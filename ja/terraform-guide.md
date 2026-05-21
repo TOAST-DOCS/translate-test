@@ -11,9 +11,6 @@ Terraformはインフラを簡単に構築し、安全に変更し、効率的�
     * 定義したコードを簡単に共有でき、効率的に協業できます。
 * **Execution Plan**
     * 変更計画と変更適用を分離して変更内容を適用する時に発生しうる失敗をへらすことができます。
-* **Resource Graph**
-    * 些細な変更がインフラ全体にどんな影響を与えるかを事前に確認できます。
-    *従属性グラフを作成し、このグラフを元に計画を立て、この計画を適用した時に変更されるインフラの状態を確認できます。
 * **Change Automation**
     * 複数の場所に同じ構成のインフラを構築し、変更できるように自動化できます。
     * インフラを構築するのにかかる時間を節約することができ、失敗も減らすことができます。
@@ -209,3 +206,68 @@ provider.tf
 $ terraform init
 ```
 
+<a id="terraform-provider-provided"></a>
+## Terraformプロバイダーの提供
+
+NHN CloudはHashiCorp社の公式パートナーとして、[Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest)を通じてTerraformプロバイダーを提供しています。
+
+Terraformはterraformバイナリファイルを起点に、ローカル環境または配備サーバーのようなリモート環境から目的のターゲットを呼び出す方式で実行されます。この際、「目的のターゲット」は呼び出し方法が異なりますが、ターゲットのプロバイダー、つまりプロバイダーが提供するAPIを呼び出して相互作用します。ここでTerraformがターゲットとの相互作用を可能にするのが「プロバイダー」です。
+
+
+
+<a id="terraform-usage"></a>
+## Terraformの基本的な使用方法
+
+Terraformを使用したインフラ構築は、通常以下のようなライフサイクルを持ちます。
+
+1. tfファイルの作成
+2. 構築計画の確認
+3. リソースの作成
+4. リソースの変更
+5. リソースの削除
+
+まず、構築するインフラ形状をtfファイルに記述します。作成されたtfファイルに基づく構築計画は、以下のように`plan`コマンドで確認します。
+
+```
+$ terraform plan
+```
+
+構築計画に問題がなければ、`apply`コマンドを使用してリソースを作成、変更、削除します。
+
+```
+$ terraform apply
+```
+
+次のセクションでは、これらのステップを例とともにより詳しく説明します。
+
+
+<a id="create-tf-files"></a>
+### tfファイルの作成
+
+プロバイダー設定ファイルがあるパスにtfファイルを作成します。複数のリソース設定を1つのtfファイルにまとめるか、リソースごとに別々のtfファイルで作成することも可能です。Terraformは作成されたすべてのtfファイルを一度に読み込んで構築計画を立てます。
+
+以下は、`instance.tf`ファイルにインスタンスを作成するリソースを定義したtfファイルの例です。
+
+```
+$ ls
+instance.tf provider.tf
+$ cat instance.tf
+resource "nhncloud_compute_instance_v2" "terraform-instance-01" {
+  name      = "terraform-instance-01"
+  region    = "KR1"
+  flavor_id = "da74152c-0167-4ce9-b391-8a88a8ff2754"
+  key_pair  = "terraform-keypair"
+  network {
+    uuid = "00d5b852-cb77-4307-b6be-d81dad24eec1"
+  }
+  security_groups = ["default"]
+  block_device {
+    uuid = "6d0993b4-cd6d-4242-b59b-94258f265331"
+    source_type = "image"
+    destination_type = "volume"
+    boot_index = 0
+    volume_size = 20
+    delete_on_termination = true
+  }
+}
+```
