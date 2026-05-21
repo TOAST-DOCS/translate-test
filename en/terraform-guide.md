@@ -11,9 +11,6 @@ Terraform is an open-source tool that lets you easily build and safely change in
     * You can easily share the defined code for efficient collaboration.
 * **Execution Plan**
     * By separating change planning and change execution, you can reduce the potential for mistakes when making changes.
-* **Resource Graph**
-    * You can see in advance how minor changes will affect the entire infrastructure.
-    * By creating a dependency graph, you can make a plan based on the graph and see how your infrastructure changes when you apply the plan.
 * **Change Automation**
     * You can automate the process so that infrastructure with the same configuration can be built and changed in multiple locations.
     * You can save time to build infrastructure and reduce mistakes.
@@ -90,6 +87,14 @@ $ terraform -v
 Terraform v1.14.2
 ```
 
+<a id="terraform-provider-provided"></a>
+## Terraform Provider
+NHN Cloud is an official partner of HashiCorp and provides Terraform providers through the [Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest).
+
+Terraform executes by starting with the terraform binary file to call desired targets in a local environment or remote environments such as deployment servers. The 'desired targets' have different invocation methods, but they interact by calling APIs provided by the target's provider. What enables Terraform to interact with targets is the 'provider'.
+
+
+
 <a id="terraform-initialization"></a>
 ## Terraform Initialization
 Before using Terraform, create a provider configuration file as follows.
@@ -143,3 +148,59 @@ provider.tf
 $ terraform init
 ```
 
+<a id="terraform-usage"></a>
+## Terraform Basic Usage
+
+Infrastructure building with Terraform typically has the following lifecycle:
+
+1. Create tf files
+2. Verify build plan
+3. Create resources
+4. Modify resources
+5. Delete resources
+
+First, define the infrastructure configuration to be built in a tf file. You can verify the build plan based on the created tf file using the `plan` command as follows:
+
+```
+$ terraform plan
+```
+
+If the build plan is acceptable, use the `apply` command to create, modify, or delete resources.
+
+```
+$ terraform apply
+```
+
+The following sections describe these steps in more detail with examples.
+
+
+<a id="create-tf-files"></a>
+### Create tf Files
+
+Create tf files in the path where the provider configuration file is located. You can consolidate multiple resource configurations in a single tf file or create separate tf files for each resource. Terraform reads all created tf files at once and establishes a build plan.
+
+The following is an example of a tf file that defines a resource to create an instance in the `instance.tf` file:
+
+```
+$ ls
+instance.tf provider.tf
+$ cat instance.tf
+resource "nhncloud_compute_instance_v2" "terraform-instance-01" {
+  name      = "terraform-instance-01"
+  region    = "KR1"
+  flavor_id = "da74152c-0167-4ce9-b391-8a88a8ff2754"
+  key_pair  = "terraform-keypair"
+  network {
+    uuid = "00d5b852-cb77-4307-b6be-d81dad24eec1"
+  }
+  security_groups = ["default"]
+  block_device {
+    uuid = "6d0993b4-cd6d-4242-b59b-94258f265331"
+    source_type = "image"
+    destination_type = "volume"
+    boot_index = 0
+    volume_size = 20
+    delete_on_termination = true
+  }
+}
+```
