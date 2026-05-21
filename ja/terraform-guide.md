@@ -1,31 +1,30 @@
 <a id="third-party-user-guide-terraform-user-guide"></a>
-## サードパーティー使用ガイド > Terraform使用ガイド
-この文書はTerraformでNHN Cloudを使用する方法を説明します。
+## サードパーティ使用ガイド > Terraform使用ガイド
+本書では、TerraformでNHN Cloudを使用する方法について説明します。
 
 <a id="terraform"></a>
 ## Terraform
-Terraformはインフラを簡単に構築し、安全に変更し、効率的にインフラの形状を管理できるオープンソースのツールです。Terraformの主な特徴は次のとおりです。
+Terraformは、インフラを簡単に構築し、安全に変更し、効率的にインフラの構成を管理できるオープンソースツールです。Terraformの主な特徴は次のとおりです。
 
 * **Infrastructure as Code**
-    * インフラをコードで定義して生産性と透明性を高めることができます。
-    * 定義したコードを簡単に共有でき、効率的に協業できます。
+    * インフラをコードで定義して、生産性と透明性を高めることができます。
+    * 定義したコードを簡単に共有できるため、効率的に協業できます。
 * **Execution Plan**
-    * 変更計画と変更適用を分離して変更内容を適用する時に発生しうる失敗をへらすことができます。
+    * 変更計画と変更適用を分離して、変更内容を適用する際に発生する可能性のある実誤を減らすことができます。
 * **Resource Graph**
-    * 些細な変更がインフラ全体にどんな影響を与えるかを事前に確認できます。
-    *従属性グラフを作成し、このグラフを元に計画を立て、この計画を適用した時に変更されるインフラの状態を確認できます。
+    * 小さな変更がインフラ全体にどのような影響を与えるかを事前に確認できます。
+    * 依存関係グラフを作成して、このグラフに基づいて計画を立て、この計画を適用したときに変更されるインフラの状態を確認できます。
 * **Change Automation**
-    * 複数の場所に同じ構成のインフラを構築し、変更できるように自動化できます。
-    * インフラを構築するのにかかる時間を節約することができ、失敗も減らすことができます。
+    * 複数の場所に同じ構成のインフラを構築し、変更することを自動化できます。
+    * インフラを構築するのにかかる時間を節約でき、実誤も減らすことができます。
 
 
-<a id="supported-resources"></a>
-#### Resourcesサポート
+#### Resources サポート
 
 * Compute
     * nhncloud_compute_instance_v2
     * nhncloud_compute_volume_attach_v2
-    * nhncloud_compute_keypair_v2    
+    * nhncloud_compute_keypair_v2
 * Network
     * nhncloud_lb_loadbalancer_v2
     * nhncloud_lb_listener_v2
@@ -38,7 +37,7 @@ Terraformはインフラを簡単に構築し、安全に変更し、効率的�
     * nhncloud_networking_vpc_v2
     * nhncloud_networking_vpcsubnet_v2
     * nhncloud_networking_routingtable_v2
-    * nhncloud_networking_routingtable_attach_gateway_v2    
+    * nhncloud_networking_routingtable_attach_gateway_v2
     * nhncloud_networking_secgroup_v2
     * nhncloud_networking_secgroup_rule_v2
     * nhncloud_keymanager_secret_v1
@@ -53,9 +52,8 @@ Terraformはインフラを簡単に構築し、安全に変更し、効率的�
     * nhncloud_kubernetes_nodegroup_v1
     * nhncloud_kubernetes_cluster_resize_v1
     * nhncloud_kubernetes_nodegroup_upgrade_v1
-    
-<a id="supported-data-sources"></a>
-#### Data sourcesサポート
+
+#### Data sources サポート
 
 * nhncloud_images_image_v2
 * nhncloud_blockstorage_volume_v2
@@ -71,18 +69,19 @@ Terraformはインフラを簡単に構築し、安全に変更し、効率的�
 * nhncloud_kubernetes_cluster_v1
 * nhncloud_kubernetes_nodegroup_v1
 
-<a id="note"></a>
-### 注意
 
-* **下記例のすべてのデータは実際の情報ではありません。必ず正確な情報に修正して使用します。**
-* **下記の例はすべてTerraform 0.12.24を利用しました。**
+<a id="note"></a>
+### 注意事項
+
+* **以下の例で使用されているTerraformバージョンは1.0.0です。**
+* **バージョンを含むコンポーネントの名前と数字は変更される可能性があるため、確認してからご使用ください。**
 
 
 <a id="terraform-installation"></a>
-## Terraformインストール
-[Terraformダウンロードページ](https://www.terraform.io/downloads.html)でローカルPCのOSに合ったファイルをダウンロードします。ファイルの圧縮を解凍し、任意の場所に入れた後、次の環境設定に該当パスを追加するとインストールが完了します。
+## Terraform インストール
+[Terraform ダウンロードページ](https://www.terraform.io/downloads.html)から、ローカルPCのオペレーティングシステムに合ったファイルをダウンロードします。ファイルを展開し、目的のパスに配置してから、環境設定にそのパスを追加すればインストールが完了します。
 
-次はLinux(Ubuntu/Debian)のインストール例です。
+以下は、Linux(Ubuntu/Debian)のインストール例です。
 
 ```
 $ wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
@@ -93,75 +92,13 @@ Terraform v1.14.2
 ```
 
 
-
-<a id="local-provider"></a>
-### Local provider設定
-
-Local provider設定を通じてTerraform NHN Cloud providerを使用できます。
-
-Local providerを探すためのディレクトリ構造を作成した後、ダウンロードしたバイナリファイルをプラグインのパスに追加します。バイナリファイルには実行権限が必要です。
-
-以下はOSごとのプラグイン基本パスです。より詳しい基本パスの説明は[Terraformサイト](https://developer.hashicorp.com/terraform/cli/config/config-file#provider-installation)の`Implied Local Mirror Directories
-`項目を参照してください。
-
-* **Linux / macOS** : `${HOME}/.terraform.d/plugins/terraform.local/local/nhncloud/${version}/${platforms}`
-* **Windows** : `%APPDATA%/terraform.d/plugins/terraform.local/local/nhncloud/${version}/${platforms}`
-
-プラグイン基本パス構成ルールについての説明です。
-
-* **version**
-    * providerのバージョンです。
-* **platforms**
-    * パッケージがあるプラットフォームを説明するオブジェクトの配列で、OS識別キーワードとCPUアーキテクチャ識別キーワードで構成されています。
-    * **darwin_adm64** : macOS / AMD64
-    * **darwin_arm64** : macOS / Apple silicon
-    * **linux_amd64** : Linux / AMD64
-    * **windows_amd64** : Windows / AMD64
-
-以下は、バイナリダウンロード後、**OS/アーキテクチャ**ごとのプラグイン設定例です。 
-
-**プラグインを設定する際は1.0.2バージョンを使用することを推奨します。**
-
-`macOS / AMD64`プラグインの設定例です。
-
-```
-$ mkdir -p $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_amd64
-$ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_amd64
-$ chmod +x $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_amd64/terraform-provider-nhncloud_v1.0.2
-```
-
-`macOS / Apple silicon`プラグインの設定例です。
-
-```
-$ mkdir -p $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_arm64
-$ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_arm64
-$ chmod +x $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_arm64/terraform-provider-nhncloud_v1.0.2
-```
-
-`Linux / AMD64`プラグインの設定例です。
-
-```
-$ mkdir -p $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/linux_amd64
-$ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/linux_amd64
-$ chmod +x $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/linux_amd64/terraform-provider-nhncloud_v1.0.2
-```
-
-`Windows / AMD64`プラグインの設定例です。
-
-```
-$ mkdir -p %APPDATA%/terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/windows_amd64
-$ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/windows_amd64
-$ copy terraform-provider-nhncloud_v1.0.2 %APPDATA%/terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/windows_amd64
-```
-
-
 <a id="terraform-initialization"></a>
-## Terraformの初期化
-Terraformを使用する前に、次のようにプロバイダー設定ファイルを作成します。
+## Terraform 初期化
+Terraformを使用する前に、以下のようにプロバイダー設定ファイルを作成します。
 
-プロバイダーファイルの名前は任意で設定可能で、この例では`provider.tf`を使用します。
+プロバイダーファイル名は任意に設定でき、この例では `provider.tf` を使用します。
 
-providerバージョンは[NHN Cloud Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest)の `VERSION` 情報を参考にして作成します。
+プロバイダーバージョンは、[NHN Cloud Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest)の `VERSION` 情報を参照して作成します。
 
 ```
 # Define required providers
@@ -184,28 +121,26 @@ provider "nhncloud" {
 }
 ```
 
-
 * **user_name**
     * NHN Cloud IDを使用します。
 * **tenant_id**
-    * NHN Cloudコンソールの**Compute > Instance > 管理**メニューで**APIエンドポイント設定**ボタンを押してテナントIDを確認します。
+    * NHN Cloudコンソールの **Compute > Instance > 管理** メニューで **APIエンドポイント設定** ボタンをクリックしてテナントIDを確認します。
 * **password**
-    * **API Endpoint設定**ウィンドウで保存した**APIパスワード**を使用します。
-    * APIパスワードの設定方法は**ユーザーガイド > Compute > Instance > API使用準備**を参照します。
+    * **APIエンドポイント設定** ダイアログで保存した **API パスワード** を使用します。
+    * APIパスワード設定方法は、**ユーザーガイド > Compute > Instance > API使用準備** を参照してください。
 * **auth_url**
-    * NHN Cloud身元サービスアドレスを明示します。
-    * NHN Cloudコンソールの**Compute > Instance > 管理**メニューで**APIエンドポイント設定**ボタンをクリックして身元サービス(identity) URLを確認します。
+    * NHN Cloud ID サービスアドレスを指定します。
+    * NHN Cloudコンソールの **Compute > Instance > 管理** メニューで **APIエンドポイント設定** ボタンをクリックしてID サービス(identity) URLを確認します。
 * **region**
     * NHN Cloudリソースを管理するリージョン情報を入力します。
-    * **KR1**：韓国(パンギョ)リージョン
-    * **KR2**：韓国(ピョンチョン)リージョン
-    * **JP1**：日本(東京)リージョン
+    * **KR1**: 韓国(パンギョ) リージョン
+    * **KR2**: 韓国(ピョンチョン) リージョン
+    * **JP1**: 日本(東京) リージョン
 
-プロバイダー設定ファイルがあるパスで`init`コマンドを利用してTerraformを初期化します。
+プロバイダー設定ファイルがあるパスで `init` コマンドを使用してTerraformを初期化します。
 
 ```
 $ ls
 provider.tf
 $ terraform init
 ```
-
