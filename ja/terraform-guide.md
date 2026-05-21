@@ -11,9 +11,6 @@ Terraformはインフラを簡単に構築し、安全に変更し、効率的�
     * 定義したコードを簡単に共有でき、効率的に協業できます。
 * **Execution Plan**
     * 変更計画と変更適用を分離して変更内容を適用する時に発生しうる失敗をへらすことができます。
-* **Resource Graph**
-    * 些細な変更がインフラ全体にどんな影響を与えるかを事前に確認できます。
-    *従属性グラフを作成し、このグラフを元に計画を立て、この計画を適用した時に変更されるインフラの状態を確認できます。
 * **Change Automation**
     * 複数の場所に同じ構成のインフラを構築し、変更できるように自動化できます。
     * インフラを構築するのにかかる時間を節約することができ、失敗も減らすことができます。
@@ -154,6 +151,13 @@ $ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.loc
 $ copy terraform-provider-nhncloud_v1.0.2 %APPDATA%/terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/windows_amd64
 ```
 
+<a id="terraform-provider-provided"></a>
+## Terraform provider提供
+
+NHN Cloudは HashiCorp社の公式パートナーとして[Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest)を通じてTerraform providerを提供しています。
+
+Terraformはterraformバイナリファイルを始まりにローカル環境やデプロイサーバーのようなリモート環境で目的のターゲットを呼び出す方式で実行されます。このとき「目的のターゲット」は呼び出す方式が異なりますが、ターゲットの供給者、つまりプロバイダーが提供するAPIを呼び出して相互作用します。ここでTerraformがターゲットとの相互作用ができるようにするのが「プロバイダー」です。
+
 
 <a id="terraform-initialization"></a>
 ## Terraformの初期化
@@ -209,3 +213,61 @@ provider.tf
 $ terraform init
 ```
 
+
+
+<a id="terraform-usage"></a>
+## Terraformの基本的な使用方法
+
+Terraformを使用したインフラの構築は、通常以下のようなライフサイクルを持ちます。
+
+1. tfファイル作成
+2. 構築計画確認
+3. リソース作成
+4. リソース修正
+5. リソース削除
+
+まず、構築するインフラの形状をtfファイルに記述します。記述されたtfファイルに基づいた構築計画は、以下のように`plan`コマンドで確認します。
+
+```
+$ terraform plan
+```
+
+構築計画に問題がなければ、`apply`コマンドを使用してリソースを作成、修正、削除します。
+
+```
+$ terraform apply
+```
+
+次のセクションでは、これらのステップを例とともにより詳しく説明します。
+
+
+<a id="create-tf-files"></a>
+### tfファイル作成
+
+プロバイダー設定ファイルがあるパスにtfファイルを作成します。複数のリソース設定を1つのtfファイルにまとめることもできますし、リソースごとに別々のtfファイルとして作成することも可能です。Terraformは、作成されたすべてのtfファイルを一度に読み込んで構築計画を立てます。
+
+以下は、`instance.tf`ファイルにインスタンスを作成するリソースを定義したtfファイルの例です。
+
+```
+$ ls
+instance.tf provider.tf
+$ cat instance.tf
+resource "nhncloud_compute_instance_v2" "terraform-instance-01" {
+  name      = "terraform-instance-01"
+  region    = "KR1"
+  flavor_id = "da74152c-0167-4ce9-b391-8a88a8ff2754"
+  key_pair  = "terraform-keypair"
+  network {
+    uuid = "00d5b852-cb77-4307-b6be-d81dad24eec1"
+  }
+  security_groups = ["default"]
+  block_device {
+    uuid = "6d0993b4-cd6d-4242-b59b-94258f265331"
+    source_type = "image"
+    destination_type = "volume"
+    boot_index = 0
+    volume_size = 20
+    delete_on_termination = true
+  }
+}
+```
