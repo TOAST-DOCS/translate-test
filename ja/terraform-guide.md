@@ -11,9 +11,6 @@ Terraformはインフラを簡単に構築し、安全に変更し、効率的�
     * 定義したコードを簡単に共有でき、効率的に協業できます。
 * **Execution Plan**
     * 変更計画と変更適用を分離して変更内容を適用する時に発生しうる失敗をへらすことができます。
-* **Resource Graph**
-    * 些細な変更がインフラ全体にどんな影響を与えるかを事前に確認できます。
-    *従属性グラフを作成し、このグラフを元に計画を立て、この計画を適用した時に変更されるインフラの状態を確認できます。
 * **Change Automation**
     * 複数の場所に同じ構成のインフラを構築し、変更できるように自動化できます。
     * インフラを構築するのにかかる時間を節約することができ、失敗も減らすことができます。
@@ -209,3 +206,69 @@ provider.tf
 $ terraform init
 ```
 
+<a id="terraform-provider-provided"></a>
+## Terraformプロバイダー提供
+
+NHN CloudはHashiCorp社の公式パートナーとして[Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest)を通じてTerraformプロバイダーを提供しています。
+
+Terraformはterraformバイナリファイルから始まり、ローカル環境または展開サーバーなどのリモート環境で目的の対象を呼び出す方式で実行されます。この時「目的の対象」は呼び出す方式が異なりますが、対象のプロバイダー、つまりプロバイダーが提供するAPIを呼び出して相互作用します。ここでTerraformが対象と相互作用できるようにするのが「プロバイダー」です。
+
+
+
+<a id="terraform-usage"></a>
+## Terraform基本使用法
+
+Terraformを利用したインフラ構築は通常、以下のようなライフサイクルを持ちます。
+
+1. tfファイル作成
+2. 構築計画確認
+3. リソース作成
+4. リソース修正
+5. リソース削除
+
+まず構築するインフラ形状をtfファイルに記述します。記述されたtfファイルに基づく構築計画は以下のように`plan`コマンドで確認します。
+
+```
+$ terraform plan
+```
+
+構築計画に問題がなければ、`apply`コマンドを使用してリソースを作成、修正、削除します。
+
+```
+$ terraform apply
+```
+
+次のセクションでは、これらのステップをサンプルと共にさらに詳しく説明します。
+
+
+<a id="create-tf-files"></a>
+### tfファイル作成
+
+プロバイダー設定ファイルがあるパスにtfファイルを記述します。複数のリソース設定を1つのtfファイルに集約したり、リソース別に別々のtfファイルとして記述することも可能です。Terraformは
+記述されたすべてのtfファイルを一度に読み込んで構築計画を立案します。
+
+以下は`instance.tf`ファイルにインスタンスを作成するリソースを定義したtfファイルの例です。
+
+```
+$ ls
+instance.tf provider.tf
+$ cat instance.tf
+resource "nhncloud_compute_instance_v2" "terraform-instance-01" {
+  name      = "terraform-instance-01"
+  region    = "KR1"
+  flavor_id = "da74152c-0167-4ce9-b391-8a88a8ff2754"
+  key_pair  = "terraform-keypair"
+  network {
+    uuid = "00d5b852-cb77-4307-b6be-d81dad24eec1"
+  }
+  security_groups = ["default"]
+  block_device {
+    uuid = "6d0993b4-cd6d-4242-b59b-94258f265331"
+    source_type = "image"
+    destination_type = "volume"
+    boot_index = 0
+    volume_size = 20
+    delete_on_termination = true
+  }
+}
+```
