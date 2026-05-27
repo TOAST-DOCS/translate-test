@@ -145,6 +145,38 @@ provider.tf
 $ terraform init
 ```
 
+<a id="data-sources"></a>
+## Data sources
+
+tf 파일 작성에 필요한 인스턴스 타입 ID, 이미지 ID 등은 콘솔에서 확인하거나, Terraform이 제공하는 data sources를 이용하여 가져올 수 있습니다. Data sources는 tf 파일 안에 작성하며, 가져온 정보는 수정할 수 없고 오직 참조만 가능합니다. NHN Cloud는 주기적으로 이미지를 업데이트하므로 이미지 이름이 변경될 수 있습니다. 사용하고자 하는 정확한 이미지 이름은 콘솔을 참조하여 명시합니다.
+
+Data sources는 `{data sources 자원 유형}.{data source 이름}`으로 참조합니다. 아래 예제에서는 `nhncloud_images_image_v2.ubuntu_2004_20201222`로 가져온 이미지 정보를 참조합니다.
+
+```
+data "nhncloud_images_image_v2" "ubuntu_2004_20201222" {
+  name = "Ubuntu Server 20.04.1 LTS (2020.12.22)"
+  most_recent = true
+}
+```
+
+Data sources 안에서 다른 data source를 참조할 수 있습니다.
+
+```
+data "nhncloud_blockstorage_volume_v2" "volume_00"{
+  name = "ssd_volume1"
+  status = "available"
+}
+
+data "nhncloud_blockstorage_snapshot_v2" "my_snapshot" {
+  name = "my-snapshot"
+  volume_id = data.nhncloud_blockstorage_volume_v2.volume_00.id
+  status = "available"
+  most_recent = true
+}
+```
+
+
+
 
 <a id="terraform-usage"></a>
 ## Terraform 기본 사용법
