@@ -1,25 +1,25 @@
 <a id="third-party-user-guide-terraform-user-guide"></a>
-## Third Party User Guide > Terraform User Guide
+## Third-Party User Guide > Terraform User Guide
 This document describes how to use NHN Cloud with Terraform.
 
 <a id="terraform"></a>
 ## Terraform
-Terraform is an open-source tool that lets you easily build and safely change infrastructure, and also efficiently manage configuration of infrastructure. The main features of Terraform are as follows:
+Terraform is an open source tool that makes it easy to build infrastructure, safely change it, and efficiently manage the configuration of infrastructure. The key features of Terraform are as follows.
 
 * **Infrastructure as Code**
-    * You can increase the productivity and transparency by defining infrastructure as code.
-    * You can easily share the defined code for efficient collaboration.
+    * Define infrastructure as code to increase productivity and transparency.
+    * Easily share the defined code for efficient collaboration.
 * **Execution Plan**
-    * By separating change planning and change execution, you can reduce the potential for mistakes when making changes.
+    * Separate change plans from applying changes to reduce mistakes that may occur when applying changes.
 * **Resource Graph**
-    * You can see in advance how minor changes will affect the entire infrastructure.
-    * By creating a dependency graph, you can make a plan based on the graph and see how your infrastructure changes when you apply the plan.
+    * Check in advance how minor changes will affect the entire infrastructure.
+    * Create a dependency graph to plan based on this graph, and check the changed infrastructure state when applying this plan.
 * **Change Automation**
-    * You can automate the process so that infrastructure with the same configuration can be built and changed in multiple locations.
-    * You can save time to build infrastructure and reduce mistakes.
+    * Automate building and changing infrastructure with the same configuration across multiple locations.
+    * Save time spent building infrastructure and reduce mistakes.
 
-<a id="supported-resources"></a>
-#### Supported Resources
+
+#### Resources Support
 
 * Compute
     * nhncloud_compute_instance_v2
@@ -53,8 +53,7 @@ Terraform is an open-source tool that lets you easily build and safely change in
     * nhncloud_kubernetes_cluster_resize_v1
     * nhncloud_kubernetes_nodegroup_upgrade_v1
 
-<a id="supported-data-sources"></a>
-#### Supported Data Sources
+#### Data Sources Support
 
 * nhncloud_images_image_v2
 * nhncloud_blockstorage_volume_v2
@@ -70,17 +69,19 @@ Terraform is an open-source tool that lets you easily build and safely change in
 * nhncloud_kubernetes_cluster_v1
 * nhncloud_kubernetes_nodegroup_v1
 
+
 <a id="note"></a>
 ### Note
 
-* **The version of the Terraform used in the examples below is 1.0.0.**
-* **The name and number of the components including the version can be changed, so make sure you check the information before use.**
+* **The Terraform version used in the examples below is 1.0.0.**
+* **Component names and numbers including version may change. Please check before using.**
+
 
 <a id="terraform-installation"></a>
 ## Terraform Installation
-Go to [Download Terraform](https://www.terraform.io/downloads.html) and download the file suitable for the operating system of your local PC. Decompress the file to an appropriate path and add the path to your environment setting, and the installation is complete.
+Download the file suitable for the operating system of your local PC from the [Terraform download page](https://www.terraform.io/downloads.html). Extract the file, place it in the desired path, and add that path to the environment settings to complete the installation.
 
-See the following example for Linux(Ubuntu/Debian) installation.
+The following is an example of Linux (Ubuntu/Debian) installation.
 
 ```
 $ wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
@@ -90,13 +91,14 @@ $ terraform -v
 Terraform v1.14.2
 ```
 
+
 <a id="terraform-initialization"></a>
 ## Terraform Initialization
 Before using Terraform, create a provider configuration file as follows.
 
-The name of the provider file can be set randomly. This example uses `provider.tf` as the filename.
+The provider file name can be set arbitrarily. This example uses `provider.tf`.
 
-For provider version, please write it based on the [NHN Cloud Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest)'s `VERSION` information.
+Refer to the `VERSION` information in the [NHN Cloud Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest) to specify the provider version.
 
 ```
 # Define required providers
@@ -120,22 +122,22 @@ provider "nhncloud" {
 ```
 
 * **user_name**
-    * Use the NHN Cloud ID.
+    * Use your NHN Cloud ID.
 * **tenant_id**
-    * From **Compute > Instance > Management** on NHN Cloud console, click **Set API Endpoint** to check the Tenant ID.
+    * Click the **API Endpoint Setting** button in the **Compute > Instance > Management** menu of the NHN Cloud console to check the tenant ID.
 * **password**
-    * Use **API Password** that you saved in **Set API Endpoint**.
-    * Regarding how to set API passwords, see **User Guide > Compute > Instance > API Preparations**.
+    * Use the **API password** saved in the **API Endpoint Setting** dialog.
+    * For how to set the API password, refer to **User Guide > Compute > Instance > API Usage Preparation**.
 * **auth_url**
-    * Specify the address of the NHN Cloud identification service.
-    * From **Compute > Instance > Management** on NHN Cloud console, click **Set API Endpoint** to check Identity URL.
+    * Specify the NHN Cloud identity service address.
+    * Click the **API Endpoint Setting** button in the **Compute > Instance > Management** menu of the NHN Cloud console to check the identity service URL.
 * **region**
-    * Enter the region to manage NHN Cloud resources.
+    * Enter the region information to manage NHN Cloud resources.
     * **KR1**: Korea (Pangyo) Region
     * **KR2**: Korea (Pyeongchon) Region
     * **JP1**: Japan (Tokyo) Region
 
-On the path where the provider configuration file is located, use the `init` command to initialize Terraform.
+Initialize Terraform using the `init` command from the path where the provider configuration file is located.
 
 ```
 $ ls
@@ -143,3 +145,60 @@ provider.tf
 $ terraform init
 ```
 
+<a id="data-sources"></a>
+## Data Sources
+
+Instance type IDs and image IDs needed to write tf files can be checked in the console or obtained using data sources provided by Terraform. Data sources are written in tf files. The imported information cannot be modified and can only be referenced. Since NHN Cloud periodically updates images, image names may change. Specify the exact image name you want to use by referring to the console.
+
+Data sources are referenced as `{data sources resource type}.{data source name}`. In the example below, image information obtained as `nhncloud_images_image_v2.ubuntu_2004_20201222` is referenced.
+
+```
+data "nhncloud_images_image_v2" "ubuntu_2004_20201222" {
+  name = "Ubuntu Server 20.04.1 LTS (2020.12.22)"
+  most_recent = true
+}
+```
+
+Data sources can reference other data sources.
+
+```
+data "nhncloud_blockstorage_volume_v2" "volume_00"{
+  name = "ssd_volume1"
+  status = "available"
+}
+
+data "nhncloud_blockstorage_snapshot_v2" "my_snapshot" {
+  name = "my-snapshot"
+  volume_id = data.nhncloud_blockstorage_volume_v2.volume_00.id
+  status = "available"
+  most_recent = true
+}
+```
+
+
+
+
+<a id="terraform-usage"></a>
+## Terraform Basic Usage
+
+Infrastructure building with Terraform usually has the following lifecycle.
+
+1. Write tf files
+2. Check the construction plan
+3. Create resources
+4. Modify resources
+5. Delete resources
+
+First, write the infrastructure configuration you want to build in a tf file. Check the construction plan based on the written tf file using the `plan` command as follows.
+
+```
+$ terraform plan
+```
+
+If there are no issues with the construction plan, use the `apply` command to create, modify, and delete resources.
+
+```
+$ terraform apply
+```
+
+The following section explains these steps in more detail with examples.
