@@ -19,6 +19,6 @@ Private CA에서 인증서를 발급 받기까지의 과정은 다음과 같습�
     - **Root CA**: 자체 서명한 최상위 인증서입니다. 모든 신뢰의 출발점입니다.
     - **Intermediate CA**: Root CA에 의해 서명된 중간 인증서입니다. 실제 서버 인증서 발급에 사용됩니다.
 
-![Private CA 콘솔 화면](../images/privateca.png)
+![Private CA 콘솔 화면](https://static.toastoven.net/prod2_translate-test/ko/privateca.png)
 
 
