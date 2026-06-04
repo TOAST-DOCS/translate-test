@@ -4,21 +4,18 @@ This document describes how to use NHN Cloud with Terraform.
 
 <a id="terraform"></a>
 ## Terraform
-Terraform is an open-source tool that lets you easily build and safely change infrastructure, and also efficiently manage configuration of infrastructure. The main features of Terraform are as follows:
+Terraform is an open source tool that you can use to easily build infrastructure, safely change it, and efficiently manage infrastructure configuration. Terraform provides the following features:
 
 * **Infrastructure as Code**
-    * You can increase the productivity and transparency by defining infrastructure as code.
+    * You can define infrastructure as code to increase productivity and transparency.
     * You can easily share the defined code for efficient collaboration.
 * **Execution Plan**
-    * By separating change planning and change execution, you can reduce the potential for mistakes when making changes.
-* **Resource Graph**
-    * You can see in advance how minor changes will affect the entire infrastructure.
-    * By creating a dependency graph, you can make a plan based on the graph and see how your infrastructure changes when you apply the plan.
+    * By separating change planning and change application, you can reduce mistakes that can occur when applying changes.
 * **Change Automation**
-    * You can automate the process so that infrastructure with the same configuration can be built and changed in multiple locations.
-    * You can save time to build infrastructure and reduce mistakes.
+    * You can automate building and changing infrastructure with the same configuration in multiple locations.
+    * You can save time in building infrastructure and reduce mistakes.
 
-<a id="supported-resources"></a>
+
 #### Supported Resources
 
 * Compute
@@ -53,7 +50,6 @@ Terraform is an open-source tool that lets you easily build and safely change in
     * nhncloud_kubernetes_cluster_resize_v1
     * nhncloud_kubernetes_nodegroup_upgrade_v1
 
-<a id="supported-data-sources"></a>
 #### Supported Data Sources
 
 * nhncloud_images_image_v2
@@ -70,17 +66,21 @@ Terraform is an open-source tool that lets you easily build and safely change in
 * nhncloud_kubernetes_cluster_v1
 * nhncloud_kubernetes_nodegroup_v1
 
+
 <a id="note"></a>
 ### Note
 
-* **The version of the Terraform used in the examples below is 1.0.0.**
-* **The name and number of the components including the version can be changed, so make sure you check the information before use.**
+* **The Terraform version used in the examples below is 1.0.0.**
+* **The names and numbers of components, including versions, are subject to change. Check before using them.**
+
 
 <a id="terraform-installation"></a>
-## Terraform Installation
-Go to [Download Terraform](https://www.terraform.io/downloads.html) and download the file suitable for the operating system of your local PC. Decompress the file to an appropriate path and add the path to your environment setting, and the installation is complete.
 
-See the following example for Linux(Ubuntu/Debian) installation.
+## Install Terraform
+
+Download the file for your local PC's operating system from the [Terraform download page](https://www.terraform.io/downloads.html). Extract the file, place it in your desired path, and add that path to your environment settings to complete the installation.
+
+The following is an installation example for Linux (Ubuntu/Debian).
 
 ```
 $ wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
@@ -90,13 +90,23 @@ $ terraform -v
 Terraform v1.14.2
 ```
 
+<a id="terraform-provider-provided"></a>
+
+## Terraform Provider
+
+NHN Cloud is an official partner of HashiCorp and provides a Terraform provider through the [Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest).
+
+Terraform runs by starting with the terraform binary file and calling desired targets in local environments or remote environments such as deployment servers. At this time, although the "desired targets" have different calling methods, they interact by calling APIs provided by the target's provider. Here, what enables Terraform to interact with targets is the "provider."
+
 <a id="terraform-initialization"></a>
+
 ## Terraform Initialization
-Before using Terraform, create a provider configuration file as follows.
 
-The name of the provider file can be set randomly. This example uses `provider.tf` as the filename.
+Before you use Terraform, create a provider configuration file as follows:
 
-For provider version, please write it based on the [NHN Cloud Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest)'s `VERSION` information.
+You can set the provider file name to any value. This example uses `provider.tf`.
+
+Write the provider version by referring to the `VERSION` information in [NHN Cloud Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest).
 
 ```
 # Define required providers
@@ -120,26 +130,86 @@ provider "nhncloud" {
 ```
 
 * **user_name**
-    * Use the NHN Cloud ID.
+    * Use your NHN Cloud ID.
 * **tenant_id**
-    * From **Compute > Instance > Management** on NHN Cloud console, click **Set API Endpoint** to check the Tenant ID.
+    * In the NHN Cloud console, go to **Compute > Instance > 관리** and choose **API 엔드포인트 설정** to check the tenant ID.
 * **password**
-    * Use **API Password** that you saved in **Set API Endpoint**.
-    * Regarding how to set API passwords, see **User Guide > Compute > Instance > API Preparations**.
+    * Use the **API 비밀번호** that you saved in the **API Endpoint 설정** dialog box.
+    * For information about how to set the API password, see **사용자 가이드 > Compute > Instance > API 사용 준비**.
 * **auth_url**
-    * Specify the address of the NHN Cloud identification service.
-    * From **Compute > Instance > Management** on NHN Cloud console, click **Set API Endpoint** to check Identity URL.
+    * Specify the NHN Cloud identity service address.
+    * In the NHN Cloud console, go to **Compute > Instance > 관리** and choose **API 엔드포인트 설정** to check the identity service URL.
 * **region**
-    * Enter the region to manage NHN Cloud resources.
-    * **KR1**: Korea (Pangyo) Region
-    * **KR2**: Korea (Pyeongchon) Region
-    * **JP1**: Japan (Tokyo) Region
+    * Enter the region information for managing NHN Cloud resources.
+    * **KR1**: Korea (Pangyo) region
+    * **KR2**: Korea (Pyeongchon) region
+    * **JP1**: Japan (Tokyo) region
 
-On the path where the provider configuration file is located, use the `init` command to initialize Terraform.
+In the path that contains the provider configuration file, initialize Terraform by using the `init` command.
 
 ```
 $ ls
 provider.tf
 $ terraform init
+```
+
+
+
+<a id="terraform-usage"></a>
+
+## Basic Terraform Usage
+
+Infrastructure deployment with Terraform typically follows the lifecycle shown below:
+
+1. Write tf files
+2. Check the deployment plan
+3. Create resources
+4. Modify resources
+5. Delete resources
+
+First, write the infrastructure configuration to be deployed in tf files. You can check the deployment plan based on the written tf files by using the `plan` command as follows:
+
+```
+$ terraform plan
+```
+
+If there are no issues with the deployment plan, use the `apply` command to create, modify, or delete resources.
+
+```
+$ terraform apply
+```
+
+The following sections explain these steps in more detail with examples.
+
+
+<a id="create-tf-files"></a>
+### Write tf Files
+
+Write tf files in the path where the provider configuration file is located. You can group multiple resource configurations in a single tf file, or create separate tf files for each resource. Terraform reads all written tf files at once to create the deployment plan.
+
+The following is an example tf file that defines a resource for creating an instance in the `instance.tf` file:
+
+```
+$ ls
+instance.tf provider.tf
+$ cat instance.tf
+resource "nhncloud_compute_instance_v2" "terraform-instance-01" {
+  name      = "terraform-instance-01"
+  region    = "KR1"
+  flavor_id = "da74152c-0167-4ce9-b391-8a88a8ff2754"
+  key_pair  = "terraform-keypair"
+  network {
+    uuid = "00d5b852-cb77-4307-b6be-d81dad24eec1"
+  }
+  security_groups = ["default"]
+  block_device {
+    uuid = "6d0993b4-cd6d-4242-b59b-94258f265331"
+    source_type = "image"
+    destination_type = "volume"
+    boot_index = 0
+    volume_size = 20
+    delete_on_termination = true
+  }
+}
 ```
 
