@@ -9,6 +9,8 @@ You can easily create a DSR-type load balancer by simply entering the settings i
 
 The Load Balancer (DSR) creation screen consists of the following three sections:
 
+<a id='load-balancer-dsr-basic-information-settings'></a>
+
 #### 1. Load Balancer (DSR) Basic Information Settings
 
 Configure the basic information for Load Balancer (DSR). The required items are as follows:
@@ -26,6 +28,8 @@ Configure the basic information for Load Balancer (DSR). The required items are 
 
 !!! tip "Note"
     Load Balancer (DSR) operates at the TCP/UDP L4 level, and server response traffic does not pass through the load balancer. Therefore, unlike a standard load balancer, L7 features such as HTTP header-based routing, SSL offloading, and the listener/member group concept are not provided.
+
+<a id='health-check-settings'></a>
 
 #### 2. Health Check Settings
 
@@ -59,6 +63,8 @@ Configure the following additional items for each protocol:
 !!! tip "Note"
     TCP/HTTP health checks send requests to the DSR VIP as the destination, if the VIP is not configured on the lo interface of the member server, the packets cannot be received or processed, causing the health check to fail and the member to be marked as `INACTIVE`. ICMP health checks send requests to the actual IP of the member, so they only verify connectivity regardless of the VIP configuration.
 
+<a id='member-settings'></a>
+
 #### 3. Member Settings
 
 Specify the member instances to register when creating Load Balancer (DSR). Members can also be registered after Load Balancer (DSR) is created.
@@ -86,6 +92,8 @@ After entering all items, click **Create Load Balancer** to create Load Balancer
 <a id='view-dsr-loadbalancers'></a>
 ### Load Balancer (DSR) Details and Modification
 
+<a id='load-balancer-dsr-list'></a>
+
 #### Load Balancer (DSR) List
 
 Once Load Balancer (DSR) creation is complete, the basic information of the created Load Balancer (DSR) instances can be viewed on the list screen. The items displayed on the list screen are as follows:
@@ -108,6 +116,8 @@ Once Load Balancer (DSR) creation is complete, the basic information of the crea
 
 Additional Load Balancer (DSR) instances can be created using **+ Create DSR** button at the top. To delete, select Load Balancer (DSR) instances using the checkboxes in the list, then click **Delete** button.
 
+<a id='load-balancer-dsr-details'></a>
+
 #### Load Balancer (DSR) Details
 
 Selecting a Load Balancer (DSR) from the list displays its details at the bottom of the screen. The details screen is divided into three tabs: **Basic information**, **Members**, and **Health Check**.
@@ -119,8 +129,12 @@ The **Basic Information** tab displays the following:
 * Floating IP connection information
 * Status
 
+<a id='rename'></a>
+
 #### Rename
 To modify the name of Load Balancer (DSR), click **Modify Name** icon in the details, enter the new name, and click **Confirm**.
+
+<a id='change-floating-ip'></a>
 
 #### Change Floating IP
 A Floating IP can be connected or disconnected to enable access to Load Balancer (DSR) from an external network.
@@ -146,6 +160,8 @@ On the Load Balancer (DSR) list screen, select the Load Balancer (DSR) to delete
 ## Member Management
 
 Select the desired load balancer (DSR) from the load balancer (DSR) list, then click **Members** tab to display the member instance management screen.
+
+<a id='member-list'></a>
 
 ### Member List
 
