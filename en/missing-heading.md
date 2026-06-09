@@ -136,6 +136,12 @@ A Floating IP can be connected or disconnected to enable access to Load Balancer
     The VPC, subnet, and VIP address connected to Load Balancer (DSR) cannot be changed after creation. If a change is needed, delete Load Balancer (DSR) and recreate it.
 
 
+<a id='delete-dsr-loadbalancers'></a>
+
+### Delete Load Balancer (DSR)
+
+<!-- TODO: translate body -->
+
 <a id='manage-dsr-members'></a>
 ## Member Management
 
