@@ -94,6 +94,7 @@ Terraform v1.14.2
 
 
 
+<!-- pre-align: ko에 대응 섹션 없음 — 검토 필요 (Local provider configuration not in Korean outline) -->
 <a id="local-provider"></a>
 ### Local provider設定
 
