@@ -1,505 +1,252 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > Console Guide
+## Dev Tools > Deploy > Console User Guide 
 
-<a id="create-instances"></a>
-## Create Instances
+This document contains the following: 
 
-You can create instances either by using the settings below or by using instance templates. To create instances using instance templates, select **Use instance template** from the Create Instance page. To learn how to create instance templates, see [Instance Template Console Guide](/Compute/Instance%20Template/en/console-guide/).
+* [Deploy Console Page](/Dev%20Tools/Deploy/en/console-guide/#deploy-console-page)
+* [Client Application](/Dev%20Tools/Deploy/en/console-guide/#client-application)
+* [Server Application](/Dev%20Tools/Deploy/en/console-guide/#server-application)
 
-<a id="os-settings"></a>
-### OS Settings
+(Any other functions are available in [Detail Functional Guide](/Dev%20Tools/Deploy/en/reference/).)
 
-Determine how the root block storage is created that will be used when an instance is created.
+<a id="deploy-console-page"></a>
 
-- Select either **Create New and Set up** or **Use Existing Resource**.
-- If you select **Create New and Set up**, create root block storage using an image.
-- If you select **Use Existing Resource**, use a previously created block storage or snapshot.
+## Deploy Console Page  
 
-<a id="image"></a>
-### Image
+Below is the console page for the Deploy service. 
 
-Select the image that contains the operating system you need. You can choose between public images provided by NHN Cloud, images you've previously created, or shared images.
+![deploy_02_201812](https://static.toastoven.net/prod_tcdeploy/deploy_02_201812.png)
 
-The available instance flavors vary depending on the image you choose, so we recommended you choose an image first when creating an instance.
+<a id="client-application"></a>
 
-| OS                         | Block Storage     | Memory   |
-| -------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB or more  | 1GB or more |
-| Windows                           | 50GB or more  | 2GB or more |
+## Client Application
 
-<a id="root-block-storage"></a>
-### Root Block Storage
+Client application deployment requires setting artifacts and uploading binaries.  
 
-Set up root block storage according to the **OS settings**.
+<a id="setting-artifacts"></a>
 
-- If you select **Create New and Set up**, create the root block store by specifying the **block storage type** and **block storage size**.
-- If you select **Use Existing Resource**, specify the **original resource** to use as root block storage.
+### Setting Artifacts  
 
-#### Original Resource
+![deploy_03_201812](https://static.toastoven.net/prod_tcdeploy/deploy_03_201812.png)
 
-You can select either a previously created **block storage** or **snapshot**.
+1. Click **Create** on the top left of the **Deploy** page.   
+2. Choose **Client Application** for the type of an artifact. 
+    - Enter name (required), description (optional), and port (required).
+3. Click **Create**.
 
-- When you select **block storage**, use the previously created block storage as the root block storage.
-- When you select **snapshot**, the root block storage is created using a previously created snapshot.
+<a id="setting-binaries"></a>
 
-#### Block Storage Size
+### Setting Binaries
 
-Specify the root block storage size of an instance.
+<a id="upload"></a>
 
-- The block storage size must be at least the minimum size required by the image.
+#### Upload 
 
-The root block storage size varies depending on instance flavor.
+* Upload .ipa and .plist files for iOS, and .apk files for Android. 
+* etc. is applied as an installation application for other OS, like Windows. 
 
-| Flavors               | Supported Block Storage Size         |
-| -------------------| -------------------------- |
-| u2 flavors             | 20 ~ 100 GB (varies by flavor) |
-| t2, m2, c2, r2, and x1 flavors | 20 ~ 2000 GB               |
+![deploy_04_201812](https://static.toastoven.net/prod_tcdeploy/deploy_04_201812.png)
 
-> [Note]
-> Because you are charged by block storage size, it is inefficient to make the default block storage size large without consideration. We recommend that you add additional block storage as needed.
-> If you select **block storage** for **Use Existing Resource** in the **OS settings**, you can't change the block storage size.
-> If you select **snapshot** for **Use Existing Resource** in the **OS settings**, block storage size must be set equal to or larger than the original block storage size.
+1. Go to **Binary Group > Default** on the tab below the **Deploy** page. 
+    Click **Create** to create a new binary group. 
+2. Click **Upload** on the right. 
+3. Choose **Select Files** from **Upload Binaries**, and select a binary file.
+    * iOS: .ipa file (required), .plist file (required)
+        * .plist: Applied to install on the download page. Download URL in the file is optional.
+    * Android: .apk file (required)
+    * Enter version (optional) and description (optional).
+4. When it is completed, click **Upload**. 
 
-#### Block Storage Type
+<a id="deploy"></a>
 
-Determines the default block storage type of an instance.
+#### Deploy
 
-- Choose either **HDD** or **SSD**. The choice of block storage type affects pricing and performance.
-- You cannot change the block storage type once the instance is created.
+Download pages can be selectively delivered via SMS or email. 
 
-> [Note]
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the block storage type.
+![deploy_27_202407](https://static.toastoven.net/prod_tcdeploy/deploy_27_202407.png)
+![deploy_28_202407](https://static.toastoven.net/prod_tcdeploy/deploy_28_202407.png)
+![deploy_29_202407](https://static.toastoven.net/prod_tcdeploy/deploy_29_202407.png)
 
-<a id="availability-zone"></a>
-### Availability Zone
+1. Click **Send** on the right. 
+2. On the **Send Download Path** window, select **Send Type** and **Recipient**, and click **Send**.  
+    * You may choose either SMS or email, or both for **Send Type**.
+    * You can select individual recipient on **Select Individual**, and can select a notification receiver group on **Select Group**.
+    * Select **Select Group** and click **View** in the **Deatils** column to open the manage notification receiver groups in project screen.
 
-If an availability zone is not specified, a random zone is selected. An instance can use a block storage only if they both exist in the same availability zone. If the block storage you wish to use exists in a particular availability zone, then select that zone.
 
-> [Note]
-> Resources in a VPC can be used in any availability zone.
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the availability zone.
+Then, the binary download page is delivered to the recipient in the specified type of delivery. 
 
-For more details on availability zones, see [Availability Zone in Instance Overview](./overview/#availability-zone).
+<a id="server-application"></a>
 
-<a id="flavor"></a>
-### Flavor
+## Server Application
 
-You can select various flavors depending on virtual hardware performance specifications. However, the choice of some flavors may be limited depending on the virtual hardware performance that your image requires. For more details, see [Instance Overview](./overview).
+Server application requires setting deployment (artifact, server, server group, and scenario), uploading binaries, and deployment. 
 
-> [Note] 
-> 1 vCPU refers to one socket composed of one thread and one core, the number of threads and the number of cores per socket are constant, one each.
+<a id="setting-artifacts-2"></a>
 
-Instance flavors can be changed in the NHN Cloud console even after instance creation, from higher to lower specs and vice versa. However, note that some flavors cannot be changed. See [Modify flavor](./console-guide/#modify-flavor) for details.
+### Setting Artifacts 
 
-> [Caution] An instance's root block storagecannot be changed by changing instance flavors.
+![deploy_06_201812](https://static.toastoven.net/prod_tcdeploy/deploy_06_201812.png)
 
-<a id="number-of-instances"></a>
-### Number of Instances
+1. Click **Create** on the list. 
+2. Select **Server Application** for the type of an artifact. 
+    - Enter name (required), description (optional), and port (required). 
+3. Click **Create** from the **Create Artifacts** window.  
 
-You can specify the number of instances you want to create when creating multiple instances with the same image, availability zone, flavor, block storage size, key pair, and network settings. The instance names will be the name you specified, with numbers such as `-1` and `-2` appended to the end. For example, creating two instances named `my-instance` will result in `my-instance-1` and `my-instance-2`. The maximum number of instances you can create at once is 10.
+<a id="setting-server-groups"></a>
 
-When you create multiple instances without specifying an availability zone, each instance will be created in a randomly selected availability zone. For example, if two instances are created without specifying an availability zone, they may be created in the same zone or they may be created in different zones. If all instances need to be created in the same availability zone, select a particular zone.
+### Setting Server Groups 
 
-> [Note]
-> If you select **block storage** for **Use Existing Resource** in the **OS settings** or **Use Existing Network Interface** in the **network settings**, the number of instances is limited to `1`.
+Deployment servers are managed by this setting. 
 
-<a id="key-pair"></a>
-### Key Pair
+![deploy_07_201812](https://static.toastoven.net/prod_tcdeploy/deploy_07_201812.png)
 
-Use an existing key pair or create a new key pair. To register an existing key pair, see [Import Key Pair (Windows)](./console-guide/#import-key-pairs-windows) for Windows users, and [Import Key Pair (Mac and Linux)](./console-guide/#import-key-pairs-mac-and-linux) for Mac and Linux users.
+1. Go to **Deploy** and click **Server Group > Create** at the bottom of the page.
+2. Set a server group to create on the **Create Server Group** window.  
+    * Enter name (required) and description (optional).
+    * Select OS and specify the **Shell Type**: enter one or select from the list. 
+    * Select Phase: Choose a server tool. Otherwise, select NONE. 
+    * Add Servers 
+        * Servers can be added in the following two methods, and find more details from [Detail Functional Guide on Server Groups](/Dev%20Tools/Deploy/en/reference/#_11).
+            * Add in Mass
+            * Add Individually 
+         * Enter host name (required), IP address (required), and OS (optional), and click **Add**. 
+         * See what is added on the server list: only the servers checked on the left box can be registered. 
 
-> [Note]
-> Key Pair is a resource assigned to the user account, so it's not deleted when you delete a project.
+3.  When it is completed, click **Create**. 
 
-<a id="network"></a>
-### Network
+<a id="setting-binary-groups"></a>
 
-Select a subnet defined in your VPC to connect to an instance. For each selected subnet, a network interface is created in the instance to connect to that subnet. You can change the order of selected subnets to change network interfaces, in which case the first network interface (`eth0`) will be set as the default gateway.
+### Setting Binary Groups
 
-For more details on creating and managing networks, refer to [VPC Overview](/Network/VPC/en/overview/).
+The feature to manage binaries to be deployed.
 
-<a id="floating-ip"></a>
-### Floating IP
+![deploy_25_202402](https://static.toastoven.net/prod_tcdeploy/deploy_25_202402.png)
+![deploy_26_202402](https://static.toastoven.net/prod_tcdeploy/deploy_26_202402.png)
 
-Select whether you will use a floating IP after instance creation. If you enable this option, a new floating IP is created and connected to the first network interface. Note that the first network interface must be connected to a subnet where an internet gateway is configured.
+1. On the tab below the **Deploy** screen, click **Binary Group > New**.
+    * The Default binary group is automatically created when you create an artifact.
+2. In the **Create Binary Group** window, set the binary group you want to create.
+    * Enter a name, description, and region.
+        * Network latency can be longer if the **region**is different from the region of the server being deployed.
+    * Enter the auto-delete settings.
+        * The feature to periodically delete binaries based on conditions such as duration, size, count, etc. 
+        * The maximum number and minimum number to keep are required values and can be set to a maximum of 10.
+3. When it is completed, click **Create**.
 
-Floating IP can be managed from Instance > Management, or Instance > Floating IP. For more details on floating IP, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+<a id="create-scenarios"></a>
 
-<a id="security-group"></a>
-### Security Group
+### Create Scenarios 
 
-Select security groups that the instance will be included in. One instance can be included in multiple security groups, in which case,
+![deploy_08_201812](https://static.toastoven.net/prod_tcdeploy/deploy_08_201812.png)
 
-- The instance can communicate over the network with all other instances included in each security group. When you are dealing with an instance with sensitive data that is not meant to be accessible by other instances, you must carefully select security groups.
-- The rules of each security group are aggregated and applied to the instance's external network communication.
+1. Go to **Deploy** and click **Deploy > Create**.
+2. Enter scenario name (optional) in Scenario which is added below. 
+3. Click **Create**.  
 
-For more details on security groups, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+<a id="add-tasks"></a>
 
-<a id="additional-block-storage"></a>
-### Additional Block Storage
+### Add Tasks 
 
-Select whether you will attach an additional block storage after instance creation. If you enable this option, a new block storage separate from the root block storage is created and attached to the instance. As with the root block storage, you can specify the name, storage type, and size of the additional block storage you create.
+A task is an element of a scenario which can execute individual functions and control order, and it is categorized into two as below: 
 
-By using the root block storage only for the OS and storing your frequently used applications and data on the additional block storage, you can easily migrate or copy your applications and data using the block storage attach/detach and snapshot features. In addition, when an instance failure occurs, you can easily recover your services by simply detaching the additional block storage and attaching it to another instance.
+* pre-run Task: Execute before deployment 
+* Normal Task: Execute while deployed 
 
-Block storage can also be managed from Instance > Block Storage. For more details on block storage, see [Block Storage Guide](/Storage/Block%20Storage/en/overview/).
+Choose one as you need. This document describes tasks that are basically required for deployment. 
+Find more tasks on [Detail Functional Guide on Tasks](/Dev%20Tools/Deploy/en/reference/#_25).
 
-<a id="placement-policy"></a>
-### Placement Policy
+To test deployment, the following three tasks are added: 
 
-You can use placement policies to place instances on different hypervisors. When you set a placement policy at instance creation time, instances assigned to the same placement policy are created on different hypervisors.
- 
-> [Caution]
-> Instance creation may fail in situations where distributed deployment is not possible.
+<a id="add-user-commands"></a>
 
-<a id="user-script"></a>
-### User Script
+#### 1. Add User Commands 
 
-You can specify a script to be executed after instance creation. The user script is executed following the instance's initial boot and after the initialization process including network configuration has completed. User scripts in NHN Cloud are executed by automated tools such as cloud-init (Linux) and Cloudbase-init (Windows), which are embedded in the official images.
+* It is a user-defined command task which is executed for deployment. 
+* You may use Available Variables.
+    * Available Variables: Reserved words. Find more details on [Detail Functional Guide on Tasks](/Dev%20Tools/Deploy/en/reference/#_25).
 
-> [Caution]
-> User scripts are executed with root (Linux)/Administrator (Windows) privileges.
+![deploy_09_201812](https://static.toastoven.net/prod_tcdeploy/deploy_09_201812.png)
 
-#### Linux
-The first line of a user script must begin with `#!`.
-```
-#!/bin/bash
-...
-```
+1. Click **Add Tasks** on the right of Scenario from the **Deploy** tab.
+2. Click **User Command** below **Normal Task**.  
+3. Fill out information for the new task. 
+    * Timeout (min)
+        * Specify timeout to complete task execution: min 1, and max 30 minutes. 
+    * Run As
+        * Enter execution account. 
+    * Command
+        * Enter commands to run. 
 
-For a user script to run successfully, log files in the instance must be checked. You can check output logs printed by standard output/error from the script in `/var/log/cloud-init-output.log`.
+4. When it is completed, click **Apply**. 
 
-#### Windows
+<a id="add-binary-deploy"></a>
 
-Windows images support both Batch and PowerShell formats for user scripts. The format is determined by an indicator specified in the first line.
+#### 2. Add Binary Deploy 
 
-* Batch Script
-```
-rem cmd
-...
-```
+Deployment for uploaded binary files can be set. 
 
-* PowerShell Script
-```
-#ps1_sysnative
-...
-```
+![deploy_10_201812](https://static.toastoven.net/prod_tcdeploy/deploy_10_201812.png)
 
-To use both Batch and PowerShell in your script, use the following format.
+1. Click **Add Tasks** and **Binary Deploy** below **Normal Task**.
+2. Fill out information for the new task. 
+    * Timeout (min)
+        * Specify timeout to complete task execution: min 1, and max 30 minutes.
+    * Run As
+        * Enter execution account. 
+3. To upload binary files, click **Upload** on the right. 
+4. Enter binary file information. 
+    * Click **Select Files** to choose a binary file. 
+    * Enter Version (optional) and Description (optional).
+5. Click **Upload**. 
+6. After it is uploaded, click **Select Binaries**. 
+7. Select a binary version you need. 
+    * Use Search to choose from many versions. 
+8. Click **Select**.  
+    <br/>
+   * Variable As
+       * You can specify the name of variables of binary and use binary information at User Command. Find moe details at the bottom of the task menu of [Detail Functional Guide](/Dev%20Tools/Deploy/en/reference/).
+   * Target Directory
+       * Specify a target directory to deploy binaries. 
 
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
+<a id="add-user-commands-2"></a>
 
-Logs from user scripts can be found in `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`.
+#### 3. Add User Commands
 
-For more details regarding user scripts, see the [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) or [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) guides.
+![deploy_11_201812](https://static.toastoven.net/prod_tcdeploy/deploy_11_201812.png)
 
-<a id="additional-instance-features"></a>
-## Additional Instance Features
+1. Click **Add Tasks** and select **User Command** below **Normal Tasks**.
+2. Fill in information for the new task. 
+    * Timeout (min)
+        * Specify timeout to complete task execution: min 1, and max 30 minutes. 
+    * Run As
+        * Enter account for execution. 
+    * Command
+        * Enter commands to execute. 
+3. When it is completed, click **Apply**.  
 
-<a id="change-instance-status"></a>
-### Change Instance Status
+<a id="execute"></a>
 
-An instance’s status can be changed by stopping, terminating, deleting, and starting it.
+### Execute 
 
-For more details on hypervisor resources and fees for stopping, terminating, and deleting instances, see the table below.
+![deploy_12_201812](https://static.toastoven.net/prod_tcdeploy/deploy_12_201812.png)
 
-| Classification | Stop instance | Terminate Instance | Delete Instance |
-| --- | -- | --- | --- |
-| Hypervisor resource | Resource remain allocated  | Resource returned and reallocated when an instance is started | Resource removed |
-| Pricing for instance | Price for stopping applied | Free | Free |
-| Pricing for other connected resources | Charged| Charged | Charged |
+1. Click **Execute** on the right to request for deployment. 
+2. Fill in execution information for deployment. 
+    * Specify deployment note (optional) and an authentication method. 
+    * Enter password for **Password**, or select and upload .pem file.  
+3. When it is completed, click **Confirm**. 
 
-> [Note] GPU Instances cannot be terminated and will incur normal (100%) rates when stopped.
+![deploy_13_201812](https://static.toastoven.net/prod_tcdeploy/deploy_13_201812.png)
 
-<a id="create-image"></a>
-### Create Image
+1. You can find the progress of deployment. 
+2. Check deployment is completed. 
+    * Use exit code to see if each task is normally executed. 
+3. To find detail results, click **See Results**. 
+4. Check deployment result on the window of **See Results**.
+    * You can find details on the execution of each task (return value, exit code, error, and etc.). 
 
-Create an image from an instance's root block storage. It is recommended to stop instances before creating an image in order to ensure data integrity.
+- - -
 
-While it is possible to create an image from an instance that has no available free space in its root block storage, those images are unusable by other instances because they cannot be properly initialized. Before creating an image, ensure that your instance has at least 100KB of free space.
+File has been deployed to the server. 
+NHN Cloud Deploy supports more functions, and find more details in [Detail Functional Guide](/Dev%20Tools/Deploy/en/reference/).
 
-Created images are registered as private images in **Compute > Image**. You can use the registered image to create an instance with a block storage identical to that of the original instance.
-
-> [Caution]
-> The size of the created image may be larger than the actual usage of the root block storage.
-
-<a id="associatedisassociate-floating-ip"></a>
-### Associate/Disassociate Floating IP
-
-Floating IP can be associated with or disassociated from an instance, regardless of the instance's status. If you have no available floating IP or if the floating IP you want is not available, you can create one by clicking **Create**. Alternatively, floating IP can also be created from **Network > VPC > Floating IP**.
-
-For more details on floating IP, see [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="modify-security-group"></a>
-### Modify Security Group
-
-An instance's security groups can be modified regardless of the instance's status. Modified security groups are applied immediately.
-
-For more details on security groups, see [Security Group](./console-guide/#security-group) and [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="change-network-subnet"></a>
-### Change Network Subnet
-
-An instance's network subnet can only be changed while the instance is stopped. When you add a subnet, a network interface that will be connected to that subnet is automatically created on your instance. If you add multiple subnets at once, the order of the newly created network interfaces on the instance is set randomly. Deleting a subnet from an instance automatically deletes the network interface that was created along with the subnet.
-
-<a id="modify-flavor"></a>
-### Modify Flavor
-
-Instance flavors can be changed once an instance has been stopped. If an instance is running, click **Stop Instance** in **Additional Features** to stop the instance.
-
-You can only change an instance to another flavor that is compatible with its current flavor.
-
-* m2, c2, r2, t2, x1 flavor instances can be changed to m2, c2, r2, t2, x1 flavors.
-* m2, c2, r2, t2, x1 flavor instances cannot be changed to u2 flavors.
-* u2 flavor instances cannot be changed to other flavors once they have been created, not even to those of the same u2 flavor.
-
-When you modify flavors, instance resize and resize confirmation tasks proceed. When all tasks are completed, the VM changes its status to **Shutoff**. You can start the instance by clicking **Start Instance** in **Additional Features**.
-
-> [Note] The instance's root block storage size cannot be modified. If an instance requires additional block storage space, attach a block storage. For details on how to attach block storage, see [Block Storage Overview](/Storage/Block%20Storage/en/overview/).
-
-Instances will be charged using the new flavor from the moment the modification completes.
-
-<a id="change-instance-os-details"></a>
-### Change Instance OS Details
-
-You can change instance OS information regardless of the state of the instance. 
-
-On the **Compute > Instance** page, click the instance whose OS information you want to change. On the **Basic Information** tab of that instance's details screen, click **OS > Modify**.
-
-> [Note] You can't change the OS type.
-
-<a id="change-instance-description"></a>
-### Change Instance Description
- 
-You can change instance description regardless of the state of the instance. 
- 
-On the **Compute > Instance** page, click the instance whose information you want to change. On the **Basic Information** tab of that instance's details screen, click **Description > Change**.
-
-<a id="change-instance-key-pair"></a>
-### Change Instance Key Pair
-
-You can change the instance key pair only if the instance is active.
-
-On the **Compute > Instance** page, click the instance whose key pair information you want to change. On the **Basic Information** tab of that instance's details screen, click **Key Pair > Change**.
-
-Change the key pair of the instance default account to the selected key pair. The instance default account can be found on the **Connection Information** tab of the instance's bottom details screen.
-
-> [Caution] Changing an instance key pair deletes all public key information in the instance except for the selected key pair.
-
-> [Note] Only project members with the ADMIN permissions for the basic infrastructure can change the instance key pair, which cannot be changed if it is a Windows OS instance.
-
-> [Note] If the image version used to create the instance is low, the feature to change key pairs may not be available.
-
-<a id="manage-placement-policies"></a>
-### Manage Placement Policies
-
-You can create and delete placement policies and view a list of instances assigned to placement policies.
-
-Only the `anti-affinity` placement policy type for distributed placement is provided.
-
-You can delete a placement policy even if instances are assigned to it, in which case the instances are not deleted.
-
-<a id="key-pairs"></a>
-## Key Pairs
-
-<a id="import-key-pairs-windows"></a>
-### Import Key Pairs (Windows)
-
-You can use puttygen, which is installed when you install the PuTTY SSH client, to create a key pair and register it with NHN Cloud.
-
-Make sure you have [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) installed.
-
-Run puttygen.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
-
-Select **RSA** (or SSH-2 RSA in older versions of puttygen) under **Parameters**. Click **Generate** under **Actions**. Continuously move your mouse in the empty space in order to generate the key.
-
-After the key is generated, the public key file contents will be visible as shown below. Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
-
-Click **Save private key** under **Actions** to save the private key. If you save the private key leaving the **Key passphrase** field blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to use your converted private key more securely, set a passphrase before saving.
-
-> [Caution]
-> If you wish to be able to automatically login to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### Import Key Pairs (Mac and Linux)
-
-Key pairs created using `ssh-keygen` in Mac or Linux can be registered with NHN Cloud. Use the following command to create a key pair.
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-You can choose to set a passphrase for the key pair, although it is not required. If you wish to use your key pair more securely, we recommend setting a passphrase. The file with `.pub` appended to the specified key pair name contains the public key.
-
-	$ cat my_key.key.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-	
-Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## Appendix 1. Change Language Packs in Windows
-
-NHN Cloud provides Windows images with English as the primary language. You may change your language preferences with the following steps.
-
-1. Go to **START > Control Panel > Clock, Language, and Region > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. Select **Change your language preferences > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. Choose a language in **Add a language** and click **Add**.
-![Image1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. Check the language pack just added.
-![Image1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. Download and install the language pack.
-![Image1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. Download and install updates.
-![Image1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. To change to the installed language pack, double-click the selected language or select **Options**.
-![Image1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. Choose **Make this the primary language** for Windows display language.
-![Image1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. To apply the changes, click **Log off now**.
-![Image1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. Log in again, and you can see Windows is displayed using the language pack of your choice.
-![Image1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## Appendix 2. Change Routing in Windows
-
-Routing in NHN Cloud Windows instances can be changed as follows.
-
-* Press **Windows Key + R** to open an execution window, and enter `cmd` and execute to open a command prompt window. You can enter route commands here.
-
-Route commands
-
-* Print current configuration: route print
-* Add : route add "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Change : route change "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Delete : route delete "Destination" mask "Destination subnet" "gateway" metric "Metric value" if "Interface number"
-* Option : -p (specify as persistent route)
-
-  
-Description
-
-![Image1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* Metric Value: A lower value indicates higher priority
-* Interface Number: This value can be obtained from route print (red box above)
-* Persistent Route: Use the -p option to avoid the configured routes being reset across system reboots (blue box above)
-
-Example 1 - Restricting external communication for particular interfaces
-
-* You can restrict an interface from communicating externally by using the route change command to change its route metric or by leaving the default gateway field blank when configuring fixed IP settings.
-* How to Modify Metrics
-    * Increase interface metric value
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* How to Set Fixed IP
-    1. Use the ipconfig /all command to view IP information.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. Enter the corresponding IP information, leaving the default gateway field blank, in the IP Properties window.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. Check the results using the route print command.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Example 2 - Setting routes for a particular address range
-
-* Use the route add command to set routes for a particular address range.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Example 3 - Removing a particular route
-
-* Use the route delete command to remove specified routes.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## Appendix 3. Change System Locale
-
-System locale in NHN Cloud Windows instances can be changed as follows.
-
-1. Go to **Windows Key > Control Panel > Clock, Language, and Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. Select **Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. From the **Administrative** tab, click **Change system locale**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. Select a system locale to use.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. Restart the system to apply the changes.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## Appendix 4. Restarting Instances for Hypervisor Maintenance
-NHN Cloud updates hypervisor software on a regular basis to enhance the security and stability of infrastructure services that we provide.
-Instances running on a hypervisor that requires maintenance must be restarted and migrated to a hypervisor which has completed maintenance.
-
-To restart an instance, use the **! Restart** button that has been created next to the instance name in the console.
-`Using the "Restart Instances" button in the console or rebooting the operating system will not migrate an instance to another hypervisor.`
-Follow the guide below to use the restart feature in the console.
-
-Go to the project where your instance requiring maintenance is located.
-
-**1. Check if your instance requires maintenance.**
-
-Any instance that has the **! Restart** button before its name requires maintenance.
-Put the mouse cursor over the **! Restart** button to find maintenance schedule details.
-![Instance Maintenance Image 1](http://static.toastoven.net/prod_instance/instance_p_migration_en_1.png)    
-
-**2. Deactivate or stop application programs running on an instance which requires maintenance.**
-
-Any application programs running on an instance which requires maintenance must be deactivated or stopped in order not to impact your service.
-If there is no way to do so without impacting your service, please contact NHN Cloud Customer Center and we will provide you with guidance on appropriate measures to take.
-
-**3. Click the [! Restart] button created next to the name of the target instance.**
-
-![Instance Maintenance Image 2](http://static.toastoven.net/prod_instance/instance_p_migration_en_2.png)
-
-**4. Click [Confirm] in the Restart Instances confirmation window.**
-
-![Instance Maintenance Image3](http://static.toastoven.net/prod_instance/instance_p_migration_en_3.png)
-
-**5. Wait until the instance status turns green and the [! Restart] button disappers.**
-
-If the status does not change or the **! Restart** button is not disabled, try refreshing the page.
-
-You cannot operate or modify the instance while a restart is underway.
-If an instance restart does not complete successfully, the administrator will automatically be notified and you'll also be contacted by NHN Cloud.
