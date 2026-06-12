@@ -1,506 +1,251 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > 콘솔 사용 가이드
+## Dev Tools > Deploy > 콘솔 사용 가이드
 
-<a id="create-instances"></a>
-## 인스턴스 생성
+이 문서에서는 다음과 같은 내용을 다룹니다.
 
-아래 설정들을 통하여 인스턴스를 생성하거나 인스턴스 템플릿(Instance Template)을 통해 인스턴스를 생성할 수 있습니다. 인스턴스 템플릿을 통해 인스턴스를 생성하려면 인스턴스 생성 화면에서 **인스턴스 템플릿 사용**을 선택합니다. 인스턴스 템플릿 생성 방법은 [인스턴스 템플릿 콘솔 가이드](/Compute/Instance%20Template/ko/console-guide/)를 참고합니다.
+* [Deploy 콘솔 화면](/Dev%20Tools/Deploy/ko/console-guide/#deploy)
+* [Client Application](/Dev%20Tools/Deploy/ko/console-guide/#client-application)
+* [Server Application](/Dev%20Tools/Deploy/ko/console-guide/#server-application)
 
-<a id="os-settings"></a>
-### OS 설정
+(여기에서 다루지 않는 기능은 [기능 상세 가이드](/Dev%20Tools/Deploy/ko/reference/)에서 확인하실 수 있습니다.)
 
-인스턴스 생성 시 사용될 루트 블록 스토리지의 생성 방식을 결정합니다.
+<a id="deploy-console-page"></a>
 
-- **신규 생성 및 설정** 또는 **기존 리소스 지정** 중 하나를 선택합니다.
-- **신규 생성 및 설정**을 선택한 경우 이미지를 이용하여 루트 블록 스토리지를 생성합니다.
-- **기존 리소스 지정**을 선택한 경우 기존에 생성된 블록 스토리지 또는 스냅숏을 이용합니다.
+## Deploy 콘솔 화면
 
-<a id="image"></a>
-### 이미지
+다음은 Deploy 서비스 콘솔 화면입니다.
 
-원하는 운영체제가 설치된 이미지를 선택합니다. 이미지는 NHN Cloud에서 제공하는 퍼블릭 이미지, 기존에 만들어 둔 사용자 이미지, 공유 이미지에서 선택할 수 있습니다.
+![deploy_02_201812](https://static.toastoven.net/prod_tcdeploy/deploy_02_201812.png)
 
-사용할 이미지에 따라 인스턴스 타입(flavor)이 달라지므로 인스턴스 생성 시에는 가장 먼저 이미지를 선택하고 진행하도록 합니다.
+<a id="client-application"></a>
 
-| 운영체제                         | 블록 스토리지     | 메모리   |
-| ------------------------------ | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB 이상  | 1GB 이상 |
-| Windows                         | 50GB 이상  | 2GB 이상 |
+## Client Application
 
-<a id="root-block-storage"></a>
-### 루트 블록 스토리지
+클라이언트 애플리케이션 배포 설정은 크게 아티팩트 설정과 바이너리 업로드 단계를 거칩니다.
 
-**OS 설정**에 따라 루트 블록 스토리지를 설정합니다.
+<a id="setting-artifacts"></a>
 
-- **신규 생성 및 설정**을 선택한 경우 **블록 스토리지 타입** 및 **블록 스토리지 크기**를 지정하여 루트 블록 스토리지를 생성합니다.
-- **기존 리소스 지정**을 선택한 경우 **원본 리소스**를 지정하여 루트 블록 스토리지로 사용합니다.
+### 아티팩트 설정
 
-#### 원본 리소스
+![deploy_03_201812](https://static.toastoven.net/prod_tcdeploy/deploy_03_201812.png)
 
-기존에 생성된 **블록 스토리지** 또는 **스냅숏** 중 하나를 선택할 수 있습니다.
+1. **Deploy** 화면 왼쪽 위에서 **생성** 버튼을 클릭합니다.
+2. 아티팩트 유형을 **Client Application**으로 선택합니다.
+    - 이름(필수), 설명(선택), port(필수)를 입력합니다.
+3. **생성** 버튼을 클릭합니다.
 
-- **블록 스토리지**를 선택 시 기존에 생성된 블록 스토리지를 루트 블록 스토리지로 사용합니다.
-- **스냅숏**을 선택 시 기존에 생성된 스냅숏을 이용하여 루트 블록 스토리지를 생성합니다.
+<a id="setting-binaries"></a>
 
-#### 블록 스토리지 크기
+### 바이너리 설정
 
-인스턴스의 루트 블록 스토리지 크기를 결정합니다.
+<a id="upload"></a>
 
-- 블록 스토리지 크기는 이미지가 요구하는 최소 크기 이상으로 만들어야 합니다.
+#### 업로드
 
-인스턴스의 루트 블록 스토리지 크기는 인스턴스 타입에 따라 달라집니다.
+* iOS는 .ipa, .plist 파일을, Android는 .apk 파일을 각각 업로드합니다.
+* etc의 경우는 Windows 등의 기타 OS의 설치 애플리케이션 용도로 사용합니다.
 
-| 타입               | 지원하는 블록 스토리지 크기         |
-| -------------------| -------------------------- |
-| u2 타입             | 20 ~ 100 GB (타입별로 고정) |
-| t2, m2, c2, r2, x1 타입 | 20 ~ 2000GB               |
+![deploy_04_201812](https://static.toastoven.net/prod_tcdeploy/deploy_04_201812.png)
 
-> [참고]
-> 블록 스토리지 크기에 따라 과금되므로 기본 블록 스토리지의 크기를 무조건 크게 만드는 것은 비효율적입니다. 필요에 따라 블록 스토리지를 추가하여 사용하는 것이 좋습니다.
-> **OS 설정**에서 **기존 리소스 지정**을 **블록 스토리지**로 선택한 경우 블록 스토리지 크기 변경은 불가능합니다.
-> **OS 설정**에서 **기존 리소스 지정**을 **스냅숏**으로 선택한 경우 블록 스토리지 크기는 원본 블록 스토리지 크기보다 같거나 크게 설정되어야 합니다.
+1. **Deploy** 화면 아래 탭에서 **바이너리 그룹 > Default**를 클릭합니다.
+    새 바이너리 그룹을 만들려면 **새로 만들기**  버튼을 클릭합니다.
+2. 오른쪽에서 **업로드** 버튼을 클릭합니다.
+3. **바이너리 업로드** 창에서 **파일 선택** 버튼을 클릭하고 바이너리 파일을 선택합니다.
+    * iOS: .ipa 파일(필수), .plist 파일(필수)
+        * .plist: 다운로드 페이지에서 설치를 위해 사용합니다. 파일 내의 다운로드 URL은 선택 입력입니다.
+    * Android: .apk 파일(필수)
+    * 버전(선택), 설명(선택) 정보 입력
+4. 입력을 완료하고 **업로드** 버튼을 클릭합니다.
 
-#### 블록 스토리지 타입
+<a id="deploy"></a>
 
-인스턴스의 기본 블록 스토리지 타입을 결정합니다.
+#### 배포
 
-- **HDD** 또는 **SSD** 중 하나를 선택합니다. 타입에 따라 요금과 성능이 달라집니다.
-- 한번 선택한 블록 스토리지 타입은 변경할 수 없습니다.
+특정 바이너리 다운로드 페이지를 SMS나 E-mail로 전달할 수 있습니다.
 
-> [참고] 
-> **OS 설정**에서 **기존 리소스 지정**을 선택한 경우 블록 스토리지 타입 변경은 불가능합니다.
+![deploy_27_202407](https://static.toastoven.net/prod_tcdeploy/deploy_27_202407.png)
+![deploy_28_202407](https://static.toastoven.net/prod_tcdeploy/deploy_28_202407.png)
+![deploy_29_202407](https://static.toastoven.net/prod_tcdeploy/deploy_29_202407.png)
 
-<a id="availability-zone"></a>
-### 가용성 영역(availability zone)
+1. 오른쪽 **전송** 버튼을 클릭합니다.
+2. **다운로드 경로 전송** 창에서 **전송 유형**과 **수신자**를 설정하고 **전송** 버튼을 클릭합니다.
+    * **전송 유형**은 **SMS** 또는 **E-mail** 중 하나를 선택하거나 모두 선택할 수도 있습니다.
+    * **개별 선택**에서 수신자를 개별적으로 선택할 수 있으며, **그룹 선택**에서 알림 수신 그룹을 선택할 수 있습니다.
+    * **그룹 선택** 탭을 선택한 뒤 **상세** 열의 **보기** 버튼을 클릭하면 프로젝트 알림 수신 그룹 관리 창이 열립니다.
 
-가용성 영역을 명시적으로 설정하지 않는 경우, 임의의 영역으로 설정됩니다. 가용성 영역에 따라 이 인스턴스가 사용할 수 있는 블록 스토리지가 결정됩니다. 사용하려는 블록 스토리지가 특정 가용성 영역에 존재한다면 해당 가용성 영역으로 설정하여 사용합니다.
+지정한 전송 유형으로 수신자에게 바이너리 다운로드 페이지가 전달됩니다.
 
-> [참고] 
-> VPC의 자원들은 모든 가용성 영역에서 사용할 수 있습니다.
-> **OS 설정**에서 **기존 리소스 지정**을 선택한 경우 가용성 영역은 변경이 불가능합니다.
+<a id="server-application"></a>
 
-가용성 영역에 대한 자세한 설명은 [인스턴스 개요의 가용성 영역](./overview/#availability-zone)을 참고합니다.
+## Server Application
 
-<a id="flavor"></a>
-### 타입(flavor)
+서버 애플리케이션 배포 설정(아티팩트, 서버 그룹, 시나리오), 바이너리 업로드, 배포 단계를 거칩니다.
 
-가상 하드웨어의 성능에 따라 다양한 타입을 선택할 수 있습니다. 다만, 이미지에서 요구하는 가상 하드웨어의 성능에 따라 선택할 수 있는 타입이 제한될 수 있습니다. 보다 자세한 설명은 [인스턴스 개요](./overview)를 참고합니다.
+<a id="setting-artifacts-2"></a>
 
-> [참고]
-> 1 vCPU는 스레드 하나와 코어 하나로 구성된 소켓 한 개를 의미하며, 소켓 한 개당 스레드 수와 코어 수는 각각 한 개로 일정합니다.
+### 아티팩트 설정
 
-인스턴스의 타입은 생성 이후에도 NHN Cloud 콘솔에서 변경할 수 있습니다. 높은 타입에서 낮은 타입으로 변경할 수 있고, 낮은 타입에서 높은 타입으로도 변경할 수 있습니다. 일부 타입은 변경할 수 없는 경우도 있으니, 자세한 것은 [인스턴스 타입 변경](./console-guide/#modify-flavor)을 참고합니다.
+![deploy_06_201812](https://static.toastoven.net/prod_tcdeploy/deploy_06_201812.png)
 
-> [주의] 인스턴스의 루트 블록 스토리지는 타입 변경으로 바꿀 수 없습니다.
+1. 목록 위의 **생성** 버튼을 클릭합니다.
+2. 아티팩트 유형을 **Server Application**으로 선택합니다.
+    - 이름(필수), 설명(선택), port(필수) 항목을 입력합니다.
+3. **아티팩트 생성** 창에서 **생성** 버튼을 클릭합니다.
 
-<a id="number-of-instances"></a>
-### 인스턴스 수
+<a id="setting-server-groups"></a>
 
-이미지, 가용성 영역, 타입, 블록 스토리지 크기, 키페어, 네트워크 설정이 모두 동일한 인스턴스를 여러 개 생성할 경우에 사용합니다. 인스턴스의 이름은 설정한 이름 뒤에 `-1`, `-2`와 같이 번호가 붙어 생성됩니다. 예를 들어, 인스턴스 이름을 `my-instance`로 인스턴스를 2개 만들면, `my-instance-1`, `my-instance-2`가 생성됩니다. 한 번에 생성할 수 있는 최대 인스턴스의 개수는 10개입니다.
+### 서버 그룹 설정
 
-임의의 가용성 영역에 인스턴스를 여러 개 생성한 경우, 각각 인스턴스는 임의의 가용성 영역에 만들어집니다. 예를 들어, 2개의 인스턴스를 임의의 가용성 영역으로 생성한 경우, 2개가 같은 가용성 영역에 만들어질 수도 있고 다른 가용성 영역에 만들어질 수도 있습니다. 모든 인스턴스가 같은 가용성 영역에 생성되어야 한다면, 특정 가용성 영역을 선택하여 생성합니다.
+배포할 서버를 관리할 수 있는 기능입니다.
 
-> [참고]
-> **OS 설정**에서 **기존 리소스 지정**을 **블록 스토리지**로 선택하거나 **네트워크 설정**에서 **기존 네트워크 인터페이스 지정**을 선택한 경우 인스턴스 수는 `1`로 제한됩니다.
+![deploy_07_201812](https://static.toastoven.net/prod_tcdeploy/deploy_07_201812.png)
 
-<a id="key-pair"></a>
-### 키페어
+1. **Deploy** 화면 아래 탭에서 **서버 그룹 > 새로 만들기**를 클릭합니다.
+2. **서버 그룹 생성** 창에서 새로 만들 서버 그룹을 설정합니다.
+    * 이름(필수), 설명(선택)을 입력합니다.
+    * OS를 선택하고 Shell Type을 지정합니다. Shell Type은 **Shell Type** 목록에서 선택하거나 직접 입력할 수 있습니다.
+    * Phase를 선택합니다. 서버 장비를 구분합니다. 지정하지 않으려면 NONE을 선택합니다.
+    * 서버 추가
+        * 서버를 추가하는 방법은 아래 두 가지이며 자세한 내용은 [기능 상세 가이드 서버 그룹 메뉴](/Dev%20Tools/Deploy/ko/reference/#_11)에서 확인할 수 있습니다.
+            * 대량 추가
+            * 개별 추가
+         * 호스트 이름(필수), IP 주소(필수), OS(선택)를 입력하고 **추가** 버튼을 클릭합니다.
+         * 아래 서버 목록에 추가된 내용을 확인합니다. 왼쪽 체크 박스가 선택된 서버만 등록됩니다.
 
-기존 키페어를 사용하거나, 새로 키페어를 생성하여 사용합니다. 기존 키페어 등록은 Windows 사용자의 경우 [키페어 가져오기(Windows 사용자)](./console-guide/#import-key-pairs-windows), Mac과 Linux 사용자의 경우 [키페어 가져오기(Mac, Linux 사용자)](./console-guide/#import-key-pairs-mac-and-linux)를 참고합니다.
+3. 입력을 완료하고 **생성** 버튼을 클릭합니다.
 
-> [참고]
-> 키페어는 사용자 계정에 할당된 리소스이므로 프로젝트를 삭제해도 삭제되지 않고 유지됩니다.
+<a id="setting-binary-groups"></a>
 
-<a id="network"></a>
-### 네트워크
+### 바이너리 그룹 설정
 
-VPC에서 정의된 서브넷 중에서 인스턴스에 연결할 서브넷을 선택합니다. 서브넷을 하나 선택할 때마다 인스턴스에 해당 서브넷에 연결될 네트워크 인터페이스가 만들어집니다. 선택된 서브넷의 순서를 바꾸어서 네트워크 인터페이스를 변경할 수도 있습니다. 이 경우, 첫 번째 네트워크 인터페이스(`eth0`)가 기본 게이트웨이로 설정됩니다.
+배포할 바이너리를 관리할 수 있는 기능입니다.
 
-네트워크 생성과 관리에 대한 자세한 설명은 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
+![deploy_25_202402](https://static.toastoven.net/prod_tcdeploy/deploy_25_202402.png)
+![deploy_26_202402](https://static.toastoven.net/prod_tcdeploy/deploy_26_202402.png)
 
-<a id="floating-ip"></a>
-### 플로팅 IP
+1. **Deploy** 화면 아래 탭에서 **바이너리 그룹 > 새로 만들기**를 클릭합니다.
+    * 아티팩트 생성 시 Default 바이너리 그룹은 자동 생성됩니다.
+2. **바이너리 그룹 생성** 창에서 새로 만들 바이너리 그룹을 설정합니다.
+    * 이름, 설명, 리전을 입력합니다.
+        * **리전**은 배포 대상 서버의 리전과 다를 경우 네트워크 지연 시간이 길어질 수 있습니다.
+    * 자동 삭제 설정을 입력합니다.
+        * 기간, 용량, 개수 등의 조건으로 바이너리를 주기적으로 삭제하는 기능입니다. 
+        * 최대 개수와 최소 유지 개수는 필수 값이고, 최대 10개까지 설정 가능합니다.
+3. 입력을 완료하고 **생성** 버튼을 클릭합니다.
 
-인스턴스 생성 후 플로팅 IP 사용 여부를 지정합니다. 플로팅 IP 사용을 선택하면, 플로팅 IP를 새로 생성하여 첫번째 네트워크 인터페이스에 연결합니다. 이 때 첫번째 네트워크 인터페이스는 반드시 인터넷 게이트웨이가 설정된 서브넷에 연결되어 있어야 합니다.
+<a id="create-scenarios"></a>
 
-플로팅 IP 관리는 인스턴스 > 관리 페이지 또는 인스턴스 > 플로팅 IP 페이지에서도 할 수 있습니다. 플로팅 IP에 대한 보다 자세한 설명은 [VPC 콘솔 사용 가이드](/Network/VPC/ko/console-guide/)를 참고합니다.
+### 시나리오 생성
 
-<a id="security-group"></a>
-### 보안 그룹
+![deploy_08_201812](https://static.toastoven.net/prod_tcdeploy/deploy_08_201812.png)
 
-인스턴스가 속할 보안 그룹을 지정합니다. 인스턴스 하나는 여러 보안 그룹에 속할 수 있습니다. 인스턴스가 여러 보안 그룹에 속한 경우에는 다음을 참고합니다.
+1. **Deploy** 화면 아래 탭에서 **배포 > 새로 만들기** 버튼을 클릭합니다.
+2. 아래 추가된 시나리오 영역에 시나리오 이름(선택)을 입력합니다.
+3. **생성** 버튼을 클릭합니다.
 
-- 각 보안 그룹에 속한 모든 인스턴스와 네트워크 통신이 가능합니다. 다른 인스턴스의 의도하지 않은 접근을 막아야할 민감한 데이터를 가진 인스턴스의 경우에는 신중하게 보안 그룹을 지정해야 합니다.
-- 각 보안 그룹의 모든 룰이 합쳐져서 해당 인스턴스의 외부 통신에 적용됩니다.
+<a id="add-tasks"></a>
 
-보안 그룹에 대한 보다 자세한 설명은 [VPC 콘솔 사용 가이드](/Network/VPC/ko/console-guide/)를 참고합니다.
+### 태스크 추가
 
-<a id="additional-block-storage"></a>
-### 추가 블록 스토리지
+태스크는 개별 기능을 수행하고 순서를 제어할 수 있는 시나리오 구성 요소입니다.
+태스크 종류는 아래 두 가지입니다.
 
-인스턴스 생성 후 추가 블록 스토리지 연결 여부를 지정합니다. 추가 블록 스토리지 사용을 선택하면 루트 블록 스토리지와 별개인 새로운 블록 스토리지를 생성하여 인스턴스에 연결합니다. 루트 블록 스토리지와 마찬가지로 추가 블록 스토리지를 생성할 때 이름, 스토리지 타입, 크기를 지정할 수 있습니다.
+* pre-run Task: 배포 전 실행 기능
+* Normal Task: 배포 시 실행 기능
 
-루트 블록 스토리지는 OS 용도로만 사용하고 추가 블록 스토리지에 자주 사용하는 응용 프로그램이나 데이터를 보관하면 블록 스토리지 연결/해제 또는 스냅샷 기능을 통해 쉽게 이전하거나 복제할 수 있습니다. 또한 인스턴스 장애가 발생했을 때 추가 블록 스토리지만 해제한 뒤 다른 인스턴스에 연결하여 쉽게 서비스를 복구할 수 있습니다.
+원하는 것을 선택해서 사용할 수 있습니다. 여기에서는 기본적인 배포 시 필요한 태스크를 다룹니다.
+더 많은 태스크는 [기능 상세 가이드의 태스크 메뉴](/Dev%20Tools/Deploy/ko/reference/#_25)에서 확인할 수 있습니다.
 
-블록 스토리지 관리는 인스턴스 > 블록 스토리지 페이지에서도 할 수 있습니다. 블록 스토리지에 대한 보다 자세한 설명은 [블록 스토리지 가이드](/Storage/Block%20Storage/ko/overview/)를 참고합니다.
+배포 테스트를 위해 아래 세 개의 태스크를 추가합니다.
 
-<a id="placement-policy"></a>
-### 배치 정책
+<a id="add-user-commands"></a>
 
-배치 정책을 사용하여 인스턴스들을 서로 다른 하이퍼바이저로 배치할 수 있습니다. 인스턴스 생성 시 배치 정책을 설정하면 동일 배치 정책에 할당된 인스턴스들은 서로 다른 하이퍼바이저에 생성됩니다.
+#### 1. User Command 추가
 
-> [주의]
-> 분산 배치가 불가능한 상황인 경우 인스턴스 생성에 실패할 수 있습니다.
+* 배포 시 실행되는 사용자 정의 Command 태스크입니다.
+* Available Variables를 사용할 수 있습니다.
+    * Available Variables: 예약어. 자세한 내용은 [기능 상세 가이드의 태스크 메뉴](/Dev%20Tools/Deploy/ko/reference/#_25)에서 확인하실 수 있습니다.
 
-<a id="user-script"></a>
-### 사용자 스크립트
+![deploy_09_201812](https://static.toastoven.net/prod_tcdeploy/deploy_09_201812.png)
 
-인스턴스 생성 후 실행할 스크립트를 지정합니다. 사용자 스크립트는 인스턴스의 첫 번째 부팅이 완료된 후 네트워크 설정 등 초기화 과정이 끝나고 난 뒤 실행됩니다. NHN Cloud의 사용자 스크립트는 공식 이미지에 내장된 cloud-init (Linux), Cloudbase-init (Windows)과 같은 자동화 도구에 의해서 실행됩니다.
+1. **배포** 탭 시나리오 영역 오른쪽에서 **Task 추가** 버튼을 클릭합니다.
+2. **Normal Task** 아래에 있는 **User Command**를 클릭합니다.
+3. 새 태스크 내용을 입력합니다.
+    * Timeout(min)
+        * 해당 태스크의 실행 완료 대기 시간을 지정합니다. 최소 1분, 최대 30분.
+    * Run As
+        * 실행 계정을 입력합니다.
+    * Command
+        * 실행할 명령문을 입력합니다.
 
-> [주의]
-> 사용자 스크립트는 root (Linux)/Administrator (Windows) 사용자 권한으로 실행됩니다.
+4. 입력이나 변경을 완료한 후 **적용** 버튼을 클릭합니다. 
 
-#### Linux
+<a id="add-binary-deploy"></a>
 
-사용자 스크립트의 첫 번째 줄은 반드시 `#!`으로 시작해야 합니다.
-```
-#!/bin/bash
-...
-```
+#### 2. Binary Deploy 추가
 
-사용자 스크립트가 정상적으로 동작하기 위해서는 인스턴스 내부의 로그 파일을 확인해야 합니다. 스크립트에서 표준 출력/에러 장치로 출력한 로그는 `/var/log/cloud-init-output.log`에서 확인할 수 있습니다.
+업로드한 바이너리 파일의 배포 내용을 설정할 수 있는 태스크입니다.
 
-#### Windows
+![deploy_10_201812](https://static.toastoven.net/prod_tcdeploy/deploy_10_201812.png)
 
-Windows 이미지에서는 사용자 스크립트 형식으로 Batch 스크립트 형식, Powershell 스크립트 형식을 모두 지원합니다. 각 형식들은 첫 번째 줄에 명시하는 지시자에 의해 구분됩니다.
+1. **Task 추가** 버튼을 클릭하고 **Normal Task** 아래에 있는 **Binary Deploy**를 클릭합니다.
+2. 새 태스크 내용을 입력합니다.
+    * Timeout(min)
+        * 해당 태스크의 실행 완료 대기 시간을 지정합니다. 최소 1분, 최대 30분.
+    * Run As
+        * 실행 계정을 입력합니다.
+3. 바이너리 파일을 업로드하려면 오른쪽 **업로드** 버튼을 클릭합니다.
+4. 바이너리 파일 정보를 입력합니다.
+    * **파일 선택** 버튼을 클릭하여 바이너리 파일을 선택합니다.
+    * 버전(선택), 설명(선택) 항목을 입력합니다.
+5. **업로드** 버튼을 클릭합니다. 
+6. 업로드 완료 후 **바이너리 선택** 버튼을 클릭합니다.
+7. 원하는 바이너리 버전을 선택합니다.
+    * 여러 버전이 있을 때는 검색 기능을 활용합니다.
+8. **선택** 버튼을 클릭합니다.
+  <br/>
+   * Variable As
+       * 해당 바이너리의 Variable 이름을 지정해 User Command에서 바이너리 정보를 사용할 수 있으며 자세한 내용은 [기능 상세 가이드](/Dev%20Tools/Deploy/ko/reference/)의 태스크 메뉴 하단에서 확인하실 수 있습니다.
+   * 타겟 디렉토리
+       * 바이너리를 배포할 타겟 디렉토리를 지정합니다.
 
-* Batch 스크립트
-```
-rem cmd
-...
-```
+<a id="add-user-commands-2"></a>
 
-* PowerShell 스크립트
-```
-#ps1_sysnative
-...
-```
+#### 3. User Command 추가
 
-만약 Batch 스크립트와 PowerShell 스크립트를 같이 사용하고 싶다면 아래와 같이 기술합니다.
+![deploy_11_201812](https://static.toastoven.net/prod_tcdeploy/deploy_11_201812.png)
 
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
+1. **Task 추가** 버튼을 클릭하고 **Normal Task** 아래 **User Command**를 클릭합니다.
+2. 새로운 태스크 내용을 입력합니다.
+    * Timeout(min)
+        * 해당 태스크의 실행 완료 대기 시간을 지정합니다. 최소 1분, 최대 30분.
+    * Run As
+        * 실행 계정을 입력합니다.
+    * Command
+        * 실행할 명령문을 입력합니다.
+3. 입력이나 변경을 완료한 후 **적용** 버튼을 클릭합니다. 
 
-사용자 스크립트의 로그는 `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`에서 확인할 수 있습니다.
+<a id="execute"></a>
 
-사용자 스크립트와 관련하여 보다 자세한 설명은 [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) 또는 [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) 가이드를 참고합니다.
+### 실행
 
-<a id="additional-instance-features"></a>
-## 인스턴스 추가 기능
+![deploy_12_201812](https://static.toastoven.net/prod_tcdeploy/deploy_12_201812.png)
 
-<a id="change-instance-status"></a>
-### 인스턴스 상태 변경
+1. 오른쪽 **실행** 버튼을 클릭해 배포를 요청합니다.
+2. 배포 실행 정보를 입력합니다.
+    * 배포 노트(선택) 및 인증 방법을 지정합니다.
+    * **Password** 선택 시 비밀번호를 입력하거나 .pem 파일을 선택한 후 업로드합니다.
+3. 입력을 완료한 후 **확인** 버튼을 클릭합니다.
 
-인스턴스 중지, 종료, 삭제, 시작을 통해 인스턴스의 상태를 변경할 수 있습니다.
+![deploy_13_201812](https://static.toastoven.net/prod_tcdeploy/deploy_13_201812.png)
 
-인스턴스 중지, 종료, 삭제의 하이퍼바이저 리소스 및 요금 관련 정보는 아래 표를 참고합니다.
+1. 배포 진행 상황을 확인할 수 있습니다.
+2. 배포 완료를 확인합니다.
+    * 각 태스크 정상 실행 여부는 exit code로 확인할 수 있습니다.
+3. 상세 결과를 확인하려면 **결과 보기** 버튼을 클릭합니다.
+4. **결과 보기** 창에서 배포 결과를 확인합니다.
+    * 각 태스크 실행에 대한 자세한 내용(리턴값, exit code, 오류 내용 등)을 확인할 수 있습니다.
 
-| 구분 | 인스턴스 중지 | 인스턴스 종료 | 인스턴스 삭제 |
-| --- | -- | --- | --- |
-| 하이퍼바이저 리소스 | 리소스 할당 상태 유지 | 리소스 반납 및 인스턴스 시작 시 재할당 | 리소스 제거 |
-| 인스턴스 요금 | 중지 요금 정책 적용 | 무료 | 무료 |
-| 연결된 다른 리소스 요금 | 과금됨| 과금됨 | 과금됨 |
+- - -
 
-> [참고] GPU Instance는 종료할 수 없으며 중지 시에도 정상(100%) 요금이 발생합니다.
-
-<a id="create-image"></a>
-### 이미지 생성
-
-인스턴스의 루트 블록 스토리지로부터 이미지를 생성합니다. 이미지 생성은 데이터 정합성을 보장하기 위해 인스턴스를 중지한 상태에서 진행하는 것을 권장합니다.
-
-인스턴스의 루트 블록 스토리지에 여유 공간이 전혀 없을 경우 이미지 생성은 가능하나, 이미지를 다른 인스턴스에서 사용하기 위한 초기화 작업은 불가하여 정상적으로 사용할 수 없습니다. 이미지를 생성하기 전에 인스턴스에서 최소 100KB의 여유 공간을 확보해야 합니다.
-
-생성된 이미지는 **Compute > Image**에 Private 이미지로 등록됩니다. 등록된 이미지를 이용하여 원본 인스턴스와 동일한 블록 스토리지를 가진 인스턴스를 생성할 수 있습니다.
-
-> [주의]
-> 생성된 이미지의 크기는 루트 블록 스토리지의 실제 사용량보다 더 클 수 있습니다.
-
-<a id="associatedisassociate-floating-ip"></a>
-### 플로팅 IP 연결과 해제
-
-인스턴스의 상태에 관계없이 플로팅 IP를 연결하고 해제할 수 있습니다. 사용 가능한 플로팅 IP가 없거나 원하는 플로팅 IP가 없는 경우, **생성** 버튼을 클릭해 플로팅 IP를 생성하여 연결할 수 있습니다. 또는 **Network > VPC > Floating IP**에서 플로팅 IP를 생성하여 사용해도 됩니다.
-
-플로팅 IP에 대한 자세한 설명은 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
-
-<a id="modify-security-group"></a>
-### 보안 그룹 수정
-
-인스턴스의 상태에 관계없이 인스턴스의 보안 그룹을 수정할 수 있습니다. 수정된 보안 그룹은 바로 적용됩니다.
-
-보안 그룹에 대한 자세한 설명은 [보안 그룹](./console-guide/#security-group)과 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
-
-<a id="change-network-subnet"></a>
-### 네트워크 서브넷 변경
-
-인스턴스의 네트워크 서브넷은 인스턴스가 중지된 상태에서만 변경할 수 있습니다. 서브넷을 추가하면 자동으로 인스턴스에 해당 서브넷에 연결될 네트워크 인터페이스가 만들어집니다. 이 때, 한 번에 여러 서브넷을 추가하면 인스턴스에 새로 생성되는 네트워크 인터페이스 순서는 임의로 지정됩니다. 서브넷을 인스턴스에서 삭제하면 생성되었던 네트워크 인터페이스도 자동으로 삭제됩니다.
-
-<a id="modify-flavor"></a>
-### 인스턴스 타입 변경
-
-인스턴스 타입은 인스턴스를 중지한 후 변경할 수 있습니다. 인스턴스가 실행 중이면 **추가 기능**의 **인스턴스 중지**를 클릭하여 인스턴스를 중지합니다.
-
-현재 타입에 따라 변경할 수 있는 인스턴스 타입이 다릅니다.
-
-* m2, c2, r2, t2, x1 타입의 인스턴스는 m2, c2, r2, t2, x1 타입의 인스턴스 타입으로 변경할 수 있습니다.
-* m2, c2, r2, t2, x1 타입의 인스턴스는 u2 타입의 인스턴스 타입으로 변경할 수 없습니다.
-* u2 타입은 생성 이후에 타입을 변경할 수 없습니다. 같은 u2 타입의 인스턴스 타입으로도 변경할 수 없습니다.
-
-인스턴스 타입을 변경하면, 변경 작업과 변경 확인 작업이 진행됩니다. 모든 작업이 완료되면 VM 상태가 **Shutoff** 상태가 되며, **추가 기능**의 **Start instance**를 클릭하여 인스턴스를 시작할 수 있습니다.
-
-> [참고] 인스턴스의 루트 블록 스토리지 크기는 변경할 수 없습니다. 인스턴스의 블록 스토리지 공간이 부족하다면 블록 스토리지를 추가하여 사용합니다. 자세한 블록 스토리지 추가 방법은 [블록 스토리지 개요](/Storage/Block%20Storage/ko/overview/)를 참고합니다.
-
-인스턴스는 변경 시점을 기준으로 변경된 타입으로 과금됩니다.
-
-<a id="change-instance-os-details"></a>
-### 인스턴스 OS 정보 변경
-
-인스턴스의 상태에 관계없이 인스턴스 OS 정보를 변경할 수 있습니다. 
-
-**Compute > Instance** 서비스 페이지에서 OS 정보를 변경할 인스턴스를 클릭합니다. 해당 인스턴스 상세 정보 화면의 **기본 정보** 탭에서 **OS > 변경**을 클릭합니다.
-
-> [참고] OS 구분은 변경할 수 없습니다.
-
-<a id="change-instance-description"></a>
-### 인스턴스 설명 변경
-
-인스턴스의 상태에 관계없이 인스턴스 설명을 변경할 수 있습니다. 
-
-**Compute > Instance** 서비스 페이지에서 설명을 변경할 인스턴스를 클릭합니다. 해당 인스턴스 상세 정보 화면의 **기본 정보** 탭에서 **설명 > 변경**을 클릭합니다.
-
-<a id="change-instance-key-pair"></a>
-### 인스턴스 키페어 변경
-
-인스턴스 키페어는 인스턴스가 활성 상태인 경우에만 변경할 수 있습니다.
-
-**Compute > Instance** 서비스 페이지에서 키페어 정보를 변경할 인스턴스를 클릭합니다. 해당 인스턴스 상세 정보 화면의 **기본 정보** 탭에서 **키페어 > 변경**을 클릭합니다.
-
-인스턴스 기본 계정의 키페어를 선택한 키페어로 변경합니다. 인스턴스 기본 계정은 인스턴스 하단 상세 정보 화면의 **접속 정보** 탭에서 확인할 수 있습니다.
-
-> [주의] 인스턴스 키페어 변경 시 선택한 키페어를 제외한 인스턴스 내 모든 공개 키 내용이 삭제됩니다.
-
-> [참고] 기본 인프라 서비스 ADMIN 권한이 있는 프로젝트 멤버만 인스턴스 키페어를 변경할 수 있으며, Windows OS 인스턴스인 경우 변경할 수 없습니다.
-
-> [참고] 인스턴스 생성에 사용한 이미지 버전이 낮은 경우 키페어 변경 기능을 지원하지 않을 수 있습니다.
-
-<a id="manage-placement-policies"></a>
-### 배치 정책 관리
-
-배치 정책을 생성 및 삭제할 수 있으며 배치 정책에 할당된 인스턴스 목록을 보여줍니다.
-
-분산 배치를 위한 `anti-affinity` 배치 정책 유형만 제공합니다.
-
-배치 정책에 인스턴스가 할당된 경우에도 배치 정책 삭제가 가능하며 이 경우 인스턴스는 삭제되지 않습니다.
-
-<a id="key-pairs"></a>
-## 키페어
-
-<a id="import-key-pairs-windows"></a>
-### 키페어 가져오기(Windows 사용자)
-
-PuTTY SSH 클라이언트를 설치하면 함께 설치되는 puttygen 프로그램으로 키페어를 생성하고 NHN Cloud에 등록하여 사용할 수 있습니다.
-
-[PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 또는 한글패치가 적용된 [iPuTTY](https://github.com/iPuTTY/iPuTTY/releases/tag/l0.70i)를 설치합니다.
-
-puttygen을 실행합니다.
-
-![이미지1](http://static.toastoven.net/prod_instance/putty-ssh-001.png)
-
-**매개변수**에서 **RSA**(또는 구 버전의 puttygen에서는 SSH-2 RSA)를 선택합니다. **작업**에 있는 **생성** 버튼을 클릭합니다. 키를 생성하기 위해서 빈 공간 안에서 마우스를 계속 움직입니다.
-
-키가 생성되면 아래 그림처럼 공개 키 파일 내용이 보입니다. 공개 키 내용 전체를 **키페어 가져오기**의 **공개 Key:** 입력란에 붙여 넣어서 키페어를 등록합니다.
-
-![이미지1](http://static.toastoven.net/prod_instance/putty-ssh-002.png)
-
-**작업**의 **개인 키 저장** 버튼을 클릭해 개인 키를 저장합니다. 키 암호어구를 빈 칸으로 두고 개인 키를 저장하면, **암호어구로 보호하지 않은 채 이 키를 저장하겠습니까?** 메시지가 나타납니다. 변환된 개인 키를 좀 더 안전하게 사용하려면 암호어구를 설정하여 저장합니다.
-
-> [주의]
-인스턴스에 자동으로 로그인하려면 암호어구를 사용하지 않아야 합니다. 암호어구를 사용하면 로그인할 때 개인 키에 대한 비밀번호를 직접 입력해야 합니다.
-
-등록한 키페어는 인스턴스를 생성할 때 사용할 수 있고, 인스턴스 접속 시에는 이 키페어의 개인 키로 접속하여야 합니다. 인스턴스 접속 방법은 [인스턴스 접속 방법](./overview/#how-to-access-instances)를 참고합니다.
-
-NHN Cloud에서 생성한 키페어와 마찬가지로 이렇게 만든 키페어의 개인 키도 외부 유출 시에 누구나 유출된 개인 키로 해당 인스턴스에 접근할 수 있게 되므로 신중하게 관리해야 합니다.
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### 키페어 가져오기(Mac, Linux 사용자)
-
-Mac이나 Linux의 `ssh-keygen`으로 만든 키페어를 NHN Cloud에 등록하여 사용할 수 있습니다. 키페어는 다음 명령으로 생성합니다.
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-키페어의 비밀번호는 설정해도 되지만 설정하지 않아도 사용하는 데에 문제는 없습니다. 보안 수준을 높이려면 비밀번호 설정을 추천합니다. 입력한 키페어의 이름에 `.pub` 확장자가 추가된 파일 안에 키페어 공개 키가 들어 있습니다.
-
-	$ cat my_key.key.pub
-	ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-
-이 내용 전체를 **키페어 가져오기**의 **공개 Key:** 입력란에 붙여 넣어서 키페어를 등록합니다.
-
-등록한 키페어는 인스턴스를 생성할 때 사용할 수 있고, 인스턴스 접속 시에는 이 키페어의 개인 키로 접속해야 합니다. 인스턴스 접속 방법은 [인스턴스 접속 방법](./overview/#how-to-access-instances)을 참고합니다.
-
-NHN Cloud에서 생성한 키페어와 마찬가지로 이렇게 만든 키페어의 개인 키도 외부 유출 시에 누구나 유출된 개인 키로 해당 인스턴스에 접근할 수 있게 되므로 신중하게 관리해야 합니다.
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## 부록 1. Windows 언어팩 변경
-
-NHN Cloud Windows 이미지는 영문판을 기본으로 제공하고 있습니다. 다른 언어를 기본으로 사용하기 원하는 사용자는 다음의 방법에 따라 사용이 가능합니다.
-
-1. START -> Control Panel -> Clock, Language, and Region -> Add a language
-![이미지1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. 언어 기본 설정 변경 -> 언어 추가
-![이미지1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. 언어 추가 -> 사용하려는 언어 선택 -> 추가
-![이미지1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. 추가된 언어팩 확인
-![이미지1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. 추가된 언어팩 다운로드 및 설치
-![이미지1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. 업데이트 다운로드 및 설치
-![이미지1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. 설치된 언어팩 변경을 위해 선택언어 더블클릭 또는 옵션 선택
-![이미지1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. 언어 옵션에서 기본 언어로 설정 선택
-![이미지1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. 기본 언어로 설정후 적용되기 위해서 로그오프
-![이미지1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. 다시 로그인 하시면 사용자가 선택한 언어팩으로 변경 되어있는것을 볼수있습니다.
-![이미지1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## 부록 2. Windows 라우팅 변경
-
-NHN Cloud Windows 에서 라우팅을 변경하는 방법은 다음과 같은 방법 등이 있습니다.
-
-* START -> Run -> cmd
-
-Route 커맨드
-
-* 현재 설정 출력 : route print
-* 추가 : route add "목적지" mask "subnet" "gateway" metric "Metric 값" if "Interface 번호"
-* 변경 : route change "목적지" mask "subnet" "gateway" metric "Metric 값" if "Interface 번호"
-* 삭제 : route delete "목적지" mask "목적지 subnet" "gateway" metric "Metric 값" if "Interface 번호"
-* 옵션 : -p (영구 경로 지정)
-
-설명
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* Metric 값 : 값이 낮을 수록 우선 순위 높음
-* Interface 번호 : route print에서 확인 가능 (빨간색 테두리)
-* 영구 경로 : -p 옵션을 사용하지 않는 경우 시스템 재시작 시에 설정한 경로가 초기화 되기 때문에 사용 (파란색 테두리)
-
-Case 1 - 특정 인터페이스만 외부 통신 설정
-
-* route change 커맨드를 통해 외부 통신을 원치 않는 인터페이스 경로의 metric을 수정하거나 고정 IP 설정에서 기본 게이트웨이 정보를 입력하지 않는 방법 등이 있습니다.
-* Metric 수정 방법
-    * 인터페이스의 metric 증가
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* 고정 IP 설정 방법
-    1. ipconfig /all을 통해 IP정보 확인
-![이미지1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. 확인된 IP정보를 이용하여 IP설정 창에서 기본 게이트웨이를 제외하고 입력
-![이미지1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. route print를 통해 확인
-![이미지1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Case 2 - 특정 대역에 대한 경로 설정
-
-* route add 커맨드를 통해 특정 대역에 대한 경로를 설정합니다.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Case 3 - 특정 경로 제거
-
-* route delete를 통해 지정된 경로를 제거합니다.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## 부록 3. 시스템 로캘 변경
-
-NHN Cloud Windows에서 시스템 로캘을 변경하는 방법은 다음과 같습니다.
-
-1. **Windows 키 > 제어판 > 시계 및 국가**를 선택합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. **국가 또는 지역**을 선택합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. **관리자 옵션** 탭에서 **시스템 로캘 변경**을 클릭합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. 변경할 시스템 로캘을 선택합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. 적용하려면 시스템을 재시작합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## 부록 4. 하이퍼바이저 점검을 위한 인스턴스 재시작 가이드
-
-NHN Cloud는 주기적으로 하이퍼바이저 소프트웨어를 업데이트하여 기본 인프라 서비스의 보안과 안정성을 향상시키고 있습니다.
-점검 대상 하이퍼바이저에서 구동 중인 인스턴스는 재시작을 통해 점검이 완료된 하이퍼바이저로 이동해야 합니다.
-
-인스턴스를 재시작하려면 콘솔을 통해 인스턴스 이름 옆에 생성된 **! 재시작** 버튼을 사용해야 합니다.
-`콘솔에 있는 인스턴스 재부팅 또는 운영체제의 재시작 기능으로는 인스턴스가 다른 하이퍼바이저로 이동하지 않습니다.`
-아래 가이드에 따라 콘솔에 있는 재시작 기능을 이용하시기 바랍니다.
-
-점검 대상으로 지정된 인스턴스가 있는 프로젝트로 이동합니다.
-
-**1. 점검 대상 인스턴스를 확인합니다.**
-
-인스턴스 이름 앞에 **! 재시작** 버튼이 있는 인스턴스가 점검 대상 인스턴스입니다.
-**! 재시작** 버튼 위에 마우스 커서를 올리면 자세한 점검 일정을 확인할 수 있습니다.
-![인스턴스 점검 이미지1](http://static.toastoven.net/prod_instance/instance_p_migration_ko_1.png)    
-
-**2. 점검 대상 인스턴스에서 구동 중인 응용 프로그램을 비활성화하거나 종료합니다.**
-
-점검 대상 인스턴스에서 구동 중인 응용 프로그램을 비활성화하거나 종료하여 서비스에 영향을 주지 않도록 조치해야 합니다. 
-서비스에 영향을 줄 수 밖에 없을 때는 NHN Cloud 고객 센터로 연락해 주시면 적합한 조치를 안내해 드리겠습니다.
-
-**3. 점검 대상 인스턴스 이름 옆에 생성된 [! 재시작] 버튼을 클릭합니다.**
-
-![인스턴스 점검 이미지2](http://static.toastoven.net/prod_instance/instance_p_migration_ko_2.png)
-
-**4. 인스턴스 재시작 여부를 묻는 창이 나타나면 [확인] 버튼을 클릭합니다.**
-
-![인스턴스 점검 이미지3](http://static.toastoven.net/prod_instance/instance_p_migration_ko_3.png)
-
-**5. 인스턴스 상태 표시등이 초록색으로 변하고, [! 재시작] 버튼이 사라질 때까지 대기합니다.**
-
-인스턴스 상태 표시등이 변하지 않거나 **! 재시작** 버튼이 비활성화되지 않는다면 '새로 고침'을 해보시기 바랍니다.
-
-인스턴스가 재부팅되는 동안에는 해당 인스턴스에 아무런 조작을 할 수 없습니다.
-인스턴스 재부팅이 정상적으로 완료되지 않으면 자동으로 관리자에게 보고되며, NHN Cloud에서 별도로 연락을 드립니다.
+서버에 파일을 배포했습니다!
+NHN Cloud Deploy는 더 많은 기능을 지원하며, 자세한 사항은 [기능 상세 가이드](/Dev%20Tools/Deploy/ko/reference/)에서 확인하실 수 있습니다.
