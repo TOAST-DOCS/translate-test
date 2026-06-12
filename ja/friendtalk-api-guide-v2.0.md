@@ -1,0 +1,963 @@
+## Notification > KakaoTalk Bizmessage > カカともへのメッセージ > API v2.0 Guide
+
+<a id="friendtalk-service-termination-notice"></a>
+
+## フレンドトークサービス終了のお知らせ
+
+<!-- TODO: translate body -->
+
+<a id="friendtalk"></a>
+
+## カカともへのメッセージ
+
+<a id="api-domain"></a>
+
+#### [APIドメイン]
+
+<table>
+<thead>
+<tr>
+<th>ドメイン</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>https://kakaotalk-bizmessage.api.nhncloudservice.com</td>
+</tr>
+</tbody>
+</table>
+
+<a id="send-messages"></a>
+
+## メッセージの送信
+<a id="request-of-sending"></a>
+
+#### 送信リクエスト
+
+[URL]
+
+```
+POST  /friendtalk/v2.0/appkeys/{appkey}/messages
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| 値 | タイプ | 説明 |
+| ------ | ------ | ------ |
+| appkey | String | 固有のアプリケーションキー |
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| 値      | タイプ | 必須 | 説明                                 |
+| ------------ | ------ | ---- | ---------------------------------------- |
+| X-Secret-Key | String | O    | コンソールで作成できます。  |
+|X-NC-API-IDEMPOTENCY-KEY|	String| X | 重複メッセージ送信要求基準key<br>10分間同じkeyで要求すると、その要求を失敗処理します。 |
+
+[Request body]
+
+```
+{
+    "plusFriendId": String,
+    "requestDate": String,
+    "senderGroupingKey": String,
+    "createUser":String,
+    "recipientList": [{
+        "recipientNo": String,
+        "content": String,
+        "imageSeq": Integer,
+        "imageLink": String,
+        "buttons": [
+                {
+                    "ordering": Integer,
+                    "type": String,
+                    "name": String,
+                    "linkMo": String,
+                    "linkPc": String,
+                    "schemeIos": String,
+                    "schemeAndroid": String
+                }
+        ],
+        "resendParameter": {
+            "isResend":boolean,
+            "resendType":String,
+            "resendTitle":String,
+            "resendContent":String,
+            "resendSendNo":String,
+            "resendUnsubscribeNo": String
+        },
+        "isAd": Boolean,
+        "recipientGroupingKey": String
+    }]
+}
+```
+
+| 値                | タイプ | 必須 | 説明                                 |
+| ---------------------- | ------- | ---- | ---------------------------------------- |
+| plusFriendId           | String  | O    | プラスフレンドID(最大30文字)                         |
+| requestDate            | String  | X    | リクエスト日時(yyyy-MM-dd HH:mm)、フィールドを送信しない場合、即時送信 |
+| senderGroupingKey      | String  | X    | 発信グルーピングキー(最大100文字)                        |
+| createUser             | String  | X    | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存) |
+| recipientList          | List    | O    | 受信者リスト(最大1000人)                         |
+| - recipientNo          | String  | O    | 受信番号                              |
+| - content              | String  | O    | 内容(最大1000文字)<br>イメージを含む時は最大400文字  |
+| - imageSeq             | Integer | X    | イメージ番号                             |
+| - imageLink            | String  | X    | イメージリンク                                |
+| - buttons              | List    | X    | ボタン                                 |
+| -- ordering            | Integer | X    | ボタン順序(ボタンがある場合は必須)                      |
+| -- type                | String  | X    | ボタンタイプ(WL：Webリンク、AL：アプリリンク、BK：Botキーワード、MD：メッセージ伝達) |
+| -- name                | String  | X    | ボタン名(ボタンがある場合は必須)                      |
+| -- linkMo              | String  | X    | モバイルWebリンク(WLタイプの場合は必須フィールド)                |
+| -- linkPc              | String  | X    | PC Webリンク(WLタイプの場合は任意フィールド)                |
+| -- schemeIos           | String  | X    | iOSアプリリンク(ALタイプの場合は必須フィールド)                |
+| -- schemeAndroid       | String  | X    | Androidアプリリンク(ALタイプの場合は必須フィールド)            |
+| - resendParameter      | Object  | X    | 代替発送情報 |
+| -- isResend            | boolean | X    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
+| -- resendType          | String  | X    | 代替送信タイプ(SMS、LMS)<br>値がない場合は、テンプレート本文の長さに応じてタイプが決まります。 |
+| -- resendTitle         | String  | X    | LMS代替送信タイトル(最大20文字)<br>(値がない場合は、プラスフレンドIDで再送信されます。) |
+| -- resendContent       | String  | X    | 代替送信内容(最大1000文字)<br>(値がない場合は、テンプレートの内容で再送信されます。) |
+| -- resendSendNo        | String  | X    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+| -- resendUnsubscribeNo | String  | X    | 代替080受信拒否番号<br><span style="color:red">(SMSサービスに登録された080の受信拒否番号がない場合、代替の転送が失敗することがあります。)</span> |
+| - isAd                 | Boolean | X    | 広告かどうか(デフォルト値true)                          |
+| - recipientGroupingKey | String  | X    | 受信者グルーピングキー(最大100文字)                       |
+
+* <b>リクエスト日時は呼び出す時点から60日後まで設定可能です。</b>
+* <b>夜間送信制限(20:00～翌日08:00)</b>
+* <b>SMSサービスの代替として送信されるため、SMSサービスの発送API明細に従ってフィールドを入力してください。(SMSサービスに登録された発信番号、080受信拒否番号、各種フィールドの長さ制限など)</b>
+* <b>指定した代替発送タイプのバイトの制限を超える代替発送のタイトルや内容はカットされ、代替発送となることがあります。([[SMS注意事項](https://docs.toast.com/ja/Notification/SMS/ja/api-guide/#_1)] 参照)</b>
+* <b>友達トークの広告メッセージは、広告SMS APIに代替送信されるので、必ず080受信拒否番号を登録しないと代替送信されません。</b>
+* <b>友達トーク広告メッセージのresendContentフィールドを入力する場合、SMS広告APIの広告文句を必須入力すると正常的に代替して送信されます。(広告)内容[無料受信拒否]080XXXXXX</b>
+* <b>友達トーク広告メッセージのresendContentフィールドがない場合は、登録された080受信拒否番号で広告メッセージを自動生成して代替送信されます。</b>
+
+[例]
+```
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.0/appkeys/{appkey}/messages -d '{"plusFriendId":"@プラスフレンド","requestDate":"yyyy-MM-dd HH:mm","recipientList":[{"recipientNo":"010-0000-0000","imageSeq":1,"imageLink":"https://toast.com","content":"内容","buttons":[{"ordering":1,"type":"WL","name":"ボタン1","linkMo":"https://toast.com","linkPc":"https://toast.com"}]}]}'
+```
+
+<a id="response"></a>
+
+#### レスポンス
+
+```
+{
+  "header": {
+    "resultCode": Integer,
+    "resultMessage": String,
+    "isSuccessful": boolean
+  },
+  "message": {
+    "requestId": String,
+    "senderGroupingKey": String,
+    "sendResults": [
+      {
+        "recipientSeq": Integer,
+        "recipientNo": String,
+        "resultCode": Integer,
+        "resultMessage": String,
+        "recipientGroupingKey": String
+      }
+    ]
+  }
+}
+```
+
+| 値                 | タイプ | 説明     |
+| ----------------------- | ------- | ------------ |
+| header                  | Object  | ヘッダ領域  |
+| - resultCode            | Integer | 結果コード  |
+| - resultMessage         | String  | 結果メッセージ |
+| - isSuccessful          | Boolean | 成否   |
+| message                 | Object  | 本文領域  |
+| - requestId             | String  | リクエストID        |
+| - senderGroupingKey     | String  | 発信グルーピングキー   |
+| - sendResults           | Object  | 送信リクエスト結果 |
+| -- recipientSeq         | Integer | 受信者シーケンス番号 |
+| -- recipientNo          | String  | 受信番号  |
+| -- resultCode           | Integer | 送信リクエスト結果コード |
+| -- resultMessage        | String  | 送信リクエスト結果メッセージ |
+| -- recipientGroupingKey | String  | 受信者グルーピングキー  |
+
+<a id="list-deliveries"></a>
+
+## 送信リスト照会
+
+<a id="request"></a>
+
+#### リクエスト
+
+[URL]
+
+```
+GET  /friendtalk/v2.0/appkeys/{appkey}/messages
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| 値 | タイプ | 説明 |
+| ------ | ------ | ------ |
+| appkey | String | 固有のアプリケーションキー |
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| 値      | タイプ | 必須 | 説明                                 |
+| ------------ | ------ | ---- | ---------------------------------------- |
+| X-Secret-Key | String | O    | コンソールで作成できます。  |
+
+[Query parameter] 1番or(2番, 3番)の条件必須
+
+| 値              | タイプ | 必須  | 説明                          |
+| -------------------- | ------- | --------- | --------------------------------- |
+| requestId            | String  | 条件必須(1番) | リクエストID                             |
+| startRequestDate     | String  | 条件必須(2番) | 送信リクエスト日の開始値(yyyy-MM-dd HH:mm)   |
+| endRequestDate       | String  | 条件必須(2番) | 送信リクエスト日の終了値(yyyy-MM-dd HH:mm)    |
+| startCreateDate      | String  | 条件必須(3番) | 登録日 開始値(yyy-MM-dd HH:mm)                   |
+| endCreateDate        | String  | 条件必須(3番) | 登録日 終値(yyy-MM-dd HH:mm)                    |
+| recipientNo          | String  | X         | 受信番号                       |
+| plusFriendId         | String  | X         | プラスフレンドID                          |
+| senderGroupingKey    | String  | X         | 発信グルーピングキー                        |
+| recipientGroupingKey | String  | X         | 受信者グルーピングキー                       |
+| messageStatus        | String  | X         | リクエストステータス(COMPLETED：成功、FAILED：失敗) |
+| resultCode           | String  | X         | 送信結果(MRC01：成功、MRC02：失敗)       |
+| createUser           | String  | X         | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存) |
+| pageNum              | Integer | X         | ページ番号(基本：1)                     |
+| pageSize             | Integer | X         | 照会件数(基本：15, 最大:1000)                     |
+
+<a id="response-2"></a>
+
+#### レスポンス
+```
+{
+  "header":{
+      "resultCode": Integer,
+      "resultMessage": String,
+      "isSuccessful": boolean
+  },
+  "messageSearchResultResponse":{
+    "messages":[
+        {
+          "requestId": String,
+          "recipientSeq":Integer,
+          "plusFriendId": String,
+          "recipientNo": String,
+          "requestDate":String,
+          "createDate":String,
+          "content": String,
+          "messageStatus": String,
+          "resendStatus": String,
+          "resendStatusName": String,
+          "resultCode": String,
+          "resultCodeName":String,
+          "createUser":String,
+          "senderGroupingKey": String,
+          "recipientGroupingKey": String
+        }
+    ],
+    "totalCount": Integer
+  }
+}
+```
+
+| 値                     | タイプ | 説明                          |
+| --------------------------- | ------- | --------------------------------- |
+| header                      | Object  | ヘッダ領域                       |
+| - resultCode                | Integer | 結果コード                       |
+| - resultMessage             | String  | 結果メッセージ                      |
+| - isSuccessful              | Boolean | 成否                        |
+| messageSearchResultResponse | Object  | 本文領域                       |
+| - messages                  | List    | メッセージリスト                     |
+| -- requestId                | String  | リクエストID                             |
+| -- recipientSeq             | Integer | 受信者シーケンス番号                  |
+| -- plusFriendId             | String  | プラスフレンドID                          |
+| -- recipientNo              | String  | 受信番号                       |
+| -- requestDate              | String  | リクエスト日時                       |
+| -- createDate               | String  | 登録日時                             |
+| -- content                  | String  | 本文                          |
+| -- messageStatus            | String  | リクエストステータス(COMPLETED：成功、FAILED：失敗) |
+| -- resendStatus             | String  | 再送信ステータスコード                   |
+| -- resendStatusName         | String  | 再送信ステータスコード名                      |
+| -- resultCode               | String  | 受信結果コード                    |
+| -- resultCodeName           | String  | 受信結果コード名                       |
+| -- createUser               | String  | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存)|
+| -- senderGroupingKey        | String  | 発信グルーピングキー                        |
+| -- recipientGroupingKey     | String  | 受信者グルーピングキー                       |
+| - totalCount                | Integer | 総個数                            |
+
+[例]
+```
+curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.0/appkeys/{appkey}/messages?startRequestDate=2018-05-01%2000:00&endRequestDate=2018-05-30%2023:59"
+```
+
+<a id="status-of-resending"></a>
+
+#### 再送信ステータス
+| 値 | 説明                        |
+| ----- | ------------------------------- |
+| RSC01 | 再送信の対象外                   |
+| RSC02 | 再送信対象(送信結果が失敗の時、再送信が行われます。) |
+| RSC03 | 再送信中                      |
+| RSC04 | 再送信成功                    |
+| RSC05 | 再送信失敗                    |
+
+<a id="get-deliveries"></a>
+
+## 送信単件照会
+
+<a id="request-2"></a>
+
+#### リクエスト
+
+[URL]
+
+```
+GET  /friendtalk/v2.0/appkeys/{appkey}/messages/{requestId}/{recipientSeq}
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| 値 | タイプ | 説明 |
+| ------ | ------ | ------ |
+| appkey | String | 固有のアプリケーションキー |
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| 値      | タイプ | 必須 | 説明                                 |
+| ------------ | ------ | ---- | ---------------------------------------- |
+| X-Secret-Key | String | O    | コンソールで作成できます。  |
+
+[Query parameter]
+
+| 値      | タイプ | 必須 | 説明   |
+| ------------ | ------- | ---- | ---------- |
+| requestId    | String  | O    | リクエストID      |
+| recipientSeq | Integer | O    | 受信者シーケンス番号 |
+
+[例]
+```
+curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.0/appkeys/{appkey}/messages/{requestId}/{recipientSeq}"
+```
+
+<a id="response-3"></a>
+
+#### レスポンス
+```
+{
+  "header":{
+      "resultCode": Integer,
+      "resultMessage": String,
+      "isSuccessful": boolean
+  },
+  "message":{
+      "requestId": String,
+      "recipientSeq":Integer,
+      "plusFriendId": String,
+      "recipientNo": String,
+      "requestDate": String,
+      "createDate":String,
+      "receiveDate":String,
+      "content": String,
+      "messageStatus": String,
+      "resendStatus": String,
+      "resendStatusName": String,
+      "resendResultCode":String,
+      "resendRequestId":String,
+      "resultCode": String,
+      "resultCodeName":String,
+      "createUser":String,
+      "imageSeq":Integer,
+      "imageName":String,
+      "imageUrl":String,
+      "imageLink":String,
+      "wide":Boolean,
+      "buttons":[
+        {
+          "ordering": Integer,
+          "type": String,
+          "name": String,
+          "linkMo": String,
+          "linkPc": String,
+          "schemeIos": String,
+          "schemeAndroid": String
+        }
+      ],
+      "isAd":Boolean,
+      "senderGroupingKey": String,
+      "recipientGroupingKey": String
+  }
+}
+```
+
+| 値                | タイプ | 説明                                 |
+| ---------------------- | ------- | ---------------------------------------- |
+| header                 | Object  | ヘッダ領域                              |
+| - resultCode           | Integer | 結果コード                              |
+| - resultMessage        | String  | 結果メッセージ                             |
+| - isSuccessful         | Boolean | 成否                               |
+| message                | Object  | メッセージ                                |
+| - requestId            | String  | リクエストID                                    |
+| - recipientSeq         | Integer | 受信者シーケンス番号                         |
+| - plusFriendId         | String  | プラスフレンドID                                 |
+| - recipientNo          | String  | 受信番号                              |
+| - requestDate          | String  | リクエスト日時                              |
+| - createDate           | String  | 登録日時                             |
+| - receiveDate          | String  | 受信日時                              |
+| - content              | String  | 本文                                 |
+| - messageStatus        | String  | リクエストステータス(COMPLETED：成功、FAILED：失敗)      |
+| - resendStatus         | String  | 再送信ステータスコード                          |
+| - resendStatusName     | String  | 再送信ステータスコード名                             |
+| - resultCode           | String  | 受信結果コード                           |
+| - resultCodeName       | String  | 受信結果コード名                              |
+| - createUser           | String  | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存)|
+| - imageSeq             | Integer | イメージ番号                             |
+| - imageName            | String  | イメージ名(アップロードしたファイル名)                           |
+| - imageUrl             | String  | イメージURL                                  |
+| - imageLink            | String  | イメージリンク(イメージ番号を入力した場合は必須)                |
+| - wide                 | Boolean | ワイドイメージの可否                        |
+| - buttons              | List    | ボタンリスト                              |
+| -- ordering            | Integer | ボタン順序                              |
+| -- type                | String  | ボタンタイプ(WL：Webリンク、AL：アプリリンク、BK：Botキーワード、MD：メッセージ伝達) |
+| -- name                | String  | ボタン名                              |
+| -- linkMo              | String  | モバイルWebリンク(WLタイプの場合は必須フィールド)                |
+| -- linkPc              | String  | PC Webリンク(WLタイプの場合は任意フィールド)                |
+| -- schemeIos           | String  | iOSアプリリンク(ALタイプの場合は必須フィールド)                |
+| -- schemeAndroid       | String  | Androidアプリリンク(ALタイプの場合は必須フィールド)            |
+| - isAd                 | Boolean | 広告かどうか                                   |
+| - senderGroupingKey    | String  | 発信グルーピングキー                               |
+| - recipientGroupingKey | String  | 受信者グルーピングキー                              |
+
+<a id="messages"></a>
+
+## メッセージ
+<a id="cancel-message-delivery"></a>
+
+### メッセージ送信取消
+
+<a id="request-3"></a>
+
+#### リクエスト
+
+[URL]
+
+```
+DELETE  /friendtalk/v2.0/appkeys/{appkey}/messages/{requestId}
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| 値  | タイプ | 説明 |
+| --------- | ------ | ------ |
+| appkey    | String | 固有のアプリケーションキー |
+| requestId | String | リクエストID  |
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| 値     | タイプ | 必須 | 説明                                |
+| ------------ | ------ | ---- | ---------------------------------------- |
+| X-Secret-Key | String | O    | コンソールで作成できます。 |
+
+[Query parameter]
+
+| 値     | タイプ | 必須 | 説明                                |
+| ------------ | ------ | ---- | ---------------------------------------- |
+| recipientSeq | String | X    | 受信者シーケンス番号<br>(入力しない場合、リクエストIDのすべての送信件をキャンセル) |
+
+* 一般/認証メッセージは同じAPIでキャンセルできます。
+
+<a id="response-4"></a>
+
+#### レスポンス
+```
+{
+  "header":{
+      "resultCode": Integer,
+      "resultMessage": String,
+      "isSuccessful": boolean
+  }
+}
+```
+
+| 値        | タイプ | 説明 |
+| --------------- | ------- | ------ |
+| header          | Object  | ヘッダ領域 |
+| - resultCode    | Integer | 結果コード |
+| - resultMessage | String  | 結果メッセージ |
+| - isSuccessful  | Boolean | 成否 |
+
+[例]
+```
+curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.0/appkeys/{appkey}/messages/{requestId}?recipientSeq=1,2,3"
+```
+
+<a id="query-updated-message-results"></a>
+
+### メッセージ結果アップデート照会
+
+<a id="request-4"></a>
+
+#### リクエスト
+
+[URL]
+
+```
+GET  /friendtalk/v2.0/appkeys/{appkey}/message-results
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| 値 | タイプ | 説明 |
+| ------ | ------ | ------ |
+| appkey | String | 固有のアプリケーションキー |
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| 値      | タイプ | 必須 | 説明                                 |
+| ------------ | ------ | ---- | ---------------------------------------- |
+| X-Secret-Key | String | O    | コンソールで作成できます。  |
+
+[Query parameter]
+
+| 値         | タイプ | 必須 | 説明                           |
+| --------------- | ------- | ---- | ---------------------------------- |
+| startUpdateDate | String  | O    | 結果アップデート照会の開始時間(yyyy-MM-dd HH:mm) |
+| endUpdateDate   | String  | O    | 結果アップデート照会の終了時間(yyyy-MM-dd HH:mm) |
+| pageNum         | Integer | X    | ページ番号(基本：1)                      |
+| pageSize        | Integer | X    | 照会件数(基本：15, 最大:1000)          |
+
+<a id="response-5"></a>
+
+#### レスポンス
+```
+{
+  "header":{
+      "resultCode": Integer,
+      "resultMessage": String,
+      "isSuccessful": boolean
+  },
+  "messageSearchResultResponse":{
+    "messages":[
+    {
+      "requestId": String,
+      "recipientSeq":Integer,
+      "plusFriendId": String,
+      "recipientNo": String,
+      "requestDate": String,
+      "receiveDate":String,
+      "content": String,
+      "messageStatus": String,
+      "resendStatus": String,
+      "resendStatusName": String,
+      "resultCode": String,
+      "resultCodeName":String,
+      "senderGroupingKey": String,
+      "recipientGroupingKey": String
+    }
+    ],
+    "totalCount": Integer
+  }
+}
+```
+
+| 値                     | タイプ | 説明                                 |
+| --------------------------- | ------- | ---------------------------------------- |
+| header                      | Object  | ヘッダ領域                              |
+| - resultCode                | Integer | 結果コード                              |
+| - resultMessage             | String  | 結果メッセージ                             |
+| - isSuccessful              | Boolean | 成否                               |
+| messageSearchResultResponse | Object  | 本文領域                              |
+| - messages                  | List    | メッセージリスト                            |
+| -- requestId                | String  | リクエストID                                    |
+| -- recipientSeq             | Integer | 受信者シーケンス番号                         |
+| -- plusFriendId             | String  | プラスフレンドID                                 |
+| -- recipientNo              | String  | 受信番号                              |
+| -- requestDate              | String  | リクエスト日時                              |
+| -- receiveDate              | String  | 受信日時                              |
+| -- content                  | String  | 本文                                 |
+| -- messageStatus            | String  | リクエストステータス(COMPLETED -> 成功、FAILED -> 失敗、CANCEL -> キャンセル) |
+| -- resendStatus             | String  | 再送信ステータスコード                          |
+| -- resendStatusName         | String  | 再送信ステータスコード名                             |
+| -- resultCode               | String  | 受信結果コード                           |
+| -- resultCodeName           | String  | 受信結果コード名                              |
+| -- senderGroupingKey        | String  | 発信グルーピングキー                               |
+| -- recipientGroupingKey     | String  | 受信者グルーピングキー                              |
+| - totalCount                | Integer | 総個数                                    |
+
+[例]
+```
+curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.0/appkeys/{appkey}/message-results?startUpdateDate=2018-05-01%20:00&endUpdateDate=2018-05-30%20:59"
+```
+
+<a id="image-management"></a>
+
+## イメージの管理
+
+<a id="register-images"></a>
+
+### イメージの登録
+<a id="request-5"></a>
+
+#### リクエスト
+
+[URL]
+
+```
+POST  /friendtalk/v2.0/appkeys/{appkey}/images
+Content-Type: multipart/form-data
+```
+
+[Path parameter]
+
+| 値 | タイプ | 説明 |
+| ------ | ------ | ------ |
+| appkey | String | 固有のアプリケーションキー |
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| 値      | タイプ | 必須 | 説明                                 |
+| ------------ | ------ | ---- | ---------------------------------------- |
+| X-Secret-Key | String | O    | コンソールで作成できます。  |
+
+[Request parameter]
+
+| 値 | タイプ | 必須 | 説明 |
+| ----- | ---- | ---- | ---- |
+| image | File | O    | イメージ |
+| wide  | boolean | X | ワイドイメージの可否(基本: false) |
+
+[例]
+```
+curl -X POST -H "Content-Type: multipart/form-data" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.0/appkeys/{appkey}/images" -F "image=@friend-ricecake02.jpeg"
+```
+
+<a id="response-6"></a>
+
+#### レスポンス
+```
+
+{
+  "header":{
+      "resultCode": Integer,
+      "resultMessage": String,
+      "isSuccessful": boolean
+  },
+  "image": {
+      "imageSeq":Integer,
+      "imageUrl":String,
+      "imageName":String
+    }
+}
+```
+
+| 値         | タイプ | 説明               |
+| --------------- | ------- | ---------------------- |
+| header          | Object  | ヘッダ領域            |
+| - resultCode    | Integer | 結果コード            |
+| - resultMessage | String  | 結果メッセージ           |
+| - isSuccessful  | Boolean | 成否             |
+| image           | Object  | 本文領域            |
+| - imageSeq      | Integer | イメージ番号(カカともへのメッセージの送信時に使用) |
+| - imageUrl      | String  | イメージURL                |
+| - imageName     | String  | イメージ名(アップロードしたファイル名)         |
+
+
+<a id="query-images"></a>
+
+### イメージの照会
+<a id="request-6"></a>
+
+#### リクエスト
+
+[URL]
+
+```
+GET  /friendtalk/v2.0/appkeys/{appkey}/images
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| 値 | タイプ | 説明 |
+| ------ | ------ | ------ |
+| appkey | String | 固有のアプリケーションキー |
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| 値      | タイプ | 必須 | 説明                                 |
+| ------------ | ------ | ---- | ---------------------------------------- |
+| X-Secret-Key | String | O    | コンソールで作成できます。  |
+
+[Query parameter]
+
+| 値  | タイプ | 必須 | 説明      |
+| -------- | ------- | ---- | ------------- |
+| pageNum  | Integer | X    | ページ番号(基本：1) |
+| pageSize | Integer | X    | 照会件数(基本：15) |
+
+[例]
+```
+curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.0/appkeys/{appkey}/images?pageNum=1&pageSize=15"
+```
+
+<a id="response-7"></a>
+
+#### レスポンス
+```
+
+{
+  "header":{
+      "resultCode": Integer,
+      "resultMessage": String,
+      "isSuccessful": boolean
+  },
+  "imagesResponse": {
+    "images":[
+        {
+            "imageSeq":Integer,
+            "imageUrl":String,
+            "imageName":String,
+            "wide": String,
+            "createDate":String
+        }
+    ],
+    "totalCount":Integer
+  }
+
+}
+```
+
+| 値         | タイプ | 説明               |
+| --------------- | ------- | ---------------------- |
+| header          | Object  | ヘッダ領域            |
+| - resultCode    | Integer | 結果コード            |
+| - resultMessage | String  | 結果メッセージ           |
+| - isSuccessful  | Boolean | 成否             |
+| imagesResponse  | Object  | 本文領域            |
+| - image         | Object  | 本文領域            |
+| -- imageSeq     | Integer | イメージ番号(カカともへのメッセージの送信時に使用) |
+| -- imageUrl     | String  | イメージURL                |
+| -- imageName    | String  | イメージ名(アップロードしたファイル名)         |
+| -- wide         | boolean |	ワイドイメージの可否                       |
+| -- createDate   | String  | 作成日時            |
+| - totalCount    | Integer | 総個数                  |
+
+* イメージは、最近登録した順にソートされてレスポンスを返します。
+
+<a id="delete-images"></a>
+
+### イメージの削除
+<a id="request-7"></a>
+
+#### リクエスト
+
+[URL]
+
+```
+DELETE  /friendtalk/v2.0/appkeys/{appkey}/images
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| 値 | タイプ | 説明 |
+| ------ | ------ | ------ |
+| appkey | String | 固有のアプリケーションキー |
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| 値      | タイプ | 必須 | 説明                                 |
+| ------------ | ------ | ---- | ---------------------------------------- |
+| X-Secret-Key | String | O    | コンソールで作成できます。  |
+
+[Query parameter]
+
+| 値  | タイプ | 必須 | 説明 |
+| -------- | ------ | ---- | ------ |
+| imageSeq | String | O    | イメージ番号 |
+
+[例]
+```
+curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.0/appkeys/{appkey}/images?imageSeq=1,2,3"
+```
+
+<a id="response-8"></a>
+
+#### レスポンス
+```
+
+{
+  "header":{
+      "resultCode": Integer,
+      "resultMessage": String,
+      "isSuccessful": boolean
+  }
+}
+```
+
+| 値         | タイプ | 説明 |
+| --------------- | ------- | ------ |
+| header          | Object  | ヘッダ領域 |
+| - resultCode    | Integer | 結果コード |
+| - resultMessage | String  | 結果メッセージ |
+| - isSuccessful  | Boolean | 成否 |
+
+
+<a id="alternative-delivery-management"></a>
+
+## 代替送信管理
+<a id="register-sms-appkey"></a>
+
+### SMS AppKey 登録
+
+[URL]
+
+```
+POST  /friendtalk/v2.0/appkeys/{appkey}/failback/appkey
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| 値     | タイプ | 説明 |
+| ------------ | ------ | -------- |
+| appkey       | String | 固有のアプリケーションキー |
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| 値     | タイプ | 必須 | 説明                                |
+| ------------ | ------ | ---- | ---------------------------------------- |
+| X-Secret-Key | String | O    | コンソールで作成できます。 |
+
+
+[Request body]
+
+```
+{
+    "resendAppKey": String
+}
+```
+
+| 値     | タイプ | 必須 | 説明                                |
+|---|---|---|---|
+|resendAppKey|	String|	O | 代替発送に設定するSMS AppKey |
+
+[例]
+```
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.0/appkeys/{appkey}/failback/appkey -d '{"resendAppKey": "smsAppKey"}
+```
+
+<a id="response-9"></a>
+
+#### レスポンス
+```
+
+{
+  "header":{
+      "resultCode": Integer,
+      "resultMessage": String,
+      "isSuccessful": boolean
+  }
+}
+```
+
+<a id="register-alternative-sending-settings"></a>
+
+### 代替送信設定登録
+
+[URL]
+
+```
+POST  /friendtalk/v2.0/appkeys/{appkey}/failback
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| 値     | タイプ | 説明 |
+| ------------ | ------ | -------- |
+| appkey       | String | 固有のアプリケーションキー |
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+
+| 値     | タイプ | 必須 | 説明                                |
+| ------------ | ------ | ---- | ---------------------------------------- |
+| X-Secret-Key | String | O    | コンソールで作成できます。 |
+
+
+[Request body]
+
+```
+{  
+   "plusFriendId": String,
+   "isResend": Boolean,
+   "resendSendNo": String,
+   "resendUnsubscribeNo": String
+}
+```
+
+| 値                | タイプ | 必須 | 説明                                 |
+| ---------------------- | ------- | ---- | ---------------------------------------- |
+| plusFriendId           | String  | O    | プラスフレンドID(最大30文字)                         |
+| isResend             | boolean | O    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
+| resendSendNo         | String  | O    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+
+[例]
+```
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.0/appkeys/{appkey}/failback/appkey -d '{"plusFriendId": "@플러스친구","isResend": true,"resendSendNo": "01012341234", "resendUnsubscribeNo": "0801234567" }
+```
+
+<a id="response-10"></a>
+
+#### レスポンス
+```
+
+{
+  "header":{
+      "resultCode": Integer,
+      "resultMessage": String,
+      "isSuccessful": boolean
+  }
+}
+```
