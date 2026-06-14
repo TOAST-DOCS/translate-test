@@ -35,6 +35,8 @@ NHN Cloudが提供するAPIを使用するには、User Access Keyを発行す�
     * User Access Key IDは90日ごとに変更することを推奨します。
 
 
+<a id="making-api-calls"></a>
+
 ## APIの呼び出し
 User Access KeyはHTTPリクエストヘッダに含めて送信します。API呼び出し時、以下の例のようにヘッダにUser Access Keyを設定して呼び出してください。
 
