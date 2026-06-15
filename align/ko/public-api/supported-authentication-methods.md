@@ -12,6 +12,8 @@ Public API마다 지원하는 인증 방식이 다르며, 일부 인증 방식�
 프레임워크 API 및 파트너 관리 API 사용에 대한 자세한 내용은 각각 [프레임워크 API](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/framework-api/)와 [파트너 관리 API](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/partner-api/)를 참고하세요.
 
 
+<a id="check-authentication-methods-for-each-service-api"></a>
+
 ## 서비스 API별 인증 방식 확인하기
 
 사용할 서비스에서 지원하는 API 인증 방식을 확인하세요.
