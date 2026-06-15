@@ -1,18 +1,26 @@
 ## Analytics > Log & Crash Search > TOAST SDK 사용 가이드 > Unity
 
+<a id="section-1"></a>
+
 ## Prerequisites
 
 1. [TOAST 콘솔](https://console.toast.com)에서 [Log&Crash Search를 활성화](https://docs.toast.com/ko/Analytics/Log%20&%20Crash%20Search/ko/console-guide/)합니다.
 
 2. Log & Crash Search에서 [AppKey를 확인](https://docs.toast.com/ko/Analytics/Log%20&%20Crash%20Search/ko/console-guide/#appkey)합니다.
 
+<a id="section-2"></a>
+
 ## Component SDKs
 
 
 
+<a id="section-3"></a>
+
 ## Getting Started Unity SDK
 
 
+
+<a id="section-3-1"></a>
 
 ### Add TOAST SDK to Your Project
 
@@ -30,6 +38,8 @@
 다운로드 받은 "toast-unity-sdk.unitypackage"를 더블 클릭하여 프로젝트에 포함합니다.
 
 ![import_unitypackage](http://static.toastoven.net/toastcloud/sdk/unity/unity_setup_import_unitypackage.png)
+
+<a id="section-3-2"></a>
 
 ### Initialize TOAST SDK
 
@@ -51,7 +61,11 @@
 
 
 
+<a id="section-4"></a>
+
 ## Log Collector
+
+<a id="section-4-1"></a>
 
 ### Initialize
 
@@ -65,6 +79,8 @@ configuration.setProjectVersion (YOUR_PROJECT_VERSION);
 
 ToastLogger.initialize (configuration);
 ```
+
+<a id="section-4-2"></a>
 
 ### Send Log
 
@@ -87,6 +103,8 @@ ToastLogger.error(tag, message);
 ToastLogger.fatal(tag, message);
 ```
 
+<a id="section-4-3"></a>
+
 ### Set UserID
 
 사용자 아이디를 설정합니다.
@@ -95,6 +113,8 @@ ToastLogger.fatal(tag, message);
 ```cs
 ToastLogger.setUserId(userId);
 ```
+
+<a id="section-4-4"></a>
 
 ### Set User Field
 
@@ -108,7 +128,11 @@ ToastLogger.setUserField("UserField", "UserValue");
 > 필드명은 "A-Z, a-z"로 시작하고 "A-Z, a-z, 0-9, -, _" 문자를 사용할 수 있습니다.
 > 필드명 내에 공백은 "\_" 로 치환됩니다.
 
+<a id="section-5"></a>
+
 ## Crash Reporter
+
+<a id="section-5-1"></a>
 
 ### Initialize
 
@@ -118,6 +142,8 @@ ToastCrash를 초기화합니다.
 // Initialize Crash
 ToastCrash.initialize();
 ```
+
+<a id="section-5-2"></a>
 
 ### Send Handled Exception
 
@@ -140,6 +166,8 @@ ToastCrash.error(tag, message, stackTrace);
 ToastCrash.fatal(tag, message, stackTrace);
 ```
 
+<a id="section-5-2-1"></a>
+
 #### Using
 
 ```cs
@@ -149,6 +177,8 @@ try {
     ToastCrash.fatal(TAG, "Handled Exception", stackTrace);
 }
 ```
+
+<a id="section-5-2-2"></a>
 
 #### Application.RegisterLogCallback을 통한 로그 수집
 
@@ -191,6 +221,8 @@ public class ExampleClass : MonoBehaviour {
 
 }
 ```
+
+<a id="section-5-3"></a>
 
 ### Set User Field
 
