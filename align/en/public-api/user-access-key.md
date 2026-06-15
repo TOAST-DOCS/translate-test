@@ -35,6 +35,8 @@ To use NHN Cloud APIs, you must first issue a User Access Key. User Access Keys 
     * It is recommended to rotate (change) your User Access Key ID every 90 days.
 
 
+<a id="making-api-calls"></a>
+
 ## Making API Calls
 User Access Key is passed via the HTTP request header. When calling an API, include the User Access Key in the header as shown in the example below.
 
