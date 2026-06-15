@@ -3131,7 +3131,7 @@ IP ACL設定を照会するAPIです。
 
 <!-- TODO: translate body -->
 
-###### レスポンス本文
+**レスポンス本文**
 
 <!-- TODO: translate body -->
 
@@ -3148,6 +3148,10 @@ IP ACL設定を照会するAPIです。
 <!-- TODO: translate body -->
 
 ###### PasswordExpiry
+
+<!-- TODO: translate body -->
+
+###### LimitPasswordReuse
 
 <!-- TODO: translate body -->
 
@@ -4293,7 +4297,7 @@ GET /v1/organizations
 
 <!-- TODO: translate body -->
 
-##### 必要な権限
+**必要な権限**
 会員であれば特定の権限なしで呼び出し可能なAPIです。
 
 **[Query Parameter]**
@@ -4415,7 +4419,7 @@ GET /v1/organizations
 
 <!-- TODO: translate body -->
 
-##### 必要な権限
+**必要な権限**
 会員であれば特定の権限なしで呼び出し可能なAPIです。
 
 ##### リクエストパラメータ
@@ -4481,7 +4485,7 @@ GET /v1/organizations
 
 <!-- TODO: translate body -->
 
-##### 必要な権限
+**必要な権限**
 `Organization.Delete`
 
 ##### リクエストパラメータ
@@ -4520,7 +4524,7 @@ GET /v1/organizations
 
 <!-- TODO: translate body -->
 
-##### 必要な権限
+**必要な権限**
 会員であれば特定の権限なしで呼び出し可能なAPIです。
 
 ##### リクエストパラメータ
@@ -4589,7 +4593,7 @@ GET /v1/organizations
 
 <!-- TODO: translate body -->
 
-##### 必要権限
+**必要権限**
 会員であれば特定の権限なしで呼び出し可能なAPIです。
 
 ##### リクエストパラメータ
