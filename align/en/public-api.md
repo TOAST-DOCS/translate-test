@@ -1,8 +1,14 @@
+<!-- pre-align:aligned sig=4a0e642c4963 -->
+
 # NHN Container Service(NCS) API 가이드
 
 **Container > NHN Container Service(NCS) > API Guide**
 
-### NCS API Common Information
+<a id="ncs-api-common-information"></a>
+
+## NCS API Common Information
+
+<a id="api-endpoint"></a>
 
 ### API Endpoint
 
@@ -11,8 +17,12 @@
 | Korea (Pangyo) region | https://kr1-ncs.api.nhncloudservice.com |
 | Korea (Gwangju) region | https://kr3-ncs.api.nhncloudservice.com |
 
+<a id="authentication-and-permission"></a>
+
 ### Authentication and Permission
 NCS uses User Access Key tokens for authentication and authorization when making API calls. The User Access Key token is a temporary, Bearer-type access token issued from a User Access Key. For more information on issuing and using User Access Key tokens, please refer to the [User Access Key Token](/nhncloud/en/public-api/user-access-key-token).
+
+<a id="common-response-information"></a>
 
 ### Common Response Information
 
@@ -60,7 +70,11 @@ Returns <strong>200 OK<strong> for all API requests. For more information on the
 > [Caution]
 > In each API response, you may find fields that are not specified within this guide. Those fields are for NHN Cloud internal usage, and as such refrain from using them since they may be changed without prior notice.
 
+<a id="template"></a>
+
 ## Template
+
+<a id="view-template-list"></a>
 
 ### View Template List
 
@@ -70,6 +84,8 @@ Retrieves the list of templates.
 GET /ncs/v1.0/appkeys/{appKey}/templates
 x-nhn-authorization: {token}
 ```
+
+<a id="request"></a>
 
 #### Request
 
@@ -82,6 +98,8 @@ This API does not require a request body.
 | page | Query | Integer | X | Page number to retrieve |
 | size | Query | Integer | X | Page size to retrieve (default: 10) |
 | disable_containers | Query | Boolean | X | <li>true: Retrieve excluding containers</li><li>false: Retrieve including containers (default)</li> |
+
+<a id="response"></a>
 
 #### Response
 
@@ -243,6 +261,8 @@ This API does not require a request body.
 
 </details>
 
+<a id="view-template"></a>
+
 ### View Template
 
 Retrieves information of an individual template.
@@ -251,6 +271,8 @@ Retrieves information of an individual template.
 GET /ncs/v1.0/appkeys/{appKey}/templates/{templateId}
 x-nhn-authorization: {token}
 ```
+
+<a id="request-2"></a>
 
 #### Request
 
@@ -261,6 +283,8 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | templateId | URL | String | O | Template ID |
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+
+<a id="response-2"></a>
 
 #### Response
 
@@ -379,6 +403,8 @@ This API does not require a request body.
 
 </details>
 
+<a id="create-template"></a>
+
 ### Create Template
 
 Creates a template.
@@ -489,6 +515,8 @@ x-nhn-authorization: {token}
 ```
 
 </details>
+
+<a id="response-3"></a>
 
 #### Response
 
@@ -604,6 +632,8 @@ x-nhn-authorization: {token}
 
 </details>
 
+<a id="delete-template"></a>
+
 ### Delete Template
 
 Deletes a template.
@@ -612,6 +642,8 @@ Deletes a template.
 DELETE /ncs/v1.0/appkeys/{appKey}/templates/{templateId}
 x-nhn-authorization: {token}
 ```
+
+<a id="request-3"></a>
 
 #### Request
 
@@ -623,9 +655,13 @@ This API does not require a request body.
 | templateId | URL | String | O | Template ID |
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
 
+<a id="response-4"></a>
+
 #### Response
 
 This API only responds with common information.
+
+<a id="view-a-list-of-template-versions"></a>
 
 ### View a list of template versions
 
@@ -633,6 +669,8 @@ This API only responds with common information.
 GET /ncs/v1.0/appkeys/{appKey}/templates/{templateId}/versions
 x-nhn-authorization: {token}
 ```
+
+<a id="request-4"></a>
 
 #### Request
 
@@ -647,6 +685,8 @@ This API does not require a request body.
 | page | Query | Integer | X | Page number to retrieve |
 | size | Query | Integer | X | Page size to retrieve (default: 10) |
 | sort | Query | String | X | Name of the field to sort by<br>Prefix field names with `-`for reverse sorting<br>Example: `sort=-name` |
+
+<a id="response-5"></a>
 
 #### Response
 
@@ -835,6 +875,8 @@ This API does not require a request body.
 
 </details>
 
+<a id="view-template-versions"></a>
+
 ### View template versions
 
 View individual template version information.
@@ -843,6 +885,8 @@ View individual template version information.
 GET /ncs/v1.0/appkeys/{appKey}/templates/{templateId}/versions/{version}
 x-nhn-authorization: {token}
 ```
+
+<a id="request-5"></a>
 
 #### Request
 
@@ -854,6 +898,8 @@ This API does not require a request body.
 | templateId | URL | String | O | Template ID |
 | String | URL | String | O | Template version |
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+
+<a id="response-6"></a>
 
 #### Response
 
@@ -999,6 +1045,8 @@ This API does not require a request body.
 
 </details>
 
+<a id="create-template-version"></a>
+
 ### Create Template Version
 
 Creates a version of the template.
@@ -1108,6 +1156,8 @@ x-nhn-authorization: {token}
 ```
 
 </details>
+
+<a id="response-7"></a>
 
 #### Response
 
@@ -1223,12 +1273,16 @@ x-nhn-authorization: {token}
 
 </details>
 
+<a id="delete-template-version"></a>
+
 ### Delete Template Version
 
 ```bash
 DELETE /ncs/v1.0/appkeys/{appkey}/templates/{templateId}/versions/{version}
 x-nhn-authorization: {token}
 ```
+
+<a id="request-6"></a>
 
 #### Request
 
@@ -1241,11 +1295,17 @@ This API does not require a request body.
 | String | URL | String | O | Template version |
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
 
+<a id="response-8"></a>
+
 #### Response
 
 This API only responds with common information.
 
+<a id="workload"></a>
+
 ## Workload
+
+<a id="list-workloads"></a>
 
 ### List Workloads
 
@@ -1255,6 +1315,8 @@ Retrieves a list of workloads.
 GET /ncs/v1.0/appkeys/{appKey}/workloads
 x-nhn-authorization: {token}
 ```
+
+<a id="request-7"></a>
 
 #### Request
 
@@ -1267,6 +1329,8 @@ This API does not require a request body.
 | q | Query | String | X | Filter by workload name, template ID, and template version<ul>Example:<li>q=templateId=${template ID}</li><li>q=${workload name)</li><li>q=templateId=${Template ID}&version=${Template version}</li></ul> |
 | page | Query | Integer | X | Page number to retrieve |
 | size | Query | Integer | X | Page size to retrieve (default: 10) |
+
+<a id="response-9"></a>
 
 #### Response
 
@@ -1391,6 +1455,8 @@ This API does not require a request body.
 
 </details>
 
+<a id="view-workload"></a>
+
 ### View Workload
 
 Retrieves an individual workload.
@@ -1399,6 +1465,8 @@ Retrieves an individual workload.
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
 x-nhn-authorization: {token}
 ```
+
+<a id="request-8"></a>
 
 #### Request
 
@@ -1409,6 +1477,8 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+
+<a id="response-10"></a>
 
 #### Response
 
@@ -1639,6 +1709,8 @@ This API does not require a request body.
 
 </details>
 
+<a id="view-workload-log"></a>
+
 ### View Workload Log
 
 Retrieves the container logs for your workload.
@@ -1647,6 +1719,8 @@ Retrieves the container logs for your workload.
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/tasks/{taskId}/logs?container={ContainerName}&from={YYYY-MM-DDThh:mm:ssZ}&to={YYYY-MM-DDThh:mm:ssZ}
 x-nhn-authorization: {token}
 ```
+
+<a id="request-9"></a>
 
 #### Request
 
@@ -1663,6 +1737,8 @@ This API does not require a request body.
 | to | Query | String | X | Log end time (default: current time) |
 | page | Query | String | X | Page to search |
 | size | Query | String | X | Page size to view (default: 100) |
+
+<a id="response-11"></a>
 
 #### Response
 
@@ -1697,6 +1773,8 @@ This API does not require a request body.
 
 </details>
 
+<a id="view-workload-event"></a>
+
 ### View Workload Event
 
 Retrieves an workload event.
@@ -1705,6 +1783,8 @@ Retrieves an workload event.
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/tasks/{taskId}/events
 x-nhn-authorization: {token}
 ```
+
+<a id="request-10"></a>
 
 #### Request
 
@@ -1722,6 +1802,8 @@ This API does not require a request body.
 | size | Query | String | X | Page size to retrieve (default: 10) |
 | from | Query | String | X | Start time when the event last occurred (default: 1 hour before the current time) |
 | to | Query | String | X | End time when the event last occurred (default: current time) |
+
+<a id="response-12"></a>
 
 #### Response
 
@@ -1760,6 +1842,8 @@ This API does not require a request body.
 
 </details>
 
+<a id="view-a-list-of-workload-run-history"></a>
+
 ### View a List of Workload Run History
 
 Retrieves a list of workload run history.
@@ -1768,6 +1852,8 @@ Retrieves a list of workload run history.
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/history
 x-nhn-authorization: {token}
 ```
+
+<a id="request-11"></a>
 
 #### Request
 
@@ -1781,6 +1867,8 @@ This API does not require a request body.
 | page | Query | Integer | X | Page number to retrieve |
 | size | Query | Integer | X | Page size to retrieve (default: 10) |
 | sort | Query | String | X | Name of the field to sort by<br>Prefix field names with `-`for reverse sorting<br>Example: `sort=-id` |
+
+<a id="response-13"></a>
 
 #### Response
 
@@ -1822,6 +1910,8 @@ This API does not require a request body.
 
 </details>
 
+<a id="view-workload-run-history"></a>
+
 ### View Workload Run History
 
 Retrieves a run history for an individual workload.
@@ -1830,6 +1920,8 @@ Retrieves a run history for an individual workload.
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/history/{historyId}
 x-nhn-authorization: {token}
 ```
+
+<a id="request-12"></a>
 
 #### Request
 
@@ -1841,6 +1933,8 @@ This API does not require a request body.
 | workloadId | URL | String | O | Workload ID |
 | historyId | URL | Integer | O | History ID |
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+
+<a id="response-14"></a>
 
 #### Response
 
@@ -1998,6 +2092,8 @@ This API does not require a request body.
 
 </details>
 
+<a id="view-workload-scheduled-run-history"></a>
+
 ### View workload scheduled run history
 
 Views the history of a scheduled run.
@@ -2006,6 +2102,8 @@ Views the history of a scheduled run.
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/schedulehistory
 x-nhn-authorization: {token}
 ```
+
+<a id="request-13"></a>
 
 #### Request
 
@@ -2018,6 +2116,8 @@ This API does not require a request body.
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
 | page | Query | Integer | X | Page number to retrieve |
 | size | Query | Integer | X | Page size to retrieve (default: 10) |
+
+<a id="response-15"></a>
 
 #### Response
 
@@ -2053,6 +2153,8 @@ This API does not require a request body.
 
 </details>
 
+<a id="create-workload"></a>
+
 ### Create Workload
 
 Creates a workload.
@@ -2062,6 +2164,8 @@ POST /ncs/v1.0/appkeys/{appKey}/workloads
 Content-Type: application/json
 x-nhn-authorization: {token}
 ```
+
+<a id="request-14"></a>
 
 #### Request
 
@@ -2150,6 +2254,8 @@ x-nhn-authorization: {token}
 ```
 
 </details>
+
+<a id="response-16"></a>
 
 #### Response
 
@@ -2252,6 +2358,8 @@ x-nhn-authorization: {token}
 
 </details>
 
+<a id="change-workload"></a>
+
 ### Change Workload
 
 Changes a workload.
@@ -2261,6 +2369,8 @@ PUT /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
 Content-Type: application/json
 x-nhn-authorization: {token}
 ```
+
+<a id="request-15"></a>
 
 #### Request
 
@@ -2345,6 +2455,8 @@ x-nhn-authorization: {token}
 ```
 
 </details>
+
+<a id="response-17"></a>
 
 #### Response
 
@@ -2453,9 +2565,13 @@ x-nhn-authorization: {token}
 
 </details>
 
+<a id="changing-workload-parts"></a>
+
 ### Changing workload parts
 
 You can only modify a portion of your workload.
+
+<a id="request-16"></a>
 
 #### Request
 
@@ -2491,6 +2607,8 @@ x-nhn-authorization: {token}
 ```
 
 </details>
+
+<a id="response-18"></a>
 
 #### Response
 
@@ -2599,6 +2717,8 @@ x-nhn-authorization: {token}
 
 </details>
 
+<a id="stop-workload"></a>
+
 ### Stop Workload
 Stops the workload.
 
@@ -2606,6 +2726,8 @@ Stops the workload.
 POST /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/pause
 x-nhn-authorization: {token}
 ```
+
+<a id="request-17"></a>
 
 #### Request
 
@@ -2617,8 +2739,12 @@ This API does not require a request body.
 | workloadId | URL | String | O | Template ID |
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
 
+<a id="response-19"></a>
+
 #### Response
 This API only responds with common information.
+
+<a id="restart-workload"></a>
 
 ### Restart Workload
 Restarts a workload that is stopped.
@@ -2627,6 +2753,8 @@ Restarts a workload that is stopped.
 POST /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/resume
 x-nhn-authorization: {token}
 ```
+
+<a id="request-18"></a>
 
 #### Request
 
@@ -2638,8 +2766,12 @@ This API does not require a request body.
 | workloadId | URL | String | O | Workload ID |
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
 
+<a id="response-20"></a>
+
 #### Response
 This API only responds with common information.
+
+<a id="restart-workload-2"></a>
 
 ### Restart Workload
 Restarts the workload job.
@@ -2648,6 +2780,8 @@ Restarts the workload job.
 POST /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/tasks/{taskId}/restart
 x-nhn-authorization: {token}
 ```
+
+<a id="request-19"></a>
 
 #### Request
 
@@ -2660,8 +2794,12 @@ This API does not require a request body.
 | taskId | URL | String | O | Task ID |
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
 
+<a id="response-21"></a>
+
 #### Response
 This API only responds with common information.
+
+<a id="delete-workload"></a>
 
 ### Delete Workload
 
@@ -2671,6 +2809,8 @@ Deletes a workload.
 DELETE /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
 x-nhn-authorization: {token}
 ```
+
+<a id="request-20"></a>
 
 #### Request
 
@@ -2682,9 +2822,13 @@ This API does not require a request body.
 | workloadId | URL | String | O | Workload ID |
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
 
+<a id="response-22"></a>
+
 #### Response
 
 This API only responds with common information.
+
+<a id="view-malware-scan-settings"></a>
 
 ### View Malware Scan Settings
 View the configured malware scan settings.
@@ -2693,6 +2837,8 @@ View the configured malware scan settings.
 GET /ncs/v1.0/appkeys/{appKey}/malware/config
 x-nhn-authorization: {token}
 ```
+
+<a id="request-21"></a>
 
 #### Request
 
@@ -2703,6 +2849,8 @@ This API does ot require a request body.
 | appKey | URL | String | O | Service Appkey |
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
 
+
+<a id="respose"></a>
 
 #### Respose
 
@@ -2725,6 +2873,8 @@ This API does ot require a request body.
 ```
 </details>
 
+<a id="configure-malware-scan"></a>
+
 ### Configure Malware scan
 Configure malware scan.
 
@@ -2732,6 +2882,8 @@ Configure malware scan.
 POST /ncs/v1.0/appkeys/{appKey}/malware/config
 x-nhn-authorization: {token}
 ```
+
+<a id="request-22"></a>
 
 #### Request
 | Name | Type | Format | Required | Description |
@@ -2749,6 +2901,8 @@ x-nhn-authorization: {token}
 }
 ```
 </details>
+
+<a id="response-23"></a>
 
 #### Response
 
@@ -2771,6 +2925,8 @@ x-nhn-authorization: {token}
 ```
 </details>
 
+<a id="view-malware-scan-result"></a>
+
 ### View Malware Scan Result
 
 View malware scan results.
@@ -2779,6 +2935,8 @@ View malware scan results.
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/history/{historyId}/malware
 x-nhn-authorization: {token}
 ```
+
+<a id="request-23"></a>
 
 #### Request
 
@@ -2790,6 +2948,8 @@ This API does not require a request body.
 | token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
 | workloadId | URL | String | O | Workload ID |
 
+
+<a id="response-24"></a>
 
 #### Response
 
@@ -2875,6 +3035,8 @@ This API does not require a request body.
 }
 ```
 </details>
+
+<a id="response-code"></a>
 
 ## Response code
 | resultCode | resultMessage | Description |
