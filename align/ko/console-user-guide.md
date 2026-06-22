@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=e8a68986cbc9 -->
+
 ## Data & Analytics > DataQuery > 콘솔 사용 가이드
 
 DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해야 합니다.
@@ -7,7 +9,11 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
 * 데이터 소스를 반영하기 위한 클러스터 시작
 * 콘솔의 쿼리 편집기 또는 외부 접속 URL로 별도 도구에서 쿼리 실행
 
+<a id="data-source"></a>
+
 ## 데이터 소스
+
+<a id="add-data-source"></a>
 
 ### 데이터 소스 추가
 
@@ -16,6 +22,8 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
     * 접근 제어가 설정된 데이터 소스 연결 시에는 DataQuery IP 고정 기능을 사용해야 합니다.
         * DataQuery IP 고정 기능을 사용하려면 고객지원으로 문의하세요.
 * **데이터 소스 추가**를 클릭합니다.
+
+<a id="data-lake-storage-data-source-type"></a>
 
 ### Data Lake Storage 데이터 소스 유형
 
@@ -38,6 +46,8 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
 
 !!! danger "주의"
     * DataQuery와 연동할 Data Lake Storage가 서로 동일한 리전이 아닐 경우 네트워크 트래픽으로 인한 추가 요금이 발생할 수 있습니다.
+
+<a id="object-storage-data-source-type"></a>
 
 ### Object Storage 데이터 소스 유형
 
@@ -65,6 +75,8 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
 > [주의]
 > DataQuery와 연동할 Object Storage가 서로 동일한 리전이 아닐 경우 네트워크 트래픽으로 인한 추가 요금이 발생할 수 있습니다.
 
+<a id="mysql-data-source-type"></a>
+
 ### MySQL 데이터 소스 유형
 
 * 데이터 소스 이름
@@ -79,6 +91,8 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
 * 비밀번호
     * 접속할 MySQL 비밀번호입니다.
 
+<a id="postgresql-data-source-type"></a>
+
 ### PostgreSQL 데이터 소스 유형
 
 * 데이터 소스 이름
@@ -90,6 +104,8 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
     * 접속할 PostgreSQL 계정명입니다.
 * 비밀번호
     * 접속할 PostgreSQL 비밀번호입니다.
+
+<a id="oracle-data-source-type"></a>
 
 ### Oracle 데이터 소스 유형
 
@@ -107,6 +123,8 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
     * 기본 소수부 자릿수: 전체 유효 자릿수(precision), 소수점 이하 자릿수(scale) 설정이 없는 숫자의 기본 소수부 자릿수를 설정합니다.
     * 숫자 올림/버림: Oracle NUMBER 데이터 타입 올림/버림 정책을 설정합니다.
 
+<a id="edb-data-source-type"></a>
+
 ### EDB 데이터 소스 유형
 
 * 데이터 소스 이름
@@ -118,6 +136,8 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
     * 접속할 EDB 계정명입니다.
 * 비밀번호
     * 접속할 EDB 비밀번호입니다.
+
+<a id="mariadb-data-source-type"></a>
 
 ### MariaDB 데이터 소스 유형
 
@@ -132,6 +152,8 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
     * 접속할 MariaDB 계정명입니다.
 * 비밀번호
     * 접속할 MariaDB 비밀번호입니다.
+
+<a id="iceberg-data-source-type"></a>
 
 ### Iceberg 데이터 소스 유형
 
@@ -148,11 +170,15 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
 > [주의]
 > DataQuery와 연동할 Object Storage가 서로 동일한 리전이 아닐 경우 네트워크 트래픽으로 인한 추가 요금이 발생할 수 있습니다.
 
+<a id="query-editor"></a>
+
 ## 쿼리 편집기
 
 * 쿼리 편집기는 클러스터 영역, 스키마 영역, 저장된 쿼리 영역, 편집기 영역, 결과/콘솔 실행 영역으로 구분됩니다.
 
 <img src="https://static.toastoven.net/prod_dataquery/console-user-guide/2026-03/ko/dataquery_console_01.png" alt="쿼리 편집기 화면"/>
+
+<a id="cluster-area"></a>
 
 ### 1. 클러스터 영역
 
@@ -163,12 +189,16 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
 * DataQuery 클러스터는 모든 데이터 소스를 반영하며, 개별적으로 데이터 소스를 적용할 수 없습니다.
 * 지속적으로 클러스터 **켜기** 또는 **끄기**에 실패할 경우, 고객지원으로 문의하세요.
 
+<a id="schema-area"></a>
+
 ### 2. 스키마 영역
 
 * 연결 설정된 데이터 소스와 해당 소스에서 제공하는 실제 DB, 테이블, 칼럼 정보를 확인할 수 있습니다.
     * information\_schema는 데이터 소스와의 연결 정보를 가지고 있는 DB로 사용자가 임의로 데이터를 조작할 수 없습니다.
 * 각 항목의 새로 고침 아이콘을 클릭해 데이터 소스, 스키마, 테이블, 칼럼 정보를 새롭게 가져올 수 있습니다.
     * 단, 상위 스키마를 새로 고침하더라도 하위 정보는 새로 불러오지 않습니다. 테이블을 새로 고침할 경우 테이블 목록만 새로 가져오고 각 테이블의 칼럼 정보는 업데이트되지 않습니다.
+
+<a id="saved-query-area"></a>
 
 ### 3. 저장된 쿼리 영역
 
@@ -177,12 +207,16 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
 * **새 탭 열기**를 클릭해 새로운 쿼리 편집기 영역에 저장된 쿼리를 불러올 수 있습니다.
 * **쿼리 복사**를 클릭해 클립보드에 저장된 쿼리를 복사할 수 있습니다.
 
+<a id="editor-area"></a>
+
 ### 4. 편집기 영역
 
 * **\+ 쿼리 추가**를 클릭해 쿼리 편집기를 최대 10개까지 생성할 수 있습니다.
 * **실행**을 클릭하거나 **Ctrl+Enter**를 입력하여 쿼리를 실행할 수 있으며, 편집기 하단에서 실행 중인 쿼리의 진행 상태와 실패 시 원인 로그를 확인할 수 있습니다.
 * **쿼리 저장**을 클릭해 사용자가 자주 사용하는 쿼리를 저장할 수 있습니다.
 * 쿼리 작성 시 수집된 데이터 소스, 스키마, 테이블, 칼럼명의 자동 완성을 지원합니다.
+
+<a id="sql-guide"></a>
 
 #### SQL 가이드
 
@@ -201,6 +235,8 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
     * [키워드, 데이터 타입](https://trino.io/docs/476/language.html)
     * [Trino 쿼리](https://trino.io/docs/476/sql.html)
     * [내장 함수](https://trino.io/docs/476/functions.html)
+
+<a id="resultsconsole-execution-query-area"></a>
 
 ### 5. 결과/콘솔 실행 쿼리 영역
 
@@ -221,6 +257,8 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
 
 * 클러스터의 상태 지표를 확인할 수 있습니다.
 
+<a id="query-history"></a>
+
 ## 쿼리 이력
 
 * 실행한 쿼리 정보를 **쿼리 이력** 화면에서 확인할 수 있습니다.
@@ -230,7 +268,11 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
 
 <img src="https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_dataquery/dataquery_console_03_ko.png" alt="쿼리 이력 화면"/>
 
+<a id="settings"></a>
+
 ## 설정
+
+<a id="cluster-settings"></a>
 
 ### 클러스터 설정
 * 클러스터에 설정된 인스턴스 타입과 노드 수를 확인할 수 있습니다.
@@ -238,6 +280,8 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
 * 인스턴스 타입과 워커 수를 변경할 수 있습니다.
     * 워커 수는 최소 1개에서 최대 5개까지 설정할 수 있습니다.
     * 설정은 클러스터가 꺼진 상태(OFF)에서만 수정할 수 있습니다.
+
+<a id="external-integration"></a>
 
 ### 외부 연동
 * 외부 도구(JDBC, CLI, BI 솔루션 등)와 연동하도록 Trino 엔드포인트를 제공하며 **설정** 페이지에서 제공하는 정보를 이용하여 연동할 수 있습니다.
@@ -247,13 +291,19 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
     * 발급/재발급된 인증 키는 발급하고 5분이 지난 뒤부터 사용할 수 있습니다.
 * 인증 정보가 발급되었다면 Trino 엔드포인트 접속 정보가 화면 하단에 활성화됩니다.
 
+<a id="disable-object-storage-integration-for-storing-query-history"></a>
+
 ### 쿼리 이력 저장을 위한 Object Storage 연동 비활성화 안내 이메일
 
 * 쿼리 이력 저장을 위한 Object Storage 인증이 만료되어 연동이 비활성화되었을 때 알림 메일을 수신할 수 있습니다.
 * 기본 수신 대상
     * 사용 중인 DataQuery 서비스가 활성화된 프로젝트의 DataQuery ADMIN 역할을 가진 멤버
 
+<a id="data-source-detailed-guide"></a>
+
 ## 데이터 소스 상세 가이드
+
+<a id="run-object-storage-data-source-query"></a>
 
 ### Object Storage 데이터 소스 쿼리 실행
 
@@ -264,6 +314,8 @@ DataQuery 서비스를 사용하려면 반드시 데이터 소스를 추가해�
 * Object Storage 데이터 소스는 default라는 이름의 기본 스키마를 제공하며, 해당 스키마에서 작업할 수 있습니다.
 > [참고]
 > Object Storage 쿼리에 사용하는 Hive의 성능 향상이 필요한 경우 고객지원으로 문의하세요.
+
+<a id="additional-grammar-to-operate-hive-feature"></a>
 
 #### Hive 기능 동작을 위한 부가적인 문법
 
@@ -339,6 +391,8 @@ system.register_partition(schema_name, table_name, partition_columns, partition_
     * DELETE, UPDATE는 파티션 데이터에 대해서만 제한적으로 수행할 수 있습니다.
         * [상세 정보](https://trino.io/docs/476/connector/hive.html#data-management)
 
+<a id="external-table-query-utilization-tutorial"></a>
+
 #### 외부 테이블 쿼리 이용 튜토리얼
 
 1. 샘플 CSV 파일을 [다운로드](https://static.toastoven.net/prod_dataquery/files/facility-boundary-us-all.csv)하여 Object Storage에 업로드합니다.
@@ -389,6 +443,8 @@ SELECT * FROM corona_facility_us
 
 8. 총 10건의 데이터가 정상적으로 나오는지 확인합니다.
 
+<a id="execute-mysql-data-source-query"></a>
+
 ### MySQL 데이터 소스 쿼리 실행
 
 * MySQL 데이터 소스 쿼리는 Trino-MySQL을 기반으로 수행됩니다.
@@ -404,6 +460,8 @@ SELECT * FROM corona_facility_us
         * 산술 표현식, 함수 호출 및 상수가 아닌 값으로의 UPDATE문은 지원되지 않습니다.
         * 테이블의 모든 칼럼을 동시에 업데이트할 수 없습니다.
         * [상세 정보](https://trino.io/docs/476/connector/mysql.html#update-limitation)
+
+<a id="execute-postgresql-data-source-query"></a>
 
 ### PostgreSQL 데이터 소스 쿼리 실행
 
@@ -422,6 +480,8 @@ SELECT * FROM corona_facility_us
         * 테이블의 모든 칼럼을 동시에 업데이트할 수 없습니다.
         * [상세 정보](https://trino.io/docs/476/connector/postgresql.html#update-limitation)
 
+<a id="execute-oracle-data-source-query"></a>
+
 ### Oracle 데이터 소스 쿼리 실행
 
 * Oracle 데이터 소스 쿼리는 Trino-Oracle을 기반으로 수행됩니다.
@@ -437,6 +497,8 @@ SELECT * FROM corona_facility_us
         * 산술 표현식, 함수 호출 및 상수가 아닌 값으로의 UPDATE문은 지원되지 않습니다.
         * 테이블의 모든 칼럼을 동시에 업데이트할 수 없습니다.
         * [상세 정보](https://trino.io/docs/476/connector/oracle.html#update-limitation)
+
+<a id="execute-edb-data-source-query"></a>
 
 ### EDB 데이터 소스 쿼리 실행
 
@@ -455,6 +517,8 @@ SELECT * FROM corona_facility_us
         * 테이블의 모든 칼럼을 동시에 업데이트할 수 없습니다.
         * [상세 정보](https://trino.io/docs/476/connector/postgresql.html#update-limitation)
 
+<a id="execute-mariadb-data-source-query"></a>
+
 ### MariaDB 데이터 소스 쿼리 실행
 
 * MariaDB 데이터 소스 쿼리는 Trino-MariaDB를 기반으로 수행됩니다.
@@ -471,12 +535,16 @@ SELECT * FROM corona_facility_us
         * 테이블의 모든 칼럼을 동시에 업데이트할 수 없습니다.
         * [상세 정보](https://trino.io/docs/476/connector/mariadb.html#update-limitation)
 
+<a id="run-iceberg-data-source-queries"></a>
+
 ### Iceberg 데이터 소스 쿼리 실행
 
 * Iceberg 데이터 소스 쿼리는 Trino-Iceberg를 기반으로 수행됩니다.
 * Object Storage에 존재하는 Iceberg 테이블 데이터 및 지원하는 포맷의 데이터를 연동할 수 있습니다.
     * PARQUET(기본 포맷), ORC, AVRO 타입의 데이터를 지원합니다.
 * Object Storage 접근을 위해 S3 호환 레이어를 사용하며, 스키마 또는 테이블의 데이터 경로 지정 시 s3a 프로토콜을 사용해야 합니다(예: s3a://example/test).
+
+<a id="schema"></a>
 
 #### 스키마
 
@@ -489,6 +557,8 @@ CREATE SCHEMA example_schema;
 CREATE SCHEMA example_schema
 WITH (location = 's3a://my-bucket/example_schema/');
 ```
+
+<a id="tables"></a>
 
 #### 테이블
 
@@ -518,6 +588,8 @@ WITH (
 | sorted\_by | 개별 데이터 파일 저장 시 지정한 칼럼의 값으로 정렬하여 저장합니다. |
 | location | 테이블의 Object Storage 경로를 지정합니다.<br>속성을 설정하지 않을 경우 기본 경로 하위의 스키마 경로에 저장됩니다. |
 
+<a id="partitions"></a>
+
 #### 파티션
 
 * 테이블 속성을 통해 테이블 데이터가 분할 저장된 구조의 분할된(파티션된) 테이블을 만들 수 있습니다.
@@ -532,6 +604,8 @@ WITH (
 | month(ts) | DATE, TIMESTAMP | 월별 |
 | day(ts) | DATE, TIMESTAMP | 일별 |
 | hour(ts) | TIMESTAMP | 시간별 |
+
+<a id="metadata-table"></a>
 
 #### 메타데이터 테이블
 
@@ -553,6 +627,8 @@ WITH (
 -- 테이블 속성 조회
 SELECT * FROM "test_table$properties"
 ```
+
+<a id="data-management"></a>
 
 #### 데이터 관리
 
@@ -598,6 +674,8 @@ ALTER TABLE test_table EXECUTE expire_snapshots(retention_threshold => '7d')
 ALTER TABLE test_table EXECUTE remove_orphan_files(retention_threshold => '7d')
 ```
 
+<a id="iceberg-type-information"></a>
+
 #### Iceberg 타입 매핑 정보
 
 * Iceberg 타입은 DataQuery에서 처리할 수 있는 타입으로 아래와 같이 매핑됩니다.
@@ -620,6 +698,8 @@ ALTER TABLE test_table EXECUTE remove_orphan_files(retention_threshold => '7d')
 | ROW(...) | STRUCT(...) |
 | ARRAY(e) | LIST(e) |
 | MAP(k,v) | MAP(k,v) |
+
+<a id="add-parquet-files-that-exist-in-object-storage-to-the-iceberg-table"></a>
 
 #### Object Storage에 존재하는 Parquet 파일을 Iceberg 테이블에 추가
 * 특정 파일 혹은 특정 경로 하위의 파일들을 Iceberg 테이블에 데이터로 추가할 수 있습니다.
@@ -654,11 +734,15 @@ EXECUTE add_files(location => 's3://my-bucket/a/path', format => 'PARQUET', recu
 ALTER TABLE example.system.example_table
 EXECUTE add_files_with_partition(location => 's3://my-bucket/a/path', partition_columns => ARRAY['year'], partition_values => ARRAY['2024-11-21'], format => 'PARQUET', recursive_directory => 'TRUE', duplicate_file => 'FAIL')
 ```
+<a id="cautions-and-constraints"></a>
+
 #### 주의 및 제약 사항
 
 * 동일 경로에 Iceberg 테이블을 중복해서 생성할 수 없습니다.
 * 칼럼을 변환하여 파티션을 구성할 때, 동일한 칼럼을 사용할 수 없습니다.
     * 예: 하나의 DATE 타입을 가지는 칼럼으로 year, month 두 개의 파티션을 설정할 수 없습니다.
+
+<a id="faq"></a>
 
 #### FAQ
 
@@ -670,7 +754,11 @@ EXECUTE add_files_with_partition(location => 's3://my-bucket/a/path', partition_
     * add_files, add_files_with_partition 프로시저를 사용하여 데이터를 추가할 수 있습니다.
 
 
+<a id="external-integration-2"></a>
+
 ## 외부 연동
+<a id="trino-cli"></a>
+
 ### Trino CLI
 
 * 설정 메뉴에서 발급받은 인증 정보, 접속 정보와 Trino에서 지원하는 CLI 도구로 커맨드라인에서 쿼리를 실행할 수 있습니다.
@@ -705,6 +793,8 @@ EXECUTE add_files_with_partition(location => 's3://my-bucket/a/path', partition_
     * show schemas
 * 더 자세한 정보는 [Trino 가이드 페이지](https://trino.io/docs/476/client/cli.html)를 참고하세요.
 
+<a id="connect-to-jdbc"></a>
+
 ### JDBC 연결
 
 * **설정** 메뉴에서 발급받은 인증 정보, 접속 정보와 Trino에서 지원하는 JDBC 드라이버를 이용해 JDBC에 연결할 수 있습니다.
@@ -727,6 +817,8 @@ jdbc:trino://${host}:${port}/${catalog}/${schema}
 * 접속 정보 예시
     * jdbc:trino://test-dataquery-domain-12345abcd.kr1-cluster-dataquery.nhncloudservice.com:443/catalog/schema
 * 더 자세한 정보는 [Trino JDBC 가이드 페이지](https://trino.io/docs/476/client/jdbc.html)를 참고하세요.
+
+<a id="cloud-scheduler-connection"></a>
 
 ### Cloud Scheduler 연결
 
