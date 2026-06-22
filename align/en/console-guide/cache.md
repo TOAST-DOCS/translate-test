@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=63565fc6e53b -->
+
 ## Cache
 
 **Database > EasyCache > Console User Guide > Cache**
@@ -18,6 +20,8 @@ The types of caches provided are as follows:
 | Single node cache | A cache of one master node |
 | High-availability cache | A cache of one master node and one or more read replica nodes |
 
+<a id="node"></a>
+
 ### Node
 
 A node is a basic resource unit that actually refers to the engine (Valkey and old Redis) and the virtual machine on which the engine is installed.
@@ -34,9 +38,13 @@ The types of nodes provided are as follows:
 | Read replica node (if in a different region than the master node) | A read-only replica node that serves read only, but does not perform failover in the event of a failure. |
 | High-availability Control Node | A separate node for controlling high availability, including the master node and read replica nodes, which are automatically created when you add one or more read replica nodes. |
 
+<a id="create-cache"></a>
+
 ### Create Cache
 
 You can create a cache by using the settings below:
+
+<a id="availability-zone"></a>
 
 #### Availability Zone
 
@@ -44,6 +52,8 @@ NHN Cloud has divided its entire system into multiple availability zones to prep
 
 !!! danger "warning"
     The availability zone of master nodes already created can be changed.
+
+<a id="engine-version"></a>
 
 #### Engine Version
 
@@ -68,6 +78,8 @@ The versions listed below are available:
 !!! tip "notice"
     Newly created caches no longer provide Redis, and we only serve caches that are already using Redis.
 
+<a id="instance-flavor"></a>
+
 #### Instance Flavor
 
 Instances have different numbers of CPU cores and memory capacities depending on their flavors.
@@ -83,15 +95,21 @@ When creating an instance, you must select the appropriate instance flavor based
 !!! danger "warning"
     The instance flavor of caches and nodes already created can be changed. It is not currently available as an official feature, please contact the customer center if necessary.
 
+<a id="max-memory-mb"></a>
+
 #### Max Memory (MB)
 
 You can specify Max Memory used by Valkey to avoid running out of memory when running a sync or backup.
 When needed, cache modifications allow you to flexibly secure the capacity of memory.
 
+<a id="use-password"></a>
+
 #### Use Password
 
 If you choose to use a password, automatically create a string and specify a password.
 After the cache is completed, you can check it in the cache basic information or node basic information.
+
+<a id="network"></a>
 
 #### Network
 
@@ -100,19 +118,27 @@ You need to select the VPC subnet to connect to the node you belong to in the ca
 !!! danger "warning"
     The subnets of caches and nodes already created can be changed.
 
+<a id="floating-ip"></a>
+
 #### Floating IP
 
 To access the node from the outside, the floating IP must be connected to the master node. You can create a floating IP only if you connect the subnet connected with the Internet Gateway. Floating IP is charged at the same time as it is used, and separately, if traffic in the Internet direction through floating IP is generated, it will be charged separately.
 If you are using the floating IP, the floating IP domain for the floating IP is created together and can be found in the cache default information and the basic information of the master node.
 
+<a id="parameter-group"></a>
+
 #### Parameter Group
 
 The parameter group is a set of parameters on the VALKEY of the nodes in the cache. When creating a cache, you must choose one parameter group. Parameter groups can be changed freely after creation. For more information about the parameter group, please refer to the **@parameter group ** item.
+
+<a id="db-security-group"></a>
 
 #### DB Security Group
 
 DB security groups are used to restrict access in case of external intrusion. You can allow access to a specific port range or specified port for transmission and receiving traffic.
 You can apply multiple DB security groups at once, and please refer to the **@DB security group ** section for a detailed description of the DB security group.
+
+<a id="tls-authentication"></a>
 
 #### TLS Authentication
 
@@ -126,9 +152,13 @@ NHN Cloud's **@Certificate Manager ** You can select one of the certificates sto
 !!! danger "warning"
     If you decide whether to use the TLS certificate at the time of the creation of a replica group, you will not be able to change it later.
 
+<a id="backup"></a>
+
 #### Backup
 
 You can set the value of the cache periodically, or you can create a backup at the time you want through the console. The backup is carried out in the master, and the performance may occur during the performance. It is recommended to back up at a time when the service load is low in order not to affect the service. The backup file is stored in the internal backup storage and is charged according to the backup capacity. In order to prepare for unexpected failure, it is recommended to set up a backup periodically. For more information about the backup, please refer to the **@backup ** item.
+
+<a id="default-notifications"></a>
 
 #### Default Notifications
 
@@ -144,9 +174,13 @@ The monitoring settings for the default notification group are as follows:
 | No. of blocked clients | > | 1 | 10 min |
 | No. of deleted keys | > | 1 | 10 min |
 
+<a id="deletion-protection"></a>
+
 #### Deletion Protection
 
 If you activate deletion protection, you can protect the cache from accidental deletion.
+
+<a id="cache-and-node-list"></a>
 
 ### Cache and node list
 
@@ -173,6 +207,8 @@ The state of the cache and nodes consists of the following values, which change 
 | PLANNED\_MIGRATION\_FAILED | Failed to migrate |
 | SHUTDOWN | Stopped |
 
+<a id="cache-and-node-details"></a>
+
 ### Cache and node details
 
 You can view the details by selecting the cache and node.
@@ -185,6 +221,8 @@ You can view the details by selecting the cache and node.
 ➍: You can adjust the height of the details panel by dragging and dropping with the mouse.
 ➎: You can adjust the details panel to a predefined height.
 
+<a id="access-information"></a>
+
 #### Access Information
 
 When creating a cache, an access domain is issued. The access domain points to an IP address belonging to the user's VPC subnet. For a high-availability cache, if a failover occurs and one of the read replicas changes to the new master, the access domain does not change. Therefore, unless there is a special reason, the application's access information must use the connection domain.
@@ -195,17 +233,23 @@ If you have read replica nodes, you can set up a read-only domain by modifying t
 
 ![cache3.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache3.PNG)
 
+<a id="event-cache"></a>
+
 #### Event (cache)
 
 Events triggered by the selected cache are displayed in chronological order, and you can view them by specifying the period you want.
 
 ![cache4.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache4.PNG)
 
+<a id="backup-2"></a>
+
 #### Backup
 
 A list of backups created by the selected cache will be displayed, and you can create a backup by clicking **Create Backup**.
 
 ![cache5.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache5.PNG)
+
+<a id="domain"></a>
 
 #### Domain
 
@@ -217,11 +261,15 @@ The cache shows all domain information, but the node basic information shows dif
 | Read replica node | Read-only domain |
 | High-availability Control Node | None |
 
+<a id="os-version"></a>
+
 #### OS Version
 
 The selected node shows the OS version in working.
 
 ![cache6.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache6.PNG)
+
+<a id="monitoring"></a>
 
 #### Monitoring
 
@@ -229,17 +277,23 @@ Shows various monitoring indicators of the selected node.
 
 ![cache7.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache7.PNG)
 
+<a id="event-node"></a>
+
 #### Event (node)
 
 Events triggered by the selected node are displayed in chronological order, and you can view them by specifying the period you want.
 
 ![cache8.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache8.PNG)
 
+<a id="log"></a>
+
 #### Log
 
 The **Logs** tab of a node allows you to view Valkey's logs for a specified period of time. Click the **View in New Tab** to view the log in a new tab with a wider screen.
 
 ![cache9.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache9.PNG)
+
+<a id="user"></a>
 
 #### User
 
@@ -253,6 +307,8 @@ The Users tab of a node allows you to create, view, edit, and delete users in Va
 !!! danger "warning"
     * User settings are information set per node and are not propagated to other nodes belonging to the same cache. Therefore, if you have different user settings for each node, failover may not proceed properly, so be careful.
     * Please note that user information created on the node may be lost due to reasons such as cache restart before being saved to the configuration file.
+
+<a id="modify-cache"></a>
 
 ### Modify Cache
 
@@ -284,6 +340,8 @@ You can easily change various items of the selected cache by checking the checkb
 | Basic notification | Yes | No |  |
 | Deletion protection | Yes | No |  |
 
+<a id="modify-engine-version"></a>
+
 #### Modify Engine Version
 
 You can upgrade the cache by upgrading to a higher engine version than the current one.
@@ -297,6 +355,8 @@ If the cache only contains one master node, the engine version upgrade will occu
 !!! tip "Note"
     * Redis versions prior to 7.0.7 can be upgraded to 7.0.7 before being upgraded to the next version.
     * Redis versions 7.0.7 or later provide upgrades to the latest version.
+
+<a id="modify-node"></a>
 
 ### Modify Node
 
@@ -312,12 +372,16 @@ You can change some items of the selected node by selecting the checkbox of the 
 | Instance flavor | No | | Currently not supported. (to be supported) |
 | Operating system version | Yes | Yes | Only the latest version can be updated. |
 
+<a id="modify-os-version"></a>
+
 #### Modify OS Version
 
 Node OS version upgrades are supported. OS upgrades can address security vulnerabilities or address OS end-of-life (EOL) events.
 Operating an OS version requires caution, as it may result in service interruption in some cases.
 For the master node, if there are read replicas, the OS version upgrade cannot be performed. The OS version upgrade must be performed first on the read replica nodes and the high-availability control node, then the existing master node must be converted to a read replica using the Change Master feature before proceeding with the OS version upgrade.
 If there are no other nodes besides the master node, the OS version upgrade can be performed on the master node, but service interruption will inevitably occur.
+
+<a id="import-data"></a>
 
 ### Import Data
 
@@ -330,6 +394,8 @@ Enter your tenant ID, API password, and the data file path in the format {contai
     * Nodes will be unavailable during data import, and existing data will be deleted, so we recommend creating a manual backup before importing.
     * Only RDB files compatible with the engine version can be imported.
 
+<a id="export-data"></a>
+
 ### Export Data
 
 ![cache13.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache13.PNG)
@@ -337,6 +403,8 @@ You can export data from the cache you want to **@Object Storage** in the same r
 
 !!! tip "Note"
     An RDB file is created in Object Storage at the path entered by the user, with the data name prefix value entered and a random string concatenated.
+
+<a id="add-node"></a>
 
 ### Add Node
 
@@ -349,6 +417,8 @@ Once the node is added, the cache type changes to a high-availability cache. If 
 !!! danger "Warning"
     Read replicas created in other regions will not fail over if the master node fails.
 
+<a id="remove-replication-connection-and-forced-replication-connection"></a>
+
 ### Remove Replication Connection and Forced Replication Connection
 
 ![cache15.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache15.PNG)
@@ -359,6 +429,8 @@ Using the Remove Replication Connection function removes the replication connect
     * Performing a forced replication connection removal may result in inconsistencies with the source region's cache and master node configuration information, as this involves forcing a replication connection operation. Therefore, it is recommended only for special cases, such as a failure in the source region.
 * Read replicas in the same region as the master do not support the replication connection removal feature. (to be supported)
 
+<a id="delete-node"></a>
+
 ### Delete Node
 
 ![cache16.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache16.PNG)
@@ -366,26 +438,36 @@ You can delete a read replica node by selecting the checkbox for the node belong
 The master node and high-availability control node cannot be deleted by design.
 After the selected read replica node is deleted, if there are no more read replica nodes remaining in the same region as the master node, the high-availability control node will also be deleted.
 
+<a id="change-master"></a>
+
 ### Change Master
 
 ![cache17.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache17.PNG)
 You can change the master by selecting the checkbox for the high-availability cache you want on the console screen and using the Change Master function.
 When the existing master node is converted to a read replica, one of the read replica nodes located in the same region as the master node becomes the new master.
 
+<a id="stop-cache"></a>
+
 ### Stop Cache
 
 ![cache18.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache18.PNG)
 You can stop any running cache you want. If it's a high-availability cache, all nodes in the cache will be stopped.
+
+<a id="start-cache"></a>
 
 ### Start Cache
 
 ![cache19.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache19.PNG)
 You can restart any stopped cache you want. If it's a high-availability cache, restart all nodes belonging to the cache.
 
+<a id="restart-cache"></a>
+
 ### Restart Cache
 
 ![cache20.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache20.PNG)
 You can restart any cache you want from the console screen. If it's a high-availability cache, all nodes in the cache will restart.
+
+<a id="apply-parameter-group-changes"></a>
 
 ### Apply Parameter Group Changes
 
@@ -395,10 +477,14 @@ If you modify a parameter group that is already in use by a cache in the **Param
 !!! danger "Warning"
     When applying parameter group changes, be careful as a restart may occur depending on the changed parameter items in that parameter group.
 
+<a id="reset-high-availability"></a>
+
 ### Reset High Availability
 
 ![cache22.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache22.PNG)
 If the cache's high availability status is abnormal, the cache status will be displayed as **Abnormal**, and a **Reset High Availability** button will be displayed in the cache list for your use. Restting high availability reset will rewrite high availability-related settings or recreate high availability nodes.
+
+<a id="migration"></a>
 
 ### Migration
 
@@ -408,17 +494,25 @@ The migration function requires caution, as it may cause service interruption in
 !!! tip "Note"
     For master nodes, if there are read replicas, the button will be visible but disabled and cannot be migrated. Migration must be performed first on the read replica nodes and the high-availability control node, then the existing master node must be converted to a read replica using the Change Master feature before migration can proceed.
 
+<a id="delete-cache"></a>
+
 ### Delete Cache
 
 You can delete caches that are no longer in use at any time. Deleting a cache will also delete all nodes belonging to the cache. Deleted caches and nodes cannot be recovered, so we recommend enabling deletion protection for important caches.
+
+<a id="backup-3"></a>
 
 ### Backup
 
 You can prepare in advance to recover cache data in case of a failure. You can perform backups from the console whenever needed, or schedule backups to be performed periodically. For more information, see the **@Backup** section.
 
+<a id="restoration"></a>
+
 ### Restoration
 
 You can restore data using a backup. When restoring, you can choose to restore to an existing cache or a new cache. For details, see **@Restore** in **@Backup**.
+
+<a id="high-availability-cache"></a>
 
 ### High-availability Cache
 
@@ -427,10 +521,14 @@ EasyCache's cache automatically creates a high-availability control node when yo
 !!! danger "Warning"
     Because the nodes that make up a high-availability cache do not share user settings, changes to user settings on one node will not propagate to other nodes in the cache. Therefore, if user settings differ across nodes, failover may not proceed properly, so caution is advised.
 
+<a id="failure-detection"></a>
+
 #### Failure Detection
 
 ![cache24.PNG](https://static.toastoven.net/prod_easycache/25.09.27/cache24.PNG)
 All nodes in the same region as the master node detect the master node and, based on the master down after entered when adding a read replica node, determine whether communication has failed and initiate failover. Therefore, it is important to set a master down after appropriate for cache usage.
+
+<a id="auto-failover"></a>
 
 #### Auto Failover
 
@@ -441,6 +539,8 @@ The IP information of connection domain and read-only domain for connection are 
     * Failover is only supported for nodes within the same region as the master node. Automatic failover is not supported if read replicas are only added in different regions.
     * We recommend clicking the Update Read-Only Domain button only after the failure is fully resolved to ensure the IP information is updated based on the final status of the read-only nodes.
     * Unlike an actual failover, the read-only domain IP information is automatically updated when IP changes occur through manual master changes or other administrative functions.
+
+<a id="remove-forced-replication-connection"></a>
 
 #### Remove Forced Replication Connection
 
