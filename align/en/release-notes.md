@@ -1,21 +1,37 @@
+<!-- pre-align:aligned sig=3c0d679915db -->
+
 ## EasyCache Release Notes
 **Database > EasyCache > Release Notes**
 
+<a id="may-27-2026"></a>
+
 ### May 27, 2026
+
+<a id="feature-updates"></a>
 
 #### Feature Updates
 - Added support for Valkey 9.0.3.
 
+<a id="bug-fixes"></a>
+
 #### Bug Fixes
 - Removed the exposure of the unnecessary parameter `dynamic-hz` for Valkey 8.1.4 and later.
 
+<a id="march-24-2026"></a>
+
 ### March 24, 2026
+
+<a id="feature-updates-2"></a>
 
 #### Feature Updates
 - Added support for Valkey 8.1.6.
 - Added a feature to check and synchronize differences in redis.conf settings between parameter groups and nodes in the console.
 
+<a id="january-27-2026"></a>
+
 ### January 27, 2026
+
+<a id="feature-updates-3"></a>
 
 #### Feature Updates
 - Modified the console to display a button for updating the IP of the read-only domain after a failover is completed.
@@ -23,17 +39,25 @@
 - Updated some event lists included in the user guide to reflect the current status.
 - Updated the names of some parameters for Valkey 8.x and later versions to the latest version.
 
+<a id="bug-fixes-2"></a>
+
 #### Bug Fixes
 - Fixed an issue where an error occurred when the RDB filename used for data import contained a specific string.
 - Fixed the multilingual display of header items in the CSV file downloadable from the event screen.
 
+<a id="november-15-2025"></a>
+
 ### November 15, 2025
+
+<a id="feature-updates-4"></a>
 
 #### Feature Updates
 
 - Added support for Valkey 8.1.4
 - Improved texts in the guide for some parameters
 - Made improvements so that the list from Event Subscription > Event Code is sorted by "Start", "Completed", and "Failed".
+
+<a id="bug-fixes-3"></a>
 
 #### Bug Fixes
 
@@ -43,62 +67,114 @@
 - Fixed a bug where an error message was displayed in the Monitoring/User tabs of other region nodes.
 - Fixed a bug where other region nodes were displayed in the Server Dashboard tab.
 
+<a id="september-23-2025"></a>
+
 ### September 23, 2025
+
+<a id="feature-updates-5"></a>
 
 #### Feature Updates
 - Fixed an issue where a "Could not find the tenant resource" error message was displayed for a short time immediately after service activation
 - Fixed an issue where emails were not sent when restarting EasyCache for hypervisor maintenance
 - Fixed an issue where restarting EasyCache for hypervisor maintenance failed under certain conditions
 
+<a id="section-1"></a>
+
+### July 29, 2025
+
+<!-- TODO: translate body -->
+
+<a id="section-1-1"></a>
+
+#### Bug Fixes
+
+<!-- TODO: translate body -->
+
+<a id="april-29-2025"></a>
+
 ### April 29, 2025
+
+<a id="added-features"></a>
 
 #### Added Features
 - Added support for Valkey 8.0.2
 
+<a id="features-updates"></a>
+
 #### Features Updates
 - Terminated the feature to create new replication groups in Redis versions
+
+<a id="bug-fixes-4"></a>
 
 #### Bug Fixes
 - Fixed non-replication group nodes being exposed in the target replication group on the Notification tab
 - Fixed intermittent abnormal error message exposure immediately after service activation
 - Fixed an issue that caused replication group creation to fail in regions other than KR1 for a period of time after service activation
 
+<a id="february-25-2025"></a>
+
 ### February 25, 2025
+
+<a id="added-features-2"></a>
 
 #### Added Features
 - Added the Redis ACL feature
 
+<a id="bug-fixes-5"></a>
+
 #### Bug Fixes
 - Fixed incorrect button names on some screens
 
+<a id="january-21-2025"></a>
+
 ### January 21, 2025
+
+<a id="added-features-3"></a>
 
 #### Added Features
 - Added support for Redis 7.2.6
+
+<a id="bug-fixes-6"></a>
 
 #### Bug Fixes
 - Fixed an issue where an incorrect OS version upgrade success message are displayed
 - Fixed an issue where the Modify button is not enabled when only changing the user group name
 
+<a id="november-26-2024"></a>
+
 ### November 26, 2024
+
+<a id="feature-updates-6"></a>
 
 #### Feature Updates
 - Improved display string and sorting for user group creation and modification dates
 
+<a id="bug-fixes-7"></a>
+
 #### Bug Fixes
 - Fixed an issue where metric conditions are not modified
 
+<a id="october-15-2024"></a>
+
 ### October 15, 2024
+
+<a id="feature-updates-7"></a>
 
 #### Feature Updates
 - Added a notification to remind users to select either email or SMS when creating notification groups
+
+<a id="bug-fixes-8"></a>
 
 #### Bug Fixes
 - Fixed a status phrase that appears when performing engine version upgrades
 - Fixed an announcement phrase that appears immediately after requesting engine version upgrades
 - Fixed an issue where some event phrases are not displayed in English and Japanese in the console
 
+<a id="august-27-2024"></a>
+
 ### August 27, 2024
+
+<a id="added-features-4"></a>
 
 #### Added Features
 
@@ -106,33 +182,53 @@
 * Added the OS version upgrade feature
 * Added the feature to record event logs when notifications are sent
 
+<a id="feature-updates-8"></a>
+
 #### Feature Updates
 
 * Changed the default OS to Ubuntu
 
+<a id="may-14-2024"></a>
+
 ### May 14, 2024
+
+<a id="bug-fixes-9"></a>
 
 #### Bug Fixes
 
 * Fixed an issue where, when selecting a certificate, the certificate list cannot be extended above a certain height
   
+<a id="april-9-2024"></a>
+
 ### April 9, 2024
+
+<a id="bug-fixes-10"></a>
 
 #### Bug Fixes
 
 * Fixed an issue where abnormal replication group loading status lasts infinitely
 
+<a id="march-12-2024"></a>
+
 ### March 12, 2024
+
+<a id="feature-updates-9"></a>
 
 #### Feature Updates
 
 * Added support for Redis 7.2.4
 
+<a id="february-22-2024"></a>
+
 ### February 22, 2024
+
+<a id="feature-updates-10"></a>
 
 #### Feature Updates
 
 * Replaced internal library
+
+<a id="bug-fixes-11"></a>
 
 #### Bug Fixes
 
@@ -141,101 +237,173 @@
 - Fixed aexcessive alarm occurrence
 - Fixed master down judgment time error that occurred under certain conditions
 
+<a id="december-19-2023"></a>
+
 ### December 19, 2023
+
+<a id="feature-updates-11"></a>
 
 #### Feature Updates
 
 - Ended service in Japan (Tokyo) region
 
+<a id="november-14-2023"></a>
+
 ### November 14, 2023
+
+<a id="feature-udpates"></a>
 
 #### Feature Udpates
 
 - Added a note that the service is scheduled for End of Life in Japan (Tokyo) region when creating replication groups
 
+<a id="october-17-2023"></a>
+
 ### October 17, 2023
+
+<a id="bug-fixes-12"></a>
 
 #### Bug Fixes
 
 - Fixed an issue where the time for deleting auto backups could differ from the expected time by up to 3 hours.
 
+<a id="september-12-2023"></a>
+
 ### September 12, 2023
+
+<a id="feature-updates-12"></a>
 
 #### Feature Updates
 
 - Improved internal performance
 
+<a id="bug-fixes-13"></a>
+
 #### Bug Fixes
 
 - Fixed an issue where the profile field appears as empty after Redis version upgrade
 
+<a id="august-17-2023"></a>
+
 ### August 17, 2023
+
+<a id="feature-updates-13"></a>
 
 #### Feature Updates
 
 - Modified the access port information for replication groups using TLS certificate in accordance with TLS access port format.
 
 
+<a id="bug-fixes-14"></a>
+
 #### Bug Fixes
 
 - Fixed an issue where HA reset fails under certain conditions
 
+<a id="june-13-2023"></a>
+
 ### June 13, 2023
+
+<a id="feature-updates-14"></a>
 
 #### Feature Updates
 
 - Terminated the feature to create new replication groups in Redis 5.0.8
 - Added a feature to communicate using TLS certificates
 
+<a id="april-11-2023"></a>
+
 ### April 11, 2023
+
+<a id="bug-fixes-15"></a>
 
 #### Bug Fixes
 - Fixed an issue where alarms in some value ranges do not occur under system memory metrics conditions
 
+<a id="march-14-2023"></a>
+
 ### March 14, 2023
+
+<a id="feature-updates-15"></a>
 
 #### Feature Updates
 - Improved internal performance
 
+<a id="january-10-2023"></a>
+
 ### January 10, 2023
+
+<a id="feature-updates-16"></a>
 
 #### Feature Updates
 - Added support for Redis 7.0.7
 - Improved to display the protected-mode item in Profile
 
+<a id="bug-fixes-16"></a>
+
 #### Bug Fixes
 - Fixed an issue where version upgrade retry fails under certain conditions
 
+<a id="november-15-2022"></a>
+
 ### November 15, 2022
+
+<a id="bug-fixes-17"></a>
 
 #### Bug Fixes
 - Fixed an issue where an error message occurs when registering connection information in bulk
 - Fixed an issue where HA restoration does not work properly when adding a node fails
 
+<a id="october-11-2022"></a>
+
 ### October 11, 2022
 
 - Changed the domain for replication groups to connect from easycache.cloud.toast.com to easycache.nhncloudservice.com
 
+<a id="october-11-2022-1"></a>
+
+#### Feature Updates
+
+<!-- TODO: translate body -->
+
+<a id="february-22-2022"></a>
+
 ### February 22, 2022
+
+<a id="feature-updates-17"></a>
 
 #### Feature Updates
 - Changed the default value of maxmemory-policy from volatile-lru to allkeys-lru
 
+<a id="november-23-2021"></a>
+
 ### November 23, 2021
+
+<a id="added-features-5"></a>
 
 #### Added Features
 - Added a feature to upgrade a replication group from Redis version 5 to Redis version 6
 
+<a id="october-26-2021"></a>
+
 ### October 26, 2021
+
+<a id="bug-fixes-18"></a>
 
 #### Bug Fixes
 - Fixed an issue where configuration profiles could be modified while performing import, export, or manual backup of data.
 
+<a id="september-28-2021"></a>
+
 ### September 28, 2021
+
+<a id="feature-updates-18"></a>
 
 #### Feature Updates
 - Improved alarm rule creation screen.
 - Improved service usage start processing.
+
+<a id="bug-fixes-19"></a>
 
 #### Bug Fixes
 - Fixed an issue where node creation fails when adding a node to a replication group with a large amount of data.
@@ -243,7 +411,11 @@
 - Fixed an issue where the replication group status is not displayed as normal even when a replication was deleted in the replication unavailable status.
 - Fixed an issue where selectable replication groups are not displayed when restoring a backup in which a replication group has been deleted in the replication group restore.
 
+<a id="august-24-2021"></a>
+
 ### August 24, 2021
+
+<a id="feature-updates-19"></a>
 
 #### Feature Updates
 
@@ -252,18 +424,28 @@
 - Added a feature to set the alarm trigger conditions using the alarm template when setting the alarm 
 - Changed the UI so that default network of the **Access Control Information*- is not deletable
 
+<a id="july-27-2021"></a>
+
 ### July 27, 2021
+
+<a id="feature-updates-20"></a>
 
 #### Feature Updates
 
 - Add a feature to(Export) EasyCache data to Object Storage.
 - Modify **Promote Master*- to **Change Master*- and go to drop down menu. 
 
+<a id="bug-fixes-20"></a>
+
 #### Bug Fixes
 
 - Corrected the condition that CIDRs that failed to register are displayed as duplicates in the access control information
 
+<a id="june-29-2021"></a>
+
 ### June 29, 2021
+
+<a id="feature-updates-21"></a>
 
 #### Feature Updates
 
@@ -273,23 +455,35 @@
 - Added the Multi Replica feature to distribute read function
 - Added the current time to the screen to the right of the event search period calendar
 
+<a id="bug-fixes-21"></a>
+
 #### Bug Fixes
 
 - Fixed to expose the name in the replication group profile modification failure popup
 - Fixed a bug where after deleting the replication group node and clicking the Delete button of another replication group node, the Delete button becomes inactive if no node is selected
 
+<a id="may-25-2021"></a>
+
 ### May 25, 2021
+
+<a id="feature-updates-22"></a>
 
 #### Feature Updates
 
 - In monitoring, there was improvement by adjusting the size of each chart according to the size of the full screen.
 - The monitoring data storage period was changed from 1 month to 40 days
 
+<a id="bug-fixes-22"></a>
+
 #### Bug Fixes
 
 - When setting the search period in the View Log, an error message that used to appear was fixed.
 
+<a id="april-27-2021"></a>
+
 ### April 27, 2021
+
+<a id="feature-updates-23"></a>
 
 #### Feature Updates
 
@@ -297,28 +491,44 @@
 - Modified the system so that event categories and search time will be automatically searched when the respective button is selected
 - Modified the system so that the keyword will not remain when a notification event, replication group, or receiving group is searched for and its sub item list is selected in notification rules
 
+<a id="march-23-2021"></a>
+
 ### March 23, 2021
+
+<a id="feature-updates-24"></a>
 
 #### Feature Updates
 
 - Added read-only domain event registration
 - Fixed the system to show an error message when the replication group is using a subnet without internet gateway when setting up a public domain
 
+<a id="bug-fixes-23"></a>
+
 #### Bug Fixes
 
 - Fixed an issue where an error would occur when the user enters a blank space in the search field during log search
 
+<a id="february-23-2021"></a>
+
 ### February 23, 2021
+
+<a id="feature-updates-25"></a>
 
 #### Feature Updates
 
 - Added read-only domain tooltip
 
+<a id="bug-fixes-24"></a>
+
 #### Bug Fixes
 
 - Fixed an issue where no replicated group is created if the maximum value is entered for a profile.
 
+<a id="january-26-2021"></a>
+
 ### January 26, 2021
+
+<a id="feature-updates-26"></a>
 
 #### Feature Updates
 
@@ -326,15 +536,23 @@
 - Added **activedefrag**-related options in profile
 - **View Log**  dialog box UI improved
 
+<a id="bug-fixes-25"></a>
+
 #### Bug Fixes
 
 - Fixed a bug where the date changes to January 2 when the time is changed in monitoring
 
+<a id="december-29-2020"></a>
+
 ### December 29, 2020
+
+<a id="added-features-6"></a>
 
 #### Added Features
 
 - Added read-only domain feature
+
+<a id="feature-updates-27"></a>
 
 #### Feature Updates
 
@@ -342,24 +560,38 @@
 - Improved to show guidance when mouse is hovered over the Change instance type button
 - Changed the dialog button name to OK.
 
+<a id="bug-fixes-26"></a>
+
 #### Bug Fixes
 
 - Fixed an issue where the task of profile modification fails and made unavailable when changing the profile of a replication group if the profile before the change is modified
 - Fixed an issue of Korean filter option names were displayed when the website language is set to 'Japanese'
 
+<a id="nov-24-2020"></a>
+
 ### Nov 24, 2020
+
+<a id="feature-updates-28"></a>
 
 #### Feature Updates
 
 - View All Logs added
 
+<a id="october-27-2020"></a>
+
 ### October 27, 2020
+
+<a id="bug-fixes-27"></a>
 
 #### Bug Fixes
 - Modified node name to reflect changes in group name when changing name of replication group
 - Modified error message in cases where a quarter of CPU and RAM is exceeded
 
+<a id="september-22-2020"></a>
+
 ### September 22, 2020
+
+<a id="feature-updates-29"></a>
 
 #### Feature Updates
 
@@ -367,6 +599,8 @@
 - Added log check feature
 - Sort and display VPC subnet list by name
 - Service use permissions response
+
+<a id="bug-fixes-28"></a>
 
 #### Bug Fixes
 
@@ -376,36 +610,56 @@
     - Processed commands per second: counts/seconds -> count/1sec
 - During profile modification, the bug where the status of a replication group using the profile currently being modified is displayed as normal rather than displaying modification in progress
 
+<a id="august-25-2020"></a>
+
 ### August 25, 2020
+
+<a id="feature-updates-30"></a>
 
 #### Feature Updates
 
 - Changed the password setting for Redis access as optional
 
+<a id="bug-fixes-29"></a>
+
 #### Bug Fixes
 
 - Fixed an issue where node promotion completion time and condition display does not accord when promoting replica nodes
 
+<a id="july-28-2020"></a>
+
 ### July 28, 2020
+
+<a id="added-features-7"></a>
 
 #### Added Features
 
 - Instance type change feature added
 
+<a id="feature-updates-31"></a>
+
 #### Feature Updates
 
 - Deleted Compute Optimized type from supported instance type
+
+<a id="bug-fixes-30"></a>
 
 #### Bug Fixes
 
 - Fixed an issue where clients connected from monitoring graph is displayed as an accumulation
 - Fixed a bug where, when restoring from Redis 3.2.12 replication group which used custom profile, the profile would be restored to Redis 3.2 default profile
 
+<a id="june-23-2020"></a>
+
 ### June 23, 2020
+
+<a id="feature-updates-32"></a>
 
 #### Feature Updates
 
 - Registered events on CloudTrail service
+
+<a id="bug-fixes-31"></a>
 
 #### Bug Fixes
 
@@ -414,7 +668,11 @@
 - Fixed an issue where HA reset fails even after HA reset button is displayed and reset is executed
 - Fixed an issue where dates could not be selected freely from search period on the monitoring screen
 
+<a id="may-26-2020"></a>
+
 ### May 26, 2020
+
+<a id="feature-updates-33"></a>
 
 #### Feature Updates
 
@@ -428,6 +686,8 @@
     * Updated single graph to be displayed additionally as a pop-up to allow users to select statistical entries and aggregation duration
 * Changed features to allow user to modify values through detailed settings when creating or modifying profiles
 
+<a id="bug-fixes-32"></a>
+
 #### Bug Fixes
 
 * Fixed an issue where the modification button is disabled when trying to modify replication groups with no nodes added after modifying replication groups with added nodes
@@ -435,7 +695,11 @@
 * Fixed an issue where the profile list is not fully displayed after modification
 * Fixed an issue where the screen does not reload after modifying profiles currently being used by replication groups
 
+<a id="april-28-2020"></a>
+
 ### April 28, 2020
+
+<a id="feature-updates-34"></a>
 
 #### Feature Updates
 
@@ -444,6 +708,8 @@
 - Changed a monitoring field to display successful/failed query numbers as per time instead of an accumulation value
 - Changed alarm rules to allow changing memory usage in %
 
+<a id="bug-fixes-33"></a>
+
 #### Bug Fixes
 
 - Fixed an issue where monitoring graphs are partially displayed every 10 minutes
@@ -451,13 +717,21 @@
 - Made changes to allow password modification of warning replication groups
 - Modified a portion of menus and labels
 
+<a id="march-24-2020"></a>
+
 ### March 24, 2020
+
+<a id="feature-updates-35"></a>
 
 #### Feature Updates
 
 - Changed default config value of EasyCache(tcp-keepalive [0→300])
 
+<a id="february-25-2020"></a>
+
 ### February 25, 2020
+
+<a id="feature-updates-36"></a>
 
 #### Feature Updates
 
@@ -465,27 +739,43 @@
 - Updated SMS content
 - Modified messages when entering duplicated CIDR
 
+<a id="bug-fixes-34"></a>
+
 #### Bug Fixes
 - Fixed an issue where infinite loops of data synchronization occurs when replica node is added in presence of bulk data
 - Fixed an issue where node is displayed as creating on node alarm even after node creation failure within a replication group
 
+<a id="february-11-2020"></a>
+
 ### February 11, 2020
+
+<a id="feature-updates-37"></a>
 
 #### Feature Updates
 
 - Upgraded version of NHN Cloud user authentication module
 
+<a id="bug-fixes-35"></a>
+
 #### Bug Fixes
 - Fixed an issue where selection fails in cases of selecting VPC subnets of users that did not set up internet gateways when creating replication groups
 
+<a id="january-21-2020"></a>
+
 ### January 21, 2020
+
+<a id="feature-updates-38"></a>
 
 #### Feature Updates
 
 - Japanese supported for console screen and event messages
 - Event registration added when domain change fails after failover
 
+<a id="december-24-2019"></a>
+
 ### December 24, 2019
+
+<a id="new-service-release"></a>
 
 #### New service release
 

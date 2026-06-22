@@ -1,9 +1,15 @@
+<!-- pre-align:aligned sig=b7597aadf0a8 -->
+
 ## Database > EasyCache > 개발자 가이드
+
+<a id="client-access"></a>
 
 ## 클라이언트 접속
 
 같은 VPC 서브넷을 이용하는 인스턴스의 애플리케이션에서 접속할 수 있습니다.
 Redis를 기반으로 만든 EasyCache는 다양한 개발 언어를 지원합니다.
+
+<a id="java"></a>
 
 ### JAVA
 
@@ -21,6 +27,8 @@ Jedis는 JAVA용 Redis 클라이언트입니다.
     jedis.set("foo", "bar");
 }
 ```
+
+<a id="php"></a>
 
 ### PHP
 
@@ -41,6 +49,8 @@ $client = new Predis\Client([
 ]);
 $client->set('hogehoge','fugafuga');
 ```
+
+<a id="python"></a>
 
 ### Python
 
@@ -67,6 +77,8 @@ pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
 r = redis.StrictRedis(connection_pool=pool)
 r.set('hoge', 'moge')
 ```
+
+<a id="access-easycache-for-redis-server-from-an-instance"></a>
 
 ## 인스턴스에서 EasyCache for Redis 서버에 접속
 
@@ -95,6 +107,8 @@ redis-cli -v
 * AUTH 명령어를 이용해 인증합니다.
     * AUTH {복사한 비밀번호}
     
+<a id="redis-command-restriction"></a>
+
 ## Redis 명령어 제한
 
 아래와 같은 명령어를 사용하면 서비스에 치명적인 영향을 줄 수 있어 이용에 제한됩니다.
@@ -116,6 +130,8 @@ key 또는 아이템이 대용량(수십만 개 이상)일 때 아래와 같은 
 * FLUSHALL, FLUSHDB
 * Delete Collections
 * Get All Collections
+
+<a id="memory-management"></a>
 
 ## 메모리 관리
 

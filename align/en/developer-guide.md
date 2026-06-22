@@ -1,9 +1,15 @@
+<!-- pre-align:aligned sig=b7597aadf0a8 -->
+
 ## Database > EasyCache > Developer Guide
+
+<a id="client-access"></a>
 
 ## Client Access
 
 EasyCache can be accessed from applications in instances using the same VPC subnet.
 Since EasyCache is based on Redis, it supports various development programming languages.
+
+<a id="java"></a>
 
 ### JAVA
 
@@ -21,6 +27,8 @@ The following is the JAR files required for installation.
     jedis.set("foo", "bar");
 }
 ```
+
+<a id="php"></a>
 
 ### PHP
 
@@ -41,6 +49,8 @@ $client = new Predis\Client([
 ]);
 $client->set('hogehoge','fugafuga');
 ```
+
+<a id="python"></a>
 
 ### Python
 
@@ -67,6 +77,8 @@ pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
 r = redis.StrictRedis(connection_pool=pool)
 r.set('hoge', 'moge')
 ```
+
+<a id="access-easycache-for-redis-server-from-an-instance"></a>
 
 ## Access EasyCache for Redis Server from an Instance
 
@@ -95,6 +107,8 @@ Select the replication group to access and click the **Access Information** tab 
 * Authenticate using the AUTH command.
     * AUTH {copied password}
 
+<a id="redis-command-restriction"></a>
+
 ## Redis Command Restriction
 
 Use of the following commands is restricted as it may have a fatal impact on the service.
@@ -116,6 +130,8 @@ When the number of key or item is large (more than hundreds of thousands), the p
 * FLUSHALL, FLUSHDB
 * Delete Collections
 * Get All Collections
+
+<a id="memory-management"></a>
 
 ## Memory Management
 

@@ -1,46 +1,50 @@
-## Database > EasyCache > Overview
+<!-- pre-align:aligned sig=65ffb1d81b93 -->
+
+**Database > EasyCache > Overview**
 
 NHN Cloud EasyCache is a service that provides Valkey or Redis (REmote DIctionary Server) in a cloud environment.
 You can use a highly available in-memory cache server with simple settings.
+
+<a id="characteristics-and-features"></a>
 
 ## Characteristics and Features
 
 * To use EasyCache, you must activate the Compute & Network service.
 
-### Replication Group
+**Replication Group**
 
 * A group of in-memory cache servers that can be created instantly when you want.
 * You can use management features.
 * You can use replication group securely using certificates.
 
-### Monitoring
+**Monitoring**
 
 * You can view the measurements to monitor the cache performance of the server in graphs.
 
-### Backup
+**Backup**
 
 * You can perform automatic backup of memory data at specified time, once per day.
 * You can perform manual backup of memory data instantly at the time you want.
 * The data is stored in safe external storage.
 * Using the stored backup data, a new replication group can be created at any time.
 
-### Profile Configuration
+**Profile Configuration**
 
 * You can manage the configuration of Valkey and Redis servers with profiles.
 * You can configure a default profile or a user profile.
 
-### Alarm
+**Alarm**
 
 * You can get notification on the event and monitoring status of replication groups.
 * You can manage the events and threshold settings for monitoring.
 
-### Event
+**Event**
 
 * You can search for and check the status of replication groups and nodes.
 
-## Glossary 
+**Glossary **
 
-### Replication Group
+**Replication Group**
 
 * A replication group is provided as Standalone and Replication types.
 * Server specification supports 2-64 GB memory.
@@ -53,18 +57,18 @@ You can use a highly available in-memory cache server with simple settings.
 * A master is a general instance that allows read and write operations. 
 * A replica is an instance that replicates a master in real time.
 
-### Availability Zone
+**Availability Zone**
 
 * A logical area where a replication group is created.
 
-### Floating IP
+**Floating IP**
 
 * A dynamic IP used for communication with external networks.
 * To use a floating IP, an internet gateway must be associated with the user's VPC subnet attached to the instance to be configured.
 * The Valkey of instance associated with a floating IP is accessible from external network through a public domain.
 * You will be charged for a floating IP as soon as it is created, apart from Valkey instances.
 
-### High Availability (Automatic HA)
+**High Availability (Automatic HA)**
 
 * If you use the HA feature, the service monitors the master of replication group, detects failure, and performs failover automatically. This feature can reduce the service downtime as much as possible.
 

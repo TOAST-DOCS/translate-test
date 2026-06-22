@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=2328c54fffa0 -->
+
 # DB Security Group
 
 **Database > EasyCache > Console User Guide > DB Security Group**
@@ -14,10 +16,18 @@ DB Security Group consists of a name, a description, and multiple DB security ru
 
 * DB Security Group names can only contain between 1 and 100 uppercase and lowercase English letters, numbers, and certain symbols (-, \_, .). The first character must be an English letter.
 
-### Apply DB Security Group
+## DB Security Group
+
+<!-- TODO: translate body -->
+
+<a id="apply-db-security-group"></a>
+
+#### Apply DB Security Group
 You can select a DB Security Group to apply when creating a cache. All nodes in the cache are affected by the selected DB Security Group. Multiple DB Security Groups can be applied to a cache. The rules of all applied DB Security Groups are applied to the cache. You can freely modify the selection on the Modify Cache screen.
 
-## DB Security Rule
+<a id="db-security-rule"></a>
+
+### DB Security Rule
 You can create multiple DB security rules in a single DB Security Group. When a DB Security Group is configured for a cache, all DB security rules created in that DB Security Group are applied to all nodes belonging to the cache.
 
 | Item | Description |
@@ -28,5 +38,7 @@ You can create multiple DB security rules in a single DB Security Group. When a 
 | Remote | You can specify an IP address range. If the rule direction is Outbound, the destination is the remote. If the direction is Inbound, the source is the remote. Depending on the rule direction, the source and destination of the traffic are compared against the configured IP address or range. |
 | Description | You can add a description of the DB Security Group rule. |
 
-### Change DB Security Rule
+<a id="change-db-security-rule"></a>
+
+#### Change DB Security Rule
 When changes are made, such as creating, modifying, or deleting DB security rules, the changes are applied sequentially to the caches associated with the DB Security Group and to the nodes that belong to the caches. You cannot add new DB security rules to a DB Security Group, or modify or delete other DB security rules, until the changes have been applied to all caches and nodes associated with the DB Security Group.

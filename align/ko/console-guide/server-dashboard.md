@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=610cfce5529f -->
+
 ## 서버 대시보드
 
 **Database > EasyCache > 콘솔 사용 가이드 > 서버 대시보드**
@@ -12,6 +14,8 @@
 | 2시간   | 2년    |
 | 1일    | 5년    |
 
+<a id="layout"></a>
+
 ### 레이아웃
 
 레이아웃을 이용해 차트의 크기와 위치를 나타낼 수 있습니다. 서비스 활성화 시 **기본 시스템 지표**와 **기본 Redis 지표**를 기본 레이아웃으로 제공합니다. 기본 레이아웃은 변경하거나 삭제할 수 없습니다. 또한 차트를 추가하거나, 추가된 차트를 변경 또는 삭제할 수 없습니다. 차트에서 기본 레이아웃에 포함되지 않은 정보를 보려면 새 레이아웃을 만들어 차트를 추가할 수 있습니다.
@@ -24,6 +28,8 @@
 ❸ 버튼을 클릭하면 추가된 레이아웃을 변경할 수 있습니다.
 ❹ 버튼을 클릭하면 추가된 레이아웃을 삭제할 수 있습니다.
 
+<a id="add-a-chart-to-a-layout"></a>
+
 #### 레이아웃에 차트 추가
 
 ![server-dashboard-chart-add](https://static.toastoven.net/prod_rds_postgres/20240611/server-dashboard-chart-add-ko.png)
@@ -34,6 +40,8 @@
 ❹ 지표 이름을 클릭하면 왼쪽 미리 보기 영역에 차트가 나타납니다.
 ❺ **추가**를 클릭하면 선택된 차트가 모두 추가됩니다.
 
+<a id="change-and-delete-layout-charts"></a>
+
 #### 레이아웃의 차트 변경 및 삭제
 
 ![server-dashboard-chart-manage](https://static.toastoven.net/prod_rds_postgres/20240611/server-dashboard-chart-manage-ko.png)
@@ -41,6 +49,8 @@
 ❶ 차트의 상단 영역을 클릭한 뒤 드래그 앤 드롭하여 위치를 이동할 수 있습니다.
 ❷ 차트의 오른쪽 하단 영역을 드래그 앤 드롭하여 차트의 크기를 변경할 수 있습니다.
 ❸ 차트의 오른쪽 상단 **x**를 클릭하면 레이아웃에서 차트가 삭제됩니다.
+
+<a id="chart"></a>
 
 ### 차트
 
@@ -81,9 +91,13 @@
 | hset 실행 횟수         | hset 실행 횟수(counts)                                                                              |                                   |
 | set usec/get calls | set usec/get calls (counts)                                                                      |                                   |
 
+<a id="server-group"></a>
+
 ### 서버 그룹
 
 서버 그룹을 이용하면 하나의 차트에서 여러 노드의 성능 지표를 확인할 수 있습니다. 서버 그룹에 속한 노드별로 성능 지표가 하나의 차트에 나타납니다. 여러 개의 성능 지표로 이루어진 차트는 서버 그룹에서는 모두 개별 성능 지표로 변경됩니다.
+
+<a id="create-a-server-group"></a>
 
 #### 서버 그룹 생성
 
@@ -91,6 +105,8 @@
 
 ❶ **+ 그룹 추가**를 클릭하면 그룹을 생성할 수 있는 팝업 화면이 나타납니다.
 ❷ 서버 그룹에 추가할 노드를 선택합니다.
+
+<a id="configure-a-server-group"></a>
 
 #### 서버 그룹 설정
 
