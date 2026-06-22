@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=9d9a4ba78df0 -->
+
 ## イベント
 
 **Database > EasyCache > コンソール利用ガイド > イベント**
@@ -257,6 +259,8 @@
 | NODE | SENTINEL_INSTANCE_RUNNING                          | いいえ | インスタンス実行                           |
 | NODE | SENTINEL_INSTANCE_STOPPED                          | いいえ | インスタンス停止                           |
 
+
+<a id="event-subscription"></a>
 
 ### イベント購読
 
