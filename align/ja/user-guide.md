@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=43bb460c2362 -->
+
 ## Container > NHN Container Service(NCS) > 使用ガイド
 
 <a id="template"></a>
@@ -97,6 +99,12 @@ NHN Container Service(NCS)を使用するには、先にテンプレートを作
 
 特定テンプレートをクリックした後、**使用中のワークロード** タブに移動してテンプレートを使用中のワークロードリストを確認できます。
 
+<a id="template-workload-in-use"></a>
+
+#### 使用中のワークロード
+
+<!-- TODO: translate body -->
+
 <a id="template-delete"></a>
 ### テンプレートの削除
 
@@ -152,7 +160,12 @@ NHN Container Service(NCS)を使用するには、先にテンプレートを作
 | 状態点検 | コンテナに設定された状態点検 |
 
 <a id="version-workload-in-use"></a>
-### テンプレートの削除
+
+#### 使用中のワークロード
+
+<!-- TODO: translate body -->
+
+**テンプレートの削除**
 
 特定のバージョンをクリックした後、**使用中のワークロード**タブに移動して、そのバージョンを使用しているワークロードのリストを確認できます。
 
