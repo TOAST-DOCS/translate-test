@@ -1,9 +1,15 @@
+<!-- pre-align:aligned sig=b7597aadf0a8 -->
+
 ## Database > EasyCache > 開発者ガイド
+
+<a id="client-access"></a>
 
 ## Clients 接続
 
 * 同じVPC Subnetを利用するインスタンスのアプリケーションから接続できます。
 * Redisを基盤に開発したEasyCacheは、多様な開発言語をサポートします。
+
+<a id="java"></a>
 
 ### JAVA
 
@@ -19,6 +25,8 @@
 }
  ```
  
+<a id="php"></a>
+
 ### PHP
 
 * Predisは、PHP用のRedis Clientです。
@@ -36,6 +44,8 @@ $client = new Predis\Client([
 ]);
 $client->set('hogehoge','fugafuga');
 ```
+
+<a id="python"></a>
 
 ### PYTHON
 
@@ -61,6 +71,8 @@ r = redis.StrictRedis(connection_pool=pool)
 r.set('hoge', 'moge')
 ```
 
+<a id="access-easycache-for-redis-server-from-an-instance"></a>
+
 ## インスタンスからEasyCache for Redisサーバーに接続
 
 * 同じVPC Subnet内からのみRedisサーバーに接続可能です。
@@ -85,6 +97,8 @@ r.set('hoge', 'moge')
 * AUTHコマンドを利用して認証を行います。
     * AUTH {コピーしたパスワード}
     
+<a id="redis-command-restriction"></a>
+
 ## Restricted Redis commands
 
 * 下記のコマンドを使用すると、サービスに致命的な影響を与える可能性があるため、使用できません。
@@ -106,6 +120,8 @@ r.set('hoge', 'moge')
   * FLUSHALL, FLUSHDB
   * Delete Collections
   * Get All Collections
+
+<a id="memory-management"></a>
 
 ## メモリ管理
 
