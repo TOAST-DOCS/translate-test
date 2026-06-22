@@ -1,7 +1,11 @@
+<!-- pre-align:aligned sig=fbe5e76240c1 -->
+
 ## Container > NHN Container Service(NCS) > 개요
 
 NHN Container Service(NCS)는 컨테이너를 구동하는 환경을 제공하는 서비스입니다.
 VM 인스턴스, Kubernetes와 같은 컨테이너 실행 환경을 구성하지 않아도 이 서비스를 이용하여 컨테이너를 실행할 수 있습니다.
+
+<a id="ncs-characteristics"></a>
 
 ## 특징
 
@@ -20,11 +24,15 @@ VM 인스턴스, Kubernetes와 같은 컨테이너 실행 환경을 구성하지
 * 실행 중인 컨테이너에 접근할 수 있는 웹 터미널 기능을 제공합니다.
 * 워크로드의 리소스 사용률을 모니터링하여 필요한 경우 워크로드의 작업 수를 추가하거나 삭제할 수 있습니다.
 
+<a id="configuration-and-terms"></a>
+
 ## 구성 및 용어
 
 다음은 NCS 서비스 구성 예시입니다.
 
 ![NCS_overview_01.png](https://static.toastoven.net/prod_ncs/20221222/D-NCS_overview_01.png)
+
+<a id="template"></a>
 
 ### 템플릿
 
@@ -38,6 +46,8 @@ VM 인스턴스, Kubernetes와 같은 컨테이너 실행 환경을 구성하지
 템플릿을 유지한 상태로 필요할 때만 워크로드를 생성하여 컨테이너를 구동할 수도 있습니다.
 ```
 
+<a id="workload"></a>
+
 ### 워크로드
 
 컨테이너 사양이 기술된 `템플릿`을 참조하여 `워크로드`를 정의합니다.
@@ -49,6 +59,8 @@ VM 인스턴스, Kubernetes와 같은 컨테이너 실행 환경을 구성하지
 VPC에 접근 가능한 곳에서 생성된 컨테이너 포트로 접근하려면 `작업IP:컨테이너포트`로 접근할 수 있습니다.
 
 워크로드 실행 수에 지정한 개수만큼 `작업`이 실행됩니다. 위 예에서는 2로 지정하였기 때문에 두 개의 작업이 생성되었습니다.
+
+<a id="load-balancer"></a>
 
 ### 로드 밸런서
 
