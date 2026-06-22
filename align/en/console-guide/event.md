@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=9d9a4ba78df0 -->
+
 ## Event
 
 **Database > EasyCache > Console User Guide > Event**
@@ -257,6 +259,8 @@ Events represent significant occurrences triggered by Valkey or user actions. Ea
 | NODE | SENTINEL_INSTANCE_RUNNING | No | Instance running |
 | NODE | SENTINEL_INSTANCE_STOPPED | No | Instance stopped |
 
+
+<a id="event-subscription"></a>
 
 ### Event Subscription
 
