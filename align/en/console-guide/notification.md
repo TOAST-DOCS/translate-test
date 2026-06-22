@@ -1,10 +1,18 @@
+<!-- pre-align:aligned sig=79fb5966bd1d -->
+
 # Notification
 
 **Database > EasyCache > Console User Guide > Notification**
 
 You can receive notifications about performance metrics through notification groups. Select the **Notification Type** and **Enabled** status, then specify the node to monitor and the user group to receive notifications. Set the thresholds and conditions for performance metrics to receive notifications through the **Monitoring Settings**. When the set metrics meet the conditions in the Monitoring Settings, the associated user group will be notified. Notifications are sent via SMS or email, depending on the notification type set for the notification group.
 
-### Create a Notification Group
+## Notification
+
+<!-- TODO: translate body -->
+
+<a id="create-a-notification-group"></a>
+
+#### Create a Notification Group
 
 ![notification1.PNG](https://static.toastoven.net/prod_easycache/25.09.27/notification1.PNG)
 
@@ -14,11 +22,15 @@ You can receive notifications about performance metrics through notification gro
 ❹: Select the node to monitor.
 ❺: Select the user group to receive notifications.
 
-## Monitoring Settings
+<a id="monitoring-settings"></a>
+
+### Monitoring Settings
 
 The monitoring settings consist of monitoring items, comparison method, threshold, and duration. It compares the performance metric value of a monitoring item against the threshold to determine whether the condition is met. If the condition is continuously met for at least the specified duration, a notification is sent. For example, if the CPU utilization threshold is over 90% and the duration is 5 minutes, users in the user group are notified when the node linked to the notification group's CPU utilization is over 90% for over 5 minutes. If CPU utilization is over 90% but falls below 90% within 5 minutes, no notification is sent.
 
-### Monitoring Settings Items
+<a id="monitoring-settings-items"></a>
+
+#### Monitoring Settings Items
 
 The following performance metric topics can be monitored:
 
@@ -69,7 +81,9 @@ The following performance metric topics can be monitored:
 | REDIS | REDIS_DELTA_CMDSTAT_HGET_CALLS |  |  
 | REDIS | REDIS_DELTA_CMDSTAT_HSET_CALLS |  |  
 
-### Add Monitoring Setting
+<a id="add-monitoring-setting"></a>
+
+#### Add Monitoring Setting
 
 ![notification2.PNG](https://static.toastoven.net/prod_easycache/25.09.27/notification2.PNG)
 
@@ -77,21 +91,27 @@ The following performance metric topics can be monitored:
 ❷ Click **Add Monitoring Settings** to add a new monitoring setting.
 ❸ Enter the item to monitor, comparison method, threshold, and duration, then click **Add**.
 
-### Change and Delete Monitoring Settings
+<a id="change-and-delete-monitoring-settings"></a>
+
+#### Change and Delete Monitoring Settings
 
 ![notification3.PNG](https://static.toastoven.net/prod_easycache/25.09.27/notification3.PNG)
 
 ❶ Click the button to modify an added monitoring settings.
 ❷ Click the button to delete an added monitoring settings.
 
-## User Group
+<a id="user-group"></a>
+
+### User Group
 
 Users who receive notifications can be managed in groups. The notification target must be registered as a project member. If the users in the user group are excluded from the project members, they will not be notified, even if they belong to the user group.
 
 !!! danger "Caution"
     If there is no mobile phone information because a user did not complete real-name verification, the user will not receive SMS notifications.
 
-### Create a User Group
+<a id="create-a-user-group"></a>
+
+#### Create a User Group
 
 ![notification4.PNG](https://static.toastoven.net/prod_easycache/25.09.27/notification4.PNG)
 
@@ -101,7 +121,9 @@ Users who receive notifications can be managed in groups. The notification targe
 ❹ Click **Add** to display the project members that can be added to the notification targets.
 ❺ Click **Confirm** to create the user group. 
 
-### Modify and Delete a User Group
+<a id="modify-and-delete-a-user-group"></a>
+
+#### Modify and Delete a User Group
 
 ![notification5.PNG](https://static.toastoven.net/prod_easycache/25.09.27/notification5.PNG)
 
