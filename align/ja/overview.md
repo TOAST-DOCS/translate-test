@@ -1,7 +1,11 @@
+<!-- pre-align:aligned sig=f52b73b0cb1d -->
+
 ## DataQuery概要
 
 * 分散SQLクエリエンジンTrinoを使って大規模データに対してクエリを実行できるサービスです。
 * Object StorageなどNHN Cloudサービスとの連動をサポートします。
+
+<a id="main-features"></a>
 
 ## 主な機能
 
@@ -12,6 +16,8 @@
 * 実行中または完了したクエリの情報およびヒストリーを提供します。
 * Trinoエンドポイントを介してUI接続および外部ツール(JDBC、CLI、BIソリューションなど)との連動が可能です。
 * ユーザープロジェクトごとにTrinoクラスタを提供し、必要な時は仕様の調節が可能です。
+
+<a id="service-terminology"></a>
 
 ## サービス用語
 

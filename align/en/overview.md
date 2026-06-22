@@ -1,7 +1,11 @@
+<!-- pre-align:aligned sig=f52b73b0cb1d -->
+
 ## DataQuery Overview
 
 * DataQuery is a service that runs queries on large data based on Distributed SQL Query Engine Trino.
 * Supports connection with NHN Cloud Services such as Object Storage.
+
+<a id="main-features"></a>
 
 ## Main Features
 
@@ -12,6 +16,8 @@
 * Provides information and history about running or completed queries.
 * Trino endpoint provides UI access and linking with external tools (JDBC, CLI, BI solutions, etc.).
 * Provides user project-specific Trino clusters and allows for specification adjustment when required.
+
+<a id="service-terminology"></a>
 
 ## Service Terminology 
 
