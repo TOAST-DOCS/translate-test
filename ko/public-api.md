@@ -8,7 +8,7 @@ API를 사용하려면 API 엔드포인트와 토큰 등이 필요합니다. [AP
 |---|---|---|
 | network | 한국(평촌) 리전 | https://kr2-api-network-infrastructure.nhncloudservice.com |
 
-API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
+API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 마세요.
 
 
 
@@ -315,10 +315,10 @@ X-Auth-Token: {tokenId}
 | acl\_rules.src\_port\_range\_max | Body | Integer | src 포트 범위의 최댓값 (1~65535)|
 | acl\_rules.src_ip | Body | String | src IP |
 | acl\_rules.dst_ip | Body | String | dst IP |
-| acl\_rules.dst\_port\_range\_max | Body | Integer | dst 포트 범위의 최솟값 (1~65535)|
-| acl\_rules.dst\_port\_range\_min | Body | Integer | dst 포트 범위의 최댓값 (1~65535)|
+| acl\_rules.dst\_port\_range\_max | Body | Integer | dst 포트 범위의 최댓값 (1~65535)|
+| acl\_rules.dst\_port\_range\_min | Body | Integer | dst 포트 범위의 최솟값 (1~65535)|
 | acl\_rules.policy | Body | String | allow or deny  |
-| acl\_rules.order | Body | Integer | ACL Rule 적용 순서, 숫자가 작을수록 먼저 적용됨. (102~32764 사용)|
+| acl\_rules.order | Body | Integer | ACL Rule 적용 순서, 숫자가 작을수록 먼저 적용됩니다. (102~32764 사용)|
 
 <details><summary>예시</summary>
 <p>
@@ -370,10 +370,10 @@ X-Auth-Token: {tokenId}
 | acl\_rule.src\_port\_range\_max | Body | Integer | src 포트 범위의 최댓값 (1~65535)|
 | acl\_rule.src_ip | Body | String | src IP |
 | acl\_rule.dst_ip | Body | String | dst IP |
-| acl\_rule.dst\_port\_range\_max | Body | Integer | dst 포트 범위의 최솟값 (1~65535)|
-| acl\_rule.dst\_port\_range\_min | Body | Integer | dst 포트 범위의 최댓값 (1~65535)|
+| acl\_rule.dst\_port\_range\_max | Body | Integer | dst 포트 범위의 최댓값 (1~65535)|
+| acl\_rule.dst\_port\_range\_min | Body | Integer | dst 포트 범위의 최솟값 (1~65535)|
 | acl\_rule.policy | Body | String | allow or deny  |
-| acl\_rule.order | Body | Integer | ACL Rule 적용 순서, 숫자가 작을수록 먼저 적용됨. (102~32764 사용)|
+| acl\_rule.order | Body | Integer | ACL Rule 적용 순서, 숫자가 작을수록 먼저 적용됩니다. (102~32764 사용)|
 
 
 <details><summary>예시</summary>
@@ -412,10 +412,10 @@ X-Auth-Token: {tokenId}
 | acl\_rule.src\_port\_range\_max | Body | Integer | -|src 포트 범위의 최댓값 (1~65535)|
 | acl\_rule.src_ip | Body | String | O|src IP |
 | acl\_rule.dst_ip | Body | String | O|dst IP |
-| acl\_rule.dst\_port\_range\_max | Body | Integer | -|dst 포트 범위의 최솟값 (1~65535)|
-| acl\_rule.dst\_port\_range\_min | Body | Integer | -|dst 포트 범위의 최댓값 (1~65535)|
+| acl\_rule.dst\_port\_range\_max | Body | Integer | -|dst 포트 범위의 최댓값 (1~65535)|
+| acl\_rule.dst\_port\_range\_min | Body | Integer | -|dst 포트 범위의 최솟값 (1~65535)|
 | acl\_rule.policy | Body | String | O| allow or deny  |
-| acl\_rule.order | Body | Integer | O | ACL Rule 적용 순서, 숫자가 작을수록 먼저 적용됨. (102~32764 사용)|
+| acl\_rule.order | Body | Integer | O | ACL Rule 적용 순서, 숫자가 작을수록 먼저 적용됩니다. (102~32764 사용)|
 
 <details><summary>예시</summary>
 <p>
@@ -448,7 +448,7 @@ X-Auth-Token: {tokenId}
 | acl\_rule.src\_port\_range\_max | Body | Integer | src 포트 범위의 최댓값 (1~65535)|
 | acl\_rule.src_ip | Body | String | src IP |
 | acl\_rule.dst_ip | Body | String | dst IP |
-| acl\_rule.dst\_port\_range\_max | Body | Integer | dst 포트 범위의 최솟값 (1~65535)|
+| acl\_rule.dst\_port\_range\_max | Body | Integer | dst 포트 범위의 최댓값 (1~65535)|
 | acl\_rule.dst\_port\_range\_min | Body | Integer | dst 포트 범위의 최댓값 (1~65535)|
 | acl\_rule.policy | Body | String | allow or deny  |
 | acl\_rule.order | Body | Integer | ACL Rule 적용 순서, 숫자가 작을수록 먼저 적용됨. (102~32764 사용)|
@@ -536,8 +536,8 @@ X-Auth-Token: {tokenId}
 | acl\_rule.src\_port\_range\_max | Body | Integer | src 포트 범위의 최댓값 (1~65535)|
 | acl\_rule.src_ip | Body | String | src ip |
 | acl\_rule.dst_ip | Body | String | dst ip |
-| acl\_rule.dst\_port\_range\_max | Body | Integer | dst 포트 범위의 최솟값 (1~65535) |
-| acl\_rule.dst\_port\_range\_min | Body | Integer | dst 포트 범위의 최댓값 (1~65535)|
+| acl\_rule.dst\_port\_range\_max | Body | Integer | dst 포트 범위의 최댓값 (1~65535) |
+| acl\_rule.dst\_port\_range\_min | Body | Integer | dst 포트 범위의 최솟값 (1~65535)|
 | acl\_rule.policy | Body | String | allow or deny  |
 | acl\_rule.order | Body | Integer | ACL Rule 적용 순서, 숫자가 작을수록 먼저 적용됨. (102~32764 사용)|
 
