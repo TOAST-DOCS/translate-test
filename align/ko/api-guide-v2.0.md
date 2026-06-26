@@ -3,13 +3,19 @@
 
 NHN Cloud Private CA API를 사용하여 인증서를 프로그래밍 방식으로 관리할 수 있습니다.
 
+<a id="private-ca-api-common-information"></a>
+
 ## Private CA API 공통 정보
+
+<a id="api-endpoint"></a>
 
 ### API 엔드포인트
 
 | 리전 | 엔드포인트 |
 | --- | --- |
 | KR1 | https://kr1-pca.api.nhncloudservice.com |
+
+<a id="authentication-and-authorization"></a>
 
 ### 인증 및 권한
 
@@ -20,7 +26,11 @@ User Access Key 토큰은 User Access Key를 기반으로 발급되는 Bearer �
 
 각 인증 방법의 확인 및 사용에 대한 자세한 내용은 각각 [Appkey](/nhncloud/ko/public-api/appkey/), [User Access Key 토큰](/nhncloud/ko/public-api/user-access-key-token/)를 참고하세요.
 
+<a id="api-list"></a>
+
 ### API 목록
+
+<a id="repository"></a>
 
 #### 저장소
 
@@ -32,6 +42,8 @@ User Access Key 토큰은 User Access Key를 기반으로 발급되는 Bearer �
 | PUT | /v2.0/appkeys/{appkey}/ca-stores/{caStoreId} | 저장소를 수정 |
 | DELETE | /v2.0/appkeys/{appkey}/ca-stores/{caStoreId} | 저장소를 삭제 |
 
+<a id="certificate-issuer"></a>
+
 #### 인증서(발급자)
 
 | Method | URI | 설명 |
@@ -40,6 +52,8 @@ User Access Key 토큰은 User Access Key를 기반으로 발급되는 Bearer �
 | POST | /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs | 인증서(발급자)를 발급(ROOT, INTERMEDIATE만 발급 가능) |
 | GET | /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{certId} | 인증서 상세 정보를 조회 |
 | POST | /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{certId}/revoke | 인증서를 폐기 |
+
+<a id="template"></a>
 
 #### 템플릿
 
@@ -52,11 +66,15 @@ User Access Key 토큰은 User Access Key를 기반으로 발급되는 Bearer �
 | DELETE | /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates/{templateId} | 템플릿을 삭제 |
 | POST | /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates/{templateId}/certificates | 템플릿으로 인증서를 발급 |
 
+<a id="certificate-download"></a>
+
 #### 인증서 다운로드
 
 | Method | URI | 설명 |
 |--------|-----|------|
 | GET | /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{certId}/download | PEM 형식 인증서를 다운로드 |
+
+<a id="crl"></a>
 
 #### CRL
 
@@ -67,6 +85,8 @@ User Access Key 토큰은 User Access Key를 기반으로 발급되는 Bearer �
 | GET | /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{issuerCertId}/crl/pem | PEM 형식 CRL을 다운로드 |
 | POST | /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{issuerCertId}/crl | CRL을 수동으로 갱신 |
 
+<a id="ocsp"></a>
+
 #### OCSP
 
 | Method | URI | 설명 |
@@ -74,7 +94,11 @@ User Access Key 토큰은 User Access Key를 기반으로 발급되는 Bearer �
 | GET | /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/ocsp/{ocspRequestBase64} | Base64 인코딩된 OCSP 요청으로 인증서 상태를 조회 |
 | POST | /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/ocsp | DER 형식 OCSP 요청으로 인증서 상태를 조회 |
 
+<a id="prepare-in-advance"></a>
+
 ## 사전 준비하기
+
+<a id="manage-permissions"></a>
 
 ### 권한 관리
 
@@ -84,6 +108,8 @@ Private CA API는 역할 기반 접근 제어(RBAC)를 사용하며, 다음과 �
 - **ADMIN**: 저장소/인증서/템플릿 생성·수정·삭제, CRL 수동 갱신 등 모든 관리 작업을 수행할 수 있습니다.
 - **공개 엔드포인트**: CRL 다운로드(DER/PEM)와 OCSP API는 인증서 검증용으로 인증 없이 접근 가능합니다.
 
+<a id="certificate-formats"></a>
+
 ### 인증서 형식
 
 Private CA API에서 사용하는 주요 인증서 형식은 다음과 같습니다.
@@ -91,11 +117,17 @@ Private CA API에서 사용하는 주요 인증서 형식은 다음과 같습니
 - **PEM(privacy enhanced mail)**: 텍스트 기반 인증서 형식으로, Base64로 인코딩되어 있으며 `-----BEGIN CERTIFICATE-----`로 시작합니다. 사람이 읽을 수 있고 편집이 쉽습니다.
 - **DER(distinguished encoding rules)**: 바이너리 형식 인증서로, PEM보다 파일 크기가 작고 효율적입니다. 주로 Java 애플리케이션에서 사용됩니다.
 
+<a id="repository-api"></a>
+
 ## 저장소 API
+
+<a id="list-repositories"></a>
 
 ### 저장소 목록 조회
 
 저장소 목록을 조회합니다.
+
+<a id="request"></a>
 
 #### 요청
 
@@ -120,6 +152,8 @@ GET /v2.0/appkeys/{appkey}/ca-stores
 **필요 권한**
 
 - `VIEWER` 이상
+
+<a id="response"></a>
 
 #### 응답
 
@@ -184,9 +218,13 @@ GET /v2.0/appkeys/{appkey}/ca-stores
 | totalPageNo | Long | 전체 페이지 수 |
 | currentPageNo | Long | 현재 페이지 번호(0부터 시작) |
 
+<a id="get-repository-details"></a>
+
 ### 저장소 상세 조회
 
 저장소 상세 정보를 조회합니다.
+
+<a id="get-repository-details-request"></a>
 
 #### 요청
 
@@ -204,6 +242,8 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}
 **필요 권한**
 
 - `VIEWER` 이상
+
+<a id="get-repository-details-response"></a>
 
 #### 응답
 
@@ -261,9 +301,13 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}
 | lastChangeDatetime | LocalDateTime | 마지막 변경 일시 |
 | lastChangeUser | String | 마지막 변경자 |
 
+<a id="create-repository"></a>
+
 ### 저장소 생성
 
 저장소를 생성합니다.
+
+<a id="create-repository-request"></a>
 
 #### 요청
 
@@ -305,6 +349,8 @@ POST /v2.0/appkeys/{appkey}/ca-stores
 }
 ```
 
+<a id="create-repository-response"></a>
+
 #### 응답
 
 **Response Body**
@@ -340,9 +386,13 @@ POST /v2.0/appkeys/{appkey}/ca-stores
 | lastChangeDatetime | LocalDateTime | 마지막 변경 일시 |
 | lastChangeUser | String | 마지막 변경자 |
 
+<a id="modify-repository"></a>
+
 ### 저장소 수정
 
 저장소를 수정합니다.
+
+<a id="modify-repository-request"></a>
 
 #### 요청
 
@@ -364,6 +414,8 @@ PUT /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}
 **필요 권한**
 
 - `ADMIN`
+
+<a id="modify-repository-response"></a>
 
 #### 응답
 
@@ -392,9 +444,13 @@ PUT /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}
 | toastProjectId | Long | NHN Cloud 프로젝트 ID |
 | status | String | 저장소 상태 |
 
+<a id="delete-repository"></a>
+
 ### 저장소 삭제
 
 저장소를 삭제합니다.
+
+<a id="delete-repository-request"></a>
 
 #### 요청
 
@@ -412,6 +468,8 @@ DELETE /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}
 **필요 권한**
 
 - `ADMIN`
+
+<a id="delete-repository-response"></a>
 
 #### 응답
 
@@ -440,11 +498,17 @@ DELETE /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}
 | toastProjectId | Long | NHN Cloud 프로젝트 ID |
 | status | String | 저장소 상태(`DELETED`) |
 
+<a id="certificate-issuer-api"></a>
+
 ## 인증서(발급자) API
+
+<a id="list-certificates"></a>
 
 ### 인증서 목록 조회
 
 저장소에 포함된 인증서 목록을 조회합니다.
+
+<a id="list-certificates-request"></a>
 
 #### 요청
 
@@ -471,6 +535,8 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs
 **필요 권한**
 
 - `VIEWER` 이상
+
+<a id="list-certificates-response"></a>
 
 #### 응답
 
@@ -537,9 +603,13 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs
 | totalPageNo | Long | 전체 페이지 수 |
 | currentPageNo | Long | 현재 페이지 번호 |
 
+<a id="get-certificate-details"></a>
+
 ### 인증서 상세 조회
 
 인증서 상세 정보를 조회합니다.
+
+<a id="get-certificate-details-request"></a>
 
 #### 요청
 
@@ -558,6 +628,8 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{certId}
 **필요 권한**
 
 - `VIEWER` 이상
+
+<a id="get-certificate-details-response"></a>
 
 #### 응답
 
@@ -635,9 +707,13 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{certId}
 | ocspUrl | String | OCSP 서버 URL |
 | policies | String[] | Certificate Policies OID 목록 |
 
+<a id="issue-certificate-issuer"></a>
+
 ### 인증서(발급자) 발급
 
 ROOT 또는 INTERMEDIATE 인증서(발급자)를 발급합니다.
+
+<a id="issue-certificate-issuer-request"></a>
 
 #### 요청
 
@@ -744,6 +820,8 @@ POST /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs
 }
 ```
 
+<a id="issue-certificate-issuer-response"></a>
+
 #### 응답
 
 **Response Body**
@@ -804,9 +882,13 @@ POST /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs
 !!! note "참고"
     발급자 인증서 발급 API는 `privateKey`를 응답에 포함하지 않습니다. 발급자의 개인 키는 서버에 안전하게 저장됩니다.
 
+<a id="revoke-certificate"></a>
+
 ### 인증서 폐기
 
 인증서를 폐기합니다.
+
+<a id="revoke-certificate-request"></a>
 
 #### 요청
 
@@ -825,6 +907,8 @@ POST /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{certId}/revoke
 **필요 권한**
 
 - `ADMIN`
+
+<a id="revoke-certificate-response"></a>
 
 #### 응답
 
@@ -851,11 +935,17 @@ POST /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{certId}/revoke
 | serialNumber | String | 폐기된 인증서의 시리얼 번호 |
 | revocationDatetime | LocalDateTime | 폐기 일시 |
 
+<a id="template-api"></a>
+
 ## 템플릿 API
+
+<a id="list-templates"></a>
 
 ### 템플릿 목록 조회
 
 템플릿 목록을 조회합니다.
+
+<a id="list-templates-request"></a>
 
 #### 요청
 
@@ -881,6 +971,8 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates
 **필요 권한**
 
 - `VIEWER` 이상
+
+<a id="list-templates-response"></a>
 
 #### 응답
 
@@ -923,9 +1015,13 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates
 | totalPageNo | Number | 전체 페이지 수 |
 | currentPageNo | Number | 현재 페이지 번호(0부터 시작) |
 
+<a id="get-template-details"></a>
+
 ### 템플릿 상세 조회
 
 템플릿 상세 정보를 조회합니다.
+
+<a id="get-template-details-request"></a>
 
 #### 요청
 
@@ -944,6 +1040,8 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates/{templateId}
 **필요 권한**
 
 - `VIEWER` 이상
+
+<a id="get-template-details-response"></a>
 
 #### 응답
 
@@ -1031,9 +1129,13 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates/{templateId}
 | lastChangeDatetime | LocalDateTime | 마지막 변경 일시 |
 | lastChangeUser | String | 마지막 변경자 |
 
+<a id="create-template"></a>
+
 ### 템플릿 생성
 
 템플릿을 생성합니다.
+
+<a id="create-template-request"></a>
 
 #### 요청
 
@@ -1130,6 +1232,8 @@ POST /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates
 
 - `ADMIN`
 
+<a id="create-template-response"></a>
+
 #### 응답
 
 **Response Body**
@@ -1161,9 +1265,13 @@ POST /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates
 | signingCertificateId | Long | 서명에 사용되는 발급자 인증서 ID |
 | signingCertificateName | String | 서명에 사용되는 발급자 인증서 이름 |
 
+<a id="modify-template"></a>
+
 ### 템플릿 수정
 
 템플릿을 수정합니다.
+
+<a id="modify-template-request"></a>
 
 #### 요청
 
@@ -1187,6 +1295,8 @@ PUT /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates/{templateId}
 
 - `ADMIN`
 
+<a id="modify-template-response"></a>
+
 #### 응답
 
 **Response Body**
@@ -1206,9 +1316,13 @@ PUT /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates/{templateId}
 |------|------|------|
 | body | Boolean | 수정 성공 여부 |
 
+<a id="delete-template"></a>
+
 ### 템플릿 삭제
 
 템플릿을 삭제합니다.
+
+<a id="delete-template-request"></a>
 
 #### 요청
 
@@ -1227,6 +1341,8 @@ DELETE /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates/{templateId}
 **필요 권한**
 
 - `ADMIN`
+
+<a id="delete-template-response"></a>
 
 #### 응답
 
@@ -1247,9 +1363,13 @@ DELETE /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates/{templateId}
 |------|------|------|
 | body | Boolean | 삭제 성공 여부 |
 
+<a id="issue-certificate-using-template"></a>
+
 ### 템플릿으로 인증서 발급
 
 템플릿을 사용하여 인증서를 발급합니다.
+
+<a id="issue-certificate-using-template-request"></a>
 
 #### 요청
 
@@ -1320,6 +1440,8 @@ POST /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates/{templateId}/certifi
   "removeRootsFromChain": false
 }
 ```
+
+<a id="issue-certificate-using-template-response"></a>
 
 #### 응답
 
@@ -1420,11 +1542,17 @@ POST /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/templates/{templateId}/certifi
 !!! danger "주의"
     GENERATE 모드로 발급 시 응답에 포함된 `privateKey`는 **이 응답이 유일한 반환 시점**입니다. 서버에는 저장되지 않으므로 즉시 안전한 위치에 저장하세요. SIGN 모드는 클라이언트가 개인 키를 보유하므로 응답에 `privateKey`가 포함되지 않습니다.
 
+<a id="certificate-download-api"></a>
+
 ## 인증서 다운로드 API
+
+<a id="download-the-certificate"></a>
 
 ### 인증서 다운로드
 
 발급된 인증서를 PEM 형식으로 다운로드합니다.
+
+<a id="download-the-certificate-request"></a>
 
 #### 요청
 
@@ -1444,6 +1572,8 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{certId}/download
 
 - `VIEWER` 이상
 
+<a id="download-the-certificate-response"></a>
+
 #### 응답
 
 **Response Headers**
@@ -1455,13 +1585,19 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{certId}/download
 
 인증서 데이터(PEM 형식)
 
+<a id="crl-api"></a>
+
 ## CRL API
 
 CRL(certificate revocation list)은 특정 발급자가 발급한 인증서 중 폐기된 인증서의 목록을 제공하는 메커니즘입니다. 클라이언트는 CRL을 다운로드하여 인증서가 폐기되었는지 확인할 수 있습니다.
 
+<a id="retrieve-crl-information"></a>
+
 ### CRL 정보 조회
 
 특정 발급자의 CRL 정보를 조회합니다.
+
+<a id="retrieve-crl-information-request"></a>
 
 #### 요청
 
@@ -1480,6 +1616,8 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{issuerCertId}/crl
 **필요 권한**
 
 - `VIEWER` 이상
+
+<a id="retrieve-crl-information-response"></a>
 
 #### 응답
 
@@ -1506,9 +1644,13 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{issuerCertId}/crl
 | thisUpdate | LocalDateTime | CRL 발행 시간 |
 | nextUpdate | LocalDateTime | 다음 CRL 예정 시간 |
 
+<a id="download-the-crl-der-format"></a>
+
 ### CRL 다운로드(DER 형식)
 
 CRL을 DER(바이너리) 형식으로 다운로드합니다.
+
+<a id="download-the-crl-der-format-request"></a>
 
 #### 요청
 
@@ -1528,6 +1670,8 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{issuerCertId}/crl/der
 
 - 권한 체크 없음(공개 엔드포인트)
 
+<a id="download-the-crl-der-format-response"></a>
+
 #### 응답
 
 **Response Headers**
@@ -1539,9 +1683,13 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{issuerCertId}/crl/der
 
 CRL 데이터(DER 형식)
 
+<a id="download-the-crl-pem-format"></a>
+
 ### CRL 다운로드(PEM 형식)
 
 CRL을 PEM 형식으로 다운로드합니다.
+
+<a id="download-the-crl-pem-format-request"></a>
 
 #### 요청
 
@@ -1561,6 +1709,8 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{issuerCertId}/crl/pem
 
 - 권한 체크 없음(공개 엔드포인트)
 
+<a id="download-the-crl-pem-format-response"></a>
+
 #### 응답
 
 **Response Headers**
@@ -1572,9 +1722,13 @@ GET /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{issuerCertId}/crl/pem
 
 CRL 데이터(PEM 형식)
 
+<a id="manually-renew-a-crl"></a>
+
 ### CRL 수동 갱신
 
 CRL을 수동으로 갱신합니다.
+
+<a id="manually-renew-a-crl-request"></a>
 
 #### 요청
 
@@ -1594,6 +1748,8 @@ POST /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{issuerCertId}/crl
 
 - `ADMIN`
 
+<a id="manually-renew-a-crl-response"></a>
+
 #### 응답
 
 **Response Body**
@@ -1609,13 +1765,19 @@ POST /v2.0/appkeys/{appkey}/ca-stores/{caStoreId}/certs/{issuerCertId}/crl
 }
 ```
 
+<a id="ocsp-api"></a>
+
 ## OCSP API
 
 OCSP(online certificate status protocol)는 개별 인증서의 폐기 상태를 빠르게 확인할 수 있는 프로토콜입니다. CRL과 달리 전체 목록을 다운로드하지 않고 특정 인증서의 상태만 요청 시점에 조회할 수 있습니다.
 
+<a id="get-ocsp-status-get"></a>
+
 ### OCSP 상태 조회(GET)
 
 Base64로 인코딩된 OCSP 요청을 처리합니다.
+
+<a id="get-ocsp-status-get-request"></a>
 
 #### 요청
 
@@ -1656,6 +1818,8 @@ OCSP_REQUEST=$(openssl ocsp -issuer ca.pem -cert cert.pem -reqout - | base64 -w 
 curl -X GET "https://kr1-pca.api.nhncloudservice.com/v2.0/appkeys/my-appkey/ca-stores/1/ocsp/${OCSP_REQUEST}"
 ```
 
+<a id="get-ocsp-status-get-response"></a>
+
 #### 응답
 
 **Response Headers**
@@ -1666,9 +1830,13 @@ curl -X GET "https://kr1-pca.api.nhncloudservice.com/v2.0/appkeys/my-appkey/ca-s
 
 OCSP 응답(DER 형식)
 
+<a id="ocsp-status-query-post"></a>
+
 ### OCSP 상태 조회(POST)
 
 DER 형식 OCSP 요청을 처리합니다.
+
+<a id="ocsp-status-query-post-request"></a>
 
 #### 요청
 
@@ -1711,6 +1879,8 @@ curl -X POST "https://kr1-pca.api.nhncloudservice.com/v2.0/appkeys/my-appkey/ca-
 openssl ocsp -respin ocsp-response.der -text
 ```
 
+<a id="ocsp-status-query-post-response"></a>
+
 #### 응답
 
 **Response Headers**
@@ -1721,7 +1891,11 @@ openssl ocsp -respin ocsp-response.der -text
 
 OCSP 응답(DER 형식)
 
+<a id="troubleshooting"></a>
+
 ## 문제 해결하기
+
+<a id="if-the-crl-is-not-renewed"></a>
 
 ### CRL이 갱신되지 않는 경우
 
@@ -1729,17 +1903,23 @@ OCSP 응답(DER 형식)
 2. 수동 갱신 API를 호출하여 즉시 갱신합니다.
 3. CRL 갱신 주기(`crlRefreshPeriod`)를 확인하고 조정합니다.
 
+<a id="if-there-is-no-ocsp-response"></a>
+
 ### OCSP 응답이 없는 경우
 
 1. 콘솔의 저장소 상세 정보에서 OCSP가 활성화되었는지 확인합니다.
 2. 올바른 저장소 ID를 사용하는지 확인합니다.
 3. OCSP 요청이 올바른 형식(DER)인지 확인합니다.
 
+<a id="ocsp-response-results-differ-from-the-actual-certificate-status"></a>
+
 ### OCSP 응답 결과가 실제 인증서 상태와 다른 경우
 
 1. OCSP 응답은 갱신 주기에 따라 캐싱되므로, 최근에 인증서를 폐기한 경우 갱신 주기가 지날 때까지 이전 상태가 반환될 수 있습니다.
 2. 콘솔의 저장소 상세 정보에서 OCSP 갱신 주기를 확인합니다.
 3. 즉시 최신 상태를 확인해야 하는 경우, 갱신 주기가 경과한 후 다시 조회합니다.
+
+<a id="if-the-certificate-doesnt-have-a-crlocsp-url"></a>
 
 ### 인증서에 CRL/OCSP URL이 없는 경우
 
