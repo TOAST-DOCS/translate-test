@@ -12,9 +12,13 @@ Private CA 서비스는 ACME(automatic certificate management environment) 프�
     - **CSR(certificate signing request)**: 인증서 발급을 요청하기 위한 서명 요청 파일입니다.
     - **EAB(external account binding)**: ACME 서버에 인증하기 위한 계정 바인딩 정보입니다.
 
+<a id="prepare-in-advance"></a>
+
 ## 사전 준비하기
 
 ACME를 통한 인증서 발급을 시작하기 전에 다음 사항을 준비해야 합니다.
+
+<a id="issue-a-base-certificate"></a>
 
 ### 1. Base 인증서 발급
 
@@ -23,6 +27,8 @@ Base 인증서는 ACME 서버가 자동 갱신 시 참조하는 "템플릿" 역�
 - Base 인증서에 설정된 도메인(CN, SAN)과 동일한 도메인의 인증서만 ACME를 통해 갱신할 수 있습니다.
 - Base 인증서는 콘솔에서 일반적인 인증서 발급 절차로 생성합니다.
 - Base 인증서를 발급 받은 후, 해당 인증서의 ID를 ACME Directory URL에 사용합니다.
+
+<a id="install-certbot"></a>
 
 ### 2. Certbot 설치
 
@@ -41,6 +47,8 @@ sudo apt install certbot
 sudo yum install certbot
 ```
 
+<a id="verify-acme-server-information"></a>
+
 ### 3. ACME 서버 정보 확인
 
 Private CA 콘솔에서 다음 정보를 확인합니다.
@@ -49,9 +57,13 @@ Private CA 콘솔에서 다음 정보를 확인합니다.
 - **ACME 토큰 ID**: 콘솔에서 발급한 ACME 토큰 ID(**YOUR_ACME_TOKEN_ID**)
 - **ACME HMAC 키**: 콘솔에서 발급한 ACME 토큰 HMAC 키(**YOUR_ACME_TOKEN_HMAC_KEY**)
 
+<a id="renew-a-certificate"></a>
+
 ## 인증서 갱신하기
 
 Certbot을 사용하여 인증서를 발급 받는 절차는 다음과 같습니다.
+
+<a id="configure-commands"></a>
 
 ### 명령어 구성
 
@@ -72,6 +84,8 @@ certbot certonly \
   --agree-tos \
   --register-unsafely-without-email
 ```
+
+<a id="key-option-description"></a>
 
 ### 주요 옵션 설명
 
@@ -100,7 +114,11 @@ certbot certonly \
 !!! danger "주의"
     도메인 지정 시 Base 인증서에 설정된 CN(common name)과 도메인 SAN(subject alternative name)을 정확히 입력해야 합니다. 인증서 발급 전 콘솔에서 Base 인증서의 CN과 SAN 정보를 확인하여 `-d` 옵션에 올바른 도메인을 지정했는지 반드시 검증하세요.
 
+<a id="hook-script-example"></a>
+
 ### Hook 스크립트 예시
+
+<a id="presh-pre-authentication-execution-script"></a>
 
 #### pre.sh(인증 전 실행 스크립트)
 
@@ -110,6 +128,8 @@ certbot certonly \
 #!/bin/bash
 # 필요한 인증 전처리 작업을 여기에 추가할 수 있습니다.
 ```
+
+<a id="postsh-script-to-execute-after-certificate-issuance"></a>
 
 #### post.sh(인증서 발급 후 실행 스크립트)
 
@@ -128,6 +148,8 @@ cp /etc/letsencrypt/live/example.com/privkey.pem ~/Downloads/
 # systemctl reload nginx
 ```
 
+<a id="verify-issued-certificates"></a>
+
 ## 발급된 인증서 확인
 
 인증서는 기본적으로 다음 경로에 저장됩니다.
@@ -140,6 +162,8 @@ cp /etc/letsencrypt/live/example.com/privkey.pem ~/Downloads/
 └── privkey.pem       # 개인 키
 ```
 
+<a id="verify-certificate-contents"></a>
+
 ### 인증서 내용 확인
 
 ```bash
@@ -150,9 +174,13 @@ openssl x509 -in /etc/letsencrypt/live/<도메인명(CN)>/cert.pem -text -noout
 openssl x509 -in /etc/letsencrypt/live/<도메인명(CN)>/cert.pem -noout -dates
 ```
 
+<a id="set-up-certificate-auto-renewal"></a>
+
 ## 인증서 자동 갱신 설정하기
 
 Certbot은 만료가 임박한 인증서를 자동으로 갱신할 수 있습니다.
+
+<a id="renewal-prerequisites"></a>
 
 ### 갱신 전제 조건
 
@@ -160,11 +188,15 @@ Certbot은 만료가 임박한 인증서를 자동으로 갱신할 수 있습니
 - `/etc/letsencrypt/renewal/<도메인>.conf` 파일이 존재해야 합니다.
 - `/etc/letsencrypt/live/<도메인>/` 디렉터리에 인증서 파일들이 있어야 합니다.
 
+<a id="set-up-auto-renewal"></a>
+
 ### 자동 갱신 설정
 
 Certbot 설치 시 자동으로 cron 또는 systemd timer가 등록되어 주기적으로 인증서 만료 여부를 확인합니다.
 
 **기본 갱신 주기**: 만료 30일 전부터 자동 갱신 시도
+
+<a id="manual-renewal"></a>
 
 ### 수동 갱신
 
@@ -178,6 +210,8 @@ sudo certbot renew
 sudo certbot renew --force-renewal
 ```
 
+<a id="register-a-cron-job"></a>
+
 ### Cron 작업 등록
 
 자동 갱신이 등록되지 않았다면 수동으로 cron 작업을 추가할 수 있습니다.
@@ -189,6 +223,8 @@ sudo crontab -e
 # 매일 새벽 2시에 갱신 확인
 0 2 * * * certbot renew --no-random-sleep-on-renew
 ```
+
+<a id="change-a-renewal-cycle"></a>
 
 ### 갱신 주기 변경
 
@@ -208,7 +244,11 @@ renew_before_expiry = 30 days
     - Certbot 설치 시 자동 등록된 cron 작업에는 기본 옵션이 포함되어 있을 수 있으므로, 필요에 따라 `/etc/cron.d/certbot` 파일을 수정하는 것이 권장됩니다.
     - 기본 cron 작업에는 랜덤 지연(`perl -e 'sleep int(rand(43200))'`)이 포함되어 있습니다. 이는 ACME 서버 과부하 방지를 위한 것으로, 즉시 실행이 필요하면 해당 구문을 제거하거나 `--no-random-sleep-on-renew` 옵션을 사용해야 합니다.
 
+<a id="troubleshooting"></a>
+
 ## 문제 해결하기
+
+<a id="if-certificate-issuance-fails"></a>
 
 ### 인증서 발급 실패 시
 
@@ -217,10 +257,14 @@ renew_before_expiry = 30 days
 3. **도메인 검증 실패**: Challenge 방식이 환경에 맞는지 확인합니다. HTTP Challenge의 경우 80번 포트가 열려 있어야 합니다.
 4. **Hook 스크립트 권한**: `pre.sh`와 `post.sh` 파일에 실행 권한이 있는지 확인합니다.
 
+<a id="if-certificate-renewal-fails"></a>
+
 ### 인증서 갱신 실패 시
 
 1. **Renewal 설정 확인**: `/etc/letsencrypt/renewal/<도메인>.conf` 파일이 존재하고 올바른지 확인합니다.
 2. **Hook 스크립트 존재 확인**: `manual-auth-hook`으로 지정한 스크립트가 여전히 존재하는지 확인합니다.
+
+<a id="about-acme-protocol"></a>
 
 ## ACME 프로토콜 정보
 
@@ -229,6 +273,8 @@ Private CA에서 제공하는 ACME Directory URL(`/directory`)을 통해 ACME �
 ACME 프로토콜의 전체 흐름은 클라이언트에 의해 자동으로 처리되므로, 사용자는 Directory URL만 제공하면 됩니다.
 
 ACME 프로토콜에 대한 자세한 내용은 [RFC 8555](https://datatracker.ietf.org/doc/html/rfc8555)를 참고하세요.
+
+<a id="references"></a>
 
 ## 참고 자료
 
