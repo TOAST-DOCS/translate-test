@@ -70,6 +70,8 @@ NATインスタンスをルートゲートウェイに指定します。 NATイ�
 <a id="initial-settings-after-microsoft-sql-image-is-created"></a>
 ### MS-SQLイメージ作成後の初期設定
 
+<a id="set-sql-certification-mode"></a>
+
 #### 1. SQL認証モード設定
 
 サーバーの基本認証モードが「Windows認証モード」になっています。
@@ -85,6 +87,8 @@ Microsoft SQL Server Management Studioを実行して、インスタンス名で
 4. **サーバー認証** 方式を「SQL ServerおよびWindows認証モード」に変更します。
 
 ※ SQL認証モード設定後、適用するためにMS-SQLサービスを再起動する必要があります。
+
+<a id="change-microsoft-sql-service-port"></a>
 
 #### 2. MS-SQLサービスポート変更
 
@@ -103,6 +107,8 @@ SQL Server構成管理者を実行します。
 5. ドロップダウンメニューの中から **IP ALL**を選択し、別のポート番号に変更します。
 
 ※ MS-SQLサービスポート変更後、適用のためにMS-SQLサービスを再起動する必要があります。
+
+<a id="allow-external-access-to-microsoft-sql-database"></a>
 
 #### 3. 外部からのMS-SQLデータベース接続許容設定
 
@@ -598,6 +604,8 @@ Enter password:
 <a id="initial-settings-for-mysql-instance"></a>
 ### MariaDBインスタンス作成後の初期設定
 
+<a id="1-set-the-password"></a>
+
 #### 1\. パスワード設定
 
 初期インストール後、MariaDB rootアカウントパスワードは指定されていません。そのため、インストール後に必ずパスワードを設定する必要があります。
@@ -607,6 +615,8 @@ SET PASSWORD [FOR user] = password_option
 
 MariaDB> SET PASSWORD = PASSWORD('パスワード');
 ```
+
+<a id="2-change-the-port"></a>
 
 #### 2\. ポート\(port\)の変更
 
@@ -829,7 +839,7 @@ Tiberoで提供する基本アカウントは次のとおりです。
 * OUTLN：同じSQLを実行するときに常に同じプランで実行できるように関連ヒントを保存するなどのタスクを実行します。
 * TIBERO/TIBERO1：example userであり、DBA権限を持っています。
 
-<a id="kafka-instance"></a>
+<a id="postgresql-instance"></a>
 ## Kafka Instance
 > [参考]
 > インスタンスタイプはc1m2(CPU 1core、Memory 2GB)以上の仕様で作成してください。
@@ -1005,11 +1015,15 @@ shell> redis-cli
 ### Redisインスタンス作成後の初期設定
 Redisインスタンスの基本設定ファイルは`~/redis/redis.conf`です。変更が必要なパラメータの説明は次のとおりです。
 
+<a id="1-change-the-port"></a>
+
 #### bind
 - 基本値：`127.0.0.1 -::1`
 - 変更値：`<private ip> 127.0.0.1 -::1`
 
 Redisが使用するipの値です。サーバー外部からRedisインスタンスへのアクセスを許可するには該当パラメータにprivate ipを追加する必要があります。 private ipは`hostname -I`コマンドで確認できます。
+
+<a id="2-change-server-log-timezone"></a>
 
 #### port
 - 基本値：`6379`
@@ -1019,6 +1033,8 @@ Redisが使用するipの値です。サーバー外部からRedisインスタ�
 ```
 shell> redis-cli -p <新しいポート>
 ```
+
+<a id="3-cancel-public-schema-permission"></a>
 
 #### requirepass/masterauth
 - 基本値：`nhncloud`
@@ -1048,6 +1064,8 @@ Redisインスタンス間の通信のためにセキュリティグループ(**
 | 受信|TCP | 16379| IPv4| インスタンスIP(CIDR)|
 | 受信|TCP | 26379| IPv4| インスタンスIP(CIDR)|
 
+<a id="sentinel-automatic-configuration"></a>
+
 #### Sentinel自動構成
 Sentinel構成のために3つのRedisインスタンスが必要です。マスターとして使用するインスタンスにキーペアをコピーし、以下のようにスクリプトを実行してください。
 
@@ -1069,6 +1087,8 @@ Enter Replica-2's IP: 192.168.0.97
 ```
 shell> Enter Pemkey's name: <キーペア>.pem
 ```
+
+<a id="cluster-automatic-configuration"></a>
 
 #### Cluster自動構成
 Cluster構成のために6つのRedisインスタンスが必要です。マスターとして使用するインスタンスにキーペアをコピーし、以下のようにスクリプトを実行してください。
