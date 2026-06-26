@@ -3,6 +3,8 @@
 
 Private CA console is organized around a certificate authority (CA), and all resources (certificate templates, issuers, certificates, ACME tokens) belong to a specific repository. The console screen is tabbed, with a list of repositories on the left and details about the selected repository on the right.
 
+<a id="private-ca-usage-flow"></a>
+
 ## Private CA usage flow
 
 The process of getting a certificate from a private CA is as follows:
@@ -19,9 +21,13 @@ The process of getting a certificate from a private CA is as follows:
     - **Root CA**: a self-signed top-level certificate. The starting point for all trust.
     - **Intermediate CA**: an intermediate certificate signed by the Root CA. used to issue the actual server certificate.
 
+<a id="repository"></a>
+
 ## Repository
 
 A repository is the basic unit for managing a private CA. Once you create a repository, you can manage issuers, certificate templates, certificates, and more.
+
+<a id="add-repository"></a>
 
 ### Add repository
 
@@ -43,6 +49,8 @@ A repository is the basic unit for managing a private CA. Once you create a repo
 
 3. Click **Create** to create the repository.
 
+<a id="modify-and-delete-repositories"></a>
+
 ### Modify and delete repositories
 
 In the repository list, you can click the menu button (⋮) to the right of each repository entry to perform the following actions:
@@ -55,9 +63,13 @@ In the repository list, you can click the menu button (⋮) to the right of each
 !!! danger "Caution"
     The delete operation is irreversible, so use caution.
 
+<a id="repository-details"></a>
+
 ### Repository details
 
 Click the target repository in the list of repositories on the left, and you'll see the details of the repository on the right. The repository details screen consists of the repository name, a description, a list of tabs, and other details.
+
+<a id="tab-list"></a>
 
 #### Tab list
 
@@ -71,6 +83,8 @@ When you select a repository, you'll see the following tabs at the top of the sc
 - **ACME management**: list and manage ACME tokens
 - **Certificate history**: check the certificate history of a repository
 
+<a id="resource-statistics-card"></a>
+
 #### Resource statistics card
 
 At the top of the screen, you'll see three cards that show the number of key resources in your repository.
@@ -82,6 +96,8 @@ At the top of the screen, you'll see three cards that show the number of key res
 
 Clicking **View {card name} >** on each card will take you directly to the Manage tab for the resource.
 
+<a id="acme-info"></a>
+
 #### ACME info
 
 The bottom of the resource card displays ACME information:
@@ -90,6 +106,8 @@ The bottom of the resource card displays ACME information:
 - **Full token**: Total number of ACME tokens created
 - **Active token**: Number of active ACME tokens
 - **Deleted tokens**: Number of ACME tokens deleted
+
+<a id="repository-details-2"></a>
 
 #### Repository details
 
@@ -105,9 +123,13 @@ At the bottom of the ACME information, you'll see the repository details.
 !!! tip "Notice"
     CRLs and OCSPs are ways to verify a certificate's revocation status. The CRL provides a list of revoked certificates, and OCSPs can quickly look up the status of individual certificates to the status at the time of the request.
 
+<a id="issuer"></a>
+
 ## Issuer
 
 Issuers are the certificate authorities that sign and issue certificates. In Private CA, you can create two types of issuers: Root CA and Intermediate CA.
+
+<a id="guide-to-selecting-an-issuer-type"></a>
 
 ### Guide to selecting an issuer type
 
@@ -116,6 +138,8 @@ Issuers are the certificate authorities that sign and issue certificates. In Pri
     - When you want to keep the Root CA's private key secure
     - When you want to run separate CAs for different departments/projects
     - When you want to follow security best practices (recommended)
+
+<a id="issuer-list"></a>
 
 ### Issuer list
 
@@ -131,6 +155,8 @@ On the Issuer tab, you can see all of your created issuers in a table. The table
 - **Common name**: common name of the certificate
 
 Each issuer entry has **Revoke** button so that you can revoke the issuer when needed.
+
+<a id="add-an-issuer"></a>
 
 ### Add an issuer
 
@@ -178,10 +204,14 @@ Each issuer entry has **Revoke** button so that you can revoke the issuer when n
 
 3. Click **Add** to add the issuer.
 
+<a id="issuer-details"></a>
+
 ### Issuer details
 
 Click the issuer's name in the issuer list to go to the details page. The details page displays the following information, and you can download the certificate PEM file via the Download button at the top.
 ![issuer\_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_detail.png)
+
+<a id="certificate-information"></a>
 
 #### Certificate information
 - Status, type, serial number
@@ -192,13 +222,19 @@ Click the issuer's name in the issuer list to go to the details page. The detail
 - Validity period (not before, not after)
 - Certificate PEM contents
 
+<a id="issuer-url"></a>
+
 #### Issuer URL
 - **Issued certificate URL**: list of certificates issued by this issuer
 - **CRL distribution point**: URL to verify the CRL
 - **OCSP server**: OCSP responder URL
 
 
+<a id="issuer-modification-revocation"></a>
+
 ### Issuer modification, revocation
+
+<a id="modify-issuer"></a>
 
 #### Modify issuer
 You can modify the name and description directly on the issuer details page. After making your edits, click **Save** to save your changes.
@@ -206,6 +242,8 @@ You can modify the name and description directly on the issuer details page. Aft
 - Editable fields
     - **Name**: you can modify the issuer name.
     - **Description**: you can modify the issuer description.
+
+<a id="issuer-revocation"></a>
 
 #### Issuer revocation
 1. In the Issuers list, click **Revoke** for the issuer you want to revoke.
@@ -215,9 +253,13 @@ You can modify the name and description directly on the issuer details page. Aft
     - Revoking an issuer affects the trustworthiness of all certificates issued by that issuer. A revoked issuer can no longer issue certificates, and already issued certificates can be checked for revocation status via CRL or OCSP.
     - Root certificates cannot be revoked.
 
+<a id="certificate-template"></a>
+
 ## Certificate template
 
 A certificate template is a collection of settings for issuing certificates quickly and consistently. Certificate templates make it easy to issue multiple certificates with the same configuration.
+
+<a id="list-of-certificate-templates"></a>
 
 ### List of certificate templates
 
@@ -228,6 +270,8 @@ On the Certificate Template tab, you can see all the certificate templates that 
 - **Description**: Description of certificate templates
 
 Each certificate template entry has **Modify** and **Delete** buttons to help you manage your certificate templates.
+
+<a id="add-a-certificate-template"></a>
 
 ### Add a certificate template
 
@@ -294,6 +338,8 @@ Each certificate template entry has **Modify** and **Delete** buttons to help yo
 
 3. Click **Add** to add a certificate template.
 
+<a id="certificate-template-details"></a>
+
 ### Certificate template details
 
 Click the certificate template name in the list of certificate templates to go to the details page. The detail page is organized into collapsible sections, where you can see the information entered by the user.
@@ -301,12 +347,18 @@ Click the certificate template name in the list of certificate templates to go t
 
 At the top of the details page are the **+ Create New Certificate**, Modify**, and **Delete** ** Certificate** buttons.
 
+<a id="modify-delete-certificate-template"></a>
+
 ### Modify, delete certificate template
+
+<a id="modify-certificate-template"></a>
 
 #### Modify certificate template
 1. In the certificate template list, click **Modify**, or on the details page, click **Modify**.
 2. On the Modify Certificate Template page, make the necessary changes.
 3. Click **Modify** to save your changes.
+
+<a id="delete-a-certificate-template"></a>
 
 #### Delete a certificate template
 1. In the list of certificate templates, click **Delete** for the certificate template you want to delete, or on the details page, click **Delete**.
@@ -314,6 +366,8 @@ At the top of the details page are the **+ Create New Certificate**, Modify**, a
 
 !!! tip "Notice"
     Deleting a certificate template does not affect certificates that have already been generated with that certificate template.
+
+<a id="create-certificates-with-certificate-templates"></a>
 
 ### Create certificates with certificate templates
 
@@ -336,9 +390,13 @@ To create a certificate using a certificate template, follow these steps:
 
 The generated certificate can be saved to the Private CA at your option, and if so, you can view it on the Certificate tab.
 
+<a id="certificate"></a>
+
 ## Certificate
 
 The Certificate tab allows you to view and manage all certificates issued in your repository.
+
+<a id="list-of-certificates"></a>
 
 ### List of certificates
 
@@ -354,10 +412,14 @@ The Certificate tab shows all issued certificates in a table. The table displays
 
 Each certificate entry has **Download** and **Revoke** buttons to help you manage your certificates.
 
+<a id="certificate-details"></a>
+
 ### Certificate details
 
 Click the common name in the certificate list to go to the details page. The detail page displays the following information, and you can download the certificate PEM file via the Download button at the top.
 ![certificate\_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/certificate_detail.png)
+
+<a id="certificate-details-certificate-information"></a>
 
 #### Certificate information
 - **Common name**: common name of the certificate
@@ -370,6 +432,8 @@ Click the common name in the certificate list to go to the details page. The det
 - **Algorithm and key size**: signing algorithms and key lengths
 - **Key usage**: digitalSignature, keyEncipherment, etc.
 - **Extended key usage**: serverAuth, clientAuth, etc.
+
+<a id="revoke-certificate"></a>
 
 ### Revoke certificate
 
@@ -386,9 +450,13 @@ Revoked certificates are considered no longer trusted, and you can check their r
 !!! danger "Caution"
     Certificate revocation is an irreversible action. You can't reactivate a revoked certificate, so you'll need to issue a new one.
 
+<a id="acme-management"></a>
+
 ## ACME management
 
 An automated certificate management environment (ACME) is a protocol that automates certificate issuance and renewal. The ACME management feature of Private CA allows you to automatically issue certificates through an ACME client, such as the Let's Encrypt client (e.g., certbot).
+
+<a id="acme-token-list"></a>
 
 ### ACME token list
 
@@ -400,6 +468,8 @@ On the ACME Management tab, you can view all generated ACME tokens in a table. T
 - **Description**: description of the ACME token
 
 Each token entry has **Delete** button, so you can delete tokens that you no longer use.
+
+<a id="add-an-acme-token"></a>
 
 ### Add an ACME token
 
@@ -413,6 +483,8 @@ Each token entry has **Delete** button, so you can delete tokens that you no lon
 
 3. Click **create** to create the token.
 
+<a id="verify-information-after-acme-token-is-created"></a>
+
 #### Verify information after ACME token is created
 ![acme\_once](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_once.png)
 When the token is created, the following information is displayed:
@@ -423,10 +495,14 @@ When the token is created, the following information is displayed:
 !!! danger "Caution"
     The HMAC key is only displayed once at token generation. Be sure to copy and store it somewhere safe, or you won't be able to see it again. If you lose your HMAC key, you'll need to generate a new token.
 
+<a id="acme-token-details"></a>
+
 ### ACME token details
 
 ![acme\_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_detail.png)
 Click the token name in the token list to go to the details page. The details page displays the following information:
+
+<a id="issued-certificate"></a>
 
 #### Issued certificate
 A list of certificates issued using the token is displayed. Each certificate contains the following information:
@@ -436,9 +512,13 @@ A list of certificates issued using the token is displayed. Each certificate con
 - **Serial number**: Certificate serial number
 - **Effective date**: Validity start date
 
+<a id="example-of-acme-client-setup"></a>
+
 ### Example of ACME client setup
 
 Use the [Certificate Renewal with ACME](./acme-guide.md) page as a guide to complete it.
+
+<a id="delete-an-acme-token"></a>
 
 ### Delete an ACME token
 
@@ -449,6 +529,8 @@ Use the [Certificate Renewal with ACME](./acme-guide.md) page as a guide to comp
 
 !!! tip "Notice"
     Deleting an ACME token does not affect certificates already issued with that token. However, automatic renewal using that token will no longer work, so you'll need to update your ACME client settings to generate a new token.
+
+<a id="certificate-history"></a>
 
 ## Certificate history
 
