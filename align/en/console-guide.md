@@ -2112,6 +2112,12 @@ model_dir = os.environ.get("EM_MODEL_DIR")
 model.save(model_dir)
 ```
 
+<a id="appendix.4.environment"></a>
+
+### Environment Variables
+
+<!-- TODO: translate body -->
+
 <a id="appendix.5.tensorboard.store.metric.log"></a>
 
 ### 5. Store Indicator Logs for TensorBoard Usage
