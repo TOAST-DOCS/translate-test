@@ -15,9 +15,13 @@ This guide explains how to use a Private CA ACME server with cert-manager to iss
 !!! tip "Notice"
     To manage certificates using Certbot or acme.sh in a standard server environment, refer to the [ACME Certificate Renewal Guide (Certbot, acme.sh)](acme-guide.md).
 
+<a id="prepare-in-advance"></a>
+
 ## Prepare in advance
 
 Before you can begin issuing certificates through ACME, you need to prepare the following:
+
+<a id="issue-a-base-certificate"></a>
 
 ### 1. Issue a base certificate
 
@@ -27,6 +31,8 @@ The base certificate acts as a "template" that the ACME server references for au
 - Base certificates are created in the console with the normal certificate issuance procedure.
 - After you've been issued a base certificate, use the ID from that certificate in your ACME Directory URL.
 
+<a id="verify-acme-server-information"></a>
+
 ### 2. Verify ACME server information
 
 In the Private CA console, verify the following information:
@@ -35,9 +41,13 @@ In the Private CA console, verify the following information:
 - **ACME Token ID**: ACME token ID issued from the console (**YOUR\_ACME\_TOKEN\_ID**)
 - **ACME HMAC Key**: Console-issued ACME token HMAC key (**YOUR\_ACME\_TOKEN\_HMAC\_KEY**)
 
+<a id="renew-certificates-with-cert-manager"></a>
+
 ## Renew Certificates with cert-manager
 
 In a Kubernetes environment, you can use cert-manager to automatically issue and renew certificates.
+
+<a id="install-cert-manager"></a>
 
 ### Install cert-manager
 
@@ -52,6 +62,8 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 ```bash
 kubectl get pods -n cert-manager
 ```
+
+<a id="install-ingress-controller"></a>
 
 ### Install Ingress Controller
 
@@ -71,6 +83,8 @@ helm upgrade --install ingress-nginx ingress-nginx \
 kubectl get pods -n ingress-nginx
 ```
 
+<a id="create-an-eab-secret"></a>
+
 ### Create an EAB Secret
 
 Create a Kubernetes Secret containing the External Account Binding (EAB) information for ACME authentication.
@@ -86,11 +100,15 @@ kubectl create secret generic acme-eab-secret \
     - The EAB Secret is sensitive information and must be managed securely.
     - The namespace where the Secret is generated must be the same as the namespace where the Issuer will be located.
 
+<a id="issuer-settings"></a>
+
 ### Issuer Settings
 
 An Issuer is a cert-manager resource that defines the Certificate Authority (CA) for certificate issuance. You can choose between an Issuer, which operates at the namespace level, and a ClusterIssuer, which is available cluster-wide.
 
 You can choose to use either the **Ingress** or **Gateway API** as the HTTP-01 Challenge validation method.
+
+<a id="method-1-configure-an-issuer-with-ingress"></a>
 
 #### Method 1: Configure an Issuer with Ingress
 
@@ -122,6 +140,8 @@ spec:
         ingress:
           class: nginx
 ```
+
+<a id="method-2-configure-an-issuer-with-gateway-api"></a>
 
 #### Method 2: Configure an Issuer with Gateway API
 
@@ -285,6 +305,8 @@ spec:
 !!! tip "Notice"
     Using the Gateway API, cert-manager automatically provisions HTTPRoute, Service, and Pod resources to address the challenge. Please note that the Gateway resource must be created in advance.
 
+<a id="key-field-description"></a>
+
 #### Key Field Description
 
 | Fields | Description | Required |
@@ -298,6 +320,8 @@ spec:
 | `spec.acme.solvers` | ACME Challenge verification method. Choose from `http01`, `dns01`. | O |
 | `spec.acme.solvers.http01.ingress.class` | Ingress method: Ingress Controller class name (e.g. `nginx`). | X |
 | `spec.acme.solvers.http01.gatewayHTTPRoute.parentRefs` | Gateway API method: Gateway resource information to reference. | X |
+
+<a id="apply-issuer-and-check-status"></a>
 
 #### Apply Issuer and Check Status
 
@@ -321,6 +345,8 @@ If the `Ready` status shows `True`, it's successfully enrolled.
     - Gateway API method: requires Gateway API CRD installation, enabling the Gateway API feature in cert-manager, installing a Gateway Controller (e.g., Traefik), and creating a Gateway resource.
     - `dns01` solver requires DNS provider setup.
     - The `skipTLSVerify: true` option is required if the Private CA server uses private certificates.
+
+<a id="configure-hostaliases-for-the-http-01-challenge-preliminary-work"></a>
 
 #### Configure hostAliases for the HTTP-01 Challenge (Preliminary Work)
 
@@ -360,9 +386,13 @@ This configuration ensures that requests from the cert-manager Pod to the domain
 
     These resources are automatically deleted after the Challenge completes.
 
+<a id="create-a-certificate-resource"></a>
+
 ### Create a Certificate Resource
 
 The Certificate resource defines the properties of the certificate to be issued.
+
+<a id="example-of-certificate-configuration"></a>
 
 #### Example of Certificate Configuration
 
@@ -388,6 +418,8 @@ spec:
     kind: Issuer
 ```
 
+<a id="create-a-certificate-resource-key-field-description"></a>
+
 #### Key Field Description
 
 | Fields | Description | Required |
@@ -398,6 +430,8 @@ spec:
 | `spec.dnsNames` | Subject Alternative Names (SAN) of the certificate. Must match the SAN of the base certificate. | X |
 | `spec.issuerRef.name` | Issuer or ClusterIssuer name to use. | O |
 | `spec.issuerRef.kind` | Issuer type. `Issuer` or `ClusterIssuer`. | X |
+
+<a id="apply-the-certificate-and-check-its-status"></a>
 
 #### Apply the Certificate and Check its Status
 
@@ -434,9 +468,13 @@ kubectl get challenge -n default
     - If you add a domain that does not exist in the base certificate, the certificate will fail to issue.
     - Be sure to verify that you specified the correct domain by checking the CN and SAN information in the Base certificate in the console before issuing the certificate.
 
+<a id="verify-issued-certificates"></a>
+
 ### Verify Issued Certificates
 
 Once the certificate is successfully issued, it will be stored in the designated Secret.
+
+<a id="confirm-secret"></a>
 
 #### Confirm Secret
 
@@ -444,6 +482,8 @@ Once the certificate is successfully issued, it will be stored in the designated
 kubectl get secret test-server-tls-example-com -n default
 kubectl describe secret test-server-tls-example-com -n default
 ```
+
+<a id="verify-certificate-contents"></a>
 
 #### Verify Certificate Contents
 
@@ -459,6 +499,8 @@ kubectl get secret test-server-tls-example-com -n default -o jsonpath='{.data.tl
 kubectl get secret test-server-tls-example-com -n default -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x509 -noout -dates
 ```
 
+<a id="secret-structure"></a>
+
 #### Secret Structure
 
 The issued certificate Secret has the following structure:
@@ -473,15 +515,21 @@ data:
   ca.crt: <base64-encoded CA certificate chain>
 ```
 
+<a id="certificate-auto-renewal"></a>
+
 ### Certificate Auto-Renewal
 
 cert-manager automatically performs renewals when a certificate is nearing expiration.
+
+<a id="how-auto-renewal-works"></a>
 
 #### How Auto-Renewal Works
 
 - The cert-manager periodically checks the expiration time of certificate resources.
 - Automatically starts renewal when the time set in the `renewBefore` field is up to the expiration date.
 - Renewed certificates are automatically updated to the same Secret.
+
+<a id="set-renewal-cycle"></a>
 
 #### Set Renewal Cycle
 
@@ -491,6 +539,8 @@ You can adjust when renewals start by modifying the `renewBefore` field in the c
 spec:
   renewBefore: 720h # Start renewal 30 days ago
 ```
+
+<a id="manual-renewal"></a>
 
 #### Manual Renewal
 
@@ -526,6 +576,8 @@ kubectl apply -f test-server-cert-example-com.yml
     - Be careful not to set the `renewBefore` value too short, as you risk letting the certificate expire.
     - If the renewal fails, cert-manager will automatically retry.
 
+<a id="how-to-test-for-renewals"></a>
+
 #### How to Test for Renewals
 
 To test that auto-renewal is working properly, you can use the following methods.
@@ -550,9 +602,13 @@ You can use the manual update method above (cmctl or kubectl annotation) to test
 cmctl renew test-server-cert-example-com -n default
 ```
 
+<a id="using-certificates-in-applications"></a>
+
 ### Using certificates in applications
 
 The issued certificate is stored as a Kubernetes Secret, allowing you to mount it in your application in various ways.
+
+<a id="used-by-ingress"></a>
 
 #### Used by Ingress
 
@@ -582,6 +638,8 @@ spec:
               number: 80
 ```
 
+<a id="mount-from-pod-to-volume"></a>
+
 #### Mount from Pod to Volume
 
 ```yaml
@@ -610,7 +668,11 @@ Mounted certificates are available at the following paths:
 - `/etc/tls/tls.key`: Private key
 - `/etc/tls/ca.crt`: CA Certificate Chain
 
+<a id="troubleshooting"></a>
+
 ### Troubleshooting
+
+<a id="if-certificate-issuance-fails"></a>
 
 #### If certificate issuance fails
 
@@ -648,6 +710,8 @@ kubectl describe challenge <challenge-name> -n default
 - For HTTP-01 Challenge, make sure Ingress is configured correctly.
 - Verify that the Challenge URL is accessible.
 
+<a id="common-errors-and-solutions"></a>
+
 #### Common Errors and Solutions
 
 | Error Message | Cause | Solution |
@@ -657,6 +721,8 @@ kubectl describe challenge <challenge-name> -n default
 | `domain not allowed` | Requested a domain that is not in the base certificate. | Match the `commonName and` `dnsNames`of the certificate to the base certificate. |
 | `secret not found` | EAB Secret not found. | Verify that the Secret was created in the correct namespace `. |
 | x509: certificate signed by unknown authority` | TLS verification failed. | Set `skipTLSVerify: true`for the Issuer. |
+
+<a id="check-logs"></a>
 
 #### Check Logs
 
@@ -671,6 +737,8 @@ kubectl logs -n cert-manager deployment/cert-manager -f
     - The certificate chain must consist of at least three levels (Root → Intermediate → Leaf).
     - The `renewBefore` value must be carefully adjusted to account for the ACME server's Rate Limit policy.
 
+<a id="about-acme-protocol"></a>
+
 ## About ACME protocol
 
 Through the ACME Directory URL `(/directory`) provided by the private CA, the ACME client automatically gets all the endpoint information it needs.
@@ -678,6 +746,8 @@ Through the ACME Directory URL `(/directory`) provided by the private CA, the AC
 The ACME protocol workflow is fully automated by the client, requiring only the Directory URL from the user.
 
 For more information about the ACME protocol, see [RFC 8555](https://datatracker.ietf.org/doc/html/rfc8555).
+
+<a id="references"></a>
 
 ## References
 
