@@ -19,6 +19,8 @@ Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하고, 효�
     * 인프라를 구축하는 데 드는 시간을 절약할 수 있고, 실수도 줄일 수 있습니다.
 
 
+<a id="supported-resources"></a>
+
 #### Resources 지원
 
 * Compute
@@ -52,6 +54,8 @@ Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하고, 효�
     * nhncloud_kubernetes_nodegroup_v1
     * nhncloud_kubernetes_cluster_resize_v1
     * nhncloud_kubernetes_nodegroup_upgrade_v1
+
+<a id="supported-data-sources"></a>
 
 #### Data sources 지원
 
