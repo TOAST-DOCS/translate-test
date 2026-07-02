@@ -116,7 +116,7 @@ Content-Type: application/json;charset=UTF-8
 | - currencyType         | String  | X        | Use of international currency codes such as KRW, USD, EUR, which is the currency unit of the price/amount/payment amount included in the message(message to be delivered to the user)(related to moment advertisement) |
 
 * <b>Request date and time can be set up to 60 days since a point of calling.</b>
-* <b>Since alternative delivery is made in the SMS service, field values must follow the API specifications for SMS (e.g. Sender number registered at the SMS service, or restriction in the field length). </b>
+* <b>Since alternative delivery is made in the SMS service, field values must follow the API specifications for SMS (e.g. Sender number registered at the SMS service, or restriction in the field length). </b>
 * <b>The SMS Service supports international SMS only. For international receiver numbers, the resendType(alternative delivery type) must be changed to SMS to allow sending without fail. </b>
 * <b>Title or content for alternative delivery that exceeds specified byte size may be cut for delivery.(see [[Caution](https://docs.toast.com/ko/Notification/SMS/ko/api-guide/#_1)] for reference)</b>
 * <b>If you add the `\s` character to the end of the templateTitle and templateItemHighlight.title fields with a substitution and templateParameter, you can apply the strikethrough style</b>
@@ -471,15 +471,6 @@ Content-Type: application/json;charset=UTF-8
 ```
 curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/messages?startRequestDate=2018-05-01%20:00&endRequestDate=2018-05-30%20:59"
 ```
-
-#### Status of Sending SMS/LMS
-| Value | Description                                      |
-| ----- | ------------------------------------------------ |
-| RSC01 | No target of resending                           |
-| RSC02 | Target of resending(resent, if delivery fails.) |
-| RSC03 | Resending                                        |
-| RSC04 | Resending successful                             |
-| RSC05 | Resending failed                                 |
 
 <a id="get-messages"></a>
 
@@ -910,6 +901,8 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:
 
 ### List Messages
 
+<a id="request-3"></a>
+
 #### Request
 
 [URL]
@@ -958,7 +951,7 @@ Content-Type: application/json;charset=UTF-8
 * Delivery request data before 90 days cannot be queried.
 * Delivery can be requested within 30 days to the maximum.   
 
-<a id="request-3"></a>
+<a id="response-7"></a>
 
 #### Response
 ```
@@ -1047,17 +1040,6 @@ Content-Type: application/json;charset=UTF-8
 ```
 curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/auth/messages?startRequestDate=2018-05-01%20:00&endRequestDate=2018-05-30%20:59"
 ```
-
-<a id="response-7"></a>
-
-#### Status of Resending SMS/LMS
-| Value | Description                                     |
-| ----- | ----------------------------------------------- |
-| RSC01 | No target of resending                          |
-| RSC02 | Target of resending(resent, if sending fails.) |
-| RSC03 | Resending                                       |
-| RSC04 | Resending successful                            |
-| RSC05 | Resending failed                                |
 
 <a id="get-messages-2"></a>
 
@@ -1362,7 +1344,13 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 
 ### SMS/LMS 대체 발송 상태 코드
 
-<!-- TODO: translate body -->
+| Value | Description                                      |
+| ----- | ------------------------------------------------ |
+| RSC01 | No target of resending                           |
+| RSC02 | Target of resending(resent, if delivery fails.) |
+| RSC03 | Resending                                        |
+| RSC04 | Resending successful                             |
+| RSC05 | Resending failed                                 |
 
 <a id="templates"></a>
 
@@ -2121,33 +2109,129 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 | -- activated         | Boolean | activated or not                                             |
 | -- createDate        | String  | Date and time of creation                                    |
 | - totalCount         | Integer | Total count                                                  |
+
 <a id="section-1"></a>
 
 ## 대체 발송 관리
-
-<!-- TODO: translate body -->
 
 <a id="section-1-1"></a>
 
 ### SMS AppKey 등록
 
-<!-- TODO: translate body -->
+[URL]
+
+```
+POST  /alimtalk/v2.0/appkeys/{appkey}/failback/appkey
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| 이름 |	타입|	설명|
+|---|---|---|
+|appkey|	String|	고유의 앱키|
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| 이름 |	타입|	필수|	설명|
+|---|---|---|---|
+|X-Secret-Key|	String| O | 콘솔에서 생성할 수 있습니다.  |
+
+
+[Request body]
+
+```
+{
+    "resendAppKey": String
+}
+```
+
+| 이름 |	타입|	필수|	설명|
+|---|---|---|---|
+|resendAppKey|	String|	O | 대체 발송으로 설정할 SMS 서비스 앱키 |
+
+[예시]
+```
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/failback/appkey -d '{"resendAppKey": "smsAppKey"}
+```
 
 <a id="section-1-1-1"></a>
 
 #### 응답
+```
 
-<!-- TODO: translate body -->
+{
+  "header": {
+      "resultCode": Integer,
+      "resultMessage": String,
+      "isSuccessful": boolean
+  }
+}
+```
 
 <a id="section-1-2"></a>
 
 ### 대체 발송 설정 등록
 
-<!-- TODO: translate body -->
+[URL]
+
+```
+POST  /alimtalk/v2.0/appkeys/{appkey}/failback
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| 이름 |	타입|	설명|
+|---|---|---|
+|appkey|	String|	고유의 앱키|
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| 이름 |	타입|	필수|	설명|
+|---|---|---|---|
+|X-Secret-Key|	String| O | 콘솔에서 생성할 수 있습니다.  |
+
+
+[Request body]
+
+```
+{  
+   "senderKey": String,
+   "isResend": Boolean,
+   "resendSendNo": String
+}
+```
+
+| 이름 |	타입|	필수|	설명|
+|---|---|---|---|
+|senderKey|	String|	O | 발신 키 |
+|isResend|	Boolean|	O | 발송 실패 시, 문자 대체발송 여부<br>Console에서 대체 발송 설정 시, default로 대체 발송 됩니다. |
+|resendSendNo|	String|	O | 대체 발송 발신번호<br><span style="color:red">(SMS 상품에 등록된 발신번호가 아닐 경우, 대체발송이 실패할 수 있습니다.)</span> |
+
+[예시]
+```
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/failback/appkey -d '{"senderKey": "0be23c29de88d6888798aeda57062516354d74ba","isResend": true,"resendSendNo": "01012341234" }
+```
 
 <a id="section-1-2-1"></a>
 
 #### 응답
+```
 
-<!-- TODO: translate body -->
-
+{
+  "header": {
+      "resultCode": Integer,
+      "resultMessage": String,
+      "isSuccessful": boolean
+  }
+}
+```
