@@ -116,7 +116,7 @@ Content-Type: application/json;charset=UTF-8
 | - currencyType         | String  | X        | Use of international currency codes such as KRW, USD, EUR, which is the currency unit of the price/amount/payment amount included in the message(message to be delivered to the user)(related to moment advertisement) |
 
 * <b>Request date and time can be set up to 60 days since a point of calling.</b>
-* <b>Since alternative delivery is made in the SMS service, field values must follow the API specifications for SMS (e.g. Sender number registered at the SMS service, or restriction in the field length). </b>
+* <b>Since alternative delivery is made in the SMS service, field values must follow the API specifications for SMS (e.g. Sender number registered at the SMS service, or restriction in the field length). </b>
 * <b>The SMS Service supports international SMS only. For international receiver numbers, the resendType(alternative delivery type) must be changed to SMS to allow sending without fail. </b>
 * <b>Title or content for alternative delivery that exceeds specified byte size may be cut for delivery.(see [[Caution](https://docs.toast.com/ko/Notification/SMS/ko/api-guide/#_1)] for reference)</b>
 * <b>If you add the `\s` character to the end of the templateTitle and templateItemHighlight.title fields with a substitution and templateParameter, you can apply the strikethrough style</b>
@@ -471,15 +471,6 @@ Content-Type: application/json;charset=UTF-8
 ```
 curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/messages?startRequestDate=2018-05-01%20:00&endRequestDate=2018-05-30%20:59"
 ```
-
-#### Status of Sending SMS/LMS
-| Value | Description                                      |
-| ----- | ------------------------------------------------ |
-| RSC01 | No target of resending                           |
-| RSC02 | Target of resending(resent, if delivery fails.) |
-| RSC03 | Resending                                        |
-| RSC04 | Resending successful                             |
-| RSC05 | Resending failed                                 |
 
 <a id="get-messages"></a>
 
@@ -1047,17 +1038,6 @@ Content-Type: application/json;charset=UTF-8
 ```
 curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/auth/messages?startRequestDate=2018-05-01%20:00&endRequestDate=2018-05-30%20:59"
 ```
-
-<a id="response-7"></a>
-
-#### Status of Resending SMS/LMS
-| Value | Description                                     |
-| ----- | ----------------------------------------------- |
-| RSC01 | No target of resending                          |
-| RSC02 | Target of resending(resent, if sending fails.) |
-| RSC03 | Resending                                       |
-| RSC04 | Resending successful                            |
-| RSC05 | Resending failed                                |
 
 <a id="get-messages-2"></a>
 
@@ -1960,194 +1940,4 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 |-- templateAd         | String  | Request for consent of receiving within template or simple ad phrases |
 | -- buttons           | List    | List of buttons                                              |
 | --- ordering         | Integer | Button sequence(1~5)                                        |
-| --- type             | String  | Button type(WL: Web link, AL: App link, DS: Delivery search, BK: Bot keyword, MD: Message delivery, BC: Bot for Consultation, BT: Bot Transfer, CA: Channel Added) |
-| --- name             | String  | Button name                                                  |
-| --- linkMo           | String  | Mobile web link(required for the WL type)                   |
-| --- linkPc           | String  | PC web link(optional for the WL type)                       |
-| --- schemeIos        | String  | iOS app link(required for the AL type)                      |
-| --- schemeAndroid    | String  | Android app link(required for the AL type)                  |
-| -- comments          | List    | Inspection result                                            |
-| --- id               | Integer | Inquiry ID                                                   |
-| --- content          | String  | Inquiry content                                              |
-| --- userName          | String  | Creator                                                      |
-| --- createAt          | String  | Date of registration                                         |
-| --- attachment        | List    | Attachment                                                   |
-| ---- originalFileName | String | Attachment file name                                          |
-| ---- filePath         | String | Attachment file path                                          |
-| --- status            | String  | Comment status(INQ: Inquired, APR: Approved, REJ: Rejected, REP: Replied, REQ: Under inspection) |
-| -- status            | String  | Template status                                              |
-| -- statusName        | String  | Template status name                                         |
-| -- createDate        | String  | Date and time of creation                                    |
-| - totalCount         | Integer | Total count                                                  |
-
-<a id="list-template-modifications"></a>
-
-### List Template modifications
-
-<a id="request-14"></a>
-
-#### Request
-
-[URL]
-
-```
-GET  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}/modifications
-Content-Type: application/json;charset=UTF-8
-```
-
-[Path parameter]
-
-| Value        | Type   | Description     |
-| ------------ | ------ | --------------- |
-| appkey       | String | Original appkey |
-| senderKey    | String | Sender Key   |
-| templateCode | String | Template code   |
-
-[Header]
-```
-{
-  "X-Secret-Key": String
-}
-```
-| Value        | Type   | Required | Description                                                  |
-| ------------ | ------ | -------- | ------------------------------------------------------------ |
-| X-Secret-Key | String | O        | Can be created on console.  |
-
-[Example]
-```
-curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}/modifications"
-```
-
-<a id="response-18"></a>
-
-#### Response
-```
-
-{
-  "header" : {
-      "resultCode" :  Integer,
-      "resultMessage" :  String,
-      "isSuccessful" :  boolean
-  },
-  "templateModificationsResponse": {
-      "templates": [
-          {
-              "plusFriendId": String,
-              "senderKey": String,
-              "plusFriendType": String,
-              "templateCode": String,
-              "templateName": String,
-              "templateContent": String,
-              "templateEmphasizeType": String,
-              "templateTitle" : String,
-              "templateSubtitle" : String,
-              "templateMessageType" : String,
-              "templateExtra" : String,
-              "templateAd" : String,
-              "buttons": [
-                {
-                    "ordering":Integer,
-                    "type": String,
-                    "name": String,
-                    "linkMo": String,
-                    "linkPc": String,
-                    "schemeIos": String,
-                    "schemeAndroid": String
-                }
-                ],
-                "comments": [
-                  {
-                      "id": Integer,
-                      "content": String,
-                      "userName": String,
-                      "createdAt": String,
-                      "attachment": [{
-                        "originalFileName": String,
-                        "filePath": String
-                      }],
-                      "status": String
-                    }  
-                ],
-                "status": String,
-                "statusName": String,
-                "activated": boolean,
-                "createDate": String
-            }
-        ],
-        "totalCount": Integer
-    }
-}
-```
-
-| Value                | Type    | Description                                                  |
-| -------------------- | ------- | ------------------------------------------------------------ |
-| header               | Object  | Header area                                                  |
-| - resultCode         | Integer | Result code                                                  |
-| - resultMessage      | String  | Result message                                               |
-| - isSuccessful       | Boolean | Successful or not                                            |
-| templateModificationsResponse | Object  | Body area                                                    |
-| - templates          | List    | Template list                                                |
-| -- plusFriendId      | String  | PlusFriend ID                                                |
-| -- senderKey         | String  | Sender Key                                                   |
-| -- plusFriendType    | String  | PlusFriend type(NORMAL, GROUP)                              |
-| -- templateCode      | String  | Template code                                                |
-| -- templateName      | String  | Template name                                                |
-| -- templateContent   | String  | Template body                                                |
-| -- templateEmphasizeType| String | Types of Emphasized Template(NONE: Basic, TEXT: Emphasized, default:NONE) |
-| -- tempalteTitle      | String  | Template Title                                               |
-| -- templateSubtitle   | String  | Auxiliary Template Phrase                                    |
-| -- templateMessageType| String  | Types of Template Message(BA: Basic, EX: Extra Information, AD: Ad Included, MI: Mixed Purposes) |
-| -- templateExtra      | String  | Additional Template Information                             |
-| -- templateAd         | String  | Request for consent of receiving within template or simple ad phrases |
-| -- buttons           | List    | List of buttons                                              |
-| --- ordering         | Integer | Button sequence(1~5)                                        |
-| --- type             | String  | Button type(WL: Web link, AL: App link, DS: Delivery search, BK: Bot keyword, MD: Message delivery, BC: Bot for Consultation, BT: Bot Transfer, CA: Channel Added) |
-| --- name             | String  | Button name                                                  |
-| --- linkMo           | String  | Mobile web link(required for the WL type)                   |
-| --- linkPc           | String  | PC web link(optional for the WL type)                       |
-| --- schemeIos        | String  | iOS app link(required for the AL type)                      |
-| --- schemeAndroid    | String  | Android app link(required for the AL type)                  |
-| -- comments          | List    | Inspection result                                            |
-| --- id               | Integer | Inquiry ID                                                   |
-| --- content          | String  | Inquiry content                                              |
-| --- userName          | String  | Creator                                                      |
-| --- createAt          | String  | Date of registration                                         |
-| --- attachment        | List    | Attachment                                                   |
-| ---- originalFileName | String | Attachment file name                                          |
-| ---- filePath         | String | Attachment file path                                          |
-| --- status            | String  | Comment status(INQ: Inquired, APR: Approved, REJ: Rejected, REP: Replied, REQ: Under inspection) |
-| -- status            | String  | Template status                                              |
-| -- statusName        | String  | Template status name                                         |
-| -- activated         | Boolean | activated or not                                             |
-| -- createDate        | String  | Date and time of creation                                    |
-| - totalCount         | Integer | Total count                                                  |
-<a id="section-1"></a>
-
-## 대체 발송 관리
-
-<!-- TODO: translate body -->
-
-<a id="section-1-1"></a>
-
-### SMS AppKey 등록
-
-<!-- TODO: translate body -->
-
-<a id="section-1-1-1"></a>
-
-#### 응답
-
-<!-- TODO: translate body -->
-
-<a id="section-1-2"></a>
-
-### 대체 발송 설정 등록
-
-<!-- TODO: translate body -->
-
-<a id="section-1-2-1"></a>
-
-#### 응답
-
-<!-- TODO: translate body -->
-
+| --- type             | String  | Button type(WL: Web link, AL: App link, DS: Delivery search, BK: Bot keyword, MD: Message delivery, BC: Bot for Consultation, BT: Bot Transfer, CA: Channel Added)
