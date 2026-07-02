@@ -243,6 +243,7 @@ Content-Type: application/json;charset=UTF-8
 | templateCode           | String  | O    | 登録した送信テンプレートコード(最大20桁)                    |
 | requestDate            | String  | X    | リクエスト日時(yyyy-MM-dd HH:mm)<br>(入力しない場合は即時送信) |
 | senderGroupingKey      | String  | X    | 発信グルーピングキー(最大100文字)                        |
+| createUser             | String  | X    | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存)|
 | recipientList          | List    | O    | 受信者リスト(最大1,000人)                        |
 | - recipientNo          | String  | O    | 受信番号(最大15桁)                            |
 | - content              | String  | O    | 内容(最大1000文字)                             |
@@ -466,15 +467,6 @@ Content-Type: application/json;charset=UTF-8
 curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/messages?startRequestDate=2018-05-01%20:00&endRequestDate=2018-05-30%20:59"
 ```
 
-#### SMS/LMS再送信ステータス
-| 値 | 説明                      |
-| ----- | ------------------------------- |
-| RSC01 | 再送信の対象ではない                 |
-| RSC02 | 再送信の対象(送信結果が失敗の時、再送信が行われます。) |
-| RSC03 | 再送信中                    |
-| RSC04 | 再送信成功                  |
-| RSC05 | 再送信失敗                  |
-
 <a id="get-messages"></a>
 
 ### メッセージ単件照会
@@ -590,9 +582,12 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 | - createDate           | String  | 登録日時                            |
 | - resendStatus         | String  | 再送信ステータスコード                         |
 | - resendStatusName     | String  | 再送信ステータスコード名                          |
+| - resendResultCode     | String  | 再送結果コード[SMS結果コード](https://docs.toast.com/ja/Notification/SMS/ja/error-code/#api) |
+| - resendRequestId      | String  | 再送SMSリクエストID                                                  |
 | - messageStatus        | String  | リクエストステータス(COMPLETED -> 成功、FAILED -> 失敗、CANCEL -> キャンセル) |
 | - resultCode           | String  | 受信結果コード                          |
 | - resultCodeName       | String  | 受信結果コード名                           |
+| - createUser           | String  | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存)|
 | - buttons              | List    | ボタンリスト                             |
 | -- ordering            | Integer | ボタン順序                             |
 | -- type                | String  | ボタンタイプ(WL：Webリンク、AL：アプリリンク、DS：配送照会、BK：Botキーワード、MD：メッセージ伝達、BC：相談トーク転換、BT：Bot転換、AC：チャンネル追加) |
@@ -910,6 +905,8 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:
 
 ### メッセージリストの照会
 
+<a id="request-3"></a>
+
 #### リクエスト
 
 [URL]
@@ -958,7 +955,7 @@ Content-Type: application/json;charset=UTF-8
 * 90日以上前の送信リクエストデータは照会されません。
 * 送信リクエスト日時の範囲は最大30日です。
 
-<a id="request-3"></a>
+<a id="response-7"></a>
 
 #### レスポンス
 ```
@@ -1047,17 +1044,6 @@ Content-Type: application/json;charset=UTF-8
 ```
 curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/auth/messages?startRequestDate=2018-05-01%20:00&endRequestDate=2018-05-30%20:59"
 ```
-
-<a id="response-7"></a>
-
-#### SMS/LMS再送信ステータス
-| 値 | 説明                      |
-| ----- | ------------------------------- |
-| RSC01 | 再送信の対象ではない                 |
-| RSC02 | 再送信の対象(送信結果が失敗の時、再送信が行われます。) |
-| RSC03 | 再送信中                    |
-| RSC04 | 再送信成功                  |
-| RSC05 | 再送信失敗                  |
 
 <a id="get-messages-2"></a>
 
@@ -1936,16 +1922,17 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 | templateListResponse | Object  | 本文領域                            |
 | - templates          | List    | テンプレートリスト                          |
 | -- plusFriendId      | String  | プラスフレンドID                                 |
+| -- senderKey         | String  | 発信キー                                  |
 | -- plusFriendType    | String  | プラスフレンドタイプ(NORMAL、GROUP)                  |
 | -- templateCode      | String  | テンプレートコード                           |
 | -- templateName      | String  | テンプレート名                             |
-| -- templateContent   | String  | テンプレート本文                           |
-| -- templateEmphasizeType| String| テンプレートハイライトタイプ（NONE：基本、TEXT：ハイライト、default：NONE）<br>TEXT：templateTitle、templateSubtitleフィールド必須 |
-| -- tempalteTitle     | String  | テンプレートのタイトル(最大50字、Android:2行、23字以上のコマ処理、iOS:2行、27字以上のコマ処理) |
-| -- templateSubtitle  | String  | テンプレートの補助フレーズ(最大50文字、Android:18字以上のコマを省く、iOS:21字以上のコマを省く) |
 | -- templateMessageType| String  | テンプレートメッセージタイプ(BA:基本型、EX:付加情報型、AD:広告追加型、MI:複合型)<br>EX：templateExtraフィールド必須<br>MI：templateExtraフィールド必須」 |
+| -- templateEmphasizeType| String| テンプレートハイライトタイプ（NONE：基本、TEXT：ハイライト、default：NONE）<br>TEXT：templateTitle、templateSubtitleフィールド必須 |
+| -- templateContent   | String  | テンプレート本文                           |
 | -- templateExtra     | String  | テンプレート付加情報 |
 | -- templateAd        | String  | テンプレート内の受信同意または簡単な広告文句 |
+| -- tempalteTitle     | String  | テンプレートのタイトル(最大50字、Android:2行、23字以上のコマ処理、iOS:2行、27字以上のコマ処理) |
+| -- templateSubtitle  | String  | テンプレートの補助フレーズ(最大50文字、Android:18字以上のコマを省く、iOS:21字以上のコマを省く) |
 | -- buttons           | List    | ボタンリスト                            |
 | --- ordering         | Integer | ボタン順序(1~5)                               |
 | --- type             | String  | ボタンタイプ(WL：Webリンク、AL：アプリリンク、DS：配送照会、BK：Botキーワード、MD：メッセージ伝達、BC：相談トーク転換、BT：Bot転換、AC：チャンネル追加) |
@@ -1965,7 +1952,10 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 | --- status            | String  | 応答状態(INQ：お問い合わせ、APR：承認、REJ：差し戻し、REP：返信, REQ:検査中) |
 | -- status            | String  | テンプレートのステータス                           |
 | -- statusName        | String  | テンプレートのステータス名                           |
+| -- securityFlag      | Boolean | セキュリティテンプレートかどうか |
+| -- categoryCode      | String  | テンプレートカテゴリーコード |
 | -- createDate        | String  | 作成日時                            |
+| -- updateDate        | String  | 修正日時                            |
 | - totalCount         | Integer | 総個数                              |
 
 <a id="list-template-modifications"></a>
