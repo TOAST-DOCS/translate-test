@@ -24,8 +24,9 @@
 <a id="overview-of-v20-api"></a>
 
 ## v2.0 API紹介
-1. カカオチャンネル追加時、発行されたsenderKeyフィールドでAPI呼び出しが行われるように変更しました。
-2. カカオチャンネルグループ機能が追加されました。
+1. カカオチャンネル追加時、発行されたsenderKeyフィールドでAPI呼び出しが行われるように変更しました。(plusFriendIdフィールド代替)
+2. API uriが変更されました。(/plus-friends -> /senders)
+3. カカオチャンネルグループ機能が追加されました。
 
 <a id="general-messages"></a>
 
@@ -92,7 +93,7 @@ Content-Type: application/json;charset=UTF-8
 
 | 値               | タイプ | 必須 | 説明                                |
 | ---------------------- | ------- | ---- | ---------------------------------------- |
-| senderKey              | String  | O    | 発信キー                            |
+| senderKey              | String  | O    | 発信キー(40文字)                            |
 | templateCode           | String  | O    | 登録した送信テンプレートコード(最大20桁)                    |
 | requestDate            | String  | X    | リクエスト日時(yyyy-MM-dd HH:mm)<br>(入力しない場合は即時送信) |
 | senderGroupingKey      | String  | X    | 発信グルーピングキー(最大100文字)                        |
@@ -105,17 +106,17 @@ Content-Type: application/json;charset=UTF-8
 | - resendParameter      | Object  | X    | 代替発送情報 |
 | -- isResend            | boolean | X    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
 | -- resendType          | String  | X    | 代替送信タイプ(SMS、LMS)<br>値がない場合は、テンプレート本文の長さに応じてタイプが決まります。 |
-| -- resendTitle         | String  | X    | LMS代替送信タイトル(最大20文字)<br>(値がない場合は、プラスフレンドIDで再送信されます。) |
-| -- resendContent       | String  | X    | 代替送信内容(最大1000文字)<br>(値がない場合は、テンプレートの内容で再送信されます。) |
-| -- resendSendNo        | String  | X    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+| -- resendTitle         | String  | X    | LMS代替送信タイトル<br>(値がない場合は、プラスフレンドIDで再送信されます。) |
+| -- resendContent       | String  | X    | 代替送信内容<br>(値がない場合は、[メッセージ本文とWebリンクボタン名 - WebリンクMobileリンク]で代替送信されます。) |
+| -- resendSendNo        | String  | X    | 代替送信発信番号<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
 | - recipientGroupingKey | String  | X    | 受信者グルーピングキー(最大100文字)                       |
 | messageOption          | Object  | X    |	メッセージオプション                                           |
 | - price                | Integer | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
-| - currencyType         | String  | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
+| - currencyType         | String  | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額の通貨単位KRW、USD、EURなど国際通貨コード使用(モーメント広告に該当) |
 
 * <b>リクエスト日時は呼び出す時点から60日後まで設定可能です。</b>
 * <b>SMSサービスで代替送信されるため、SMSサービスの送信APIの仕様に応じてフィールドを入力する必要があります。(SMSサービスに登録された発信番号、各種フィールドの長さ制限など)</b>
-* <b>SMSサービスは、国際SMSのみサポートします。国際受信者番号の場合、 resendType(代替送信タイプ)をSMSに変更すると正常に代替送信できます。</b>
+* <b>代替送信はSMS、LMSで送信可能で、国際代替送信はSMSのみサポートします。国際受信者番号の場合、resendType(代替送信タイプ)をSMSに変更すると正常に代替送信できます。</b>
 * <b>指定した代替送信タイプのバイト制限を超える代替送信のタイトルや内容は、途中で切れて代替送信されることがあります。([[SMS注意事項](https://docs.toast.com/ko/Notification/SMS/ko/api-guide/#_1)]参考)</b>
 * <b>templateTitleとtemplateItemHighlight.titleフィールドの一番後ろに日本語識別子とtemplateParameterを利用して`\s`文字を追加する場合、取り消し線スタイルを適用できます。</b>
     * <b>ただし、テンプレート登録時にあらかじめ\sをフィールドに追加しておいた場合は適用されません。</b>
@@ -200,10 +201,11 @@ Content-Type: application/json;charset=UTF-8
 
 ```
 {
-    "plusFriendId": String,
+    "senderKey": String,
     "templateCode": String,
     "requestDate": String,
     "senderGroupingKey": String,
+    "createUser": String,
     "recipientList": [
         {
             "recipientNo": String,
@@ -239,14 +241,15 @@ Content-Type: application/json;charset=UTF-8
 
 | 値               | タイプ | 必須 | 説明                                |
 | ---------------------- | ------- | ---- | ---------------------------------------- |
-| senderKey           | String  | O    | 発信キー                                   |
+| senderKey           | String  | O    | 発信キー(40文字)                                   |
 | templateCode           | String  | O    | 登録した送信テンプレートコード(最大20桁)                    |
 | requestDate            | String  | X    | リクエスト日時(yyyy-MM-dd HH:mm)<br>(入力しない場合は即時送信) |
 | senderGroupingKey      | String  | X    | 発信グルーピングキー(最大100文字)                        |
+| createUser             | String  | X    | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存)|
 | recipientList          | List    | O    | 受信者リスト(最大1,000人)                        |
 | - recipientNo          | String  | O    | 受信番号(最大15桁)                            |
 | - content              | String  | O    | 内容(最大1000文字)                             |
-| - templateTitle        | String  | X    | テンプレートハイライトタイトル(最大50桁) |
+| - templateTitle        | String  | X    | タイトル(最大50桁) |
 | - buttons              | List    | X    | ボタンリスト(最大5個)                             |
 | -- ordering            | Integer | X    | ボタン順序(ボタンがある場合は必須)                      |
 | -- type                | String  | X    | ボタンタイプ(WL：Webリンク、AL：アプリリンク、DS：配送照会、BK：Botキーワード、MD：メッセージ伝達、BC：相談トーク転換、BT：Bot転換、AC：チャンネル追加) |
@@ -258,19 +261,19 @@ Content-Type: application/json;charset=UTF-8
 | - resendParameter      | Object  | X    | 代替発送情報 |
 | -- isResend            | boolean | X    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
 | -- resendType          | String  | X    | 代替送信タイプ(SMS、LMS)<br>値がない場合は、テンプレート本文の長さに応じてタイプが決まります。 |
-| -- resendTitle         | String  | X    | LMS代替送信タイトル(最大20文字)<br>(値がない場合は、プラスフレンドIDで再送信されます。) |
-| -- resendContent       | String  | X    | 代替送信内容(最大1000文字)<br>(値がない場合は、テンプレートの内容で再送信されます。) |
-| -- resendSendNo        | String  | X    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+| -- resendTitle         | String  | X    | LMS代替送信タイトル<br>(値がない場合は、プラスフレンドIDで再送信されます。) |
+| -- resendContent       | String  | X    | 代替送信内容<br>(値がない場合は、[メッセージ本文とWebリンクボタン名 - WebリンクMobileリンク]で代替送信されます。) |
+| -- resendSendNo        | String  | X    | 代替送信発信番号<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
 | - recipientGroupingKey | String  | X    | 受信者グルーピングキー(最大100文字)                       |
 | messageOption          | Object  | X    |	メッセージオプション                                           |
 | - price                | Integer | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
-| - currencyType         | String  | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
+| - currencyType         | String  | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額の通貨単位KRW、USD、EURなど国際通貨コード使用(モーメント広告に該当) |
 
 * <b>本文とボタンに置換が完了したデータを入れてください。</b>
 * <b>リクエスト日時は呼び出す時点から60日後まで設定可能です。</b>
 * <b>SMSサービスで代替送信されるため、SMSサービスの送信APIの仕様に応じてフィールドを入力する必要があります。(SMSサービスに登録された発信番号、各種フィールドの長さ制限など)</b>
-* <b>SMSサービスは、国際SMSのみサポートします。国際受信者番号の場合、 resendType(代替送信タイプ)をSMSに変更すると正常に代替送信できます。</b>
-* <b>指定した代替送信タイプのバイト制限を超える代替送信のタイトルや内容は、途中で切れて代替送信されることがあります。([[SMS注意事項](https://docs.toast.com/ko/Notification/SMS/ko/api-guide/#_1)]参考)<
+* <b>代替送信はSMS、LMSで送信可能で、国際代替送信はSMSのみサポートします。国際受信者番号の場合、resendType(代替送信タイプ)をSMSに変更すると正常に代替送信できます。</b>
+* <b>指定した代替送信タイプのバイト制限を超える代替送信のタイトルや内容は、途中で切れて代替送信されることがあります。([[SMS注意事項](https://docs.toast.com/ko/Notification/SMS/ko/api-guide/#_1)]参考)</b>
 * <b>送信時にtemplateTitleとtemplateItemHighlight.titleフィールドの一番後ろに`\s`文字を追加すると、取り消し線スタイルを適用できます。</b>
     * <b>ただし、テンプレート登録時にあらかじめ\sをフィールドに追加しておいた場合は適用されません。</b>
 
@@ -440,10 +443,10 @@ Content-Type: application/json;charset=UTF-8
 | -- templateCode             | String  | テンプレートコード                           |
 | -- recipientNo              | String  | 受信番号                            |
 | -- content                  | String  | 本文                               |
-| -- requestDate              | String  | リクエスト日
+| -- requestDate              | String  | リクエスト日時                            |
 | -- createDate               | String  | 登録日時                            |
 | -- receiveDate              | String  | 受信日時                            |
-| -- resendStatus             | String  | 再送信ステータスコード                        |
+| -- resendStatus             | String  | 再送信ステータスコード(RSC01, RSC02, RSC03, RSC04, RSC05)<br>([[以下の代替送信ステータス表](http://docs.toast.com/ko/Notification/KakaoTalk%20Bizmessage/ko/alimtalk-api-guide/#smslms)]参考) |
 | -- resendStatusName         | String  | 再送信ステータスコード名                        |
 | -- messageStatus            | String  | リクエストステータス(COMPLETED -> 成功、FAILED -> 失敗、CANCEL -> キャンセル) |
 | -- createUser               | String  | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存) |
@@ -465,15 +468,6 @@ Content-Type: application/json;charset=UTF-8
 ```
 curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/messages?startRequestDate=2018-05-01%20:00&endRequestDate=2018-05-30%20:59"
 ```
-
-#### SMS/LMS再送信ステータス
-| 値 | 説明                      |
-| ----- | ------------------------------- |
-| RSC01 | 再送信の対象ではない                 |
-| RSC02 | 再送信の対象(送信結果が失敗の時、再送信が行われます。) |
-| RSC03 | 再送信中                    |
-| RSC04 | 再送信成功                  |
-| RSC05 | 再送信失敗                  |
 
 <a id="get-messages"></a>
 
@@ -581,18 +575,21 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 | - templateCode         | String  | テンプレートコード                            |
 | - recipientNo          | String  | 受信番号                             |
 | - content              | String  | 本文                                |
-|- templateTitle         | String  | テンプレートハイライトタイトル              |
-|- templateSubtitle      | String  | テンプレートハイライトサブタイトル           |
+|- templateTitle         | String  | テンプレートタイトル              |
+|- templateSubtitle      | String  | テンプレート補助文言           |
 |- templateExtra         | String  | テンプレート付加情報                     |
 |- templateAd            | String  | テンプレート内の受信同意または簡単な広告文句   |
 | - requestDate          | String  | リクエスト日時                             |
 | - receiveDate          | String  | 受信日時                             |
 | - createDate           | String  | 登録日時                            |
-| - resendStatus         | String  | 再送信ステータスコード                         |
+| - resendStatus         | String  | 再送信ステータスコード(RSC01, RSC02, RSC03, RSC04, RSC05)<br>([[以下の代替送信ステータス表](http://docs.toast.com/ko/Notification/KakaoTalk%20Bizmessage/ko/alimtalk-api-guide/#smslms)]参考) |
 | - resendStatusName     | String  | 再送信ステータスコード名                          |
+| - resendResultCode     | String  | 再送結果コード[SMS結果コード](https://docs.toast.com/ko/Notification/SMS/ko/error-code/#api) |
+| - resendRequestId      | String  | 再送SMSリクエストID                                                  |
 | - messageStatus        | String  | リクエストステータス(COMPLETED -> 成功、FAILED -> 失敗、CANCEL -> キャンセル) |
 | - resultCode           | String  | 受信結果コード                          |
 | - resultCodeName       | String  | 受信結果コード名                           |
+| - createUser           | String  | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存) |
 | - buttons              | List    | ボタンリスト                             |
 | -- ordering            | Integer | ボタン順序                             |
 | -- type                | String  | ボタンタイプ(WL：Webリンク、AL：アプリリンク、DS：配送照会、BK：Botキーワード、MD：メッセージ伝達、BC：相談トーク転換、BT：Bot転換、AC：チャンネル追加) |
@@ -603,7 +600,7 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 | -- schemeAndroid       | String  | Androidアプリリンク(ALタイプの場合は必須フィールド)            |
 | - messageOption        | Object  |	メッセージオプション                                           |
 | -- price               | Integer |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
-| -- currencyType        | String  |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
+| -- currencyType        | String  |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額の通貨単位KRW、USD、EURなど国際通貨コード使用(モーメント広告に該当) |
 | - senderGroupingKey    | String  | 発信グルーピングキー                            |
 | - recipientGroupingKey | String  | 受信者グルーピングキー                           |
 
@@ -682,11 +679,11 @@ Content-Type: application/json;charset=UTF-8
 
 | 値               | タイプ | 必須 | 説明                                |
 | ---------------------- | ------- | ---- | ---------------------------------------- |
-| senderKey              | String  | O    | 発信キー                         |
+| senderKey              | String  | O    | 発信キー(40文字)                         |
 | templateCode           | String  | O    | 登録した送信テンプレートコード(最大20桁)                    |
 | requestDate            | String  | X    | リクエスト日時(yyyy-MM-dd HH:mm)<br>(入力しない場合は即時送信) |
-| createUser             | String  | X    | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存)|
 | senderGroupingKey      | String  | X    | 発信グルーピングキー(最大100文字)                        |
+| createUser             | String  | X    | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存)|
 | recipientList          | List    | O    | 受信者リスト(最大1000人)                         |
 | - recipientNo          | String  | O    | 受信番号(最大15桁)                            |
 | - templateParameter    | Object  | X    | テンプレートパラメータ<br>(テンプレートに置換する変数が含まれる時は必須)       |
@@ -695,13 +692,13 @@ Content-Type: application/json;charset=UTF-8
 | - resendParameter      | Object  | X    | 代替発送情報 |
 | -- isResend            | boolean | X    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
 | -- resendType          | String  | X    | 代替送信タイプ(SMS、LMS)<br>値がない場合は、テンプレート本文の長さに応じてタイプが決まります。 |
-| -- resendTitle         | String  | X    | LMS代替送信タイトル(最大20文字)<br>(値がない場合は、プラスフレンドIDで再送信されます。) |
-| -- resendContent       | String  | X    | 代替送信内容(最大1000文字)<br>(値がない場合は、テンプレートの内容で再送信されます。) |
-| -- resendSendNo        | String  | X    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+| -- resendTitle         | String  | X    | LMS代替送信タイトル<br>(値がない場合は、プラスフレンドIDで再送信されます。) |
+| -- resendContent       | String  | X    | 代替送信内容<br>(値がない場合は、[メッセージ本文とWebリンクボタン名 - WebリンクMobileリンク]で代替送信されます。) |
+| -- resendSendNo        | String  | X    | 代替送信発信番号<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
 | - recipientGroupingKey | String  | X    | 受信者グルーピングキー(最大100文字)                       |
 | messageOption          | Object  | X    |	メッセージオプション                                           |
 | - price                | Integer | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
-| - currencyType         | String  | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
+| - currencyType         | String  | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額の通貨単位KRW、USD、EURなど国際通貨コード使用(モーメント広告に該当) |
 
 * <b>リクエスト日時は呼び出す時点から60日後まで設定可能です。</b>
 * <b>SMSサービスで代替送信されるため、SMSサービスの送信APIの仕様に応じてフィールドを入力する必要があります。(SMSサービスに登録された発信番号、各種フィールドの長さ制限など)</b>
@@ -827,7 +824,7 @@ Content-Type: application/json;charset=UTF-8
 
 | 値               | タイプ | 必須 | 説明                                |
 | ---------------------- | ------- | ---- | ---------------------------------------- |
-| senderKey              | String  | O    | 発信キー                         |
+| senderKey              | String  | O    | 発信キー(40文字)                         |
 | templateCode           | String  | O    | 登録した送信テンプレートコード(最大20桁)                    |
 | requestDate            | String  | X    | リクエスト日時(yyyy-MM-dd HH:mm)<br>(入力しない場合は即時送信) |
 | senderGroupingKey      | String  | X    | 発信グルーピングキー(最大100文字)                        |
@@ -847,13 +844,13 @@ Content-Type: application/json;charset=UTF-8
 | - resendParameter      | Object  | X    | 代替発送情報 |
 | -- isResend            | boolean | X    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
 | -- resendType          | String  | X    | 代替送信タイプ(SMS、LMS)<br>値がない場合は、テンプレート本文の長さに応じてタイプが決まります。 |
-| -- resendTitle         | String  | X    | LMS代替送信タイトル(最大20文字)<br>(値がない場合は、プラスフレンドIDで再送信されます。) |
-| -- resendContent       | String  | X    | 代替送信内容(最大1000文字)<br>(値がない場合は、テンプレートの内容で再送信されます。) |
-| -- resendSendNo        | String  | X    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+| -- resendTitle         | String  | X    | LMS代替送信タイトル<br>(値がない場合は、プラスフレンドIDで再送信されます。) |
+| -- resendContent       | String  | X    | 代替送信内容<br>(値がない場合は、[メッセージ本文とWebリンクボタン名 - WebリンクMobileリンク]で代替送信されます。) |
+| -- resendSendNo        | String  | X    | 代替送信発信番号<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
 | - recipientGroupingKey | String  | X    | 受信者グルーピングキー(最大100文字)                       |
 | messageOption          | Object  | X    |	メッセージオプション                                           |
 | - price                | Integer | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
-| - currencyType         | String  | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
+| - currencyType         | String  | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額の通貨単位KRW、USD、EURなど国際通貨コード使用(モーメント広告に該当) |
 
 * <b>本文とボタンに置換が完了したデータを入れてください。</b>
 * <b>リクエスト日時は呼び出す時点から60日後まで設定可能です。</b>
@@ -910,6 +907,8 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:
 
 ### メッセージリストの照会
 
+<a id="request-3"></a>
+
 #### リクエスト
 
 [URL]
@@ -950,15 +949,15 @@ Content-Type: application/json;charset=UTF-8
 | senderGroupingKey    | String  | X         | 発信グルーピングキー                            |
 | recipientGroupingKey | String  | X         | 受信者グルーピングキー                           |
 | messageStatus        | String  | X         | リクエストステータス(COMPLETED -> 成功、FAILED -> 失敗、CANCEL -> キャンセル) |
-| createUser           | String  | X         | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存)|
 | resultCode           | String  | X         | 送信結果(MRC01 -> 成功、MRC02 -> 失敗)          |
+| createUser           | String  | X         | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存)|
 | pageNum              | Integer | X         | ページ番号(基本：1)                            |
 | pageSize             | Integer | X         | 照会件数(基本：15、最大: 1000)                |
 
 * 90日以上前の送信リクエストデータは照会されません。
 * 送信リクエスト日時の範囲は最大30日です。
 
-<a id="request-3"></a>
+<a id="response-7"></a>
 
 #### レスポンス
 ```
@@ -1025,7 +1024,7 @@ Content-Type: application/json;charset=UTF-8
 | -- requestDate              | String  | リクエスト日時                            |
 | -- createDate               | String  | 登録日時                            |
 | -- receiveDate              | String  | 受信日時                            |
-| -- resendStatus             | String  | 再送信ステータスコード                        |
+| -- resendStatus             | String  | 再送信ステータスコード(RSC01, RSC02, RSC03, RSC04, RSC05)<br>([[以下の代替送信ステータス表](http://docs.toast.com/ko/Notification/KakaoTalk%20Bizmessage/ko/alimtalk-api-guide/#smslms)]参考) |
 | -- resendStatusName         | String  | 再送信ステータスコード名                        |
 | -- messageStatus            | String  | リクエストステータス(COMPLETED -> 成功、FAILED -> 失敗、CANCEL -> キャンセル) |
 | -- resultCode               | String  | 受信結果コード                         |
@@ -1047,17 +1046,6 @@ Content-Type: application/json;charset=UTF-8
 ```
 curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/auth/messages?startRequestDate=2018-05-01%20:00&endRequestDate=2018-05-30%20:59"
 ```
-
-<a id="response-7"></a>
-
-#### SMS/LMS再送信ステータス
-| 値 | 説明                      |
-| ----- | ------------------------------- |
-| RSC01 | 再送信の対象ではない                 |
-| RSC02 | 再送信の対象(送信結果が失敗の時、再送信が行われます。) |
-| RSC03 | 再送信中                    |
-| RSC04 | 再送信成功                  |
-| RSC05 | 再送信失敗                  |
 
 <a id="get-messages-2"></a>
 
@@ -1165,16 +1153,16 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 | - templateCode         | String  | テンプレートコード                            |
 | - recipientNo          | String  | 受信番号                             |
 | - content              | String  | 本文                                |
-| - templateTitle        | String  | テンプレートハイライトタイトル              |
-| - templateSubtitle     | String  | テンプレートハイライトサブタイトル           |
+| - templateTitle        | String  | テンプレートタイトル              |
+| - templateSubtitle     | String  | テンプレート補助文言           |
 | - templateExtra        | String  | テンプレート付加情報                     |
 | - templateAd           | String  | テンプレート内の受信同意または簡単な広告文句   |
 | - requestDate          | String  | リクエスト日時                             |
 | - createDate           | String  | 登録日時                            |
 | - receiveDate          | String  | 受信日時                             |
-| - resendStatus         | String  | 再送信ステータスコード                         |
+| - resendStatus         | String  | 再送信ステータスコード(RSC01, RSC02, RSC03, RSC04, RSC05)<br>([[以下の代替送信ステータス表](http://docs.toast.com/ko/Notification/KakaoTalk%20Bizmessage/ko/alimtalk-api-guide/#smslms)]参考) |
 | - resendStatusName     | String  | 再送信ステータスコード名                          |
-| - resendResultCode     | String  | 再送結果コード[SMS結果コード](https://docs.toast.com/ja/Notification/SMS/ja/error-code/#api) |
+| - resendResultCode     | String  | 再送結果コード[SMS結果コード](https://docs.toast.com/ko/Notification/SMS/ko/error-code/#api) |
 | - resendRequestId      | String  | 再送SMSリクエストID                                                  |
 | - messageStatus        | String  | リクエストステータス(COMPLETED -> 成功、FAILED -> 失敗、CANCEL -> キャンセル) |
 | - resultCode           | String  | 受信結果コード                          |
@@ -1190,7 +1178,7 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 | -- schemeAndroid       | String  | Androidアプリリンク(ALタイプの場合は必須フィールド)            |
 | - messageOption        | Object  |	メッセージオプション                                           |
 | -- price               | Integer |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
-| -- currencyType        | String  |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
+| -- currencyType        | String  |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額の通貨単位KRW、USD、EURなど国際通貨コード使用(モーメント広告に該当) |
 | - senderGroupingKey    | String  | 発信グルーピングキー                            |
 | - recipientGroupingKey | String  | 受信者グルーピングキー                           |
 
@@ -1344,9 +1332,9 @@ Content-Type: application/json;charset=UTF-8
 | - requestDate              | String  | リクエスト日時                            |
 | - createDate               | String  | 作成日時                            |
 | - receiveDate              | String  | 受信日時                            |
-| - resendStatus             | String  | 再送信ステータスコード                        |
+| - resendStatus             | String  | 再送信ステータスコード(RSC01, RSC02, RSC03, RSC04, RSC05)<br>([[以下の代替送信ステータス表](http://docs.toast.com/ko/Notification/KakaoTalk%20Bizmessage/ko/alimtalk-api-guide/#smslms)]参考) |
 | - resendStatusName         | String  | 再送信ステータスコード名                        |
-| - resendResultCode         | String  | 再送結果コード[SMS結果コード](https://docs.toast.com/ja/Notification/SMS/ja/error-code/#api)                        |
+| - resendResultCode         | String  | 再送結果コード[SMS結果コード](https://docs.toast.com/ko/Notification/SMS/ko/error-code/#api)                        |
 | - resendRequestId          | String  | 再送SMSリクエストID                        |
 | - messageStatus            | String  | リクエストステータス(COMPLETED -> 成功、FAILED -> 失敗、CANCEL -> キャンセル) |
 | - resultCode               | String  | 受信結果コード                         |
@@ -1360,9 +1348,14 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 
 <a id="messages-1"></a>
 
-### SMS/LMS 대체 발송 상태 코드
-
-<!-- TODO: translate body -->
+### SMS/LMS代替送信ステータスコード
+| 値 | 説明                      |
+| ----- | ------------------------------- |
+| RSC01 | 再送信の対象ではない                 |
+| RSC02 | 再送信の対象(送信結果が失敗の時、再送信が行われます。) |
+| RSC03 | 再送信中                    |
+| RSC04 | 再送信成功                  |
+| RSC05 | 再送信失敗                  |
 
 <a id="templates"></a>
 
@@ -1449,7 +1442,7 @@ Content-Type: application/json;charset=UTF-8
 [URL]
 
 ```
-POST  /alimtalk/v2.0/appkeys/{appkey}/plus-friends/{plusFriendId}/templates
+POST  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates
 Content-Type: application/json;charset=UTF-8
 ```
 
@@ -1480,7 +1473,6 @@ Content-Type: application/json;charset=UTF-8
   "templateMessageType": String,
   "templateEmphasizeType":String,
   "templateExtra": String,
-  "templateAd": String,
   "templateTitle":String,
   "templateSubtitle":String,
   "securityFlag": Boolean,
@@ -1504,16 +1496,16 @@ Content-Type: application/json;charset=UTF-8
 | templateCode    | String  | O    | テンプレートコード(最大20文字)                           |
 | templateName    | String  | O    | テンプレート名(最大150文字)                             |
 | templateContent | String  | O    | テンプレート本文(最大1000文字)                         |
-| templateMessageType| String | X  | テンプレートメッセージタイプ(BA:基本型、EX:付加情報型、AD:広告追加型、MI:複合型)<br>EX：templateExtraフィールド必須<br>MI：templateExtraフィールド必須」 |
+| templateMessageType| String | X  | テンプレートメッセージタイプ(BA:基本型、EX:付加情報型、AD:広告追加型、MI:複合型, default:BA) |
 |templateEmphasizeType| String| X  | テンプレートハイライトタイプ（NONE：基本、TEXT：ハイライト、default：NONE）<br>TEXT：templateTitle、templateSubtitleフィールド必須 |
-| templateExtra     | String  | X  | テンプレート付加情報 |
+| templateExtra     | String  | X  | テンプレート付加情報(テンプレートメッセージタイプが[付加情報型/複合型]の場合は必須) |
 |tempalteTitle      | String  | X  | テンプレートのタイトル(最大50字、Android:2行、23字以上のコマ処理、iOS:2行、27字以上のコマ処理) |
 |templateSubtitle   | String  | X  | テンプレートの補助フレーズ(最大50文字、Android:18字以上のコマを省く、iOS:21字以上のコマを省く) |
 |securityFlag| Boolean | X| セキュリティテンプレートかどうか<br>OTPなどのセキュリティメッセージの場合、設定<br>発信当時のメインデバイスを除くすべてのデバイスにメッセージテキストミノチュル(default: false) |
-|categoryCode| String | X | テンプレートのカテゴリコード(テンプレートカテゴリー照会API参考, default: 999999)<br>カテゴリーを入力し、テンプレートを優先審査 |
+|categoryCode| String | X | テンプレートのカテゴリコード(テンプレートカテゴリー照会API参考, default: 999999)<br>カテゴリーがその他の場合、最下位優先順位で審査 |
 | buttons         | List    | X    | ボタンリスト(最大5個)                             |
 | -ordering       | Integer | X    | ボタン順序(1~5)                               |
-| -type           | String  | X    | ボタンタイプ(WL：Webリンク、AL：アプリリンク、DS：配送照会、BK：Botキーワード、MD：メッセージ伝達、BC：相談トーク転換、BT：Bot転換、AC：チャンネル追加) |[広告追加/複合型のみ]) |
+| -type           | String  | X    | ボタンタイプ(WL：Webリンク、AL：アプリリンク、DS：配送照会、BK：Botキーワード、MD：メッセージ伝達、BC：相談トーク転換、BT：Bot転換、AC：チャンネル追加[広告追加/複合型のみ]) |
 | -name           | String  | X    | ボタン名(ボタンがある場合は必須、最大14文字)              |
 | -linkMo         | String  | X    | モバイルWebリンク(WLタイプの場合は必須フィールド、最大500文字)       |
 | -linkPc         | String  | X    | PC Webリンク(WLタイプの場合は任意フィールド、最大500文字)        |
@@ -1549,7 +1541,7 @@ Content-Type: application/json;charset=UTF-8
 [URL]
 
 ```
-PUT  /alimtalk/v2.0/appkeys/{appkey}/plus-friends/{plusFriendId}/templates/{templateCode}
+PUT  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}
 Content-Type: application/json;charset=UTF-8
 ```
 
@@ -1602,16 +1594,16 @@ Content-Type: application/json;charset=UTF-8
 | --------------- | ------- | ---- | ---------------------------------------- |
 | templateName    | String  | O    | テンプレート名(最大150文字)                             |
 | templateContent | String  | O    | テンプレート本文(最大1000文字)                         |
-| templateMessageType| String | X  | テンプレートメッセージタイプ(BA:基本型、EX:付加情報型、AD:広告追加型、MI:複合型)<br>EX：templateExtraフィールド必須<br>MI：templateExtraフィールド必須」 |
+| templateMessageType| String | X  | テンプレートメッセージタイプ(BA:基本型、EX:付加情報型、AD:広告追加型、MI:複合型) |
 | templateEmphasizeType| String| X  | テンプレートハイライトタイプ（NONE：基本、TEXT：ハイライト、default：NONE）<br>TEXT：templateTitle、templateSubtitleフィールド必須 |
-| templateExtra   | String  | X    |テンプレート付加情報 |
+| templateExtra   | String  | X    |テンプレート付加情報(テンプレートメッセージタイプが[付加情報型/複合型]の場合は必須) |
 | tempalteTitle| String | X| テンプレートのタイトル(最大50字、Android:2行、23字以上のコマ処理、iOS:2行、27字以上のコマ処理) |
 | templateSubtitle| String | X| テンプレートの補助フレーズ(最大50文字、Android:18字以上のコマを省く、iOS:21字以上のコマを省く) |
 |securityFlag| Boolean | X| セキュリティテンプレートかどうか<br>OTPなどのセキュリティメッセージの場合、設定<br>発信当時のメインデバイスを除くすべてのデバイスにメッセージテキストミノチュル(default: false) |
-|categoryCode| String | X | テンプレートのカテゴリコード(テンプレートカテゴリー照会API参考, default: 999999)<br>カテゴリーを入力し、テンプレートを優先審査 |
+|categoryCode| String | X | テンプレートのカテゴリコード(テンプレートカテゴリー照会API参考, default: 999999)<br>カテゴリーがその他の場合、最下位優先順位で審査 |
 | buttons         | List    | X    | ボタンリスト(最大5個)                             |
 | -ordering       | Integer | X    | ボタン順序(1~5)                               |
-| -type           | String  | X    | ボタンタイプ(WL：Webリンク、AL：アプリリンク、DS：配送照会、BK：Botキーワード、MD：メッセージ伝達、BC：相談トーク転換、BT：Bot転換、AC：チャンネル追加) |[広告追加/複合型のみ]) |
+| -type           | String  | X    | ボタンタイプ(WL：Webリンク、AL：アプリリンク、DS：配送照会、BK：Botキーワード、MD：メッセージ伝達、BC：相談トーク転換、BT：Bot転換、AC：チャンネル追加[広告追加/複合型のみ]) |
 | -name           | String  | X    | ボタン名(ボタンがある場合は必須、最大14文字)              |
 | -linkMo         | String  | X    | モバイルWebリンク(WLタイプの場合は必須フィールド、最大500文字)       |
 | -linkPc         | String  | X    | PC Webリンク(WLタイプの場合は任意フィールド、最大500文字)        |
@@ -1647,7 +1639,7 @@ Content-Type: application/json;charset=UTF-8
 [URL]
 
 ```
-DELETE  /alimtalk/v2.0/appkeys/{appkey}/plus-friends/{plusFriendId}/templates/{templateCode}
+DELETE  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}
 Content-Type: application/json;charset=UTF-8
 ```
 
@@ -1656,7 +1648,7 @@ Content-Type: application/json;charset=UTF-8
 | 値    | タイプ | 説明 |
 | ------------ | ------ | -------- |
 | appkey       | String | 固有のアプリケーションキー |
-| plusFriendId | String | 発信キー |
+| senderKey | String | 発信キー |
 | templateCode | String | テンプレートコード |
 
 [Header]
@@ -1695,7 +1687,7 @@ Content-Type: application/json;charset=UTF-8
 [URL]
 
 ```
-PUT  /alimtalk/v2.0/appkeys/{appkey}/plus-friends/{plusFriendId}/templates/{templateCode}/comments
+POST  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}/comments
 Content-Type: application/json;charset=UTF-8
 ```
 
@@ -1704,7 +1696,7 @@ Content-Type: application/json;charset=UTF-8
 | 値    | タイプ | 説明 |
 | ------------ | ------ | -------- |
 | appkey       | String | 固有のアプリケーションキー |
-| plusFriendId | String | 発信キー |
+| senderKey | String | 発信キー |
 | templateCode | String | テンプレートコード |
 
 [Header]
@@ -1758,7 +1750,7 @@ Content-Type: application/json;charset=UTF-8
 [URL]
 
 ```
-POST  /alimtalk/v2.0/appkeys/{appkey}/plus-friends/{plusFriendId}/templates/{templateCode}/comments_file
+POST  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}/comments_file
 Content-Type: application/json;charset=UTF-8
 ```
 
@@ -1767,7 +1759,7 @@ Content-Type: application/json;charset=UTF-8
 |値|	タイプ|	説明|
 |---|---|---|
 |appkey|	String|	固有のAppkey|
-|plusFriendId|	String|	発信キー |
+|senderKey|	String|	発信キー |
 |templateCode|	String|	テンプレートコード |
 
 [Header]
@@ -1825,7 +1817,7 @@ Content-Type: application/json;charset=UTF-8
 [URL]
 
 ```
-GET  /alimtalk/v2.0/appkeys/{appkey}/templates
+GET  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates
 Content-Type: application/json;charset=UTF-8
 ```
 
@@ -1834,6 +1826,7 @@ Content-Type: application/json;charset=UTF-8
 | 値 | タイプ | 説明 |
 | ------ | ------ | ------ |
 | appkey | String | 固有のアプリケーションキー |
+| senderKey | String | 発信キー |
 
 [Header]
 ```
@@ -1849,7 +1842,6 @@ Content-Type: application/json;charset=UTF-8
 
 | 値      | タイプ | 必須 | 説明    |
 | -------------- | ------- | ---- | ------------- |
-| plusFriendId   | String  | X    | 発信キー      |
 | templateCode   | String  | X    | テンプレートコード |
 | templateName   | String  | X    | テンプレート名 |
 | templateStatus | String  | X    | テンプレートステータスコード |
@@ -1865,7 +1857,7 @@ Content-Type: application/json;charset=UTF-8
 
 [例]
 ```
-curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/templates?plusFriendId={発信キー}&templateStatus={テンプレートステータスコード}"
+curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates?templateStatus={テンプレートステータスコード}"
 ```
 
 <a id="response-17"></a>
@@ -1883,16 +1875,17 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
       "templates": [
           {
               "plusFriendId": String,
+              "senderKey": String,
               "plusFriendType": String,
               "templateCode": String,
               "templateName": String,
-              "templateContent": String,
+              "templateMessageType": String,
               "templateEmphasizeType": String,
+              "templateContent": String,
+              "templateExtra": String,
+              "templateAd": String,
               "templateTitle":String,
               "templateSubtitle":String,
-              "templateMessageType":String,
-              "templateExtra":String,
-              "templateAd":String,
               "buttons": [
                 {
                     "ordering":Integer,
@@ -1919,7 +1912,10 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
                 ],
                 "status": String,
                 "statusName": String,
-                "createDate": String
+                "securityFlag": Boolean,
+                "categoryCode": String,
+                "createDate": String,
+                "updateDate": String
             }
         ],
         "totalCount": Integer
@@ -1935,17 +1931,18 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 | - isSuccessful       | Boolean | 成否                             |
 | templateListResponse | Object  | 本文領域                            |
 | - templates          | List    | テンプレートリスト                          |
-| -- plusFriendId      | String  | プラスフレンドID                                 |
+| -- plusFriendId      | String  | カカオトークチャンネル検索用IDまたは発信プロフィールグループ名                                 |
+| -- senderKey    | String  | 発信キー                  |
 | -- plusFriendType    | String  | プラスフレンドタイプ(NORMAL、GROUP)                  |
 | -- templateCode      | String  | テンプレートコード                           |
 | -- templateName      | String  | テンプレート名                             |
+| -- templateMessageType| String  | テンプレートメッセージタイプ(BA:基本型、EX:付加情報型、AD:広告追加型、MI:複合型) |
+| -- templateEmphasizeType| String| テンプレートハイライトタイプ（NONE：基本、TEXT：ハイライト、default：NONE） |
 | -- templateContent   | String  | テンプレート本文                           |
-| -- templateEmphasizeType| String| テンプレートハイライトタイプ（NONE：基本、TEXT：ハイライト、default：NONE）<br>TEXT：templateTitle、templateSubtitleフィールド必須 |
-| -- tempalteTitle     | String  | テンプレートのタイトル(最大50字、Android:2行、23字以上のコマ処理、iOS:2行、27字以上のコマ処理) |
-| -- templateSubtitle  | String  | テンプレートの補助フレーズ(最大50文字、Android:18字以上のコマを省く、iOS:21字以上のコマを省く) |
-| -- templateMessageType| String  | テンプレートメッセージタイプ(BA:基本型、EX:付加情報型、AD:広告追加型、MI:複合型)<br>EX：templateExtraフィールド必須<br>MI：templateExtraフィールド必須」 |
 | -- templateExtra     | String  | テンプレート付加情報 |
 | -- templateAd        | String  | テンプレート内の受信同意または簡単な広告文句 |
+| -- tempalteTitle     | String  | テンプレートタイトル |
+| -- templateSubtitle  | String  | テンプレート補助文言 |
 | -- buttons           | List    | ボタンリスト                            |
 | --- ordering         | Integer | ボタン順序(1~5)                               |
 | --- type             | String  | ボタンタイプ(WL：Webリンク、AL：アプリリンク、DS：配送照会、BK：Botキーワード、MD：メッセージ伝達、BC：相談トーク転換、BT：Bot転換、AC：チャンネル追加) |
@@ -1965,7 +1962,10 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 | --- status            | String  | 応答状態(INQ：お問い合わせ、APR：承認、REJ：差し戻し、REP：返信, REQ:検査中) |
 | -- status            | String  | テンプレートのステータス                           |
 | -- statusName        | String  | テンプレートのステータス名                           |
+| -- securityFlag      | Boolean | セキュリティテンプレートかどうか                           |
+| -- categoryCode      | String  | テンプレートカテゴリーコード                           |
 | -- createDate        | String  | 作成日時                            |
+| -- updateDate        | String  | 修正日時                            |
 | - totalCount         | Integer | 総個数                              |
 
 <a id="list-template-modifications"></a>
@@ -1979,7 +1979,7 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 [URL]
 
 ```
-GET  /alimtalk/v2.0/appkeys/{appkey}/plus-friends/{plusFriendId}/templates/{templateCode}/modifications
+GET  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}/modifications
 Content-Type: application/json;charset=UTF-8
 ```
 
@@ -1988,7 +1988,7 @@ Content-Type: application/json;charset=UTF-8
 | 値 | タイプ | 説明 |
 |---|---|---|
 | appkey       | String | 固有のアプリケーションキー |
-| plusFriendId | String | プラスフレンドID |
+| senderKey | String | 発信キー |
 | templateCode | String | テンプレートコード |
 
 [Header]
@@ -2003,7 +2003,7 @@ Content-Type: application/json;charset=UTF-8
 
 [例]
 ```
-curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/plus-friends/{plusFriendId}/templates/{templateCode}/modifications"
+curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}/modifications"
 ```
 
 <a id="response-18"></a>
@@ -2021,16 +2021,17 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
       "templates": [
           {
               "plusFriendId": String,
+              "senderKey": String,
               "plusFriendType": String,
               "templateCode": String,
               "templateName": String,
-              "templateContent": String,
+              "templateMessageType": String,
               "templateEmphasizeType": String,
+              "templateContent": String,
+              "templateExtra": String,
+              "templateAd": String,
               "templateTitle":String,
               "templateSubtitle":String,
-              "templateMessageType":String,
-              "templateExtra":String,
-              "templateAd":String,
               "buttons": [
                 {
                     "ordering":Integer,
@@ -2057,8 +2058,11 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
                 ],
                 "status": String,
                 "statusName": String,
+                "securityFlag": Boolean,
+                "categoryCode": String,
                 "activated": boolean,
-                "createDate": String
+                "createDate": String,
+                "updateDate": String
             }
         ],
         "totalCount": Integer
@@ -2074,13 +2078,13 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 |- isSuccessful|	Boolean| 成否                                                                                          |
 |templateModificationsResponse|	Object| 	本文領域                                                                                         |
 |- templates | List | 	テンプレートリスト                                                                                       |
-|-- plusFriendId | String | 	プラスフレンドID                                                                   |
+|-- plusFriendId | String | 	カカオトークチャンネル検索用IDまたは発信プロフィールグループ名                                                                   |
 |-- senderKey    | String | 発信キー                                                                                           |
 |-- plusFriendType | String | プラスフレンドタイプ(NORMAL, GROUP)                                                                          |
 |-- templateCode | String | 	テンプレートコード                                                                                        |
 |-- templateName | String | 	テンプレート名                                                                                          |
-|-- templateMessageType| String | テンプレート本文                                            |
-|-- templateEmphasizeType| String| テンプレートハイライトタイプ（NONE：基本、TEXT：ハイライト、default：NONE）<br>TEXT：templateTitle、templateSubtitleフィールド必須                                           |
+|-- templateMessageType| String | テンプレートメッセージタイプ(BA:基本型、EX:付加情報型、AD:広告追加型、MI:複合型)                                            |
+|-- templateEmphasizeType| String| テンプレートハイライトタイプ（NONE：基本、TEXT：ハイライト、default：NONE）                                           |
 |-- templateContent | String | 	テンプレート本文                                                                                        |
 |-- templateExtra | String | テンプレート付加情報                                                                                      |
 |-- templateAd | String | テンプレート内の受信同意または簡単な広告文句                                                                    |
@@ -2208,7 +2212,7 @@ Content-Type: application/json;charset=UTF-8
 
 ```
 {  
-   "plusFriendId": String,
+   "senderKey": String,
    "isResend": Boolean,
    "resendSendNo": String
 }
@@ -2216,13 +2220,13 @@ Content-Type: application/json;charset=UTF-8
 
 | 値               | タイプ | 必須 | 説明                                |
 | ---------------------- | ------- | ---- | ---------------------------------------- |
-| plusFriendId           | String  | O    | プラスフレンドID(最大30文字)                         |
+| senderKey           | String  | O    | 発信キー                         |
 | isResend             | boolean | O    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
-| resendSendNo         | String  | O    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+| resendSendNo         | String  | O    | 代替送信発信番号<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
 
 [例]
 ```
-curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/failback/appkey -d '{"plusFriendId": "@プラスフレンド","isResend": true,"resendSendNo": "01012341234" }
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/failback/appkey -d '{"senderKey": "0be23c29de88d6888798aeda57062516354d74ba","isResend": true,"resendSendNo": "01012341234" }
 ```
 
 <a id="section-1-2-1"></a>
