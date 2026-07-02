@@ -27,10 +27,10 @@ ACL을 선택하면 하단에 **ACL Rule** 메뉴가 나타납니다.
 ACL Rule을 추가하면, 이 ACL을 사용하는 모든 네트워크에 추가된 규칙(rule)이 반영됩니다.
 
 * 프로토콜: TCP, UDP, ICMP 등의 프로토콜을 선택합니다.
-* src cidr: src IP 혹은 대역을 입력합니다.
-* src port: src port 혹은 범위를 입력합니다.
-* dst cidr: dst IP 혹은 대역을 입력합니다.
-* dst port: dst port 혹은 범위를 입력합니다.
+* src cidr: src IP 또는 대역을 입력합니다.
+* src port: src port 또는 범위를 입력합니다.
+* dst cidr: dst IP 또는 대역을 입력합니다.
+* dst port: dst port 또는 범위를 입력합니다.
 * 순서: 적용 순서를 입력합니다. 해당 규칙이 적용되는 우선순위를 의미합니다. 값이 작은 것부터 먼저 적용됩니다.
 * 적용 방법: 규칙이 허용인지 차단인지를 입력합니다.
 * 설명: ACL Rule의 설명을 입력합니다.
