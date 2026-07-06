@@ -29,34 +29,37 @@ NHN Cloud는 물리 하드웨어 문제로 생기는 장애에 대비하기 위�
 
 ### DB 엔진
 
-아래에 명시된 버전을 사용할 수 있습니다.
+아래에 명시된 버전을 사용할 수 있습니다. 신규 DB 인스턴스 생성 및 읽기 복제본 추가는 메이저 버전당 상위 7개 마이너 버전까지만 지원합니다.
+MySQL 8.0.34 미만 버전은 MySQL LTS 지원 정책에 따라 지원이 종료되었습니다. 해당 버전의 DB 인스턴스는 최신 버전으로 업그레이드할 것을 권장합니다.
 
-| 버전           | 비고                             |
-|--------------|--------------------------------|
-| **8.4**      |                                |
-| MySQL 8.4.6  |                                |
-| MySQL 8.4.5  |                                |
-| **8.0**      |                                |
-| MySQL 8.0.43 |                                |
-| MySQL 8.0.42 |                                |
-| MySQL 8.0.41 |                                |
-| MySQL 8.0.40 |                                |
-| MySQL 8.0.36 |                                |
-| MySQL 8.0.35 |                                |
-| MySQL 8.0.34 |                                |
-| MySQL 8.0.33 |                                |
-| MySQL 8.0.32 |                                |
-| MySQL 8.0.28 |                                |
-| MySQL 8.0.23 |                                |
-| MySQL 8.0.18 |                                |
-| **5.7**      |                                |
-| MySQL 5.7.37 |                                |
-| MySQL 5.7.33 | 외부의 백업본으로 DB 인스턴스를 복원할 수 없습니다. |
-| MySQL 5.7.26 |                                |
-| MySQL 5.7.19 |                                |
-| MySQL 5.7.15 |                                |
-| **5.6**      |                                |
-| MySQL 5.6.33 | 지원이 종료된 버전입니다.                 |
+| 버전                   | 비고                             |
+|----------------------|--------------------------------|
+| <strong>8.4</strong> |                                |
+| MySQL 8.4.7          |                                |
+| MySQL 8.4.6          |                                |
+| MySQL 8.4.5          |                                |
+| <strong>8.0</strong> |                                |
+| MySQL 8.0.44         |                                |
+| MySQL 8.0.43         |                                |
+| MySQL 8.0.42         |                                |
+| MySQL 8.0.41         |                                |
+| MySQL 8.0.40         |                                |
+| MySQL 8.0.36         |                                |
+| MySQL 8.0.35         |                                |
+| MySQL 8.0.34         | 신규로 생성하거나 읽기 복제본을 추가할 수 없습니다.  | 
+| MySQL 8.0.33         | 신규로 생성하거나 읽기 복제본을 추가할 수 없습니다.  | 
+| MySQL 8.0.32         | 신규로 생성하거나 읽기 복제본을 추가할 수 없습니다.  | 
+| MySQL 8.0.28         | 신규로 생성하거나 읽기 복제본을 추가할 수 없습니다.  | 
+| MySQL 8.0.23         | 신규로 생성하거나 읽기 복제본을 추가할 수 없습니다.  |
+| MySQL 8.0.18         | 신규로 생성하거나 읽기 복제본을 추가할 수 없습니다.  |
+| <strong>5.7</strong> |                                |
+| MySQL 5.7.37         |                                |
+| MySQL 5.7.33         | 외부의 백업본으로 DB 인스턴스를 복원할 수 없습니다. |
+| MySQL 5.7.26         |                                |
+| MySQL 5.7.19         |                                |
+| MySQL 5.7.15         |                                |
+| <strong>5.6</strong> |                                |
+| MySQL 5.6.33         | 지원이 종료된 버전입니다.                 |
 
 DB 엔진의 경우 생성 이후 콘솔의 수정 기능을 통해 버전 업그레이드가 가능합니다.
 DB 엔진에 대한 자세한 사항은 [DB 엔진](db-engine/)에서 확인할 수 있습니다.
@@ -86,7 +89,7 @@ DB 인스턴스 생성 시 데이터베이스 워크로드에 따라 알맞은 D
 > 이미 생성한 DB 인스턴스의 데이터 스토리지 유형은 변경할 수 없습니다.
 
 > [참고]
-> 데이터 스토리지를 2TB 이상 사용하려면 NHN Cloud 고객 센터로 연락하십시오.
+> 데이터 스토리지를 2TB 이상 사용하려면 NHN Cloud 고객문의로 문의하세요.
 
 아래 작업은 데이터 스토리지의 I/O 사용률이 높아지기 때문에 진행되는 동안 DB 인스턴스의 성능이 저하될 수 있습니다.
 
@@ -125,6 +128,77 @@ DB 보안 그룹은 외부 침입에 대비해 접속을 제한하기 위해서 
 
 DB 인스턴스의 데이터베이스를 주기적으로 백업하도록 설정하거나, 콘솔을 통해 원하는 시기에 백업을 생성할 수 있습니다. 백업이 수행되는 동안 성능 저하가 발생할 수 있습니다. 서비스에 영향을 주지 않기 위해 서비스의 부하가 적은 시간에 백업하는 것을 권장합니다. 백업으로 인한 성능 저하를 원치 않으면 고가용성 구성을 사용하거나, 이전 백업 이후 데이터의 증분만 백업할 수 있으며, 읽기 복제본에서 백업을 수행할 수 있습니다. 백업 파일은 내부 백업 스토리지에 저장되며, 백업 용량에 따라 과금됩니다. 필요한 경우 NHN Cloud의 사용자 오브젝트 스토리지로 내보낼 수 있습니다. 예상치 못한 장애에 대비하기 위해서 주기적으로 백업을 수행하도록 설정하는 것을 권장합니다. 백업에 대한 자세한 설명은 [백업 및 복원](backup-and-restore/) 항목을 참고합니다.
 
+### 유지 관리
+
+유지 관리 기능을 사용하면 DB 인스턴스의 다양한 변경 작업을 원하는 시간대에 수행할 수 있습니다. DB 인스턴스 수정, DB 엔진 버전 업그레이드, DB 인스턴스 운영체제 업그레이드 등의 작업은 재시작이 필요하여 다운타임이 발생할 수 있습니다. 유지 관리 기간을 설정하면 이러한 작업들을 서비스 부하가 적은 시간대에 실행할 수 있습니다.
+
+#### 유지 관리 기간
+
+DB 인스턴스 생성 또는 수정 시 유지 관리 기간을 설정할 수 있습니다. 유지 관리 기간을 설정하지 않으면 22:00~06:00 사이의 30분이 랜덤하게 자동 할당됩니다. 유지 관리 기간은 자동 백업 시간과 겹칠 수 없습니다.
+
+> [참고]
+> 유지 관리 기간은 유지 관리 시작 요일, 유지 관리 시작 시간, 유지 관리 윈도우(30분 단위)로 구성됩니다.
+
+#### 유지 관리 작업
+
+유지 관리 작업은 사용자 유지 관리 작업과 Provider 유지 관리 작업으로 구분됩니다.
+
+**사용자 유지 관리 작업**
+
+사용자가 직접 실행을 예약할 수 있는 작업입니다.
+
+* DB 인스턴스 수정(DB 인스턴스 사양 변경, 포트 변경, 파라미터 그룹 변경 등)
+* DB 엔진 버전 업그레이드
+* DB 인스턴스 운영체제 업그레이드
+
+**Provider 유지 관리 작업**
+
+NHN Cloud에서 제공하는 유지 관리 작업입니다.
+
+* 파라미터 그룹 변경 사항 적용
+* 하이퍼바이저 점검을 위한 마이그레이션
+
+#### 유지 관리 적용 시점
+
+유지 관리 작업 수행 시 적용 시점을 선택할 수 있습니다.
+
+* **즉시 적용**: 요청 즉시 유지 관리 작업을 수행합니다.
+* **다음 유지 관리 기간에 적용**: 다음 유지 관리 기간에 작업을 수행합니다.
+
+#### 유지 관리 상태
+
+DB 인스턴스 목록에서 각 인스턴스의 유지 관리 상태를 확인할 수 있습니다.
+
+| 상태      | 설명                                     |
+|---------|----------------------------------------|
+| 없음      | 예약 및 보류 중인 유지 관리 작업이 없습니다.             |
+| 다음 적용   | 사용자 유지 관리 작업이 다음 유지 관리 기간에 실행 예정입니다.   |
+| 적용 중    | 유지 관리 작업이 진행 중입니다.                     |
+| 필수      | 필수 Provider 유지 관리 작업이 보류 중입니다.         |
+| 사용 가능   | 필수가 아닌 Provider 유지 관리 작업이 보류/준비 중입니다. |
+
+> [참고]
+> 고가용성 DB 인스턴스의 예비 마스터는 유지 관리 상태가 표시되지 않습니다.
+
+#### 유지 관리 탭
+
+DB 인스턴스 상세 화면의 유지 관리 탭에서 다음 정보를 확인할 수 있습니다.
+
+* 유지 관리 시작 요일 및 기간
+* 다음 유지 관리 기간
+* 유지 관리 상태
+* 준비 중인 유지 관리 작업 목록(다음 유지 관리 기간에 실행될 작업)
+* 보류 중인 유지 관리 작업 목록
+
+준비 중인 유지 관리 작업은 보류/삭제 버튼을 통해 유지 관리 기간에서 제외할 수 있습니다. 보류 중인 Provider 유지 관리 작업은 **즉시 적용** 또는 **다음 유지 관리 기간에 적용**을 선택하여 수동으로 적용할 수 있습니다.
+
+#### 작업 실행 순서
+
+유지 관리 기간 내의 모든 작업은 등록 순서에 따라 순차적으로 실행됩니다. 단, 만료 일시가 지난 필수 유지 관리 작업은 가장 먼저 실행됩니다. 유지 관리 기간 내에 실행되지 못한 작업은 다음 유지 관리 기간에 다시 실행됩니다.
+
+> [참고]
+> 자동 백업 및 DB 인스턴스가 '작업 중' 상태에서 유지 관리 기간이 시작되어 유지 관리 시간이 계속 미뤄질 경우 해당 유지 관리는 우선 생략하고 다음 유지 관리 기간에 실행됩니다. 유지 관리 작업이 생략되면 이벤트가 생성됩니다.
+
 ### 기본 알림
 
 DB 인스턴스 생성 시 기본 알림을 설정할 수 있습니다. 기본 알림을 설정하면 `{DB 인스턴스 이름}-default` 이름으로 새로운 알림 그룹이 생성되며 아래 알림 항목들이 자동으로 설정됩니다. 기본 알림으로 생성된 알림 그룹은 자유롭게 수정, 삭제할 수 있습니다. 알림 그룹에 대한 자세한 설명은 [알림 그룹](notification/) 항목을 참고합니다.
@@ -148,7 +222,7 @@ DB 인스턴스 생성 시 기본 알림을 설정할 수 있습니다. 기본 �
 
 콘솔에서 생성된 DB 인스턴스를 확인할 수 있습니다. DB 인스턴스 그룹 단위로 묶어서 보거나, 개별 DB 인스턴스로 볼 수 있습니다.
 
-![db-instance-list_ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-list_ko.png)
+![db-instance-list_ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-list_ko.png)
 
 ❶ DB 인스턴스 화면 모드를 변경할 수 있습니다.
 ❷ 버튼을 클릭하여 그룹 안에 속한 DB 인스턴스를 펼치거나 접을 수 있습니다.
@@ -172,7 +246,7 @@ DB 인스턴스의 상태는 아래와 같은 값들로 구성되며, 사용자�
 
 변경할 수 있는 검색 조건은 아래와 같습니다.
 
-![db-instance-filter_ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-filter_ko.png)
+![db-instance-filter_ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-filter_ko.png)
 
 ❶ 파라미터 변경 사항 적용이 필요한 DB 인스턴스를 필터링 조건으로 검색할 수 있습니다.
 
@@ -180,7 +254,7 @@ DB 인스턴스의 상태는 아래와 같은 값들로 구성되며, 사용자�
 
 DB 인스턴스를 선택하면 상세 정보를 볼 수 있습니다.
 
-![db-instance-detail_ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-detail_ko.png)
+![db-instance-detail_ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-detail_ko.png)
 
 ❶ 접속 정보의 도메인을 클릭하면 IP 주소를 확인할 수 있는 팝업 창이 나타납니다.
 ❷ DB 보안 그룹을 클릭하면 DB 보안 규칙을 확인할 수 있는 팝업 창이 나타납니다.
@@ -216,7 +290,7 @@ DB 인스턴스의 로그 탭에서는 각종 로그 파일을 보거나 다운�
 | server_audit.log | 20MB 30개  | 변경 가능 | `server_audit_logging`<br />`server_audit_file_rotations`              | 
 | mysql-bin.xxxxxx | 5일        | 변경 가능 | `binlog_expire_logs_seconds` (8.X 버전)<br />`expire_logs_days` (5.X 버전) |
 
-![db-instance-detail-log_ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-detail-log_ko.png)
+![db-instance-detail-log_ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-detail-log_ko.png)
 
 ❶ **로그 보기**를 클릭하면 로그 파일의 내용을 확인할 수 있는 팝업 화면이 나타납니다. 최대 65,535Bytes의 로그를 확인할 수 있습니다.
 ❷ **가져오기**를 클릭하면 DB 인스턴스의 로그 파일을 다운로드할 수 있도록 요청합니다.
@@ -232,13 +306,76 @@ DB 인스턴스의 로그 탭에서는 각종 로그 파일을 보거나 다운�
 
 ❺ mysqlbinlog 유틸리티를 이용하여 바이너리 로그(binary log)를 SQL 파일로 변환 후 내려받으려면 선택합니다.
 
+### 유지 관리
+
+DB 인스턴스의 **유지 관리** 탭에서는 유지 관리 설정 및 상태를 확인하고, 유지 관리 작업을 관리할 수 있습니다.
+
+![db-instance-detail-maintenance_ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-detail-maintenance_ko.png)
+
+#### 유지 관리 정보
+
+유지 관리 탭 상단에서 현재 DB 인스턴스의 유지 관리 설정 정보를 확인할 수 있습니다.
+
+| 항목               | 설명                                                          |
+|------------------|-------------------------------------------------------------|
+| 유지 관리 시작 요일      | DB 인스턴스에 설정된 유지 관리 시작 요일입니다.                                |
+| 유지 관리 기간         | DB 인스턴스에 설정된 유지 관리 시간 범위입니다.                                |
+| 다음 유지 관리 기간      | 다음에 유지 관리 작업이 실행될 예정인 일시입니다.                                |
+| 유지 관리 상태         | 현재 유지 관리 상태를 나타냅니다. **없음**, **다음 적용**, **적용 중**, **필수**, **사용 가능** 중 하나로 표시됩니다. |
+
+> [참고]
+> 유지 관리 기간을 설정하지 않은 경우에도 랜덤으로 할당된 유지 관리 기간을 확인할 수 있습니다.
+
+#### 준비 중인 유지 관리
+
+준비 중인 유지 관리는 다음 유지 관리 기간에 실행될 예정인 작업 목록입니다. 사용자가 DB 인스턴스 수정, DB 엔진 버전 업그레이드 등의 작업을 수행할 때 **다음 유지 관리 기간에 적용**을 선택하면 이 목록에 추가됩니다.
+
+| 항목         | 설명                               |
+|------------|----------------------------------|
+| 설명         | 유지 관리 작업에 대한 설명입니다.              |
+| 유형         | 유지 관리 작업의 유형입니다.                 |
+| 상태         | 유지 관리 작업의 현재 상태입니다.              |
+| 필수 여부      | 필수 유지 관리 작업 여부를 나타냅니다.           |
+| 등록 일시      | 유지 관리 작업이 등록된 일시입니다.             |
+| 강제 적용 일시   | 필수 작업의 경우, 이 일시 이후에는 자동으로 적용됩니다. |
+
+준비 중인 유지 관리 작업은 선택 후 **삭제** 또는 **보류**를 클릭하여 유지 관리 기간에서 제외할 수 있습니다. 
+삭제된 사용자 유지 관리 작업은 취소되며, 다시 유지 관리 기간에 적용하려면 해당 작업을 다시 수행해야 합니다. 
+Provider 유지 관리 작업은 보류 중인 유지 관리 목록으로 이동합니다. 보류 중인 유지 관리 목록에서 다시 준비 중인 유지 관리 작업으로 이동할 수 있습니다.
+
+#### 보류 중인 유지 관리
+
+보류 중인 유지 관리는 NHN Cloud에서 제공하는 Provider 유지 관리 작업 목록입니다. 파라미터 그룹 변경 사항 적용, 하이퍼바이저 점검을 위한 마이그레이션 등의 작업이 포함됩니다.
+
+| 항목         | 설명                               |
+|------------|----------------------------------|
+| 설명         | 유지 관리 작업에 대한 설명입니다.              |
+| 유형         | 유지 관리 작업의 유형입니다.                 |
+| 상태         | 유지 관리 작업의 현재 상태입니다.              |
+| 필수 여부      | 필수 유지 관리 작업 여부를 나타냅니다.           |
+| 강제 적용 일시   | 필수 작업의 경우, 이 일시 이후에는 자동으로 적용됩니다. |
+
+보류 중인 유지 관리 작업을 선택한 후 **다음**을 클릭하여 적용 시점을 선택할 수 있습니다.
+
+**즉시 적용**: 선택한 유지 관리 작업을 즉시 수행합니다. **확인**을 클릭하면 바로 실행됩니다.
+![db-instance-detail-maintenance-immediately_ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-detail-maintenance-immediately_ko.png)
+
+**다음 유지 관리 기간에 적용**: 선택한 유지 관리 작업을 다음 유지 관리 기간에 수행합니다. **확인**을 클릭하면 준비 중인 유지 관리 목록으로 이동합니다.
+![db-instance-detail-maintenance-schedule_ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-detail-maintenance-schedule_ko.png)
+
+> [주의]
+> 필수 유지 관리 작업은 강제 적용 일시 이전까지는 적용 시점을 선택할 수 있지만, 강제 적용 일시 이후에는 자동으로 다음 유지 관리 기간에 수행됩니다.
+
+> [참고]
+> 유지 관리 작업 적용 시 재시작이 필요한 경우 장애 조치, 백업 등의 추가 옵션을 선택할 수 있는 팝업 화면이 나타납니다. 고가용성 DB 인스턴스의 경우 장애 조치를 이용한 재시작을 사용하여 서비스 중단 시간을 최소화할 수 있습니다.
+
 ### DB 스키마 & 사용자
 
 DB 인스턴스의 **DB 스키마 & 사용자** 탭에서는 데이터베이스에 생성된 스키마와 사용자를 조회 및 제어할 수 있습니다.
 
 #### DB 스키마 생성
 
-![db-instance-detail-schema_ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-detail-schema_ko.png)
+![db-instance-detail-schema_ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-detail-schema_ko.png)
 
 ❶ **생성**을 클릭하면 DB 스키마의 이름을 입력할 수 있는 팝업 창이 나타납니다.
 ❷ DB 스키마 이름을 입력한 뒤 **확인**을 클릭하여 DB 스키마를 생성할 수 있습니다.
@@ -252,14 +389,14 @@ DB 스키마 이름은 아래와 같은 제약 사항이 있습니다.
 
 #### DB 스키마 삭제
 
-![db-instance-detail-schema-delete-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-detail-schema-delete-ko.png)
+![db-instance-detail-schema-delete-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-detail-schema-delete-ko.png)
 
 ❶ 삭제할 DB 스키마를 선택 후 드롭다운 메뉴를 클릭합니다.
 ❷ **삭제** 메뉴를 클릭하면 삭제 확인 팝업 화면이 나타납니다. **확인**을 클릭하여 삭제를 요청할 수 있습니다.
 
 #### 사용자 생성
 
-![db-instance-detail-user-create-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-detail-user-create-ko.png)
+![db-instance-detail-user-create-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-detail-user-create-ko.png)
 
 ❶ **+ 생성**을 클릭하면 사용자 추가 팝업 화면이 나타납니다.
 ❷ 사용자 ID를 입력합니다.
@@ -307,7 +444,7 @@ GRANT EXECUTE ON `mysql`.* TO '{user_id}'@'{host}';
 
 | 인증 플러그인               | 지원 버전                  |
 |-----------------------|------------------------|
-| mysql_native_password | 모든 버전                  |
+| mysql_native_password | 8.4 버전 미만              |
 | sha256_password       | 5.7.33 버전 이상 8.0 버전 미만 |
 | caching_sha2_password | 8.0 버전 이상              |
 
@@ -326,7 +463,7 @@ GRANT EXECUTE ON `mysql`.* TO '{user_id}'@'{host}';
 
 사용자 계정의 TLS Option을 X509로 설정한 경우 DB 인스턴스에 접속하려면 인증서가 필요합니다.
 
-![db-instance-detail-user-cert-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-detail-user-cert-ko.png)
+![db-instance-detail-user-cert-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-detail-user-cert-ko.png)
 ![db-instance-detail-user-cert-down-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-detail-user-cert-down-ko.png)
 
 ❶ 인증서를 내려받을 DB 인스턴스를 선택합니다.
@@ -341,7 +478,7 @@ GRANT EXECUTE ON `mysql`.* TO '{user_id}'@'{host}';
 
 #### 사용자 수정
 
-![db-instance-detail-user-modify-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-detail-user-modify-ko.png)
+![db-instance-detail-user-modify-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-detail-user-modify-ko.png)
 
 ❶ 수정할 사용자 행의 **수정**을 클릭하면 사용자 정보를 수정할 수 있는 팝업 화면이 나타납니다.
 ❷ Password를 입력하지 않으면 변경되지 않습니다.
@@ -349,7 +486,7 @@ GRANT EXECUTE ON `mysql`.* TO '{user_id}'@'{host}';
 
 #### 사용자 삭제
 
-![db-instance-detail-user-delete-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-detail-user-delete-ko.png)
+![db-instance-detail-user-delete-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-detail-user-delete-ko.png)
 
 ❶ 삭제할 사용자를 선택 후 드롭다운 메뉴를 클릭합니다.
 ❷ **삭제**를 클릭하면 **삭제 확인** 팝업 화면이 나타납니다. **확인**을 클릭하여 삭제를 요청할 수 있습니다.
@@ -379,9 +516,10 @@ GRANT EXECUTE ON `mysql`.* TO '{user_id}'@'{host}';
 
 고가용성 DB 인스턴스의 경우 재시작이 필요한 항목의 변경이 있으면 안정성을 높이고 순단 시간을 줄이기 위하여 장애 조치를 이용한 재시작 기능을 제공합니다.
 
-![modify-ha-popup-ko](https://static.toastoven.net/prod_rds/mysql/24.11.12/modify-ha-popup-ko.png)
+![modify-ha-popup-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/modify-ha-popup-ko.png)
 
-장애 조치를 이용한 재시작을 사용하지 않으면 마스터와 예비 마스터에 변경 사항을 순차적으로 적용한 후 DB 인스턴스를 재시작합니다. 자세한 사항은 고가용성 DB 인스턴스의 [수동 장애 조치 항목](db-instance/#manual-failover)을 참고합니다.
+❶ 유지 관리 기능으로 **다음 유지 관리 기간에 적용** 또는 **즉시 적용**을 선택해 DB 인스턴스 수정을 진행할 수 있습니다.
+❷ 장애 조치를 이용한 재시작을 사용하지 않으면 마스터와 예비 마스터에 변경 사항을 순차적으로 적용한 후 DB 인스턴스를 재시작합니다. 자세한 사항은 고가용성 DB 인스턴스의 [수동 장애 조치 항목](db-instance/#manual-failover)을 참고합니다.
 
 ### DB 스키마 & 사용자 직접 제어
 
@@ -401,7 +539,7 @@ DB 인스턴스 운영체제 업그레이드를 지원합니다. 운영체제 �
 운영체제 업그레이드는 서비스 순단이 발생하기 때문에 주의가 필요합니다. 고가용성 DB 인스턴스는 장애조치를 통해 서비스 순단을 최소화 할 수 있습니다.
 
 현재 DB 인스턴스의 운영체제 정보는 DB 인스턴스 상세 화면에서 확인할 수 있습니다.
-![db-instance-os-upgrade-ko.png](https://static.toastoven.net/prod_rds/mysql/24.06.11/db-instance-os-upgrade-ko.png)
+![db-instance-os-upgrade-ko.png](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-os-upgrade-ko.png)
 
 ❶ DB 인스턴스의 운영체제 정보를 확인할 수 있습니다.
 ❷ 운영체제가 버전 업그레이드 대상일 경우 **운영체제 버전 업그레이드** 버튼이 표시됩니다.
@@ -409,12 +547,14 @@ DB 인스턴스 운영체제 업그레이드를 지원합니다. 운영체제 �
 운영체제 버전 업그레이드는 고가용성 구성인지 아닌지에 따라 다르게 동작합니다. 고가용성의 경우 장애 조치를 이용해 운영체제 버전 업그레이드를 수행합니다. 고가용성이 아닌 경우에는 DB 인스턴스를 재시작하여 운영체제 버전 업그레이드를 수행합니다.
 
 단일 DB 인스턴스의 운영체제 버전 업그레이드 버튼을 클릭하면 아래와 같은 팝업 화면이 나타납니다.
-![db-instance-os-upgrade-single-popup-ko.png](https://static.toastoven.net/prod_rds/mysql/24.06.11/db-instance-os-upgrade-simple-popup-ko.png)
+단일 DB 인스턴스의 운영체제 버전 업그레이드시에도 유지 관리 기능을 사용할 수 있습니다.
+![db-instance-os-upgrade-single-popup-ko.png](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-os-upgrade-simple-popup-ko.png)
 
 고가용성 DB 인스턴스의 운영체제 버전 업그레이드 버튼을 클릭하면 아래와 같은 팝업 화면이 나타납니다. 자세한 사항은 고가용성 DB 인스턴스의 [수동 장애 조치 항목](db-instance/#manual-failover)을 참고합니다.
-![os-upgrade-ha-popup-ko.png](https://static.toastoven.net/prod_rds/mysql/24.11.12/os-upgrade-ha-popup-ko.png)
+![os-upgrade-ha-popup-ko.png](https://static.toastoven.net/prod_rds/mysql/26.01.13/os-upgrade-ha-popup-ko.png)
 
-❶ 장애 조치를 사용하는 방법만 제공 됩니다.
+❶ 유지 관리 적용 방법을 통해서 유지 관리 기능을 사용할 수 있습니다.
+❷ 장애 조치를 사용하는 방법만 제공 됩니다.
 
 ## DB 인스턴스 삭제
 
@@ -460,21 +600,22 @@ DB 인스턴스의 데이터 스토리지 크기를 자동으로 확장할 수 �
 
 ## 파라미터 그룹 변경 사항 적용
 
-DB 인스턴스에 연결된 파라미터 그룹의 설정이 변경되어도 이 변경 사항은 DB 인스턴스에 자동으로 적용되지 않습니다. 만약 DB 인스턴스에 적용된 파라미터와 연결된 파라미터 그룹의 설정이 서로 다를 경우 콘솔에 **파라미터** 버튼이 표시됩니다.
+DB 인스턴스에 연결된 파라미터 그룹의 설정이 변경되어도 이 변경 사항은 DB 인스턴스에 자동으로 적용되지 않습니다. 
+만약 DB 인스턴스에 적용된 파라미터와 연결된 파라미터 그룹의 설정이 서로 다를 경우 **파라미터 변경 적용** 유지 관리가 생성되고 유지 관리 상태가 변경됩니다.
 
-다음 방법 중 하나를 사용하여 DB 인스턴스에 파라미터 그룹의 변경 사항을 적용할 수 있습니다.
+다음 방법은 여러 DB 인스턴스 또는 단일 DB 인스턴스에 대해서 파라미터 그룹의 변경 사항을 적용할 수 있습니다.
 
-![db-instance-list-parameter-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-list-parameter-ko.png)
+![db-instance-list-parameter-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-list-parameter-ko.png)
 
-❶ 대상 DB 인스턴스의 **파라미터**를 클릭하거나
-❷ 대상 DB 인스턴스를 선택한 후 드롭다운 메뉴에서 **파라미터 그룹 변경 사항 적용** 메뉴를 클릭하거나
-❸ 대상 DB 인스턴스의 **기본 정보** 탭에서 **파라미터 그룹 변경 사항 적용**을 클릭합니다.
+❶ 대상 DB 인스턴스를 선택한 후 드롭다운 메뉴에서 **파라미터 그룹 변경 사항 적용** 메뉴를 클릭
+
+유지 관리 기능으로 **다음 유지 관리 기간에 적용** 또는 **즉시 적용**을 선택해 파라미터 그룹 변경 사항을 적용할 수 있습니다.
 
 파라미터 그룹에서 재시작을 필요로 하는 파라미터가 변경된 경우, 변경 사항을 적용하는 과정에서 DB 인스턴스가 재시작됩니다.
 
 고가용성 DB 인스턴스의 경우 안정성을 높이고 순단 시간을 줄이기 위하여 장애 조치를 이용한 재시작 기능을 제공합니다.
 
-![db-instance-parameter-ha-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-parameter-ha-ko.png)
+![db-instance-parameter-ha-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-parameter-ha-ko.png)
 
 장애 조치를 이용한 재시작을 사용하지 않으면 마스터와 예비 마스터에 변경 사항을 순차적으로 적용한 후 DB 인스턴스를 재시작합니다. 자세한 사항은 고가용성 DB 인스턴스의 [수동 장애 조치 항목](db-instance/#manual-failover)을 참고합니다.
 
@@ -509,7 +650,7 @@ DB 인스턴스에 연결된 파라미터 그룹의 설정이 변경되어도 �
 
 읽기 복제본을 생성하려면 콘솔에서
 
-![db-instance-replica-create-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-replica-create-ko.png)
+![db-instance-replica-create-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-replica-create-ko.png)
 
 ❶ 원본 DB 인스턴스를 선택한 뒤 **읽기 복제본 생성**을 클릭하면
 
@@ -601,13 +742,13 @@ MySQL을 재시작하거나 고가용성 DB 인스턴스를 수동으로 장애 
 
 DB 인스턴스 재시작을 하려면 콘솔에서
 
-![db-instance-restart-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-restart-ko.png)
+![db-instance-restart-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-restart-ko.png)
 
 ❶ 재시작을 원하는 DB 인스턴스를 선택 후 드롭다운 메뉴에서 **DB 인스턴스 재시작** 메뉴를 클릭합니다.
 
 ## DB 인스턴스 강제 재시작
 
-DB 인스턴스의 MySQL이 정상 동작하지 않는 경우 강제로 재시작할 수 있습니다. 강제 재시작의 경우 MySQL에 SIGTERM 명령을 내려 정상 종료되기를 10분간 기다립니다. 10분 안에 MySQL이 정상 종료되면 이후 가상 머신을 재부팅합니다. 10분 안에 정상 종료되지 않으면 가상 머신을 강제로 재부팅합니다. 가상 머신이 강제로 재부팅되면 작업 중인 일부 트랜잭션이 유실될 수 있으며, 데이터 볼륨이 손상되어 복구가 불가능해질 수 있습니다. 강제 재시작 이후 DB 인스턴스의 상태가 사용 가능 상태로 돌아오지 않을 수 있습니다. 해당 상황 발생 시 고객 센터로 문의하십시오.
+DB 인스턴스의 MySQL이 정상 동작하지 않는 경우 강제로 재시작할 수 있습니다. 강제 재시작의 경우 MySQL에 SIGTERM 명령을 내려 정상 종료되기를 10분간 기다립니다. 10분 안에 MySQL이 정상 종료되면 이후 가상 머신을 재부팅합니다. 10분 안에 정상 종료되지 않으면 가상 머신을 강제로 재부팅합니다. 가상 머신이 강제로 재부팅되면 작업 중인 일부 트랜잭션이 유실될 수 있으며, 데이터 볼륨이 손상되어 복구가 불가능해질 수 있습니다. 강제 재시작 이후 DB 인스턴스의 상태가 사용 가능 상태로 돌아오지 않을 수 있습니다. 해당 상황 발생 시 고객문의로 문의하세요.
 
 > [주의]
 > 데이터가 유실되거나 데이터 볼륨이 손상될 가능성이 있으므로 해당 기능은 긴급하고 불가피한 상황 이외에는 사용을 지양해야 합니다.
@@ -617,7 +758,7 @@ DB 인스턴스의 MySQL이 정상 동작하지 않는 경우 강제로 재시�
 
 DB 인스턴스 강제 재시작을 하려면 콘솔에서
 
-![db-instance-restart-force-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-restart-force-ko.png)
+![db-instance-restart-force-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-restart-force-ko.png)
 
 ❶ 강제 재시작을 원하는 DB 인스턴스를 선택 후 드롭다운 메뉴에서 **DB 인스턴스 강제 재시작** 메뉴를 클릭합니다.
 
@@ -625,7 +766,7 @@ DB 인스턴스 강제 재시작을 하려면 콘솔에서
 
 삭제 보호를 활성화하면 실수로 DB 인스턴스가 삭제되지 않도록 보호할 수 있습니다. 삭제 보호를 비활성화할 때까지 해당 DB 인스턴스를 삭제할 수 없습니다. 삭제 보호 설정을 변경하려면
 
-![db-instance-deletion-protection-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-deletion-protection-ko.png)
+![db-instance-deletion-protection-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-deletion-protection-ko.png)
 
 ❶ 삭제 보호 설정을 변경하려는 DB 인스턴스를 선택 후 드롭다운 메뉴에서 **삭제 보호 설정 변경** 메뉴를 클릭하면 팝업 창이 나타납니다.
 
@@ -676,7 +817,7 @@ DB 인스턴스 강제 재시작을 하려면 콘솔에서
 
 장애 조치된 마스터를 복구하려면 콘솔에서
 
-![db-instance-failover-repair-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-failover-repair-ko.png)
+![db-instance-failover-repair-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-failover-repair-ko.png)
 
 ❶ 복구를 원하는 장애 조치된 마스터를 선택 후 드롭다운 메뉴에서 **장애 조치된 마스터 복구** 메뉴를 클릭합니다.
 
@@ -698,7 +839,7 @@ DB 인스턴스 강제 재시작을 하려면 콘솔에서
 
 장애 조치된 마스터를 재구축하려면 콘솔에서
 
-![db-instance-failover-rebuild-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-failover-rebuild-ko.png)
+![db-instance-failover-rebuild-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-failover-rebuild-ko.png)
 
 ❶ 재구축을 원하는 장애 조치된 마스터를 선택 후 드롭다운 메뉴에서 **장애 조치된 마스터 재구축** 메뉴를 클릭합니다.
 
@@ -708,7 +849,7 @@ DB 인스턴스 강제 재시작을 하려면 콘솔에서
 
 장애 조치된 마스터를 분리하려면 콘솔에서
 
-![db-instance-failover-split-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-failover-split-ko.png)
+![db-instance-failover-split-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-failover-split-ko.png)
 
 ❶ 분리를 원하는 장애 조치된 마스터를 선택 후 드롭다운 메뉴에서 **장애 조치된 마스터 분리** 메뉴를 클릭합니다.
 
@@ -741,7 +882,7 @@ DB 인스턴스 강제 재시작을 하려면 콘솔에서
 
 예비 마스터에 변경 사항을 먼저 적용한 뒤 그 추이를 관찰하거나, 정확한 시간에 장애 조치를 실행하고자 할 때 콘솔에서 장애 조치 시점을 직접 제어할 수 있습니다. 장애 조치 수동 제어를 선택하면 예비 마스터가 재시작된 후 ❶ 콘솔에 **장애 조치** 버튼이 표시됩니다. 이 버튼을 클릭하면 장애 조치가 실행되며, 최대 5일간 실행을 대기할 수 있습니다. 5일 이내에 장애 조치를 실행하지 않을 경우 해당 작업은 자동으로 취소됩니다.
 
-![db-instance-ha-wait-manual-failover-ko](https://static.toastoven.net/prod_rds/mysql/24.03.12/db-instance-ha-wait-manual-failover-ko.png)
+![db-instance-ha-wait-manual-failover-ko](https://static.toastoven.net/prod_rds/mysql/26.01.13/db-instance-ha-wait-manual-failover-ko.png)
 
 > [주의]
 > 장애 조치를 대기하는 동안에는 자동 장애 조치가 되지 않습니다.
@@ -1168,28 +1309,32 @@ DB 구성에 따라 특정 DB 인스턴스를 선택하여 마이그레이션 �
 
 #### 1. 점검 대상 DB 인스턴스를 확인합니다.
 
-이름 옆에 마이그레이션 버튼이 있는 DB 인스턴스가 점검 대상 인스턴스입니다.
+**유지 관리**에서 **필수**를 클릭하거나 **DB 인스턴스 상세**의 **유지 관리** 탭에서 하이퍼바이저 마이그레이션 유지 관리 작업이 있는지 확인할 수 있습니다.
 
-![rds_planed_migration_0](https://static.toastoven.net/prod_rds/mysql/planned_migration_alarm/image0_kr.png)
+![rds_planed_migration_0](https://static.toastoven.net/prod_rds/mysql/planned_migration_alarm/26.01.13/image0_kr.png)
 
-마이그레이션 버튼 위에 마우스 포인터를 올리면 자세한 점검 일정을 확인할 수 있습니다.
+❶ 하이퍼바이저 마이그레이션 유지 관리 **보기** 버튼 클릭
+❷ 하이퍼바이저 마이그레이션에 대한 자세한 점검 내용을 확인할 수 있습니다.
 
-![rds_planed_migration_1](https://static.toastoven.net/prod_rds/mysql/planned_migration_alarm/image1_kr.png)
+![rds_planed_migration_1](https://static.toastoven.net/prod_rds/mysql/planned_migration_alarm/26.01.13/image1_kr.png)
 
 #### 2. 점검 대상 DB 인스턴스에 접속 중인 응용 프로그램을 종료해야 합니다.
 
 DB에 연결된 서비스에 영향을 주지 않도록 적절한 조치를 취하십시오.
-서비스에 영향을 줄 수밖에 없을 때는 NHN Cloud 고객 센터로 연락해 주시면 적합한 조치를 안내해 드리겠습니다.
+서비스에 영향을 줄 수밖에 없을 때는 NHN Cloud 고객문의로 문의하시면 적합한 조치를 안내해 드리겠습니다.
 
-#### 3. 점검 대상 DB 인스턴스를 선택하고 마이그레이션 버튼을 클릭한 후 DB 인스턴스 마이그레이션 확인을 묻는 창이 나타나면 확인 버튼을 클릭합니다.
+#### 3. 점검 대상의 DB 인스턴스 마이그레이션을 적용할 수 있습니다.
 
-![rds_planed_migration_2](https://static.toastoven.net/prod_rds/mysql/planned_migration_alarm/image2_kr.png)
+![rds_planed_migration_2](https://static.toastoven.net/prod_rds/mysql/planned_migration_alarm/26.01.13/image2_kr.png)
+
+❶ **즉시 적용**을 클릭해 하이퍼바이저 마이그레이션을 바로 적용할 수 있습니다.
+❷ **다음 유지 관리 기간에 적용**을 클릭해 원하는 유지 관리 기간에 하이퍼바이저 마이그레이션을 적용할 수 있습니다.
 
 #### 4. DB 인스턴스 마이그레이션이 끝날 때까지 대기합니다.
 
-DB 인스턴스 상태가 변경되지 않는다면 '새로 고침'하십시오.
+DB 인스턴스 상태가 변경되지 않는다면 새로 고침하세요.
 
-![rds_planed_migration_3](https://static.toastoven.net/prod_rds/mysql/planned_migration_alarm/image3_kr.png)
+![rds_planed_migration_3](https://static.toastoven.net/prod_rds/mysql/planned_migration_alarm/26.01.13/image3_kr.png)
 
 DB 인스턴스가 마이그레이션되는 동안에는 아무런 조작을 할 수 없습니다.
 DB 인스턴스 마이그레이션이 정상적으로 완료되지 않으면 자동으로 관리자에게 보고되며, NHN Cloud에서 별도로 연락을 드립니다.
