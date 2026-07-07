@@ -1,7 +1,13 @@
 ## Storage > Storage Gateway > 콘솔 사용 가이드
+<a id="gateway"></a>
+
 ## 게이트웨이(Gateway)
+<a id="create-gateway"></a>
+
 ### 게이트웨이 생성
 새로운 스토리지 게이트웨이를 생성합니다. 게이트웨이는 사용자 프로젝트에 인스턴스를 생성해 구성합니다. 
+
+<a id="gateway-information"></a>
 
 #### 게이트웨이 정보
 스토리지 게이트웨이의 이름, 설명, 연결할 스토리지 유형을 설정합니다.
@@ -9,16 +15,24 @@
 > [참고]
 > 2025년 3월 현재 Object Storage를 연결할 수 있습니다.
 
+<a id="cache-storage"></a>
+
 #### 캐시 스토리지
 스토리지 게이트웨이의 디스크 캐시로 사용할 스토리지의 크기를 설정합니다. SSD 타입으로 제공되며 최소 50GB, 최대 2,048GB까지 설정할 수 있습니다.
+
+<a id="network"></a>
 
 #### 네트워크
 스토리지 게이트웨이에 사용할 VPC와 서브넷을 선택합니다. 
 게이트웨이를 구성하는 인스턴스에 선택한 VPC의 서브넷과 연결되는 네트워크 인터페이스가 만들어집니다. 네트워크 자원의 생성과 관리에 대한 자세한 내용은 [VPC 사용자 가이드](/Network/VPC/ko/overview/)를 참조하세요.
 서비스 게이트웨이는 Object Storage와 같이 사용자 VPC 외부의 스토리지를 인터넷 경유 없이 연결하기 위해 사용합니다. 서비스 게이트웨이에 대한 자세한 내용은 [Service Gateway 사용 가이드](/Network/Service%20Gateway/ko/overview/)를 참조하세요.
 
+<a id="floating-ip"></a>
+
 #### 플로팅 IP
 플로팅 IP 사용 여부를 설정합니다. 게이트웨이에 플로팅 IP를 사용하면 인터넷에서 게이트웨이에 접속할 수 있습니다. 자세한 내용은 [Floating IP 사용 가이드](/Network/Floating%20IP/ko/overview/)를 참조하세요.
+
+<a id="security-groups"></a>
 
 #### 보안 그룹
 스토리지 게이트웨이의 인스턴스가 속할 보안 그룹을 지정합니다. 선택한 VPC 네트워크 외부에서 게이트웨이를 통해 NHN Cloud 스토리지에 마운트하려면 보안 그룹에 다음과 같은 포트에 대한 규칙이 명시되어 있어야 합니다. 
@@ -36,12 +50,18 @@
 
 자세한 내용은 [Security Groups 사용 가이드](/Network/Security%20Groups/ko/overview/)를 참조하세요.
 
+<a id="redundancy"></a>
+
 #### 이중화
 스토리지 게이트웨이 이중화 여부를 선택합니다. 
 이중화를 사용하면 2개의 인스턴스를 생성해 클러스터를 구성합니다. 클러스터를 구성하는 하나의 인스턴스에 장애가 발생하더라도 다른 인스턴스를 통해 중단 없이 게이트웨이를 사용할 수 있습니다. 장애가 발생하여 서비스에서 제외된 인스턴스는 오토 힐링 기능을 통해 자동으로 복구되어 클러스터에 투입됩니다.
 
+<a id="start-gateway"></a>
+
 ### 게이트웨이 시작
 중지된 스토리지 게이트웨이를 시작합니다.
+
+<a id="stop-gateway"></a>
 
 ### 게이트웨이 중지 
 스토리지 게이트웨이를 중지합니다. 게이트웨이를 중지하면 클러스터를 구성하는 인스턴스가 중지되며 스토리지와 연결할 수 없습니다.
@@ -49,21 +69,31 @@
 > [주의]
 > 스토리지 게이트웨이를 중지하기 전, NHN Cloud 스토리지를 연결하여 사용 중인 시스템에서 언마운트해야 합니다. 마운트 상태에서 게이트웨이를 중지하면 사용자 시스템에 문제가 발생할 수 있습니다. 
 
+<a id="delete-gateway"></a>
+
 ### 게이트웨이 삭제
 스토리지 게이트웨이를 삭제합니다. 클러스터를 구성하는 모든 인스턴스와 자원이 삭제됩니다. 게이트웨이에 연결되어 있던 NHN Cloud 스토리지는 삭제되지 않습니다. 
 
 > [참고]
 > 게이트웨이를 삭제하려면 먼저 게이트웨이에 생성한 모든 공유를 삭제해야 합니다.
 
+<a id="share"></a>
+
 ## 공유(Share)
+<a id="create-share"></a>
+
 ### 공유 생성
 공유를 생성합니다. 공유는 NHN Cloud 스토리지를 연결할 설정입니다. 공유를 생성하면 마운트 연결 정보를 얻을 수 있고, 이 연결 정보를 이용해 사용자 시스템에 NHN Cloud 스토리지를 마운트하여 사용할 수 있습니다.
+
+<a id="share-information"></a>
 
 #### 공유 정보
 마운트 연결 정보의 경로에 사용할 공유 이름과 프로토콜을 설정합니다.
 
 > [참고]
 > 2025년 3월 현재 NFS 프로토콜을 사용할 수 있습니다.
+
+<a id="storage-information-for-connection"></a>
 
 #### 연결 스토리지 정보
 연결할 스토리지 정보를 설정합니다. 
@@ -79,6 +109,8 @@ Object Storage는 연결할 컨테이너 이름과 S3 API 자격 증명의 Acces
 > Object Storage의 S3 API 자격 증명을 발급하는 사용자는 연결할 컨테이너에 대한 **read/write** 권한이 필요합니다.
 > 스토리지 게이트웨이를 통해 Object Storage의 컨테이너를 연결해 사용하는 동안 컨테이너를 삭제하거나 S3 API 자격 증명을 삭제한다면 사용자 시스템에 문제가 생길 수 있습니다. 삭제하지 않도록 주의해야 합니다.
 > 스토리지 게이트웨이를 통해 Object Storage의 컨테이너를 연결해 사용하는 동안 `{컨테이너명}+segments` 컨테이너의 오브젝트를 삭제하면 저장한 파일에 접근할 수 없습니다. 삭제하지 않도록 주의해야 합니다.
+
+<a id="nfs-permissions-settings"></a>
 
 #### NFS 권한 설정
 NFS 프로토콜을 통해 연결할 클라이언트의 권한을 설정합니다. 
@@ -96,11 +128,17 @@ $ id
 uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu)
 ```
 
+<a id="access-control-acl"></a>
+
 #### 접근 제어(ACL)
 게이트웨이를 통해 NHN Cloud 스토리지에 접근할 수 있는 클라이언트의 IP 또는 IP 대역을 CIDR 형식으로 입력합니다.
 
+<a id="cache-settings"></a>
+
 #### 캐시 설정
 메모리 캐시 유효 시간을 설정합니다. 설정된 유효 시간 동안 캐시가 유지됩니다.
+
+<a id="delete-share"></a>
 
 ### 공유 삭제
 공유를 삭제합니다. 
@@ -108,8 +146,12 @@ uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu)
 > [주의]
 > 공유를 삭제하기 전에 NHN Cloud 스토리지를 마운트하여 사용 중인 시스템에서 언마운트해야 합니다. 마운트 상태에서 공유를 삭제하면 사용자 시스템에 문제가 생길 수 있습니다. 
 
+<a id="immediately-empty-cache"></a>
+
 ### 캐시 즉시 비우기
 디스크 캐시 영역에 저장된 데이터를 즉시 삭제합니다. 
+
+<a id="change-access-key"></a>
 
 ### Access Key 변경
 Object Storage 유형 게이트웨이의 공유 생성 시 설정한 Access Key를 변경합니다.
@@ -117,14 +159,22 @@ Object Storage 유형 게이트웨이의 공유 생성 시 설정한 Access Key�
 > [주의]
 > Access Key를 변경하기 전에 NHN Cloud 스토리지를 마운트하여 사용 중인 시스템에서 언마운트해야 합니다. 마운트 상태에서 Access Key를 변경하면 사용자 시스템에 문제가 생길 수 있습니다. 
 
+<a id="change-nfs-permissions"></a>
+
 ### NFS 권한 변경
 NFS 프로토콜을 통해 연결할 클라이언트의 권한을 변경합니다.
+
+<a id="change-access-control-acl"></a>
 
 ### 접근 제어(ACL) 변경
 게이트웨이를 통해 NHN Cloud 스토리지에 접근할 수 있는 클라이언트의 IP 또는 IP 대역을 변경합니다.
 
+<a id="connect-nfs"></a>
+
 ## NFS 연결
 NFS를 사용하려면 다음과 같이 NFS 패키지를 설치하고 rpcbind 서비스를 실행해야 합니다.
+
+<a id="install-nfs-package"></a>
 
 ### NFS 패키지 설치
 * **Debian, Ubuntu**
@@ -137,10 +187,14 @@ sudo apt-get install nfs-common rpcbind
 sudo yum install nfs-utils rpcbind
 ```
 
+<a id="run-rpcbind-service"></a>
+
 ### rpcbind 서비스 실행
 ```
 sudo service rpcbind start
 ```
+
+<a id="mount-share"></a>
 
 ### 공유 마운트
 생성한 공유의 마운트 연결 정보와 mount 명령을 이용하여 다음과 같이 NHN Cloud 스토리지를 사용자 시스템에 마운트할 수 있습니다.
@@ -162,8 +216,12 @@ sudo mount -t nfs -o vers=3 {마운트 연결 정보} {마운트할 경로}
   예: /mnt/data
 
 
+<a id="posix-api"></a>
+
 ## POSIX API
 Object Storage 유형의 게이트웨이는 POSIX API 일부만 지원합니다.
+
+<a id="supported-apis"></a>
 
 ### 지원하는 API
 ```

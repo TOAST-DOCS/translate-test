@@ -5,34 +5,56 @@ Storage Gateway는 하나 이상의 클라우드 인스턴스 또는 온프레�
 > [참고]
 > Storage Gateway는 2025년 3월 기준 한국(판교) 리전에서 제공되며, NHN Cloud 스토리지 서비스 중 Object Storage와 연결할 수 있습니다.
 
+<a id="characteristics"></a>
+
 ## 특징
+<a id="sharable"></a>
+
 ### 공유
 NHN Cloud 스토리지를 하나 이상의 인스턴스 또는 온프레미스 장비에 마운트하여 사용할 수 있습니다.
 지원하는 프로토콜은 NFS v3, v4(Linux)입니다.
 
+<a id="convenient"></a>
+
 ### 편리성
 다양한 인터페이스의 NHN Cloud 스토리지를 파일 수준으로 마운트할 수 있는 인터페이스를 제공하기 때문에 별도의 파일 시스템 구성이나 API 호출이 필요하지 않습니다.
+
+<a id="scalable"></a>
 
 ### 확장성
 NHN Cloud 스토리지의 뛰어난 확장성을 통해 데이터 사용량에 따라 스토리지 용량을 유연하게 증설할 수 있습니다.
 
+<a id="stable"></a>
+
 ### 안정성
 이중화 구성을 통해, 장애가 발생하더라도 서비스 중단 없이 사용할 수 있습니다.
+
+<a id="accessible"></a>
 
 ### 접근성
 게이트웨이의 VPC 네트워크에 Floating IP를 연결하거나 네트워크 게이트웨이 설정을 통해 다양한 환경에서 NHN Cloud Storage에 접근할 수 있습니다.
 
+<a id="secure"></a>
+
 ### 보안성
 NHN Cloud 스토리지의 서버 측 암호화 기능을 이용하여 데이터를 안전하게 보관할 수 있습니다.
+
+<a id="disaster-recovery"></a>
 
 ### 재해 복구
 NHN Cloud 스토리지의 재해 복구 설정을 통해 예기치 않은 재해 상황에 대비할 수 있습니다.
 
 
+<a id="terms"></a>
+
 ## 용어
+<a id="gateway"></a>
+
 ### 게이트웨이
 NHN Cloud 스토리지에 연결할 인터페이스를 제공하는 인스턴스 클러스터입니다.
 사용자 프로젝트에 생성되며 이중화 구성을 할 수 있습니다.
+
+<a id="share"></a>
 
 ### 공유
 NHN Cloud 스토리지를 연결할 설정입니다.
