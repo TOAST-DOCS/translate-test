@@ -10,7 +10,7 @@ NHN Cloud 콘솔에서 로드 밸런서(DSR) 설정값들을 입력하는 것만
 
 로드 밸런서(DSR) 생성 화면은 다음 세 개의 영역으로 구성됩니다.
 
-<a id='load-balancer-dsr-basic-information-settings'></a>
+<a id='create-load-balancer-dsr-load-balancer-dsr-basic-information-settings'></a>
 #### 1. 로드 밸런서(DSR) 기본 정보 설정
 
 로드 밸런서(DSR)에 대한 기본 정보를 설정합니다. 필요한 항목들은 다음과 같습니다.
@@ -29,7 +29,7 @@ NHN Cloud 콘솔에서 로드 밸런서(DSR) 설정값들을 입력하는 것만
 !!! tip "알아두기"
     로드 밸런서(DSR)는 TCP/UDP L4 레벨에서 동작하며, 서버 응답 트래픽이 로드 밸런서를 경유하지 않습니다. 따라서 일반 로드 밸런서와 달리 L7 기능(HTTP 헤더 기반 라우팅, SSL Offloading, 리스너/멤버 그룹 개념 등)은 제공되지 않습니다.
 
-<a id='health-check-settings'></a>
+<a id='create-load-balancer-dsr-health-check-settings'></a>
 #### 2. 상태 확인 설정
 
 멤버 인스턴스가 정상적으로 동작하는지 주기적으로 확인하는 상태 확인을 설정합니다.
@@ -61,7 +61,7 @@ NHN Cloud 콘솔에서 로드 밸런서(DSR) 설정값들을 입력하는 것만
 !!! tip "알아두기"
     TCP/HTTP 상태 확인은 DSR VIP를 목적지로 요청하므로, 멤버 서버의 lo 인터페이스에 VIP가 설정되어 있지 않으면 해당 패킷이 수신·처리되지 못해 상태 확인이 실패하고 멤버가 `INACTIVE`로 판정됩니다. ICMP 상태 확인은 멤버의 실제 IP로 요청하므로 VIP 설정과 무관하게 연결성만 확인합니다.
 
-<a id='member-settings'></a>
+<a id='create-load-balancer-dsr-member-settings'></a>
 #### 3. 멤버 설정
 
 로드 밸런서(DSR) 생성 시 등록할 멤버 인스턴스를 지정합니다. 멤버 등록은 로드 밸런서(DSR) 생성 후에도 할 수 있습니다.
@@ -89,7 +89,7 @@ NHN Cloud 콘솔에서 로드 밸런서(DSR) 설정값들을 입력하는 것만
 <a id='load-balancer-dsr-details-and-modification'></a>
 ### 로드 밸런서(DSR) 살펴보기 및 수정 { #load-balancer-dsr-details-and-modification }
 
-<a id='load-balancer-dsr-list'></a>
+<a id='load-balancer-dsr-details-and-modification-load-balancer-dsr-list'></a>
 #### 로드 밸런서(DSR) 목록
 
 로드 밸런서(DSR) 생성을 완료하면 목록 화면에서 생성된 로드 밸런서(DSR)들의 기본 정보를 확인할 수 있습니다. 목록 화면에서 노출되는 항목들은 다음과 같습니다.
@@ -112,7 +112,7 @@ NHN Cloud 콘솔에서 로드 밸런서(DSR) 설정값들을 입력하는 것만
 
 상단의 **+ DSR 생성** 버튼으로 로드 밸런서(DSR)를 추가 생성할 수 있으며, 목록에서 체크박스로 로드 밸런서(DSR)를 선택한 뒤 **삭제** 버튼으로 삭제할 수 있습니다.
 
-<a id='load-balancer-dsr-details'></a>
+<a id='load-balancer-dsr-details-and-modification-load-balancer-dsr-details'></a>
 #### 로드 밸런서(DSR) 상세 정보
 
 목록에서 로드 밸런서(DSR)를 선택하면 화면 하단에 상세 정보가 표시됩니다. 상세 화면은 **기본 정보**, **멤버**, **상태 확인** 세 개의 탭으로 구분됩니다.
@@ -124,11 +124,11 @@ NHN Cloud 콘솔에서 로드 밸런서(DSR) 설정값들을 입력하는 것만
 * 플로팅 IP 연결 정보
 * 상태
 
-<a id='rename'></a>
+<a id='load-balancer-dsr-details-and-modification-rename'></a>
 #### 이름 변경
 로드 밸런서(DSR)의 이름을 변경하려면, 상세 정보의 **이름 수정** 아이콘을 클릭하여 변경할 이름을 입력한 뒤 **확인** 버튼을 클릭합니다.
 
-<a id='change-floating-ip'></a>
+<a id='load-balancer-dsr-details-and-modification-change-floating-ip'></a>
 #### 플로팅 IP 변경
 외부 네트워크에서 로드 밸런서(DSR)에 접근할 수 있도록 플로팅 IP를 연결하거나 분리할 수 있습니다.
 

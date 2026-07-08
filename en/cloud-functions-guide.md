@@ -13,7 +13,7 @@ After configuring function settings, writing code, and building it, click the **
 ![console-guide-07](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-07.png)
 ![console-guide-08](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-08.png)
 
-<a id="function-settings"></a>
+<a id="create-function-function-settings"></a>
 #### Function Settings
 <table class="it">
     <tr>
@@ -91,7 +91,7 @@ After configuring function settings, writing code, and building it, click the **
 <br>
 
 
-<a id="writing-code"></a>
+<a id="create-function-writing-code"></a>
 #### Writing Code
 
 ![console-guide-09](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-09.png)
@@ -158,11 +158,11 @@ After configuring function settings, writing code, and building it, click the **
 <a id="modify-function"></a>
 ### Modify Function { #modify-function }
 Click the **Modify** button to modify the function settings and code of an existing function.
-<a id="non-modifiable-items"></a>
+<a id="modify-function-non-modifiable-items"></a>
 #### Non-modifiable Items
 - Name, Runtime environment
     - All items except these can be modified.
-<a id="source-code"></a>
+<a id="modify-function-source-code"></a>
 #### Source Code
 - When using the code editor, the existing code is loaded.
 - If the function was created by uploading a ZIP file from the user local environment, switching to the code editor will not display the ZIP file and will load the default template code instead.
@@ -198,14 +198,14 @@ Copies an existing function to create an identical one. Since duplicate names ar
 - You can manage the versions of a function.
 - You can view the history of all created versions and roll back to a previous version.
 
-<a id="version-management-overview"></a>
+<a id="function-version-management-version-management-overview"></a>
 #### Version Management Overview
 Clicking the **Build** button on the function creation/modification screen builds the code and generates a package.
 - The last built package is linked as the function version when the function is created/modified.
 - Each version is managed independently, and a tested version can be applied to the function as-is.
 - At least one build must be performed before a function can be created.
 
-<a id="version-information"></a>
+<a id="function-version-management-version-information"></a>
 #### Version Information
 <table class="it">
     <tr>
@@ -235,7 +235,7 @@ Clicking the **Build** button on the function creation/modification screen build
     </tr>
 </table>
 
-<a id="version-deployment"></a>
+<a id="function-version-management-version-deployment"></a>
 #### Version Deployment
 - Select the version to deploy from the version list and click the **Deploy Version** button to update the function to that version.
 - The currently applied version cannot be selected.
@@ -245,7 +245,7 @@ Clicking the **Build** button on the function creation/modification screen build
 > **[Note]**
 > <br>A confirmation popup is displayed when deploying a version, and upon success, the version list is automatically refreshed.
 
-<a id="delete-version"></a>
+<a id="function-version-management-delete-version"></a>
 #### Delete Version
 - Select the version to delete from the version list and click the **Delete Version** button to delete that version.
 - The currently applied version cannot be deleted.
@@ -255,7 +255,7 @@ Clicking the **Build** button on the function creation/modification screen build
 > **[Note]**
 > <br>A confirmation popup is displayed when deleting a version, and deleted versions cannot be recovered.
 
-<a id="constraints"></a>
+<a id="function-version-management-constraints"></a>
 #### Constraints
 - Packages built on the function creation/modification screen are not linked as function versions if the creation/modification is canceled.
 - When a function is deleted, all versions linked to that function are also deleted.
@@ -274,14 +274,14 @@ Clicking the **Build** button on the function creation/modification screen build
     - Example: `https://{userdomain}/{function name}`
     - Method: GET, POST
 
-<a id="createmodify-trigger"></a>
+<a id="function-trigger-management-createmodify-trigger"></a>
 #### Create/Modify Trigger
 - Timer
     - Value: Enter the cycle as a Cron string.
 - API Gateway
     - You can add an HTTP Endpoint using the API Gateway service.
 
-<a id="delete-trigger"></a>
+<a id="function-trigger-management-delete-trigger"></a>
 #### Delete Trigger
 - Multiple triggers can be selected and deleted. The default HTTP trigger cannot be deleted.
 

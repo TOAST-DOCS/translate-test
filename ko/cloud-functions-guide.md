@@ -13,7 +13,7 @@
 ![console-guide-07](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-07.png)
 ![console-guide-08](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-08.png)
 
-<a id="function-settings"></a>
+<a id="create-function-function-settings"></a>
 #### 함수 설정
 <table class="it">
     <tr>
@@ -91,7 +91,7 @@
 <br>
 
 
-<a id="writing-code"></a>
+<a id="create-function-writing-code"></a>
 #### 코드 작성
 
 ![console-guide-09](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-09.png)
@@ -158,11 +158,11 @@
 <a id="modify-function"></a>
 ### 함수 수정 { #modify-function }
 기존 함수의 함수 설정 및 코드를 수정하기 위해 **수정** 버튼을 클릭해 함수를 수정합니다.
-<a id="non-modifiable-items"></a>
+<a id="modify-function-non-modifiable-items"></a>
 #### 수정 불가 항목
 - 이름, 런타임 환경
     - 해당 항목을 제외한 모든 항목을 수정할 수 있습니다.
-<a id="source-code"></a>
+<a id="modify-function-source-code"></a>
 #### 소스 코드
 - 코드 에디터를 사용하는 경우 기존 코드가 로드됩니다.
 - 사용자 로컬 환경의 ZIP 파일을 업로드하여 함수를 생성했을 경우, 코드 에디터로 변경하면 ZIP 파일을 보여주지 않고 기본 템플릿 코드를 로드합니다.
@@ -198,14 +198,14 @@
 - 함수의 버전을 관리할 수 있습니다.
 - 생성된 모든 버전의 이력을 확인하고, 이전 버전으로 롤백할 수 있습니다.
 
-<a id="version-management-overview"></a>
+<a id="function-version-management-version-management-overview"></a>
 #### 버전 관리 개요
 함수 생성/수정 화면에서 **빌드** 버튼을 클릭해 코드를 빌드하면 패키지가 생성됩니다.
 - 함수 생성/수정 시 마지막 빌드한 패키지가 함수 버전으로 연동됩니다.
 - 각 버전은 독립적으로 관리되며, 테스트한 버전을 그대로 함수에 적용할 수 있습니다.
 - 함수 생성 시 최소 1회 이상 빌드를 진행해야 함수 생성이 가능합니다.
 
-<a id="version-information"></a>
+<a id="function-version-management-version-information"></a>
 #### 버전 정보
 <table class="it">
     <tr>
@@ -235,7 +235,7 @@
     </tr>
 </table>
 
-<a id="version-deployment"></a>
+<a id="function-version-management-version-deployment"></a>
 #### 버전 배포
 - 버전 목록에서 배포할 버전을 선택하고 **버전 배포** 버튼을 클릭하면 해당 버전으로 함수가 업데이트됩니다.
 - 현재 적용된 버전은 선택할 수 없습니다.
@@ -245,7 +245,7 @@
 > **[참고]**
 > <br>버전 배포 시 확인 팝업이 표시되며, 성공 시 버전 목록이 자동으로 갱신됩니다.
 
-<a id="delete-version"></a>
+<a id="function-version-management-delete-version"></a>
 #### 버전 삭제
 - 버전 목록에서 삭제할 버전을 선택하고 **버전 삭제** 버튼을 클릭하면 해당 버전이 삭제됩니다.
 - 현재 적용된 버전은 삭제할 수 없습니다.
@@ -255,7 +255,7 @@
 > **[참고]**
 > <br>버전 삭제 시 확인 팝업이 표시되며, 삭제된 버전은 복구할 수 없습니다.
 
-<a id="constraints"></a>
+<a id="function-version-management-constraints"></a>
 #### 제약 사항
 - 함수 생성/수정 화면에서 빌드한 패키지는 함수 생성/수정을 취소하면 함수 버전으로 연동되지 않습니다.
 - 함수 삭제 시 해당 함수와 연동된 모든 버전도 함께 삭제됩니다.
@@ -274,14 +274,14 @@
     - 예시 : `https://{userdomain}/{함수명}`
     - Method : GET, POST
 
-<a id="createmodify-trigger"></a>
+<a id="function-trigger-management-createmodify-trigger"></a>
 #### 트리거 생성/수정
 - Timer
     - Value: Cron 문자열로 주기를 입력합니다.
 - API Gateway
     - API Gateway 서비스를 이용하여 HTTP Endpoint를 추가할 수 있습니다.
 
-<a id="delete-trigger"></a>
+<a id="function-trigger-management-delete-trigger"></a>
 #### 트리거 삭제
 - 여러 건의 트리거를 선택하여 삭제할 수 있습니다. 기본 트리거인 HTTP 트리거는 삭제할 수 없습니다.
 
