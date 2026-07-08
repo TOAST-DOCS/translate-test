@@ -1,9 +1,11 @@
-## Network > Transit Hub > Overview
+<a id="network-transit-hub-overview"></a>
+## Network > Transit Hub > Overview { #network-transit-hub-overview }
 
 If using **Transit Hub** service, a single gateway acting as a central hub allows multiple **VPC**s to form a centralized connection and an environment capable of communicating between **VPC**s. The service can eliminate complex peering relationships, centralize and simplify your network, and act as a router to manage communication paths between VPCs. </br>
 **Transit Hub** is only available in new network environments for Korea (Pangyo) region. Projects created by Korea (Pangyo) region before March 7, 2022 are network environments before improvement, so you need to create new projects to use **Transit Hub**.
 
-### Main Features
+<a id="main-features"></a>
+### Main Features { #main-features }
 
 * Allows you to connect VPC resources to the internet.
 * Provides routing settings between connected VPCs.
@@ -12,50 +14,61 @@ If using **Transit Hub** service, a single gateway acting as a central hub allow
 * Allows you to implement a variety of architectures, including centralized connectivity and isolated routing.
 * Streamline network configuration to increase operational efficiency.
 
-### Service Targets
+<a id="service-targets"></a>
+### Service Targets { #service-targets }
 
 * When needs to simplify communication between VPCs by eliminating complex peering relationships.
 * When routing between multiple VPCs needs to be centrally controlled
 * When multicast communication between VPCs is required
 
-### Terms
+<a id="terms"></a>
+### Terms { #terms }
 
 When multicast communication between VPCs is required
 
+<a id="terms-transit-hub"></a>
 #### Transit Hub
 
 It is a top-level resource that manages centralized connections and provides routing and multicast communication between connected resources.
 
+<a id="terms-attachment"></a>
 #### Attachment
 
 A resource that manages the association relationship between the Transit Hub and other resources. Currently, only **attachment** that is connected to the VPC is available.
 
+<a id="terms-routing-table"></a>
 #### Routing Table
 
 Select **attachment** to forward packets based on the destination IP address of the packet and act as a router to forward packets. Depending on the settings that you enter when you create a Transit Hub, you can have one default routing table and if you need additional routing tables, you can create additional routing tables. 
 
+<a id="terms-routing-association"></a>
 #### Routing Association
 
 These settings that specify **attachment** to which packets will flow into the **routing table**. Packets that flown into the **routing table** by **routing association** are forwarded to another **attachment** by **routing rule**. One **attachment** can only create one **routing association** from one **routing table**. 
 
+<a id="terms-routing-propagation"></a>
 #### Routing Propagation
 
 Obtain the CIDR value of the resource associated with **attachment** and automatically create **routing rule**.
 
+<a id="terms-routing-rule"></a>
 #### Routing Rule
 
 This is a route policy included in the **routing table**. Set up static routing by specifying the destination CIDR and the **attachment** to which the packet is forwarded. Regardless of whether or not the **routing association** is created, you can designate the route of all **attachments** of the same **transit hub** and forward packets 
 > [Note] All **attachments** under the same **transit hub** can be used as the next hop in the **routing rule**.
 
+<a id="terms-multicast-domain"></a>
 #### Multicast Domain
 
 You can split a Transit Hub into multiple multicast domains and **multicast domains** will have multicast networks independent of one another.
 
+<a id="terms-multicast-association"></a>
 #### Multicast Association
 
 This is a setting to connect **attachment** and **multicast domain**. The **subnet** related to the VPC associated with the **attachment** will join the connected multicast network.
 > [Note] One **subnet** can only be attached to one multicast domain.
 
+<a id="terms-multicast-group"></a>
 #### Multicast Group
 
 This means the set of VM instances that uses the same multicast IP address in the **multicast domain**. You can add **network interface** of VM instance that uses a subnet connected to a multicast domain as a multicast group.

@@ -1,4 +1,5 @@
-## Network > Transit Hub > API v2 가이드
+<a id="network-transit-hub-api-v2-guide"></a>
+## Network > Transit Hub > API v2 가이드 { #network-transit-hub-api-v2-guide }
 
 NHN Cloud Network 서비스는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token)을 참고하세요.
 
@@ -10,15 +11,18 @@ NHN Cloud Network 서비스는 API 호출 시 인증/인가를 위해 IaaS 토�
 
 API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
 
-## 트랜짓 허브
+<a id="transit-hub"></a>
+## 트랜짓 허브 { #transit-hub }
 
-### 트랜짓 허브 목록 보기
+<a id="view-transit-hubs"></a>
+### 트랜짓 허브 목록 보기 { #view-transit-hubs }
 
 ```
 GET /v2.0/gateways/transithubs
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-transit-hubs-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -29,6 +33,7 @@ X-Auth-Token: {tokenId}
 | name | Query | String | - | 조회할 트랜짓 허브 이름 |
 
 
+<a id="view-transit-hubs-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -66,13 +71,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 트랜짓 허브 보기
+<a id="view-transit-hub"></a>
+### 트랜짓 허브 보기 { #view-transit-hub }
 
 ```
 GET /v2.0/gateways/transithubs/{transitHubId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-transit-hub-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -81,6 +88,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | transitHubId | URL | UUID | O | 트랜짓 허브 ID |
 
+<a id="view-transit-hub-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -116,13 +124,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 트랜짓 허브 생성하기
+<a id="create-transit-hub"></a>
+### 트랜짓 허브 생성하기 { #create-transit-hub }
 
 ```
 POST /v2.0/gateways/transithubs
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-transit-hub-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -153,6 +163,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-transit-hub-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -189,13 +200,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 트랜짓 허브 수정하기
+<a id="modify-transit-hub"></a>
+### 트랜짓 허브 수정하기 { #modify-transit-hub }
 
 ```
 PUT /v2.0/gateways/transithubs/{transitHubId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-transit-hub-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -218,6 +231,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="modify-transit-hub-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -254,13 +268,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 트랜짓 허브 삭제하기
+<a id="delete-transit-hub"></a>
+### 트랜짓 허브 삭제하기 { #delete-transit-hub }
 
 ```
 DELETE /v2.0/gateways/transithubs/{transitHubId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-transit-hub-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -270,6 +286,7 @@ X-Auth-Token: {tokenId}
 | transitHubId | URL | UUID | O | 트랜짓 허브 ID |
 
 
+<a id="delete-transit-hub-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다.
 
@@ -282,15 +299,18 @@ X-Auth-Token: {tokenId}
 
 
 
-## 연결
+<a id="attachment"></a>
+## 연결 { #attachment }
 
-### 연결 목록 보기
+<a id="view-attachments"></a>
+### 연결 목록 보기 { #view-attachments }
 
 ```
 GET /v2.0/gateways/transithub_attachments
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-attachments-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -305,6 +325,7 @@ X-Auth-Token: {tokenId}
 
 
 
+<a id="view-attachments-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -345,13 +366,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 연결 보기
+<a id="view-attachment"></a>
+### 연결 보기 { #view-attachment }
 
 ```
 GET /v2.0/gateways/transithub_attachments/{attachmentId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-attachment-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -360,6 +383,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | attachmentId | URL | UUID | O | 연결 ID |
 
+<a id="view-attachment-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -398,13 +422,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 연결 생성하기
+<a id="create-attachment"></a>
+### 연결 생성하기 { #create-attachment }
 
 ```
 POST /v2.0/gateways/transithub_attachments
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-attachment-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -432,6 +458,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-attachment-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -471,13 +498,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 연결 수정하기
+<a id="modify-attachment"></a>
+### 연결 수정하기 { #modify-attachment }
 
 ```
 PUT /v2.0/gateways/transithub_attachments/{attachmentId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-attachment-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -500,6 +529,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="modify-attachment-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -539,13 +569,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 연결 삭제하기
+<a id="delete-attachment"></a>
+### 연결 삭제하기 { #delete-attachment }
 
 ```
 DELETE /v2.0/gateways/transithub_attachments/{attachmentId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-attachment-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -555,6 +587,7 @@ X-Auth-Token: {tokenId}
 | attachmentId | URL | UUID | O | 연결 ID |
 
 
+<a id="delete-attachment-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다.
 
@@ -567,15 +600,18 @@ X-Auth-Token: {tokenId}
 
 
 
-## 라우팅 테이블
+<a id="routing-table"></a>
+## 라우팅 테이블 { #routing-table }
 
-### 라우팅 테이블 목록 보기
+<a id="view-routing-tables"></a>
+### 라우팅 테이블 목록 보기 { #view-routing-tables }
 
 ```
 GET /v2.0/gateways/transithub_routing_tables
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-tables-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -588,6 +624,7 @@ X-Auth-Token: {tokenId}
 
 
 
+<a id="view-routing-tables-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -623,13 +660,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 테이블 보기
+<a id="view-routing-table"></a>
+### 라우팅 테이블 보기 { #view-routing-table }
 
 ```
 GET /v2.0/gateways/transithub_routing_tables/{routingTableId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-table-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -638,6 +677,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | routingTableId | URL | UUID | O | 라우팅 테이블 ID |
 
+<a id="view-routing-table-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -671,13 +711,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 테이블 생성하기
+<a id="create-routing-table"></a>
+### 라우팅 테이블 생성하기 { #create-routing-table }
 
 ```
 POST /v2.0/gateways/transithub_routing_tables
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-routing-table-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -701,6 +743,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-routing-table-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -734,13 +777,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 테이블 수정하기
+<a id="modify-routing-table"></a>
+### 라우팅 테이블 수정하기 { #modify-routing-table }
 
 ```
 PUT /v2.0/gateways/transithub_routing_tables/{routingTableId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-routing-table-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -763,6 +808,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="modify-routing-table-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -797,13 +843,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 테이블 삭제하기
+<a id="delete-routing-table"></a>
+### 라우팅 테이블 삭제하기 { #delete-routing-table }
 
 ```
 DELETE /v2.0/gateways/transithub_routing_tables/{routingTableId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-routing-table-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -813,6 +861,7 @@ X-Auth-Token: {tokenId}
 | routingTableId | URL | UUID | O | 라우팅 테이블 ID |
 
 
+<a id="delete-routing-table-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다.
 
@@ -826,15 +875,18 @@ X-Auth-Token: {tokenId}
 
 
 
-## 라우팅 연결
+<a id="routing-association"></a>
+## 라우팅 연결 { #routing-association }
 
-### 라우팅 연결 목록 보기
+<a id="view-routing-associations"></a>
+### 라우팅 연결 목록 보기 { #view-routing-associations }
 
 ```
 GET /v2.0/gateways/transithub_routing_associations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-associations-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -847,6 +899,7 @@ X-Auth-Token: {tokenId}
 
 
 
+<a id="view-routing-associations-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -880,13 +933,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 연결 보기
+<a id="view-routing-association"></a>
+### 라우팅 연결 보기 { #view-routing-association }
 
 ```
 GET /v2.0/gateways/transithub_routing_associations/{routingAssociationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-association-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -895,6 +950,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | routingAssociationId | URL | UUID | O | 라우팅 연결 ID |
 
+<a id="view-routing-association-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -926,13 +982,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 연결 생성하기
+<a id="create-routing-association"></a>
+### 라우팅 연결 생성하기 { #create-routing-association }
 
 ```
 POST /v2.0/gateways/transithub_routing_associations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-routing-association-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -955,6 +1013,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-routing-association-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -986,13 +1045,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 연결 삭제하기
+<a id="delete-routing-association"></a>
+### 라우팅 연결 삭제하기 { #delete-routing-association }
 
 ```
 DELETE /v2.0/gateways/transithub_routing_associations/{routingAssociationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-routing-association-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1002,6 +1063,7 @@ X-Auth-Token: {tokenId}
 | routingAssociationId | URL | UUID | O | 라우팅 연결 ID |
 
 
+<a id="delete-routing-association-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다.
 
@@ -1015,15 +1077,18 @@ X-Auth-Token: {tokenId}
 
 
 
-## 라우팅 전파
+<a id="routing-propagation"></a>
+## 라우팅 전파 { #routing-propagation }
 
-### 라우팅 전파 목록 보기
+<a id="routing-propagation-view-routing-associations"></a>
+### 라우팅 전파 목록 보기 { #routing-propagation-view-routing-associations }
 
 ```
 GET /v2.0/gateways/transithub_routing_propagations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="routing-propagation-view-routing-associations-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1036,6 +1101,7 @@ X-Auth-Token: {tokenId}
 
 
 
+<a id="routing-propagation-view-routing-associations-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1069,13 +1135,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 전파 보기
+<a id="view-routing-propagation"></a>
+### 라우팅 전파 보기 { #view-routing-propagation }
 
 ```
 GET /v2.0/gateways/transithub_routing_propagations/{routingPropagationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-propagation-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1084,6 +1152,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | routingPropagationId | URL | UUID | O | 라우팅 전파 ID |
 
+<a id="view-routing-propagation-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1115,13 +1184,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 전파 생성하기
+<a id="create-routing-propagation"></a>
+### 라우팅 전파 생성하기 { #create-routing-propagation }
 
 ```
 POST /v2.0/gateways/transithub_routing_propagations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-routing-propagation-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -1144,6 +1215,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-routing-propagation-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1175,13 +1247,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 전파 삭제하기
+<a id="delete-routing-propagation"></a>
+### 라우팅 전파 삭제하기 { #delete-routing-propagation }
 
 ```
 DELETE /v2.0/gateways/transithub_routing_propagations/{routingPropagationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-routing-propagation-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1191,6 +1265,7 @@ X-Auth-Token: {tokenId}
 | routingPropagationId | URL | UUID | O | 라우팅 전파 ID |
 
 
+<a id="delete-routing-propagation-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다.
 
@@ -1204,15 +1279,18 @@ X-Auth-Token: {tokenId}
 
 
 
-## 라우팅 룰
+<a id="routing-rule"></a>
+## 라우팅 룰 { #routing-rule }
 
-### 라우팅 룰 목록 보기
+<a id="view-routing-rules"></a>
+### 라우팅 룰 목록 보기 { #view-routing-rules }
 
 ```
 GET /v2.0/gateways/transithub_routing_rules
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-rules-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1227,6 +1305,7 @@ X-Auth-Token: {tokenId}
 
 
 
+<a id="view-routing-rules-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1268,13 +1347,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 룰 보기
+<a id="view-routing-rule"></a>
+### 라우팅 룰 보기 { #view-routing-rule }
 
 ```
 GET /v2.0/gateways/transithub_routing_rules/{routingRuleId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-rule-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1283,6 +1364,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | routingRuleId | URL | UUID | O | 라우팅 룰 ID |
 
+<a id="view-routing-rule-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1322,13 +1404,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 룰 생성하기
+<a id="create-routing-rule"></a>
+### 라우팅 룰 생성하기 { #create-routing-rule }
 
 ```
 POST /v2.0/gateways/transithub_routing_rules
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-routing-rule-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -1355,6 +1439,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-routing-rule-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1394,13 +1479,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 라우팅 룰 삭제하기
+<a id="delete-routing-rule"></a>
+### 라우팅 룰 삭제하기 { #delete-routing-rule }
 
 ```
 DELETE /v2.0/gateways/transithub_routing_rules/{routingRuleId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-routing-rule-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1410,6 +1497,7 @@ X-Auth-Token: {tokenId}
 | routingRuleId | URL | UUID | O | 라우팅 룰 ID |
 
 
+<a id="delete-routing-rule-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다.
 
@@ -1424,15 +1512,18 @@ X-Auth-Token: {tokenId}
 
 
 
-## 멀티캐스트 도메인
+<a id="multicast-domain"></a>
+## 멀티캐스트 도메인 { #multicast-domain }
 
-### 멀티캐스트 도메인 목록 보기
+<a id="view-multicast-domains"></a>
+### 멀티캐스트 도메인 목록 보기 { #view-multicast-domains }
 
 ```
 GET /v2.0/gateways/transithub_multicast_domains
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-multicast-domains-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1444,6 +1535,7 @@ X-Auth-Token: {tokenId}
 | transithub_id | Query | UUID | - | 조회할 트랜짓 허브 ID |
 
 
+<a id="view-multicast-domains-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1477,13 +1569,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 멀티캐스트 도메인 보기
+<a id="view-multicast-domain"></a>
+### 멀티캐스트 도메인 보기 { #view-multicast-domain }
 
 ```
 GET /v2.0/gateways/transithub_multicast_domains/{multicastDomainId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-multicast-domain-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1492,6 +1586,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | multicastDomainId | URL | UUID | O | 멀티캐스트 도메인 ID |
 
+<a id="view-multicast-domain-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1524,13 +1619,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### 멀티캐스트 도메인 생성하기
+<a id="create-multicast-domain"></a>
+### 멀티캐스트 도메인 생성하기 { #create-multicast-domain }
 
 ```
 POST /v2.0/gateways/transithub_multicast_domains
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-multicast-domain-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -1553,6 +1650,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-multicast-domain-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1585,13 +1683,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### 멀티캐스트 도메인 수정하기
+<a id="modify-multicast-domain"></a>
+### 멀티캐스트 도메인 수정하기 { #modify-multicast-domain }
 
 ```
 PUT /v2.0/gateways/transithub_multicast_domains/{multicastDomainId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-multicast-domain-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -1614,6 +1714,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="modify-multicast-domain-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1646,13 +1747,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### 멀티캐스트 도메인 삭제하기
+<a id="delete-multicast-domain"></a>
+### 멀티캐스트 도메인 삭제하기 { #delete-multicast-domain }
 
 ```
 DELETE /v2.0/gateways/transithub_multicast_domains/{multicastDomainId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-multicast-domain-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1662,6 +1765,7 @@ X-Auth-Token: {tokenId}
 | multicastDomainId | URL | UUID | O | 멀티캐스트 도메인 ID |
 
 
+<a id="delete-multicast-domain-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다.
 
@@ -1673,15 +1777,18 @@ X-Auth-Token: {tokenId}
 
 
 
-## 멀티캐스트 연결
+<a id="multicast-association"></a>
+## 멀티캐스트 연결 { #multicast-association }
 
-### 멀티캐스트 연결 목록 보기
+<a id="multicast-association-view-multicast-domains"></a>
+### 멀티캐스트 연결 목록 보기 { #multicast-association-view-multicast-domains }
 
 ```
 GET /v2.0/gateways/transithub_multicast_associations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="multicast-association-view-multicast-domains-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1693,6 +1800,7 @@ X-Auth-Token: {tokenId}
 | domain_id | Query | UUID | - | 조회할 멀티캐스트 도메인 ID |
 
 
+<a id="multicast-association-view-multicast-domains-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1729,13 +1837,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### 멀티캐스트 연결 보기
+<a id="view-multicast-association"></a>
+### 멀티캐스트 연결 보기 { #view-multicast-association }
 
 ```
 GET /v2.0/gateways/transithub_multicast_associations/{multicastAssociationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-multicast-association-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1744,6 +1854,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | multicastAssociationId | URL | UUID | O | 라우팅 룰 ID |
 
+<a id="view-multicast-association-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1779,13 +1890,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### 멀티캐스트 연결 생성하기
+<a id="create-multicast-association"></a>
+### 멀티캐스트 연결 생성하기 { #create-multicast-association }
 
 ```
 POST /v2.0/gateways/transithub_multicast_associations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-multicast-association-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -1808,6 +1921,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-multicast-association-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1842,13 +1956,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 멀티캐스트 연결 삭제하기
+<a id="delete-multicast-association"></a>
+### 멀티캐스트 연결 삭제하기 { #delete-multicast-association }
 
 ```
 DELETE /v2.0/gateways/transithub_multicast_associations/{multicastAssociationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-multicast-association-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1858,6 +1974,7 @@ X-Auth-Token: {tokenId}
 | multicastAssociationId | URL | UUID | O | 멀티캐스트 연결 ID |
 
 
+<a id="delete-multicast-association-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다.
 
@@ -1876,15 +1993,18 @@ X-Auth-Token: {tokenId}
 
 
 
-## 멀티캐스트 그룹
+<a id="multicast-group"></a>
+## 멀티캐스트 그룹 { #multicast-group }
 
-### 멀티캐스트 그룹 목록 보기
+<a id="view-multicast-group"></a>
+### 멀티캐스트 그룹 목록 보기 { #view-multicast-group }
 
 ```
 GET /v2.0/gateways/transithub_multicast_groups
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-multicast-group-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1896,6 +2016,7 @@ X-Auth-Token: {tokenId}
 | domain_id | Query | UUID | - | 조회할 멀티캐스트 그룹 ID |
 
 
+<a id="view-multicast-group-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1936,13 +2057,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 멀티캐스트 그룹 보기
+<a id="multicast-group-view-multicast-group"></a>
+### 멀티캐스트 그룹 보기 { #multicast-group-view-multicast-group }
 
 ```
 GET /v2.0/gateways/transithub_multicast_groups/{multicastGroupId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="multicast-group-view-multicast-group-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -1951,6 +2074,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | multicastGroupId | URL | UUID | O | 멀티캐스트 그룹 ID |
 
+<a id="multicast-group-view-multicast-group-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -1989,13 +2113,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 멀티캐스트 그룹 생성하기
+<a id="create-multicast-group"></a>
+### 멀티캐스트 그룹 생성하기 { #create-multicast-group }
 
 ```
 POST /v2.0/gateways/transithub_multicast_groups
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-multicast-group-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -2024,6 +2150,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-multicast-group-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -2063,13 +2190,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### 멀티캐스트 그룹 삭제하기
+<a id="delete-multicast-group"></a>
+### 멀티캐스트 그룹 삭제하기 { #delete-multicast-group }
 
 ```
 DELETE /v2.0/gateways/transithub_multicast_groups/{multicastGroupId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-multicast-group-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -2079,6 +2208,7 @@ X-Auth-Token: {tokenId}
 | multicastGroupId | URL | UUID | O | 멀티캐스트 그룹 ID |
 
 
+<a id="delete-multicast-group-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다.
 
@@ -2088,15 +2218,18 @@ X-Auth-Token: {tokenId}
 
 
 
-## 트랜짓 허브 공유
+<a id="share-transit-hub"></a>
+## 트랜짓 허브 공유 { #share-transit-hub }
 
-### 공유 허용 목록 보기
+<a id="view-sharing-allowed-list"></a>
+### 공유 허용 목록 보기 { #view-sharing-allowed-list }
 
 ```
 GET /v2.0/gateways/transithub_allow_projects
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-sharing-allowed-list-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -2107,6 +2240,7 @@ X-Auth-Token: {tokenId}
 | transithub_id | Query | UUID | - | 조회할 트랜짓 허브 ID |
 
 
+<a id="view-sharing-allowed-list-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -2138,13 +2272,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 공유 허용 정보 생성하기
+<a id="create-sharing-allowed-information"></a>
+### 공유 허용 정보 생성하기 { #create-sharing-allowed-information }
 
 ```
 POST /v2.0/gateways/transithub_allow_projects
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-sharing-allowed-information-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -2167,6 +2303,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-sharing-allowed-information-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -2198,13 +2335,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### 공유 허용 정보 삭제하기
+<a id="delete-sharing-allowed-information"></a>
+### 공유 허용 정보 삭제하기 { #delete-sharing-allowed-information }
 
 ```
 DELETE /v2.0/gateways/transithub_allow_projects/{allowProjectId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-sharing-allowed-information-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -2214,18 +2353,21 @@ X-Auth-Token: {tokenId}
 | allowProjectId | URL | UUID | O | 공유 허용 정보 ID |
 
 
+<a id="delete-sharing-allowed-information-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다.
 
 
 
-### 공유 받은 목록 보기
+<a id="view-shared-list"></a>
+### 공유 받은 목록 보기 { #view-shared-list }
 
 ```
 GET /v2.0/gateways/transithub_shared_lists
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-shared-list-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -2235,6 +2377,7 @@ X-Auth-Token: {tokenId}
 | transithub_id | Query | UUID | - | 조회할 트랜짓 허브 ID |
 
 
+<a id="view-shared-list-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -2271,15 +2414,18 @@ X-Auth-Token: {tokenId}
 
 
 
-## 멀티캐스트 도메인 공유
+<a id="share-multicast-domain"></a>
+## 멀티캐스트 도메인 공유 { #share-multicast-domain }
 
-### 공유 허용 목록 보기
+<a id="share-multicast-domain-view-sharing-allowed-list"></a>
+### 공유 허용 목록 보기 { #share-multicast-domain-view-sharing-allowed-list }
 
 ```
 GET /v2.0/gateways/transithub_multicast_domain_allow_projects
 X-Auth-Token: {tokenId}
 ```
 
+<a id="share-multicast-domain-view-sharing-allowed-list-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -2290,6 +2436,7 @@ X-Auth-Token: {tokenId}
 | domain_id | Query | UUID | - | 조회할 멀티캐스트 도메인 ID |
 
 
+<a id="share-multicast-domain-view-sharing-allowed-list-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -2321,13 +2468,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 공유 허용 정보 생성하기
+<a id="share-multicast-domain-create-sharing-allowed-information"></a>
+### 공유 허용 정보 생성하기 { #share-multicast-domain-create-sharing-allowed-information }
 
 ```
 POST /v2.0/gateways/transithub_multicast_domain_allow_projects
 X-Auth-Token: {tokenId}
 ```
 
+<a id="share-multicast-domain-create-sharing-allowed-information-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -2350,6 +2499,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="share-multicast-domain-create-sharing-allowed-information-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -2381,13 +2531,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### 공유 허용 정보 삭제하기
+<a id="share-multicast-domain-delete-sharing-allowed-information"></a>
+### 공유 허용 정보 삭제하기 { #share-multicast-domain-delete-sharing-allowed-information }
 
 ```
 DELETE /v2.0/gateways/transithub_multicast_domain_allow_projects/{allowProjectId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="share-multicast-domain-delete-sharing-allowed-information-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -2397,18 +2549,21 @@ X-Auth-Token: {tokenId}
 | allowProjectId | URL | UUID | O | 공유 허용 정보 ID |
 
 
+<a id="share-multicast-domain-delete-sharing-allowed-information-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다.
 
 
 
-### 공유 받은 목록 보기
+<a id="share-multicast-domain-view-shared-list"></a>
+### 공유 받은 목록 보기 { #share-multicast-domain-view-shared-list }
 
 ```
 GET /v2.0/gateways/transithub_multicast_domain_shared_lists
 X-Auth-Token: {tokenId}
 ```
 
+<a id="share-multicast-domain-view-shared-list-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -2418,6 +2573,7 @@ X-Auth-Token: {tokenId}
 | domain_id | Query | UUID | - | 조회할 멀티캐스트 도메인 ID |
 
 
+<a id="share-multicast-domain-view-shared-list-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |

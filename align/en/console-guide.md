@@ -1,12 +1,15 @@
-## Network > Transit Hub > Console User Guide
+<a id="network-transit-hub-console-user-guide"></a>
+## Network > Transit Hub > Console User Guide { #network-transit-hub-console-user-guide }
 
 This guide describes how to use the Transit Hub service from the console.
 
-## Manage
+<a id="manage"></a>
+## Manage { #manage }
 
 Manage **Transit Hub** settings.
 
-### Create Transit Hub
+<a id="create-transit-hub"></a>
+### Create Transit Hub { #create-transit-hub }
 
 To create a transit hub, use the following steps.
 
@@ -24,7 +27,8 @@ To create a transit hub, use the following steps.
 > * You cannot change multicast support, default routing table attachment/propagation settings.
 > * Default routing table is created only when one or more of the default routing table attachments or default routing table propagation is selected.
 
-### Modify Transit Hub
+<a id="modify-transit-hub"></a>
+### Modify Transit Hub { #modify-transit-hub }
 
 A transit hub can be modified as follows. You can only change the name and description.
 
@@ -33,7 +37,8 @@ A transit hub can be modified as follows. You can only change the name and descr
 3. Click **Modify Transit Hub** to display the modification screen.
 4. On the modification screen, make changes to an item.
 
-### Delete Transit Hub
+<a id="delete-transit-hub"></a>
+### Delete Transit Hub { #delete-transit-hub }
 
 To delete a transit hub, use the following steps.
 
@@ -41,7 +46,8 @@ To delete a transit hub, use the following steps.
 2. Select a transit hub that you want to delete from the list on the screen.
 3. Click **Delete** Transit Hub to delete.
 
-### Share Transit Hub
+<a id="share-transit-hub"></a>
+### Share Transit Hub { #share-transit-hub }
 
 Share a transit hub with another project. In another project, you can create **Attachment** to the **shared transit hub**.<br>
 To share Transit Hub, use the following steps.
@@ -56,11 +62,13 @@ If you do not have access to another project, obtain a tenant ID from the admini
 > 3. Select one of the VPCs that appears in the screen list.
 > 4. Copy the ID value shown in **Basic Information > Tenant ID.
 
-## Attach
+<a id="attach"></a>
+## Attach { #attach }
 
 Manage attachment that defines the relationship between transit hubs and other resources.
 
-### Create Attachment
+<a id="create-attachment"></a>
+### Create Attachment { #create-attachment }
 
 To create attachment, use the following steps.
 
@@ -77,7 +85,8 @@ To create attachment, use the following steps.
     > [Note] Since only VPC can be selected as the resource type, only the VPC list is automatically output.
     * Subnet: Select a subnet where the **network interface** of the attachment is created.
 
-### Modify Attachment
+<a id="modify-attachment"></a>
+### Modify Attachment { #modify-attachment }
 
 Attachment can be modified as follows. You can only change the name and description.
 
@@ -88,7 +97,8 @@ Attachment can be modified as follows. You can only change the name and descript
 5. Click **Modify Attachment** to display the modification screen.
 6. On the modification screen, make changes to an item.
 
-### Delete Attachment
+<a id="delete-attachment"></a>
+### Delete Attachment { #delete-attachment }
 
 To delete attachment, use the following steps.
 
@@ -98,11 +108,13 @@ To delete attachment, use the following steps.
 4. Select attachment you want to delete from the list.
 5. Click **Delete Attachment** to delete.
 
-## Routing Table
+<a id="routing-table"></a>
+## Routing Table { #routing-table }
 
 Manage the Routing Table settings on the Transit Hub.
 
-### Create Routing table
+<a id="create-routing-table"></a>
+### Create Routing table { #create-routing-table }
 
 To create a routing table, use the following steps.
 
@@ -114,7 +126,8 @@ To create a routing table, use the following steps.
     * Name: Enter a routing table name.
     * Description: Describe the description of a routing table.
 
-### Modify Routing Table
+<a id="modify-routing-table"></a>
+### Modify Routing Table { #modify-routing-table }
 
 Routing table can be modified as follows. You can only change the name and description.
 
@@ -125,7 +138,8 @@ Routing table can be modified as follows. You can only change the name and descr
 5. Click **Modify Routing Table** to display the modification screen.
 6. On the modification screen, make changes to an item.
 
-### Delete Routing Table
+<a id="delete-routing-table"></a>
+### Delete Routing Table { #delete-routing-table }
 
 To delete routing table, use the following steps.
 
@@ -135,14 +149,17 @@ To delete routing table, use the following steps.
 4. Select a routing table you want to delete from the list.
 5. Click **Delete Routing Table** to delete.
 
-### Manage Routing Table
+<a id="manage-routing-table"></a>
+### Manage Routing Table { #manage-routing-table }
 
 Check the basic information for the selected **routing table and manage the packet handling rules and settings associated with routing.
 
+<a id="manage-routing-table-basic-information"></a>
 #### Basic Information
 
 You can check the basic information for the selected routing table.
 
+<a id="manage-routing-table-routing-association"></a>
 #### Routing Association
 
 Manage **routing association** that defines the relationship with the attachment for routing table to receive packets.
@@ -173,6 +190,7 @@ To delete routing association, use the following steps.
 6. Select routing association you want to delete from the list.
 7. Click **Delete Routing Association** to delete.
    
+<a id="manage-routing-table-routing-propagation"></a>
 #### Routing Propagation
 
 You can automatically create a **routing rule** in the **routing table** that manages the outbound policy for packets. Manage **routing propagation**, which defines the relationship with **attachment** to automatically create **routing rules**.
@@ -208,6 +226,7 @@ To delete routing propagation, use the following steps.
 7. Click **Delete Routing Propagation** to delete.
 > [Caution] When deleting routing propagation, the routing rule that was automatically added will be deleted together.
 
+<a id="manage-routing-table-routing-rule"></a>
 #### Routing Rule
 
 Manage **routing rules** that handle the outbound rules of packets from the routing table.
@@ -241,12 +260,14 @@ To delete routing rule, use the following steps.
 6. Select routing rule you want to delete from the list.
 7. Click **Delete Routing Rule** to delete.
 
-## Multicast
+<a id="multicast"></a>
+## Multicast { #multicast }
 
 Manage the **Multicast settings on Transit Hub.
 > [Caution] **Multicast Domain** cannot be created if **Multicast Support is not selected on Transit Hub and all multicast-related features are unavailable to use.
 
-### Create Multicast Domain
+<a id="create-multicast-domain"></a>
+### Create Multicast Domain { #create-multicast-domain }
 
 To create **multicast domain, use the following steps.
 
@@ -258,7 +279,8 @@ To create **multicast domain, use the following steps.
     * Name: Enter the name of multicast domain.
     * Description: Describe the description of multicast domain.
 
-### Modify Multicast Domain
+<a id="modify-multicast-domain"></a>
+### Modify Multicast Domain { #modify-multicast-domain }
 
 Multicast domain can be modified as follows. You can only change the name and description.
 
@@ -269,7 +291,8 @@ Multicast domain can be modified as follows. You can only change the name and de
 5. Click **Modify Multicast Domain** to display the modification screen.
 6. On the modification screen, make changes to an item.
 
-### Delete Multicast Domain
+<a id="delete-multicast-domain"></a>
+### Delete Multicast Domain { #delete-multicast-domain }
 
 To delete Multicast domain, use the following steps.
 
@@ -279,7 +302,8 @@ To delete Multicast domain, use the following steps.
 4. Select multicast domain you want to delete from the list.
 5. Click **Delete Multicast Domain** to delete.
 
-### Share Multicast Domain
+<a id="share-multicast-domain"></a>
+### Share Multicast Domain { #share-multicast-domain }
 
 Share a multicast domain to another project. Other projects can create **multicast connections and** **multicast groups**from the list of multicast domains output **from the multicast** **under the shared transit hub**.<br>
 To share a multicast domain, use the following steps.
@@ -296,14 +320,17 @@ If you do not have access to another project, obtain a tenant ID from the admini
 > 3. Select one of the VPCs that appears in the screen list.
 > 4. Copy the ID value shown in **Basic Information > Tenant ID**.
 
-### Manage Multicast
+<a id="manage-multicast"></a>
+### Manage Multicast { #manage-multicast }
 
 Check basic information for the selected multicast domain and manage the packet handling policy and settings associated with the multicast.
 
+<a id="manage-multicast-basic-information"></a>
 #### Basic Information
 
 You can check the basic information for the selected multicast domain.
 
+<a id="manage-multicast-multicast-association"></a>
 #### Multicast Association
 
 Manage multicast associations join subnets of VPC-type attachments to multicast networks in multicast domains.
@@ -337,6 +364,7 @@ To delete multicast association, use the following steps.
 6. Select multicast association you want to delete from the list on the screen.
 7. Click **Delete Multicast Association** to delete.
 
+<a id="manage-multicast-multicast-group"></a>
 #### Multicast Group
 
 **Network interfaces** to participate in multicast communication provided by the **multicast domain** are managed as a **multicast group**. By configuring the **multicast group**, **network interfaces** with the same group IP address perform multicast communication with each other.<br>
@@ -379,7 +407,8 @@ To delete multicast group, use the following steps.
 6. Select multicast domain you want to delete from the list.
 7. Click **Delete Multicast Group** to delete.
 
-## Shared Transit Hub
+<a id="shared-transit-hub"></a>
+## Shared Transit Hub { #shared-transit-hub }
 
 If you've been shared transit hubs owned by other projects, you can view the list and join the communication on the **Shared Transit Hub** page.
 > [Note] The following settings are available in the shared transit hub.
@@ -387,11 +416,13 @@ If you've been shared transit hubs owned by other projects, you can view the lis
 > * You can connect a VPC you own to a shared transit hub by creating an attachment.
 > * If you have been given a shared multicast domain, the subnet of the VPC you own can participate in multicast communication managed by the multicast domain.
 
-## Attachment (shared transit hub)
+<a id="attachment-shared-transit-hub"></a>
+## Attachment (shared transit hub) { #attachment-shared-transit-hub }
 
 Manage attachments that define relationships between shared transit hubs and other resources.
 
-### Create Attachment
+<a id="attachment-shared-transit-hub-create-attachment"></a>
+### Create Attachment { #attachment-shared-transit-hub-create-attachment }
 
 To create attachment, use the following steps.
 
@@ -410,7 +441,8 @@ To create attachment, use the following steps.
     > [Note] Only the VPC list is exposed because the resource type can only be a VPC.
     * Subnet: Select the subnet where the attachment's network interface is created.
 
-### Modify Attachment
+<a id="attachment-shared-transit-hub-modify-attachment"></a>
+### Modify Attachment { #attachment-shared-transit-hub-modify-attachment }
 
 Attachment can be modified as follows. You can only change the name and description.
 
@@ -421,7 +453,8 @@ Attachment can be modified as follows. You can only change the name and descript
 5. Click **Modify Attachment** to display the modification screen.
 6. On the modification screen, make changes to an item.
 
-### Delete Attachment
+<a id="attachment-shared-transit-hub-delete-attachment"></a>
+### Delete Attachment { #attachment-shared-transit-hub-delete-attachment }
 
 To delete attachment, use the following steps.
 
@@ -431,14 +464,17 @@ To delete attachment, use the following steps.
 4. Select attachment you want to delete from the list.
 5. Click **Delete Attachment** to delete.
 
-## Multicast (shared multicast domains)
+<a id="multicast-shared-multicast-domains"></a>
+## Multicast (shared multicast domains) { #multicast-shared-multicast-domains }
 
 Manage resources for participating in multicast communications in a shared received multicast domain.
 
-### Manage Shared Multicast
+<a id="manage-shared-multicast"></a>
+### Manage Shared Multicast { #manage-shared-multicast }
 
 Check basic information for the shared multicast domain and manage the packet handling policy and settings associated with the multicast.
 
+<a id="manage-shared-multicast-multicast-association"></a>
 #### Multicast Association
 
 Manage **multicast association** so that VPC-type **attachment** can join the multicast network configured by a shared **multicast domain**.
@@ -472,6 +508,7 @@ To delete multicast association, use the following steps.
 6. Select multicast association you want to delete from the list.
 7. Click **Delete Multicast Association** to delete.
 
+<a id="manage-shared-multicast-multicast-group"></a>
 #### Multicast Group
 
 Manage network interfaces that will participate in multicast communications provided by a shared multicast domain as a multicast group. Multicast group settings enable network interfaces with the same group IP address to multicast communicate with each other.<br>

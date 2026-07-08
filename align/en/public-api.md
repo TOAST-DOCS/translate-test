@@ -1,4 +1,5 @@
-## Network > Transit Hub > API v2 Guide
+<a id="network-transit-hub-api-v2-guide"></a>
+## Network > Transit Hub > API v2 Guide { #network-transit-hub-api-v2-guide }
 
 NHN Cloud Network services use IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS). For more information on issuing and using IaaS tokens, please refer to the [IaaS Token](/nhncloud/en/public-api/iaas-token).
 
@@ -10,15 +11,18 @@ For Transit Hub API, the `network` type endpoint is used. For more details, see 
 
 In each API response, you may find fields that are not specified within this guide. Those fields are for NHN Cloud internal usage, so refrain from using them because they may be changed without prior notice.
 
-## Transit Hub
+<a id="transit-hub"></a>
+## Transit Hub { #transit-hub }
 
-### View Transit Hubs
+<a id="view-transit-hubs"></a>
+### View Transit Hubs { #view-transit-hubs }
 
 ```
 GET /v2.0/gateways/transithubs
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-transit-hubs-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -29,6 +33,7 @@ This API does not require a request body.
 | String | Query | Token ID | - | Transit hub name to query |
 
 
+<a id="view-transit-hubs-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -66,13 +71,15 @@ This API does not require a request body.
 </details>
 
 ---
-### View Transit Hub
+<a id="view-transit-hub"></a>
+### View Transit Hub { #view-transit-hub }
 
 ```
 GET /v2.0/gateways/transithubs/{transitHubId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-transit-hub-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -81,6 +88,7 @@ This API does not require a request body.
 | String | O | Token ID | Response | Token ID |
 | transitHubId | O | UUID | Response | Transit Hub ID |
 
+<a id="view-transit-hub-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -116,13 +124,15 @@ This API does not require a request body.
 </details>
 
 ---
-### Create Transit Hub
+<a id="create-transit-hub"></a>
+### Create Transit Hub { #create-transit-hub }
 
 ```
 POST /v2.0/gateways/transithubs
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-transit-hub-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -153,6 +163,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-transit-hub-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -189,13 +200,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### Modify Transit Hub
+<a id="modify-transit-hub"></a>
+### Modify Transit Hub { #modify-transit-hub }
 
 ```
 PUT /v2.0/gateways/transithubs/{transitHubId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-transit-hub-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -218,6 +231,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="modify-transit-hub-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -254,13 +268,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### Delete Transit Hub
+<a id="delete-transit-hub"></a>
+### Delete Transit Hub { #delete-transit-hub }
 
 ```
 DELETE /v2.0/gateways/transithubs/{transitHubId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-transit-hub-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -270,6 +286,7 @@ This API does not require a request body.
 | transitHubId | O | UUID | Response | Transit Hub ID |
 
 
+<a id="delete-transit-hub-response"></a>
 #### Response
 Stops the specified node group.
 
@@ -282,15 +299,18 @@ Stops the specified node group.
 
 
 
-## Attachment
+<a id="attachment"></a>
+## Attachment { #attachment }
 
-### View Attachments
+<a id="view-attachments"></a>
+### View Attachments { #view-attachments }
 
 ```
 GET /v2.0/gateways/transithub_attachments
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-attachments-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -305,6 +325,7 @@ This API does not require a request body.
 
 
 
+<a id="view-attachments-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -345,13 +366,15 @@ This API does not require a request body.
 </details>
 
 ---
-### View Attachment
+<a id="view-attachment"></a>
+### View Attachment { #view-attachment }
 
 ```
 GET /v2.0/gateways/transithub_attachments/{attachmentId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-attachment-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -360,6 +383,7 @@ This API does not require a request body.
 | String | O | Token ID | Response | Token ID |
 | attachmentId | O | UUID | Response | Attachment ID |
 
+<a id="view-attachment-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -398,13 +422,15 @@ This API does not require a request body.
 </details>
 
 ---
-### Create Attachment
+<a id="create-attachment"></a>
+### Create Attachment { #create-attachment }
 
 ```
 POST /v2.0/gateways/transithub_attachments
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-attachment-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -432,6 +458,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-attachment-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -471,13 +498,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### Modify Attachment
+<a id="modify-attachment"></a>
+### Modify Attachment { #modify-attachment }
 
 ```
 PUT /v2.0/gateways/transithub_attachments/{attachmentId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-attachment-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -500,6 +529,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="modify-attachment-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -539,13 +569,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### Delete Attachment
+<a id="delete-attachment"></a>
+### Delete Attachment { #delete-attachment }
 
 ```
 DELETE /v2.0/gateways/transithub_attachments/{attachmentId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-attachment-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -555,6 +587,7 @@ This API does not require a request body.
 | attachmentId | O | UUID | Response | Attachment ID |
 
 
+<a id="delete-attachment-response"></a>
 #### Response
 Stops the specified node group.
 
@@ -567,15 +600,18 @@ Stops the specified node group.
 
 
 
-## Routing Table
+<a id="routing-table"></a>
+## Routing Table { #routing-table }
 
-### View Routing Tables
+<a id="view-routing-tables"></a>
+### View Routing Tables { #view-routing-tables }
 
 ```
 GET /v2.0/gateways/transithub_routing_tables
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-tables-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -588,6 +624,7 @@ This API does not require a request body.
 
 
 
+<a id="view-routing-tables-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -623,13 +660,15 @@ This API does not require a request body.
 </details>
 
 ---
-### View Routing Table
+<a id="view-routing-table"></a>
+### View Routing Table { #view-routing-table }
 
 ```
 GET /v2.0/gateways/transithub_routing_tables/{routingTableId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-table-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -638,6 +677,7 @@ This API does not require a request body.
 | String | O | Token ID | Response | Token ID |
 | routingTableId | O | UUID | Response | Routing table ID |
 
+<a id="view-routing-table-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -671,13 +711,15 @@ This API does not require a request body.
 </details>
 
 ---
-### Create Routing Table
+<a id="create-routing-table"></a>
+### Create Routing Table { #create-routing-table }
 
 ```
 POST /v2.0/gateways/transithub_routing_tables
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-routing-table-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -701,6 +743,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-routing-table-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -734,13 +777,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### Modify Routing Table
+<a id="modify-routing-table"></a>
+### Modify Routing Table { #modify-routing-table }
 
 ```
 PUT /v2.0/gateways/transithub_routing_tables/{routingTableId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-routing-table-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -763,6 +808,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="modify-routing-table-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -797,13 +843,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### Delete Routing Table
+<a id="delete-routing-table"></a>
+### Delete Routing Table { #delete-routing-table }
 
 ```
 DELETE /v2.0/gateways/transithub_routing_tables/{routingTableId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-routing-table-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -813,6 +861,7 @@ This API does not require a request body.
 | routingTableId | O | UUID | Response | Routing table ID |
 
 
+<a id="delete-routing-table-response"></a>
 #### Response
 Stops the specified node group.
 
@@ -826,15 +875,18 @@ Stops the specified node group.
 
 
 
-## Routing Association
+<a id="routing-association"></a>
+## Routing Association { #routing-association }
 
-### View Routing Associations
+<a id="view-routing-associations"></a>
+### View Routing Associations { #view-routing-associations }
 
 ```
 GET /v2.0/gateways/transithub_routing_associations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-associations-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -847,6 +899,7 @@ This API does not require a request body.
 
 
 
+<a id="view-routing-associations-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -880,13 +933,15 @@ This API does not require a request body.
 </details>
 
 ---
-### View Routing Association
+<a id="view-routing-association"></a>
+### View Routing Association { #view-routing-association }
 
 ```
 GET /v2.0/gateways/transithub_routing_associations/{routingAssociationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-association-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -895,6 +950,7 @@ This API does not require a request body.
 | String | O | Token ID | Response | Token ID |
 | routingAssociationId | O | UUID | Response | Routing Association ID |
 
+<a id="view-routing-association-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -926,13 +982,15 @@ This API does not require a request body.
 </details>
 
 ---
-### Create Routing Association
+<a id="create-routing-association"></a>
+### Create Routing Association { #create-routing-association }
 
 ```
 POST /v2.0/gateways/transithub_routing_associations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-routing-association-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -955,6 +1013,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-routing-association-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -986,13 +1045,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### Delete Routing Association
+<a id="delete-routing-association"></a>
+### Delete Routing Association { #delete-routing-association }
 
 ```
 DELETE /v2.0/gateways/transithub_routing_associations/{routingAssociationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-routing-association-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1002,6 +1063,7 @@ This API does not require a request body.
 | routingAssociationId | O | UUID | Response | Routing Association ID |
 
 
+<a id="delete-routing-association-response"></a>
 #### Response
 Stops the specified node group.
 
@@ -1015,15 +1077,18 @@ Stops the specified node group.
 
 
 
-## Routing Propagation
+<a id="routing-propagation"></a>
+## Routing Propagation { #routing-propagation }
 
-### View Routing Associations
+<a id="routing-propagation-view-routing-associations"></a>
+### View Routing Associations { #routing-propagation-view-routing-associations }
 
 ```
 GET /v2.0/gateways/transithub_routing_propagations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="routing-propagation-view-routing-associations-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1036,6 +1101,7 @@ This API does not require a request body.
 
 
 
+<a id="routing-propagation-view-routing-associations-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1069,13 +1135,15 @@ This API does not require a request body.
 </details>
 
 ---
-### View Routing propagation
+<a id="view-routing-propagation"></a>
+### View Routing propagation { #view-routing-propagation }
 
 ```
 GET /v2.0/gateways/transithub_routing_propagations/{routingPropagationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-propagation-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1084,6 +1152,7 @@ This API does not require a request body.
 | String | O | Token ID | Response | Token ID |
 | routingPropagationId | O | UUID | Response | Routing Propagation ID |
 
+<a id="view-routing-propagation-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1115,13 +1184,15 @@ This API does not require a request body.
 </details>
 
 ---
-### Create Routing Propagation
+<a id="create-routing-propagation"></a>
+### Create Routing Propagation { #create-routing-propagation }
 
 ```
 POST /v2.0/gateways/transithub_routing_propagations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-routing-propagation-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -1144,6 +1215,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-routing-propagation-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1175,13 +1247,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### Delete Routing Propagation
+<a id="delete-routing-propagation"></a>
+### Delete Routing Propagation { #delete-routing-propagation }
 
 ```
 DELETE /v2.0/gateways/transithub_routing_propagations/{routingPropagationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-routing-propagation-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1191,6 +1265,7 @@ This API does not require a request body.
 | routingPropagationId | O | UUID | Response | Routing Propagation ID |
 
 
+<a id="delete-routing-propagation-response"></a>
 #### Response
 Stops the specified node group.
 
@@ -1204,15 +1279,18 @@ Stops the specified node group.
 
 
 
-## Routing Rule
+<a id="routing-rule"></a>
+## Routing Rule { #routing-rule }
 
-### View Routing Rules
+<a id="view-routing-rules"></a>
+### View Routing Rules { #view-routing-rules }
 
 ```
 GET /v2.0/gateways/transithub_routing_rules
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-rules-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1227,6 +1305,7 @@ This API does not require a request body.
 
 
 
+<a id="view-routing-rules-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1268,13 +1347,15 @@ This API does not require a request body.
 </details>
 
 ---
-### View routing rule
+<a id="view-routing-rule"></a>
+### View routing rule { #view-routing-rule }
 
 ```
 GET /v2.0/gateways/transithub_routing_rules/{routingRuleId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-rule-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1283,6 +1364,7 @@ This API does not require a request body.
 | String | O | Token ID | Response | Token ID |
 | routingRuleId | O | UUID | Response | Routing Rule ID |
 
+<a id="view-routing-rule-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1322,13 +1404,15 @@ This API does not require a request body.
 </details>
 
 ---
-### Create Routing Rule
+<a id="create-routing-rule"></a>
+### Create Routing Rule { #create-routing-rule }
 
 ```
 POST /v2.0/gateways/transithub_routing_rules
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-routing-rule-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -1355,6 +1439,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-routing-rule-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1394,13 +1479,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### Delete Routing Rule
+<a id="delete-routing-rule"></a>
+### Delete Routing Rule { #delete-routing-rule }
 
 ```
 DELETE /v2.0/gateways/transithub_routing_rules/{routingRuleId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-routing-rule-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1410,6 +1497,7 @@ This API does not require a request body.
 | routingRuleId | O | UUID | Response | Routing Rule ID |
 
 
+<a id="delete-routing-rule-response"></a>
 #### Response
 Stops the specified node group.
 
@@ -1424,15 +1512,18 @@ Stops the specified node group.
 
 
 
-## Multicast Domain
+<a id="multicast-domain"></a>
+## Multicast Domain { #multicast-domain }
 
-### View multicast domains
+<a id="view-multicast-domains"></a>
+### View multicast domains { #view-multicast-domains }
 
 ```
 GET /v2.0/gateways/transithub_multicast_domains
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-multicast-domains-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1444,6 +1535,7 @@ This API does not require a request body.
 | transithub_id | Query | UUID | - | Transit hub ID to query |
 
 
+<a id="view-multicast-domains-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1477,13 +1569,15 @@ This API does not require a request body.
 </details>
 
 ---
-### View Multicast Domain
+<a id="view-multicast-domain"></a>
+### View Multicast Domain { #view-multicast-domain }
 
 ```
 GET /v2.0/gateways/transithub_multicast_domains/{multicastDomainId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-multicast-domain-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1492,6 +1586,7 @@ This API does not require a request body.
 | String | O | Token ID | Response | Token ID |
 | multicastDomainId | O | UUID | Response | Multicast Domain ID |
 
+<a id="view-multicast-domain-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1524,13 +1619,15 @@ This API does not require a request body.
 
 
 ---
-### Create Multicast Domain
+<a id="create-multicast-domain"></a>
+### Create Multicast Domain { #create-multicast-domain }
 
 ```
 POST /v2.0/gateways/transithub_multicast_domains
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-multicast-domain-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -1553,6 +1650,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-multicast-domain-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1585,13 +1683,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### Modify Multicast Domain
+<a id="modify-multicast-domain"></a>
+### Modify Multicast Domain { #modify-multicast-domain }
 
 ```
 PUT /v2.0/gateways/transithub_multicast_domains/{multicastDomainId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-multicast-domain-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -1614,6 +1714,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="modify-multicast-domain-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1646,13 +1747,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### Delete Multicast Domain
+<a id="delete-multicast-domain"></a>
+### Delete Multicast Domain { #delete-multicast-domain }
 
 ```
 DELETE /v2.0/gateways/transithub_multicast_domains/{multicastDomainId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-multicast-domain-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1662,6 +1765,7 @@ This API does not require a request body.
 | multicastDomainId | O | UUID | Response | Multicast Domain ID |
 
 
+<a id="delete-multicast-domain-response"></a>
 #### Response
 Stops the specified node group.
 
@@ -1673,15 +1777,18 @@ Stops the specified node group.
 
 
 
-## Multicast Association
+<a id="multicast-association"></a>
+## Multicast Association { #multicast-association }
 
-### View multicast domains
+<a id="multicast-association-view-multicast-domains"></a>
+### View multicast domains { #multicast-association-view-multicast-domains }
 
 ```
 GET /v2.0/gateways/transithub_multicast_associations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="multicast-association-view-multicast-domains-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1693,6 +1800,7 @@ This API does not require a request body.
 | domain_id | Query | UUID | - | Multicast domain ID to query |
 
 
+<a id="multicast-association-view-multicast-domains-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1729,13 +1837,15 @@ This API does not require a request body.
 
 
 ---
-### View Multicast Association
+<a id="view-multicast-association"></a>
+### View Multicast Association { #view-multicast-association }
 
 ```
 GET /v2.0/gateways/transithub_multicast_associations/{multicastAssociationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-multicast-association-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1744,6 +1854,7 @@ This API does not require a request body.
 | String | O | Token ID | Response | Token ID |
 | multicastAssociationId | O | UUID | Response | Routing Rule ID |
 
+<a id="view-multicast-association-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1779,13 +1890,15 @@ This API does not require a request body.
 
 
 ---
-### Create Multicast Association
+<a id="create-multicast-association"></a>
+### Create Multicast Association { #create-multicast-association }
 
 ```
 POST /v2.0/gateways/transithub_multicast_associations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-multicast-association-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -1808,6 +1921,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-multicast-association-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1842,13 +1956,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### Delete Multicast Association
+<a id="delete-multicast-association"></a>
+### Delete Multicast Association { #delete-multicast-association }
 
 ```
 DELETE /v2.0/gateways/transithub_multicast_associations/{multicastAssociationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-multicast-association-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1858,6 +1974,7 @@ This API does not require a request body.
 | multicastAssociationId | O | UUID | Response | Multicast association ID |
 
 
+<a id="delete-multicast-association-response"></a>
 #### Response
 Stops the specified node group.
 
@@ -1876,15 +1993,18 @@ Stops the specified node group.
 
 
 
-## Multicast Group
+<a id="multicast-group"></a>
+## Multicast Group { #multicast-group }
 
-### View multicast group
+<a id="view-multicast-group"></a>
+### View multicast group { #view-multicast-group }
 
 ```
 GET /v2.0/gateways/transithub_multicast_groups
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-multicast-group-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1896,6 +2016,7 @@ This API does not require a request body.
 | domain_id | Query | UUID | - | Multicast group ID to query |
 
 
+<a id="view-multicast-group-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1936,13 +2057,15 @@ This API does not require a request body.
 </details>
 
 ---
-### View Multicast Group
+<a id="multicast-group-view-multicast-group"></a>
+### View Multicast Group { #multicast-group-view-multicast-group }
 
 ```
 GET /v2.0/gateways/transithub_multicast_groups/{multicastGroupId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="multicast-group-view-multicast-group-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1951,6 +2074,7 @@ This API does not require a request body.
 | String | O | Token ID | Response | Token ID |
 | multicastGroupId | O | UUID | Response | Multicast Group ID |
 
+<a id="multicast-group-view-multicast-group-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -1989,13 +2113,15 @@ This API does not require a request body.
 </details>
 
 ---
-### Create Multicast Group
+<a id="create-multicast-group"></a>
+### Create Multicast Group { #create-multicast-group }
 
 ```
 POST /v2.0/gateways/transithub_multicast_groups
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-multicast-group-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -2024,6 +2150,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-multicast-group-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -2063,13 +2190,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### Delete Multicast Group
+<a id="delete-multicast-group"></a>
+### Delete Multicast Group { #delete-multicast-group }
 
 ```
 DELETE /v2.0/gateways/transithub_multicast_groups/{multicastGroupId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-multicast-group-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -2079,6 +2208,7 @@ This API does not require a request body.
 | multicastGroupId | O | UUID | Response | Multicast Group ID |
 
 
+<a id="delete-multicast-group-response"></a>
 #### Response
 Stops the specified node group.
 
@@ -2088,15 +2218,18 @@ Stops the specified node group.
 
 
 
-## Share Transit Hub
+<a id="share-transit-hub"></a>
+## Share Transit Hub { #share-transit-hub }
 
-### View Sharing Allowed List
+<a id="view-sharing-allowed-list"></a>
+### View Sharing Allowed List { #view-sharing-allowed-list }
 
 ```
 GET /v2.0/gateways/transithub_allow_projects
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-sharing-allowed-list-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -2107,6 +2240,7 @@ This API does not require a request body.
 | transithub_id | Query | UUID | - | Transit hub ID to query |
 
 
+<a id="view-sharing-allowed-list-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -2138,13 +2272,15 @@ This API does not require a request body.
 </details>
 
 ---
-### Create sharing allowed information
+<a id="create-sharing-allowed-information"></a>
+### Create sharing allowed information { #create-sharing-allowed-information }
 
 ```
 POST /v2.0/gateways/transithub_allow_projects
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-sharing-allowed-information-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -2167,6 +2303,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="create-sharing-allowed-information-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -2198,13 +2335,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### Delete Sharing Allowed Information
+<a id="delete-sharing-allowed-information"></a>
+### Delete Sharing Allowed Information { #delete-sharing-allowed-information }
 
 ```
 DELETE /v2.0/gateways/transithub_allow_projects/{allowProjectId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-sharing-allowed-information-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -2214,18 +2353,21 @@ This API does not require a request body.
 | allowProjectId | O | UUID | Response | Sharing allowed information ID |
 
 
+<a id="delete-sharing-allowed-information-response"></a>
 #### Response
 Stops the specified node group.
 
 
 
-### View Shared List
+<a id="view-shared-list"></a>
+### View Shared List { #view-shared-list }
 
 ```
 GET /v2.0/gateways/transithub_shared_lists
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-shared-list-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -2235,6 +2377,7 @@ This API does not require a request body.
 | transithub_id | Query | UUID | - | Transit hub ID to query |
 
 
+<a id="view-shared-list-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -2271,15 +2414,18 @@ This API does not require a request body.
 
 
 
-## Share Multicast Domain
+<a id="share-multicast-domain"></a>
+## Share Multicast Domain { #share-multicast-domain }
 
-### View Sharing Allowed List
+<a id="share-multicast-domain-view-sharing-allowed-list"></a>
+### View Sharing Allowed List { #share-multicast-domain-view-sharing-allowed-list }
 
 ```
 GET /v2.0/gateways/transithub_multicast_domain_allow_projects
 X-Auth-Token: {tokenId}
 ```
 
+<a id="share-multicast-domain-view-sharing-allowed-list-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -2290,6 +2436,7 @@ This API does not require a request body.
 | domain_id | Query | UUID | - | Multicast domain ID to query |
 
 
+<a id="share-multicast-domain-view-sharing-allowed-list-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -2321,13 +2468,15 @@ This API does not require a request body.
 </details>
 
 ---
-### Create Sharing Allowed Information
+<a id="share-multicast-domain-create-sharing-allowed-information"></a>
+### Create Sharing Allowed Information { #share-multicast-domain-create-sharing-allowed-information }
 
 ```
 POST /v2.0/gateways/transithub_multicast_domain_allow_projects
 X-Auth-Token: {tokenId}
 ```
 
+<a id="share-multicast-domain-create-sharing-allowed-information-request"></a>
 #### Request
 
 | Format | Description | Description | tokenId | Header |
@@ -2350,6 +2499,7 @@ X-Auth-Token: {tokenId}
 ```
 </details>
 
+<a id="share-multicast-domain-create-sharing-allowed-information-response"></a>
 #### Response
 
 | Format | Description | Description | Header |
@@ -2381,13 +2531,15 @@ X-Auth-Token: {tokenId}
 
 
 ---
-### Delete Sharing Allowed Information
+<a id="share-multicast-domain-delete-sharing-allowed-information"></a>
+### Delete Sharing Allowed Information { #share-multicast-domain-delete-sharing-allowed-information }
 
 ```
 DELETE /v2.0/gateways/transithub_multicast_domain_allow_projects/{allowProjectId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="share-multicast-domain-delete-sharing-allowed-information-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -2397,18 +2549,21 @@ This API does not require a request body.
 | allowProjectId | O | UUID | Response | Sharing allowed information ID |
 
 
+<a id="share-multicast-domain-delete-sharing-allowed-information-response"></a>
 #### Response
 Stops the specified node group.
 
 
 
-### View Shared List
+<a id="share-multicast-domain-view-shared-list"></a>
+### View Shared List { #share-multicast-domain-view-shared-list }
 
 ```
 GET /v2.0/gateways/transithub_multicast_domain_shared_lists
 X-Auth-Token: {tokenId}
 ```
 
+<a id="share-multicast-domain-view-shared-list-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -2418,6 +2573,7 @@ This API does not require a request body.
 | domain_id | Query | UUID | - | Multicast domain ID to query |
 
 
+<a id="share-multicast-domain-view-shared-list-response"></a>
 #### Response
 
 | Format | Type | Description | Header |
