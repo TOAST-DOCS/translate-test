@@ -1,4 +1,5 @@
-## Network > Traffic Mirroring > API v2 가이드
+<a id="network-traffic-mirroring-api-v2-guide"></a>
+## Network > Traffic Mirroring > API v2 가이드 { #network-traffic-mirroring-api-v2-guide }
 
 NHN Cloud Network 서비스는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token)을 참고하세요.
 
@@ -10,17 +11,20 @@ NHN Cloud Network 서비스는 API 호출 시 인증/인가를 위해 IaaS 토�
 
 API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
 
-## 미러링 세션(session)
+<a id="mirroring-session-session"></a>
+## 미러링 세션(session) { #mirroring-session-session }
 
 세션은 소스 포트의 트래픽을 타깃 포트로 미러링하는 단위를 의미합니다. 필요한 경우 하나 이상의 필터 그룹을 연결해 세부 트래픽만 미러링할 수 있습니다.
 
-### 세션 목록 보기
+<a id="view-session-lists"></a>
+### 세션 목록 보기 { #view-session-lists }
 
 ```
 GET /v2.0/mirroring/sessions
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-session-lists-request"></a>
 #### 요청
 
 이 API는 요청 본문을 요구하지 않습니다.
@@ -36,6 +40,7 @@ X-Auth-Token: {tokenId}
 | sort\_key | Query | String | - | 정렬 기준 필드 |
 | fields | Query | String | - | 응답에 포함할 필드. 예: `fields=id&fields=name` |
 
+<a id="view-session-lists-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -85,13 +90,15 @@ X-Auth-Token: {tokenId}
 
 ***
 
-### 세션 보기
+<a id="view-sessions"></a>
+### 세션 보기 { #view-sessions }
 
 ```
 GET /v2.0/mirroring/sessions/{SessionId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-sessions-request"></a>
 #### 요청
 
 이 API는 요청 본문을 요구하지 않습니다.
@@ -102,6 +109,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | fields | Query | String | - | 응답에 포함할 필드. 예: `fields=id&fields=name` |
 
+<a id="view-sessions-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -149,13 +157,15 @@ X-Auth-Token: {tokenId}
 
 ***
 
-### 세션 생성하기
+<a id="create-sessions"></a>
+### 세션 생성하기 { #create-sessions }
 
 ```
 POST /v2.0/mirroring/sessions
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-sessions-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -188,6 +198,7 @@ X-Auth-Token: {tokenId}
 }
 ```
 
+<a id="create-sessions-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -223,7 +234,8 @@ X-Auth-Token: {tokenId}
 
 ***
 
-### 세션 수정하기
+<a id="modify-sessions"></a>
+### 세션 수정하기 { #modify-sessions }
 
 ```
 PUT /v2.0/mirroring/sessions/{SessionId}
@@ -232,6 +244,7 @@ X-Auth-Token: {tokenId}
 
 설명과 이름, 방향, 필터 그룹 목록만 수정할 수 있습니다. 포트 변경은 지원하지 않습니다.
 
+<a id="modify-sessions-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -257,19 +270,22 @@ X-Auth-Token: {tokenId}
 }
 ```
 
+<a id="modify-sessions-response"></a>
 #### 응답
 
 세션 보기 응답과 동일합니다.
 
 ***
 
-### 세션 삭제하기
+<a id="delete-sessions"></a>
+### 세션 삭제하기 { #delete-sessions }
 
 ```
 DELETE /v2.0/mirroring/sessions/{SessionId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-sessions-request"></a>
 #### 요청
 
 이 API는 요청 본문을 요구하지 않습니다.
@@ -279,23 +295,27 @@ X-Auth-Token: {tokenId}
 | SessionId | URL | UUID | O | 세션 ID |
 | tokenId | Header | String | O | 토큰 ID |
 
+<a id="delete-sessions-response"></a>
 #### 응답
 
 이 API는 응답 본문을 반환하지 않습니다.
 
 ***
 
-## 미러링 필터 그룹(filtergroup)
+<a id="mirroring-filter-group-filtergroup"></a>
+## 미러링 필터 그룹(filtergroup) { #mirroring-filter-group-filtergroup }
 
 필터 그룹은 하나 이상의 필터를 묶는 컨테이너입니다. 세션에 연결하여 특정 트래픽만 미러링할 수 있습니다.
 
-### 필터 그룹 목록 보기
+<a id="view-a-list-of-filter-groups"></a>
+### 필터 그룹 목록 보기 { #view-a-list-of-filter-groups }
 
 ```
 GET /v2.0/mirroring/filtergroups
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-a-list-of-filter-groups-request"></a>
 #### 요청
 
 이 API는 요청 본문을 요구하지 않습니다.
@@ -310,6 +330,7 @@ X-Auth-Token: {tokenId}
 | sort\_key | Query | String | - | 정렬 키 |
 | fields | Query | String | - | 포함할 필드 |
 
+<a id="view-a-list-of-filter-groups-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -345,13 +366,15 @@ X-Auth-Token: {tokenId}
 
 ***
 
-### 필터 그룹 보기
+<a id="view-filter-groups"></a>
+### 필터 그룹 보기 { #view-filter-groups }
 
 ```
 GET /v2.0/mirroring/filtergroups/{FilterGroupId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-filter-groups-request"></a>
 #### 요청
 
 이 API는 요청 본문을 요구하지 않습니다.
@@ -361,6 +384,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | id | URL | UUID | O | 필터 그룹 ID |
 
+<a id="view-filter-groups-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -377,13 +401,15 @@ X-Auth-Token: {tokenId}
 
 ***
 
-### 필터 그룹 생성하기
+<a id="create-filter-groups"></a>
+### 필터 그룹 생성하기 { #create-filter-groups }
 
 ```
 POST /v2.0/mirroring/filtergroups
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-filter-groups-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -408,6 +434,7 @@ X-Auth-Token: {tokenId}
 }
 ```
 
+<a id="create-filter-groups-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -424,7 +451,8 @@ X-Auth-Token: {tokenId}
 
 ***
 
-### 필터 그룹 수정하기
+<a id="modify-filter-groups"></a>
+### 필터 그룹 수정하기 { #modify-filter-groups }
 
 ```
 PUT /v2.0/mirroring/filtergroups/{FilterGroupId}
@@ -433,6 +461,7 @@ X-Auth-Token: {tokenId}
 
 이름과 설명만 수정할 수 있습니다.
 
+<a id="modify-filter-groups-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -443,6 +472,7 @@ X-Auth-Token: {tokenId}
 | filtergroup.name | Body | String | - | 이름 |
 | filtergroup.description | Body | String | - | 설명 |
 
+<a id="modify-filter-groups-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -459,30 +489,35 @@ X-Auth-Token: {tokenId}
 
 ***
 
-### 필터 그룹 삭제하기
+<a id="delete-filter-groups"></a>
+### 필터 그룹 삭제하기 { #delete-filter-groups }
 
 ```
 DELETE /v2.0/mirroring/filtergroups/{FilterGroupId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-filter-groups-requestresponse"></a>
 #### 요청/응답
 
 요청 본문 없음. 응답 본문 없음.
 
 ***
 
-## 미러링 필터(filter)
+<a id="mirroring-filter-filter"></a>
+## 미러링 필터(filter) { #mirroring-filter-filter }
 
 필터는 매칭 조건과 액션으로 구성되며, 특정 트래픽을 허용(`accept`) 또는 제외(`drop`)하는 용도로 사용됩니다. 필터는 반드시 특정 필터 그룹에 속해야 합니다.
 
-### 필터 목록 보기
+<a id="view-filter-lists"></a>
+### 필터 목록 보기 { #view-filter-lists }
 
 ```
 GET /v2.0/mirroring/filters
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-filter-lists-request"></a>
 #### 요청
 
 이 API는 요청 본문을 요구하지 않습니다.
@@ -497,6 +532,7 @@ X-Auth-Token: {tokenId}
 | sort\_key | Query | String | - | 정렬 키 |
 | fields | Query | String | - | 포함할 필드 |
 
+<a id="view-filter-lists-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -548,13 +584,15 @@ X-Auth-Token: {tokenId}
 
 ***
 
-### 필터 보기
+<a id="view-filters"></a>
+### 필터 보기 { #view-filters }
 
 ```
 GET /v2.0/mirroring/filters/{FilterId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-filters-request"></a>
 #### 요청
 
 이 API는 요청 본문을 요구하지 않습니다.
@@ -564,6 +602,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | id | Query | URL | O | 필터 ID |
 
+<a id="view-filters-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -588,13 +627,15 @@ X-Auth-Token: {tokenId}
 
 ***
 
-### 필터 생성하기
+<a id="create-filters"></a>
+### 필터 생성하기 { #create-filters }
 
 ```
 POST /v2.0/mirroring/filters
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-filters-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -634,6 +675,7 @@ X-Auth-Token: {tokenId}
 }
 ```
 
+<a id="create-filters-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -658,7 +700,8 @@ X-Auth-Token: {tokenId}
 
 ***
 
-### 필터 수정하기
+<a id="modify-filters"></a>
+### 필터 수정하기 { #modify-filters }
 
 ```
 PUT /v2.0/mirroring/filters/{FilterId}
@@ -667,6 +710,7 @@ X-Auth-Token: {tokenId}
 
 설명만 수정할 수 있습니다. 매칭 조건, 액션, 우선순위, 소속 그룹은 수정할 수 없습니다.
 
+<a id="modify-filters-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -676,6 +720,7 @@ X-Auth-Token: {tokenId}
 | filter | Body | Object | O | 수정할 필드만 포함 |
 | filter.description | Body | String | - | 설명 |
 
+<a id="modify-filters-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -700,13 +745,15 @@ X-Auth-Token: {tokenId}
 
 ***
 
-### 필터 삭제하기
+<a id="delete-filters"></a>
+### 필터 삭제하기 { #delete-filters }
 
 ```
 DELETE /v2.0/mirroring/filters/{FilterId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-filters-requestresponse"></a>
 #### 요청/응답
 
 요청 본문 없음. 응답 본문 없음.

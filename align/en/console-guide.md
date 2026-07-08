@@ -1,11 +1,14 @@
-## Network > Traffic Mirroring > Console User Guide
+<a id="network-traffic-mirroring-console-user-guide"></a>
+## Network > Traffic Mirroring > Console User Guide { #network-traffic-mirroring-console-user-guide }
 
 This guide describes how to use the Traffic Mirroring service from the console.
 
-## Manage a Mirror Session
+<a id="manage-a-mirror-session"></a>
+## Manage a Mirror Session { #manage-a-mirror-session }
 
 You can easily create a mirror session just by entering setting values from the console.
 
+<a id="manage-a-mirror-session-mirror-session-information"></a>
 #### Mirror Session Information
 Enter basic information on the mirror session. The following items are required. 
 
@@ -26,7 +29,8 @@ Enter basic information on the mirror session. The following items are required.
 >
 > [Note] If a network interface registered as a mirror source and mirror target is deleted, the attached mirror session is also automatically deleted.
 
-### About Mirror Session Information
+<a id="about-mirror-session-information"></a>
+### About Mirror Session Information { #about-mirror-session-information }
 After creating a mirror session, you return to the Mirror Session List screen. In Mirror Session List, you can find the basic information on the created mirror session. Items that appear on the list screen are as follows.
 
 * Name: Name of the mirror session specified when creating the mirror session. 
@@ -36,30 +40,37 @@ After creating a mirror session, you return to the Mirror Session List screen. I
 * Mirror Target Port: Displays information about the network interface that you specified as a mirror target when you created the mirror session.
 * Mirror Filter Group: Displays information about the mirror filter group that is specified when creating the mirror session.
 
-### Modify a Mirror Session
+<a id="modify-a-mirror-session"></a>
+### Modify a Mirror Session { #modify-a-mirror-session }
 On Mirror Session List screen, select the desired mirror session and press the **Change Session** button to modify the settings of the mirror session.
 > [Note] It is not allowed to change the mirror source port, mirror target port, and direction of the mirror session.
 
-### Delete a Mirror Session
+<a id="delete-a-mirror-session"></a>
+### Delete a Mirror Session { #delete-a-mirror-session }
 On the Mirror Session List screen, select the mirror session you want to delete and click the Delete button to delete the mirror session.
 
-## Mirror Filter
+<a id="mirror-filter"></a>
+## Mirror Filter { #mirror-filter }
 You can create filter groups and rules to use in mirror sessions.
 
-### Mirror Filter Group Information
+<a id="mirror-filter-group-information"></a>
+### Mirror Filter Group Information { #mirror-filter-group-information }
 Enter basic information for the mirror filter group. Required items are as follows. 
 
 * Name: Enter a name for the mirror filter group.
 * Description: Describe the mirror filter group.
 
-### About Mirror Filter Groups
+<a id="about-mirror-filter-groups"></a>
+### About Mirror Filter Groups { #about-mirror-filter-groups }
 When you have finished creating a mirror filter group, you are returned to the Mirror Filter Group List screen.  Mirror Filter Group List screen allows you to view basic information about the created mirror filter group. Items that appear on the list screen are as follows.
 
+<a id="about-mirror-filter-groups-basic-information"></a>
 #### Basic Information
 * Name: Name of the mirror filter group specified when creating the mirror filter group. 
 * Description:  Description of the mirror filter group specified when creating the mirror filter group.
 * Tenant ID: The ID of the project that created the mirror filter group.
 
+<a id="about-mirror-filter-groups-filter-rules"></a>
 #### Filter Rules
 Filter rules that belong to the filter group are listed. **Create Filter Rule**, **Change Filter Rule** and **Delete Filter Rule** that allow you to create, change and delete rules. 
 The following items are required for filter rules.
@@ -76,10 +87,12 @@ The following items are required for filter rules.
 > [Note] Only description items can be changed for filter rules. If required to change other items, you must delete them and recreate them.
 
 
-### Modify Mirror Filter Group
+<a id="modify-mirror-filter-group"></a>
+### Modify Mirror Filter Group { #modify-mirror-filter-group }
 On the Mirror Filter Group List screen, select the desired mirror filter group and click the **Change Filter Group** button to modify the settings of the mirror filter group.
 
-### Delete Mirror Filter Group
+<a id="delete-mirror-filter-group"></a>
+### Delete Mirror Filter Group { #delete-mirror-filter-group }
 On the Mirror Filter Groups list screen, select the mirror filter group you want to delete and click the Delete button to delete the mirror filter group.
 > [Note] If the mirror filter group is deleted, filter rules attached to mirror filter groups are automatically deleted.
 
