@@ -1,8 +1,10 @@
-## Network > Security Groups > Overview
+<a id="network-security-groups-overview"></a>
+## Network > Security Groups > Overview { #network-security-groups-overview }
 
 A security group is used to control the incoming and outgoing traffic of an instance to protect the instance. It uses a 'positive security model', where traffic specified by the rule is allowed and the rest of the traffic is blocked.
 
-### Key Features
+<a id="key-features"></a>
+### Key Features { #key-features }
 * When you start a service for the first time, a default security group is created and all incoming traffic is blocked.
     * Therefore, services such as 'ping' and 'ssh' cannot be used until necessary rules are set.
     * The same applies to both of external access using a floating IP and internal access using a private IP.

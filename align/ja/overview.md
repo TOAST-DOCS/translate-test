@@ -1,8 +1,10 @@
-## Network > Security Groups > 概要
+<a id="network-security-groups-overview"></a>
+## Network > Security Groups > 概要 { #network-security-groups-overview }
 
 セキュリティグループはインスタンスの送受信トラフィックを制御してインスタンスを保護する目的で使用します。ルールで指定したトラフィックは許可し、その他のトラフィックはブロックする「ポジティブセキュリティモデル(positive security model)」を使用します。
  
-### 主な機能
+<a id="key-features"></a>
+### 主な機能 { #key-features }
 * サービスを初めて開始すると、基本セキュリティグループが1つ作成され、流入するすべてのトラフィックをブロックします。 
     * したがって「ping」、「ssh」などのサービスも使用できないので、ルールを設定する必要があります。
     * Floating IPを使用した外部アクセスとプライベートIPを使用した内部アクセスに同じように適用されます。 

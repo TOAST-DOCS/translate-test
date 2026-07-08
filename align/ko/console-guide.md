@@ -1,14 +1,18 @@
-## Network > Security Groups > 콘솔 사용 가이드
+<a id="network-security-groups-console-user-guide"></a>
+## Network > Security Groups > 콘솔 사용 가이드 { #network-security-groups-console-user-guide }
 
-## 보안 그룹 관리
+<a id="security-management-group"></a>
+## 보안 그룹 관리 { #security-management-group }
 
-### 보안 그룹 생성
+<a id="creating-security-groups"></a>
+### 보안 그룹 생성 { #creating-security-groups }
 서비스를 처음 시작하면 기본 보안 그룹 하나가 생성되며, 추가적으로 보안 그룹을 생성할 수 있습니다.
 보안 그룹 생성 시에 송신하는 모든 트래픽에 대한 규칙이 무조건 추가됩니다. 이 규칙은 보안 그룹 규칙 설정에서 변경하거나 삭제할 수 있습니다.
 보안 그룹을 생성하더라도 인스턴스에 설정하지 않으면 규칙이 적용되지 않습니다.
 
 
-### 보안 규칙 생성
+<a id="create-security-rules"></a>
+### 보안 규칙 생성 { #create-security-rules }
 보안 그룹에서 적용할 규칙을 생성합니다. 하나의 보안 그룹에 다수의 보안 규칙을 생성할 수 있습니다. 인스턴스에 보안 그룹을 설정하면 해당 보안 그룹에 생성된 모든 보안 규칙들이 적용됩니다.
 
 | 항목        | 설명                                                         |
@@ -20,17 +24,20 @@
 | 원격        | 보안 그룹 또는 IP 주소 범위를 지정할 수 있습니다. 규칙의 방향이 '송신'이면 목적지가 원격이고, '수신'이면 출발지가 원격입니다. <br>규칙의 방향에 따라 트래픽의 출발지와 목적지를 비교하는데, 보안 그룹을 지정하면 지정된 보안 그룹에 속한 인스턴스의 IP인지를 비교하고, <br>CIDR을 선택하여 IP 주소나 범위를 지정하는 경우에는 설정된 IP 주소나 범위인지를 비교합니다. |
 | 설명        | 보안 그룹 규칙에 대한 설명을 추가할 수 있습니다.         |
 
-### 보안 규칙 대량 생성
+<a id="create-security-rules-in-bulk"></a>
+### 보안 규칙 대량 생성 { #create-security-rules-in-bulk }
 제공되는 템플릿 파일에 보안 그룹 규칙들을 기재한 후 이를 업로드하여 최대 300개의 보안 그룹 규칙을 한번에 생성할 수 있습니다.
 
 > [참고]
 > TCP, ICMP, UDP 프로토콜을 추가할 때 포트 범위를 입력하지 않으면 전체 포트 범위(ALL)로 적용됩니다.
 > 대량 생성 템플릿의 설명 영역(1~8행)을 삭제하면 업로드가 정상적으로 처리되지 않습니다.
 
-### 보안 규칙 목록 다운로드
+<a id="download-the-list-of-security-rules"></a>
+### 보안 규칙 목록 다운로드 { #download-the-list-of-security-rules }
 보안 그룹에 설정된 보안 규칙 목록을 파일로 다운로드할 수 있습니다.
 
-### 보안 그룹 적용
+<a id="applying-security-groups"></a>
+### 보안 그룹 적용 { #applying-security-groups }
 인스턴스 생성 시에 보안 그룹을 선택하면 보안 그룹이 적용됩니다. 인스턴스에는 다수의 보안 그룹을 설정할 수 있습니다. 설정된 모든 보안 그룹의 규칙들이 인스턴스에 적용됩니다.
 예를 들어 'CONN'이라는 보안 그룹에 '수신 TCP PORT 22', '수신 TCP PORT 23'이라는 규칙이 있고, 'WEB'이라는 보안 그룹에 '수신 TCP PORT 80', '수신 TCP PORT 8080'과 같은 규칙이 있을 때, 하나의 인스턴스에 'CONN', 'WEB' 두 개의 보안 그룹을 설정하면 네 개의 규칙이 함께 적용되어 해당 서비스를 모두 사용할 수 있습니다.
 인스턴스에 적용된 보안 그룹은 인스턴스 관리 메뉴에서 변경할 수 있습니다. 동일한 보안 그룹을 여러 인스턴스에 적용할 수 있습니다.

@@ -1,4 +1,5 @@
-## Network > Security Groups > API v2ガイド
+<a id="network-security-groups-api-v2-guide"></a>
+## Network > Security Groups > API v2ガイド { #network-security-groups-api-v2-guide }
 
 NHN Cloud Networkサービスは、API呼び出し時の認証/認可のためにIaaSトークンを使用します。IaaSトークンは、NHN CloudのOpenStackベースのインフラサービス(IaaS)で使用する認証トークンです。IaaSトークンの発行及び使用に関する詳細は、[IaaSトークン](/nhncloud/ja/public-api/iaas-token)を参照してください。
 
@@ -11,13 +12,16 @@ NHN Cloud Networkサービスは、API呼び出し時の認証/認可のため�
 APIレスポンスにガイドに明示されていないフィールドが現れることがあります。これらのフィールドはNHN Cloud内部用途で使用し、事前の告知なしに変更される場合があるため使用しません。
 
 
-## セキュリティグループ
-### セキュリティグループリスト表示
+<a id="security-group"></a>
+## セキュリティグループ { #security-group }
+<a id="see-the-list-of-security-groups"></a>
+### セキュリティグループリスト表示 { #see-the-list-of-security-groups }
 ```
 GET /v2.0/security-groups
 X-Auth-Token: {tokenId}
 ```
 
+<a id="see-the-list-of-security-groups-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -31,6 +35,7 @@ X-Auth-Token: {tokenId}
 | sort_key | Query | String | - | 照会するセキュリティグループのソートキー<br>`sort_dir`で指定した方向でソート |
 | fields | Query | String | - | 照会するセキュリティグループのフィールド名<br>例) `fields=id&fields=name` |
 
+<a id="see-the-list-of-security-groups-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -117,12 +122,14 @@ X-Auth-Token: {tokenId}
 
 ---
 
-### セキュリティグループ表示
+<a id="see-the-security-groups"></a>
+### セキュリティグループ表示 { #see-the-security-groups }
 ```
 GET /v2.0/security-groups/{securityGroupId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="see-the-security-groups-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -132,6 +139,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | トークンID |
 | fields | Query | String | - | 照会するセキュリティグループのフィールド名<br>指定したフィールドのみ返す<br>例) `fields=id&fields=name` |
 
+<a id="see-the-security-groups-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 例 | 説明 |
@@ -216,7 +224,8 @@ X-Auth-Token: {tokenId}
 
 ---
 
-### セキュリティグループ作成
+<a id="creating-a-security-group"></a>
+### セキュリティグループ作成 { #creating-a-security-group }
 
 新しいセキュリティグループを作成します。新たに作成されたセキュリティグループは出る方向のセキュリティグループルールを基本的に含みます。
 
@@ -225,6 +234,7 @@ POST /v2.0/security-groups
 X-Auth-Token: {tokenId}
 ```
 
+<a id="creating-a-security-group-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -249,6 +259,7 @@ X-Auth-Token: {tokenId}
 </p>
 </details>
 
+<a id="creating-a-security-group-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -307,13 +318,15 @@ X-Auth-Token: {tokenId}
 
 ---
 
-### セキュリティグループ修正
+<a id="modifying-a-security-group"></a>
+### セキュリティグループ修正 { #modifying-a-security-group }
 セキュリティグループを修正します。
 ```
 PUT /v2.0/security-groups/{securityGroupId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modifying-a-security-group-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -339,6 +352,7 @@ X-Auth-Token: {tokenId}
 </p>
 </details>
 
+<a id="modifying-a-security-group-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -397,13 +411,15 @@ X-Auth-Token: {tokenId}
 
 ---
 
-### セキュリティグループ削除
+<a id="deleting-a-security-group"></a>
+### セキュリティグループ削除 { #deleting-a-security-group }
 指定したセキュリティグループを削除します。
 ```
 DELETE /v2.0/security-groups/{securityGroupId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="deleting-a-security-group-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -412,18 +428,22 @@ X-Auth-Token: {tokenId}
 | securityGroupId | URL | UUID | O | セキュリティグループID |
 | tokenId | Header | String | O | トークンID |
 
+<a id="deleting-a-security-group-response"></a>
 #### レスポンス
 このAPIはレスポンス本文を返しません。
 
 ---
 
-## セキュリティルール
-### セキュリティルールリスト表示
+<a id="security-rules"></a>
+## セキュリティルール { #security-rules }
+<a id="see-the-list-of-security-rules"></a>
+### セキュリティルールリスト表示 { #see-the-list-of-security-rules }
 ```
 GET /v2.0/security-group-rules
 X-Auth-Token: {tokenId}
 ```
 
+<a id="see-the-list-of-security-rules-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -445,6 +465,7 @@ X-Auth-Token: {tokenId}
 | sort_key | Query | String | - | 照会するセキュリティルールのソートキー<br>`sort_dir`で指定した方向でソート |
 | fields | Query | String | - | 照会するセキュリティルールのフィールド名<br>例) `fields=id&fields=name` |
 
+<a id="see-the-list-of-security-rules-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -490,12 +511,14 @@ X-Auth-Token: {tokenId}
 
 ---
 
-### セキュリティルール表示
+<a id="see-the-security-rules"></a>
+### セキュリティルール表示 { #see-the-security-rules }
 ```
 GET /v2.0/security-group-rules/{securityGroupRuleId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="see-the-security-rules-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -505,6 +528,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | トークンID |
 | fields | Query | String | - | 照会するセキュリティルールのフィールド名<br>例) `fields=id&fields=name` |
 
+<a id="see-the-security-rules-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -548,7 +572,8 @@ X-Auth-Token: {tokenId}
 
 ---
 
-### セキュリティルール作成
+<a id="creating-a-security-rule"></a>
+### セキュリティルール作成 { #creating-a-security-rule }
 
 新しいセキュリティグループルールを作成します。 IPv4に対するセキュリティルールのみ作成できます。
 
@@ -557,6 +582,7 @@ POST /v2.0/security-group-rules
 X-Auth-Token: {tokenId}
 ```
 
+<a id="creating-a-security-rule-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -593,6 +619,7 @@ X-Auth-Token: {tokenId}
 </p>
 </details>
 
+<a id="creating-a-security-rule-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -636,13 +663,15 @@ X-Auth-Token: {tokenId}
 
 ---
 
-### セキュリティルール削除
+<a id="deleting-a-security-rule"></a>
+### セキュリティルール削除 { #deleting-a-security-rule }
 指定したセキュリティルールを削除します。
 ```
 DELETE /v2.0/security-group-rules/{securityGroupRuleId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="deleting-a-security-rule-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -651,14 +680,17 @@ X-Auth-Token: {tokenId}
 | securityGroupRuleId | URL | UUID | O | セキュリティルールID |
 | tokenId | Header | String | O | トークンID |
 
+<a id="deleting-a-security-rule-response"></a>
 #### レスポンス
 このAPIはレスポンス本文を返しません。
 
 ---
 
 
-## 接続情報
-### 接続情報リスト表示
+<a id="connection-information"></a>
+## 接続情報 { #connection-information }
+<a id="view-the-list-of-the-connection-information"></a>
+### 接続情報リスト表示 { #view-the-list-of-the-connection-information }
 
 ```
 GET /v2.0/security-group-ports
@@ -666,6 +698,7 @@ X-Auth-Token: {tokenId}
 ```
 
 
+<a id="view-the-list-of-the-connection-information-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -678,6 +711,7 @@ X-Auth-Token: {tokenId}
 | sort_key | Query | String | -  | 照会するセキュリティグループのソートキー<br>`sort_dir`で指定した方向でソート                              |
 | fields | Query | String | -  | 照会するセキュリティグループのフィールド名<br>例：`fields=id&fields=name`                             |
 
+<a id="view-the-list-of-the-connection-information-response"></a>
 #### レスポンス
 
 | 名前                                 | 種類 | 形式 | 説明                                        |

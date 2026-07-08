@@ -1,14 +1,18 @@
-## Network > Security Groups > Console User Guide
+<a id="network-security-groups-console-user-guide"></a>
+## Network > Security Groups > Console User Guide { #network-security-groups-console-user-guide }
 
-## Security Management Group
+<a id="security-management-group"></a>
+## Security Management Group { #security-management-group }
 
-### Creating security groups
+<a id="creating-security-groups"></a>
+### Creating security groups { #creating-security-groups }
 A default security group is created when the service is launched for the first time, and additional security groups can be created afterwards.
 When a security group is created, a rule for all outgoing traffic is added unconditionally. This rule can be changed or deleted in the Security Group Rule Settings.
 Even if the security group has been created, the rule will not be applied unless you set the security group for the instance.
 
 
-### Create Security Rules
+<a id="create-security-rules"></a>
+### Create Security Rules { #create-security-rules }
 Create rules to apply to the security group. You can create multiple security rules for a single security group. If a security group is set for an instance, all security rules created in the security group are applied.
 
 | Item        | Description                                                         |
@@ -20,16 +24,19 @@ Create rules to apply to the security group. You can create multiple security ru
 | Remote        | You can specify a security group or IP address range. If the rule direction is 'egress', the destination is remote; if it is 'ingress', the source is remote. <br>The source and destination of traffic are compared in consideration of the rule direction. If you specify a security group, it compares whether the address is the IP address of an instance that belongs to the specified security group. <br>If you select CIDR to specify an IP address or range, it compares if the address is the configured IP address or range. |
 | Description        | You can add description for security group rules.          |
 
-### Create security rules in bulk
+<a id="create-security-rules-in-bulk"></a>
+### Create security rules in bulk { #create-security-rules-in-bulk }
 You can create up to 300 security group rules at once by writing the security group rules in the provided template file and uploading them.
 
 > [Note]
 > If you do not enter a port range when adding TCP, ICMP, or UDP protocols, the entire port range (ALL) will be applied.
 > If you delete the description area (lines 1-8) of the bulk creation template, the upload will not be processed properly.
-### Download the list of security rules
+<a id="download-the-list-of-security-rules"></a>
+### Download the list of security rules { #download-the-list-of-security-rules }
 You can download a list of security rules set for a security group to a file.
 
-### Applying security groups
+<a id="applying-security-groups"></a>
+### Applying security groups { #applying-security-groups }
 If you select a security group when you create an instance, the security group is applied. Multiple security groups can be set on the instance. The rules of all set security groups are applied to the instance.
 For example, if the security group 'CONN' has rules 'Ingress TCP PORT 22' and 'Ingress TCP PORT 23', and the security group 'WEB' has rules 'Ingress TCP PORT 80' and 'Ingress TCP PORT 8080', setting two security groups 'CONN' and 'WEB' on a single instance will apply all four rules, allowing you to use all of the services.
 The security groups that were applied to the instance can be changed in the Instance Management menu. The identical security group can be applied to a number of instances. 

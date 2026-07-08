@@ -1,8 +1,10 @@
-## Network > Security Groups > 개요
+<a id="network-security-groups-overview"></a>
+## Network > Security Groups > 개요 { #network-security-groups-overview }
 
 보안 그룹은 인스턴스의 송수신 트래픽을 제어하여 인스턴스를 보호할 목적으로 사용합니다. 규칙으로 지정한 트래픽은 허용하고, 나머지 트래픽은 차단하는 '포지티브 시큐리티 모델(positive security model)'을 사용합니다.
  
-### 주요 기능
+<a id="key-features"></a>
+### 주요 기능 { #key-features }
 * 서비스를 처음 시작하면 기본 보안 그룹 하나가 생성되며, 유입되는 모든 트래픽을 차단합니다.
     * 따라서 'ping', 'ssh' 등의 서비스도 사용할 수 없으며 필요한 규칙을 설정해야만 사용할 수 있습니다.
     * 플로팅 IP를 사용한 외부 접근과 사설 IP를 사용한 내부 접근 모두에 동일하게 적용됩니다.
