@@ -10,13 +10,13 @@ This document verifies the stub-filling tool.
 
 ## Body Stub Section
 
-<!-- TODO: translate body -->
+This section's body text has not yet been translated into English or Japanese. This is a short verification sentence.
 
 <a id="heading-stub-section"></a>
 
-## 헤딩 스텁 섹션
+## ## Overview
 
-<!-- TODO: translate -->
+This section has both the title and body untranslated.
 
 ## No Id Stub Section
 
