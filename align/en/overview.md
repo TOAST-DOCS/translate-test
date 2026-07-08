@@ -1,4 +1,5 @@
-## Network > Traffic Mirroring > Overview
+<a id="network-traffic-mirroring-overview"></a>
+## Network > Traffic Mirroring > Overview { #network-traffic-mirroring-overview }
 
 Network packets in VPC can be captured and routed to detection tools for purposes such as content security, threat analysis, and troubleshooting.
 Traffic Mirroring, with detection tools, allows you to quickly detect and respond to attacks and meet various security compliance requirements.
@@ -6,7 +7,8 @@ Traffic Mirroring, with detection tools, allows you to quickly detect and respon
 Traffic Mirroring is only available in new network environments in Korea (Pangyo) region and Korea (Pyeongchon) region.
 For projects created before March 7, 2022 in Korea (Pangyo) region, they are in the old version network environment, so you must create new projects to use Traffic Mirroring.
 
-## Main Features
+<a id="main-features"></a>
+## Main Features { #main-features }
 * Mirror Session
     * Mirror source and target source can be linked with each mirror session unit.
 * Mirror Source
@@ -23,6 +25,7 @@ For projects created before March 7, 2022 in Korea (Pangyo) region, they are in 
     * Filters allow you to mirror only the specific network packets that you want.
     * You can specify protocols, ranges of source and target ports, and CIDR blocks of source and target.
 
-## Service Targets
+<a id="service-targets"></a>
+## Service Targets { #service-targets }
 * When you want to capture network traffic and route it to the desired detection tool.
 * When application traffic mirroring is required for testing and troubleshooting purposes.

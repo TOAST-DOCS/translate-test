@@ -1,4 +1,5 @@
-## Network > Traffic Mirroring > API v2 Guide
+<a id="network-traffic-mirroring-api-v2-guide"></a>
+## Network > Traffic Mirroring > API v2 Guide { #network-traffic-mirroring-api-v2-guide }
 
 NHN Cloud Network services use IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS). For more information on issuing and using IaaS tokens, please refer to the [IaaS Token](/nhncloud/en/public-api/iaas-token).
 
@@ -10,17 +11,20 @@ The Mirroring API uses a `network` type endpoint. For the exact endpoint, refer 
 
 API responses may contain fields not specified in the guide. The fields are used internally by NHN Cloud and are subject to change without notice, so they are not used.
 
-## Mirroring Session (Session)
+<a id="mirroring-session-session"></a>
+## Mirroring Session (Session) { #mirroring-session-session }
 
 A session is a unit that mirrors traffic from a source port to a target port. If needed, you can link one or more filter groups to mirror only specific traffic.
 
-### View Session Lists
+<a id="view-session-lists"></a>
+### View Session Lists { #view-session-lists }
 
 ```
 GET /v2.0/mirroring/sessions
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-session-lists-request"></a>
 #### Request
 
 This API does not require a request body.
@@ -36,6 +40,7 @@ This API does not require a request body.
 | sort\_key | Query | String | - | Sort criteria field |
 | fields | Query | String | - | Fields to include in the response. e.g. `fields=id&fields=name` |
 
+<a id="view-session-lists-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
@@ -85,13 +90,15 @@ Example
 
 ***
 
-### View Sessions
+<a id="view-sessions"></a>
+### View Sessions { #view-sessions }
 
 ```
 GET /v2.0/mirroring/sessions/{SessionId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-sessions-request"></a>
 #### Request
 
 This API does not require a request body.
@@ -102,6 +109,7 @@ This API does not require a request body.
 | tokenId | Header | String | O | Token ID |
 | fields | Query | String | - | Fields to include in the response. e.g. `fields=id&fields=name` |
 
+<a id="view-sessions-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
@@ -149,13 +157,15 @@ Example
 
 ***
 
-### Create Sessions
+<a id="create-sessions"></a>
+### Create Sessions { #create-sessions }
 
 ```
 POST /v2.0/mirroring/sessions
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-sessions-request"></a>
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -188,6 +198,7 @@ Example
 }
 ```
 
+<a id="create-sessions-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
@@ -223,7 +234,8 @@ Example
 
 ***
 
-### Modify Sessions
+<a id="modify-sessions"></a>
+### Modify Sessions { #modify-sessions }
 
 ```
 PUT /v2.0/mirroring/sessions/{SessionId}
@@ -232,6 +244,7 @@ X-Auth-Token: {tokenId}
 
 You can modify description, name, direction, and filter group list only. Changing ports is not supported.
 
+<a id="modify-sessions-request"></a>
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -257,19 +270,22 @@ Example
 }
 ```
 
+<a id="modify-sessions-response"></a>
 #### Response
 
 Same as the session view response.
 
 ***
 
-### Delete Sessions
+<a id="delete-sessions"></a>
+### Delete Sessions { #delete-sessions }
 
 ```
 DELETE /v2.0/mirroring/sessions/{SessionId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-sessions-request"></a>
 #### Request
 
 This API does not request a request body.
@@ -279,23 +295,27 @@ This API does not request a request body.
 | SessionId | URL | UUID | O | Session ID |
 | tokenId | Header | String | O | Token ID |
 
+<a id="delete-sessions-response"></a>
 #### Response
 
 This API does not return a response body.
 
 ***
 
-## Mirroring Filter Group (filtergroup)
+<a id="mirroring-filter-group-filtergroup"></a>
+## Mirroring Filter Group (filtergroup) { #mirroring-filter-group-filtergroup }
 
 A filter group is a container that groups one or more filters. You can connect them to a session to mirror only specific traffic.
 
-### View a List of Filter Groups
+<a id="view-a-list-of-filter-groups"></a>
+### View a List of Filter Groups { #view-a-list-of-filter-groups }
 
 ```
 GET /v2.0/mirroring/filtergroups
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-a-list-of-filter-groups-request"></a>
 #### Request
 
 This API does not require a request body.
@@ -310,6 +330,7 @@ This API does not require a request body.
 | sort\_key | Query | String | - | Sort Key |
 | fields | Query | String | - | Fields to Include |
 
+<a id="view-a-list-of-filter-groups-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
@@ -345,13 +366,15 @@ Example
 
 ***
 
-### View Filter Groups
+<a id="view-filter-groups"></a>
+### View Filter Groups { #view-filter-groups }
 
 ```
 GET /v2.0/mirroring/filtergroups/{FilterGroupId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-filter-groups-request"></a>
 #### Request
 
 This API does not require a request body.
@@ -361,6 +384,7 @@ This API does not require a request body.
 | tokenId | Header | String | Yes | Token ID |
 | id | URL | UUID | Yes | Filter Group ID |
 
+<a id="view-filter-groups-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
@@ -377,13 +401,15 @@ This API does not require a request body.
 
 ***
 
-### Create Filter Groups
+<a id="create-filter-groups"></a>
+### Create Filter Groups { #create-filter-groups }
 
 ```
 POST /v2.0/mirroring/filtergroups
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-filter-groups-request"></a>
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -408,6 +434,7 @@ Example
 }
 ```
 
+<a id="create-filter-groups-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
@@ -424,7 +451,8 @@ Example
 
 ***
 
-### Modify Filter Groups
+<a id="modify-filter-groups"></a>
+### Modify Filter Groups { #modify-filter-groups }
 
 ```
 PUT /v2.0/mirroring/filtergroups/{FilterGroupId}
@@ -433,6 +461,7 @@ X-Auth-Token: {tokenId}
 
 Name and description only can be modified.
 
+<a id="modify-filter-groups-request"></a>
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -443,6 +472,7 @@ Name and description only can be modified.
 | filtergroup.name | Body | String | - | Name |
 | filtergroup.description | Body | String | - | Description |
 
+<a id="modify-filter-groups-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
@@ -459,30 +489,35 @@ Name and description only can be modified.
 
 ***
 
-### Delete Filter Groups
+<a id="delete-filter-groups"></a>
+### Delete Filter Groups { #delete-filter-groups }
 
 ```
 DELETE /v2.0/mirroring/filtergroups/{FilterGroupId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-filter-groups-requestresponse"></a>
 #### Request/Response
 
 No request body. No response body.
 
 ***
 
-## Mirroring Filter (filter)
+<a id="mirroring-filter-filter"></a>
+## Mirroring Filter (filter) { #mirroring-filter-filter }
 
 A filter consists of matching conditions and actions, and is used to allow (`accept`) or exclude (`drop`) specific traffic. A filter must belong to a specific filter group.
 
-### View Filter Lists
+<a id="view-filter-lists"></a>
+### View Filter Lists { #view-filter-lists }
 
 ```
 GET /v2.0/mirroring/filters
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-filter-lists-request"></a>
 #### Request
 
 This API does not require a request body.
@@ -497,6 +532,7 @@ This API does not require a request body.
 | sort\_key | Query | String | - | Sort Key |
 | fields | Query | String | - | Fields to Include |
 
+<a id="view-filter-lists-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
@@ -548,13 +584,15 @@ Example
 
 ***
 
-### View Filters
+<a id="view-filters"></a>
+### View Filters { #view-filters }
 
 ```
 GET /v2.0/mirroring/filters/{FilterId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-filters-request"></a>
 #### Request
 
 This API does not require a request body.
@@ -564,6 +602,7 @@ This API does not require a request body.
 | tokenId | Header | String | Yes | Token ID |
 | id | Query | URL | Yes | Filter ID |
 
+<a id="view-filters-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
@@ -588,13 +627,15 @@ This API does not require a request body.
 
 ***
 
-### Create Filters
+<a id="create-filters"></a>
+### Create Filters { #create-filters }
 
 ```
 POST /v2.0/mirroring/filters
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-filters-request"></a>
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -634,6 +675,7 @@ Example
 }
 ```
 
+<a id="create-filters-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
@@ -658,7 +700,8 @@ Example
 
 ***
 
-### Modify Filters
+<a id="modify-filters"></a>
+### Modify Filters { #modify-filters }
 
 ```
 PUT /v2.0/mirroring/filters/{FilterId}
@@ -667,6 +710,7 @@ X-Auth-Token: {tokenId}
 
 Only the description can be modified. Matching conditions, actions, priorities, and group affiliation cannot be modified.
 
+<a id="modify-filters-request"></a>
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -676,6 +720,7 @@ Only the description can be modified. Matching conditions, actions, priorities, 
 | filter | Body | Object | Yes | Include only fields to be modified |
 | filter.description | Body | String | - | Description |
 
+<a id="modify-filters-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
@@ -700,13 +745,15 @@ Only the description can be modified. Matching conditions, actions, priorities, 
 
 ***
 
-### Delete Filters
+<a id="delete-filters"></a>
+### Delete Filters { #delete-filters }
 
 ```
 DELETE /v2.0/mirroring/filters/{FilterId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-filters-requestresponse"></a>
 #### Request/Response
 
 No request body. No response body.

@@ -1,11 +1,14 @@
-## Network > Traffic Mirroring > 콘솔 사용 가이드
+<a id="network-traffic-mirroring-console-user-guide"></a>
+## Network > Traffic Mirroring > 콘솔 사용 가이드 { #network-traffic-mirroring-console-user-guide }
 
 콘솔에서 Traffic Mirroring 서비스를 사용하는 방법을 설명합니다.
 
-## 미러 세션 관리
+<a id="manage-a-mirror-session"></a>
+## 미러 세션 관리 { #manage-a-mirror-session }
 
 NHN Cloud의 Traffic Mirroring 콘솔에서 설정값들을 입력하는 것만으로 쉽게 미러 세션을 생성할 수 있습니다.
 
+<a id="manage-a-mirror-session-mirror-session-information"></a>
 #### 미러 세션 정보
 미러 세션에 대한 기본 정보를 입력합니다. 필요한 항목들은 다음과 같습니다.
 
@@ -26,7 +29,8 @@ NHN Cloud의 Traffic Mirroring 콘솔에서 설정값들을 입력하는 것만�
 >
 > [참고] 미러 소스와 미러 대상으로 등록된 네트워크 인터페이스가 삭제되는 경우, 연결된 미러 세션도 자동으로 삭제됩니다.
 
-### 미러 세션 정보 살펴보기
+<a id="about-mirror-session-information"></a>
+### 미러 세션 정보 살펴보기 { #about-mirror-session-information }
 미러 세션 생성을 마치면 다시 미러 세션 목록 화면으로 돌아오게 됩니다. 미러 세션 목록 화면에서는 생성된 미러 세션의 기본 정보를 확인할 수 있습니다. 목록 화면에서 노출되는 항목은 아래와 같습니다.
 
 * 이름: 미러 세션 생성 시 지정한 미러 세션의 이름입니다. 
@@ -36,30 +40,37 @@ NHN Cloud의 Traffic Mirroring 콘솔에서 설정값들을 입력하는 것만�
 * 미러 대상 포트: 미러 세션 생성 시 미러 대상으로 지정한 네트워크 인터페이스의 정보가 표시됩니다.
 * 미러 필터 그룹: 미러 세션 생성 시 지정한 미러 필터 그룹의 정보가 표시됩니다.
 
-### 미러 세션 수정
+<a id="modify-a-mirror-session"></a>
+### 미러 세션 수정 { #modify-a-mirror-session }
 미러 세션 목록 화면에서 원하는 미러 세션을 선택하여 **세션 변경** 버튼을 누르면 미러 세션의 설정값을 수정할 수 있습니다.
 > [참고] 미러 세션의 미러 소스 포트, 미러 대상 포트 및 방향은 변경할 수 없습니다.
 
-### 미러 세션 삭제
+<a id="delete-a-mirror-session"></a>
+### 미러 세션 삭제 { #delete-a-mirror-session }
 미러 세션 목록 화면에서 삭제하려는 미러 세션을 선택한 후 **삭제** 버튼을 누르면, 해당 미러 세션이 삭제됩니다.
 
-## 미러 필터
+<a id="mirror-filter"></a>
+## 미러 필터 { #mirror-filter }
 미러 세션에서 사용할 필터 그룹 및 규칙을 생성할 수 있습니다.
 
-### 미러 필터 그룹 정보
+<a id="mirror-filter-group-information"></a>
+### 미러 필터 그룹 정보 { #mirror-filter-group-information }
 미러 필터 그룹에 대한 기본 정보를 입력합니다. 필요한 항목들은 다음과 같습니다.
 
 * 이름: 미러 필터 그룹의 이름을 입력합니다.
 * 설명: 미러 필터 그룹에 대한 설명을 기술합니다.
 
-### 미러 필터 그룹 살펴보기
+<a id="about-mirror-filter-groups"></a>
+### 미러 필터 그룹 살펴보기 { #about-mirror-filter-groups }
 미러 필터 그룹 생성을 마치면 다시 미러 필터 그룹 목록 화면으로 돌아오게 됩니다. 미러 필터 그룹 목록 화면에서는 생성된 미러 필터 그룹의 기본 정보를 확인할 수 있습니다. 목록 화면에서 노출되는 항목은 아래와 같습니다.
 
+<a id="about-mirror-filter-groups-basic-information"></a>
 #### 기본 정보
 * 이름: 미러 필터 그룹 생성 시 지정한 미러 필터 그룹의 이름입니다. 
 * 설명: 미러 필터 그룹 생성 시 지정한 미러 필터 그룹의 설명입니다.
 * 테넌트 ID: 미러 필터 그룹을 생성한 프로젝트의 아이디입니다.
 
+<a id="about-mirror-filter-groups-filter-rules"></a>
 #### 필터 규칙
 필터 그룹에 속한 필터 규칙이 나열됩니다. **필터 규칙 생성**, **필터 규칙 변경** 및 **필터 규칙 삭제**를 통해 규칙에 대한 생성, 변경 및 삭제가 가능합니다.
 필터 규칙에 대해 필요한 항목들은 다음과 같습니다.
@@ -76,10 +87,12 @@ NHN Cloud의 Traffic Mirroring 콘솔에서 설정값들을 입력하는 것만�
 > [참고] 필터 규칙은 설명 항목만 변경 가능합니다. 다른 항목의 변경이 필요할 경우 삭제 후 다시 생성해야 합니다.
 
 
-### 미러 필터 그룹 수정
+<a id="modify-mirror-filter-group"></a>
+### 미러 필터 그룹 수정 { #modify-mirror-filter-group }
 미러 필터 그룹 목록 화면에서 원하는 미러 필터 그룹을 선택하여 **필터 그룹 변경** 버튼을 누르면 미러 필터 그룹의 설정값을 수정할 수 있습니다.
 
-### 미러 필터 그룹 삭제
+<a id="delete-mirror-filter-group"></a>
+### 미러 필터 그룹 삭제 { #delete-mirror-filter-group }
 미러 필터 그룹 목록 화면에서 삭제하려는 미러 필터 그룹을 선택한 후 **삭제** 버튼을 누르면, 해당 미러 필터 그룹이 삭제됩니다.
 > [주의] 미러 필터 그룹을 삭제하는 경우, 미러 필터 그룹에 연결된 필터 규칙이 자동으로 삭제됩니다.
 
