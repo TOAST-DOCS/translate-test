@@ -1,15 +1,19 @@
-## Compute > Cloud Functions > Console Guide
+<a id="compute-cloud-functions-console-guide"></a>
+## Compute > Cloud Functions > Console Guide { #compute-cloud-functions-console-guide }
 This document describes how to create and manage functions in the Cloud Functions console.
 
-## Function Management
+<a id="function-management"></a>
+## Function Management { #function-management }
 You can create, modify, delete, and copy functions.
 
-### Create Function
+<a id="create-function"></a>
+### Create Function { #create-function }
 After configuring function settings, writing code, and building it, click the **Create** button to create a function with the last built package.
 
 ![console-guide-07](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-07.png)
 ![console-guide-08](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-08.png)
 
+<a id="function-settings"></a>
 #### Function Settings
 <table class="it">
     <tr>
@@ -87,6 +91,7 @@ After configuring function settings, writing code, and building it, click the **
 <br>
 
 
+<a id="writing-code"></a>
 #### Writing Code
 
 ![console-guide-09](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-09.png)
@@ -150,46 +155,57 @@ After configuring function settings, writing code, and building it, click the **
 
 > **[Note]** <br> The package generated through the Build button is linked as the function version with the last built package when the function is created/modified. At least one build must be performed before creating a function.
 
-### Modify Function
+<a id="modify-function"></a>
+### Modify Function { #modify-function }
 Click the **Modify** button to modify the function settings and code of an existing function.
+<a id="non-modifiable-items"></a>
 #### Non-modifiable Items
 - Name, Runtime environment
     - All items except these can be modified.
+<a id="source-code"></a>
 #### Source Code
 - When using the code editor, the existing code is loaded.
 - If the function was created by uploading a ZIP file from the user local environment, switching to the code editor will not display the ZIP file and will load the default template code instead.
 
-### Delete Function
+<a id="delete-function"></a>
+### Delete Function { #delete-function }
 ![console-guide-14](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-14.png)
 Select and delete existing functions. Multiple functions can be deleted at once.
 
-### Copy Function
+<a id="copy-function"></a>
+### Copy Function { #copy-function }
 ![console-guide-13](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-13.png)
 Copies an existing function to create an identical one. Since duplicate names are not allowed, you can enter a new name before copying.
 - Triggers are not copied. (HTTP trigger is provided by default)
 - Only the currently applied version is copied.
 
-## Function Information
-### Function List
+<a id="function-information"></a>
+## Function Information { #function-information }
+<a id="function-list"></a>
+### Function List { #function-list }
 ![console-guide-01](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-01.png)
 - You can view the list of functions created by the user.
 - The build status displays the build status of the current version.
-### Function Basic Information
+<a id="function-basic-information"></a>
+### Function Basic Information { #function-basic-information }
 ![console-guide-02](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-02.png)
 - You can view the basic information of the function.
 - In the log management item, click the **Log & Crash Search** button to navigate to the Log & Crash Search service and check logs.
 
-### Function Version Management
+<a id="function-version-management"></a>
+### Function Version Management { #function-version-management }
 ![console-guide-15](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2026-01-27/console-guide-15.png)
 - You can manage the versions of a function.
 - You can view the history of all created versions and roll back to a previous version.
 
+<a id="version-management-overview"></a>
 #### Version Management Overview
 Clicking the **Build** button on the function creation/modification screen builds the code and generates a package.
 - The last built package is linked as the function version when the function is created/modified.
 - Each version is managed independently, and a tested version can be applied to the function as-is.
 - At least one build must be performed before a function can be created.
 
+<a id="version-information"></a>
 #### Version Information
 <table class="it">
     <tr>
@@ -219,6 +235,7 @@ Clicking the **Build** button on the function creation/modification screen build
     </tr>
 </table>
 
+<a id="version-deployment"></a>
 #### Version Deployment
 - Select the version to deploy from the version list and click the **Deploy Version** button to update the function to that version.
 - The currently applied version cannot be selected.
@@ -228,6 +245,7 @@ Clicking the **Build** button on the function creation/modification screen build
 > **[Note]**
 > <br>A confirmation popup is displayed when deploying a version, and upon success, the version list is automatically refreshed.
 
+<a id="delete-version"></a>
 #### Delete Version
 - Select the version to delete from the version list and click the **Delete Version** button to delete that version.
 - The currently applied version cannot be deleted.
@@ -237,13 +255,15 @@ Clicking the **Build** button on the function creation/modification screen build
 > **[Note]**
 > <br>A confirmation popup is displayed when deleting a version, and deleted versions cannot be recovered.
 
+<a id="constraints"></a>
 #### Constraints
 - Packages built on the function creation/modification screen are not linked as function versions if the creation/modification is canceled.
 - When a function is deleted, all versions linked to that function are also deleted.
 - When copying a function, only the currently applied version of the original function is copied; the entire version history is not copied.
 - When creating a function, you can build with multiple runtimes, but when modifying a function, you can only build with the runtime selected at the time of creation.
 
-### Function Trigger Management
+<a id="function-trigger-management"></a>
+### Function Trigger Management { #function-trigger-management }
 - You can manage triggers that execute a function.
 - An HTTP trigger is provided by default when a function is created.
     - You can configure whether to use it by enabling/disabling it.
@@ -254,16 +274,19 @@ Clicking the **Build** button on the function creation/modification screen build
     - Example: `https://{userdomain}/{function name}`
     - Method: GET, POST
 
+<a id="createmodify-trigger"></a>
 #### Create/Modify Trigger
 - Timer
     - Value: Enter the cycle as a Cron string.
 - API Gateway
     - You can add an HTTP Endpoint using the API Gateway service.
 
+<a id="delete-trigger"></a>
 #### Delete Trigger
 - Multiple triggers can be selected and deleted. The default HTTP trigger cannot be deleted.
 
-### Function Monitoring
+<a id="function-monitoring"></a>
+### Function Monitoring { #function-monitoring }
 ![console-guide-06](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_cloud_functions/2025-07-29/console-guide-06.png)
 - You can view the usage of a function.
 - Provides metrics for function invocation count, rejected invocation count, error occurrence count, success rate, and function execution time.
