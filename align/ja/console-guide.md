@@ -1,10 +1,13 @@
-## Network > NAT Gateway > コンソール使用ガイド
+<a id="network-nat-gateway-console-user-guide"></a>
+## Network > NAT Gateway > コンソール使用ガイド { #network-nat-gateway-console-user-guide }
 コンソールでNAT Gatewayサービスを使用する方法を説明します。
 
-## NATゲートウェイ
+<a id="nat-gateway"></a>
+## NATゲートウェイ { #nat-gateway }
 韓国(パンギョ)、韓国(ピョンチョン)リージョンにのみ提供する機能です。
 
-### NATゲートウェイの作成
+<a id="create-an-nat-gateway"></a>
+### NATゲートウェイの作成 { #create-an-nat-gateway }
 以下の項目を設定してNATゲートウェイを作成します。
 
 | 項目    | 説明                                                       |
@@ -22,7 +25,8 @@
 * 韓国(ピョンチョン)リージョンにはネットワークACLが適用されます。
 * NATゲートウェイのQuotaは3個です。
 
-### ルート設定
+<a id="configure-a-route"></a>
+### ルート設定 { #configure-a-route }
 * ルーティングテーブルで特定CIDRに対してNATゲートウェイをゲートウェイに指定するルートを設定すると、NATゲートウェイを使用します。
 * NATゲートウェイをルートに設定したルーティングテーブルに接続されたインスタンスからルートに設定されたCIDRを宛先にする場合、パケットのソースIPがNATゲートウェイのFloating IPに変換されます。
 * 1つのNATゲートウェイは、同じVPC内の複数のルーティングテーブルでゲートウェイに指定できます。
@@ -31,5 +35,6 @@
 * ルート設定でIP Prefix 0 (/0)ではないルート対象CIDRに対してNATゲートウェイをゲートウェイに設定すると、インスタンスにFloating IPが設定されていてもNATゲートウェイで通信されます。
 
 
-### ネットワークACL設定
+<a id="configure-a-network-acl"></a>
+### ネットワークACL設定 { #configure-a-network-acl }
 韓国(ピョンチョン)リージョンでNATゲートウェイのVPCに対してネットワークACL設定を行う場合にNATゲートウェイにも適用されます。 [ネットワークACL設定方法](https://docs.toast.com/ja/Network/Network%20ACL/ja/overview/)
