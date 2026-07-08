@@ -1,4 +1,5 @@
-## Network > NAT Gateway > API v2 Guide
+<a id="network-nat-gateway-api-v2-guide"></a>
+## Network > NAT Gateway > API v2 Guide { #network-nat-gateway-api-v2-guide }
 
 NHN Cloud Network services use IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS). For more information on issuing and using IaaS tokens, please refer to the [IaaS Token](/nhncloud/en/public-api/iaas-token).
 
@@ -11,13 +12,16 @@ The NAT Gateway API utilizes an endpoint of the `network` type. The exact endpoi
 In each API response, you may find fields that are not specified within this guide. Those fields are for NHN Cloud internal usage, so refrain from using them because they may be changed without prior notice.
 
 
-## NAT gateway
-### View a list of NAT gateways
+<a id="nat-gateway"></a>
+## NAT gateway { #nat-gateway }
+<a id="view-a-list-of-nat-gateways"></a>
+### View a list of NAT gateways { #view-a-list-of-nat-gateways }
 ```
 GET /v2.0/natgateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-a-list-of-nat-gateways-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -31,6 +35,7 @@ This API does not require a request body.
 | sort_key | Query | String | - | Sort key of the NAT gateway to retrieve<br>Sort in the direction as specified by `sort_dir`                                |
 | fields | Query | String | - | Field name of the NAT gateway to retrieve<br>Example: `fields=id&fields=name`                             |
 
+<a id="view-a-list-of-nat-gateways-response"></a>
 #### Response
 
 | Name                         | Type | Format | Description                                             |
@@ -81,12 +86,14 @@ This API does not require a request body.
 
 ---
 
-### View NAT Gateways
+<a id="view-nat-gateways"></a>
+### View NAT Gateways { #view-nat-gateways }
 ```
 GET /v2.0/natgateways/{NatGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-nat-gateways-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -96,6 +103,7 @@ This API does not require a request body.
 | tokenId | Header | String | O | Token ID                                                                |
 | fields | Query  | String | - | Field name of the NAT gateway to retrieve<br>Return only specified fields in the response<br>Example: `fields=id&fields=name` |
 
+<a id="view-nat-gateways-response"></a>
 #### Response
 
 | Name                        | Type | Format | Description                                               |
@@ -143,7 +151,8 @@ This API does not require a request body.
 </details>
 
 ---
-### Create a NAT gateway
+<a id="create-a-nat-gateway"></a>
+### Create a NAT gateway { #create-a-nat-gateway }
 
 Create a new NAT gateway.
 
@@ -152,6 +161,7 @@ POST /v2.0/natgateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-a-nat-gateway-request"></a>
 #### Request
 
 | Name                        | Type | Format     | Required | Description                   |
@@ -185,6 +195,7 @@ X-Auth-Token: {tokenId}
 </details>
 
 
+<a id="create-a-nat-gateway-response"></a>
 #### Response
 | Name                        | Type | Format | Description                                               |
 |---------------------------|---|---|--------------------------------------------------|
@@ -231,7 +242,8 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### Modifying the NAT gateway
+<a id="modifying-the-nat-gateway"></a>
+### Modifying the NAT gateway { #modifying-the-nat-gateway }
 
 Modify an existing NAT gateway.
 
@@ -240,6 +252,7 @@ PUT /v2.0/natgateways/{NatGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modifying-the-nat-gateway-request"></a>
 #### Request
 
 | Name                        | Type | Format     | Required | Description                 |
@@ -268,6 +281,7 @@ X-Auth-Token: {tokenId}
 </details>
 
 
+<a id="modifying-the-nat-gateway-response"></a>
 #### Response
 | Name                        | Type | Format | Description                                              |
 |---------------------------|---|---|-------------------------------------------------|
@@ -314,13 +328,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### Delete a NAT gateway
+<a id="delete-a-nat-gateway"></a>
+### Delete a NAT gateway { #delete-a-nat-gateway }
 Delete the specified NAT gateway.
 ```
 DELETE /v2.0/natgateways/{NatGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-a-nat-gateway-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -329,6 +345,7 @@ This API does not require a request body.
 | NatGatewayId | URL    | UUID   | O  | NAT Gateway ID       |
 | tokenId | Header | String | O | Token ID |
 
+<a id="delete-a-nat-gateway-response"></a>
 #### Response
 This API does not return a response body.
 

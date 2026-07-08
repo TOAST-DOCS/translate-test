@@ -1,10 +1,13 @@
-## Network > NAT Gateway > 콘솔 사용 가이드
+<a id="network-nat-gateway-console-user-guide"></a>
+## Network > NAT Gateway > 콘솔 사용 가이드 { #network-nat-gateway-console-user-guide }
 콘솔에서 NAT Gateway 서비스를 사용하는 방법을 설명합니다.
 
-## NAT 게이트웨이 
+<a id="nat-gateway"></a>
+## NAT 게이트웨이 { #nat-gateway }
 한국(판교), 한국(평촌) 리전에만 제공하는 기능입니다.
 
-### NAT 게이트웨이 생성
+<a id="create-an-nat-gateway"></a>
+### NAT 게이트웨이 생성 { #create-an-nat-gateway }
 아래 항목을 설정하여 NAT 게이트웨이를 생성합니다.
 
 | 항목      | 설명                                                         |
@@ -22,7 +25,8 @@
 * 한국(평촌) 리전에는 네트워크 ACL이 적용됩니다.
 * NAT 게이트웨이의 Quota는 3개입니다.
 
-### 라우트 설정
+<a id="configure-a-route"></a>
+### 라우트 설정 { #configure-a-route }
 * 라우팅 테이블에서 특정 CIDR에 대해 NAT 게이트웨이를 게이트웨이로 지정하는 라우트를 설정하면, NAT 게이트웨이를 사용하게 됩니다.
 * NAT 게이트웨이를 라우트로 설정한 라우팅 테이블에 연결된 인스턴스들에서 라우트에 설정된 CIDR을 목적지로 하는 경우, 패킷의 소스 IP가 NAT 게이트웨이의 플로팅 IP로 변환됩니다.
 * 하나의 NAT 게이트웨이는 동일 VPC 내의 여러 라우팅 테이블에서 게이트웨이로 지정할 수 있습니다.
@@ -31,5 +35,6 @@
 * 라우트 설정에서 IP Prefix 0 (/0)이 아닌 라우트 대상 CIDR에 대해 NAT 게이트웨이를 게이트웨이로 설정하면, 인스턴스에 플로팅 IP가 설정되어 있더라도 NAT 게이트웨이로 통신됩니다.
 
 
-### 네트워크 ACL 설정
+<a id="configure-a-network-acl"></a>
+### 네트워크 ACL 설정 { #configure-a-network-acl }
 한국(평촌) 리전에서 NAT 게이트웨이의 VPC에 대해서 네트워크 ACL 설정을 하는 경우에 NAT 게이트웨이에도 적용됩니다. [네트워크 ACL 설정 방법](https://docs.toast.com/ko/Network/Network%20ACL/ko/overview/)

@@ -1,9 +1,11 @@
-## Network > NAT Gateway > Overview
+<a id="network-nat-gateway-overview"></a>
+## Network > NAT Gateway > Overview { #network-nat-gateway-overview }
 An NAT gateway allows instances that is not connected to an internet gateway to access the internet. However, you cannot initiate connections to these instances from the internet.
 This function is only available in the Korea (Pangyo) and Korea (Pyeongchon) regions.
 
 
-### Main Features
+<a id="main-features"></a>
+### Main Features { #main-features }
 * Instances that are not connected to an internet gateway can access the internet with the floating IP of an NAT gateway.
 * When you configure a route specifying an NAT gateway as a gateway for a specific CIDR in the routing table, the source IP of packets destined for the configured CIDR from the instances connected to this routing table is converted to the floating IP of the NAT gateway.
 * A single NAT gateway can be specified as a gateway in multiple routing tables in the same VPC.

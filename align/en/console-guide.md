@@ -1,10 +1,13 @@
-## Network > NAT Gateway > Console User Guide
+<a id="network-nat-gateway-console-user-guide"></a>
+## Network > NAT Gateway > Console User Guide { #network-nat-gateway-console-user-guide }
 This guide describes how to use the NAT Gateway service from the console.
 
-## NAT Gateway 
+<a id="nat-gateway"></a>
+## NAT Gateway { #nat-gateway }
 This function is only available in the Korea (Pangyo) and Korea (Pyeongchon) regions.
 
-### Create an NAT Gateway
+<a id="create-an-nat-gateway"></a>
+### Create an NAT Gateway { #create-an-nat-gateway }
 Create an NAT gateway by setting the items below.
 
 | Item      | Description                                                         |
@@ -22,7 +25,8 @@ Create an NAT gateway by setting the items below.
 * Network ACLs are applied to the Korea (Pyeongchon) region.
 * The quota for NAT gateway is 3.
 
-### Configure a Route
+<a id="configure-a-route"></a>
+### Configure a Route { #configure-a-route }
 * If you configure a route in the routing table that specifies the NAT gateway as a gateway for a specific CIDR, the NAT gateway is used.
 * In instances connected to the routing table that has set the NAT gateway as a route, if the CIDR configured in the route is the destination, the source IP of the packet is converted to the floating IP of the NAT gateway.
 * A single NAT gateway can be specified as a gateway in multiple routing tables of the same VPC.
@@ -31,5 +35,6 @@ Create an NAT gateway by setting the items below.
 * If you set the NAT gateway as a gateway for a route destination CIDR other than IP Prefix 0 (/0) in the route configuration, the communication will be performed through the NAT gateway even if the instance has a floating IP configured.
 
 
-### Configure a Network ACL
+<a id="configure-a-network-acl"></a>
+### Configure a Network ACL { #configure-a-network-acl }
 If you configure a network ACL for the VPC of the NAT gateway in the Korea (Pyeongchon) region, it will also be applied to the NAT gateway. [How to configure a network ACL](https://docs.toast.com/en/Network/Network%20ACL/en/overview/)

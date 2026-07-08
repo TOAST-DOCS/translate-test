@@ -1,4 +1,5 @@
-## Network > NAT Gateway > API v2ガイド
+<a id="network-nat-gateway-api-v2-guide"></a>
+## Network > NAT Gateway > API v2ガイド { #network-nat-gateway-api-v2-guide }
 
 NHN Cloud Networkサービスは、API呼び出し時の認証/認可のためにIaaSトークンを使用します。IaaSトークンは、NHN CloudのOpenStackベースのインフラサービス(IaaS)で使用する認証トークンです。IaaSトークンの発行及び使用に関する詳細は、[IaaSトークン](/nhncloud/ja/public-api/iaas-token)を参照してください。
 
@@ -11,13 +12,16 @@ NATゲートウェイAPIは`network`タイプエンドポイントを利用し�
 APIレスポンスにガイドに記載されていないフィールドが表示される場合があります。このようなフィールドは、NHN Cloudの内部用途に使用され、事前告知なしに変更される可能性があるため、使用しないでください。
 
 
-## NATゲートウェイ
-### NATゲートウェイ一覧を表示
+<a id="nat-gateway"></a>
+## NATゲートウェイ { #nat-gateway }
+<a id="view-a-list-of-nat-gateways"></a>
+### NATゲートウェイ一覧を表示 { #view-a-list-of-nat-gateways }
 ```
 GET /v2.0/natgateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-a-list-of-nat-gateways-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -31,6 +35,7 @@ X-Auth-Token: {tokenId}
 | sort_key | Query | String | - | 照会するNATゲートウェイのソートキー<br>`sort_dir`で指定した方向でソート                              |
 | fields | Query | String | - | 照会するNATゲートウェイのフィールド名<br>例：`fields=id&fields=name`                             |
 
+<a id="view-a-list-of-nat-gateways-response"></a>
 #### レスポンス
 
 | 名前                       | 種類 | 形式 | 説明                                           |
@@ -81,12 +86,14 @@ X-Auth-Token: {tokenId}
 
 ---
 
-### NATゲートウェイ表示
+<a id="view-nat-gateways"></a>
+### NATゲートウェイ表示 { #view-nat-gateways }
 ```
 GET /v2.0/natgateways/{NatGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-nat-gateways-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -96,6 +103,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | トークンID                                                                |
 | fields | Query  | String | - | 照会するNATゲートウェイのフィールド名<br>指定したフィールドのみレスポンスに返す<br>例：`fields=id&fields=name` |
 
+<a id="view-nat-gateways-response"></a>
 #### レスポンス
 
 | 名前                      | 種類 | 形式 | 説明                                             |
@@ -143,7 +151,8 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### NATゲートウェイの作成
+<a id="create-a-nat-gateway"></a>
+### NATゲートウェイの作成 { #create-a-nat-gateway }
 
 新しいNATゲートウェイを作成します。
 
@@ -152,6 +161,7 @@ POST /v2.0/natgateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-a-nat-gateway-request"></a>
 #### リクエスト
 
 | 名前                      | 種類 | 形式   | 必須 | 説明                 |
@@ -185,6 +195,7 @@ X-Auth-Token: {tokenId}
 </details>
 
 
+<a id="create-a-nat-gateway-response"></a>
 #### レスポンス
 | 名前                      | 種類 | 形式 | 説明                                             |
 |---------------------------|---|---|--------------------------------------------------|
@@ -231,7 +242,8 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### NATゲートウェイの修正
+<a id="modifying-the-nat-gateway"></a>
+### NATゲートウェイの修正 { #modifying-the-nat-gateway }
 
 既存NATゲートウェイを修正します。
 
@@ -240,6 +252,7 @@ PUT /v2.0/natgateways/{NatGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modifying-the-nat-gateway-request"></a>
 #### リクエスト
 
 | 名前                      | 種類 | 形式   | 必須 | 説明               |
@@ -268,6 +281,7 @@ X-Auth-Token: {tokenId}
 </details>
 
 
+<a id="modifying-the-nat-gateway-response"></a>
 #### レスポンス
 | 名前                      | 種類 | 形式 | 説明                                            |
 |---------------------------|---|---|-------------------------------------------------|
@@ -314,13 +328,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### NATゲートウェイの削除
+<a id="delete-a-nat-gateway"></a>
+### NATゲートウェイの削除 { #delete-a-nat-gateway }
 指定したNATゲートウェイを削除します。
 ```
 DELETE /v2.0/natgateways/{NatGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-a-nat-gateway-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -329,5 +345,6 @@ X-Auth-Token: {tokenId}
 | NatGatewayId | URL    | UUID   | O  | NATゲートウェイID       |
 | tokenId | Header | String | O | トークンID |
 
+<a id="delete-a-nat-gateway-response"></a>
 #### レスポンス
 このAPIはレスポンス本文を返しません。
