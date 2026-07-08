@@ -2,6 +2,7 @@
 
 <a id="sec"></a>
 
-## 발신 번호 사전 등록
+## Pre-register Sender Numbers
 
-<!-- TODO: translate -->
+This feature describes the procedure for pre-registering sender numbers.
+
