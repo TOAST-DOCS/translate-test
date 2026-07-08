@@ -1,4 +1,8 @@
+<a id="storage-storage-gateway-release-notes"></a>
+
 ## Storage > Storage Gateway > 릴리스 노트
+
+<a id="march-4-2025"></a>
 
 ### 2025. 03. 04.
 * 신규 서비스 출시
