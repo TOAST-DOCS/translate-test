@@ -288,10 +288,9 @@ X-NHN-Authorization: Bearer {accessToken}
   } ],
   "id" : "alpha123",
   "content" : {
-    "chatBubbleType" : "TEXT",
+    "messageType" : "TEXT",
     "adult" : false,
     "content" : null,
-    "attachmentId" : "20230131070811m2fDe1rXx80",
     "image" : {
       "attachmentId" : "20230131070811m2fDe1rXx80",
       "imageUrl" : "https://example.com/image.jpg",
@@ -427,10 +426,9 @@ X-NHN-Authorization: Bearer {accessToken}
 | recipients[].templateParameters | Object | X | 템플릿 파라미터입니다. 키(Key, 치환자)와 값(Value)의 쌍으로 구성되어 있습니다.<br><br>그룹 발송에서는 수신자별 템플릿 파라미터를 지정할 수 없습니다.<br><br>수신자에 설정되는 템플릿 파라미터는 메시지 템플릿 파라미터보다 우선시됩니다.<br><br> |
 | id | String | X | 대량 수신자 목록 및 파일 업로드 성공 시 생성되는 아이디 |
 | content | Object | X |  |
-| content.chatBubbleType | String | X | 메시지 말풍선 타입. TEXT: 텍스트형, IMAGE: 이미지형, WIDE: 와이드 이미지형, WIDE_ITEM_LIST: 와이드 아이템리스트형, CAROUSEL_FEED: 캐러셀 피드형, CAROUSEL_COMMERCE: 캐러셀 커머스형, COMMERCE: 커머스형, PREMIUM_VIDEO: 프리미엄 비디오형<br>[TEXT, IMAGE, WIDE, WIDE_ITEM_LIST, CAROUSEL_FEED, CAROUSEL_COMMERCE, COMMERCE, PREMIUM_VIDEO] |
+| content.messageType | String | X | 메시지 말풍선 타입. TEXT: 텍스트형, IMAGE: 이미지형, WIDE: 와이드 이미지형, WIDE_ITEM_LIST: 와이드 아이템리스트형, CAROUSEL_FEED: 캐러셀 피드형, CAROUSEL_COMMERCE: 캐러셀 커머스형, COMMERCE: 커머스형, PREMIUM_VIDEO: 프리미엄 비디오형<br>[TEXT, IMAGE, WIDE, WIDE_ITEM_LIST, CAROUSEL_FEED, CAROUSEL_COMMERCE, COMMERCE, PREMIUM_VIDEO] |
 | content.adult | Boolean | X | 성인용 메시지 여부(default: false). 성인용 설정 시 성인 인증을 완료한 수신자에게만 노출<br>기본값: false |
 | content.content | String | X | 메시지 본문. TEXT: 필수(최대 1,300자, 줄바꿈 최대 99개), IMAGE: 필수(최대 1,300자), WIDE: 필수(최대 76자, 줄바꿈 최대 5개), PREMIUM_VIDEO: 선택(최대 76자, 줄바꿈 최대 5개). WIDE_ITEM_LIST/CAROUSEL_FEED/CAROUSEL_COMMERCE: 사용 불가. URL 입력 가능 |
-| content.attachmentId | String | X | 첨부 파일 아이디. IMAGE/WIDE: attachmentId 또는 image.imageUrl 중 하나 필수 |
 | content.image | Object | X |  |
 | content.image.attachmentId | String | X | 첨부 파일 아이디. imageUrl과 택1 |
 | content.image.imageUrl | String | X | 이미지 URL. attachmentId와 택1 |
@@ -589,10 +587,9 @@ X-NHN-Authorization: Bearer {accessToken}
   } ],
   "id" : "alpha123",
   "content" : {
-    "chatBubbleType" : "TEXT",
+    "messageType" : "TEXT",
     "adult" : false,
     "content" : null,
-    "attachmentId" : "20230131070811m2fDe1rXx80",
     "image" : {
       "attachmentId" : "20230131070811m2fDe1rXx80",
       "imageUrl" : "https://example.com/image.jpg",
@@ -739,10 +736,9 @@ curl -X POST "${endpoint}/message/v1.0/BRANDMESSAGE/free-form-messages/${message
   } ],
   "id" : "alpha123",
   "content" : {
-    "chatBubbleType" : "TEXT",
+    "messageType" : "TEXT",
     "adult" : false,
     "content" : null,
-    "attachmentId" : "20230131070811m2fDe1rXx80",
     "image" : {
       "attachmentId" : "20230131070811m2fDe1rXx80",
       "imageUrl" : "https://example.com/image.jpg",
@@ -2183,7 +2179,7 @@ X-NHN-Authorization: Bearer {accessToken}
 | recipients[].imageParameters | Array | X | 수신자별 이미지 파라미터. 템플릿에 포함된 이미지를 수신자별로 치환합니다. 배열의 순서가 템플릿 내 이미지 위치와 매핑됩니다(첫 번째 요소가 템플릿의 첫 번째 이미지를 치환). 단건 수신자(recipients) 발송에서만 사용 가능하며, 대량 발송(id 사용) 시에는 수신자별 이미지 치환을 지원하지 않습니다. |
 | recipients[].imageParameters[].attachmentId | String | X | 첨부 파일 아이디. imageUrl과 택1. 이미지 업로드 API로 등록한 첨부 파일 아이디 사용 |
 | recipients[].imageParameters[].imageUrl | String | X | 이미지 URL. attachmentId와 택1. 카카오 CDN에 등록된 이미지만 허용. 이미지 업로드 API로 등록 후 발급된 URL 사용 |
-| recipients[].imageParameters[].imageLink | String | X | 이미지 클릭 시 이동할 URL(http/https). 선택. 미설정 시 카카오톡 이미지 뷰어 사용. attachmentId/imageUrl 없이 imageLink만 단독 입력 시 템플릿 원본 이미지를 유지하면서 클릭 링크만 변경 |
+| recipients[].imageParameters[].imageLink | String | X | 이미지 클릭 시 이동할 URL(http/https). 선택. 미설정 시 카카오톡 이미지 뷰어 사용. attachmentId/imageUrl 없이 imageLink만 단독 입력 불가 |
 | recipients[].videoParameter | Object | X |  |
 | recipients[].videoParameter.videoUrl | String | O | 카카오TV 동영상 URL(https://tv.kakao.com/으로 시작). PREMIUM_VIDEO 타입 필수 |
 | recipients[].videoParameter.thumbnailAttachmentId | String | X | 썸네일 이미지 첨부 파일 아이디. thumbnailUrl과 택1. 일반 이미지 업로드 API로 등록한 이미지만 사용 가능 |
