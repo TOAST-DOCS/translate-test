@@ -10,10 +10,12 @@ This document verifies the stub-filling tool.
 
 ## Body Stub Section
 
-<!-- TODO: translate body -->
+This section's content has not been translated into English and Japanese yet. This is a short verification sentence.
 
 <a id="heading-stub-section"></a>
 
-## 발신 번호 사전 등록
+## Pre-register Sender Numbers
 
-<!-- TODO: translate -->
+
+This section has both the title and body untranslated.
+
