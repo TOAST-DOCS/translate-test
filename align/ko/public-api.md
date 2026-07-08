@@ -1,5 +1,6 @@
 
-## Network > Colocation Gateway > API v2 가이드
+<a id="network-colocation-gateway-api-v2-guide"></a>
+## Network > Colocation Gateway > API v2 가이드 { #network-colocation-gateway-api-v2-guide }
 
 NHN Cloud Network 서비스는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token)을 참고하세요.
 
@@ -11,15 +12,18 @@ NHN Cloud Network 서비스는 API 호출 시 인증/인가를 위해 IaaS 토�
 
 API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
 
-## 코로케이션 게이트웨이
+<a id="colocation-gateway"></a>
+## 코로케이션 게이트웨이 { #colocation-gateway }
 
-### 코로케이션 게이트웨이 목록 보기
+<a id="view-a-list-of-colocation-gateways"></a>
+### 코로케이션 게이트웨이 목록 보기 { #view-a-list-of-colocation-gateways }
 
 ```
 GET /v2.0/gateways/colocationgateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-a-list-of-colocation-gateways-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -31,6 +35,7 @@ X-Auth-Token: {tokenId}
 | vpc_id | Query | String | - | 조회할 코로케이션 게이트웨이와 연결된 VPC ID |
 
 
+<a id="view-a-list-of-colocation-gateways-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -71,13 +76,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### 코로케이션 게이트웨이 보기
+<a id="view-colocation-gateways"></a>
+### 코로케이션 게이트웨이 보기 { #view-colocation-gateways }
 
 ```
 GET /v2.0/gateways/colocationgateways/{colocationGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-colocation-gateways-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -86,6 +93,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | colocationGatewayId | URL | UUID | O | 코로케이션 게이트웨이 ID |
 
+<a id="view-colocation-gateways-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |

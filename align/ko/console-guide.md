@@ -1,10 +1,13 @@
-## Network > Colocation Gateway > 콘솔 사용 가이드
+<a id="network-colocation-gateway-console-user-guide"></a>
+## Network > Colocation Gateway > 콘솔 사용 가이드 { #network-colocation-gateway-console-user-guide }
 
 콘솔에서 **Colocation Gateway** 서비스를 사용하는 방법을 설명합니다.
 
-## 코로케이션 게이트웨이
+<a id="colocation-gateway"></a>
+## 코로케이션 게이트웨이 { #colocation-gateway }
 
-### 코로케이션 게이트웨이 생성
+<a id="create-a-colocation-gateway"></a>
+### 코로케이션 게이트웨이 생성 { #create-a-colocation-gateway }
 
 **코로케이션 게이트웨이**를 생성하는 방법은 다음과 같습니다.
 
@@ -20,28 +23,33 @@
 5. **NHN Cloud Zone**을 선택합니다.
 6. **확인** 버튼을 클릭합니다.
 
-### 코로케이션 게이트웨이 조회
+<a id="view-a-colocation-gateway"></a>
+### 코로케이션 게이트웨이 조회 { #view-a-colocation-gateway }
 
 생성한 코로케이션 게이트웨이는 **Network > Colocation Gateway** 화면에서 확인할 수 있습니다. 코로케이션 게이트웨이를 선택하면 하단에 코로케이션 게이트웨이 정보가 나타납니다.
 
-### 코로케이션 게이트웨이 변경
+<a id="modify-a-colocation-gateway"></a>
+### 코로케이션 게이트웨이 변경 { #modify-a-colocation-gateway }
 
 코로케이션 게이트웨이를 변경하는 방법은 다음과 같습니다. **이름**, **설명**만 변경할 수 있습니다.
 
 1. **Network > Colocation Gateway**로 이동합니다.
 2. **코로케이션 게이트웨이 변경** 버튼을 클릭한 후 변경 화면에서 원하는 항목을 변경합니다.
 
-### 코로케이션 게이트웨이 삭제
+<a id="delete-a-colocation-gateway"></a>
+### 코로케이션 게이트웨이 삭제 { #delete-a-colocation-gateway }
 
 코로케이션 게이트웨이를 삭제하려면 **Network > Colocation Gateway** 화면에서 삭제할 코로케이션 게이트웨이를 선택하고 코로케이션 게이트웨이 삭제 버튼을 클릭합니다.
 
-### 라우트
+<a id="route"></a>
+### 라우트 { #route }
 
 코로케이션 게이트웨이로부터 유입된 트래픽을 처리할 VM 인스턴스의 Port 및 가상 IP 포트를 지정할 수 있습니다. 라우트의 게이트웨이가 되는 VM 인스턴스에는 Network Virtual Appliance VM을 배치하여 VM 인스턴스 내부에서 트래픽을 제어하고 피어링 기능을 이용하여 다른 VPC로 트래픽을 전달할 수 있습니다.<br>
 * 피어링으로 허브 & 스포크(Hub & Spoke) 형태의 VPC 연결을 구성하고 허브 VPC에 위치한 Network Virtual Appliance로 트래픽을 제어하는 상황에서 고객의 온프레미스 네트워크를 허브 VPC에 스포크로 추가하기 위해 코로케이션 게이트웨이의 라우트 기능을 활용할 수 있습니다. 
 
 > [참고] 현재는 한국(평촌), 한국(판교) 리전에서만 기능이 제공됩니다.
 
+<a id="route-create-a-route"></a>
 #### 라우트 생성
 
 1. 라우트를 설정할 코로케이션 게이트웨이를 선택합니다.
@@ -53,6 +61,7 @@
    > [참고] 게이트웨이는 인스턴스와 가상 IP만 선택이 가능합니다.<br>
 7. **확인** 버튼을 클릭합니다.
 
+<a id="route-delete-a-route"></a>
 #### 라우트 삭제
 
 1. 라우트 설정을 삭제할 코로케이션 게이트웨이를 선택합니다.
@@ -61,11 +70,13 @@
 4. 삭제 대상의 **-** 버튼을 클릭합니다.
 5. **확인** 버튼을 클릭합니다.
 
-## 코로케이션 게이트웨이 사용
+<a id="use-a-colocation-gateway"></a>
+## 코로케이션 게이트웨이 사용 { #use-a-colocation-gateway }
 
 온프레미스 네트워크로 패킷을 전달하려면 **Network > Routing**에서 라우팅 경로를 추가해야 합니다.
 
-### 코로케이션 게이트웨이 라우트 설정
+<a id="configure-a-route-for-a-colocation-gateway"></a>
+### 코로케이션 게이트웨이 라우트 설정 { #configure-a-route-for-a-colocation-gateway }
 
 1. **Network > Routing**으로 이동합니다.
 2. **코로케이션 게이트웨이**를 생성한 **VPC**의 **라우팅 테이블**을 선택합니다.

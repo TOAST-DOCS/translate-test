@@ -1,5 +1,6 @@
 
-## Network > Colocation Gateway > API v2 Guide
+<a id="network-colocation-gateway-api-v2-guide"></a>
+## Network > Colocation Gateway > API v2 Guide { #network-colocation-gateway-api-v2-guide }
 
 NHN Cloud Network services use IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS). For more information on issuing and using IaaS tokens, please refer to the [IaaS Token](/nhncloud/en/public-api/iaas-token).
 
@@ -11,15 +12,18 @@ The Colocation Gateway API utilizes an endpoint of the`network` type. See the `s
 
 In each API response, you may find fields that are not specified within this guide. Those fields are for NHN Cloud internal usage, so refrain from using them because they may be changed without prior notice.
 
-## Colocation Gateway
+<a id="colocation-gateway"></a>
+## Colocation Gateway { #colocation-gateway }
 
-### View a list of colocation gateways
+<a id="view-a-list-of-colocation-gateways"></a>
+### View a list of colocation gateways { #view-a-list-of-colocation-gateways }
 
 ```
 GET /v2.0/gateways/colocationgateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-a-list-of-colocation-gateways-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -31,6 +35,7 @@ This API does not require a request body.
 | vpc_id | Query | String | - | VPC ID associated with the colocation gateway to retrieve |
 
 
+<a id="view-a-list-of-colocation-gateways-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
@@ -71,13 +76,15 @@ This API does not require a request body.
 </details>
 
 ---
-### View colocation gateways
+<a id="view-colocation-gateways"></a>
+### View colocation gateways { #view-colocation-gateways }
 
 ```
 GET /v2.0/gateways/colocationgateways/{colocationGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-colocation-gateways-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -86,6 +93,7 @@ This API does not require a request body.
 | tokenId | Header | String | O | Token ID |
 | colocationGatewayId | URL | UUID | O | Colocation Gateway ID |
 
+<a id="view-colocation-gateways-response"></a>
 #### Response
 
 | Name | Type | Format | Description |

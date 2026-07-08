@@ -1,5 +1,6 @@
 
-## Network > Colocation Gateway > API v2ガイド
+<a id="network-colocation-gateway-api-v2-guide"></a>
+## Network > Colocation Gateway > API v2ガイド { #network-colocation-gateway-api-v2-guide }
 
 NHN Cloud Networkサービスは、API呼び出し時の認証/認可のためにIaaSトークンを使用します。IaaSトークンは、NHN CloudのOpenStackベースのインフラサービス(IaaS)で使用する認証トークンです。IaaSトークンの発行及び使用に関する詳細は、[IaaSトークン](/nhncloud/ja/public-api/iaas-token)を参照してください。
 
@@ -11,15 +12,18 @@ NHN Cloud Networkサービスは、API呼び出し時の認証/認可のため�
 
 APIレスポンスにガイドに記載されていないフィールドが表示される場合があります。このようなフィールドは、NHN Cloudの内部用途に使用され、事前告知なしに変更される可能性があるため、使用しないでください。
 
-## コロケーションゲートウェイ
+<a id="colocation-gateway"></a>
+## コロケーションゲートウェイ { #colocation-gateway }
 
-### コロケーションゲートウェイリスト表示
+<a id="view-a-list-of-colocation-gateways"></a>
+### コロケーションゲートウェイリスト表示 { #view-a-list-of-colocation-gateways }
 
 ```
 GET /v2.0/gateways/colocationgateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-a-list-of-colocation-gateways-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -31,6 +35,7 @@ X-Auth-Token: {tokenId}
 | vpc_id | Query | String | - | 照会するコロケーションゲートウェイと接続されたVPC ID |
 
 
+<a id="view-a-list-of-colocation-gateways-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -71,13 +76,15 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-### コロケーションゲートウェイ表示
+<a id="view-colocation-gateways"></a>
+### コロケーションゲートウェイ表示 { #view-colocation-gateways }
 
 ```
 GET /v2.0/gateways/colocationgateways/{colocationGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-colocation-gateways-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -86,6 +93,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | トークンID |
 | colocationGatewayId | URL | UUID | O | コロケーションゲートウェイID |
 
+<a id="view-colocation-gateways-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |

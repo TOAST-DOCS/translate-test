@@ -1,10 +1,13 @@
-## Network > Colocation Gateway > Console User Guide
+<a id="network-colocation-gateway-console-user-guide"></a>
+## Network > Colocation Gateway > Console User Guide { #network-colocation-gateway-console-user-guide }
 
 This guide describes how to use the **Colocation Gateway** service from the console.
 
-## Colocation Gateway
+<a id="colocation-gateway"></a>
+## Colocation Gateway { #colocation-gateway }
 
-### Create a Colocation Gateway
+<a id="create-a-colocation-gateway"></a>
+### Create a Colocation Gateway { #create-a-colocation-gateway }
 
 To create a **colocation gateway**, use the following steps:
 
@@ -20,28 +23,33 @@ To create a **colocation gateway**, use the following steps:
 5. Select **NHN Cloud Zone**.
 6. Click **Confirm**.
 
-### View a Colocation Gateway
+<a id="view-a-colocation-gateway"></a>
+### View a Colocation Gateway { #view-a-colocation-gateway }
 
 You can view the created colocation gateway on the **Network > Colocation Gateway** page. If you select a colocation gateway, the colocation gateway information appears at the bottom.
 
-### Modify a Colocation Gateway
+<a id="modify-a-colocation-gateway"></a>
+### Modify a Colocation Gateway { #modify-a-colocation-gateway }
 
 A colocation gateway can be modified as follows. You can only change **Name** and **Description**.
 
 1. Go to **Network > Colocation Gateway**.
 2. Click **Change Colocation Gateway** and change items on the change screen.
 
-### Delete a Colocation Gateway
+<a id="delete-a-colocation-gateway"></a>
+### Delete a Colocation Gateway { #delete-a-colocation-gateway }
 
 To delete a colocation gateway, select the colocation gateway you want to delete in the **Network > Colocation Gateway** page and click the Delete Colocation Gateway button.
 
-### Route
+<a id="route"></a>
+### Route { #route }
 
 You can specify the port and virtual IP port of VM instances that process traffic coming from the colocation gateway. If you deploy Network Virtual Appliance VM that serves as the gate way for the route, you can control traffic inside the VM instance and forward traffic to other VPC by using the peering feature.<br>
 * You can use the colocation gateway’s route feature to add the customer’s on-premises network to the hub VPC as a spoke in a situation where traffic is controlled by Network Virtual Appliance in the hub VPC after configuring VPC connection of hub and spoke model through peering. 
 
 > [Note] This feature is only available in the Korea (Pangyo) and Korea (Pyeongchon) regions.
 
+<a id="route-create-a-route"></a>
 #### Create a Route
 
 1. Select a colocation gateway in which you want to set a route.
@@ -53,6 +61,7 @@ You can specify the port and virtual IP port of VM instances that process traffi
    > [Note] You can only select instance and virtual IP in a gateway.<br>
 7. Click the **Confirm** button.
 
+<a id="route-delete-a-route"></a>
 #### Delete a Route
 
 1. Select a colocation gateway in which you want to delete a route setting.
@@ -61,11 +70,13 @@ You can specify the port and virtual IP port of VM instances that process traffi
 4. Click the **+** button for the route to delete.
 5. Click the **Confirm** button.
 
-## Use a Colocation Gateway
+<a id="use-a-colocation-gateway"></a>
+## Use a Colocation Gateway { #use-a-colocation-gateway }
 
 To transmit packets to an on-premises network, add a routing path in **Network > Routing**.
 
-### Configure a Route for a Colocation Gateway
+<a id="configure-a-route-for-a-colocation-gateway"></a>
+### Configure a Route for a Colocation Gateway { #configure-a-route-for-a-colocation-gateway }
 
 1. Go to **Network > Routing**.
 2. Choose the **Routing Table** for the **VPC** where you created the **colocation gateway**.
