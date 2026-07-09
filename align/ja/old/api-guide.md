@@ -1,4 +1,7 @@
-## Compute > Instance > APIガイド
+<!-- pre-align:aligned sig=0e320df24b06 -->
+
+<a id="compute-instance-api-guide"></a>
+## Compute > Instance > APIガイド { #compute-instance-api-guide }
 
 APIは現在、韓国リージョンでのみ使用できます。
 
@@ -10,11 +13,13 @@ NHN Cloud Compute Instanceサービスは次のAPIを提供します。
 * [インスタンスタイプAPI](#api_5)
 * [キーペアAPI](#api_6)
 
-## 事前準備
+<a id="prerequisites"></a>
+## 事前準備 { #prerequisites }
 
 インスタンスAPIを使用するにはアプリケーションキーとトークンが必要です。 [API Endpoint URL](#api-endpoint-url)と[トークンAPI](#api)を利用してアプリケーションキーとトークンを準備します。アプリケーションキーはAPI Endpoint URLに、トークンはRequest Bodyに含めて使用します。
 
-### API Endpoint URL
+<a id="api-endpoint-url"></a>
+### API Endpoint URL { #api-endpoint-url }
 
 全てのインスタンス、イメージ、ネットワーク(VPC)、ブロックストレージAPIは次のURLから始まるものを使用する必要があります。
 
@@ -31,12 +36,15 @@ APIをリクエストする時は、常にアプリケーションキーを含�
 
 インスタンス、イメージ、ネットワーク、ブロックストレージAPI文書では簡潔で見やすく表記するためにAPI URLの始めの部分を省略しました。
 
-### API Response
+<a id="api-response"></a>
+### API Response { #api-response }
 
+<a id="api-response-response-http-status-code"></a>
 #### Response HTTP Status Code
 
 全てのAPIリクエストに200 OKで応答し、JSON形式のResponse Bodyを含めます。
 
+<a id="api-response-response-body"></a>
 #### Response Body
 
 Response Bodyには「header」情報が基本的に含まれており、これにより詳細な応答結果を確認できます。APIによって「header」以外の追加情報が含まれる場合があります。
@@ -53,10 +61,12 @@ Response Bodyには「header」情報が基本的に含まれており、これ�
 
 API呼び出しが失敗すると、「isSuccessful」が「false」になり、エラーコードが「resultCode」に表示されます。詳細なエラーコードは[エラーコード](/Compute/Instance/ja/error-code/)を参照してください。
 
-### トークンAPI
+<a id="token-api"></a>
+### トークンAPI { #token-api }
 
 トークンはAPIを使用するために必ず発行されなければならない認証キーで、全てのAPIはRequestに**X-Auth-Token** Headerを追加してリクエストする必要があります。
 
+<a id="token-api-set-api-passwords"></a>
 #### APIパスワード設定
 
 APIパスワードは**Compute > Instance**サービスページの**API Endpoint設定**ボタンをクリックして設定できます。
@@ -65,6 +75,7 @@ APIパスワードは**Compute > Instance**サービスページの**API Endpoin
 2. **API Endpoint設定**の下にある**APIパスワード設定**に、トークン発行時に使用するパスワードを入力します。
 3. パスワードを入力した後、 **保存**ボタンをクリックします。
 
+<a id="token-api-issue-tokens"></a>
 #### Token発行
 
 ##### Method、URL
@@ -123,6 +134,7 @@ Content-Type： application/json;charset=UTF-8
 | User ID | Body | String |トークンを発行されたユーザーのUUID |
 | Role name | Body | String |トークンを発行されたユーザーに付与されたRole |
 
+<a id="token-api-retrieve-token-information"></a>
 #### Token情報照会
 ##### Method、URL
 ```
@@ -171,11 +183,14 @@ GET /v1.0/appkeys/{appkey}/tokens?id={tokenId}
 | Role name | Body | String |トークンを発行されたユーザーに付与されたRole |
 
 
-## アベイラビリティーゾーンAPI
+<a id="availability-zone-api"></a>
+## アベイラビリティーゾーンAPI { #availability-zone-api }
 
-### アベイラビリティーゾーン照会
+<a id="retrieve-availability-zone"></a>
+### アベイラビリティーゾーン照会 { #retrieve-availability-zone }
 インスタンス、ブロックストレージを生成できるアベイラビリティーゾーン情報を照会します。
 
+<a id="retrieve-availability-zone-method-url"></a>
 #### Method、URL
 ```
 GET /v1.0/appkeys/{appkey}/availability-zones
@@ -186,9 +201,11 @@ X-Auth-Token： {tokenId}
 |--|--|--|--|--|
 | tokenId | Header | String | - | トークンID |
 
+<a id="retrieve-availability-zone-request-body"></a>
 #### Request Body
 このAPIはRequest Bodyが必要ありません。
 
+<a id="retrieve-availability-zone-response-body"></a>
 #### Response Body
 ```json
 {
@@ -213,10 +230,12 @@ X-Auth-Token： {tokenId}
 | Zone Name | Body | String | アベイラビリティーゾーン名 |
 | Available | Body | Boolean | アベイラビリティーゾーンを可用可否 |
 
-## インスタンスAPI
+<a id="instance-api"></a>
+## インスタンスAPI { #instance-api }
 インスタンス生成、削除、情報照会およびブロックストレージ接続管理機能を提供します。
 
-### インスタンス状態
+<a id="instance-status"></a>
+### インスタンス状態 { #instance-status }
 インスタンスは生成、変更、削除、運営中は次の状態になります。
 ![[図1]インスタンスStatus Diagram](http://static.toastoven.net/prod_infrastructure/compute/developersguide/img_001.png)
 
@@ -234,8 +253,10 @@ X-Auth-Token： {tokenId}
 | MIGRATING | インスタンスマイグレーション作業中 |
 | ERROR | エラー状態 |
 
-### インスタンス情報簡略照会
+<a id="retrieve-brief-instance-information"></a>
+### インスタンス情報簡略照会 { #retrieve-brief-instance-information }
 生成されているインスタンスの簡潔な情報を照会します。
+<a id="retrieve-brief-instance-information-method-url"></a>
 #### Method、URL
 ```
 GET /v1.0/appkeys/{appkey}/instances?id={instanceId}
@@ -247,9 +268,11 @@ X-Auth-Token： {tokenId}
 | tokenId | Header | String | - | トークンID |
 | instanceId | Query | String | O | 照会するインスタンスID。記載しない場合、全てのインスタンスの簡略情報を照会します。 |
 
+<a id="retrieve-brief-instance-information-request-body"></a>
 #### Request Body
 このAPIはRequest Bodyが必要ありません。
 
+<a id="retrieve-brief-instance-information-response-body"></a>
 #### Response Body
 ```json
 {
@@ -274,8 +297,10 @@ X-Auth-Token： {tokenId}
 | Instance Name | Body | String | インスタンス名 |
 | Instance Status | Body | String | インスタンスの状態 |
 
-### インスタンス削除照会
+<a id="retrieve-instance-details"></a>
+### インスタンス削除照会 { #retrieve-instance-details }
 インスタンスの詳細な情報を照会します。
+<a id="retrieve-instance-details-method-url"></a>
 #### Method、URL
 ```
 GET /v1.0/appkeys/{appkey}/instances-detail?id={instanceId}
@@ -287,9 +312,11 @@ X-Auth-Token： {tokenId}
 | tokenId | Header | String | - | トークンID. |
 | instanceId | Query | String | O | 照会するインスタンスのID。省略すると全てのインスタンスの詳細情報を照会します。 |
 
+<a id="retrieve-instance-details-request-body"></a>
 #### Request Body
 このAPIはRequest Bodyが必要ありません。
 
+<a id="retrieve-instance-details-response-body"></a>
 #### Response Body
 ```json
 {
@@ -378,9 +405,11 @@ X-Auth-Token： {tokenId}
 | Created Time | Body | String | インスタンス生成時刻。 yyyy-mm-ddTHH：MM：ssZの形式。例) 2017-05-16T02：17：50.166563 |
 | Updated Time | Body | String | インスタンス修正時刻。 yyyy-mm-ddTHH：MM：ssZの形式。例) 2017-05-16T02：17：50.166563 |
 
-### インスタンス生成
+<a id="create-instances"></a>
+### インスタンス生成 { #create-instances }
 新たなインスタンスを生成します。
 
+<a id="create-instances-method-url"></a>
 #### Method、URL
 ```
 POST /v1.0/appkeys/{appkey}/instances
@@ -392,6 +421,7 @@ Content-Type： application/json;charset=UTF-8
 |--|--|--|--|--|
 | tokenId | Header | String | - | トークンID |
 
+<a id="create-instances-request-body"></a>
 #### Request Body
 ```json
 {
@@ -442,6 +472,7 @@ Content-Type： application/json;charset=UTF-8
 > * `Volume Type`は`null`に指定することができ、この場合"General HDD"に指定されます。
 
 
+<a id="create-instances-response-body"></a>
 #### Response Body
 ```json
 {
@@ -464,8 +495,10 @@ Content-Type： application/json;charset=UTF-8
 | Instance Name | body | String | インスタンス名 |
 | Instance Status | Body | String | インスタンスの状態 |
 
-### インスタンス削除
+<a id="delete-instances"></a>
+### インスタンス削除 { #delete-instances }
 特定インスタンスを削除します。
+<a id="delete-instances-method-url"></a>
 #### Method、URL
 ```
 DELETE /v1.0/appkeys/{appkey}/instances?id={instanceId}
@@ -477,9 +510,11 @@ X-Auth-Token： {tokenId}
 | tokenId | Header | String | - | トークンID |
 | instanceId | Query | String | - | 削除するインスタンスID |
 
-### ブロックストレージ接続
+<a id="attach-block-storages"></a>
+### ブロックストレージ接続 { #attach-block-storages }
 インスタンスにブロックストレージを接続します。
 
+<a id="attach-block-storages-method-url"></a>
 #### Method、URL
 ```
 POST /v1.0/appkeys/{appkey}/instances/{instanceId}/attachments
@@ -492,6 +527,7 @@ Content-Type： application/json;charset=UTF-8
 | tokenId | Header | String | - | トークンID |
 | instanceId | Path | String | - | ブロックストレージを接続するインスタンスID |
 
+<a id="attach-block-storages-request-body"></a>
 #### Request Body
 ```json
 {
@@ -505,6 +541,7 @@ Content-Type： application/json;charset=UTF-8
 |--|--|--|--|--|
 | Volume ID | body | String | - | インスタンスに接続するブロックストレージID |
 
+<a id="attach-block-storages-response-body"></a>
 #### Response Body
 
 ```json
@@ -528,9 +565,11 @@ Content-Type： application/json;charset=UTF-8
 | Attachement ID | body | String | 接続ID.|
 | Volume ID | body | String | ブロックストレージID。接続解除する際に必要。 |
 
-### ブロックストレージ接続解除
+<a id="detach-block-storages"></a>
+### ブロックストレージ接続解除 { #detach-block-storages }
 インスタンスに接続されているブロックストレージ接続を解除します。
 
+<a id="detach-block-storages-method-url"></a>
 #### Method、URL
 ```
 DELETE /v1.0/appkeys/{appkey}/instances/{instanceId}/attachments?volumeId={volumeId}
@@ -543,9 +582,11 @@ X-Auth-Token： {tokenId}
 | instanceId | Path | String | - | インスタンスID |
 | volumeId | Path | String | - | ブロックストレージID |
 
+<a id="detach-block-storages-request-body"></a>
 #### Request body
 このAPIはRequest Bodyが必要ありません。
 
+<a id="detach-block-storages-response-body"></a>
 #### Response Body
 
 ```json
@@ -558,7 +599,8 @@ X-Auth-Token： {tokenId}
 }
 ```
 
-## インスタンス追加機能API
+<a id="add-instances-api"></a>
+## インスタンス追加機能API { #add-instances-api }
 次のようなインスタンス制御および付加機能を提供します。
 
 - インスタンス起動、停止、再起動
@@ -567,8 +609,10 @@ X-Auth-Token： {tokenId}
 - Floating IP接続、解除
 - セキュリティーグループ登録、解除
 
-### 共通
+<a id="common"></a>
+### 共通 { #common }
 全てのインスタンス追加機能APIは同じMethod、URLで呼び出し、Request Bodyで各追加機能を区分します。
+<a id="common-method-url"></a>
 #### Method、URL
 ```
 POST /v1.0/appkeys/{appkey}/instances/{instanceId}/action
@@ -581,6 +625,7 @@ Content-Type： application/json;charset=UTF-8
 | tokenId | Header | String| - | トークンID |
 | instanceId | Path | String | - | 追加機能を実行するインスタンスID |
 
+<a id="common-request-body-template"></a>
 #### Request Body Template
 ```json
 {
@@ -595,8 +640,10 @@ Content-Type： application/json;charset=UTF-8
 | Action Name | Body | String | - | インスタンスで実行する追加機能 |
 | parameters | Body | Object| O | 追加機能実行に必要なパラメータ。追加機能に応じて必要な値を記載します。一部追加機能はパラメータなしで動作します。|
 
-### インスタンス起動
+<a id="start-instances"></a>
+### インスタンス起動 { #start-instances }
 停止(STOP)状態のインスタンスを起動します。
+<a id="start-instances-request-body"></a>
 #### Request Body
 ```json
 {
@@ -604,6 +651,7 @@ Content-Type： application/json;charset=UTF-8
 }
 ```
 
+<a id="start-instances-response-body"></a>
 #### Response Body
 ```json
 {
@@ -615,8 +663,10 @@ Content-Type： application/json;charset=UTF-8
 }
 ```
 
-### インスタンス停止
+<a id="stop-instances"></a>
+### インスタンス停止 { #stop-instances }
 動作中(ACTIVE)またはエラー(ERROR)状態のインスタンスを停止します。
+<a id="stop-instances-request-body"></a>
 #### Request Body
 ```json
 {
@@ -624,6 +674,7 @@ Content-Type： application/json;charset=UTF-8
 }
 ```
 
+<a id="stop-instances-response-body"></a>
 #### Response Body
 
 ```json
@@ -636,12 +687,14 @@ Content-Type： application/json;charset=UTF-8
 }
 ```
 
-### インスタンス再起動
+<a id="restart-instances"></a>
+### インスタンス再起動 { #restart-instances }
 インスタンスを再起動します。以下のように再起動方式を指定できます。
 
 - **SOFT**:正常終了(graceful shutdown)後、インスタンスを再起動します。
 - **HARD**:強制終了(shutdown)後、インスタンスを再起動します。
 
+<a id="restart-instances-request-body"></a>
 #### Request Body
 
 ```json
@@ -657,6 +710,7 @@ Content-Type： application/json;charset=UTF-8
 |--|--|--|--|--|
 | Reboot Type | body | String | - | 再起動方式。 `HARD`または`SOFT`. |
 
+<a id="restart-instances-response-body"></a>
 #### Response Body
 ```json
 {
@@ -668,8 +722,10 @@ Content-Type： application/json;charset=UTF-8
 }
 ```
 
-### インスタンスタイプ変更
+<a id="change-flavors"></a>
+### インスタンスタイプ変更 { #change-flavors }
 インスタンスタイプを変更します。
+<a id="change-flavors-request-body"></a>
 #### Request Body
 ```json
 {
@@ -684,6 +740,7 @@ Content-Type： application/json;charset=UTF-8
 |--|--|--|--|--|
 |  Flavor ID | body | String | - | 変更するインスタンスタイプ(flavor) ID |
 
+<a id="change-flavors-response-body"></a>
 #### Response Body
 ```json
 {
@@ -695,11 +752,13 @@ Content-Type： application/json;charset=UTF-8
 }
 ```
 
-### イメージ作成
+<a id="create-images"></a>
+### イメージ作成 { #create-images }
 指定したインスタンスからイメージを作成します。作成されたイメージは[イメージAPI](/Compute/Image/ja/api-guide/)で照会できます。
 
 イメージ作成対象のインスタンスはSTOP状態である必要があります。
 
+<a id="create-images-request-body"></a>
 #### Request Body
 ```json
 {
@@ -714,6 +773,7 @@ Content-Type： application/json;charset=UTF-8
 |--|--|--|--|--|
 | Image Name | body | String | - | 作成するイメージ名 |
 
+<a id="create-images-response-body"></a>
 #### Response Body
 ```json
 {
@@ -734,9 +794,11 @@ Content-Type： application/json;charset=UTF-8
 | Created Image ID | body | String | 作成されたイメージID |
 | Created Image Name | body | String |作成されたイメージ名 |
 
-### Floating IP接続
+<a id="associate-floating-ips"></a>
+### Floating IP接続 { #associate-floating-ips }
 Floating IPをインスタンスに接続します。
 
+<a id="associate-floating-ips-request-body"></a>
 #### Request Body
 ```json
 {
@@ -753,6 +815,7 @@ Floating IPをインスタンスに接続します。
 | Floating IP Address | body | String | - | インスタンスに接続するFloating IPアドレス |
 | IP Address of the instance | body | String | - | Floating IPを接続するインスタンスのIPアドレス |
 
+<a id="associate-floating-ips-response-body"></a>
 #### Response Body
 
 ```json
@@ -765,9 +828,11 @@ Floating IPをインスタンスに接続します。
 }
 ```
 
-### Floating IP接続解除
+<a id="disassociate-floating-ips"></a>
+### Floating IP接続解除 { #disassociate-floating-ips }
 インスタンスに接続されているFloating IPを接続解除します。
 
+<a id="disassociate-floating-ips-request-body"></a>
 #### Request Body
 
 ```json
@@ -783,6 +848,7 @@ Floating IPをインスタンスに接続します。
 |--|--|--|--|--|
 | Floating IP Address | body | String | - | 接続を解除するFloating IPアドレス |
 
+<a id="disassociate-floating-ips-response-body"></a>
 #### Response Body
 
 ```json
@@ -795,9 +861,11 @@ Floating IPをインスタンスに接続します。
 }
 ```
 
-### セキュリティーグループ登録
+<a id="register-security-groups"></a>
+### セキュリティーグループ登録 { #register-security-groups }
 インスタンスにセキュリティーグループを追加します。
 
+<a id="register-security-groups-request-body"></a>
 #### Request Body
 ```json
 {
@@ -812,6 +880,7 @@ Floating IPをインスタンスに接続します。
 |--|--|--|--|--|
 | Security Group Name | body | String | - | インスタンスに追加するセキュリティーグループ名 |
 
+<a id="register-security-groups-response-body"></a>
 #### Response Body
 
 ```json
@@ -824,9 +893,11 @@ Floating IPをインスタンスに接続します。
 }
 ```
 
-### セキュリティーグループ削除
+<a id="remove-security-groups"></a>
+### セキュリティーグループ削除 { #remove-security-groups }
 インスタンスに登録されているセキュリティーグループを削除します。
 
+<a id="remove-security-groups-request-body"></a>
 #### Request Body
 ```json
 {
@@ -841,6 +912,7 @@ Floating IPをインスタンスに接続します。
 |--|--|--|--|--|
 | Security Group Name | body | String | - | インスタンスから削除するセキュリティーグループ名 |
 
+<a id="remove-security-groups-response-body"></a>
 #### Response Body
 ```json
 {
@@ -852,10 +924,13 @@ Floating IPをインスタンスに接続します。
 }
 ```
 
-## インスタンスタイプAPI
-### インスタンスタイプのリスト照会
+<a id="instance-flavors-api"></a>
+## インスタンスタイプAPI { #instance-flavors-api }
+<a id="list-instance-flavors"></a>
+### インスタンスタイプのリスト照会 { #list-instance-flavors }
 インスタンスタイプのリストおよび詳細情報を照会します。
 
+<a id="list-instance-flavors-method-url"></a>
 #### Method、URL
 ```
 GET /v1.0/appkeys/{appkey}/flavors
@@ -866,9 +941,11 @@ X-Auth-Token： {tokenID}
 |--|--|--|--|--|
 | tokenId | Header | String| - | トークンID |
 
+<a id="list-instance-flavors-request-body"></a>
 #### Request Body
 このAPIはRequest Bodyが必要ありません。
 
+<a id="list-instance-flavors-response-body"></a>
 #### Response Body
 ```json
 {
@@ -906,10 +983,13 @@ X-Auth-Token： {tokenID}
 | RAM | Body | Integer | インスタンスタイプが持つRAM総量(MB)。 |
 | VCPUs | Body | Integer | インスタンスに割り当てられる仮想CPUコア個数。 |
 
-## キーペアAPI
+<a id="key-pair-api"></a>
+## キーペアAPI { #key-pair-api }
 インスタンスのアクセスに必要なキーペアを生成、削除、照会する機能を提供します。
-### キーペア照会
+<a id="retrieve-key-pairs"></a>
+### キーペア照会 { #retrieve-key-pairs }
 キーペアを照会します。
+<a id="retrieve-key-pairs-method-url"></a>
 #### Method、URL
 ```
 GET /v1.0/appkeys/{appkey}/keypairs?name={keypairName}
@@ -921,9 +1001,11 @@ X-Auth-Token： {tokenId}
 | tokenId | Header | String | - |トークンID. |
 | keypairName | Query | String | O | 照会するキーペアの名前。入力しなければ全てのキーペア情報を照会します。 |
 
+<a id="retrieve-key-pairs-request-body"></a>
 #### Request Body
 このAPIはRequest Bodyが必要ありません。
 
+<a id="retrieve-key-pairs-response-body"></a>
 #### Response Body
 
 ```json
@@ -951,9 +1033,11 @@ X-Auth-Token： {tokenId}
 | Fingerprint Value | Body | String | フィンガープリント(fingerprint)の値。 |
 | Created At | Body | DateTime | キーペア生成時間。 "Keypair Name"を指定した1件の照会の時にのみ表示されます。 |
 
-### キーペア生成とアップロード
+<a id="create-and-upload-key-pairs"></a>
+### キーペア生成とアップロード { #create-and-upload-key-pairs }
 キーペアを生成したりユーザーが直接生成したキーペアをアップロードします。
 
+<a id="create-and-upload-key-pairs-method-url"></a>
 #### Method、URL
 ```
 POST /v1.0/appkeys/{appkey}/keypairs
@@ -965,6 +1049,7 @@ Content-Type： application/json;charset=UTF-8
 |--|--|--|--|--|
 | tokenId | Header | String | - | トークンID |
 
+<a id="create-and-upload-key-pairs-request-body"></a>
 #### Request Body
 
 ```json
@@ -981,6 +1066,7 @@ Content-Type： application/json;charset=UTF-8
 | Keypair Name | Body | String | - | キーペアの名前 |
 | Public Key Value | Body | String | O | アップロードする公開鍵。省略すると新たなキーペアが作成され、作成されたキーペアの秘密鍵がResponseに一緒に渡されます。 |
 
+<a id="create-and-upload-key-pairs-response-body"></a>
 #### Response Body
 
 ```json
@@ -1008,8 +1094,10 @@ Content-Type： application/json;charset=UTF-8
 
 生成されたPrivate Key Valueは全文を.pemファイルで保存した後、該当のキーペアが設定されたインスタンスへのアクセス時に使用できます。 **生成されたPrivate Key Valueは1度しか照会できないため**紛失または削除されないよう、しっかりと保管し、流出防止のためになるべく補助記憶装置(USBフラッシュメモリ)で管理するのが良いでしょう。
 
-### キーペア削除
+<a id="delete-key-pairs"></a>
+### キーペア削除 { #delete-key-pairs }
 指定したキーペアを削除します。
+<a id="delete-key-pairs-method-url"></a>
 #### Method、URL
 ```
 DELETE /v1.0/appkeys/{appkey}/keypairs?name={keypairName}
@@ -1021,9 +1109,11 @@ X-Auth-Token： {tokenId}
 | tokenId | Header | String | - | トークンID |
 | keypairName | Query | String | - | 削除するキーペアの名前 |
 
+<a id="delete-key-pairs-request-body"></a>
 #### Request Body
 このAPIはRequest Bodyが必要ありません。
 
+<a id="delete-key-pairs-response-body"></a>
 #### Response Body
 ```json
 {

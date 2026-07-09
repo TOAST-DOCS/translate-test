@@ -1,5 +1,7 @@
-## Compute > Instance > 特化したインスタンス使用ガイド > MySQL Instanceガイド
-## MySQL version
+<a id="compute-instance-instance-guide-mysql-instance-guide"></a>
+## Compute > Instance > 特化したインスタンス使用ガイド > MySQL Instanceガイド { #compute-instance-instance-guide-mysql-instance-guide }
+<a id="mysql-version"></a>
+## MySQL version { #mysql-version }
 
 MySQL versionは次の2種類が提供されます。
 
@@ -8,7 +10,8 @@ MySQL versionは次の2種類が提供されます。
 * MySQL Community Server 5.7.20
     * mysql-community-server-5.7.20-1.el6.x86_64
 
-## MySQL開始/停止方法
+<a id="how-to-startstop-mysql"></a>
+## MySQL開始/停止方法 { #how-to-startstop-mysql }
 
 ```
 #mysqlサービス開始
@@ -21,7 +24,8 @@ shell> service mysqld stop
 shell> service mysqld restart
 ```
 
-## MySQL接続
+<a id="access-mysql"></a>
+## MySQL接続 { #access-mysql }
 
 イメージ生成後、最初は下記のように接続します。
 
@@ -29,9 +33,11 @@ shell> service mysqld restart
 shell> mysql -uroot
 ```
 
-## MySQLイメージ生成後、初期設定
+<a id="initial-setting-after-mysql-image-created"></a>
+## MySQLイメージ生成後、初期設定 { #initial-setting-after-mysql-image-created }
 
-### 1\.パスワード変更
+<a id="1-change-passwords"></a>
+### 1\.パスワード変更 { #1-change-passwords }
 
 初期インストール後、 MySQL ROOTアカウントパスワードは指定されていません。したがってインストール後、必ずすぐにパスワードの変更をする必要があります。
 
@@ -56,7 +62,8 @@ MySQL基本validate\_password\_policyは下記のとおりです。
 * validate\_password\_policy=MEDIUM
 * 基本**8文字以上で、アルファベット(大文字/小文字)、数字、特殊文字**を含める必要があります。
 
-### 2\. ポート(port)変更
+<a id="2-change-ports"></a>
+### 2\. ポート(port)変更 { #2-change-ports }
 
 提供されるイメージポートはMySQLの基本ポートである3306です。セキュリティー上、ポート変更を推奨します。
 
@@ -84,7 +91,8 @@ shell> service mysqld restart
 shell> mysql -uroot -P[変更されたポート番号]
 ```
 
-## my.cnf説明
+<a id="description-of-mycnf"></a>
+## my.cnf説明 { #description-of-mycnf }
 
 my.cnfの基本パスは /etc/my.cnfで、NHN Cloud推奨変数(variable)が設定されており、内容は以下のとおりです。
 
@@ -99,7 +107,8 @@ my.cnfの基本パスは /etc/my.cnfで、NHN Cloud推奨変数(variable)が設�
 | slow\_query\_log | slow\_query logオプションを使用します。 long\_query\_timeに基づく基本10秒以上のクエリーはslow\_query\_logに記録されます。 |
 | sysdate-is-now | sysdateの場合、 replicationでsysdate()使用されたSQL文は複製時、マスターとスレーブ間の時間が変わる問題があり、sysdate()とnow()の関数を同一に適用します。 |
 
-## MySQLディレクトリ説明
+<a id="description-of-mysql-directory"></a>
+## MySQLディレクトリ説明 { #description-of-mysql-directory }
 
 MySQLディレクトリおよびファイルの説明は下記のとおりです。
 
