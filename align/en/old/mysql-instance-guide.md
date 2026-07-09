@@ -1,6 +1,9 @@
-## Compute > Instance > Instance Guide > MySQL Instance Guide
-## MySQL version
+<a id="compute-instance-instance-guide-mysql-instance-guide"></a>
+## Compute > Instance > Instance Guide > MySQL Instance Guide { #compute-instance-instance-guide-mysql-instance-guide }
+<a id="mysql-version"></a>
+## MySQL version { #mysql-version }
 
+<!-- pre-align: ko에 대응 섹션 없음 — 검토 필요 (Body text promoted to a heading; no corresponding ko heading exists under k2) -->
 ##### MySQL of TOAST Cloud is classified into the following two versions: 
 
 * MySQL Community Server 5.6.38
@@ -8,7 +11,8 @@
 * MySQL Community Server 5.7.20
     * mysql-community-server-5.7.20-1.el6.x86_64
 
-## How to Start/Stop MySQL 
+<a id="how-to-startstop-mysql"></a>
+## How to Start/Stop MySQL { #how-to-startstop-mysql }
 
 ```
 #Start mysql Service 
@@ -21,7 +25,8 @@ shell> service mysqld stop
 shell> service mysqld restart
 ```
 
-## Access MySQL 
+<a id="access-mysql"></a>
+## Access MySQL { #access-mysql }
 
 Access as below initially after image is created.
 
@@ -29,9 +34,11 @@ Access as below initially after image is created.
 shell> mysql -uroot
 ```
 
-## Initial Setting after MySQL Image Created 
+<a id="initial-setting-after-mysql-image-created"></a>
+## Initial Setting after MySQL Image Created { #initial-setting-after-mysql-image-created }
 
-### 1\. Change Passwords 
+<a id="1-change-passwords"></a>
+### 1\. Change Passwords { #1-change-passwords }
 
 Passwords for MySQL Root account is not specified after initial installation. Therefore, password change is required after installation.  
 
@@ -51,13 +58,16 @@ ALTER USER USER() IDENTIFIED BY 'auth_string';
 mysql> ALTER USER 'root'@'localhost' IDENTIFIED BY 'New Password';
 ```
 
-### Default MySQL validate_password_policy is as below:
+<!-- pre-align: ko에 대응 섹션 없음 — 검토 필요 (Body text promoted to a heading; no corresponding ko heading exists under k6) -->
+<a id="2-change-ports"></a>
+### Default MySQL validate_password_policy is as below: { #2-change-ports }
 
 * validate\_password\_policy=MEDIUM
 * Must be more than 8 characters, including numbers, lower/upper cases, and special characters.
 
 ### 2\. Change Ports
 
+<!-- pre-align: ko에 대응 섹션 없음 — 검토 필요 (Body text promoted to a heading; no corresponding ko heading exists under k7) -->
 #### The default image port is 3306. It is recommended to change port for security reasons. 
 
 ```
@@ -84,7 +94,8 @@ shell> service mysqld restart
 shell> mysql -uroot -P[changed port number]
 ```
 
-## Description of my.cnf 
+<a id="description-of-mycnf"></a>
+## Description of my.cnf { #description-of-mycnf }
 
 The default route of my.cnf is /etc/my.cnf, where variables are set as recommended by ToastCloud, like below: 
 
@@ -99,7 +110,8 @@ The default route of my.cnf is /etc/my.cnf, where variables are set as recommend
 | slow\_query\_log | Enable the slow\_query log option. Queries of more than 10 seconds in accordance with long_query_time remains in the slow_query_log. |
 | sysdate-is-now | For sysdate, SQL with sysdate() used for replication results in different time between Master and Slave, and functions for sysdate() and now() shall be applied the same. |
 
-## Description of MySQL Directory 
+<a id="description-of-mysql-directory"></a>
+## Description of MySQL Directory { #description-of-mysql-directory }
 
 Directory and file description of MySQL are as below: 
 

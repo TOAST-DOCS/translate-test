@@ -1,4 +1,7 @@
-## Compute > Instance > Error Code
+<!-- pre-align:aligned sig=7e7369279eac -->
+
+<a id="compute-instance-error-code"></a>
+## Compute > Instance > Error Code { #compute-instance-error-code }
 
 Response Body includes "header" information by default. 
 When API call fails, `isSuccessful` becomes `false` , with the error code displayed on `resultCode`.

@@ -1,4 +1,7 @@
-## Compute > Instance > API Guide
+<!-- pre-align:aligned sig=0e320df24b06 -->
+
+<a id="compute-instance-api-guide"></a>
+## Compute > Instance > API Guide { #compute-instance-api-guide }
 
 API is currently available only in the Korea region.
 
@@ -11,11 +14,13 @@ The TOAST Compute Instance service provides APIs of the following types:
 * [Key Pair API](#api_6)
 
 
-## Prerequisites
+<a id="prerequisites"></a>
+## Prerequisites { #prerequisites }
 
 Using an Instance API requires an appkey and a token. Get an appkey and a token by using [API Endpoint URL](#api-endpoint-url) and [Token API](#api): include the appkey to Endpoint URL and the token to the Request Body.
 
-### API Endpoint URL
+<a id="api-endpoint-url"></a>
+### API Endpoint URL { #api-endpoint-url }
 
 APIs of all instances, images, networks (VPC), and block storages must start with the following URL:
 
@@ -32,12 +37,15 @@ For instance, here is the URL to issue a token:
 
 In the API documents for instances, images, networks and block storages, the URL prefix has been omitted for clear and easy understanding.
 
-### API Response
+<a id="api-response"></a>
+### API Response { #api-response }
 
+<a id="api-response-response-http-status-code"></a>
 #### Response HTTP Status Code
 
 Respond with 200 OK to all API requests, and include the response body of the JSON format.
 
+<a id="api-response-response-body"></a>
 #### Response Body
 
 The response body includes the "header" information by default, from which detailed results can be confirmed. Additional information may be added, depending on the API.
@@ -54,10 +62,12 @@ The response body includes the "header" information by default, from which detai
 
 When an API call is failed, 'isSuccessful' becomes 'false', and the error code will be displayed on the 'resultCode'. For more details, refer to [Error Code](/Compute/Instance/en/error-code/).
 
-### Token API
+<a id="token-api"></a>
+### Token API { #token-api }
 
 Token is an authentication key which is required to use API. All APIs must be requested with the **X-Auth-Token** header added.
 
+<a id="token-api-set-api-passwords"></a>
 #### Set API Passwords
 
 To set a password for API, go to Compute > Instance, and click `[Set API Endpoint]`.
@@ -66,6 +76,7 @@ To set a password for API, go to Compute > Instance, and click `[Set API Endpoin
 2. Go to **Set API Endpoint > Set API Password**, and enter a password to use.
 3. Enter your password and click **Save**.
 
+<a id="token-api-issue-tokens"></a>
 #### Issue Tokens
 
 ##### Method, URL
@@ -124,6 +135,7 @@ Content-Type: application/json;charset=UTF-8
 | User ID   | Body | String | UUID of the user with a token issued     |
 | Role name | Body | String | Role assigned to the user with a token issued |
 
+<a id="token-api-retrieve-token-information"></a>
 #### Retrieve Token Information
 ##### Method, URL
 ```
@@ -172,11 +184,14 @@ This API does not require a request body.
 | Role name | Body | String | Role assigned to the user with a token issued |
 
 
-## Availability Zone API
+<a id="availability-zone-api"></a>
+## Availability Zone API { #availability-zone-api }
 
-### Retrieve Availability Zone
+<a id="retrieve-availability-zone"></a>
+### Retrieve Availability Zone { #retrieve-availability-zone }
 Retrieve information on availability zones to create instances and block storages.
 
+<a id="retrieve-availability-zone-method-url"></a>
 #### Method, URL
 ```
 GET /v1.0/appkeys/{appkey}/availability-zones
@@ -187,9 +202,11 @@ X-Auth-Token: {tokenId}
 | ------- | ------ | ------ | -------- | ----------- |
 | tokenId | Header | String | -        | Token ID    |
 
+<a id="retrieve-availability-zone-request-body"></a>
 #### Request Body
 This API does not require a request body.
 
+<a id="retrieve-availability-zone-response-body"></a>
 #### Response Body
 ```json
 {
@@ -214,10 +231,12 @@ This API does not require a request body.
 | Zone Name | Body | String  | Name of AZ         |
 | Available | Body | Boolean | Availability of AZ |
 
-## Instance API
+<a id="instance-api"></a>
+## Instance API { #instance-api }
 Provide functions, such as create/delete instances, retrieve information and connect with block storages.
 
-### Instance Status
+<a id="instance-status"></a>
+### Instance Status { #instance-status }
 An instance has following status while it is created, changed, deleted, or operated:
 ![[Figure 1] Instance Status Diagram](http://static.toastoven.net/prod_infrastructure/compute/developersguide/img_001.png)
 
@@ -235,8 +254,10 @@ An instance has following status while it is created, changed, deleted, or opera
 | DELETING     | Deleting an instance             |
 | ERROR        | In error                         |
 
-### Retrieve Brief Instance Information
+<a id="retrieve-brief-instance-information"></a>
+### Retrieve Brief Instance Information { #retrieve-brief-instance-information }
 Retrieve brief information of a created instance.
+<a id="retrieve-brief-instance-information-method-url"></a>
 #### Method, URL
 ```
 GET /v1.0/appkeys/{appkey}/instances?id={instanceId}
@@ -248,9 +269,11 @@ X-Auth-Token: {tokenId}
 | tokenId    | Header | String | -        | Token ID                                 |
 | instanceId | Query  | String | O        | Instance ID to retrieve. If left empty, retrieve brief information of all instances. |
 
+<a id="retrieve-brief-instance-information-request-body"></a>
 #### Request Body
 This API does not require a request body.
 
+<a id="retrieve-brief-instance-information-response-body"></a>
 #### Response Body
 ```json
 {
@@ -275,8 +298,10 @@ This API does not require a request body.
 | Instance Name   | Body | String | Instance Name   |
 | Instance Status | Body | String | Instance Status |
 
-### Retrieve Instance Details
+<a id="retrieve-instance-details"></a>
+### Retrieve Instance Details { #retrieve-instance-details }
 Retrieve detailed information of an instance.
+<a id="retrieve-instance-details-method-url"></a>
 #### Method, URL
 ```
 GET /v1.0/appkeys/{appkey}/instances-detail?id={instanceId}
@@ -288,9 +313,11 @@ X-Auth-Token: {tokenId}
 | tokenId    | Header | String | -        | Token ID                                 |
 | instanceId | Query  | String | O        | Instance ID to retrieve: if left empty, retrieve detail information of all instances. |
 
+<a id="retrieve-instance-details-request-body"></a>
 #### Request Body
 This API does not require a request body.
 
+<a id="retrieve-instance-details-response-body"></a>
 #### Response Body
 ```json
 {
@@ -379,9 +406,11 @@ This API does not require a request body.
 | Created Time         | Body | String  | Time of instance creation in the format of yyyy-mm-ddTHH:MM:ssZ. e.g) 2017-05-16T02:17:50.166563 |
 | Updated Time         | Body | String  | Time of instance update in the format of yyyy-mm-ddTHH:MM:ssZ. e.g) 2017-05-16T02:17:50.166563 |
 
-### Create Instances
+<a id="create-instances"></a>
+### Create Instances { #create-instances }
 Create a new instance.
 
+<a id="create-instances-method-url"></a>
 #### Method, URL
 ```
 POST /v1.0/appkeys/{appkey}/instances
@@ -393,6 +422,7 @@ Content-Type: application/json;charset=UTF-8
 | ------- | ------ | ------ | -------- | ----------- |
 | tokenId | Header | String | -        | Token ID    |
 
+<a id="create-instances-request-body"></a>
 #### Request Body
 ```json
 {
@@ -442,6 +472,7 @@ Content-Type: application/json;charset=UTF-8
 > * `Volume Type` can be `null`, and it be regarded as "General HDD".
 
 
+<a id="create-instances-response-body"></a>
 #### Response Body
 ```json
 {
@@ -464,8 +495,10 @@ Content-Type: application/json;charset=UTF-8
 | Instance Name   | body | String | Name of instance       |
 | Instance Status | Body | String | Status of instance     |
 
-### Delete Instances
+<a id="delete-instances"></a>
+### Delete Instances { #delete-instances }
 Delete a particular instance.
+<a id="delete-instances-method-url"></a>
 #### Method, URL
 ```
 DELETE /v1.0/appkeys/{appkey}/instances?id={instanceId}
@@ -477,9 +510,11 @@ X-Auth-Token: {tokenId}
 | tokenId    | Header | String | -        | Token ID                        |
 | instanceId | Query  | String | -        | ID of an instance to be deleted |
 
-### Attach Block Storages
+<a id="attach-block-storages"></a>
+### Attach Block Storages { #attach-block-storages }
 Attach a block storage to an instance.
 
+<a id="attach-block-storages-method-url"></a>
 #### Method, URL
 ```
 POST /v1.0/appkeys/{appkey}/instances/{instanceId}/attachments
@@ -492,6 +527,7 @@ Content-Type: application/json;charset=UTF-8
 | tokenId    | Header | String | -        | Token ID                                 |
 | instanceId | Path   | String | -        | Instance ID to be attached with a block storage |
 
+<a id="attach-block-storages-request-body"></a>
 #### Request Body
 ```json
 {
@@ -505,6 +541,7 @@ Content-Type: application/json;charset=UTF-8
 | --------- | ---- | ------ | -------- | ---------------------------------------- |
 | Volume ID | body | String | -        | Block storage ID to be attached to an instance. |
 
+<a id="attach-block-storages-response-body"></a>
 #### Response Body
 
 ```json
@@ -528,9 +565,11 @@ Content-Type: application/json;charset=UTF-8
 | Attachement ID | body | String | Attachment ID                            |
 | Volume ID      | body | String | Block storage ID: required to detach     |
 
-### Detach Block Storages
+<a id="detach-block-storages"></a>
+### Detach Block Storages { #detach-block-storages }
 Detach a block storage which is attached to an instance.
 
+<a id="detach-block-storages-method-url"></a>
 #### Method, URL
 ```
 DELETE /v1.0/appkeys/{appkey}/instances/{instanceId}/attachments?volumeId={volumeId}
@@ -543,9 +582,11 @@ X-Auth-Token: {tokenId}
 | instanceId | Path   | String | -        | Instance ID      |
 | volumeId   | Path   | String | -        | Block Storage ID |
 
+<a id="detach-block-storages-request-body"></a>
 #### Request body
 This request does not require a body.
 
+<a id="detach-block-storages-response-body"></a>
 #### Response Body
 
 ```json
@@ -558,7 +599,8 @@ This request does not require a body.
 }
 ```
 
-## Add Instances API
+<a id="add-instances-api"></a>
+## Add Instances API { #add-instances-api }
 Instance control and additional functions are provided as follows:
 
 - Start/stop/restart instances
@@ -567,8 +609,10 @@ Instance control and additional functions are provided as follows:
 - Associate/disassociate floating IPs
 - Register/remove security groups
 
-### Common
+<a id="common"></a>
+### Common { #common }
 All Add Instance APIs are called with a same method and URL, and can be divided by additional functions at the request body.
+<a id="common-method-url"></a>
 #### Method, URL
 ```
 POST /v1.0/appkeys/{appkey}/instances/{instanceId}/action
@@ -581,6 +625,7 @@ Content-Type: application/json;charset=UTF-8
 | tokenId    | Header | String | -        | Token ID                             |
 | instanceId | Path   | String | -        | Instance ID for additional functions |
 
+<a id="common-request-body-template"></a>
 #### Request Body Template
 ```json
 {
@@ -595,8 +640,10 @@ Content-Type: application/json;charset=UTF-8
 | Action Name | Body | String | -        | Additional functions to be executed at an instance |
 | parameters  | Body | Object | O        | Parameters required to execute additional functions: fill in required values depending on the additional functions. Some functions operate without parameters. |
 
-### Start Instances
+<a id="start-instances"></a>
+### Start Instances { #start-instances }
 Start an instance which has been stopped.
+<a id="start-instances-request-body"></a>
 #### Request Body
 ```json
 {
@@ -604,6 +651,7 @@ Start an instance which has been stopped.
 }
 ```
 
+<a id="start-instances-response-body"></a>
 #### Response Body
 ```json
 {
@@ -615,8 +663,10 @@ Start an instance which has been stopped.
 }
 ```
 
-### Stop Instances
+<a id="stop-instances"></a>
+### Stop Instances { #stop-instances }
 Stop an instance which is active or has an error.
+<a id="stop-instances-request-body"></a>
 #### Request Body
 ```json
 {
@@ -624,6 +674,7 @@ Stop an instance which is active or has an error.
 }
 ```
 
+<a id="stop-instances-response-body"></a>
 #### Response Body
 
 ```json
@@ -636,12 +687,14 @@ Stop an instance which is active or has an error.
 }
 ```
 
-### Restart Instances
+<a id="restart-instances"></a>
+### Restart Instances { #restart-instances }
 Restart an instance, and the method can be specified as below:
 
 - **SOFT**: Execute a graceful shutdown and restart an instance .
 - **HARD**: Execute a shutdown, and restart an instance.
 
+<a id="restart-instances-request-body"></a>
 #### Request Body
 
 ```json
@@ -657,6 +710,7 @@ Restart an instance, and the method can be specified as below:
 | ----------- | ---- | ------ | -------- | ---------------------------------------- |
 | Reboot Type | body | String | -        | Restarting method: either `HARD` or `SOFT` |
 
+<a id="restart-instances-response-body"></a>
 #### Response Body
 ```json
 {
@@ -668,8 +722,10 @@ Restart an instance, and the method can be specified as below:
 }
 ```
 
-### Change Flavors
+<a id="change-flavors"></a>
+### Change Flavors { #change-flavors }
 Change flavors of an instance.
+<a id="change-flavors-request-body"></a>
 #### Request Body
 ```json
 {
@@ -684,6 +740,7 @@ Change flavors of an instance.
 | --------- | ---- | ------ | -------- | ------------------------------------- |
 | Flavor ID | body | String | -        | Instance flavors ID to change. |
 
+<a id="change-flavors-response-body"></a>
 #### Response Body
 ```json
 {
@@ -695,11 +752,13 @@ Change flavors of an instance.
 }
 ```
 
-### Create Images
+<a id="create-images"></a>
+### Create Images { #create-images }
 Create an image from a specified instance. To retrieve the image, go to [Image API](/Compute/Image/en/api-guide/).
 
 Instances that are stopped can be the subject for image creation.
 
+<a id="create-images-request-body"></a>
 #### Request Body
 ```json
 {
@@ -714,6 +773,7 @@ Instances that are stopped can be the subject for image creation.
 | ---------- | ---- | ------ | -------- | -------------------------- |
 | Image Name | body | String | -        | Name of an image to create |
 
+<a id="create-images-response-body"></a>
 #### Response Body
 ```json
 {
@@ -734,9 +794,11 @@ Instances that are stopped can be the subject for image creation.
 | Created Image ID   | body | String | ID of an image created   |
 | Created Image Name | body | String | Name of an image created |
 
-### Associate Floating IPs
+<a id="associate-floating-ips"></a>
+### Associate Floating IPs { #associate-floating-ips }
 Associate a floating IP with an instance.
 
+<a id="associate-floating-ips-request-body"></a>
 #### Request Body
 ```json
 {
@@ -753,6 +815,7 @@ Associate a floating IP with an instance.
 | Floating IP Address        | body | String | -        | Floating IP address to be associated with an instance |
 | IP Address of the instance | body | String | -        | IP address of an instance which a floating IP is to be associated with |
 
+<a id="associate-floating-ips-response-body"></a>
 #### Response Body
 
 ```json
@@ -765,9 +828,11 @@ Associate a floating IP with an instance.
 }
 ```
 
-### Disassociate Floating IPs
+<a id="disassociate-floating-ips"></a>
+### Disassociate Floating IPs { #disassociate-floating-ips }
 Disassociate a floating IP which is associated with an instance.
 
+<a id="disassociate-floating-ips-request-body"></a>
 #### Request Body
 
 ```json
@@ -783,6 +848,7 @@ Disassociate a floating IP which is associated with an instance.
 | ------------------- | ---- | ------ | -------- | ---------------------------------------- |
 | Floating IP Address | body | String | -        | Floating IP address which is to be disassociated |
 
+<a id="disassociate-floating-ips-response-body"></a>
 #### Response Body
 
 ```json
@@ -795,9 +861,11 @@ Disassociate a floating IP which is associated with an instance.
 }
 ```
 
-### Register Security Groups
+<a id="register-security-groups"></a>
+### Register Security Groups { #register-security-groups }
 Additionally register a security group at an instance.
 
+<a id="register-security-groups-request-body"></a>
 #### Request Body
 ```json
 {
@@ -812,6 +880,7 @@ Additionally register a security group at an instance.
 | ------------------- | ---- | ------ | -------- | ---------------------------------------- |
 | Security Group Name | body | String | -        | Name of a security group to be added to an instance |
 
+<a id="register-security-groups-response-body"></a>
 #### Response Body
 
 ```json
@@ -824,9 +893,11 @@ Additionally register a security group at an instance.
 }
 ```
 
-### Remove Security Groups
+<a id="remove-security-groups"></a>
+### Remove Security Groups { #remove-security-groups }
 Remove a security group which is registered at an instance.
 
+<a id="remove-security-groups-request-body"></a>
 #### Request Body
 ```json
 {
@@ -841,6 +912,7 @@ Remove a security group which is registered at an instance.
 | ------------------- | ---- | ------ | -------- | ---------------------------------------- |
 | Security Group Name | body | String | -        | Name of a security group to be removed from an instance |
 
+<a id="remove-security-groups-response-body"></a>
 #### Response Body
 ```json
 {
@@ -852,10 +924,13 @@ Remove a security group which is registered at an instance.
 }
 ```
 
-## Instance Flavors API
-### List Instance Flavors
+<a id="instance-flavors-api"></a>
+## Instance Flavors API { #instance-flavors-api }
+<a id="list-instance-flavors"></a>
+### List Instance Flavors { #list-instance-flavors }
 List instance flavors with detail information.
 
+<a id="list-instance-flavors-method-url"></a>
 #### Method, URL
 ```
 GET /v1.0/appkeys/{appkey}/flavors
@@ -866,9 +941,11 @@ X-Auth-Token: {tokenID}
 | ------- | ------ | ------ | -------- | ----------- |
 | tokenId | Header | String | -        | Token ID    |
 
+<a id="list-instance-flavors-request-body"></a>
 #### Request Body
 This API does not require a request body.
 
+<a id="list-instance-flavors-response-body"></a>
 #### Response Body
 ```json
 {
@@ -906,10 +983,13 @@ This API does not require a request body.
 | RAM             | Body | Integer | Total volume of RAM of an instance flavors (MB) |
 | VCPUs           | Body | Integer | Number of virtual CPU cores assigned to an instance |
 
-## Key Pair API
+<a id="key-pair-api"></a>
+## Key Pair API { #key-pair-api }
 Create, delete, and retrieve key pairs required to access an instance.
-### Retrieve Key Pairs
+<a id="retrieve-key-pairs"></a>
+### Retrieve Key Pairs { #retrieve-key-pairs }
 Retrieve key pairs.
+<a id="retrieve-key-pairs-method-url"></a>
 #### Method, URL
 ```
 GET /v1.0/appkeys/{appkey}/keypairs?name={keypairName}
@@ -921,9 +1001,11 @@ X-Auth-Token: {tokenId}
 | tokenId     | Header | String | -        | Token ID                                 |
 | keypairName | Query  | String | O        | Key pair name to retrieve: if left empty, retrieve all key pair information. |
 
+<a id="retrieve-key-pairs-request-body"></a>
 #### Request Body
 This API does not require a request body.
 
+<a id="retrieve-key-pairs-response-body"></a>
 #### Response Body
 
 ```json
@@ -951,9 +1033,11 @@ This API does not require a request body.
 | Fingerprint Value | Body | String   | Value of a fingerprint                   |
 | Created At        | Body | DateTime | Time of key pair creation: to show only when getting "Keypair Name" specifically. |
 
-### Create and Upload Key Pairs
+<a id="create-and-upload-key-pairs"></a>
+### Create and Upload Key Pairs { #create-and-upload-key-pairs }
 Create a key pair or upload a key pair created by user.
 
+<a id="create-and-upload-key-pairs-method-url"></a>
 #### Method, URL
 ```
 POST /v1.0/appkeys/{appkey}/keypairs
@@ -965,6 +1049,7 @@ Content-Type: application/json;charset=UTF-8
 | ------- | ------ | ------ | -------- | ----------- |
 | tokenId | Header | String | -        | Token ID    |
 
+<a id="create-and-upload-key-pairs-request-body"></a>
 #### Request Body
 
 ```json
@@ -981,6 +1066,7 @@ Content-Type: application/json;charset=UTF-8
 | Keypair Name     | Body | String | -        | Name of a key pair                       |
 | Public Key Value | Body | String | O        | Public key to upload: when omitted, a new key pair is created, which shall be delivered to Response, along with its private key. |
 
+<a id="create-and-upload-key-pairs-response-body"></a>
 #### Response Body
 
 ```json
@@ -1008,8 +1094,10 @@ Content-Type: application/json;charset=UTF-8
 
 The key pair can be used, by saving the whole private key value in the .pem file and accessing the instance which is configured to use the key pair. Take cautions not to lose or delete the **created key value as it cannot be retrieved again**, and it is recommended to save it in a supplementary saving device (like USB memory) to prevent leakage.  
 
-### Delete Key Pairs
+<a id="delete-key-pairs"></a>
+### Delete Key Pairs { #delete-key-pairs }
 Delete a specified key pair.
+<a id="delete-key-pairs-method-url"></a>
 #### Method, URL
 ```
 DELETE /v1.0/appkeys/{appkey}/keypairs?name={keypairName}
@@ -1021,9 +1109,11 @@ X-Auth-Token: {tokenId}
 | tokenId     | Header | String | -        | Token ID                     |
 | keypairName | Query  | String | -        | Name of a key pair to delete |
 
+<a id="delete-key-pairs-request-body"></a>
 #### Request Body
 This API does not require a request body.
 
+<a id="delete-key-pairs-response-body"></a>
 #### Response Body
 ```json
 {

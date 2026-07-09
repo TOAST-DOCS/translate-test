@@ -1,4 +1,7 @@
-## Compute > Instance > エラーコード
+<!-- pre-align:aligned sig=7e7369279eac -->
+
+<a id="compute-instance-error-code"></a>
+## Compute > Instance > エラーコード { #compute-instance-error-code }
 
 Response Bodyには"header"情報が基本的に含まれています。
 API呼び出しが失敗すると`isSuccessful`が`false`になり、エラーコードが`resultCode`に表示されます。 

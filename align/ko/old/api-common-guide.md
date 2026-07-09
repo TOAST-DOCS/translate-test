@@ -1,8 +1,12 @@
-## Reference > API 준비 가이드
+<!-- pre-align:aligned sig=ce901388b778 -->
+
+<a id="reference-api"></a>
+## Reference > API 준비 가이드 { #reference-api }
 
 Object Storage를 제외한 Compute, Network, Storage API를 사용하기 위해 필요한 작업입니다.
 
-## API Endpoint URL
+<a id="api-endpoint-url"></a>
+## API Endpoint URL { #api-endpoint-url }
 
 	https://api-compute.cloud.toast.com/compute/v1.0/appkeys/{appkey}
 
@@ -16,7 +20,8 @@ Object Storage를 제외한 Compute, Network, Storage API를 사용하기 위해
 2. **URL & Appkey** 대화 상자에서 **Appkey** 값을 복사해 사용합니다.
 
 
-### API Response
+<a id="api-response"></a>
+### API Response { #api-response }
 ##### Response HTTP Status Code
 모든 API 요청에 200 OK로 응답하며, JSON 형태의 Response Body를 포함합니다.
 
@@ -64,11 +69,13 @@ Response body "header"의 `resultCode`는 다음과 같습니다.
 | false        | 50400~50499 | 토큰 API 관련 오류 메시지                         | resultCode의 뒤 세 자리는 HTTP Status Code이며, resultMessage 내용에 따라 조치 후 재시도 가능. |
 
 
-## 토큰 API
+<a id="api"></a>
+## 토큰 API { #api }
 
 **토큰**은 API 사용을 위해 필수로 발급받아야 하는 인증 키이며, 모든 API는 Request에 **X-Auth-Token** Header를 추가하여 요청해야 합니다.
 
-### API 보안 설정
+<a id="api-2"></a>
+### API 보안 설정 { #api-2 }
 
 인증 토큰을 발급받으려면 User Access Key ID와 Secret Access Key가 필요합니다.
 
@@ -77,8 +84,10 @@ Response body "header"의 `resultCode`는 다음과 같습니다.
 3. **API 보안 설정**에서 **User Access Key ID 발급** 버튼을 클릭합니다.
 4. User Access Key ID와 Secret Access Key가 발급됩니다.
 
-### 토큰(token) 발급
+<a id="token"></a>
+### 토큰(token) 발급 { #token }
 
+<a id="token-method-url"></a>
 #### Method, URL
 ```
 POST /v1.0/appkeys/{appkey}/tokens
@@ -86,6 +95,7 @@ Content-Type: application/json;charset=UTF-8
 ```
 
 
+<a id="token-request-body"></a>
 #### Request Body
 ```json
 {
@@ -101,6 +111,7 @@ Content-Type: application/json;charset=UTF-8
 | User Access Key ID | Body | String | -        | API 보안 설정에서 생성한 User Access Key ID |
 | Secret Access Key  | Body | String | -        | API 보안 설정에서 발급받은 Secret Access Key |
 
+<a id="token-response-body"></a>
 #### Response Body
 ```json
 {
@@ -135,7 +146,9 @@ Content-Type: application/json;charset=UTF-8
 | User ID   | Body | String | 토큰을 발급받은 사용자의 UUID                       |
 | Role name | Body | String | 토큰을 발급받은 사용자에게 부여된 Role                  |
 
-### 토큰 정보 조회
+<a id="api-1"></a>
+### 토큰 정보 조회 { #api-1 }
+<a id="api-1-method-url"></a>
 #### Method, URL
 ```
 GET /v1.0/appkeys/{appkey}/tokens?id={tokenId}
@@ -145,9 +158,11 @@ GET /v1.0/appkeys/{appkey}/tokens?id={tokenId}
 | ------- | ----- | ------ | -------- | ------------ |
 | tokenId | Query | String | -        | 조회할 Token ID |
 
+<a id="api-1-request-body"></a>
 #### Request Body
 이 API는 Request Body가 필요 없습니다.
 
+<a id="api-1-response-body"></a>
 #### Response Body
 ```json
 {
