@@ -29,8 +29,6 @@ Configure the basic information for Load Balancer (DSR). The required items are 
 
 #### 2. Health Check Settings
 
-Configure health checks to periodically verify that member instances are operating normally.
-
 * Health check protocol: Select the protocol to use for health checks. Select one of the following: **TCP, ICMP, or HTTP**.
 
 * Delay: The interval (in seconds) at which health check requests are sent.
