@@ -1,16 +1,13 @@
 ## Network > Load Balancer > API v2 가이드
 
-NHN Cloud Network 서비스는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token-gov)을 참고하세요.
+API를 사용하려면 API 엔드포인트와 토큰 등이 필요합니다. [API 사용 준비](/Compute/Compute/ko/identity-api-ncgn/)를 참고하여 API 사용에 필요한 정보를 준비합니다.
 
 로드 밸런서, 리스너, 풀, 헬스 모니터, 멤버 API는 `network` 타입 엔드포인트를 이용합니다. 시크릿, 시크릿 컨테이너 API는 `key-manager` 타입 엔드포인트를 이용해 호출합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
 | 타입 | 리전 | 엔드포인트 |
 |---|---|---|
-| network | 한국(판교) 리전 | https://kr1-api-network-infrastructure.gov-nhncloudservice.com |
-| network | 한국(평촌) 리전 | https://kr2-api-network-infrastructure.gov-nhncloudservice.com |
-| key-manager | 한국(판교) 리전 | https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com |
-| key-manager | 한국(평촌) 리전 | https://kr2-api-key-manager-infrastructure.gov-nhncloudservice.com |
-
+| network | 한국(판교) 리전 | https://kr1-api-network-infrastructure.gncloud.go.kr |
+| key-manager | 한국(판교) 리전 | https://kr1-api-key-manager-infrastructure.gncloud.go.kr |
 
 API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용하며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
 
@@ -60,6 +57,7 @@ X-Auth-Token: {tokenId}
 | loadbalancers.admin_state_up | Body | Boolean | 로드 밸런서 관리자 제어 상태 |
 
 <details><summary>예시</summary>
+	
 ```json
 {
   "loadbalancers": [
@@ -138,6 +136,7 @@ X-Auth-Token: {tokenId}
 
 
 <details><summary>예시</summary>
+
 ```json
 {
   "loadbalancer": {
@@ -158,11 +157,11 @@ X-Auth-Token: {tokenId}
         "id": "fe192219-0d4c-4145-9855-0af8c949dfe8"
       }
     ],
-      "pools": [
-        {
-          "id": "766e51ff-4d29-4ab4-bfb6-4dab8d62803f"
-        }
-      ],
+    "pools": [
+      {
+        "id": "766e51ff-4d29-4ab4-bfb6-4dab8d62803f"
+      }
+    ],
     "vip_address": "192.168.0.187",
     "vip_port_id": "f3764f0d-b0da-4be1-a61f-fc5e8914278a",
     "workflow_status": "SUCCESS",
@@ -174,7 +173,9 @@ X-Auth-Token: {tokenId}
 }
 ```
 </details>
+
 ---
+
 ### 로드 밸런서 생성하기
 
 ```
@@ -256,11 +257,11 @@ X-Auth-Token: {tokenId}
         "id": "fe192219-0d4c-4145-9855-0af8c949dfe8"
       }
     ],
-      "pools": [
-        {
-          "id": "766e51ff-4d29-4ab4-bfb6-4dab8d62803f"
-        }
-      ],
+    "pools": [
+      {
+        "id": "766e51ff-4d29-4ab4-bfb6-4dab8d62803f"
+      }
+    ],
     "vip_address": "192.168.0.187",
     "vip_port_id": "f3764f0d-b0da-4be1-a61f-fc5e8914278a",
     "workflow_status": "SUCCESS",
@@ -274,6 +275,7 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
+
 ### 로드 밸런서 수정하기
 
 ```
@@ -349,11 +351,11 @@ X-Auth-Token: {tokenId}
         "id": "fe192219-0d4c-4145-9855-0af8c949dfe8"
       }
     ],
-      "pools": [
-        {
-          "id": "766e51ff-4d29-4ab4-bfb6-4dab8d62803f"
-        }
-      ],
+    "pools": [
+      {
+        "id": "766e51ff-4d29-4ab4-bfb6-4dab8d62803f"
+      }
+    ],
     "vip_address": "192.168.0.187",
     "vip_port_id": "f3764f0d-b0da-4be1-a61f-fc5e8914278a",
     "workflow_status": "SUCCESS",
@@ -367,6 +369,7 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
+
 ### 로드 밸런서 삭제하기
 
 ```
@@ -437,7 +440,7 @@ X-Auth-Token: {tokenId}
 |---|---|---|---|
 | listeners | Body | Array | 리스너 정보 객체 목록 |
 | listeners.default_pool_id | Body | UUID | 리스너에 등록된 기본 멤버 그룹(풀) ID |
-| listeners.protocol | Body | Enum | 리스너의 프로토콜<br>`TCP`, `HTTP`, `HTTPS`, `TERMINATED_HTTPS` 중 하나 |
+| listeners.protocol | Body | Enum | 리스너의 프로토콜<br>`TCP`, `HTTP`,`HTTPS`, `TERMINATED_HTTPS` 중 하나 |
 | listeners.description | Body | String | 리스너 설명 |
 | listeners.name | Body | String | 리스너 이름 |
 | listeners.loadbalancers | Body | Array | 리스너가 등록된 로드 밸런서 객 목록 |
@@ -480,10 +483,13 @@ X-Auth-Token: {tokenId}
       "connection_limit": 2000,
       "keepalive_timeout": 300,
       "keepalive_enable": true,
+      "enable_x_forwarded_proto": true,
+      "enable_x_forwarded_port": true,
+      "enable_x_forwarded_for": true,
       "tls_version": "TLSv1.0",
       "ssl_policy_id": null,
       "sni_container_ids": [],
-      "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
+      "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
       "sni_container_refs": [],
       "protocol_port": 443,
       "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20",
@@ -564,13 +570,10 @@ X-Auth-Token: {tokenId}
     "connection_limit": 2000,
     "keepalive_timeout": 300,
     "keepalive_enable": true,
-    "enable_x_forwarded_proto": true,
-    "enable_x_forwarded_port": true,
-    "enable_x_forwarded_for": true,
-    "tls_version": "TLSv1.2",
-    "ssl_policy_id": "b5b3f6f2-6c29-4f3a-9a2e-3b2e6b2b5c0a",
+    "tls_version": "TLSv1.0",
+    "ssl_policy_id": null,
     "sni_container_ids": [],
-    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
+    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
     "sni_container_refs": [],
     "protocol_port": 443,
     "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20",
@@ -598,10 +601,10 @@ X-Auth-Token: {tokenId}
 |---|---|---|---|---|
 | tokenId | Header | String | O | 토큰 ID |
 | listener | Body | Object | O | 리스너 정보 객체 |
-| listener.protocol | Body | Enum | O | 리스너 프로토콜<br>`TCP`, `HTTP`,`HTTPS`, `TERMINATED_HTTPS` 중 하나 |
+| listener.protocol | Body | Enum | O | 리스너 프로토콜<br>`TCP`, `HTTP`, `HTTPS`, `TERMINATED_HTTPS` 중 하나 |
+| listener.default_pool_id | Body | UUID | - | 리스너에 등록된 기본 멤버 그룹(풀) ID<br>지정하지 않으면 `사용 안 함`으로 생성 |
 | listener.description | Body | String | - | 리스너 설명 |
 | listener.name | Body | String | - | 리스너 이름 |
-| listener.default_pool_id | Body | UUID | - | 리스너에 등록된 기본 멤버 그룹(풀) ID<br>지정하지 않으면 `사용 안 함`으로 생성 |
 | listener.loadbalancer_id | Body | UUID | O | 로드 밸런서 ID |
 | listener.admin_state_up | Body | Boolean | - | 관리자 제어 상태 |
 | listener.connection_limit | Body |  Integer | - | 리스너의 connection limit |
@@ -615,7 +618,7 @@ X-Auth-Token: {tokenId}
 | listener.proxy_protocol | Body | Boolean | - | 프록시 프로토콜 on/off<br>기본값: `false` |
 | listener.block_invalid_http_request | Body | Boolean | - | 유효하지 않은 HTTP 요청 차단 on/off<br>기본값: `true` |
 | listener.tls_version | Body | String | - | 리스너의 TLS 버전<br>`SSLv3`, `TLSv1.0`, `TLSv1.0_2016`, `TLSv1.1`, `TLSv1.2`, `TLSv1.3` 중 하나<br>프로토콜이 `TERMINATED_HTTPS`인 경우에만 적용<br>`ssl_policy_id`와 함께 지정 시 SSL 정책의 `min_tls_version`과 일치해야 함 |
-| listener.ssl_policy_id | Body | UUID | - | 리스너에 연결할 SSL 정책 ID<br>기본값: `null`<br>프로토콜이 `TERMINATED_HTTPS`인 경우에만 적용<br>자세한 내용은 [사용자 정의 SSL 정책](/Network/Load%20Balancer/ko/overview-gov/#ssl) 참고 |
+| listener.ssl_policy_id | Body | UUID | - | 리스너에 연결할 SSL 정책 ID<br>기본값: `null`<br>프로토콜이 `TERMINATED_HTTPS`인 경우에만 적용<br>자세한 내용은 [사용자 정의 SSL 정책](/Network/Load%20Balancer/ko/overview/#ssl) 참고 |
 | listener.keepalive_enable | Body | Boolean | - | keepalive 활성화 on/off<br>기본값: `true` |
 
 
@@ -635,13 +638,12 @@ X-Auth-Token: {tokenId}
     "admin_state_up": true,
     "connection_limit": 2000,
     "keepalive_timeout": 300,
-    "keepalive_enable": true,
     "enable_x_forwarded_proto": false,
     "enable_x_forwarded_port": false,
     "enable_x_forwarded_for": false,
-    "tls_version": "TLSv1.2",
-    "ssl_policy_id": "b5b3f6f2-6c29-4f3a-9a2e-3b2e6b2b5c0a",
-    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
+    "tls_version": "TLSv1.0",
+    "ssl_policy_id": null,
+    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
     "sni_container_refs": [],
     "protocol_port": 443
   }
@@ -665,9 +667,6 @@ X-Auth-Token: {tokenId}
 | listener.admin_state_up | Body | Boolean | 관리자 제어 상태 |
 | listener.connection_limit | Body | Integer | 리스너의 connection limit |
 | listener.keepalive_timeout | Body | Integer | 리스너의 keepalive timeout |
-| listener.enable_x_forwarded_proto | Body | Boolean | - | X-Forwarded-Proto/X-Forwarded-Prot 헤더 on/off<br>기본값: `true` |
-| listener.enable_x_forwarded_port | Body | Boolean | - | X-Forwarded-Port 헤더 on/off<br>기본값: `true` |
-| listener.enable_x_forwarded_for | Body | Boolean | - | X-Forwarded-For 헤더 on/off<br>기본값: `true` |
 | listener.default_tls_container_ref | Body | String | key-manager에 등록된 TLS 인증서 경로 |
 | listener.sni_container_refs | Body | Array | key-manager에 등록된 SNI 인증서 경로 목록 |
 | listener.protocol_port | Body | Integer | 리스너 포트 |
@@ -701,13 +700,13 @@ X-Auth-Token: {tokenId}
     "connection_limit": 2000,
     "keepalive_timeout": 300,
     "keepalive_enable": true,
+    "tls_version": "TLSv1.0",
+    "ssl_policy_id": null,
     "enable_x_forwarded_proto": false,
     "enable_x_forwarded_port": false,
     "enable_x_forwarded_for": false,
-    "tls_version": "TLSv1.2",
-    "ssl_policy_id": "b5b3f6f2-6c29-4f3a-9a2e-3b2e6b2b5c0a",
     "sni_container_ids": [],
-    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
+    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
     "sni_container_refs": [],
     "protocol_port": 443,
     "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20",
@@ -734,7 +733,7 @@ X-Auth-Token: {tokenId}
 | listenerId | URL | UUID | O | 리스너 ID |
 | listener | Body | Object | O | 리스너 정보 객체 |
 | listener.description | Body | String | - | 리스너 설명 |
-| listener.name | Body | String | - | 리스너 이름 |
+| listener.name | Body | String| - | 리스너 이름 |
 | listener.default_pool_id | Body | UUID | - | 리스너에 등록된 기본 멤버 그룹(풀) ID<br>해당 값을 null로 지정하면 `사용 안 함`으로 변경 |
 | listener.admin_state_up | Body | Boolean | - | 관리자 제어 상태 |
 | listener.connection_limit | Body |  Integer | - | 리스너의 connection limit |
@@ -747,7 +746,7 @@ X-Auth-Token: {tokenId}
 | listener.proxy_protocol | Body | Boolean | - | 프록시 프로토콜 on/off<br>기본값: `false` |
 | listener.block_invalid_http_request | Body | Boolean | - | 유효하지 않은 HTTP 요청 차단 on/off<br>기본값: `true` |
 | listener.tls_version | Body | String | - | 리스너의 TLS 버전<br>`SSLv3`, `TLSv1.0`, `TLSv1.0_2016`, `TLSv1.1`, `TLSv1.2`, `TLSv1.3` 중 하나<br>프로토콜이 `TERMINATED_HTTPS`인 경우에만 적용<br>`ssl_policy_id`와 함께 지정 시 SSL 정책의 `min_tls_version`과 일치해야 함 |
-| listener.ssl_policy_id | Body | UUID | - | 리스너에 연결할 SSL 정책 ID<br>연결을 해제하려면 `null` 전달<br>프로토콜이 `TERMINATED_HTTPS`인 경우에만 적용<br>자세한 내용은 [사용자 정의 SSL 정책](/Network/Load%20Balancer/ko/overview-gov/#ssl) 참고 |
+| listener.ssl_policy_id | Body | UUID | - | 리스너에 연결할 SSL 정책 ID<br>연결을 해제하려면 `null` 전달<br>프로토콜이 `TERMINATED_HTTPS`인 경우에만 적용<br>자세한 내용은 [사용자 정의 SSL 정책](/Network/Load%20Balancer/ko/overview/#ssl) 참고 |
 | listener.keepalive_enable | Body | Boolean | - | keepalive 활성화 on/off<br>기본값: `true` |
 
 <details><summary>예시</summary>
@@ -768,9 +767,9 @@ X-Auth-Token: {tokenId}
     "enable_x_forwarded_proto": true,
     "enable_x_forwarded_port": true,
     "enable_x_forwarded_for": true,
-    "tls_version": "TLSv1.2",
-    "ssl_policy_id": "b5b3f6f2-6c29-4f3a-9a2e-3b2e6b2b5c0a",
-    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
+    "tls_version": "TLSv1.0",
+    "ssl_policy_id": null,
+    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
     "sni_container_refs": []
   }
 }
@@ -832,10 +831,10 @@ X-Auth-Token: {tokenId}
     "enable_x_forwarded_proto": true,
     "enable_x_forwarded_port": true,
     "enable_x_forwarded_for": true,
-    "tls_version": "TLSv1.2",
-    "ssl_policy_id": "b5b3f6f2-6c29-4f3a-9a2e-3b2e6b2b5c0a",
+    "tls_version": "TLSv1.0",
+    "ssl_policy_id": null,
     "sni_container_ids": [],
-    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
+    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
     "sni_container_refs": [],
     "protocol_port": 443,
     "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20",
@@ -883,13 +882,11 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | listenerId | URL | UUID | O | 리스너 ID |
 | errorpage | Body | Object | O | 사용자 정의 응답 정보 객체 |
-| errorpage.code | Body | Integer | O | 오류 코드<br>`400`, `403`, `408`, `500`, `502`, `503`, `504` 중 하나 |
+| errorpage.code | Body | Integer | O | 에러 코드<br>`400`, `403`, `408`, `500`, `502`, `503`, `504` 중 하나 |
 | errorpage.content_type | Body | Enum | O | 콘텐츠 타입<br>`application/javascript`, `application/json`, `text/css`, `text/html`, `text/plain` 중 하나 |
 | errorpage.body | Body | String | O | 사용자 정의 응답 본문(1024자 이내) |
 
-
-!!! tip "알아두기"
-    동일 리스너에 중복된 코드는 생성할 수 없습니다. (예: 504를 여러 개 생성하는 경우)
+**참고**: 동일 리스너에 중복된 코드는 생성할 수 없습니다. (예: 504를 여러 개 생성하는 경우)
 
 <details><summary>예시</summary>
 <p>
@@ -912,7 +909,7 @@ X-Auth-Token: {tokenId}
 |---|---|---|---|
 | errorpage | Body | Object | 사용자 정의 응답 정보 객체 |
 | errorpage.id | Body | UUID | 사용자 정의 응답 ID |
-| errorpage.code | Body | Integer | 오류 코드 |
+| errorpage.code | Body | Integer | 에러 코드 |
 | errorpage.content_type | Body | Enum | 콘텐츠 타입 |
 | errorpage.body | Body | String | 사용자 정의 응답 본문 |
 | errorpage.tenant_id | Body | String | 테넌트 ID |
@@ -954,9 +951,7 @@ X-Auth-Token: {tokenId}
 | errorpage.content_type | Body | Enum | O | 콘텐츠 타입<br>`application/javascript`, `application/json`, `text/css`, `text/html`, `text/plain` 중 하나 |
 | errorpage.body | Body | String | O | 사용자 정의 응답 본문(1024자 이내) |
 
-
-!!! tip "알아두기"
-    `code`는 수정할 수 없습니다.
+**참고**: `code`는 수정할 수 없습니다.
 
 <details><summary>예시</summary>
 <p>
@@ -978,7 +973,7 @@ X-Auth-Token: {tokenId}
 |---|---|---|---|
 | errorpage | Body | Object | 사용자 정의 응답 정보 객체 |
 | errorpage.id | Body | UUID | 사용자 정의 응답 ID |
-| errorpage.code | Body | Integer | 오류 코드 |
+| errorpage.code | Body | Integer | 에러 코드 |
 | errorpage.content_type | Body | Enum | 콘텐츠 타입 |
 | errorpage.body | Body | String | 사용자 정의 응답 본문 |
 | errorpage.tenant_id | Body | String | 테넌트 ID |
@@ -1048,7 +1043,7 @@ X-Auth-Token: {tokenId}
 |---|---|---|---|
 | errorpage | Body | Object | 사용자 정의 응답 정보 객체 |
 | errorpage.id | Body | UUID | 사용자 정의 응답 ID |
-| errorpage.code | Body | Integer | 오류 코드 |
+| errorpage.code | Body | Integer | 에러 코드 |
 | errorpage.content_type | Body | Enum | 콘텐츠 타입 |
 | errorpage.body | Body | String | 사용자 정의 응답 본문 |
 | errorpage.tenant_id | Body | String | 테넌트 ID |
@@ -1094,7 +1089,7 @@ X-Auth-Token: {tokenId}
 |---|---|---|---|
 | errorpages | Body | Array | 사용자 정의 응답 정보 객체 목록 |
 | errorpages.id | Body | UUID | 사용자 정의 응답 ID |
-| errorpages.code | Body | Integer | 오류 코드 |
+| errorpages.code | Body | Integer | 에러 코드 |
 | errorpages.content_type | Body | Enum | 콘텐츠 타입 |
 | errorpages.body | Body | String | 사용자 정의 응답 본문 |
 | errorpages.tenant_id | Body | String | 테넌트 ID |
@@ -1173,8 +1168,6 @@ X-Auth-Token: {tokenId}
 | pools.session_persistence.type | Body | Enum | 세션 지속성<br> `SOURCE_IP`, `HTTP_COOKIE`, `APP_COOKIE` 중 하나로 설정<br> `HTTP_COOKIE`, `APP_COOKIE`로 설정하는 경우 연결된 리스너의 프로토콜을 `HTTP` 또는 `TERMINATED_HTTPS`로 설정했는지 확인하는 것이 좋습니다.<br> 리스너의 프로토콜을 `TCP` 또는 `HTTPS`로 설정한 경우, 세션 지속성을 `HTTP_COOKIE`, `APP_COOKIE`로 설정해도 로드 밸런서는 세션 지속성 관련 동작을 하지 않습니다. |
 | pools.session_persistence.cookie_name | Body | String | 쿠키 이름 <br>세션 지속성 타입이 `APP_COOKIE`인 경우에만 설정값이 적용됩니다. |
 | pools.healthmonitor_id | Body | String | 헬스 모니터 ID |
-| pools.loadbalancers | Body | Array | 풀이 등록된 로드밸런서 객체 목록 |
-| pools.loadbalancers.id | Body | UUID | 로드밸런서 ID |
 | pools.listeners | Body | Array | 풀이 등록된 리스너 객체 목록 |
 | pools.listeners.id | Body | String | 리스너 ID |
 | pools.members | Body | Array | 풀에 등록된 멤버 객체 목록 |
@@ -1197,11 +1190,6 @@ X-Auth-Token: {tokenId}
       "member_port": 80,
       "session_persistence": null,
       "healthmonitor_id": "607c4da1-4fe2-4a3a-9527-82dd5a5c430e",
-      "loadbalancers": [
-        {
-          "id": "2997cb9d-9c31-475d-b679-040569c9e27b"
-        }
-      ],
       "listeners": [
         {
           "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20"
@@ -1255,8 +1243,6 @@ X-Auth-Token: {tokenId}
 | pool.session_persistence.type | Body | Enum | 세션 지속성<br> `SOURCE_IP`, `HTTP_COOKIE`, `APP_COOKIE` 중 하나로 설정<br> `HTTP_COOKIE`, `APP_COOKIE`로 설정하는 경우 연결된 리스너의 프로토콜을 `HTTP` 또는 `TERMINATED_HTTPS`로 설정했는지 확인하는 것이 좋습니다.<br> 리스너의 프로토콜을 `TCP` 또는 `HTTPS`로 설정한 경우, 세션 지속성을 `HTTP_COOKIE`, `APP_COOKIE`로 설정해도 로드 밸런서는 세션 지속성 관련 동작을 하지 않습니다. |
 | pool.session_persistence.cookie_name | Body | String | 쿠키 이름 <br>세션 지속성 타입이 `APP_COOKIE`인 경우에만 설정값이 적용됩니다. |
 | pool.healthmonitor_id | Body | UUID | 헬스 모니터 ID |
-| pool.loadbalancers | Body | Array | 풀이 등록된 로드밸런서 객체 목록 |
-| pool.loadbalancers.id | Body | UUID | 로드밸런서 ID |
 | pool.listeners | Body | Array | 풀이 등록된 리스너 객체 목록 |
 | pool.listeners.id | Body | UUID | 리스너 ID |
 | pool.members | Body | Array | 풀에 등록된 멤버 객체 목록 |
@@ -1278,11 +1264,6 @@ X-Auth-Token: {tokenId}
     "member_port": 80,
     "session_persistence": null,
     "healthmonitor_id": "607c4da1-4fe2-4a3a-9527-82dd5a5c430e",
-    "loadbalancers": [
-      {
-        "id": "2997cb9d-9c31-475d-b679-040569c9e27b"
-      }
-    ],
     "listeners": [
       {
         "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20"
@@ -1321,8 +1302,7 @@ X-Auth-Token: {tokenId}
 |---|---|---|---|---|
 | tokenId | Header | String | O | 토큰 ID |
 | pool | Body | Object | O | 풀 정보 객체 |
-| pool.loadbalancer_id | Body | UUID | - | 풀이 등록될 로드밸런서 ID, 로드밸런서 ID나 리스너 ID 중 하나는 필수로 입력되어야 합니다. |
-| pool.listener_id | Body | UUID | - | 풀이 등록될 리스너 ID, 로드밸런서 ID나 리스너 ID 중 하나는 필수로 입력되어야 합니다. |
+| pool.listener_id | Body | UUID | O | 풀이 등록될 리스너 ID |
 | pool.lb_algorithm | Body | Enum | O | 풀의 로드 밸런싱 방식 <br> `ROUND_ROBIN`, `LEAST_CONNECTIONS`, `SOURCE_IP` 중 하나 |
 | pool.protocol | Body | Enum | O | 멤버의 프로토콜 |
 | pool.description | Body | String | - | 풀 설명 |
@@ -1368,8 +1348,6 @@ X-Auth-Token: {tokenId}
 | pool.session_persistence | Body | Object | - | 풀의 세션 지속성 객체 |
 | pool.session_persistence.type | Body | Enum | 세션 지속성<br> `SOURCE_IP`, `HTTP_COOKIE`, `APP_COOKIE` 중 하나로 설정<br> `HTTP_COOKIE`, `APP_COOKIE`로 설정하는 경우 연결된 리스너의 프로토콜을 `HTTP` 또는 `TERMINATED_HTTPS`로 설정했는지 확인하는 것이 좋습니다.<br> 리스너의 프로토콜을 `TCP` 또는 `HTTPS`로 설정한 경우, 세션 지속성을 `HTTP_COOKIE`, `APP_COOKIE`로 설정해도 로드 밸런서는 세션 지속성 관련 동작을 하지 않습니다. |
 | pool.healthmonitor_id | Body | String | 헬스 모니터 ID |
-| pool.loadbalancers | Body | Array | 풀이 등록된 로드밸런서 객체 목록 |
-| pool.loadbalancers.id | Body | UUID | 로드밸런서 ID |
 | pool.listeners | Body | Array | 풀이 등록된 리스너 객체 목록 |
 | pool.listeners.id | Body | UUID | 리스너 ID |
 | pool.members | Body | Array | 풀에 등록된 멤버 객체 목록 |
@@ -1391,11 +1369,6 @@ X-Auth-Token: {tokenId}
     "member_port": 80,
     "session_persistence": null,
     "healthmonitor_id": "607c4da1-4fe2-4a3a-9527-82dd5a5c430e",
-    "loadbalancers": [
-      {
-        "id": "2997cb9d-9c31-475d-b679-040569c9e27b"
-      }
-    ],
     "listeners": [
       {
         "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20"
@@ -1476,8 +1449,6 @@ X-Auth-Token: {tokenId}
 | pool.session_persistence.type | Body | Enum | 세션 지속성<br> `SOURCE_IP`, `HTTP_COOKIE`, `APP_COOKIE` 중 하나로 설정<br> `HTTP_COOKIE`, `APP_COOKIE`로 설정하는 경우 연결된 리스너의 프로토콜을 `HTTP` 또는 `TERMINATED_HTTPS`로 설정했는지 확인하는 것이 좋습니다.<br> 리스너의 프로토콜을 `TCP` 또는 `HTTPS`로 설정한 경우, 세션 지속성을 `HTTP_COOKIE`, `APP_COOKIE`로 설정해도 로드 밸런서는 세션 지속성 관련 동작을 하지 않습니다. |
 | pools.session_persistence.cookie_name | Body | String | 쿠키 이름 <br>세션 지속성 타입이 `APP_COOKIE`인 경우에만 설정값이 적용됩니다. |
 | pool.healthmonitor_id | Body | UUID | 헬스 모니터 ID |
-| pool.loadbalancers | Body | Array | 풀이 등록된 로드밸런서 객체 목록 |
-| pool.loadbalancers.id | Body | UUID | 로드밸런서 ID |
 | pool.listeners | Body | Array | 풀이 등록된 리스너 객체 목록 |
 | pool.listeners.id | Body | UUID | 리스너 ID |
 | pool.members | Body | Array | 풀에 등록된 멤버 객체 목록 |
@@ -1499,11 +1470,6 @@ X-Auth-Token: {tokenId}
     "member_port": 80,
     "session_persistence": null,
     "healthmonitor_id": "607c4da1-4fe2-4a3a-9527-82dd5a5c430e",
-    "loadbalancers": [
-      {
-        "id": "2997cb9d-9c31-475d-b679-040569c9e27b"
-      }
-    ],
     "listeners": [
       {
         "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20"
@@ -1545,7 +1511,6 @@ X-Auth-Token: {tokenId}
 #### 응답
 
 이 API는 응답 본문을 반환하지 않습니다.
-
 
 
 
@@ -1687,7 +1652,6 @@ X-Auth-Token: {tokenId}
 | healthmonitor.host_header | Body | String | 상태 확인에 사용할 호스트 헤더의 필드값<br> 상태 확인 타입을 `TCP`로 설정한 경우 이 필드에 설정한 값은 무시됩니다.|
 
 
-
 <details><summary>예시</summary>
 <p>
 
@@ -1776,7 +1740,7 @@ X-Auth-Token: {tokenId}
 | healthmonitor | Body | Object | 헬스 모니터 정보 객체 |
 | healthmonitor.admin_state_up | Body | Boolean | 관리자 제어 상태 |
 | healthmonitor.delay | Body | Integer | 상태 확인 간격(초) |
-| healthmonitor.health_check_port | Body | Integer | 헬스 체크의 대상이 되는 멤버 포트 <br> * `member-port` 또는 0의 경우, 각 멤버별로 지정된 포트 번호를 대상으로 상태 확인을 수행합니다. <br> * 양수의 경우, 각 멤버별로 지정된 포트 번호와 관계없이 입력된 포트 번호로 상태 확인을 수행합니다.|
+| healthmonitor.health_check_port | Body | Integer | 헬스 체크의 대상이 되는 멤버 포트 <br> * `member-port` 또는 0의 경우, 각 멤버별로 지정된 포트 번호를 대상으로 상태 확인을 수행합니다. <br> * 양수의 경우, 각 멤버별로 지정된 포트 번호와 관계없이 입력된 포트 번호로 상태 확인을 수행합니다. |
 | healthmonitor.expected_codes | Body | String | 정상 상태로 간주할 멤버의 HTTP 응답 코드. 생략하면 200으로 설정됨.<br> 단일값(200), 목록(201,202), 또는 범위(201-204)로 사용 가능<br> 상태 확인 타입을 `TCP`로 설정한 경우 이 필드에 설정한 값은 무시됩니다.|
 | healthmonitor.max_retries | Body | Integer | 최대 재시도 횟수 |
 | healthmonitor.http_method | Body | Enum | 상태 확인에 사용할 HTTP Method <br> 상태 확인 타입을 `TCP`로 설정한 경우 이 필드에 설정한 값은 무시됩니다.|
@@ -1868,8 +1832,8 @@ X-Auth-Token: {tokenId}
 |---|---|---|---|
 | healthmonitor | Body | Object | 헬스 모니터 정보 객체 |
 | healthmonitor.admin_state_up | Body | Boolean | 관리자 제어 상태 |
-| healthmonitor.health_check_port | Body | Integer | 헬스 체크의 대상이 되는 멤버 포트 <br> * `member-port` 또는 0의 경우, 각 멤버별로 지정된 포트 번호를 대상으로 상태 확인을 수행합니다. <br> * 양수의 경우, 각 멤버별로 지정된 포트 번호와 관계없이 입력된 포트 번호로 상태 확인을 수행합니다.|
 | healthmonitor.delay | Body | Integer | 상태 확인 간격(초) |
+| healthmonitor.health_check_port | Body | Integer | 헬스 체크의 대상이 되는 멤버 포트 <br> * `member-port` 또는 0의 경우, 각 멤버별로 지정된 포트 번호를 대상으로 상태 확인을 수행합니다. <br> * 양수의 경우, 각 멤버별로 지정된 포트 번호와 관계없이 입력된 포트 번호로 상태 확인을 수행합니다.|
 | healthmonitor.expected_codes | Body | String | 정상 상태로 간주할 멤버의 HTTP 응답 코드<br>단일값(200), 목록(201,202), 또는 범위(201-204)로 사용 가능<br> 상태 확인 타입을 `TCP`로 설정한 경우 이 필드에 설정한 값은 무시됩니다.|
 | healthmonitor.max_retries | Body | Integer | 최대 재시도 횟수 |
 | healthmonitor.http_method | Body | Enum | 상태 확인에 사용할 HTTP Method <br> 상태 확인 타입을 `TCP`로 설정한 경우 이 필드에 설정한 값은 무시됩니다.|
@@ -2397,7 +2361,7 @@ X-Auth-Token: {tokenId}
 | l7policy.admin_state_up | Body | Boolean | - | L7 정책 관리자 제어 상태로 생략하면 `true`로 설정 |
 | l7policy.action | Body | Enum | O | L7 정책의 액션<br> `REDIRECT_TO_POOL`/`REDIRECT_TO_URL`/`REJECT` 중 하나 |
 | l7policy.redirect_pool_id | Body | UUID | - | L7 정책의 리다이렉트 풀 ID<br>액션이 `REDIRECT_TO_POOL`인 경우 필수 |
-| l7policy.redirect_url | Body | String | - | L7 정책의 리다이렉트 URL<br>액션이 `REDIRECT_TO_URL`인 경우 필수 <br> * 입력 가능한 포맷은 `#{protocol}://#{host}:#{port}/#{path}?#{query}` 형태이며, `#{_}` 형태로 입력 시 기존 요청의 값을 유지합니다. `#{_}`가 아닌 값을 직접 입력할 경우 리다이렉트 URL에 해당 값이 적용되어 클라이언트에게 반환합니다. <br> * 무한한 리다이렉트를 방지하기 위하여 protocol, host, port, path 중에서 최소 1개 이상은 변경되어야 합니다. <br> * 올바르지 않은 형태로 입력 시, 리다이렉트 URL이 실제 입력과는 다른 값으로 변환될 수 있습니다.|
+| l7policy.redirect_url | Body | String | - | L7 정책의 리다이렉트 URL<br>액션이 `REDIRECT_TO_URL`인 경우 필수 <br> * 입력 가능한 포맷은 `#{protocol}://#{host}:#{port}/#{path}?#{query}` 형태이며, `#{_}` 형태로 입력 시 기존 요청의 값을 유지합니다. `#{_}`가 아닌 값을 직접 입력할 경우 리다이렉트 URL에 해당 값이 적용되어 클라이언트에게 반환합니다. <br> * 무한한 리다이렉트를 방지하기 위하여 protocol, host, port, path 중에서 최소 1개 이상은 변경되어야 합니다. <br> * 올바르지 않은 형태로 입력 시, 리다이렉트 URL이 실제 입력과는 다른 값으로 변환이 될 수 있습니다.|
 | l7policy.redirect_http_code | Body | Integer | - | L7 정책의 리다이렉트 HTTP 응답 코드 <br> 301, 302 중에서 하나. 기본 값 302 |
 | l7policy.position | Body | Integer | - | L7 정책의 우선순위. 생략할 경우 마지막 순위로 설정 |
 
@@ -2859,15 +2823,13 @@ X-Auth-Token: {tokenId}
 
 
 
-
 ## 시크릿
 
-시크릿 API는 `key-manager` 타입 엔드포인트를 이용하여 호출합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
+시크릿 API는 `key-manager` 타입 앤드포인트를 이용하여 호출합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
 | 타입 | 리전 | 엔드포인트 |
 |---|---|---|
-| key-manager | 한국(판교) 리전 | https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com |
-| key-manager | 한국(평촌) 리전 | https://kr2-api-key-manager-infrastructure.gov-nhncloudservice.com |
+| key-manager | 한국(판교) 리전 | https://kr1-api-key-manager-infrastructure.gncloud.go.kr |
 
 API 응답에 가이드에 명시되지 않은 필드가 노출될 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
 
@@ -2933,7 +2895,7 @@ X-Auth-Token: {tokenId}
       "expiration": null,
       "mode": null,
       "name": "certificate",
-      "secret_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/secrets/adffcd66-ff63-4c66-8139-2f254e63aef5",
+      "secret_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/secrets/adffcd66-ff63-4c66-8139-2f254e63aef5",
       "secret_type": "certificate",
       "status": "ACTIVE",
       "updated": "2019-12-17T08:50:39"
@@ -2949,15 +2911,15 @@ X-Auth-Token: {tokenId}
       "expiration": null,
       "mode": null,
       "name": "private_key",
-      "secret_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/secrets/36f88d4c-16f0-4db2-80bc-4dda0125589b",
+      "secret_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/secrets/36f88d4c-16f0-4db2-80bc-4dda0125589b",
       "secret_type": "private",
       "status": "ACTIVE",
       "updated": "2019-12-17T08:50:39"
     }
   ],
   "total": 10,
-  "next": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/secrets?limit=1&offset=2",
-  "previous": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/secrets?limit=1&offset=0"
+  "next": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/secrets?limit=1&offset=2",
+  "previous": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/secrets?limit=1&offset=0"
 }
 
 ```
@@ -3010,7 +2972,7 @@ X-Auth-Token: {tokenId}
   "name": "certificate",
   "algorithm": null,
   "created": "2019-12-17T08:50:39",
-  "secret_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/secrets/adffcd66-ff63-4c66-8139-2f254e63aef5",
+  "secret_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/secrets/adffcd66-ff63-4c66-8139-2f254e63aef5",
   "content_types": {
     "default": "text/plain"
   },
@@ -3050,6 +3012,7 @@ X-Auth-Token: {tokenId}
 
 <details><summary>예시</summary>
 메타데이터만 생성
+
 ```json
 {
     "name": "example key",
@@ -3098,7 +3061,7 @@ base64로 페이로드 전송
 
 ```json
 {
-    "secret_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/secrets/9b2dcb7b-51fe-4408-a2bb-23da731758a6"
+    "secret_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/secrets/9b2dcb7b-51fe-4408-a2bb-23da731758a6"
 }
 ```
 </p>
@@ -3193,12 +3156,11 @@ X-Auth-Token: {tokenId}
 
 ## 시크릿 컨테이너
 
-시크릿 컨테이너 API는 `key-manager` 타입 엔드포인트를 이용하여 호출합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
+시크릿 컨테이너 API는 `key-manager` 타입 앤드포인트를 이용하여 호출합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
 | 타입 | 리전 | 엔드포인트 |
 |---|---|---|
-| key-manager | 한국(판교) 리전 | https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com |
-| key-manager | 한국(평촌) 리전 | https://kr2-api-key-manager-infrastructure.gov-nhncloudservice.com |
+| key-manager | 한국(판교) 리전 | https://kr1-api-key-manager-infrastructure.gncloud.go.kr |
 
 API 응답에 가이드에 명시되지 않은 필드가 노출될 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지없이 변경될 수 있으므로 사용하지 않습니다.
 
@@ -3241,7 +3203,6 @@ X-Auth-Token: {tokenId}
 | containers.type | Body | Enum | 컨테이너 타입<br> `generic`, `rsa`, `certificate` 중 하나|
 | containers.common_name | Body | String | 컨테이너에 등록된 인증서의 Common Name<br>컨테이너 타입이 `certificate`인 경우만 노출 |
 | containers.expiration | Body | Datetime | 컨테이너에 등록된 인증서의 만료일<br>컨테이너 타입이 `certificate`인 경우만 노출. 예시: `YYYY-MM-DDThh:mm:ss` |
-
 | total | Body | Integer | 요청 쿼리의 시크릿 컨테이너의 총 개수 |
 | next | Body | String | 현재 조회된 목록의 다음 목록 URL |
 | previous | Body | String | 현재 조회된 목록의 이전 목록 URL |
@@ -3254,8 +3215,8 @@ X-Auth-Token: {tokenId}
 ```json
 {
   "total": 10,
-  "previous": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/containers?limit=1&offset=0",
-  "next": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/containers?limit=1&offset=2",
+  "previous": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/containers?limit=1&offset=0",
+  "next": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/containers?limit=1&offset=2",
   "containers": [
     {
       "status": "ACTIVE",
@@ -3263,15 +3224,15 @@ X-Auth-Token: {tokenId}
       "name": "The Certificate",
       "consumers": [],
       "created": "2019-12-17T08:50:39",
-      "container_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/containers/2d1dcf4d-2e92-475e-bde7-e469880be924",
+      "container_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/containers/2d1dcf4d-2e92-475e-bde7-e469880be924",
       "creator_id": "1da4ce9f59ed4f6487c9be39fa792be4",
       "secret_refs": [
         {
-          "secret_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/secrets/adffcd66-ff63-4c66-8139-2f254e63aef5",
+          "secret_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/secrets/adffcd66-ff63-4c66-8139-2f254e63aef5",
           "name": "certificate"
         },
         {
-          "secret_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/secrets/36f88d4c-16f0-4db2-80bc-4dda0125589b",
+          "secret_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/secrets/36f88d4c-16f0-4db2-80bc-4dda0125589b",
           "name": "private_key"
         }
       ],
@@ -3323,7 +3284,6 @@ X-Auth-Token: {tokenId}
 | expiration | Body | Datetime | 컨테이너에 등록된 인증서의 만료일<br>컨테이너 타입이 `certificate`인 경우만 노출. 예시: `YYYY-MM-DDThh:mm:ss` |
 
 
-
 <details><summary>예시</summary>
 
 ```json
@@ -3333,15 +3293,15 @@ X-Auth-Token: {tokenId}
     "name": "The Certificate",
     "consumers": [],
     "created": "2019-12-17T08:50:39",
-    "container_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/containers/2d1dcf4d-2e92-475e-bde7-e469880be924",
+    "container_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/containers/2d1dcf4d-2e92-475e-bde7-e469880be924",
     "creator_id": "1da4ce9f59ed4f6487c9be39fa792be4",
     "secret_refs": [
         {
-            "secret_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/secrets/36f88d4c-16f0-4db2-80bc-4dda0125589b",
+            "secret_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/secrets/36f88d4c-16f0-4db2-80bc-4dda0125589b",
             "name": "private_key"
         },
         {
-            "secret_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/secrets/adffcd66-ff63-4c66-8139-2f254e63aef5",
+            "secret_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/secrets/adffcd66-ff63-4c66-8139-2f254e63aef5",
             "name": "certificate"
         }
     ],
@@ -3382,7 +3342,7 @@ X-Auth-Token: {tokenId}
     "secret_refs": [
         {
             "name": "private_key",
-            "secret_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/cf11edcf-f475-47f3-92c3-29de8bcdd639"
+            "secret_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/cf11edcf-f475-47f3-92c3-29de8bcdd639"
         }
     ]
 }
@@ -3400,7 +3360,7 @@ X-Auth-Token: {tokenId}
 
 ```json
 {
-    "container_ref": "https://kr1-api-key-manager-infrastructure.gov-nhncloudservice.com/v1/containers/ea2e90fc-1ba2-412b-b7a0-61da4402bf58"
+    "container_ref": "https://kr1-api-key-manager-infrastructure.gncloud.go.kr/v1/containers/ea2e90fc-1ba2-412b-b7a0-61da4402bf58"
 }
 ```
 </p>
@@ -3755,7 +3715,7 @@ DELETE /v2.0/lbaas/ipacl-groups/{ipaclGroupId}
 X-Auth-Token: {tokenId}
 ```
 
-IP ACL 그룹 삭제 시 하위의 IP ACL 타깃도 모두 삭제됩니다.
+IP ACL 그룹 삭제시 하위의 IP ACL 타깃도 모두 삭제됩니다.
 삭제되는 IP ACL 그룹을 사용하는 모든 로드밸런서에서 이 IP ACL 그룹 관련된 룰이 삭제됩니다.
 
 #### 요청
@@ -4134,9 +4094,10 @@ X-Auth-Token: {tokenId}
 
 - - -
 
+
 ## SSL 정책
 
-사용자 정의 SSL 정책을 생성하여 리스너에 적용할 수 있습니다. SSL 정책에는 최소 TLS 버전과 해당 버전에서 사용할 암호화 스위트(cipher suite)를 지정합니다. SSL 정책의 개념과 선택 가능한 암호화 스위트 목록은 [사용자 정의 SSL 정책](/Network/Load%20Balancer/ko/overview-gov/#ssl)을 참고하세요.
+사용자 정의 SSL 정책을 생성하여 리스너에 적용할 수 있습니다. SSL 정책에는 최소 TLS 버전과 해당 버전에서 사용할 암호화 스위트(cipher suite)를 지정합니다. SSL 정책의 개념과 선택 가능한 암호화 스위트 목록은 [사용자 정의 SSL 정책](/Network/Load%20Balancer/ko/overview/#ssl)을 참고하세요.
 
 !!! tip "알아두기"
     - SSL 정책은 테넌트당 최대 10개까지 생성할 수 있습니다.
@@ -4285,7 +4246,7 @@ X-Auth-Token: {tokenId}
 
 !!! danger "주의"
     - `min_tls_version`이 `TLSv1.3`인 경우 `ciphers`에 TLS 1.2 이하 암호화 스위트를 포함할 수 없습니다. 포함 시 오류가 반환됩니다.
-    - 선택 가능한 암호화 스위트는 [사용자 정의 SSL 정책](/Network/Load%20Balancer/ko/overview-gov/#ssl)에 정의된 값만 사용할 수 있습니다.
+    - 선택 가능한 암호화 스위트는 [사용자 정의 SSL 정책](/Network/Load%20Balancer/ko/overview/#ssl)에 정의된 값만 사용할 수 있습니다.
 
 <details><summary>예시</summary>
 
