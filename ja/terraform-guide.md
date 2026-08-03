@@ -7,26 +7,21 @@
 Terraformはインフラを簡単に構築し、安全に変更し、効率的にインフラの形状を管理できるオープンソースのツールです。Terraformの主な特徴は次のとおりです。
 
 * **Infrastructure as Code**
-    * インフラをコードで定義して生産性と透明性を高めることができます。
-    * 定義したコードを簡単に共有でき、効率的に協業できます。
+    * インフラストラクチャをコードで定義して、生産性と透明性を高めることができます。
+    * 定義したコードを簡単に共有でき、効率的に協業することができます。
 * **Execution Plan**
-    * 変更計画と変更適用を分離して変更内容を適用する時に発生しうる失敗をへらすことができます。
-* **Resource Graph**
-    * 些細な変更がインフラ全体にどんな影響を与えるかを事前に確認できます。
-    *従属性グラフを作成し、このグラフを元に計画を立て、この計画を適用した時に変更されるインフラの状態を確認できます。
+    * 変更計画と変更適用を分離して、変更内容を適用する際に発生する可能性のある誤りを減らすことができます。
 * **Change Automation**
-    * 複数の場所に同じ構成のインフラを構築し、変更できるように自動化できます。
-    * インフラを構築するのにかかる時間を節約することができ、失敗も減らすことができます。
+    * 複数の場所に同じ構成のインフラストラクチャを構築・変更できるよう自動化することができます。
+    * インフラストラクチャの構築にかかる時間を節約でき、誤りも減らすことができます。
 
+#### Resources 対応
 
-<a id="supported-resources"></a>
-#### Resourcesサポート
-
-* Compute
+* コンピュート
     * nhncloud_compute_instance_v2
     * nhncloud_compute_volume_attach_v2
-    * nhncloud_compute_keypair_v2    
-* Network
+    * nhncloud_compute_keypair_v2
+* ネットワーク
     * nhncloud_lb_loadbalancer_v2
     * nhncloud_lb_listener_v2
     * nhncloud_lb_pool_v2
@@ -38,24 +33,23 @@ Terraformはインフラを簡単に構築し、安全に変更し、効率的�
     * nhncloud_networking_vpc_v2
     * nhncloud_networking_vpcsubnet_v2
     * nhncloud_networking_routingtable_v2
-    * nhncloud_networking_routingtable_attach_gateway_v2    
+    * nhncloud_networking_routingtable_attach_gateway_v2
     * nhncloud_networking_secgroup_v2
     * nhncloud_networking_secgroup_rule_v2
     * nhncloud_keymanager_secret_v1
     * nhncloud_keymanager_container_v1
-* Block Storage
+* ブロックストレージ
     * nhncloud_blockstorage_volume_v2
-* Object Storage
+* オブジェクトストレージ
     * nhncloud_objectstorage_container_v1
     * nhncloud_objectstorage_object_v1
-* Container
+* コンテナ
     * nhncloud_kubernetes_cluster_v1
     * nhncloud_kubernetes_nodegroup_v1
     * nhncloud_kubernetes_cluster_resize_v1
     * nhncloud_kubernetes_nodegroup_upgrade_v1
-    
-<a id="supported-data-sources"></a>
-#### Data sourcesサポート
+
+#### Data sources 対応
 
 * nhncloud_images_image_v2
 * nhncloud_blockstorage_volume_v2
@@ -85,75 +79,18 @@ Terraformはインフラを簡単に構築し、安全に変更し、効率的�
 次はLinux(Ubuntu/Debian)のインストール例です。
 
 ```
-$ wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-$ sudo apt update && sudo apt install terraform
-$ terraform -v
-Terraform v1.14.2
-```
-
-
-
-<a id="local-provider"></a>
-### Local provider設定
-
-Local provider設定を通じてTerraform NHN Cloud providerを使用できます。
-
-Local providerを探すためのディレクトリ構造を作成した後、ダウンロードしたバイナリファイルをプラグインのパスに追加します。バイナリファイルには実行権限が必要です。
-
-以下はOSごとのプラグイン基本パスです。より詳しい基本パスの説明は[Terraformサイト](https://developer.hashicorp.com/terraform/cli/config/config-file#provider-installation)の`Implied Local Mirror Directories
-`項目を参照してください。
-
-* **Linux / macOS** : `${HOME}/.terraform.d/plugins/terraform.local/local/nhncloud/${version}/${platforms}`
-* **Windows** : `%APPDATA%/terraform.d/plugins/terraform.local/local/nhncloud/${version}/${platforms}`
-
-プラグイン基本パス構成ルールについての説明です。
-
-* **version**
-    * providerのバージョンです。
-* **platforms**
-    * パッケージがあるプラットフォームを説明するオブジェクトの配列で、OS識別キーワードとCPUアーキテクチャ識別キーワードで構成されています。
-    * **darwin_adm64** : macOS / AMD64
-    * **darwin_arm64** : macOS / Apple silicon
-    * **linux_amd64** : Linux / AMD64
-    * **windows_amd64** : Windows / AMD64
-
-以下は、バイナリダウンロード後、**OS/アーキテクチャ**ごとのプラグイン設定例です。 
-
-**プラグインを設定する際は1.0.2バージョンを使用することを推奨します。**
-
-`macOS / AMD64`プラグインの設定例です。
-
-```
-$ mkdir -p $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_amd64
-$ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_amd64
-$ chmod +x $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_amd64/terraform-provider-nhncloud_v1.0.2
-```
-
-`macOS / Apple silicon`プラグインの設定例です。
-
-```
-$ mkdir -p $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_arm64
-$ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_arm64
-$ chmod +x $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_arm64/terraform-provider-nhncloud_v1.0.2
-```
-
-`Linux / AMD64`プラグインの設定例です。
-
-```
-$ mkdir -p $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/linux_amd64
-$ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/linux_amd64
-$ chmod +x $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/linux_amd64/terraform-provider-nhncloud_v1.0.2
-```
-
-`Windows / AMD64`プラグインの設定例です。
-
-```
 $ mkdir -p %APPDATA%/terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/windows_amd64
 $ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/windows_amd64
 $ copy terraform-provider-nhncloud_v1.0.2 %APPDATA%/terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/windows_amd64
 ```
 
+
+<a id="terraform-provider-provided"></a>
+## Terraform provider の提供
+
+NHN Cloud は HashiCorp 社の公式パートナーとして、[Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest) を通じて Terraform プロバイダーを提供します。
+
+Terraform は、terraform バイナリファイルを起点として、ローカル環境またはデプロイサーバーなどのリモート環境で、目的の対象を呼び出す方法で実行されます。このとき、「目的の対象」は呼び出し方法が異なりますが、対象のプロバイダー、つまり、プロバイダーが提供する API を呼び出して相互作用します。Terraform が対象との相互作用を実行できるようにするのが「プロバイダー」です。
 
 <a id="terraform-initialization"></a>
 ## Terraformの初期化
@@ -207,5 +144,62 @@ provider "nhncloud" {
 $ ls
 provider.tf
 $ terraform init
+```
+
+<a id="terraform-usage"></a>
+## Terraform の基本的な使用法
+
+Terraform を利用したインフラ構築は、通常、以下のようなライフサイクルを有します。
+
+1. tfファイルを作成します
+2. 構築計画を確認します
+3. リソースを作成します
+4. リソースを修正します
+5. リソースを削除します
+
+まず、構築するインフラの構成を tf ファイルに記述します。作成された tf ファイルに従う構築計画は、以下のように `plan` コマンドで確認します。
+
+```
+$ terraform plan
+```
+
+構築計画に問題がない場合、`apply` コマンドを使用してリソースを作成、変更、削除します。
+
+```
+$ terraform apply
+```
+
+次のセクションでは、これらのステップを例とともにより詳しく説明します。
+
+<a id="create-tf-files"></a>
+### tf ファイルの作成
+
+プロバイダー設定ファイルが存在するパスに tf ファイルを作成します。複数のリソース設定を 1 つの tf ファイルに集めておくか、リソース別に別々の tf ファイルで作成することができます。Terraform は
+ 作成されたすべての tf ファイルを一度に読み込んで、構築計画を策定します。
+
+以下は、`instance.tf` ファイルにインスタンスを作成するリソースを定義した tf ファイルの例です。
+
+```
+$ ls
+instance.tf provider.tf
+$ cat instance.tf
+resource "nhncloud_compute_instance_v2" "terraform-instance-01" {
+  name      = "terraform-instance-01"
+  region    = "KR1"
+  flavor_id = "da74152c-0167-4ce9-b391-8a88a8ff2754"
+  key_pair  = "terraform-keypair"
+  network {
+    uuid = "00d5b852-cb77-4307-b6be-d81dad24eec1"
+  }
+  security_groups = ["default"]
+  block_device {
+    uuid = "6d0993b4-cd6d-4242-b59b-94258f265331"
+    source_type = "image"
+    destination_type = "volume"
+    boot_index = 0
+    volume_size = 20
+    delete_on_termination = true
+  }
+}
 ```
 
