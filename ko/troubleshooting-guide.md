@@ -1,135 +1,74 @@
-## Compute > Instance > 문제 해결 가이드
+<!-- pre-align:aligned sig=c775a568be8f -->
 
-NHN Cloud를 사용하면서 겪을 수 있는 다양한 문제들을 해결하는 방법을 설명합니다.
+# 문제 해결 가이드
+**Security > Secure Key Manager > 문제 해결 가이드**
 
-<h3>현재 NHN Cloud에서 기본 제공하는 OS 버전 이외의 버전을 사용하고 싶습니다. 개인 이미지를 업로드해서 사용할 수는 없나요?</h3>
+Secure Key Manager를 사용하면서 발생할 수 있는 주요 문제에 대한 해결 방법을 설명합니다.
 
-NHN Cloud에서 제공하는 OS 버전만 이용할 수 있습니다. 개인 이미지 업로드는 지원하지 않습니다.
-개인 OS 이미지를 사용하려면 NHN Cloud에서 제공하는 이미지로 인스턴스를 생성한 후, **이미지 생성** 기능을 이용하시기 바랍니다.
-<br>
+<a id="api-call-failure-returns-invalid-appkey-error-message"></a>
+## API 호출이 실패하면서 Invalid Appkey 오류 메시지를 반환합니다. { #api-call-failure-returns-invalid-appkey-error-message }
+* API 호출에 사용한 앱키가 유효하지 않을 때 발생합니다.
+    * Secure Key Manager 관리 페이지의 URL & Appkey 창에 표시되는 올바른 앱키를 사용하셨는지 확인하십시오.
 
-<h3>인스턴스에 접속하면 "Permissions 0644 for '/Users/username/.ssh/your-key.pem' are too open." 메시지가 나타나면서 접속되지 않습니다.</h3>
+<a id="api-call-failure-returns-invalid-key-id-error-message"></a>
+## API 호출이 실패하면서 Invalid Key Id 오류 메시지를 반환합니다. { #api-call-failure-returns-invalid-key-id-error-message }
+* API 호출에 사용한 Key Id가 유효하지 않을 때 발생합니다.
+    * 올바른 Key Id를 사용하셨는지 확인하십시오.
+    * Key가 사용 중인 상태인지 확인하십시오.
 
-인스턴스 접속에 사용하는 키 페어의 개인 키(PEM 키)의 권한이 맞지 않아서 생기는 문제입니다.
-아래와 같이 개인 키 파일의 권한을 조정합니다.
+<a id="api-call-failure-returns-invalid-key-version-error-message"></a>
+## API 호출이 실패하면서 Invalid Key Version 오류 메시지를 반환합니다. { #api-call-failure-returns-invalid-key-version-error-message }
+* API 호출에 사용한 Key Version이 유효하지 않을 때 발생합니다.
+    * 대칭 키 복호화 API에서 발생했다면, 암호화 당시 사용했던 키 버전이 존재하는지 확인하십시오.
+    * 비대칭 키 검증 API에서 발생했다면, 서명 당시 사용했던 키 버전이 존재하는지 확인하십시오.
 
-    $ chmod 600 your-key.pem
-<br>
+<a id="api-call-failure-returns-invalid-user-data-error-message"></a>
+## API 호출이 실패하면서 Invalid User Data 오류 메시지를 반환합니다. { #api-call-failure-returns-invalid-user-data-error-message }
+* API 호출에 사용한 사용자 데이터가 유효하지 않을 때 발생합니다.
+    * 대칭 키 복호화 API에서 발생했다면, 복호화 대상 데이터가 올바른지 확인하십시오.
+    * 비대칭 키 검증 API에서 발생했다면, 서명값이 올바른지 확인하십시오.
 
-<h3>CentOS 인스턴스에서 root 권한을 어떻게 얻나요?</h3>
+<a id="api-call-failure-returns-invalid-key-status-error-message"></a>
+## API 호출이 실패하면서 Invalid Key Status 오류 메시지를 반환합니다. { #api-call-failure-returns-invalid-key-status-error-message }
+* API 호출에 사용한 Key의 상태가 유효하지 않을 때 발생합니다.
+    * 대칭 키 복호화 API에서 발생했다면, 암호화 당시 사용했던 키가 '사용중' 상태인지 확인하십시오.
+    * 비대칭 키 검증 API에서 발생했다면, 서명 당시 사용했던 키가 '사용중' 상태인지 확인하십시오.
 
-CentOS 인스턴스에서 root 권한을 얻으려면 다음과 같이 `sudo` 명령을 이용합니다.
+<a id="api-call-failure-returns-invalid-key-version-status-error-message"></a>
+## API 호출이 실패하면서 Invalid Key Version Status 오류 메시지를 반환합니다. { #api-call-failure-returns-invalid-key-version-status-error-message }
+* API 호출에 사용한 Key Version의 상태가 유효하지 않을 때 발생합니다.
+    * 대칭 키 복호화 API에서 발생했다면, 암호화 당시 사용했던 키 버전이 '사용중' 상태인지 확인하십시오.
+    * 비대칭 키 검증 API에서 발생했다면, 서명 당시 사용했던 키 버전이 '사용중' 상태인지 확인하십시오.
 
-    $ sudo su
-<br>
+<a id="api-call-failure-returns-ipv4-auth-failure-error-message"></a>
+## API 호출이 실패하면서 IPv4 Auth Failure 오류 메시지를 반환합니다. { #api-call-failure-returns-ipv4-auth-failure-error-message }
+* IPv4 주소 인증에 실패했을 때 발생합니다.
+    * API를 호출하는 클라이언트의 IPv4 주소를 Secure Key Manager에 등록했는지 확인하십시오.
+    * Secure Key Manager에 등록한 클라이언트의 IPv4 주소가 '사용중' 상태인지 확인하십시오.
 
-<h3>개인 이미지를 만들어서 인스턴스를 생성하고 부팅했는데 마운트(mount) 오류가 발생합니다.</h3>
+<a id="api-call-failure-returns-mac-auth-failure-error-message"></a>
+## API 호출이 실패하면서 MAC Auth Failure 오류 메시지를 반환합니다. { #api-call-failure-returns-mac-auth-failure-error-message }
+* MAC 주소 인증에 실패했을 때 발생합니다.
+    * API를 호출하는 클라이언트의 MAC 주소를 Secure Key Manager에 등록했는지 확인하십시오.
+    * Secure Key Manager에 등록한 클라이언트의 MAC 주소가 '사용중' 상태인지 확인하십시오.
+    * API를 호출할 때 X-TOAST-CLIENT-MAC-ADDR 요청 헤더에 클라이언트의 MAC 주소를 추가했는지 확인하십시오.
 
-두 개 이상의 블록 스토리지를 사용하는 인스턴스로 이미지를 생성하고, 생성한 이미지로 인스턴스를 만들어 부팅하면 이와 같은 문제가 발생합니다.
+<a id="api-call-failure-returns-certificate-auth-failure-error-message"></a>
+## API 호출이 실패하면서 Certificate Auth Failure 오류 메시지를 반환합니다. { #api-call-failure-returns-certificate-auth-failure-error-message }
+* 클라이언트 인증서 인증에 실패했을 때 발생합니다.
+    * Secure Key Manager에서 발급한 인증서를 사용하는지 확인하십시오.
+    * Secure Key Manager에 등록한 인증서가 '사용중' 상태인지 확인하십시오.
 
-두 개 이상의 블록 스토리지를 사용하는 인스턴스는 기본 디스크 외의 다른 디스크를 `/etc/fstab` 파일에 설정합니다. 이미지 생성 시에 이 파일 역시 복제되므로 새로운 인스턴스가 부팅될 때 `/etc/fstab` 파일이 참조하는 블록 스토리지가 없어서 마운트 오류가 발생합니다.
+<a id="api-call-failure-returns-certificate-related-error-messages"></a>
+## API 호출이 실패하면서 인증서 관련 오류 메시지를 반환합니다. { #api-call-failure-returns-certificate-related-error-messages }
+* 인증서가 올바르지 않을 때 발생합니다.
+    * Secure Key Manager에서 발급한 인증서를 사용하는지 확인하십시오.
+    * 인증서의 유효 기간을 확인하십시오.
 
-이 문제를 해소하려면, `/etc/fstab` 파일에서 기본 디스크를 제외한 블록 스토리지 설정을 주석으로 처리하고 이미지를 생성해야 합니다.
-<br>
-<br>
+<a id="api-call-failure-returns-url-not-found-error-message"></a>
+## API 호출이 실패하면서 URL NOT FOUND 오류 메시지를 반환합니다. { #api-call-failure-returns-url-not-found-error-message }
+* 올바르지 않은 URL로 요청하였을 때 발생합니다.
+    * 올바른 URL을 사용했는지 확인하십시오.
 
-<h3>SSH 접속이 너무 느립니다.</h3>
-
-인스턴스가 속한 보안 그룹의 송신 부분에서 DNS를 막은 경우 발생합니다. DNS 송신을 할 수 있도록 보안 그룹을 조정합니다.
-<br>
-<br>
-
-<h3>"Could not resolve the host" 메시지가 나타나며 yum 등을 사용할 수 없습니다.</h3>
-
-인스턴스가 속한 보안 그룹의 송신 부분에서 DNS를 막은 경우 발생합니다. DNS 송신을 할 수 있도록 보안 그룹을 조정합니다.
-<br>
-<br>
-
-<a id="proxy-instance-issue">
-<h3>프록시를 사용하는 인스턴스에서의 동작이 이상합니다.</h3>
-</a>
-
-프록시를 사용하는 인스턴스에서 NHN Cloud의 Monitoring 서비스(System Monitoring, Service Monitoring, Cloud Monitoring)가 정상적으로 동작하지 않을 수 있습니다. 또한 Windows 운영체제의 경우 비밀번호 초기화 등의 문제가 발생할 수 있습니다.
-
-이러한 문제를 방지하려면, 프록시를 사용하는 인스턴스에서 `169.254.0.0/16` 대역에 대해서는 프록시를 사용하지 못하도록 설정해야 합니다. 일반적으로는 `no_proxy`라는 환경 변수에 이 값을 설정하지만, 사용하는 프록시에 따라 이 환경 변수를 무시하는 경우도 있으니 사용하는 프록시의 가이드를 참고하여 설정하시기 바랍니다.
-<br>
-<br>
-
-<h3>CentOS 인스턴스에서 패키지 업데이트에 실패합니다.</h3>
-
-다음과 같이 `yum repository` 파일을 수정하여 사용합니다.
-공식 지원이 종료된 OS는 추가 업데이트가 지원되지 않으므로, 상위 버전의 OS 사용을 권장합니다.
-
-<h4>CentOS 6.x</h4>
-
-```
-$ sudo vi /etc/yum.repos.d/CentOS-Base.repo
-
-[base]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
-baseurl=https://vault.centos.org/6.10/os/$basearch/
-...
-
-[updates]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
-baseurl=https://vault.centos.org/6.10/updates/$basearch/
-...
-
-[extras]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
-baseurl=https://vault.centos.org/6.10/extras/$basearch/
-...
-
-```
-
-<h4>CentOS 7.x</h4>
-
-```
-
-$ sudo vi /etc/yum.repos.d/CentOS-Base.repo
-
-[base]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/os/$basearch/
-...
-
-[updates]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/updates/$basearch/
-...
-
-[extras]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/extras/$basearch/
-...
-
-[centosplus]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/centosplus/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/centosplus/$basearch/
-...
-```
-
-<h4>공통</h4>
-
-```
-$ sudo yum clean all
-$ sudo yum repolist
-```
-
-<br>
-<br>
-
+<a id="api-call-failure-returns-url-not-found-error-message-for-any-other-errors-that-occur-during-an-api-request-contact-us-at-customer-support-contact-us"></a>
+#### 이밖에 API 요청 중 발생한 오류에 대해서는 고객지원 > [문의하기](https://www.nhncloud.com/KR/support/inquiry)로 문의해 주시기 바랍니다
