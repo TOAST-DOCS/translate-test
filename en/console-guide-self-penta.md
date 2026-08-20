@@ -16,17 +16,21 @@ To use the Web Firewall service, log in to **NHN Cloud Console**, and activate t
 <a id="use-and-cancel-a-service"></a>
 ## Use and Cancel a Service { #use-and-cancel-a-service }
 <a id="create-web-firewall"></a>
-### Create Web Firewall { #create-web-firewall }
+### Create a Web Firewall { #create-web-firewall }
 
-![webfirewall_public_en_console-guide-self-penta_02_241115.png](https://static.toastoven.net/prod_web_firewall/Penta/public/en/webfirewall_public_en_console-guide-self-penta_02_241115.png)
-![webfirewall_public_en_console-guide-self-penta_03_241115.png](https://static.toastoven.net/prod_web_firewall/Penta/public/en/webfirewall_public_en_console-guide-self-penta_03_241115.png)
+![
+webfirewall_public_kr_console-guide-self-penta_02_241113.png](https://static.toastoven.net/prod_web_firewall/Penta/public/kr/webfirewall_public_kr_console-guide-self-penta_02_241113.png)
+![
+webfirewall_public_kr_console-guide-self-penta_03_241113.png](https://static.toastoven.net/prod_web_firewall/Penta/public/kr/webfirewall_public_kr_console-guide-self-penta_03_241113.png)
 
-1. Click the **Go button** in the Apply to **Self section** of the **Web Firewall** to navigate to the Compute > Instance page.
-2. Click **+ Create Instance**, select PENTA WAF from the image list, and enter the instance information. For detailed instructions, **please refer to the Detailed Procedure for Creating a Web Firewall Instance below.**
+1. In the **WEB Firewall** console, click **Quick Link** under **Self Service Application** to go to the "Compute > Instance" page.
+2. Click **+ Create Instance**, select PENTA WAF from the image list, and enter the instance information. For details, see **Detailed Procedure for Creating a Web Firewall Instance** below.
 
-> [note]
-> * Service fee will be charged as soon as the instance is created.
-> * The minimum recommended instance specifications for WAPPLE SA (PENTA WAF) are 2 vCores / 8GB of memory. Using an instance with lower specifications than recommended may cause malfunctions. Therefore, **you must use an instance type that meets or exceeds these specifications.**
+> [Note]
+> * Charges are applied as soon as the instance is created.
+> * The minimum recommended instance specification for WAPPLE SA (PENTA WAF) is 2 vCore / Memory 4 GB. Using an instance with lower than the recommended specifications may cause it to not operate normally. **Therefore, you must use an instance type that meets or exceeds the recommended specifications.**
+
+<br>
 
 <a id="cancel-a-service"></a>
 ### Cancel a Service { #cancel-a-service }
@@ -50,8 +54,6 @@ This guide provides detailed procedures to reference when creating a web firewal
 ![webfirewall_public_en_console-guide-self-penta_05_241115.png](https://static.toastoven.net/prod_web_firewall/Penta/public/en/webfirewall_public_en_console-guide-self-penta_05_241115.png)
 1. Select the **'PETNA WAF'** image from the public image list.
 
-1. Select the "PENTA WAF" image from the Public Image list. The WAF version displayed may vary.
-
 <br>
 
 <a id="instance-information"></a>
@@ -65,11 +67,11 @@ This guide provides detailed procedures to reference when creating a web firewal
 5. Key Pair: Configure the key pair used for SSH access to the instance. You can either use an existing key pair or create a new one.<br>
 
 > [note]
-> * The minimum recommended specification is 2vCore/8GB, but make sure to use an instance type with a specification above the minimum specfication. **Otherwise, Web Firewall may not function properly.**
+> * The minimum recommended specification is 2vCore/4GB, but make sure to use an instance type with a specification above the minimum specfication. **Otherwise, Web Firewall may not function properly.**
 
 | Throughput (Mbps) | Instance type | vCPU | Memory(GB) |
 | :-------: | :-----: | :---: | :---: |
-| 100 | r2.c2m8 | 2 | 8 |
+| 100 | m2.c2m4 | 2 | 4 | 
 | 300 | m2.c4m8 | 4 | 8 | 
 | 700 | m2.c8m16 | 8 | 16 |
 | 1,500 | m2.c16m32 | 16 | 32 |
