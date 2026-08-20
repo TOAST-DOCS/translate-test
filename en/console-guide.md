@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=4cffce67e4ac -->
 
 <a id="network-service-gateway-console-user-guide"></a>
@@ -11,33 +13,33 @@ This guides describes how to use the **Service Gateway** service from the consol
 <a id="create-a-service-gateway"></a>
 ### Create a Service Gateway { #create-a-service-gateway }
 
-To create a service gateway, use the following steps:
+To create a service gateway, follow these steps:
 
 1. Go to **Network > Service Gateway**.
-2. Click the **Create Service Gateway** button, and the creation screen appears.
-3. Enter the **Name** to use for the service gateway.
-4. Select a **Connection Type**. When you access the IP assigned to the service gateway, it connects to the selected target.
+2. Click the **Create Service Gateway** button to display the creation screen.
+3. Enter a **Name** for the service gateway.
+4. Select a **Connection Type**. When accessing the IP address assigned to the service gateway, it will connect to the selected target.
     * **Service Endpoint**: Connects to a service provided by NHN Cloud. Select the **Service** to connect to from the list.
-    * **Custom Endpoint**: Connects to a resource (load balancer) published by another user. Enter the **Target Service Name** provided by the endpoint publisher. The service name is in the format `{region}.sep-{12-digit hexadecimal}` (e.g., `kr1.sep-0a1b2c3d4e5f`).
+    * **Custom Endpoint**: Connects to a resource (load balancer) published by another user. Enter the **Target Service Name** provided by the endpoint publisher. The service name follows the format `{region}.sep-{12-digit hexadecimal}` (e.g., `kr1.sep-0a1b2c3d4e5f`).
 
-!!! tip "Note"
-    The service name you enter is validated upon creation, and you can connect to it only if it is included in the publisher's allowed projects.
+    !!! tip "Note"
+        The service name you enter is validated at creation time, and a connection can only be established if your project is included in the publisher's allowed projects.
 
-5. Select **VPC**. A service gateway subordinate to the selected VPC is created.
-6. Select **Subnet**. An IP for the service gateway is assigned from the selected subnet.
-7. Select the **Private IP** assignment method.
-    * Auto-assigned: Automatically assigns an IP within the CIDR range of the selected subnet.
+5. Select a **VPC**. A service gateway belonging to the selected VPC will be created.
+6. Select a **Subnet**. The IP address for the service gateway will be allocated from the selected subnet.
+7. Select the **Private IP** allocation method.
+    * Auto-assign: Automatically assigns an IP address within the CIDR range of the selected subnet.
     * Custom: Manually enter the IP address to use.
 
-!!! tip "Notice"
-    The IP address you enter must be within the CIDR range of the selected subnet.
+    !!! tip "Note"
+        The IP address you enter must be within the CIDR range of the selected subnet.
 
-8. Select whether to enable **NAT IP Static**.
-    * In general, you do not need to select this option. Select it only if the **service** you chose requires access control configuration.
-    * This option can only be selected at creation time and cannot be changed.
+8. Select whether to **Fix NAT IP**.
+    * In general, this does not need to be selected. Select this option only if the chosen **Service** requires access control configuration.
+    * This option can only be selected at creation time and cannot be changed afterward.
 
-!!! tip "Note"
-    This is enabled only for services that support selection.
+    !!! tip "Note"
+        This option is only enabled for services that support it.
 
 <a id="view-a-service-gateway"></a>
 ### View a Service Gateway { #view-a-service-gateway }
@@ -60,31 +62,31 @@ To delete a service gateway, select the service gateway you want to delete in th
 <a id="custom-endpoints"></a>
 ## Custom Endpoints { #custom-endpoints }
 
-A custom endpoint is a feature that allows you to publish your own resources (load balancers) as endpoints, sharing them so that other projects can connect to them through a service gateway. The publisher receives a shared ***service name** (`service_name`), delivers it to the parties that are allowed to connect, and directly manages the list of allowed projects.
+Custom endpoints is a feature that allows you to publish your own resources (load balancers) as endpoints and share them so that other projects can connect via a service gateway. The publisher receives a ***service name** (`service_name`) for sharing, delivers it to the intended recipients, and directly manages which projects are allowed to connect.
 
 <a id="create-a-custom-endpoint"></a>
 ### Create a Custom Endpoint { #create-a-custom-endpoint }
 
-To create a custom endpoint, follow these steps:
+To create a custom endpoint, follow the steps below:
 
 1. Go to **Network > Service Gateway** and select the **Custom Endpoint** tab.
-2. Click **Create Custom Endpoint** to open the creation screen.
-3. Enter a **Name** for the endpoint. (Up to 255 characters; only letters, numbers, hyphens (-), and underscores (_) are allowed.)
-4. Enter a **Display Name**. This is the name that appears on service gateways connected to this endpoint. If omitted, the name is used as the display name.
-5. Select a **Resource Type** and a **Target Resource**. Currently, only **Load Balancer** is supported as a resource type. Select the load balancer to publish as an endpoint from the target resource list.
-6. Select the **Maximum Creation Count**. This is the maximum number of service gateways that can be created for this endpoint.
+2. Click the **Create Custom Endpoint** button to open the creation screen.
+3. Enter a **Name** for the endpoint. (Up to 255 characters; only alphanumeric characters, hyphens (-), and underscores (_) are allowed.)
+4. Enter a **Display Name**. This is the name shown on service gateways that connect to this endpoint. If omitted, the name specified in step 3 is used.
+5. Select a **Resource Type** and a **Target Resource**. Currently, only **Load Balancer** is supported as the resource type. Select the load balancer to publish as the endpoint from the target resource list.
+6. Select the **Maximum Number of Creations**. This is the maximum number of service gateways that can be created using this endpoint.
     * Unlimited: No limit on the number of service gateways that can be created. Select this option if you need more than 1,000.
-    * Custom: Enter a value from 0 to 1,000. Entering 0 blocks creation.
+    * Custom: Enter a value from 0 to 1,000. Entering 0 blocks all creation.
 7. Enter a **Description** if needed, and click **OK**.
-8. Once creation is complete, a **Service Name** for sharing (`{region}.sep-{12-digit hexadecimal}`) is automatically issued. Provide this service name to the consumers that you want to allow connections from.
+8. When creation is complete, a **Service Name** for sharing (`{region}.sep-{12-digit hexadecimal}`) is automatically issued. Provide this service name to the consumers that you want to allow connections from.
 
 !!! tip "Note"
-    By default, you can create up to 5 custom endpoints per project.
+    By default, up to 5 custom endpoints can be created per project.
 
 <a id="view-custom-endpoints"></a>
 ### View custom endpoints { #view-custom-endpoints }
 
-You can view the list of endpoints that you have created on the **Custom Endpoint** tab. If you select an endpoint, the detailed information appears at the bottom, where you can view **Basic Information** (service name, resource type, target resource, maximum number of endpoints, and more), **Allowed Projects**, and **Usage**.
+On the **Custom Endpoints** tab, you can check the list of endpoints that you have created. If you select an endpoint, the details appear at the bottom, where you can view **Basic Information** (service name, resource type, target resource, maximum number of instances, etc.), **Allowed Projects**, and **Usage Status**.
 
 <a id="modify-a-custom-endpoint"></a>
 ### Modify a Custom Endpoint { #modify-a-custom-endpoint }
@@ -92,29 +94,29 @@ You can view the list of endpoints that you have created on the **Custom Endpoin
 You can only change the **Name**, **Display Name**, **Maximum Creation Count**, and **Description**. The resource type and target resource cannot be changed.
 
 1. On the **Custom Endpoint** tab, select the endpoint that you want to modify.
-2. Click **Modify** and change the items that you want on the change screen.
+2. Click **Change** and change items on the change screen.
 
 !!! tip "Note"
     Even if you reduce the maximum creation count, service gateways that have already been created are retained. However, while the current count exceeds the maximum creation count, you cannot create additional service gateways.
 
 <a id="delete-a-custom-endpoint"></a>
-### Delete a Custom Endpoint { #delete-a-custom-endpoint }
+### Delete a custom endpoint { #delete-a-custom-endpoint }
 
-On the **Custom Endpoint** tab, select the endpoint to delete and click the **Delete** button.
+On the **Custom Endpoints** tab, select the endpoint to delete and click the **Delete** button.
 
 !!! danger "Caution"
-    You cannot delete an endpoint if it is in use by any service gateway. Deleting an endpoint also deletes all registered allowed projects associated with it.
+    If any service gateway is using this endpoint, it cannot be deleted. Deleting an endpoint also deletes the registered allowed projects.
 
 <a id="reissue-a-service-name"></a>
 ### Reissue a Service Name { #reissue-a-service-name }
 
-You can reissue a service name if it needs to be changed — for example, if the shared service name has been leaked to outside parties.
+You can reissue a service name if it needs to be changed, for example, when the shared service name has been exposed externally.
 
 1. On the **Custom Endpoint** tab, select an endpoint, and then click the **Reissue** button next to the service name in **Basic Information**.
 2. In the confirmation dialog, click the **Reissue** button.
 
 !!! danger "Caution"
-    When reissued, the existing service name is immediately discarded and can no longer be found. Service gateways that were created using the existing service name will continue to work normally, but you must use the reissued service name to create new service gateways.
+    When reissued, the existing service name is immediately invalidated and can no longer be found. Service gateways that were created using the existing service name will continue to function normally, but you must use the reissued service name to create new service gateways.
 
 !!! tip "Note"
     Only a member (owner) of the project that created the endpoint can reissue a service name.
@@ -122,23 +124,23 @@ You can reissue a service name if it needs to be changed — for example, if the
 <a id="manage-allowed-projects"></a>
 ### Manage Allowed Projects { #manage-allowed-projects }
 
-The allowed projects list manages the targets that are permitted to connect to this endpoint (by creating a service gateway).
+The allowed projects list manages which projects are permitted to connect to this endpoint (create a service gateway).
 
-1. Select an endpoint and go to the **Allowed Projects** tab in the details section.
-2. Click **Add** and select the **Allowed Scope**.
-    * **All Projects (\*)**: Allows connections from all projects.
+1. Select an endpoint and go to the **Allowed Projects** tab in the details view.
+2. Click **Add** and select an **Allowed Scope**.
+    * **All Projects (*)**: Allows connections from all projects.
     * **Specific Project**: Enter the **tenant ID** (32-digit hexadecimal) of the project to allow.
 3. If needed, enter a **Description** and click **Confirm**.
 
 !!! tip "Note"
-    If both All Projects (\*) and a specific project are registered together, the narrower scope (specific project) takes effect. You can use this to switch the allowed scope without any connection interruption. For example, if you add a specific project while All Projects (\*) is active and then delete All Projects (\*), the configuration switches to allow only the specific project without interrupting any existing connections.
+    If both all-project (*) and specific project entries are registered, the narrower scope (specific project) takes effect. You can use this to switch the allowed scope without interrupting connections. For example, if you add a specific project while all-project (*) is active and then delete the all-project (*) entry, only the specific project will be allowed — without any connection interruption.
 
-For existing allowed targets, only the **Description** can be modified; the allowed scope and tenant ID cannot be changed. To delete an allowed target, select the target from the list and click **Delete**.
+For existing allowed entries, only the **Description** can be changed; the allowed scope and tenant ID cannot be modified. To delete an allowed entry, select it from the list and click **Delete**.
 
 <a id="check-usage-status"></a>
 ### Check Usage Status { #check-usage-status }
 
-On the **Usage Status** tab of the endpoint details, you can check the list of service gateways currently connected to this endpoint. (Read-only)
+On the **Usage Status** tab in the endpoint details, you can check the list of service gateways connected to this endpoint. (Read-only)
 
 <a id="use-a-service-gateway"></a>
 ## Use a Service Gateway { #use-a-service-gateway }
@@ -189,15 +191,15 @@ To use the **Object Storage API**, you must obtain an **authentication token**. 
 3. Check the IP addresses on the two service gateways that have been created.
 
 <a id="edit-the-etchosts-file"></a>
-### Edit the /etc/hosts File { #edit-the-etchosts-file }
+### Edit the /etc/hosts file { #edit-the-etchosts-file }
 
-For example, if the IP address of the service gateway created by selecting **Object Storage** is 192.168.1.42 and 192.168.1.57 is assigned as the IP address of the service gateway created by selecting **IaaS API Identity**, add the IP addresses and URLs to the `/etc/hosts` file of the VM Instance, as shown below.
+For example, if the IP address of the Service Gateway created by selecting **Object Storage** is 192.168.1.42 and 192.168.1.57 is assigned as the IP address of the Service Gateway created by selecting **IaaS API Identity**, add the IP addresses and URLs to the `/etc/hosts` file of the VM Instance, as shown below.
 
-!!! tip "Tip"
-    You can check the API URL address of object storage by clicking the **Set API Endpoint** button in **Storage > Object Storage** on the console screen.
+!!! tip "Note"
+    You can check the API URL address of Object Storage by clicking the **Set API Endpoint** button in **Storage > Object Storage** on the console screen.
 
 !!! danger "Caution"
-    Since the URL address of the Object Storage API used by each region is different, make sure that you check the URL in **Set API Endpoint**.
+    Since the URL address of the Object Storage API used by each region is different, make sure that you check the URL in the **Set API Endpoint**.
 
 ```
 192.168.1.42	api-identity-infrastructure.nhncloudservice.com
@@ -213,18 +215,18 @@ For example, if the IP address of the service gateway created by selecting **Obj
     1. In **Storage > Object Storage**, click the **Set API Endpoint** button.
     2. Enter the password to use in **Set API Password** on the **API Endpoint settings** screen and click **Modify**.
 
-!!! tip "Tip"
-    For details on how to use it, refer to [User Guide > Storage > Object Storage > API Guide](https://docs.nhncloud.com/en/Storage/Object%20Storage/ko/api-guide/).
+    !!! tip "Note"
+        For details on how to use it, refer to [User Guide > Storage > Object Storage > API Guide](https://docs.nhncloud.com/ko/Storage/Object%20Storage/ko/api-guide/).
 
-* Request for obtaining the Authentication token<br>
-  Make a request to obtain the token to the URL of the service gateway created for the **IaaS API Identify** service using the **NHN Cloud login ID** and the password of **Set API Password** set previously.
+* Request to issue an authentication token<br>
+  Request to obtain the token to the URL of the Service Gateway created for the **IaaS API Identify** service using the **NHN Cloud login ID** and the password of **Set API Password** set previously.
     * Use NHN Cloud login ID for `auth.passwordCredentials.username`
-    * Use the password entered in **Set API Password** for `auth.passwordCredentials.password`
+    * Use the password entered in Set API Password for `auth.passwordCredentials.password`
   
 
             ~# curl -X POST -H 'Content-Type:application/json' https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens -d '{"auth": {"tenantId": "2fda9d4b88244a0a92ff23841198e2e6", "passwordCredentials": {"username": "example@nhn.com", "password": "example123"}}}'
 
-* Response for obtaining the Authentication token<br>
+* Authentication token issuance response<br>
   In the response below, the value of the `access.token.id` entry is the authentication token. The authentication token is valid until the time in `access.token.expires`.
 
             {"access":{"token":{"id":"gAAAAABiVnmCOJVJhh1W2eXGo3aL0eaZxXmd-SMDMIE3zmip2lXy6eH0BlZAlTZBG20dWEm7TF4zi4YIOTKnc6yKh_wqZsyxgMWKkpVNShzE-k6GaSThBP54QeUePSjC2t-R10X6G4xL_Wecl-V-lV-bnOfVo6Ccpz6rv9eLYJnbJw7KrIMSSiY","expires":"2022-04-13T19:19:30Z","tenant":{"id":"2fda9d4b8821111192ff23841198e2e6","name":"tTMgSSSF","groupId":"XXj2zkH7777modGU","description":"","enabled":true,"project_domain":"NORMAL","swift":true},"issued_at":"2022-04-13T07:32:14.000441"},"serviceCatalog":[{"endpoints":[{"region":"KR1","publicURL":"https://api-identity.infrastructure.cloud.toast.com/v2.0"}],"type":"identity","name":"keystone"},{"endpoints":[{"region":"KR2","publicURL":"https://kr2-api-storage.cloud.toast.com/v1/AUTH_2fda9d4b88244a0a92ff23841198e2e6"},{"region":"KR1","publicURL":"https://api-storage.cloud.toast.com/v1/AUTH_2fda9d4b88244a0a92ff23841198e2e6"}],"type":"object-store","name":"swift"}],"user":{"id":"80884888887b45dbaf9b815117130671","username":"5111111c-b111-4b11-b11b-01111f81111f","name":"5211122c-bfc4-4115-b11b-05b52f84
