@@ -1,512 +1,220 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > コンソール使用ガイド
+<!-- pre-align:aligned sig=70259b9e24c2 -->
 
-<a id="create-instances"></a>
-## インスタンス生成
+<a id="security-secure-key-manager-console-user-guide"></a>
+## Security > Secure Key Manager > コンソール使用ガイド { #security-secure-key-manager-console-user-guide }
 
-インスタンスを作成するには、以下の設定を行うか、インスタンステンプレート(Instance Template)を利用します。インスタンステンプレートを利用してインスタンスを作成するにはインスタンス作成画面で**インスタンステンプレート使用**を選択します。インスタンステンプレートの作成方法は[インスタンステンプレートコンソールガイド](/Compute/Instance%20Template/ja/console-guide/)を参照します。
+コンソール使用ガイドではSecure Key Managerを使用するのに必要な基本的な内容を説明します。
+- **キー保存場所の作成**
+- **キーの作成**
+- **認証情報の登録**
+- **ユーザーデータの管理**
+- **承認機能**
 
-<a id="os-settings"></a>
-### OS設定
+<a id="create-a-key-store"></a>
+### キー保存場所の作成 { #create-a-key-store }
+Secure Key Managerは、キー保存場所の単位として認証情報とキーを管理します。キー保存場所がない場合は次のような画面が表示されます。
 
-インスタンス作成時に使用されるルートブロックストレージの作成方式を決定します。
+![console-guide-01](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-01.png)
 
-- **新規作成及び設定**または**既存リソース指定**のいずれかを選択します。
-- **新規作成及び設定**を選択した場合、イメージを利用してルートブロックストレージを作成します。
-- **既存リソース指定**を選択した場合、既存のブロックストレージまたはスナップショットを利用します。
+**キー保存場所追加**をクリックすると、キーの保存場所を作成できるウィンドウが表示されます。
 
-<a id="image"></a>
-### イメージ
+![console-guide-02](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-02.png)
 
-希望のオペレーションシステムがインストールされているイメージを選択します。イメージはNHN Cloudが提供するパブリックイメージ、作成済のユーザーイメージ、共有イメージから選択できます。
+名前と説明を入力し、1つ以上の認証方法を選択します。**認証方式の組み合わせ**オプションは必須であり、有効にした認証方法が1つだけのときでも必ず選択する必要があります。
 
-使用するイメージによってインスタンスタイプ(flavor)が異なるので、インスタンス生成の際は、まず初めにイメージを選択してください。
+- **全て通過(AND)**: 有効にした全ての認証方法を通過すると認証に成功します(デフォルト値)。
+- **1つのみ通過(OR)**: 有効にした認証方法のうち1つだけ通過しても認証に成功します。複数の認証方法を有効にした状態で、使用中の認証方式を別の方式へ段階的に移行する際の無停止マイグレーションの用途に役立ちます。
 
-| オペレーションシステム                  | ブロックストレージ    | メモリ  |
-| ---------------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu、Debian、Rocky | 20GB以上  | 1GB以上 |
-| Windows                           | 50GB以上  | 2GB以上 |
+![console-guide-auth-mode](画像パス)
 
-<a id="root-block-storage"></a>
-### ルートブロックストレージ
+**追加**をクリックするとキーストアを作成します。作成したキーストアは次の図のようにキーストア一覧に表示されます。
 
-**OS設定**に従ってルートブロックストレージを設定します。
+![console-guide-03](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-03.png)
 
-- **新規作成及び設定**を選択した場合、**ブロックストレージタイプ**及び**ブロックストレージサイズ**を指定してルートブロックストレージを作成します。
-- **既存リソース指定**を選択した場合、**原本リソース**を指定してルートブロックストレージとして使用します。
+キーストア右上にある「さらに表示」ボタンをクリックして、詳細情報メニューから選択したキーストアの情報を確認できます。
+![console-guide-01](http://static.toastoven.net/prod_kms/2024-02-27/console-guide-01.png)
 
-#### 原本リソース
+キー保存場所リストでキー保存場所をクリックすると、次の図のようにキー保存場所を管理できるメニューが表示されます。
 
-既存の**ブロックストレージ**または**スナップショット**のいずれかを選択できます。
+![console-guide-04](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-04.png)
 
-- **ブロックストレージ**を選択した場合、既存のブロックストレージをルートブロックストレージとして使用します。
-- **スナップショット**を選択した場合、既存のスナップショットを利用してルートブロックストレージを作成します。
+<a id="create-a-key"></a>
+### キーの作成 { #create-a-key }
+Secure Key Managerは、キーを3つのタイプに区分します。機密データは文字列データを保存し、APIを使用した照会機能を提供します。対称鍵はAPIを使用したデータ暗号化/復号機能を提供します。非対称鍵はAPIを使用したデータ署名/検証機能を提供します。ユーザーは使用目的に合ったキータイプを選択してキーを作成できます。
 
-#### ブロックストレージサイズ
+**キー管理**メニューをクリックすると、次の図のようにキーを管理できる画面が表示されます。
 
-インスタンスのルートブロックストレージを決定します。
+![console-guide-05](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-05.png)
 
-- ブロックストレージのサイズはイメージが要求する最小サイズ以上にする必要があります。
+キー管理画面で**キー追加**をクリックすると、キーを作成できるウィンドウが表示されます。選択したキーのタイプに応じて、自由にデータを入力できます。
 
-インスタンスのルートブロックストレージサイズはインスタンスタイプによって異なります。
+![console-guide-06](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-06.png)
 
-| 仕様              | サポートするブロックストレージのサイズ             |
-| ---------------- | -------------------------------- |
-| u2タイプ            | 20 ～ 100 GB (仕様ごとに固定)        |
-| t2、m2、c2、r2、x1タイプ   | 20 ～2000GB       　               |
 
-> [参考]
-> ブロックストレージサイズに応じて課金されるため、基本ブロックストレージのサイズを無条件に大きくすることは非効率的です。必要に応じてブロックストレージを追加して使用することを推奨します。
-> **OS設定**で**既存リソース指定**を**ブロックストレージ**に選択した場合、ブロックストレージサイズを変更することはできません。
-> **OS設定**で**既存リソース指定**を**スナップショット**に選択した場合、ブロックストレージサイズは原本ブロックストレージサイズと同じか、それより大きく設定する必要があります。
+![console-guide-07](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-07.png)
 
-#### ブロックストレージタイプ
 
-インスタンスの基本ブロックストレージタイプを決定します。
+![console-guide-08](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-08.png)
 
-- **HDD**または**SSD**のいずれかを選択します。タイプによって料金と性能が異なります。
-- 一度選択したブロックストレージタイプは変更できません。 
 
-> [参考] 
-> **OS設定**で**既存リソース指定**を選択した場合、ブロックストレージタイプの変更はできません。
+機密データを選択すると名前、説明、データを入力できます。対称鍵/非対称鍵を選択すると名前、説明、ローテーション周期を入力できます。必須データを入力した後、**追加**をクリックするとキーを作成します。作成したキーは次の図のようにキー管理画面に表示されます。
 
-<a id="availability-zone"></a>
-### アベイラビリティゾーン(availability zone)
-
-アベイラビリティゾーンを明示的に設定しない場合、任意のゾーンに設定されます。ノクターナルによって、このインスタンスが使用できるブロックストレージが決定されます。使用したいブロックストレージが特定のノクターナルに存在する場合は、そのノクターナルに設定して使用します。
-
-> [参考] 
-> VPCのリソースは全てのアベイラビリティゾーンで使用できます。
-> **OS設定**で**既存リソース指定**を選択した場合、アベイラビリティゾーンは変更できません。
-
-アベイラビリティゾーンの詳細は[インスタンス概要のアベイラビリティゾーン](./overview/#availability-zone)を参照してください。
-
-<a id="flavor"></a>
-### タイプ(flavor)
-
-仮想ハードウェアの性能によって様々なタイプを選択できます。ただし、イメージで要求する仮想ハードウェアの性能によって選択できるタイプが制限される場合があります。詳細は[インスタンス概要](./overview)を参照してください。
+![console-guide-09](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-09.png)
 
 > [参考]
-> 1 vCPUは、スレッド1つとコア1つで構成されたソケット1つを意味し、ソケット1つ当たりのスレッド数とコア数はそれぞれ1つで一定です。
+>
+> NASサービスで暗号化ストレージを作成する際に設定したキーストアに対称鍵が保存されます。詳細は[NASユーザーガイド](https://docs.nhncloud.com/ko/Storage/NAS/ko/console-guide/#_2)を参照してください。
 
-インスタンスのタイプは、作成後もNHN Cloudコンソールで変更できます。高いタイプから低いタイプに変更することができ、低いタイプから高いタイプに変更することもできます。一部のタイプは変更できない場合もありますので、詳細は[インスタンスタイプ変更](./console-guide/#modify-flavor)を参照してください。
+<a id="import-a-key"></a>
+### キーのインポート { #import-a-key }
+Secure Key Managerは、対称鍵(AES-256)をインポートする機能をサポートします。
 
-> [注意]インスタンスのルートブロックストレージはタイプ変更で変更できません。
+![console-guide-10](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-10.png)
 
-<a id="number-of-instances"></a>
-### インスタンス数
+**キーデータ**領域にキー値を入力してアップロードできます。アップロード可能なキーの形式は次のとおりです。
 
-イメージ、アベイラビリティゾーン、インスタンスタイプ、ブロックストレージサイズ、キーペア、ネットワーク設定が、全て同じインスタンスを複数生成する場合に使用します。インスタンスの名前には、設定した名前の後ろに「-1」、「-2」のような番号が振られます。例えば、インスタンス名を「my-instance」にしてインスタンスを2個生成すると、「my-instance-1」、「my-instance-2」が生成されます。一度に生成できる最大インスタンス数は10個です。
-
-任意のアベイラビリティゾーンにインスタンスを複数生成した場合、それぞれのインスタンスは任意のアベイラビリティゾーンに生成されます。たとえば、2個のインスタンスを任意のアベイラビリティゾーンに生成した場合、2個が同じアベイラビリティゾーンに生成されることもあれば、別のアベイラビリティゾーンに生成されることもあります。全てのインスタンスを同じアベイラビリティゾーンに生成する必要がある時は、特定アベイラビリティゾーンを選択して生成します。
-
-> [参考]
-> **OS設定**で**既存リソース指定**を**ブロックストレージ**に選択した場合、または**ネットワーク設定**で**既存ネットワークインターフェイス指定**を選択した場合、インスタンス数は`1`に制限されます。
-
-<a id="key-pair"></a>
-### キーペア
-
-既存のキーペアを使用したり、新たにキーペアを生成して使用します。既存キーペアの登録はWindowsユーザーの場合、[キーペアインポート(Windowsユーザー)](./console-guide/#import-key-pairs-windows)、Mac、Linuxユーザーの場合は[キーペアインポート(Mac、Linuxユーザー)](./console-guide/#import-key-pairs-mac-and-linux)を参照してください。
-
-> [参考]
-> キーペアはユーザーアカウントに割り当てられたリソースなので、プロジェクトを削除しても削除されずに維持されます。
-
-<a id="network"></a>
-### ネットワーク
-
-VPCで定義されたサブネットの中からインスタンスに接続するサブネットを選択します。サブネットを一つ選択するたびに、インスタンスに該当のサブネットに接続するネットワークインターフェイスが作られます。選択されたサブネットの順序を変えてネットワークインターフェイスを変更することもできます。この場合、最初のネットワークインターフェイス(`eth0`)が基本ゲートウェイに設定されます。
-
-ネットワーク作成と管理の詳細については[VPC概要](/Network/VPC/ja/overview/)を参照してください。
-
-<a id="floating-ip"></a>
-### Floating IP
-
-インスタンス作成後、Floating IPを使用するかどうかを指定します。Floating IP使用を選択すると、Floating IPを新たに作成して最初のネットワークインターフェイスに接続します。この時、最初のネットワークインターフェイスは必ずインターネットゲートウェイが設定されているサブネットに接続されている必要があります。
-
-Floating IP管理は、Instance > 管理ページまたはInstance > Floating IPページで行えます。Floating IPの詳細は、[VPCコンソール使用ガイド](/Network/VPC/ja/console-guide/)を参照してください。
-
-<a id="security-group"></a>
-### セキュリティグループ
-
-インスタンスが属すセキュリティグループを指定します。一つのインスタンスは複数のセキュリティグループに属すことがあります。インスタンスが複数のセキュリティグループに属す場合は、次を参照してください。
-
-- 各セキュリティグループに属している全てのインスタンスとネットワーク通信ができます。別のインスタンスの意図していないアクセスを防ぐ必要のある機密データを持つインスタンスの場合は、慎重にセキュリティグループを指定する必要があります。
-- 各セキュリティグループの全てのルールが合わさって、該当のインスタンスの外部通信に適用されます。
-
-セキュリティグループの詳細については[VPC概要](/Network/VPC/ja/overview/)を参照してください。
-
-<a id="additional-block-storage"></a>
-### 追加ブロックストレージ
-
-インスタンス作成後、追加ブロックストレージに接続するかどうかを指定します。追加ブロックストレージ使用を選択すると、ルートブロックストレージとは別の新しいブロックストレージを作成してインスタンスに接続します。ルートブロックストレージ同様、追加ブロックストレージを作成する時に、名前、ストレージタイプ、サイズを指定できます。
-
-ルートブロックストレージはOS用途でのみ使用し、追加ブロックストレージにはよく使用するソフトウェアやデータを保管すると、ブロックストレージ接続/解除またはスナップショット機能で簡単に移行や複製ができます。またインスタンスに障害が発生した時、追加ブロックストレージのみ解除して他のインスタンスに接続することで、簡単にサービスを復旧できます。
-
-ブロックストレージ管理は、Instance > Block Storageページでもできます。ブロックストレージの詳細は[ブロックストレージガイド](/Storage/Block%20Storage/ja/overview/)を参照してください。
-
-<a id="placement-policy"></a>
-### 配置ポリシー
-
-配置ポリシーを使用して、インスタンスを異なるハイパーバイザーに配置することができます。インスタンス作成時に配置ポリシーを設定すると、同じ配置ポリシーに割り当てられたインスタンスは異なるハイパーバイザーに作成されます。
-
-> [注意]
-> 分散配置が不可能な状況の場合、インスタンス生成に失敗する可能性があります。
-
-<a id="user-script"></a>
-### ユーザースクリプト
-
-インスタンス作成後に実行するスクリプトを指定します。ユーザースクリプトは、インスタンスの最初の起動が完了した後、ネットワーク設定などの初期化プロセスが終わった後に実行されます。NHN Cloudのユーザースクリプトは公式イメージに含まれているcloud-init (Linux)、Cloudbase-init (Windows)などの自動化ツールにより実行されます。
-
-> [注意]
-> ユーザースクリプトはroot (Linux)/Administrator (Windows)ユーザー権限で実行されます。
-
-#### Linux
-ユーザースクリプトの最初の行は必ず`#!`で始まる必要があります。
 ```
-#!/bin/bash
-...
+0xXX, 0xXX, ..., 0xXX
 ```
 
-ユーザースクリプトが正常に動作するには、インスタンス内部のログファイルを確認する必要があります。スクリプトで標準出力/エラー装置に出力したログは`/var/log/cloud-init-output.log`で確認できます。
+上記のように32個のHex Stringをカンマ(`,`)またはスペース(` `)で区切って入力してキーをアップロードします。
 
-#### Windows
+<a id="register-authentication-information"></a>
+### 認証情報の登録 { #register-authentication-information }
+Secure Key Managerで作成したキーは、認証に成功したクライアントのみ使用できます。クライアント認証に使用する認証情報は**IPv4アドレス管理**、**MACアドレス管理**、**証明書管理**メニューで登録します。
 
-Windowsイメージではユーザースクリプト形式にBatchスクリプト形式、 Powershellスクリプト形式をすべてサポートします。各形式は最初の行に明示する表示子により区別されます。
+<a id="register-authentication-information-register-ipv4-address"></a>
+#### IPv4アドレスの登録
+**IPv4アドレス管理**をクリックすると、次の図のようにクライアント認証に使用するIPv4アドレス管理画面が表示されます。
 
-* Batchスクリプト
-```
-rem cmd
-...
-```
+![console-guide-11](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-11.png)
 
-* PowerShellスクリプト
-```
-#ps1_sysnative
-...
-```
+**IPv4アドレス追加**をクリックすると、図のようにIPv4アドレスを追加できるウィンドウが表示されます。
 
-BatchスクリプトとPowerShellスクリプトを一緒に使用したい場合は、下記のように記述します。
+![console-guide-12](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-12.png)
 
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
+IPv4アドレス追加**をクリックすると、図のようにIPv4アドレスを追加できるウィンドウが表示されます。
 
-ユーザースクリプトのログは、`C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`で確認できます。
+![console-guide-38](http://static.toastoven.net/prod_kms/2023-09-26-en/console-guide-38.png)
 
-ユーザースクリプト関連の詳細は、[cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html)または[Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html)ガイドを参照してください。
+クライアントIPv4アドレスと説明を入力した後、**追加**をクリックすると、IPv4アドレスを追加します。この時、IPv4アドレスにはクライアントがSecure Key Managerに接続する時に使用するIPv4アドレスを入力する必要があります。追加したIPv4アドレスは次の図のようにIPv4アドレス管理画面に表示されます。
 
-<a id="additional-instance-features"></a>
-## インスタンス追加機能
+![console-guide-13](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-13.png)
 
-<a id="change-instance-status"></a>
-### インスタンスの状態変更
+<a id="register-authentication-information-register-mac-address"></a>
+#### MACアドレスの登録
+**MACアドレス管理**をクリックすると、クライアント認証に使用するMACアドレス管理画面が表示されます。
+![console-guide-14](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-14.png)
 
-インスタンスの停止、終了、削除、起動でインスタンスの状態を変更できます。
+**MACアドレス追加**をクリックすると、MACアドレスを追加できるウィンドウが表示されます。
 
-インスタンスの停止、終了、削除のハイパーバイザリソース及び料金関連情報は下表を参照してください。
+![console-guide-15](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-15.png)
 
-| 区分 | インスタンス停止 | インスタンス終了 | インスタンス削除 |
-| --- | -- | --- | --- |
-| ハイパーバイザリソース | リソース割り当て状態維持 | リソース返却及びインスタンス起動時に再割り当て | リソース削除 |
-| インスタンス料金 | 停止料金ポリシーの適用 | 無料 | 無料 |
-| 接続された他のリソースの料金 | 課金される| 課金される | 課金される |
+クライアントMACアドレスと説明を入力した後、**追加**をクリックすると、MACアドレスを追加します。追加したMACアドレスはMACアドレス管理画面に表示されます。
 
-> [参考] GPU Instanceは終了することができず、停止時にも通常(100%)料金が発生します。
+![console-guide-16](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-16.png)
 
-<a id="create-image"></a>
-### イメージ作成
+<a id="register-authentication-information-register-client-certificates"></a>
+#### クライアント証明書の登録
+**証明書管理**をクリックすると、クライアント認証に使用する証明書管理画面が表示されます。
 
-インスタンスのルートブロックストレージからイメージを作成します。イメージ作成は、データの整合性を保障するために、インスタンスを停止した状態で行うことを推奨します。
+![console-guide-17](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-17.png)
 
-インスタンスのルートブロックストレージに空き容量が全くない場合、イメージの作成はできますが、イメージを別のインスタンスで使用するための初期化作業は行えないので正常に使用できません。イメージを作成する前にインスタンスで最低100KBの空き容量を確保する必要があります。
+**証明書追加**をクリックすると、証明書を作成できるウィンドウが表示されます。
 
-作成されたイメージは**Compute > Image**にプライベートイメージとして登録されます。登録されたイメージを利用して、元のインスタンスと同じブロックストレージを持つインスタンスを作成できます。
+![console-guide-18](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-18.png)
 
-> [注意]
-> 作成されたイメージのサイズはルートブロックストレージの実際の使用量より大きくなる可能性があります。
+証明書名、パスワード、説明を入力し、使用期間を選択した後、**追加**をクリックすると証明書を作成します。作成した証明書は次のように証明書管理画面に表示されます。証明書管理画面で**ダウンロード**アイコンをクリックすると証明書ファイルをダウンロードします。
 
-<a id="associatedisassociate-floating-ip"></a>
-### Floating IP接続と解除
+![console-guide-19](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-19.png)
 
-インスタンスの状態にかかわらずFloating IPを接続または解除できます。使用できるFloating IPがない場合や、希望するFloating IPがない場合、**生成**ボタンをクリックしてFloating IPを生成して接続できます。また**Network > VPC > Floating IP**でFloating IPを生成して使用することもできます。
+<a id="manage-user-data"></a>
+### ユーザーデータの管理 { #manage-user-data }
+Secure Key Managerは、ユーザーが作成したデータ(キー、認証情報)の詳細情報を提供します。ユーザーデータリストで**詳細情報アイコン**をクリックすると、次の図のように詳細情報が表示されます。
 
-Floating IPの詳細については[VPC概要](/Network/VPC/ja/overview/)を参照してください。
+![console-guide-20](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-20.png)
 
-<a id="modify-security-group"></a>
-### セキュリティグループ修正
+<a id="manage-user-data-delete-user-data"></a>
+#### ユーザーデータの削除
 
-インスタンスの状態に関わらずインスタンスのセキュリティグループを修正できます。修正されたセキュリティグループはすぐに適用されます。
+ユーザーが作成したデータの初期状態は**使用中**です。不要なデータを削除するには次の図のように**詳細情報**ウィンドウで**削除リクエスト**をクリックします。
 
-セキュリティグループの詳細については[セキュリティグループ](./console-guide/#security-group)と[VPC概要](/Network/VPC/ja/overview/)を参照してください。
+![console-guide-21](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-21.png)
 
-<a id="change-network-subnet"></a>
-### サブネット変更
+削除をリクエストすると、次の図のようにデータ状態が**削除予定**に変更されます。**削除予定**に変更されたデータは使用できず、7日後に完全に削除されます。
 
-インスタンスのネットワークサブネットはインスタンスが停止した状態でのみ変更できます。サブネットを追加すると、自動的にインスタンスに該当サブネットに接続されるネットワークインターフェイスが作成されます。この時、一度に複数のサブネットを追加するとインスタンスに新たに作成されるネットワークインターフェイスの順序は任意で指定されます。サブネットをインスタンスから削除すると作成されていたネットワークインターフェイスも自動的に削除されます。
+![console-guide-22](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-22.png)
 
-<a id="modify-flavor"></a>
-### インスタンスタイプ変更
+**削除予定**状態のデータは**即時削除**をクリックして削除予定時間まで待たずにすぐに削除することができます。また、**削除キャンセル**をクリックして**使用中**状態に戻すこともできます。
 
-インスタンスの仕様は、インスタンスを停止した後に変更できます。インスタンスが実行中の場合は**追加機能**の**インスタンス停止**をクリックしてインスタンスを停止します。
+![console-guide-23](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-23.png)
 
-現在の仕様に応じて、変更できるインスタンスの仕様が異なります。
+<a id="manage-user-data-rotate-symmetricasymmetric-keys"></a>
+#### 対称鍵/非対称鍵のローテーション
 
-* m2、c2、r2、t2、x1タイプのインスタンスはm2、c2、r2、t2、x1タイプのインスタンスタイプに変更できます。
-* m2、c2、r2、t2、x1タイプのインスタンスはu2タイプのインスタンスタイプに変更できません。
-* u2タイプは生成後に仕様を変更できません。同じu2タイプのインスタンスタイプへも変更できません。
+Secure Key Managerでは対称鍵/非対称鍵をローテーションできます。次の図のように対称鍵/非対称鍵詳細情報ウィンドウで自動ローテーション周期を設定できます。ローテーション周期を「0」に設定すると、自動ローテーションを行いません。
 
-インスタンスの仕様を変更すると、変更作業と変更確認作業が行われます。全ての作業が完了するとVM状態が**Shutoff**状態になり、**追加機能**の**Start instance**をクリックしてインスタンスを起動できます。
+![console-guide-24](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-24.png)
 
-> [参考]インスタンスのルートブロックストレージサイズは変更できません。インスタンスのブロックストレージ容量が足りない場合は、ブロックストレージを追加して使用します。ブロックストレージ追加方法については[ブロックストレージ概要](/Storage/Block%20Storage/ja/overview/)を参照してください。
+ローテーション周期に30以上の値を設定すると、次のローテーション日を表示し、ローテーション周期ごとにキーを自動的にローテーションします。
 
-インスタンスは変更時点を基準に変更された仕様で課金されます。
+![console-guide-25](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-25.png)
 
-<a id="change-instance-os-details"></a>
-### インスタンスOS情報の変更
+対称鍵/非対称鍵詳細情報ウィンドウで**即時ローテーション**をクリックすると、キーを即時にローテーションできます。
 
-インスタンスの状態に関係なく インスタンスOS情報を変更できます。 
+![console-guide-26](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-26.png)
 
-**Compute > Instance**サービスページで、OS情報を変更するインスタンスをクリックします。該当インスタンスの詳細情報画面の**基本情報**タブで**OS > 変更**をクリックします。
+キーをローテーションすると、次の図のようにキーバージョンリストに新しいバージョンが追加されます。
 
-> [参考] OS区分は変更できません。
+![console-guide-27](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-27.png)
 
-<a id="change-instance-description"></a>
-### インスタンス説明の変更
+例外としてキーのインポートを行って作成したキーはSecure Key Managerで作成した対称鍵とは異なり、ローテーション機能を提供しません。照会時、次のようにキーローテーション領域が存在しません。
 
-インスタンスの状態に関係なくインスタンス説明を変更できます。 
+![console-guide-28](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-28.png)
 
-**Compute > Instance**サービスページで説明を変更するインスタンスをクリックします。該当インスタンス詳細情報画面の**基本情報**タブで**説明 > 変更**をクリックします。
+<a id="approval-feature"></a>
+### 承認機能 { #approval-feature }
 
-<a id="change-instance-key-pair"></a>
-### インスタンスキーペアの変更
+<a id="approval-feature-enable-approval-feature"></a>
+#### 承認機能の有効化
+組織管理画面のガバナンス設定で承認プロセス管理設定を利用してSecure Key Managerの承認機能を有効にします。
 
-インスタンスキーペアはインスタンスが有効状態の場合にのみ変更できます。
+![console-guide-29](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-29.png)
 
-**Compute > Instance** サービスページでキーペア情報を変更するインスタンスをクリックします。該当インスタンス詳細情報画面の **基本情報**タブで**キーペア > 変更**をクリックします。
+<a id="approval-feature-set-up-roles-for-approval-feature"></a>
+#### 承認機能役割設定
+Secure Key Managerのメンバー管理から承認者(APPROVAL ADMIN)、要請者(APPROVAL MEMBER)の役割を取得して承認手続きを進めます。
 
-インスタンス基本アカウントのキーペアを選択したキーペアに変更します。インスタンス基本アカウントはインスタンス下部の詳細情報画面の**接続情報**タブで確認できます。
+![console-guide-30](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-30.png)
 
-> [注意]インスタンスのキーペアを変更すると、選択したキーペアを除いたインスタンス内のすべての公開鍵の内容が削除されます。
-> [参考]基本インフラサービスADMIN権限を持つプロジェクトメンバーのみインスタンスキーペアを変更することができ、Windows OSインスタンスの場合は変更できません。
-> [参考]インスタンス作成に使用したイメージのバージョンが低い場合、キーペア変更機能をサポートしない場合があります。
+<a id="approval-feature-differences-with-approval-feature-enabled"></a>
+#### 承認機能を有効にしたときの違い
+承認機能を有効にして承認者または要請者の役割を取得すると、Secure Key Managerに**承認リスト**と**キー保存場所管理**タブが追加されます。2つのタブは承認者、要請者のみアクセスできます。
 
-<a id="manage-placement-policies"></a>
-### 配置ポリシー管理
+![console-guide-31](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-31.png)
 
-配置ポリシーを作成及び削除することができ、配置ポリシーに割り当てられたインスタンスのリストを表示します。
+承認機能を有効にすると、キー保存場所でデータを追加、修正、削除できなくなり、変更リクエストを行うと**キー保存場所管理**タブに移動します。
 
-分散配置のための`anti-affinity`配置ポリシータイプのみ提供します。
+![console-guide-32](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-32.png)
 
-配置ポリシーにインスタンスが割り当てられている場合でも、配置ポリシーの削除が可能で、この場合、インスタンスは削除されません。
+<a id="approval-feature-make-approval-requests"></a>
+#### 承認リクエスト作成
+承認者と要請者は、**キー保存場所管理**タブでキー保存場所ごとに変更内容を承認リクエストできます。既存のキー保存場所と似た動作で追加、修正、削除を進めます。キー、認証情報の変更状態については次のように状態に表示されます。
 
-<a id="key-pairs"></a>
-## キーペア
+![console-guide-33](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-33.png)
 
-<a id="import-key-pairs-windows"></a>
-### キーペアをインポートする(Windowsユーザー)
+![console-guide-34](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-34.png)
 
-PuTTY SSHクライアントをインストールすると一緒にインストールされるputtygenプログラムでキーペアを生成し、NHN Cloudに登録して使用できます。
+キー保存場所の**承認リクエスト**ボタンで承認をリクエストし、該当プロジェクトの承認リクエストは**承認リスト**タブで確認できます。
 
-[PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)をインストールします。
+![console-guide-35](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-35.png)
 
-Puttygenを実行します。
+<a id="approval-feature-apply-approval-requests"></a>
+#### 承認リクエストの反映
+承認者は、**承認リスト**からキー保存場所の変更承認リクエストを確認し、**承認**または**拒否**を選択して反映するかどうかを決定します。
 
-![イメージ1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
+![console-guide-36](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-36.png)
 
-**パラメータ**で**RSA**(旧バージョンのputtygenではSSH-2 RSA)を選択します。 **Actions**にある**「Generate」**ボタンをクリックします。キーを生成するために空欄の中でマウスを動かします。
+承認を押すとすぐにキー保存場所に反映されます。**キー保存場所**または**キー保存場所管理**タブで変更内容を確認できます。
 
-キーが生成されたら下図のように公開鍵ファイル内容が表示されます。公開鍵全体を**キーペア作成**の**公開鍵:**入力欄に貼り付けてキーペアを登録します。
-
-![イメージ1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
-
-** Actions **の**「Save private key」**をクリックして秘密鍵を保存します。キーパスフレーズを空欄のまま秘密鍵を保存すると、**キーパスフレーズで保護されないままこのキーを保存しますか？**というメッセージが表示されます。変換された秘密鍵をより安全に使用するには、キーパスフレーズを設定して保存します。
-
-> [注意]
-インスタンスに自動的にログインするには、キーパスフレーズを使わないでください。キーパスフレーズを使用するとログインする際に秘密鍵のパスワードを直接入力する必要があります。
-
-登録したキーペアはインスタンスを生成する時に使用でき、インスタンス接続時にはこのキーペアの秘密鍵で接続する必要があります。インスタンス接続方法は[インスタンス接続方法](./overview/#how-to-access-instances)を参照してください。
-
-NHN Cloudで生成したキーペア同様、このように作成されたキーペアの秘密鍵も外部に流出すると、誰でも流出した秘密鍵でそのインスタンスにアクセスできるようになるので、慎重に管理する必要があります。
-
-
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### キーペアインポート(Mac、Linuxユーザー)
-
-MacやLinuxの「ssh-keygen」で作成したキーペアをNHN Cloudに登録して使用できます。キーペアは次のコマンドで作成します。
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-キーペアのパスワードは設定しても構いませんが、設定しなくても問題はありません。セキュリティレベルを上げるならば、パスワードの設定を推奨します。入力したキーペアの名前に拡張子「.pub」が追加されたファイル内にキーペア公開鍵が入っています。
-
-	$ cat my_key.key.pub
-	ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-
-この内容全体を**キーペア作成**の**公開鍵:**入力欄に貼り付けてキーペアを登録します。
-
-登録したキーペアはインスタンスを生成する時に使用でき、インスタンス接続時にはこのキーペアの秘密鍵で接続する必要があります。インスタンス接続方法は[インスタンス接続方法](./overview/#how-to-access-instances)を参照してください。
-
-NHN Cloudで生成したキーペア同様、このように作成されたキーペアの秘密鍵も外部に流出すると誰でも流出した秘密鍵でそのインスタンスにアクセスできるようになるので慎重に管理する必要があります。
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## 付録1. Windows言語パックの変更
-
-NHN CloudのWindowsイメージは、英語版が基本設定になっています。他の言語を基本設定にする方法は次のとおりです。
-
-1. **START > Control Panel > Clock, Language, and Region > Add a language**を選択します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. **言語基本設定変更 > 言語追加**を選択します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. **言語追加(Add a language)**で使用したい言語を選択し、**追加(Add)**をクリックします。
-![イメージ1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. 追加された言語パックを確認します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. 追加された言語パックをダウンロードし、インストールします。
-![イメージ1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. アップデートをダウンロードし、インストールします。
-![イメージ1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. インストールされた言語パックを変更するには、選択した言語をダブルクリックするか、**オプション(Options)**を選択します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. 言語オプションで、**基本言語に設定**を選択します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. 基本言語設定を適用するには、**いまログオフ(Log off now)**をクリックします。
-![イメージ1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. 再度ログインすると、ユーザーが選択した言語パックへの変更を確認できます。
-![イメージ1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## 付録2. Windowsルーティングの変更
-
-NHN CloudWindowsでルーティングを変更する方法は次のとおりです。
-
-
-* **Windowsキー + R**を押すと「ファイル名を指定して実行」ダイアログが表示されるので、名前に`cmd`と入力してOKボタンをクリックし、コマンドプロンプトウィンドウを開きます。
-
-
-  Routeコマンドを入力します。
-
-* 現在設定の出力：route print
-* 追加：route add "宛先" mask "subnet" "gateway" metric "メトリック値" if "インターフェイス番号"
-* 変更：route change "宛先" mask "subnet" "gateway" metric "メトリック値" if "インターフェイス番号"
-* 削除：route delete "宛先" mask "宛先subnet" "gateway" metric "メトリック値" if "インターフェイス番号"
-* オプション：-p (永久ルート指定)
-
-
-説明
-
-
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* メトリック値：値が小さいほど優先順位が高い
-* インターフェイス番号：route printで確認可能(上の図で赤色の枠)
-* 永久ルート：-pオプションを使用しない場合、システム再起動時に、設定したルートが初期化されるため使用(上の図で青色の枠)
-
-事例1 - 特定インターフェイスのみ外部通信設定
-
-* route changeコマンドを使用し、外部通信をしたくないインターフェイスルートのmetricを修正するか、固定IP設定でデフォルトゲートウェイ情報を入力しない方法などがあります。
-
-* Metricの修正方法
-    * インターフェイスのmetric増加
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* 固定IPの設定方法
-    1. ipconfig /allを入力し、IP情報を確認します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. 確認したIP情報を利用し、IP設定ウィンドウでデフォルトゲートウェイを除いて入力します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. route printで確認します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-事例2 - 特定帯域に対するルート設定
-
-* route addコマンドで、特定帯域に対するルートを設定します。
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-
-事例3 - 特定ルートの除去
-
-* route deleteを使用し、指定したルートを除去します。
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## 付録3. システムロケールの変更
-
-NHN CloudのWindowsで、システムロケールを変更する方法は次の通りです。
-
-1. **スタート > コントロールパネル > 時計、言語、および地域**を選択します。
-![画像1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. **地域と言語**を選択します。
-![画像1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. **管理**タブで**システムロケール変更**をクリックします。
-![画像1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. 変更するシステムロケールを選択します。
-![画像1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. 適用するにはシステムを再起動します。
-![画像1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## 付録4. ハイパーバイザーのメンテナンスのためのインスタンス再起動ガイド
-NHN Cloudは周期的にハイパーバイザーのソフトウェアをアップデートして、基本インフラサービスのセキュリティと安定性を向上させています。
-メンテナンス対象のハイパーバイザーで起動中のインスタンスは再起動を行い、メンテナンスが完了したハイパーバイザーに移動する必要があります。
-
-インスタンスを再起動するには、コンソールでインスタンス名の横に作成された**!再起動** ボタンを使用する必要があります。
-`コンソールにあるインスタンス再起動またはOSの再起動機能では、インスタンスが別のハイパーバイザに移動しません。`
-下記のガイドに従って、コンソールの再起動機能を利用してください。
-
-メンテナンス対象に指定されたインスタンスがあるプロジェクトに移動します。
-
-**1. メンテナンス対象インスタンスを確認します。**
-
-インスタンス名の前に**!再起動**ボタンがあるインスタンスが、メンテナンス対象のインスタンスです。
-**再起動**ボタンの上にマウスオーバーすると、詳細なメンテナンス時間を確認できます。
-![イメージ1](http://static.toastoven.net/prod_instance/instance_p_migration_jp_1.png)    
-
-**2. メンテナンス対象インスタンスで起動中のアプリケーションを無効化するか、終了します。**
-
-メンテナンス対象インスタンスで起動中のアプリケーションを無効化するか終了して、サービスに影響を与えないようにする必要があります。 
-やむを得ずサービスに影響を与えてしまう時は、NHN Cloudサポートに連絡してくだされば、適切な措置を案内いたします。
-
-**3. メンテナンス対象インスタンス名の横に作成された[!再起動]ボタンをクリックします。**
-
-![イメージ2](http://static.toastoven.net/prod_instance/instance_p_migration_jp_2.png)
-
-**4. インスタンスの再起動を確認するウィンドウが表示されたら、[確認] ボタンをクリックします。**
-
-![イメージ3](http://static.toastoven.net/prod_instance/instance_p_migration_jp_3.png)
-
-**5. インスタンス状態表示灯が緑に変わり、[!再起動] ボタンが消えるまで待機します。**
-
-インスタンス状態表示灯が変わらない場合や、**!再起動**ボタンが無効化されない場合は、「更新」を行ってみてください。
-
-
-インスタンスの再起動中は、該当インスタンスを一切操作できません。
-インスタンスの再起動が正常に完了しない場合は、自動的に管理者に報告され、NHN Cloudから別途連絡いたします。
+![console-guide-37](http://static.toastoven.net/prod_kms/2023-03-28-en/console-guide-37.png)
