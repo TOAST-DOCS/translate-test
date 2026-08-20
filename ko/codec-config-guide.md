@@ -1,0 +1,188 @@
+<!-- pre-align:aligned sig=66678fc2a2b5 -->
+
+<a id="data-analytics-dataflow-codec-configuration-guide"></a>
+## Data & Analytics > DataFlow > 코덱 설정 가이드 { #data-analytics-dataflow-codec-configuration-guide }
+
+<a id="overview"></a>
+## 개요 { #overview }
+
+* 코덱은 데이터의 입출력 형식을 결정하는 구성 요소입니다.
+* Source 노드에서는 데이터 인입 시, Sink 노드에서는 데이터 출력 시 코덱이 적용됩니다.
+* 다양한 코덱 타입을 지원하며, 각 코덱마다 고유한 특성과 사용 예시가 있습니다.
+
+<a id="supported-codec-type"></a>
+## 지원 코덱 타입 { #supported-codec-type }
+
+<a id="json-codec"></a>
+### json 코덱 { #json-codec }
+
+* JSON 형식의 데이터를 파싱하여 각 필드를 개별적으로 처리합니다.
+* Source 및 Sink 노드 모두 JSON의 모든 필드가 그대로 유지되기 때문에 필터링이나 가공에 유리합니다.
+
+<a id="json-codec-condition"></a>
+#### 조건
+
+* 입력 데이터
+
+```json
+{
+  "name": "DataFlow",
+  "type": "pipeline",
+  "status": "running",
+  "level": "info"
+}
+
+```
+
+* charset → `UTF-8`
+
+<a id="json-codec-process-result"></a>
+#### 처리 결과
+
+```json
+{
+  "name": "DataFlow",
+  "type": "pipeline",
+  "status": "running",
+  "level": "info"
+}
+
+```
+
+<a id="json-codec-delivery-output-data"></a>
+#### 전달 & 출력 데이터
+
+```json
+{
+  "name": "DataFlow",
+  "type": "pipeline",
+  "status": "running",
+  "level": "info"
+}
+
+```
+
+<a id="plain-codec"></a>
+### plain 코덱 { #plain-codec }
+
+* 원본 데이터를 문자열 형태로 처리합니다.
+* Source 노드에서 입력 데이터를 `message` 필드에 문자열로 저장합니다.
+* 원본 형태를 그대로 보존하고자 할 때 사용합니다.
+
+<a id="plain-codec-example---source-node"></a>
+#### plain 코덱 예제 - Source 노드
+
+##### 조건
+
+* 입력 데이터
+  ```json
+  {"name": "DataFlow","type": "pipeline","status": "running","level": "info"}
+  ```
+* charset → `UTF-8`
+
+##### 처리 결과
+
+```text
+{\"name\":\"DataFlow\",\"type\":\"pipeline\",\"status\":\"running\",\"level\":\"info\"}
+```
+
+##### 전달 데이터
+
+```json
+{
+  "message": "{\"name\":\"DataFlow\",\"type\":\"pipeline\",\"status\":\"running\",\"level\":\"info\"}"
+}
+```
+
+<a id="line-codec"></a>
+### line 코덱 { #line-codec }
+
+* 각 행을 하나의 메시지로 처리합니다.
+* Source 노드에서는 입력된 각 행을 `message` 필드에 문자열로 저장하고, Sink 노드에서는 데이터를 format에 따라 텍스트 행으로 출력합니다.
+* 행 단위 처리가 필요할 때 사용합니다.
+* line 코덱의 경우 delimiter를 통해 출력되는 메시지들의 구분자를 정의할 수 있습니다.
+    * 기본값은 줄바꿈(`\n`)입니다.
+
+<a id="line-codec-example---source-node"></a>
+#### line 코덱 예제 - Source 노드
+
+##### 조건
+
+* 입력 데이터
+  ```text
+  {"name":"DataFlow","type":"pipeline","status":"running","level":"info"}
+  ```
+* charset → `UTF-8`
+
+##### 처리 결과
+
+```text
+{\"name\":\"DataFlow\",\"type\":\"pipeline\",\"status\":\"running\",\"level\":\"info\"}
+```
+
+##### 전달 데이터
+
+```json
+{
+  "message": "{\"name\":\"DataFlow\",\"type\":\"pipeline\",\"status\":\"running\",\"level\":\"info\"}"
+}
+```
+
+<a id="line-codec-example---sink-node"></a>
+#### line 코덱 예제 - Sink 노드
+
+##### 조건
+
+* 입력 메시지
+  ```json
+  {
+    "name": "DataFlow",
+    "type": "pipeline",
+    "status": "running",
+    "level": "info"
+  }
+  ```
+* delimiter → `\n`
+* format → `[%{level}] %{name} %{status}`
+* charset → `UTF-8`
+
+##### 처리 결과
+
+```text
+[info] DataFlow running
+```
+
+##### 출력 데이터
+
+```text
+[info] DataFlow running
+```
+
+<a id="parquet-codec"></a>
+### parquet 코덱 { #parquet-codec }
+
+* Apache Parquet 형식으로 데이터를 저장합니다.
+* 다양한 압축 옵션을 지원하며, 대용량 데이터 처리에 적합합니다.
+* 제공 스키마 타입: `string`, `integer`, `long`, `float`, `double`, `boolean`, `timestamp`, `date`
+* 제공 압축 형식: `SNAPPY(기본값)`, `GZIP`, `LZ4_RAW`, `ZSTD`, `UNCOMPRESSED`
+    * [압축 형식 참조](https://parquet.apache.org/docs/file-format/data-pages/compression/)
+
+<a id="parquet-codec-example---sink-node"></a>
+#### parquet 코덱 예제 - Sink 노드
+
+##### 조건
+
+* schema
+  ```json
+  {
+    "name": "string",
+    "count": "integer", 
+    "changeable": "boolean",
+    "created":"timestamp"
+  }
+  ```
+* compression type → `SNAPPY`
+
+##### 출력 데이터
+
+Parquet는 컬럼 기반 바이너리 형식으로 저장되므로 parquet-tools, Apache Spark, pandas 등 별도 도구를 통해 확인할 수 있습니다.
