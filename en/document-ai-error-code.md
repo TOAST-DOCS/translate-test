@@ -1,4 +1,6 @@
-## AI Service > OCR > Document AI > Error Code
+<!-- machine_translated: true -->
+
+## AI Service > OCR > Document AI > Error Codes
 
 | resultCode | resultKey                          | resultMessage                                                             |
 | ---------- | ---------------------------------- | ------------------------------------------------------------------------- |

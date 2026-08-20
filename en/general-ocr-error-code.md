@@ -1,4 +1,6 @@
-## AI Service > OCR > General OCR > Error Code
+<!-- machine_translated: true -->
+
+## AI Service > OCR > General OCR > Error Codes
 
 | resultCode | resultKey                           | resultMessage                                                             |
 | ---------- | ----------------------------------- | ------------------------------------------------------------------------- |
