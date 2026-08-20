@@ -7,8 +7,8 @@
 
 Storage Gateway allows you to connect NHN Cloud storage from one or more cloud instances or on-premises devices to efficiently store and manage data.
 
-> [Note]
-> Storage Gateway is available in the Korea (Pangyo) region as of March 2025 and can be connected to Object Storage among NHN Cloud storage services.
+!!! tip "Note"
+    Storage Gateway is available in the Korea (Pangyo) region as of March 2025 and can be connected to Object Storage among NHN Cloud storage services.
 
 <a id="characteristics"></a>
 ## Characteristics { #characteristics }
@@ -31,7 +31,7 @@ With a redundant configuration, you'll have uninterrupted service in the event o
 
 <a id="accessible"></a>
 ### Accessible { #accessible }
-You can access NHN Cloud Storage from different environments by connecting a floating IP to the VPC network on the gateway or by setting up a network gateway.
+You can access NHN Cloud storage from different environments by connecting a Floating IP to the VPC network on the gateway or by using network gateway settings.
 
 <a id="secure"></a>
 ### Secure { #secure }

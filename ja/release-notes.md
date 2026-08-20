@@ -12,4 +12,4 @@
 ### 新規サービスリリース { #march-4-2025-new-service-launch }
 
 * Storage Gateway サービスリリース
-    * 韓国 (板橋) リージョンに Storage Gateway サービスがリリースされました。
+    * 韓国(板橋)リージョンに Storage Gateway サービスがリリースされました。
