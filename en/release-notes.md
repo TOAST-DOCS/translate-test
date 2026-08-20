@@ -5,7 +5,7 @@
 <a id="container-nhn-container-servicencs-release-notes"></a>
 ## Container > NHN Container Service(NCS) > Release Notes { #container-nhn-container-servicencs-release-notes }
 
-<a id="october-28-2025"></a>
+<a id="august-25-2026"></a>
 ### August 25, 2026 { #august-25-2026 }
 
 <a id="august-25-2026-added-features"></a>
