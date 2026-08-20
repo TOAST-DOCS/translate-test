@@ -1,54 +1,56 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=feffcf49c769 -->
 
 # Overview
 **Security > Secure Key Manager > Overview**
 
-Secure Key Manager is a service to store user's important data securely and control access permission. Users may store confidential data, symmetric keys, and asymmetric keys in Secure Key Manager. Data stored in Secure Key Manager can only be accessed by clients that pass the user-configured authentication method.
+Secure Key Manager is a service that securely stores users' critical data and controls access permissions. Users can store confidential data, symmetric keys, and asymmetric keys in Secure Key Manager. Only clients that pass the authentication method configured by the user can access data stored in Secure Key Manager.
 
 <a id="main-features"></a>
 ## Main Features { #main-features }
-* Data Management
+* Data management
     * Register, manage, and query confidential data
-    * Create, manage, and rotate symmetric keys, or encrypt, decrypt, and query data
-    * Create, manage, and rotate asymmetric keys, or sign, verify, and query data
-* Data Access Control
-    * Control data access by using client's IPv4 address
-    * Control data access by using client's MAC address
-    * Control data access by using client's certificate
-* Approval Feature
-    * Manage changes to data and data access control through approvers and requesters
+    * Create, manage, rotate, encrypt/decrypt data with, and query symmetric keys
+    * Create, manage, rotate, sign/verify data with, and query asymmetric keys
+* Data access control
+    * Control data access using client IPv4 addresses
+    * Control data access using client MAC addresses
+    * Control data access using client certificates
+* Approval feature
+    * Manage changes to data and data access control by separating responsibilities between approvers and requesters
 
 <a id="feature-description"></a>
 ## Feature Description { #feature-description }
-Secure Key Manager provides features to store user's important data securely and control access permission. Confidential data, symmetric keys, and asymmetric keys can be managed by Secure Key Manager.
+Secure Key Manager provides features to securely store users' critical data and control access permissions. Data that can be managed through Secure Key Manager is categorized into confidential data, symmetric keys, and asymmetric keys.
 
 <a id="confidential-data-management"></a>
 ### Confidential Data Management { #confidential-data-management }
-Secure Key Manager provides features to manage data that may be exposed to security threats if they are under client's direct management, such as database access information, or Appkey for API calls. Users can register 32KB or smaller text data as confidential data. Only the clients that pass the user-configured authentication method can access the registered confidential data. Regarding the use of confidential data management, see "Reference- Managing Database Access Information with Confidential Data Management of Secure Key Manager".
+Secure Key Manager provides a feature for managing data that poses security risks when clients manage it directly, such as database connection information and app keys used for API calls. Users can register 32KB or smaller text data as confidential data. Only clients that pass the authentication method configured by the user can access registered confidential data. For information on how to use the confidential data management feature, see "Reference - Managing Database Access Information Using Secure Key Manager's Confidential Data Management Feature."
 
 <a id="symmetric-key-management"></a>
 ### Symmetric Key Management { #symmetric-key-management }
-Secure Key Manager provides features to manage user symmetric keys that can be used to encrypt/decrypt data. Users can create and store symmetric keys in Secure Key Manager. Clients that pass the user-configured authentication method can encrypt or decrypt 32KB or smaller text data by using user symmetric keys stored in Secure Key Manager. User symmetric keys are never directly exposed to clients, but are available only for use through APIs. Therefore, user symmetric keys can be protected without being exposed to outside. In addition, by using the key rotation feature of Secure Key Manager, user symmetric key values can be updated without changing clients. Regarding the use of symmetric key management, see "Reference- Envelope Encryption with Symmetric Key Management of Secure Key Manager".
+Secure Key Manager provides a feature for managing user symmetric keys that can be used to encrypt and decrypt data. Users can create and store user symmetric keys in Secure Key Manager. Clients that pass the authentication method configured by the user can use the user symmetric keys stored in Secure Key Manager to encrypt and decrypt 32KB or smaller text data. User symmetric keys are never exposed directly to clients under any circumstances; they can only be used through the API. This protects user symmetric keys from being exposed externally. In addition, using Secure Key Manager's key rotation feature, you can renew the user symmetric key value without modifying the client. For information on how to use the symmetric key management feature, see "Reference - Envelope Encryption Using Secure Key Manager's Symmetric Key Management Feature."
 
 <a id="asymmetric-key-management"></a>
 ### Asymmetric Key Management { #asymmetric-key-management }
-Secure Key Manager provides features to manage user's asymmetric keys that can be used to sign/verify data. Users can create and store user asymmetric keys in Secure Key Manager. Clients that pass the user-configured authentication method can sign/verify 245 Byte or smaller text data by using user asymmetric keys stored in Secure Key Manager. User asymmetric keys are never directly exposed to clients, but are available only for use through APIs. Therefore, user asymmetric keys can be protected without being exposed to outside. In addition, by using the key rotation feature of Secure Key Manager, user asymmetric key values can be updated without changing clients.
+Secure Key Manager provides a feature for managing user asymmetric keys that can be used to sign and verify data. Users can create and store user asymmetric keys in Secure Key Manager. Clients that pass the authentication method configured by the user can use the user asymmetric keys stored in Secure Key Manager to sign and verify 245 Byte or smaller text data. User asymmetric keys are never exposed directly to clients under any circumstances; they can only be used through the API. This protects user asymmetric keys from the risk of being exposed externally. In addition, using Secure Key Manager's key rotation feature, you can renew the user asymmetric key value without modifying the client.
 
 <a id="access-control"></a>
 ### Access Control { #access-control }
-Secure Key Manager provides various authentication methods to protect user data. Only the clients that pass the authentication can access data stored in Secure Key Manager. The authentication methods are categorized into 'IPv4 Address Authentication' that checks client's IPv4 address, 'MAC Address Authentication' that checks client's MAC address, and 'Client Certificate Authentication' that checks client's certificate used for communication. The user must select at least one authentication method, and the combination method can be specified through the authentication method combination option. The combination method is divided into "All pass (AND, default)," which requires passing all enabled authentications, and "Any pass (OR)," which requires passing only one of the enabled authentications.
+Secure Key Manager provides various authentication methods to protect user data. Only clients that pass authentication can use data stored in Secure Key Manager. Authentication methods are categorized as follows: IPv4 Address Authentication, which verifies the client's IPv4 address; MAC Address Authentication, which verifies the client's MAC address; and Client Certificate Authentication, which verifies the certificate that the client uses for communication. Users must select at least one authentication method. If two or more are selected, the combination method can be specified through the authentication combination option. The combination method is divided into "All pass (AND, default)," which requires passing all enabled authentications, and "Any pass (OR)," which requires passing only one of the enabled authentications.
 
 <a id="approval-feature"></a>
 ### Approval Feature { #approval-feature }
-To meet the secure encryption key management requirements required by domestic and foreign security certification audits (ISMS-P, ISO, etc.), a manager's approval procedure can be added for key creation, modification, deletion, and access control.
+To meet the requirements for secure encryption key management as required by national and international security certification audits (ISMS-P, ISO, etc.), an approval process by a responsible party can be added for key creation, modification, deletion, and access control.
 
 <a id="structure-of-service"></a>
-## Structure of Service { #structure-of-service }
-To store user data securely, Secure Key Manager internally applies two encryption keys, root key and system key. Root Key is used to protect the system key, while system key is to protect user data. System Key is encrypted with Root Key and stored at the system key management server of Secure Key Manager. The Secure Key Manager server goes through authentication process during the start of the service, and retrieves encrypted system key from the system key management server of Secure Key Manager. When it is decrypted by using the root key, system key becomes available for the system key processing module. To access user data stored in Secure Key Manager abnormally, all of root key, system key, and user data must be acquired from three physically separated systems.
+## Service Structure { #structure-of-service }
+Secure Key Manager internally uses two encryption keys — a root key and a system key — to securely store user data. The root key is used to protect the system key, and the system key is used to protect user data. The system key is encrypted with the root key and stored on the Secure Key Manager system key management server. When the Secure Key Manager server starts the service, it retrieves the encrypted system key from the Secure Key Manager system key management server through an authentication process. Once the system key is decrypted using the root key, the system key processing module is able to use the system key. To access user data stored in Secure Key Manager through unauthorized means, an attacker would need to obtain the root key, system key, and user data from three physically separate systems.
 
-Users can manage Secure Key Manager on the NHN Cloud web console. Web console provides features such as creating/managing user data and creating/managing client authentication data. All user data generated in Secure Key Manager are encrypted with system key and stored in user's data storage. For client authentication data, a part of important data is encrypted with system key and stored in a client authentication data storage.
+Users can manage Secure Key Manager from the NHN Cloud web console. The web console provides features such as creating and managing user data, and creating and managing client authentication data. All user data created in Secure Key Manager is encrypted with the system key and stored in the user data store. Client authentication data has certain sensitive information encrypted with the system key and stored in the client authentication data store.
 
-Secure Key Manager provides various APIs that can be used by a client server. The client server can request querying confidential data, encrypting/decrypting with symmetric keys, and signing/verifying with asymmetric keys. Client authentication module determines whether to allow client's request by using client authentication data. If a client's request is allowed, the user data processing module decrypts encrypted user data with system key processing module and provides service.
+Secure Key Manager provides various APIs for use on client servers. Client servers can request confidential data queries, encryption/decryption using symmetric keys, and signing/verification using asymmetric keys. The client authentication module uses client authentication data to determine whether to allow a client's request. When a client's request is allowed, the user data processing module uses the system key processing module to decrypt the encrypted user data and provide the service.
 
 ![overview-01](http://static.toastoven.net/prod_kms/2023-03-28/overview-01.png)
 
@@ -56,21 +58,21 @@ Secure Key Manager provides various APIs that can be used by a client server. Th
 ## Reference { #reference }
 
 <a id="managing-database-access-information-with-confidential-data-management-of-secure-key-manager"></a>
-### Managing Database Access Information with Confidential Data Management of Secure Key Manager { #managing-database-access-information-with-confidential-data-management-of-secure-key-manager }
-An application using database stores database access information in the configuration file. As the number of servers running such applications increases, more servers store database access information, increasing the risk of exposure of such data. In addition, when there is a change in the database access information, the configuration must be modified and redeployed to the entire servers.
-With the confidential data management feature of Secure Key Manager, database access information can be safely managed centrally. Applications requiring database access can retrieve database access information from Secure Key Manager, at the start of a service. With Secure Key Manager, users can manage application servers to allow database access. Even with a change in the database access information, you just need to update information in Secure Key Manager without modifying application.
+### Managing Database Access Information Using Secure Key Manager's Confidential Data Management Feature { #managing-database-access-information-with-confidential-data-management-of-secure-key-manager }
+Applications that use a database store database connection information in configuration files. As the number of servers running the application increases, so does the number of servers storing database connection information, along with the risk of that information being exposed. Additionally, when database connection information changes, you must modify the configuration and redeploy to all servers, which is inconvenient.
+By using Secure Key Manager's confidential data management feature, you can manage database connection information centrally and securely. Applications that need database access retrieve database connection information from Secure Key Manager when the service starts. Users can manage which application servers are allowed database access through Secure Key Manager. Even when database connection information changes, you can update it in Secure Key Manager without modifying the application.
 
 <a id="envelope-encryption-with-symmetric-key-management-of-secure-key-manager"></a>
-### Envelope Encryption with Symmetric Key Management of Secure Key Manager { #envelope-encryption-with-symmetric-key-management-of-secure-key-manager }
-Secure Key Manager provides symmetric key management to enable data encryption/decryption. Applications can encrypt/decrypt data by using the Secure Key Manager API. However, encrypting/decrypting all data with Secure Key Manager API may cause performance or cost issues.  That is when Envelope Encryption comes in, as one of the most common solutions. Envelope Encryption refers to a method in which only the encryption key, which is applied to encrypt data for encryption, is protected by another encryption key from outside. In other words, data is encrypted by a local encryption key which is managed within an application, while the local encryption key is encrypted with Secure Key Manager API and stored. When the data needs to be decrypted, the encrypted local encryption key gets decrypted with the Secure Key Manager API and then used for data decryption.
+### Envelope Encryption Using Secure Key Manager's Symmetric Key Management Feature { #envelope-encryption-with-symmetric-key-management-of-secure-key-manager }
+Secure Key Manager provides a symmetric key management feature that can encrypt and decrypt data. Applications can encrypt and decrypt any desired data by using the Secure Key Manager API. However, encrypting and decrypting all data processed by an application through the Secure Key Manager API can lead to performance and cost issues. The commonly used solution in this situation is the Envelope Encryption technique. Envelope Encryption is a method that protects only the encryption key used to encrypt the target data with a separate external encryption key. Data is encrypted using a local encryption key that the application manages on its own, and the local encryption key is encrypted using the Secure Key Manager API for storage. When data decryption is needed, the encrypted local encryption key is decrypted using the Secure Key Manager API and then used to decrypt the data.
 
 <a id="glossary"></a>
 ### Glossary { #glossary }
 | Term | Description |
 |---|---|
-| Key Store | The unit of storing user data and setting authentication method |
-| Key | User data managed by Secure Key Manager (e.g. confidential data, symmetric key, or asymmetric key) |
-| Authentication Method | A method for deciding whether a client can access user data stored in Secure Key Manager |
-| Authentication Data | Client information allowing access to user data stored in Secure Key Manager |
-| Key Rotation | A task of updating key values only while retaining key ID of symmetric and asymmetric keys |
-| Key Version | A value that increases at every key rotation of symmetric or asymmetric keys |
+| Key Store | The unit for storing user data and configuring authentication methods |
+| Key | User data managed in Secure Key Manager (confidential data, symmetric keys, asymmetric keys) |
+| Authentication Method | The method used to determine whether a client can access user data stored in Secure Key Manager |
+| Authentication Data | Client information that is granted access to user data stored in Secure Key Manager |
+| Key Rotation | The process of renewing only the key value while retaining the key ID of a symmetric or asymmetric key |
+| Key Version | A value that increments each time a key rotation occurs for a symmetric or asymmetric key |

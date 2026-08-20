@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=263cd1eadb32 -->
 
 <a id="security-secure-key-manager-release-notes"></a>
@@ -52,8 +54,8 @@
 ### 2025. 06. 24. { #june-24-2025 }
 <a id="june-24-2025-feature-updates"></a>
 #### 機能改善/変更
-  * 新規エラーメッセージ追加
-    * 有効ではないURIでAPIリクエストを行った際のエラーメッセージを追加。詳細は[トラブルシューティング](/Security/Secure%20Key%20Manager/ja/troubleshooting-guide/#api-call-failure-returns-url-not-found-error-message)を参照。
+  * 新規エラーメッセージの追加
+    * 無効な URI で API リクエストを行った際のエラーメッセージを追加。詳細については、[トラブルシューティングガイド](/Security/Secure%20Key%20Manager/ja/troubleshooting-guide/#api-call-failure-returns-url-not-found-error-message)を参照してください。
 
 <a id="april-28-2025"></a>
 ### 2025. 04. 28. { #april-28-2025 }
@@ -99,9 +101,9 @@
 ### 2024. 03. 26. { #march-26-2024 }
 <a id="march-26-2024-added-new-features"></a>
 #### 新規機能追加
-  * 認証情報登録/削除API追加
-    * PIを利用してキーを使用するための認証情報を登録または削除する機能を追加しました。
-    * APIを利用して認証情報を追加または削除するには、**User Access Key ID** と **Secret Access Key** が必要です。詳細は[User Access Key](/nhncloud/ja/public-api/user-access-key)を参照してください。
+  * 認証情報登録/削除 API 追加
+    * API を利用してキーを使用するための認証情報を登録または削除できる機能を追加
+    * API を利用して認証情報を追加または削除するには、**User Access Key ID** と **Secret Access Key** が必要です。詳細については、[User Access Key](/nhncloud/ja/public-api/user-access-key) を参照してください。
 
 <a id="february-27-2024"></a>
 ### 2024. 02. 27. { #february-27-2024 }
@@ -119,9 +121,9 @@
 ### 2023. 11. 28. { #november-28-2023 }
 <a id="november-28-2023-added-new-features"></a>
 #### 新規機能追加
-  * キー追加/削除API追加
-    * APIを利用してキーを追加または削除する機能を追加
-    * APIを利用してキーを追加または削除するには **User Access Key ID** と **Secret Access Key** が必要。詳細は[User Access Key](/nhncloud/ja/public-api/user-access-key)を参照。
+  * キー追加/削除 API の追加
+    * API を使用してキーを追加または削除できる機能を追加
+    * API を使用してキーを追加または削除するには、**User Access Key ID** と **Secret Access Key** が必要です。詳細については、[User Access Key](/nhncloud/ja/public-api/user-access-key)を参照してください。
 
 <a id="september-26-2023"></a>
 ### 2023. 09. 26. { #september-26-2023 }
@@ -272,5 +274,5 @@
 <a id="may-28-2019"></a>
 ### 2019. 05. 28. { #may-28-2019 }
 <a id="may-28-2019-release-of-new-service"></a>
-#### サービスリリース
-  * 機密データ、対称鍵、非対称鍵などをアプリケーションサーバーに保存する場合、危険にさらされることがあるデータを中央集中的に安全に管理し、認証をパスしたクライアントのみアクセスできるように制御するサービスです。
+#### 新規サービスリリース
+  * 機密データ、対称鍵、非対称鍵など、アプリケーションサーバーに保存するとセキュリティリスクにさらされる可能性があるデータを一元的かつ安全に管理し、認証を通過したクライアントのみがアクセスできるよう制御するサービスです。

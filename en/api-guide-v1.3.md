@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=68657d3daf9d -->
 
 <a id="security-secure-key-manager-api-v13-guide"></a>
