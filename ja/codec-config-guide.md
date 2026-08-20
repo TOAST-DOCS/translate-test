@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=66678fc2a2b5 -->
 
 <a id="data-analytics-dataflow-codec-configuration-guide"></a>
@@ -14,7 +16,7 @@
 ## 対応コーデックタイプ { #supported-codec-type }
 
 <a id="json-codec"></a>
-### jsonコーデック { #json-codec }
+### json コーデック { #json-codec }
 
 * JSON形式のデータをパースして各フィールドを個別に処理します。
 * Source及びSinkノードともにJSONの全てのフィールドがそのまま維持されるため、フィルタリングや加工に有利です。
