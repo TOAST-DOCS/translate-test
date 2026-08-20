@@ -112,11 +112,11 @@ The traffic that flows into the load balancer is defined by listeners. By defini
 <a id="engine-version"></a>
 ## Load Balancer Engine Version { #engine-version }
 
-The load balancer provides two versions of the internal engine that handles traffic: `v1` and `v2`. Some behaviors, such as HTTP traffic processing, may vary depending on the engine version.
+Load balancers provide two versions of the internal engine that processes traffic: `v1` and `v2`. Depending on the engine version, some behaviors, such as HTTP traffic processing, may differ.
 
 | Engine Version | Description |
 | -- | -- |
-| v2 | The latest engine version. Applied by default to newly created load balancers. Features available only in the latest engine, such as HTTP/2, can be used. |
+| v2 | The latest engine version. Applied by default to newly created load balancers, and supports features available only in the latest engine, such as HTTP/2. |
 | v1 | The previous engine version. Use this version when compatibility with existing behavior is required. |
 
 * New load balancers: Always created with the latest version (`v2`).
@@ -126,36 +126,36 @@ The load balancer provides two versions of the internal engine that handles traf
 <a id="features-supported-by-engine-version"></a>
 ### Features Supported by Engine Version { #features-supported-by-engine-version }
 
-| Feature | Available from Version | Description |
+| Feature | Supported from Version | Description |
 | -- | -- | -- |
 | HTTP/2 protocol support | v2 | You can select either HTTP/1 or HTTP/2. Only HTTP/1 is supported in v1. |
 
 
 !!! danger "Caution"
-    Changing the engine version may alter how HTTP traffic is processed, as described below. Be sure to test before applying changes to a production environment.
+    Changing the engine version may alter how HTTP traffic is handled, as described below. Make sure to test thoroughly before applying changes to your production environment.
 
-    * HTTP response chunk processing: `v2` can merge HTTP responses transmitted in multiple chunks into a single response. Clients that rely on receiving responses in individual chunks may behave differently.
-    * HTTP header name casing: `v2` may convert HTTP/1.1 header names in requests and responses to lowercase before forwarding them (e.g., `Content-Type` → `content-type`). Although HTTP header names are case-insensitive by standard, backend servers or clients that handle header names in a case-sensitive manner may be affected. In particular, clients that read response headers may be impacted.
-    * HTTP standard compliance: `v2` enforces stricter compliance with the HTTP standard. If you have been using requests or responses in a non-standard format, behavior may change.
+    * HTTP response chunk handling: `v2` can merge an HTTP response that is sent in multiple chunks into a single response. Clients that rely on receiving responses in chunks may behave differently.
+    * HTTP header name casing: `v2` may convert HTTP/1.1 header names in requests and responses to lowercase (for example, `Content-Type` → `content-type`). Although the HTTP standard treats header names as case-insensitive, backend servers or clients that handle header names in a case-sensitive manner may be affected. Clients that read response headers are especially susceptible to this change.
+    * HTTP standards compliance: `v2` enforces HTTP standards more strictly. If you are using non-standard request or response formats, behavior may change.
 
-    While `v2` complies with the HTTP standard (RFC), some behaviors may differ slightly from those in the previous version (`v1`). The items listed above are representative examples, and other behaviors not explicitly mentioned may also change. After changing the engine version, make sure to perform thorough testing before applying the changes to a production environment.
+    While `v2` complies with the HTTP standard (RFC), some behaviors may differ from those of the previous version (`v1`). The items listed above are representative examples, and other behaviors not explicitly mentioned may also change. After changing the engine version, make sure to perform sufficient validation before applying the changes to your production environment.
 
 <a id="load-balancer-http-protocol-version"></a>
 ## Load Balancer HTTP Protocol Version { #load-balancer-http-protocol-version }
 
-When using the following protocols, you can select HTTP/1 or HTTP/2 as the protocol version.
+You can select HTTP/1 or HTTP/2 as the protocol version when using the following protocols:
 
-* Listener TERMINATED_HTTPS
-* Member group HTTP, HTTP_REENCRYPT
+* Listener: TERMINATED_HTTPS
+* Member group: HTTP, HTTP_REENCRYPT
 
-If you select HTTP/2, the load balancer communicates using H2C (plaintext) when HTTP is selected for the member group, or H2 (TLS encrypted) when HTTP_REENCRYPT is selected.
+If you select HTTP/2, communication uses H2C (plain text) when HTTP is selected for the member group, or H2 (TLS encryption) when HTTP_REENCRYPT is selected.
 The load balancer operates strictly according to the selected protocol version, and if HTTP/2 is selected, it cannot communicate using HTTP/1.
-If you select HTTP or HTTPS as the health check protocol, the load balancer operates using the same protocol version that is selected for the member group.
+If you select HTTP or HTTPS as the health check protocol, it operates in the same way as the protocol version selected for the member group.
 
 !!! danger "Caution"
     - This feature is not available in load balancer engine version v1.
     - If the member group protocol version is HTTP/2 and you select HTTP or HTTPS as the health check protocol without entering a Host, `NHNLB` is automatically set in the Host header.
-    - If the listener's protocol version is HTTP/2, setting the Keep-Alive timeout to **Not use** does not immediately terminate the session with the client. Because HTTP/2 multiplexes multiple requests over a single connection, the HTTP/1 behavior of closing the connection after each response does not apply.
+
 
 <a id="l7-rules"></a>
 ## L7 rules { #l7-rules }
@@ -214,19 +214,19 @@ Load Balancer operates in a `proxy mode`. The client connects to a load balancer
 <a id="proxy-protocol-and-health-check"></a>
 ### Proxy Protocol and Health Check { #proxy-protocol-and-health-check }
 
-When the proxy protocol is set on a listener, it is always sent for service traffic. However, whether it is sent for health check traffic depends on the health check port configuration. If the health check port is set to **Member port**, the proxy protocol is also sent for health check connections. If a separate port is specified using **Specify**, the proxy protocol is not sent.
+When you set the proxy protocol on a listener, the proxy protocol is always sent for service traffic. However, whether the proxy protocol is sent for health check traffic depends on the health check port configuration. If the health check port is set to **Member port**, the proxy protocol is also sent for health check connections. If a separate port is specified with **Specify**, the proxy protocol is not sent.
 
 | Listener Proxy Protocol | Health Check Port | Proxy Protocol on Health Check | Proxy Protocol on Service Traffic |
 |--|--|--|--|
 | ON | Member port | Sent | Sent |
-| ON | Custom | Not sent | Sent |
+| ON | Specify | Not sent | Sent |
 | OFF | Member port | Not sent | Not sent |
-| OFF | Custom | Not sent | Not sent |
+| OFF | Specify | Not sent | Not sent |
 
-Therefore, if the health check protocol is HTTP or HTTPS and the proxy protocol is being sent, the member instance must be able to recognize the proxy protocol in order to return a normal response and transition to the ACTIVE state. If the member instance does not support the proxy protocol, set the health check port to **Specify** so that the proxy protocol is not sent.
+Therefore, if you use HTTP or HTTPS as the health check protocol and the proxy protocol is being sent, the member instance must be able to recognize the proxy protocol in order to return a normal response and achieve ACTIVE status. If the member instance does not support the proxy protocol, set the health check port to **Specify** so that the proxy protocol is not sent.
 
 !!! tip "Note"
-    When the health check protocol is TCP, only the success of the TCP handshake with the member instance is verified. Therefore, regardless of whether the proxy protocol is sent or whether the member instance supports the proxy protocol, the instance is considered ACTIVE as long as the port is open.
+    When the health check protocol is TCP, only the success of the TCP handshake with the member instance is checked. Therefore, regardless of whether the proxy protocol is sent or whether the member instance supports the proxy protocol, the instance is considered ACTIVE as long as the port is open.
 
 
 <a id="session-connection-limits"></a>
@@ -296,12 +296,12 @@ When creating or modifying a listener, you can control the addition/removal of e
 <a id="instance-health-check"></a>
 ## Instance Health Check { #instance-health-check }
 
-NHN Cloud Load Balancer periodically tries checking the status of the instances registered as members to ensure that they operate normally. The health check is done by checking whether a expected response comes according to the specified protocol. If a normal response does not come within the specified number of times or duration, the instance is regarded as abnormal and excluded from the target of load balancing. This function enables uninterrupted service to be provided even in case of unexpected failure or maintenance.
+NHN Cloud load balancers periodically perform health checks to verify that member instances are operating normally. A health check confirms whether the expected response is received according to the specified protocol. If a normal response is not received within the specified number of attempts or time limit, the instance is considered unhealthy and excluded from load balancing. This feature ensures uninterrupted service even in the event of unexpected failures or maintenance.
 
-The load balancer supports TCP, HTTP, and HTTPS as health check protocols. For precise health check, various health check methods can be set when using each protocol.
+Load balancers support TCP, HTTP, and HTTPS as health check protocols. For precise health checks, you can configure various health check methods for each protocol.
 
+If a proxy protocol is set on the listener, the health check behavior varies depending on the health check port setting. For more information, see "Proxy Protocol and Health Check" in "Load Balancer Proxy Mode."
 
-When the proxy protocol is set on the listener, the health check behavior varies depending on the health check port configuration. For more information, see "Proxy Protocol and Health Check" in "Load Balancer Proxy Mode."
 
 <a id="statistics-function-of-load-balancer"></a>
 ## Statistics Function of Load Balancer { #statistics-function-of-load-balancer }
