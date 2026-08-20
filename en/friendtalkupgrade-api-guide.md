@@ -292,11 +292,10 @@ Content-Type: application/json;charset=UTF-8
 | - unsubscribeAuthNo   | String  | X  | 080 opt-out authentication number (up to 10 characters; if not entered, the message is sent using the opt-out information registered in the sender profile)<br>Cannot enter unsubscribeAuthNo without unsubscribeNo<br>Example: 1234        |
 | - recipientGroupingKey | String  | X  | Recipient's grouping key (a grouping key can be specified per recipient, up to 100 characters)                                                                                                                                                                                                                   |
 | senderGroupingKey    | String  | X  | Sender's grouping key (a grouping key can be specified per sender, up to 100 characters)                                                                                                                                                                                                                   |
+| groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check KakaoTalk template statistics by group tag.                                                                                                                                                                                                                                                              |
 | groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check the Kakao template statistics for each group tag.                                                                                                                                                                                                                                                              |
 | resellerCode          | String  | X  | Reseller code (used when a reseller sends messages)                                                                                                                                                                                                                                                       |
 | createUser             | String  | X  | Registrant (saved as user UUID when sending from console)                                                                                                                                                                                                                                                   |
-| statsId                | String  | 	X | Statistics ID (not included in the delivery search conditions, up to 8 characters)                                                                                                                                                            |
-
 <a id="request-image-type-sending"></a>
 #### Send Image Type
 
@@ -406,11 +405,10 @@ Content-Type: application/json;charset=UTF-8
 | - unsubscribeAuthNo   | String  | X  | 080 opt-out authentication number (up to 10 characters; if all fields are left blank, the message is sent using the opt-out information registered in the sender profile)<br>Cannot enter unsubscribeAuthNo without unsubscribeNo<br>Example: 1234        |
 | - recipientGroupingKey | String  | X  | Recipient grouping key (you can specify a grouping key per recipient; up to 100 characters)                                                                                                                                                                                                                   |
 | senderGroupingKey    | String  | X  | Sender grouping key (you can specify a grouping key per sender; up to 100 characters)                                                                                                                                                                                                                   |
+| groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check KakaoTalk template statistics by group tag.                                                                                                                                                                                                                                                              |
 | groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check the Kakao template statistics for each group tag.                                                                                                                                                                                                                                                              |
 | resellerCode          | String  | X  | Reseller code (used when a reseller sends messages)                                                                                                                                                                                                                                                       |
 | createUser             | String  | X  | Registrant (saved as user UUID when sending from console)                                                                                                                                                                                                                                                   |
-| statsId                | String  | 	X | Statistics ID (not included in the delivery search conditions, up to 8 characters)                                                                                                                                                                                                                                            |
-
 <a id="request-wide-image-type-sending"></a>
 #### Wide Image Type Delivery Request
 
@@ -520,11 +518,10 @@ Content-Type: application/json;charset=UTF-8
 | - unsubscribeAuthNo   | String  | X  | 080 free opt-out authentication number (up to 10 characters; if all fields are left empty, the message is sent using the opt-out information registered in the sender profile)<br>Cannot enter unsubscribeAuthNo without unsubscribeNo<br>Example: 1234        |
 | - recipientGroupingKey | String  | X  | Recipient grouping key (a grouping key can be specified for each recipient, up to 100 characters)                                                                                                                                                                                                                   |
 | senderGroupingKey    | String  | X  | Sender grouping key (a grouping key can be specified for each sender, up to 100 characters)                                                                                                                                                                                                                   |
+| groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check KakaoTalk template statistics by group tag.                                                                                                                                                                                                                                                              |
 | groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check the Kakao template statistics for each group tag.                                                                                                                                                                                                                                                              |
 | resellerCode          | String  | X  | Reseller code (used when a reseller sends a message)                                                                                                                                                                                                                                                       |
 | createUser             | String  | X  | Registrant (saved as user UUID when sending from console)                                                                                                                                                                                                                                                   |
-| statsId                | String  | 	X | Statistics ID (not included in the delivery search conditions, up to 8 characters)                                                                                                                                                                                                                                            |
-
 <a id="request-to-send-wide-item-list-type"></a>
 #### Wide Item List Type Delivery Request
 
@@ -663,11 +660,10 @@ Content-Type: application/json;charset=UTF-8
 | - unsubscribeAuthNo   | String  | X  | 080 free opt-out authentication number (up to 10 characters; if all are left blank, the message is sent using the free opt-out information registered in the sender profile)<br>Cannot enter unsubscribeAuthNo without unsubscribeNo<br>Example: 1234        |
 | - recipientGroupingKey | String  | X  | Recipient grouping key (a grouping key can be assigned per recipient, up to 100 characters)                                                                                                                                                                                                                   |
 | senderGroupingKey    | String  | X  | Sender grouping key (a grouping key can be assigned per sender, up to 100 characters)                                                                                                                                                                                                                   |
+| groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check KakaoTalk template statistics by group tag.                                                                                                                                                                                                                                                              |
 | groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check the Kakao template statistics for each group tag.                                                                                                                                                                                                                                                              |
 | resellerCode          | String  | X  | Reseller code (used when a reseller sends a message)                                                                                                                                                                                                                                                       |
 | createUser             | String  | X  | Registrant (saved as the user UUID when sending from the console)                                                                                                                                                                                                                                                   |
-| statsId                | String  | 	X | Statistics ID (not included in the delivery search conditions, up to 8 characters)                                                                                                                                                                                                                                            |
-
 <a id="request-to-send-premium-video-type"></a>
 #### Send Premium Video Type
 
@@ -779,11 +775,10 @@ Content-Type: application/json;charset=UTF-8
 | - unsubscribeAuthNo   | String  | X  | 080 opt-out authentication number (up to 10 characters; if all are left blank, the message is sent using the opt-out information registered in the sender's profile)<br>Cannot enter unsubscribeAuthNo without unsubscribeNo<br>Example: 1234        |
 | - recipientGroupingKey | String  | X  | Recipient grouping key (you can specify a grouping key per recipient; up to 100 characters)                                                                                                                                                                                                                   |
 | senderGroupingKey    | String  | X  | Sender grouping key (you can specify a grouping key per sender; up to 100 characters)                                                                                                                                                                                                                   |
+| groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check KakaoTalk template statistics by group tag.                                                                                                                                                                                                                                                              |
 | groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check the Kakao template statistics for each group tag.                                                                                                                                                                                                                                                              |
 | resellerCode          | String  | X  | Reseller code (used when a reseller sends messages)                                                                                                                                                                                                                                                       |
 | createUser             | String  | X  | Registrant (saved as user UUID when sending from console)                                                                                                                                                                                                                                                   |
-| statsId                | String  | 	X | Statistics ID (not included in the delivery search conditions, up to 8 characters)                                                                                                                                                            |
-
 <a id="request-to-send-commerce"></a>
 #### Commerce Type Delivery Request
 
@@ -873,7 +868,7 @@ Content-Type: application/json;charset=UTF-8
 | title | String | O | Product title (up to 30 characters, line breaks: not allowed) |
 | regularPrice | Integer | O | Regular price (0–99,999,999) |
 | discountPrice | Integer | X | Discounted price (0–99,999,999) |
-| discountRate           | Integer | X  | Discount rate (from 1 to 100). The discount rate when a discount price is present. Either the fixed discount amount or the discount price is required.                                                                                                                                                                                                                                   |
+| discountRate           | Integer | X  | Discount rate (1–100); if a discounted price exists, the discount rate is required. Either the discount rate or the fixed discount amount is required.                                                                                                                                                                                                                                   |
 | discountFixed | Integer | X | Fixed discount price (0–999,999). When a discounted price exists, either the discount rate or the fixed discount price is required. |
 | buttons | List | O | Button list<br>- For the TEXT and IMAGE types: up to 4 buttons when a coupon is applied, otherwise up to 5<br>- For the WIDE and WIDE_ITEM_LIST types: up to 2 buttons<br>- For the PREMIUM_VIDEO type: up to 1 button<br>- For the COMMERCE type: at least 1 and up to 2 buttons |
 | - name | String | O | Button title<br>- For the TEXT and IMAGE types: up to 14 characters<br>- For all other types: up to 8 characters |
@@ -906,11 +901,10 @@ Content-Type: application/json;charset=UTF-8
 | - unsubscribeAuthNo   | String  | X  | 080 free opt-out authentication number (up to 10 characters; if all fields are left empty, the message is sent using the free opt-out information registered in the sender profile)<br>Cannot enter unsubscribeAuthNo without unsubscribeNo<br>Example: 1234        |
 | - recipientGroupingKey | String  | X  | Recipient grouping key (you can specify a grouping key per recipient, up to 100 characters)                                                                                                                                                                                                                   |
 | senderGroupingKey    | String  | X  | Sender grouping key (you can specify a grouping key per sender, up to 100 characters)                                                                                                                                                                                                                   |
+| groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check KakaoTalk template statistics by group tag.                                                                                                                                                                                                                                                              |
 | groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check the Kakao template statistics for each group tag.                                                                                                                                                                                                                                                              |
 | resellerCode          | String  | X  | Reseller code (used when a reseller sends messages)                                                                                                                                                                                                                                                       |
 | createUser             | String  | X  | Registrant (saved as the user UUID when sent from the console)                                                                                                                                                                                                                                                   |
-| statsId                | String  | 	X | Statistics ID (not included in the delivery search conditions, up to 8 characters)                                                                                                                                                                                                                                            |
-
 <a id="request-to-send-carousel-feed-type"></a>
 #### Send Carousel Feed
 
@@ -1086,11 +1080,10 @@ In the carousel type, you can apply different replacement variable values to eac
 | - unsubscribeAuthNo   | String  | X  | 080 free opt-out authentication number (up to 10 characters; if all fields are left blank, the message is sent using the opt-out information registered in the sender profile)<br>Cannot enter unsubscribeAuthNo without unsubscribeNo<br>Example: 1234        |
 | - recipientGroupingKey | String  | X  | Recipient grouping key (you can specify a grouping key per recipient, up to 100 characters)                                                                                                                                                                                                                   |
 | senderGroupingKey    | String  | X  | Sender grouping key (you can specify a grouping key per sender, up to 100 characters)                                                                                                                                                                                                                   |
+| groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check KakaoTalk template statistics by group tag.                                                                                                                                                                                                                                                              |
 | groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check the Kakao template statistics for each group tag.                                                                                                                                                                                                                                                              |
 | resellerCode          | String  | X  | Reseller code (used when a reseller sends messages)                                                                                                                                                                                                                                                       |
 | createUser             | String  | X  | Registrant (saved as user UUID when sending from console)                                                                                                                                                                                                                                                   |
-| statsId                | String  | 	X | Statistics ID (not included in the delivery search conditions, up to 8 characters)                                                                                                                                                                                                                            |
-
 <a id="request-to-send-carousel-commerce-type"></a>
 #### Carousel Commerce Delivery Request
 
@@ -1208,7 +1201,7 @@ In the carousel type, you can apply different replacement variable values to eac
 | --- title            | String  | O  | Product title (up to 30 characters, line breaks not allowed)                                                                                                                                                                                                                                                       |
 | --- regularPrice     | Integer | O  | Regular price (0–99,999,999)                                                                                                                                                                                                                                                        |
 | --- discountPrice    | Integer | X  | Discounted price (0–99,999,999)                                                                                                                                                                                                                                                          |
-| --- discountRate     | Integer | X  | Discount rate (from 1 to 100). When a discounted price exists, one of the discount rate or fixed discount price is required.                                                                                                                                                                                                                                   |
+| --- discountRate     | Integer | X  | Discount rate (1–100); when a discounted price exists, one of discount rate or flat discount price is required                                                                                                                                                                                                                                   |
 | --- discountFixed    | Integer | X  | Fixed discount price (0–999,999); if a discounted price exists, either the discount rate or the fixed discount price is required                                                                                                                                                                                                                            |
 | -- buttons           | List    | O  | Carousel list button list: minimum 1, maximum 2                                                                                                                                                                                                                                                    |
 | --- name             | String  | O  | Button title<br>- Up to 14 characters for TEXT and IMAGE types<br>- Up to 8 characters for all other types                                                                                                                                                                                                                    |
@@ -1245,11 +1238,10 @@ In the carousel type, you can apply different replacement variable values to eac
 | - unsubscribeAuthNo   | String  | X  | 080 free opt-out authentication number (up to 10 characters; if all opt-out fields are left blank, the message is sent using the free opt-out information registered in the sender profile)<br>Cannot enter unsubscribeAuthNo without unsubscribeNo<br>Example: 1234        |
 | - recipientGroupingKey | String  | X  | Recipient grouping key (you can specify a grouping key per recipient, up to 100 characters)                                                                                                                                                                                                                   |
 | senderGroupingKey    | String  | X  | Sender grouping key (you can specify a grouping key per sender, up to 100 characters)                                                                                                                                                                                                                   |
+| groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check KakaoTalk template statistics by group tag.                                                                                                                                                                                                                                                              |
 | groupTagKey          | String  | X  | Group tag key (up to 40 characters). When specified, you can check the Kakao template statistics for each group tag.                                                                                                                                                                                                                                                              |
 | resellerCode          | String  | X  | Reseller code (used when a reseller sends messages)                                                                                                                                                                                                                                                                       |
 | createUser           | String  | X  | Registrant (saved as the user UUID when sending from the console)                                                                                                                                                                                                                                                   |
-| statsId              | String  | 	X | Statistics ID (not included in the delivery search conditions, up to 8 characters)                                                                                                                                                                                                                                            |
-
 <a id="response-3"></a>
 #### Response
 
@@ -1405,11 +1397,10 @@ Content-Type: application/json;charset=UTF-8
 | - unsubscribeAuthNo    | String  | X  | 080 free opt-out authentication number (up to 10 characters; if all fields are left blank, the message is sent using the free opt-out information registered in the sender's profile)<br>Cannot enter unsubscribeAuthNo without unsubscribeNo<br>Example: 1234                                                                                                           |
 | - recipientGroupingKey | String  | X  | Recipient grouping key (a grouping key can be specified per recipient; up to 100 characters) |
 | senderGroupingKey      | String  | X  | Sender grouping key (a grouping key can be specified per sender; up to 100 characters) |
+| groupTagKey            | String  | X  | Group tag key (up to 40 characters). When specified, you can check KakaoTalk template statistics by group tag.                                                                                                                                                                                                                          |
 | groupTagKey            | String  | X  | Group tag key (up to 40 characters). When specified, you can check Kakao template statistics for each group tag.                                                                                                                                                                                                                          |
 | resellerCode           | String  | X  | Reseller code (used when a reseller sends a message) |
 | createUser             | String  | X  | Registrant (saved as user UUID when sending from console) |
-| statsId                | String  | X  | Statistics ID (not included in the delivery search conditions, up to 8 characters) |
-
 <a id="response-4"></a>
 #### Response
 
@@ -2034,12 +2025,12 @@ curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Ke
 ```
 
 <a id="section-1"></a>
-## Mass Delivery Query { #section-1 }
+## Query Mass Delivery { #section-1 }
 
 Retrieves a list of mass delivery requests (master) and delivery results per recipient.
 
-* Retrieve Mass Delivery Requests returns only request-level information. For per-recipient results, use List Mass Delivery Recipients or Get a Mass Delivery Recipient.
-* The response body of Retrieve Mass Delivery Requests provides only the `content`, `image`, and `buttons` elements. Wide list, coupon, commerce, video, and carousel elements are available in Get a Mass Delivery Recipient.
+* Retrieve Mass Delivery Requests returns information at the request level only. For per-recipient results, use the recipient list retrieval or recipient retrieval APIs.
+* The body elements of the Retrieve Mass Delivery Requests response provide only `content`, `image`, and `buttons`. Wide list, coupon, commerce, video, and carousel elements can be found in Get a Mass Delivery Recipient.
 
 <a id="retrieve-mass-delivery-requests"></a>
 ### Retrieve Mass Delivery Requests { #retrieve-mass-delivery-requests }
@@ -2056,10 +2047,9 @@ Content-Type: application/json;charset=UTF-8
 
 [Path parameter]
 
-| Name   | Type   | Description    |
-|--------|--------|----------------|
-| appkey | String | Unique app key |
-
+| Name | Type | Description |
+|--------|--------|--------|
+| appkey | String | Unique appkey |
 [Header]
 
 ```
@@ -2074,17 +2064,16 @@ Content-Type: application/json;charset=UTF-8
 
 [Query parameter] No.1 or No.2 is conditionally required
 
-| Name             | Type    | Required                      | Description                                                                                                  |
-|------------------|---------|-------------------------------|--------------------------------------------------------------------------------------------------------------|
-| requestId        | String  | Conditionally required (No.1) | Request ID                                                                                                   |
-| startRequestDate | String  | Conditionally required (No.2) | Start date of delivery request (yyyy-MM-dd HH:mm)                                                           |
-| endRequestDate   | String  | Conditionally required (No.2) | End date of delivery request (yyyy-MM-dd HH:mm)                                                             |
-| plusFriendId     | String  | X                             | Sender Profile ID                                                                                            |
-| masterStatusCode | String  | X                             | Mass delivery status (WAIT, READY, SENDREADY, SENDWAIT, SENDING, COMPLETE, CANCEL, FAIL)                     |
-| chatBubbleType   | String  | X                             | Message type (TEXT, IMAGE, WIDE, WIDE_ITEM_LIST, PREMIUM_VIDEO, COMMERCE, CAROUSEL_FEED, CAROUSEL_COMMERCE) |
-| pageNum          | Integer | X                             | Page number (Default: 1)                                                                                     |
-| pageSize         | Integer | X                             | Number of results (Default: 15, Max: 1,000)                                                                  |
-
+| Name               | Type      | Required        | Description                                                                                             |
+|------------------|---------|-----------|------------------------------------------------------------------------------------------------|
+| requestId        | String  | Conditionally required (no.1) | Request ID                                                                                          |
+| startRequestDate | String  | Conditionally required (2) | Start date of delivery request (yyyy-MM-dd HH:mm)                                                                 |
+| endRequestDate   | String  | Conditionally required (no.2) | End date of delivery request (yyyy-MM-dd HH:mm)                                                                  |
+| plusFriendId     | String  | X         | Sender Profile ID                                                                                      |
+| masterStatusCode | String  | X         | Mass delivery status code (WAIT, READY, SENDREADY, SENDWAIT, SENDING, COMPLETE, CANCEL, FAIL)                     |
+| chatBubbleType   | String  | X         | Message type (TEXT, IMAGE, WIDE, WIDE_ITEM_LIST, PREMIUM_VIDEO, COMMERCE, CAROUSEL_FEED, CAROUSEL_COMMERCE) |
+| pageNum          | Integer | X         | Page number (Default: 1)                                                                             |
+| pageSize         | Integer | X         | Number of queries (Default: 15, Max: 1000)                                                                  |
 <a id="retrieve-mass-delivery-requests-response"></a>
 #### Response
 
@@ -2148,26 +2137,26 @@ Content-Type: application/json;charset=UTF-8
 | -- requestDate     | String  | O        | Date and time of request (yyyy-MM-dd HH:mm)                                                                                 |
 | -- plusFriendId    | String  | O        | Sender Profile ID                                                                                              |
 | -- senderKey       | String  | O        | Sender Key                                                                                                    |
-| -- templateCode    | String  | X        | Template Code (applicable to standard delivery requests only)                                                                                  |
-| -- masterStatusCode | String | O        | Mass delivery status code (WAIT, READY, SENDREADY, SENDWAIT, SENDING, COMPLETE, CANCEL, FAIL)                              |
+| -- templateCode    | String  | X        | Template Code (applicable only for standard type delivery requests)                                                                                  |
+| -- masterStatusCode | String | O        | Mass delivery status (WAIT, READY, SENDREADY, SENDWAIT, SENDING, COMPLETE, CANCEL, FAIL)                              |
 | -- chatBubbleType  | String  | O        | Message type                                                                                                 |
 | -- content         | String  | X        | Message content                                                                                                 |
 | -- image           | Object  | X        | Image element                                                                                                 |
-| --- imageUrl       | String  | O        | Image URL (Not Null if image object exists)                                                                        |
+| --- imageUrl       | String  | O        | Image URL (Not Null when image object exists)                                                                        |
 | --- imageLink      | String  | X        | Image link                                                                                                 |
 | -- buttons         | Array   | X        | Button list                                                                                                  |
-| --- name           | String  | O        | Button name (Not Null if buttons array item exists)                                                                     |
-| --- type           | String  | O        | Button type (Not Null if buttons array item exists)                                                                     |
+| --- name           | String  | O        | Button title (Not Null when buttons array item exists)                                                                     |
+| --- type           | String  | O        | Button type (Not Null when buttons array item exists)                                                                     |
 | --- linkMo         | String  | X        | Mobile web link                                                                                               |
 | --- linkPc         | String  | X        | PC web link                                                                                                 |
 | --- schemeIos      | String  | X        | iOS app link                                                                                                |
 | --- schemeAndroid  | String  | X        | Android app link                                                                                            |
-| --- chatExtra      | String  | X        | Meta information to be delivered for BT (Bot Transfer) type button                                                                                 |
-| --- chatEvent      | String  | X        | Bot event name to connect for BT (Bot Transfer) type button                                                                                |
+| --- chatExtra      | String  | X        | Meta information to pass for BT type button                                                                                 |
+| --- chatEvent      | String  | X        | Bot event name to connect for BT type button                                                                                |
 | --- bizFormKey     | String  | X        | Biz form key for BF type button                                                                                     |
 | -- pushAlarm       | boolean | O        | Whether push alarm is enabled                                                                                               |
 | -- fileId          | String  | X        | Recipient file ID                                                                                              |
-| -- isAutoSend      | boolean | O        | Whether to automatically send (true if automatically sent after recipient file upload is complete)                                                               |
+| -- isAutoSend      | boolean | O        | Whether auto-send is enabled (true if sent automatically after recipient file upload is complete)                                                               |
 | -- statsId         | String  | X        | Statistics ID                                                                                                   |
 | -- createUser      | String  | X        | Registrant (saved as user UUID when sending from console)                                                                            |
 | -- createDate      | String  | O        | Registration date and time                                                                                                  |
@@ -2196,7 +2185,7 @@ Content-Type: application/json;charset=UTF-8
 | Name      | Type   | Description    |
 |-----------|--------|----------------|
 | appkey    | String | App Key        |
-| requestId | String | Request ID     |
+| requestId | String | Request ID |
 
 [Header]
 
@@ -2212,16 +2201,15 @@ Content-Type: application/json;charset=UTF-8
 
 [Query parameter]
 
-| Name             | Type    | Required | Description                                                                          |
-|------------------|---------|----------|--------------------------------------------------------------------------------------|
-| startReceiveDate | String  | X        | Start date of receipt (yyyy-MM-dd HH:mm)                                             |
-| endReceiveDate   | String  | X        | End date of receipt (yyyy-MM-dd HH:mm)                                               |
-| recipientNo      | String  | X        | Recipient Number                                                                     |
-| messageStatus    | String  | X        | Request status (READY: waiting, COMPLETED: successful, FAILED: failed, CANCEL: canceled) |
-| resultCode       | String  | X        | Delivery result (MRC01: successful, MRC02: failed)                                   |
-| pageNum          | Integer | X        | Page number (Default: 1)                                                             |
-| pageSize         | Integer | X        | Number of results (Default: 15, Max: 1000)                                           |
-
+| Name | Type | Required | Description |
+|------------------|---------|----|-----------------------------------------------------------------|
+| startReceiveDate | String  | X  | Start date of receiving (yyyy-MM-dd HH:mm)                                     |
+| endReceiveDate   | String  | X  | End date of receiving (yyyy-MM-dd HH:mm)                                      |
+| recipientNo      | String  | X  | Recipient number                                                           |
+| messageStatus    | String  | X  | Request status (READY: waiting, COMPLETED: successful, FAILED: failed, CANCEL: canceled)          |
+| resultCode       | String  | X  | Delivery result (MRC01: successful, MRC02: failed)                                     |
+| pageNum          | Integer | X  | Page number (Default: 1)                                              |
+| pageSize         | Integer | X  | Number of queries (Default: 15, Max: 1000)                                   |
 <a id="list-mass-delivery-recipients-response"></a>
 #### Response
 
@@ -2257,30 +2245,30 @@ Content-Type: application/json;charset=UTF-8
 }
 ```
 
-| Name                 | Type      | Not Null | Description                                                                                                                                                      |
-|:-------------------|:--------|:---------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| header             | Object  | O        | Header area                                                                                                                                                      |
-| - resultCode       | Integer | O        | Result code                                                                                                                                                      |
-| - resultMessage    | String  | O        | Result message                                                                                                                                                   |
-| - isSuccessful     | boolean | O        | Success                                                                                                                                                          |
-| body               | Object  | X        | Body area                                                                                                                                                        |
-| - recipients       | Array   | O        | Recipient list (empty array if no results)                                                                                                                       |
-| -- requestId       | String  | O        | Request ID                                                                                                                                                       |
-| -- recipientSeq    | Integer | O        | Recipient sequence number                                                                                                                                        |
-| -- recipientNo     | String  | O        | Recipient number                                                                                                                                                 |
-| -- targeting       | String  | O        | Message target type (M: users who agreed to receive marketing messages, N: only users who agreed to receive marketing messages but are not friends, I: users who are friends) |
-| -- messageStatus   | String  | O        | Request status (READY: waiting, COMPLETED: successful, FAILED: failed, CANCEL: canceled)                                                                        |
-| -- isAddedChannel  | boolean | X        | Whether the recipient is a channel friend (provided only for successfully sent messages)                                                                         |
-| -- templateCode    | String  | X        | Template code (applicable only to standard delivery requests)                                                                                                   |
-| -- resultCode      | String  | X        | Recipient result code                                                                                                                                            |
-| -- resultCodeName  | String  | X        | Recipient result code name                                                                                                                                       |
-| -- receiveDate     | String  | X        | Received date and time                                                                                                                                           |
-| -- resultDate      | String  | X        | Result received date and time                                                                                                                                    |
-| -- resendStatusCode | String | X        | Alternative delivery status code                                                                                                                                 |
-| -- resendStatusName | String | X        | Alternative delivery status name                                                                                                                                 |
-| -- resendResultCode | String | X        | Alternative delivery result code                                                                                                                                 |
-| -- resendRequestId | String  | X        | Alternative delivery request ID                                                                                                                                  |
-| - totalCount       | Integer | O        | Total count                                                                                                                                                      |
+| Name                 | Type      | Not Null | Description                                                                        |
+|:-------------------|:--------|:---------|:--------------------------------------------------------------------------|
+| header             | Object  | O        | Header area                                                                     |
+| - resultCode       | Integer | O        | Result code                                                                     |
+| - resultMessage    | String  | O        | Result message                                                                    |
+| - isSuccessful     | boolean | O        | Success                                                                     |
+| body               | Object  | X        | Body area                                                                     |
+| - recipients       | Array   | O        | Recipient list (empty array if no results)                                                   |
+| -- requestId       | String  | O        | Request ID                                                                     |
+| -- recipientSeq    | Integer | O        | Recipient sequence number                                                                |
+| -- recipientNo     | String  | O        | Recipient number                                                                     |
+| -- targeting       | String  | O        | Target type of the message (M: users who agreed to receive marketing messages, N: users who are not friends but agreed to receive marketing messages, I: users who are friends)      |
+| -- messageStatus   | String  | O        | Request status (READY: waiting, COMPLETED: successful, FAILED: failed, CANCEL: canceled)                   |
+| -- isAddedChannel  | boolean | X        | Whether the recipient is a channel friend (provided only for successful deliveries)                                                  |
+| -- templateCode    | String  | X        | Template Code (applicable only to standard delivery requests)                                                     |
+| -- resultCode      | String  | X        | Receive result code                                                                  |
+| -- resultCodeName  | String  | X        | Receive result code name                                                                 |
+| -- receiveDate     | String  | X        | Date and time of receipt                                                                     |
+| -- resultDate      | String  | X        | Date and time of result receipt                                                                  |
+| -- resendStatusCode | String | X        | Alternative delivery status code                                                               |
+| -- resendStatusName | String | X        | Alternative delivery status name                                                               |
+| -- resendResultCode | String | X        | Alternative delivery result code                                                               |
+| -- resendRequestId | String  | X        | Alternative delivery request ID                                                               |
+| - totalCount       | Integer | O        | Total count                                                                      |
 
 [Example]
 ```
@@ -2302,12 +2290,11 @@ Content-Type: application/json;charset=UTF-8
 
 [Path parameter]
 
-| Name         | Type    | Description              |
-|--------------|---------|--------------------------|
-| appkey       | String  | Unique app key           |
-| requestId    | String  | Request ID               |
+| Name           | Type      | Description         |
+|--------------|---------|------------|
+| appkey       | String  | Unique appkey     |
+| requestId    | String  | Request ID      |
 | recipientSeq | Integer | Recipient sequence number |
-
 [Header]
 
 ```
@@ -2465,38 +2452,38 @@ Content-Type: application/json;charset=UTF-8
 }
 ```
 
-| Name                  | Type    | Not Null | Description                                                                              |
-|:----------------------|:--------|:---------|:-----------------------------------------------------------------------------------------|
-| header                | Object  | O        | Header area                                                                              |
-| - resultCode          | Integer | O        | Result code                                                                              |
-| - resultMessage       | String  | O        | Result message                                                                           |
-| - isSuccessful        | boolean | O        | Success                                                                                  |
-| message               | Object  | X        | Message body area                                                                        |
-| - requestId           | String  | O        | Request ID (Not Null if the message object exists)                                       |
-| - recipientSeq        | Integer | O        | Recipient sequence number (Not Null if the message object exists)                        |
-| - plusFriendId        | String  | O        | Sender Profile ID (Not Null if the message object exists)                                |
-| - senderKey           | String  | O        | Sender Key (Not Null if the message object exists)                                       |
-| - templateCode        | String  | X        | Template Code (only for basic delivery requests)                                         |
-| - recipientNo         | String  | O        | Recipient number (Not Null when the message object exists)                                                                                                                              |
-| - targeting           | String  | O        | Type of message target (M: users who consented to receive marketing messages, N: users who are not friends but consented to receive marketing messages only, I: users who are friends) (Not Null when the message object exists) |
-| - chatBubbleType      | String  | O        | Message type (Not Null when the message object exists)                                                                                                                                  |
-| - content             | String  | X        | Message content                                                                                                                                                                         |
-| - adult               | boolean | X        | Whether the message is for adults                                                                                                                                                       |
-| - header              | String  | X        | Header (within the message)                                                                                                                                                             |
-| - additionalContent   | String  | X        | Additional information (within the message)                                                                                                                                             |
-| - image               | Object  | X        | Image element                                                                                                                                                                           |
-| -- imageUrl           | String  | O        | Image URL (Not Null when the image object exists)                                                                                                                                       |
-| -- imageLink          | String  | X        | Image link                                                                                                                                                                              |
-| - buttons             | Array   | X        | Button list                                                                                      |
-| -- name               | String  | O        | Button title (Not Null when buttons array item exists)                                           |
-| -- type               | String  | O        | Button type (Not Null when buttons array item exists)                                            |
-| -- linkMo             | String  | X        | Mobile web link                                                                                  |
-| -- linkPc             | String  | X        | PC web link                                                                                      |
-| -- schemeIos          | String  | X        | iOS app link                                                                                     |
-| -- schemeAndroid      | String  | X        | Android app link                                                                                 |
-| -- chatExtra          | String  | X        | Meta information to send for BT type button                                                      |
-| -- chatEvent          | String  | X        | Bot event name to connect for BT type button                                                     |
-| -- bizFormKey         | String  | X        | Biz form key for BF type button                                                                  |
+| Name | Type | Not Null | Description |
+|:----------------------|:--------|:---------|:-------------------------------------------------------------------------------------------------|
+| header | Object | O | Header area |
+| - resultCode | Integer | O | Result code |
+| - resultMessage | String | O | Result message |
+| - isSuccessful | boolean | O | Success |
+| message | Object | X | Message body area |
+| - requestId | String | O | Request ID (Not Null if the message object exists) |
+| - recipientSeq | Integer | O | Recipient sequence number (Not Null if the message object exists) |
+| - plusFriendId | String | O | Sender Profile ID (Not Null if the message object exists) |
+| - senderKey | String | O | Sender Key (Not Null if the message object exists) |
+| - templateCode | String | X | Template Code (applicable only for standard delivery requests) |
+| - recipientNo         | String  | O        | Recipient number (Not Null if the message object exists)                                                                                                                             |
+| - targeting           | String  | O        | Target type of the message (M: users who consented to receive marketing, N: users who consented to receive marketing but are not friends only, I: users who are friends) (Not Null if the message object exists) |
+| - chatBubbleType      | String  | O        | Message type (Not Null if the message object exists)                                                                                                                                 |
+| - content             | String  | X        | Message content                                                                                                                                                                      |
+| - adult               | boolean | X        | Whether the message is for adults                                                                                                                                                    |
+| - header              | String  | X        | Header (within the message)                                                                                                                                                          |
+| - additionalContent   | String  | X        | Additional information (within the message)                                                                                                                                          |
+| - image               | Object  | X        | Image element                                                                                                                                                                        |
+| -- imageUrl           | String  | O        | Image URL (Not Null if the image object exists)                                                                                                                                      |
+| -- imageLink          | String  | X        | Image link                                                                                                                                                                           |
+| - buttons             | Array   | X        | Button list                                                                                            |
+| -- name               | String  | O        | Button title (Not Null if buttons array item exists)                                                              |
+| -- type               | String  | O        | Button type (Not Null if buttons array item exists)                                                              |
+| -- linkMo             | String  | X        | Mobile web link                                                                                         |
+| -- linkPc             | String  | X        | PC web link                                                                                          |
+| -- schemeIos          | String  | X        | iOS app link                                                                                         |
+| -- schemeAndroid      | String  | X        | Android app link                                                                                     |
+| -- chatExtra          | String  | X        | Meta information to send for BT type buttons                                                                      |
+| -- chatEvent          | String  | X        | Bot event name to connect for BT type buttons                                                                          |
+| -- bizFormKey         | String  | X        | Biz form key for BF type buttons                                                                               |
 | - item                | Object  | X        | Wide list element                                                                                |
 | -- list               | Array   | X        | Wide list (Nullable if item object exists)                                                       |
 | --- title             | String  | X        | Item title                                                                                       |
@@ -2507,79 +2494,79 @@ Content-Type: application/json;charset=UTF-8
 | --- schemeAndroid     | String  | X        | Android app link                                                                                 |
 | - coupon              | Object  | X        | Coupon element                                                                                   |
 | -- title              | String  | O        | Coupon title (Not Null if coupon object exists)                                                  |
-| -- description        | String  | O        | Coupon detailed description (Not Null when coupon object exists)                                 |
-| -- linkMo             | String  | X        | Mobile web link                                                                                  |
-| -- linkPc             | String  | X        | PC web link                                                                                      |
-| -- schemeAndroid      | String  | X        | Android app link                                                                                 |
-| -- schemeIos          | String  | X        | iOS app link                                                                                     |
-| - commerce            | Object  | X        | Commerce element                                                                                 |
-| -- title              | String  | O        | Product title (Not Null when commerce object exists)                                             |
-| -- regularPrice       | Integer | X        | Regular price                                                                                    |
-| -- discountPrice      | Integer | X        | Discounted price                                                                                 |
-| -- discountRate       | Integer | X        | Discount rate                                                                                    |
-| -- discountFixed      | Integer | X        | Fixed discount price                                                                             |
-| - video               | Object  | X        | Video element                                                                                    |
-| -- videoUrl           | String  | O        | KakaoTV video URL (Not Null if the video object exists)                                          |
-| -- thumbnailUrl       | String  | X        | Image URL for video thumbnail                                                                    |
-| - carousel            | Object  | X        | Carousel                                                                                         |
-| -- head               | Object  | X        | Carousel intro (Nullable if the carousel object exists)                                          |
-| --- header            | String  | O        | Carousel intro header (Not Null if the head object exists)                                       |
-| --- content           | String  | O        | Carousel intro content (Not Null if the head object exists)                                      |
-| --- imageUrl          | String  | O        | Carousel intro image URL (Not Null if the head object exists)                                    |
-| --- linkMo            | String  | X        | Mobile web link                                                                                  |
-| --- linkPc            | String  | X        | PC web link                                                                                       |
-| --- schemeIos         | String  | X        | iOS app link                                                                                      |
-| --- schemeAndroid     | String  | X        | Android app link                                                                                  |
-| -- list               | Array   | O        | Carousel list (not null when carousel object exists)                                              |
-| --- header            | String  | X        | Carousel item header                                                                              |
-| --- message           | String  | O        | Carousel item message (not null when list item exists)                                            |
-| --- additionalContent | String  | X        | Additional information                                                                            |
-| --- imageUrl          | String  | X        | Image URL                                                                                         |
-| --- imageLink         | String  | X        | Image link                                                                                        |
-| --- commerce          | Object  | X        | Commerce (within carousel)                                                                        |
-| ---- title            | String  | O        | Product title (Not Null when carousel.list.commerce exists)                                      |
+| -- description | String | O | Coupon detailed description (Not Null when coupon object exists) |
+| -- linkMo | String | X | Mobile web link |
+| -- linkPc | String | X | PC web link |
+| -- schemeAndroid | String | X | Android app link |
+| -- schemeIos | String | X | iOS app link |
+| - commerce | Object | X | Commerce element |
+| -- title | String | O | Product title (Not Null when commerce object exists) |
+| -- regularPrice | Integer | X | Regular price |
+| -- discountPrice | Integer | X | Discounted price |
+| -- discountRate | Integer | X | Discount rate |
+| -- discountFixed      | Integer | X        | Fixed discount price                                                                                           |
+| - video               | Object  | X        | Video element                                                                                           |
+| -- videoUrl           | String  | O        | KakaoTV video URL (Not Null if video object exists)                                                           |
+| -- thumbnailUrl       | String  | X        | Image URL for video thumbnail                                                                                 |
+| - carousel            | Object  | X        | Carousel                                                                                              |
+| -- head               | Object  | X        | Carousel intro (Nullable if carousel object exists)                                                              |
+| --- header            | String  | O        | Carousel intro header (Not Null if head object exists)                                                               |
+| --- content           | String  | O        | Carousel intro content (Not Null if head object exists)                                                               |
+| --- imageUrl          | String  | O        | Carousel intro image URL (Not Null if head object exists)                                                           |
+| --- linkMo            | String  | X        | Mobile web link                                                                                         |
+| --- linkPc            | String  | X        | PC web link                                                                                      |
+| --- schemeIos         | String  | X        | iOS app link                                                                                     |
+| --- schemeAndroid     | String  | X        | Android app link                                                                                 |
+| -- list               | Array   | O        | Carousel list (Not Null when carousel object exists)                                             |
+| --- header            | String  | X        | Carousel item header                                                                             |
+| --- message           | String  | O        | Carousel item message (Not Null when list item exists)                                           |
+| --- additionalContent | String  | X        | Additional information                                                                           |
+| --- imageUrl          | String  | X        | Image URL                                                                                        |
+| --- imageLink         | String  | X        | Image link                                                                                       |
+| --- commerce          | Object  | X        | Commerce (within carousel)                                                                       |
+| ---- title            | String  | O        | Product title (Not Null if carousel.list.commerce exists)                                        |
 | ---- regularPrice     | Integer | X        | Regular price                                                                                    |
-| ---- discountPrice    | Integer | X        | Discount price                                                                                   |
+| ---- discountPrice    | Integer | X        | Discounted price                                                                                 |
 | ---- discountRate     | Integer | X        | Discount rate                                                                                    |
 | ---- discountFixed    | Integer | X        | Fixed discount price                                                                             |
 | --- buttons           | Array   | X        | Button list (within carousel)                                                                    |
-| ---- name             | String  | O        | Button title (Not Null when carousel.list.buttons item exists)                                   |
-| ---- type             | String  | O        | Button type (Not Null when carousel.list.buttons item exists)                                    |
+| ---- name             | String  | O        | Button title (Not Null if carousel.list.buttons item exists)                                     |
+| ---- type             | String  | O        | Button type (Not Null if carousel.list.buttons item exists)                                      |
 | ---- linkMo           | String  | X        | Mobile web link                                                                                  |
 | ---- linkPc           | String  | X        | PC web link                                                                                      |
-| ---- schemeAndroid    | String  | X        | Android app link                                                                                 |
-| ---- schemeIos        | String  | X        | iOS app link                                                                                     |
-| ---- chatExtra        | String  | X        | Meta information to deliver for BT (Bot Transfer) type button                                   |
-| ---- chatEvent        | String  | X        | Bot event name to connect for BT (Bot Transfer) type button                                     |
-| ---- bizFormKey       | String  | X        | Biz form key for BF (Business Form) type button                                                 |
-| --- coupon            | Object  | X        | Coupon (in carousel)                                                                             |
-| ---- title            | String  | O        | Coupon title (Not Null when carousel.list.coupon exists)                                        |
-| ---- description      | String  | O        | Coupon detailed description (Not Null when carousel.list.coupon exists)                         |
-| ---- linkMo           | String  | X        | Mobile web link                                                                                  |
-| ---- linkPc           | String  | X        | PC web link                                                                                      |
-| ---- schemeAndroid    | String  | X        | Android app link                                                                                                                                                             |
-| ---- schemeIos        | String  | X        | iOS app link                                                                                                                                                                 |
-| -- tail               | Object  | X        | More button information (Nullable if the carousel object exists)                                                                                                             |
-| --- linkMo            | String  | O        | Mobile web link (Not Null if the tail object exists)                                                                                                                         |
-| --- linkPc            | String  | X        | PC web link                                                                                                                                                                  |
-| --- schemeAndroid     | String  | X        | Android app link                                                                                                                                                             |
-| --- schemeIos         | String  | X        | iOS app link                                                                                                                                                                 |
-| - templateParameter   | String  | X        | Template replacement variable entered in the recipient file (JSON string)<br>The message body in the response reflects the result of replacing this value.                   |
-| - imageParameters     | String  | X        | Image replacement value entered in the recipient file (JSON string)                                                                                                          |
-| - videoParameter      | String  | X        | Video replacement value entered in the recipient file (JSON string)<br>Contains only the value specified per recipient. If no value is specified, the message is sent using the `video` value specified in the delivery request. |
-| - pushAlarm           | boolean | O        | Whether push alarm is enabled (Not Null when message object exists)                                                                  |
-| - messageStatus       | String  | O        | Request status (READY: waiting, COMPLETED: successful, FAILED: failed, CANCEL: canceled) (Not Null when message object exists)       |
-| - isAddedChannel      | boolean | X        | Whether a channel friend was added (provided only for successfully delivered messages)                                               |
-| - resultCode          | String  | X        | Receive result code                                                                                                                  |
-| - resultCodeName      | String  | X        | Receive result code name                                                                                                             |
-| - venderResultMessage | String  | X        | Result message received from Kakao                                                                                                   |
-| - requestDate         | String  | O        | Date and time of request (yyyy-MM-dd HH:mm) (Not Null when message object exists)                                                    |
-| - createDate          | String  | O        | Date and time of registration (Not Null when message object exists)                                                                  |
-| - receiveDate         | String  | X        | Date and time of receipt                                                                                                             |
-| - resendStatusCode    | String  | X        | Alternative delivery status code                                                                                                     |
-| - resendStatusName    | String  | X        | Status code name of resending        |
-| - resendResultCode    | String  | X        | Fallback Result Code                 |
-| - resendRequestId     | String  | X        | Resending SMS request ID             |
+| ---- schemeAndroid | String | X | Android app link |
+| ---- schemeIos | String | X | iOS app link |
+| ---- chatExtra | String | X | Meta information to send for BT type button |
+| ---- chatEvent | String | X | Bot event name to connect for BT type button |
+| ---- bizFormKey | String | X | Biz form key for BF type button |
+| --- coupon | Object | X | Coupon (within carousel) |
+| ---- title | String | O | Coupon title (Not Null if carousel.list.coupon exists) |
+| ---- description | String | O | Coupon detailed description (Not Null if carousel.list.coupon exists) |
+| ---- linkMo | String | X | Mobile web link |
+| ---- linkPc | String | X | PC web link |
+| ---- schemeAndroid | String | X | Android app link |
+| ---- schemeIos | String | X | iOS app link |
+| -- tail | Object | X | View More button information (Nullable if carousel object exists) |
+| --- linkMo | String | O | Mobile web link (Not Null if tail object exists) |
+| --- linkPc | String | X | PC web link |
+| --- schemeAndroid | String | X | Android app link |
+| --- schemeIos | String | X | iOS app link |
+| - templateParameter | String | X | Template replacement variables entered in the recipient file (JSON string)<br>The message body in the response reflects the result of substituting these values. |
+| - imageParameters | String | X | Image replacement values entered in the recipient file (JSON string) |
+| - videoParameter | String | X | Video replacement values entered in the recipient file (JSON string)<br>Contains only the values specified per recipient; if no value is provided, the `video` value specified at the time of the delivery request is used. |
+| - pushAlarm           | boolean | O        | Whether push alarm is enabled (Not Null if the message object exists)                                                |
+| - messageStatus       | String  | O        | Request status (READY: waiting, COMPLETED: successful, FAILED: failed, CANCEL: canceled) (Not Null if the message object exists) |
+| - isAddedChannel      | boolean | X        | Whether the recipient is a channel friend (provided only for successful deliveries)                                  |
+| - resultCode          | String  | X        | Recipient result code                                                                                                |
+| - resultCodeName      | String  | X        | Recipient result code name                                                                                           |
+| - venderResultMessage | String  | X        | Result message received from Kakao                                                                                   |
+| - requestDate         | String  | O        | Date and time of request (yyyy-MM-dd HH:mm) (Not Null if the message object exists)                                 |
+| - createDate          | String  | O        | Date and time of registration (Not Null if the message object exists)                                                |
+| - receiveDate         | String  | X        | Date and time of receipt                                                                                             |
+| - resendStatusCode    | String  | X        | Alternative delivery status code                                                                                     |
+| - resendStatusName    | String  | X        | Status code name of resending      |
+| - resendResultCode    | String  | X        | Fallback Result Code               |
+| - resendRequestId     | String  | X        | Resending SMS request ID           |
 
 [Example]
 ```
@@ -3556,7 +3543,7 @@ Content-Type: application/json;charset=UTF-8
 | title | String | O | Product title (up to 30 characters, line breaks: not allowed) |
 | regularPrice | Integer | O | Regular price (0–99,999,999)<br>Replacement variable customization is not available; if left empty, it is saved as the fixed replacement variable `#{정상가격}` |
 | discountPrice | Integer | X | Discount price (0–99,999,999)<br>Replacement variable customization is not available; if left empty, it is saved as the fixed replacement variable `#{할인가격}` |
-| discountRate      | Integer | X  | Discount percentage (from 1 to 100). When a discounted price exists, either the discount percentage or the discount fixed amount is required.<br>Custom replacement variable not available. If left empty, saved as a fixed replacement variable `#{할인율}`. |
+| discountRate      | Integer | X  | Discount rate (1–100). If a discounted price is present, either a discount rate or a fixed discount amount is required.<br>Replacement variable customization is not available. If left blank, the value is saved as the fixed replacement variable `#{할인율}`. |
 | discountFixed | Integer | X | Fixed discount price (0–999,999); when a discount price exists, either the discount rate or the fixed discount price is required<br>Replacement variable customization is not available; if left empty, it is saved as the fixed replacement variable `#{정액할인가격}` |
 | buttons | List | O | Button list<br>- For the TEXT or IMAGE type, up to 4 buttons when a coupon is applied, otherwise up to 5<br>- For the WIDE or WIDE_ITEM_LIST type, up to 2 buttons<br>- For the PREMIUM_VIDEO type, up to 1 button<br>- For the COMMERCE type, at least 1 and up to 2 buttons |
 | - name | String | O | Button title<br>- For the TEXT or IMAGE type, up to 14 characters<br>- For other types, up to 8 characters<br>Replacement variables cannot be used |
@@ -3771,7 +3758,7 @@ Content-Type: application/json;charset=UTF-8
 | --- title | String | O | Product title (maximum 30 characters; line breaks not allowed) |
 | --- regularPrice | Integer | O | Regular price (0–99,999,999)<br>Custom replacement variables cannot be used; if left empty, the fixed replacement variable `#{정상가격}` is used |
 | --- discountPrice | Integer | X | Discount price (0–99,999,999)<br>Custom replacement variables cannot be used; if left empty, the fixed replacement variable `#{할인가격}` is used |
-| --- discountRate     | Integer | X  | Discount percentage (from 1 to 100). Required if a discounted price exists; either a discount percentage or a discount fixed amount must be specified.<br>Custom replacement variables are not supported. If the value is left empty, it is saved as the fixed replacement variable `#{할인율}`.                                                                                                                                      |
+| --- discountRate     | Integer | X  | Discount rate (1–100). Required if a discounted price exists — either discount rate or discount fixed amount must be provided.<br>Replacement variable customization is not available. If left blank, the value is saved as the fixed replacement variable `#{할인율}`. |
 | --- discountFixed | Integer | X | Fixed discount price (0–999,999); when a discount price exists, either discount rate or fixed discount price is required<br>Custom replacement variables cannot be used; if left empty, the fixed replacement variable `#{정액할인가격}` is used |
 | -- buttons | List | O | List of carousel buttons (minimum 1, maximum 2) |
 | --- name | String | O | Button title<br>- Maximum 14 characters for the TEXT or IMAGE type<br>- Maximum 8 characters for all other types<br>Replacement variables cannot be used |
