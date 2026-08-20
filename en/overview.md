@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=6a53191beba7 -->
 
 <a id="ai-service-speech-to-text-overview"></a>
@@ -40,9 +42,9 @@ For more accurate speech recognition, please refer to the following guide.
 <a id="synchronous-api"></a>
 ### Synchronous API { #synchronous-api }
 
-* Maximum capacity: 150 MB
-* Recognition time for the voice file: minimum 0.36 seconds, maximum 3,600 seconds
-* It is suitable for the case where a quick response is required for a short speech.
+* Maximum size: 150 MB
+* Supported duration for voice file recognition: minimum 0.36 seconds, maximum 3,600 seconds
+* Suitable when a fast response is needed for short audio.
 
 <a id="asynchronous-api"></a>
 ### Asynchronous API { #asynchronous-api }
