@@ -1,135 +1,88 @@
-## Compute > Instance > 문제 해결 가이드
+<!-- pre-align:aligned sig=800defce3427 -->
 
-NHN Cloud를 사용하면서 겪을 수 있는 다양한 문제들을 해결하는 방법을 설명합니다.
+<a id="troubleshooting-guide"></a>
+## Notification > KakaoTalk Bizmessage > 문제 해결 가이드 { #troubleshooting-guide }
 
-<h3>현재 NHN Cloud에서 기본 제공하는 OS 버전 이외의 버전을 사용하고 싶습니다. 개인 이미지를 업로드해서 사용할 수는 없나요?</h3>
+<a id="message-for-query-delivery-button"></a>
+### 배송 조회 버튼 { #message-for-query-delivery-button }
 
-NHN Cloud에서 제공하는 OS 버전만 이용할 수 있습니다. 개인 이미지 업로드는 지원하지 않습니다.
-개인 OS 이미지를 사용하려면 NHN Cloud에서 제공하는 이미지로 인스턴스를 생성한 후, **이미지 생성** 기능을 이용하시기 바랍니다.
-<br>
 
-<h3>인스턴스에 접속하면 "Permissions 0644 for '/Users/username/.ssh/your-key.pem' are too open." 메시지가 나타나면서 접속되지 않습니다.</h3>
+카카오 메시지에 택배사 명과 송장번호를 기재한 후, 배송 조회 버튼을 추가하시면 메시지 내용에서 택배사 명과 송장번호를 추출하여 각 택배사에서 제공하는 배송조회 페이지 링크가 자동으로 생성됩니다. 카카오에서 지원하지 않는 택배사 명과 운송장번호가 알림톡 메시지 내에 포함된 경우 배송 조회 버튼이 노출되지 않습니다.
 
-인스턴스 접속에 사용하는 키 페어의 개인 키(PEM 키)의 권한이 맞지 않아서 생기는 문제입니다.
-아래와 같이 개인 키 파일의 권한을 조정합니다.
+배송조회 버튼 지원이 가능한 택배사 목록 안내드립니다.
 
-    $ chmod 600 your-key.pem
-<br>
+지원 택배사 :
 
-<h3>CentOS 인스턴스에서 root 권한을 어떻게 얻나요?</h3>
+KGB택배 우체국택배 로젠택배 일양로지스 GTX로지스 FedEx 한진택배 경동택배 합동택배 롯데택배 농협택배 호남택배 CU 편의점택배 CVSnet편의점택배 TNT Express USPS EMS 천일택배 DHL 대신택배 건영택배 한덱스
 
-CentOS 인스턴스에서 root 권한을 얻으려면 다음과 같이 `sudo` 명령을 이용합니다.
+<span style="color:red">**이는 카카오와 해당 택배사와의 계약 관계에 의해 변동될 수 있음을 유의해주시기 바랍니다.**</span>
+<b>CJ대한통운</b>
+* 카카오 비즈메시지의 배송조회 버튼 관련 변경으로 인해, 메시지 내 CJ대한통운 송장번호가 포함된 경우, '배송조회' 버튼 없이 발송됩니다.(추후 카카오에서 변경 시, 재공지)
 
-    $ sudo su
-<br>
-
-<h3>개인 이미지를 만들어서 인스턴스를 생성하고 부팅했는데 마운트(mount) 오류가 발생합니다.</h3>
-
-두 개 이상의 블록 스토리지를 사용하는 인스턴스로 이미지를 생성하고, 생성한 이미지로 인스턴스를 만들어 부팅하면 이와 같은 문제가 발생합니다.
-
-두 개 이상의 블록 스토리지를 사용하는 인스턴스는 기본 디스크 외의 다른 디스크를 `/etc/fstab` 파일에 설정합니다. 이미지 생성 시에 이 파일 역시 복제되므로 새로운 인스턴스가 부팅될 때 `/etc/fstab` 파일이 참조하는 블록 스토리지가 없어서 마운트 오류가 발생합니다.
-
-이 문제를 해소하려면, `/etc/fstab` 파일에서 기본 디스크를 제외한 블록 스토리지 설정을 주석으로 처리하고 이미지를 생성해야 합니다.
-<br>
-<br>
-
-<h3>SSH 접속이 너무 느립니다.</h3>
-
-인스턴스가 속한 보안 그룹의 송신 부분에서 DNS를 막은 경우 발생합니다. DNS 송신을 할 수 있도록 보안 그룹을 조정합니다.
-<br>
-<br>
-
-<h3>"Could not resolve the host" 메시지가 나타나며 yum 등을 사용할 수 없습니다.</h3>
-
-인스턴스가 속한 보안 그룹의 송신 부분에서 DNS를 막은 경우 발생합니다. DNS 송신을 할 수 있도록 보안 그룹을 조정합니다.
-<br>
-<br>
-
-<a id="proxy-instance-issue">
-<h3>프록시를 사용하는 인스턴스에서의 동작이 이상합니다.</h3>
-</a>
-
-프록시를 사용하는 인스턴스에서 NHN Cloud의 Monitoring 서비스(System Monitoring, Service Monitoring, Cloud Monitoring)가 정상적으로 동작하지 않을 수 있습니다. 또한 Windows 운영체제의 경우 비밀번호 초기화 등의 문제가 발생할 수 있습니다.
-
-이러한 문제를 방지하려면, 프록시를 사용하는 인스턴스에서 `169.254.0.0/16` 대역에 대해서는 프록시를 사용하지 못하도록 설정해야 합니다. 일반적으로는 `no_proxy`라는 환경 변수에 이 값을 설정하지만, 사용하는 프록시에 따라 이 환경 변수를 무시하는 경우도 있으니 사용하는 프록시의 가이드를 참고하여 설정하시기 바랍니다.
-<br>
-<br>
-
-<h3>CentOS 인스턴스에서 패키지 업데이트에 실패합니다.</h3>
-
-다음과 같이 `yum repository` 파일을 수정하여 사용합니다.
-공식 지원이 종료된 OS는 추가 업데이트가 지원되지 않으므로, 상위 버전의 OS 사용을 권장합니다.
-
-<h4>CentOS 6.x</h4>
+택배사 별 송장번호 형식
 
 ```
-$ sudo vi /etc/yum.repos.d/CentOS-Base.repo
+우체국택배: 숫자 13자리 또는 숫자 6자리 + 숫자 7자리(구분자 '-' 또는 '_')
+예시) 1234567890123, 123456-1234567, 123456_1234567
 
-[base]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
-baseurl=https://vault.centos.org/6.10/os/$basearch/
-...
+로젠택배: 숫자 11자리 또는 숫자 3자리 + 숫자 4자리 + 숫자 4자리(구분자 '-' 또는 '_'))
+예시) 12345678901, 123-1234-1234, 123_1234_1234
 
-[updates]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
-baseurl=https://vault.centos.org/6.10/updates/$basearch/
-...
+일양로지스: 숫자 9~11자리
+예시) 123456789, 1234567890, 12345678901
 
-[extras]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
-baseurl=https://vault.centos.org/6.10/extras/$basearch/
-...
+FedEx: 숫자 12자리
+예시) 123456789012
+
+한진택배: 숫자 10자리 또는 숫자 12자리
+예시) 1234567890, 123456789012
+
+경동택배: 숫자 9~16자리 또는 숫자 4자리 + 숫자 3자리 + 숫자 6자리(구분자 '-')
+예시) 123456789, 1234567890123456, 1234-123-123456
+
+합동택배: 숫자 9~16자리
+예시) 123456789, 1234567890123456
+
+롯데택배: 숫자 12자리 또는 숫자 4자리 + 숫자 4자리 + 숫자 4자리(구분자 '-')
+예시) 123456789012, 1234-1234-1234
+
+농협택배: 숫자 12자리
+예시) 123456789012
+
+호남택배: 숫자 10자리
+예시) 1234567890
+
+천일택배: 숫자 11자리
+예시) 12345678901
+
+대신택배: 숫자 13자리
+예시) 1234567890123
+
+건영택배: 숫자 10자리
+예시) 1234567890
+
+CU편의점택배: 숫자 10자리 또는 숫자 12자리 또는 숫자 4자리 + 숫자 4자리 + 숫자 4자리(구분자 '-' 또는 '_')
+예시) 1234567890, 123456789012, 1234-1234-1234, 1234_1234_1234
+
+CVSnet편의점택배: 숫자 10자리 또는 숫자 12자리 또는 숫자 4자리 + 숫자 4자리 + 숫자 4자리(구분자 '-' 또는 '_')
+예시) 1234567890, 123456789012, 1234-1234-1234, 1234_1234_1234
+
+한덱스: 숫자 10자리 또는 숫자 14자리
+예시) 1234567890, 12345678901234
+
+TNT Express: 숫자 8~9자리
+예시) 12345678, 123456789
+
+USPS: 숫자 10자리 또는 숫자 22자리 또는 대문자 알파벳 2자리 + 숫자 9자리 + 대문자 알파벳 2자리(구분자 없음)
+예시) 1234567890, 1234567890123456789012, AB123456789AB
+
+EMS: 대문자 알파벳 2자리 + 숫자 9자리 + 대문자 알파벳 2자리(구분자 없음)
+예시) AB1234567890AB
+
+DHL: 숫자 10자리
+예시) 1234567890
+
+굿투럭: 숫자 4자리+숫자 4자리+숫자 4자리(구분자 - )
+예시) 1234-1234-1234
 
 ```
-
-<h4>CentOS 7.x</h4>
-
-```
-
-$ sudo vi /etc/yum.repos.d/CentOS-Base.repo
-
-[base]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/os/$basearch/
-...
-
-[updates]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/updates/$basearch/
-...
-
-[extras]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/extras/$basearch/
-...
-
-[centosplus]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/centosplus/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/centosplus/$basearch/
-...
-```
-
-<h4>공통</h4>
-
-```
-$ sudo yum clean all
-$ sudo yum repolist
-```
-
-<br>
-<br>
-
