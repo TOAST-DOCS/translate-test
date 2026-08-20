@@ -1,1965 +1,985 @@
-<a id="compute-instance-api-v2-guide"></a>
-## Compute > Instance > API v2 Guide
+<!-- pre-align:aligned sig=fbbff493af43 -->
 
-To use the APIs listed in this document, you will need the appropriate API endpoint and token. See [API v2 Preparations](/Compute/Compute/en/identity-api/) to prepare the necessary information for using APIs.
+<a id="network-service-gateway-api-v2-guide"></a>
+## Network > Service Gateway > API v2 Guide { #network-service-gateway-api-v2-guide }
 
-The Instance API uses the `compute` type endpoint. For the exact endpoint, see `serviceCatalog` from the token issue response.
+NHN Cloud Network services use IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS). For more information on issuing and using IaaS tokens, please refer to the [IaaS Token](/nhncloud/en/public-api/iaas-token).
+
+For Service Gateway APIs, the `network` type endpoint is used. For more details, see `serviceCatalog` from the response of token issuance.
 
 | Type | Region | Endpoint |
 |---|---|---|
-| compute | Korea (Pangyo) Region<br>Korea (Pyeongchon) Region<br>Korea (Gwangju) Region<br>Japan Region | https://kr1-api-instance-infrastructure.nhncloudservice.com<br>https://kr2-api-instance-infrastructure.nhncloudservice.com<br>https://kr3-api-instance-infrastructure.nhncloudservice.com<br>https://jp1-api-instance-infrastructure.nhncloudservice.com |
+| network | Korea (Pangyo) Region<br>Korea (Pyeongchon) Region<br>Korea (Gwangju) Region | https://kr1-api-network-infrastructure.nhncloudservice.com<br>https://kr2-api-network-infrastructure.nhncloudservice.com<br>https://kr3-api-network-infrastructure.nhncloudservice.com |
 
-In each API response, you may find fields that are not specified within this guide. Those fields are for NHN Cloud internal usage, and as such refrain from using them since they may be changed without prior notice.
+In each API response, you may find fields that are not specified within this guide. Those fields are for NHN Cloud internal usage, so refrain from using them because they may be changed without prior notice.
 
-<a id="instance-flavors"></a>
-## Instance Flavors
+<a id="service-gateway"></a>
+## Service Gateway { #service-gateway }
 
-<a id="list-flavors"></a>
-### List Flavors
+<a id="get-a-list-of-service-gateways"></a>
+### Get a List of Service Gateways { #get-a-list-of-service-gateways }
 
 ```
-GET /v2/{tenantId}/flavors
+GET /v2.0/gateways/servicegateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="get-a-list-of-service-gateways-request"></a>
 #### Request
-
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| tenantId | URL | String | O | Tenant ID |
 | tokenId | Header | String | O | Token ID |
-| minDisk | Query | Integer | - | Minimum block storage size (GB)<br>Returns only flavors with block storage sizes greater than specified value |
-| minRam | Query | Integer | - | Minimum RAM Size (MB)<br>Returns only flavors with RAM sizes greater than specified value |
-
+| id | Query | UUID | - | The ID of the service gateway to retrieve |
+| name | Query | String | - | The name of the service gateway to retrieve |
+| service_endpoint_id | Query | UUID | - | The service endpoint (or custom endpoint) ID of the service gateway to retrieve |
+| network_id | Query | UUID | - | The VPC ID of the service gateway to retrieve |
+| subnet_id | Query | UUID | - | The subnet ID of the service gateway to retrieve |
+| port_id | Query | UUID | - | The port ID of the service gateway to retrieve |
+| fixed_ip| Query | String | - | The IP address of the service gateway to retrieve |
+| include_gateway_identity| Query | Boolean | - | Whether to use a static NAT IP address |
+<a id="get-a-list-of-service-gateways-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
 |---|---|---|---|
-| flavors | Body | Object | Instance flavor list object |
-| flavors.id | Body | UUID | Instance flavor ID |
-| flavors.links | Body | Object | Instance flavor path object |
-| flavors.name | Body | String | Instance flavor name |
-
+| servicegateways | Body | Array | A list of service gateway information objects |
+| servicegateways.id | Body | UUID | The ID of the service gateway |
+| servicegateways.name | Body | String | The name of the service gateway |
+| servicegateways.port_id | Body | UUID | Port ID |
+| servicegateways.tenant_id | Body | String | Tenant ID |
+| servicegateways.network_id | Body | UUID | VPC ID |
+| servicegateways.subnet_id | Body | UUID | Subnet ID |
+| servicegateways.fixed_ip | Body | String | The IP address of the service gateway |
+| servicegateways.include_gateway_identity| Body | Boolean | Whether to use fixed NAT IP address |
+| servicegateways.service_endpoint_id | Body | UUID | Service endpoint (or Custom endpoint) ID |
+| servicegateways.service_provider | Body | String | Connection type (the value of the connected endpoint). `csp`=Service Endpoint / `user`=Custom endpoint |
+| servicegateways.description | Body | String | The description for the service gateway |
 
 <details><summary>Example</summary>
-<p>
 
 ```json
 {
-  "flavors": [
+  "servicegateways": [
     {
-      "id": "013bea75-8541-4c6f-9abe-a03fee3d74fe",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/013bea75-8541-4c6f-9abe-a03fee3d74fe",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/013bea75-8541-4c6f-9abe-a03fee3d74fe",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "x1.c32m256"
-    },
-    {
-      "id": "0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "x1.c32m128"
+      "status": "AVAILABLE",
+      "include_gateway_identity": true,
+      "description": "",
+      "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+      "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+      "fixed_ip": "192.168.0.82",
+      "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+      "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+      "service_provider": "csp",
+      "create_time": "2023-08-31 02:11:09",
+      "project_id": "302406c4a1d44b2cb2bc07a652c0b202",
+      "port_id": "182a31be-9e29-400d-983b-f701cf9b4bbc",
+      "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+      "name": "sgw_test"
     }
   ]
 }
 ```
 
-</p>
 </details>
 
 ---
-
-<a id="list-flavors-with-details"></a>
-### List Flavors with Details
+<a id="get-a-service-gateway"></a>
+### Get a Service Gateway { #get-a-service-gateway }
 
 ```
-GET /v2/{tenantId}/flavors/detail
+GET /v2.0/gateways/servicegateways/{serviceGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
-#### Request
-
-This API does not require a request body.
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|---|
-| tenantId | URL | String | O | Tenant ID |
-| tokenId | Header | String | O | Token ID |
-| minDisk | Query | Integer | - | Minimum block storage size (GB)<br/>Returns only flavors with block storage sizes greater than specified value |
-| minRam | Query | Integer | - | Minimum RAM Size (MB)<br/>Returns only flavors with RAM sizes greater than specified value |
-
-#### Response
-
-| Name | Type | Format | Description             |
-|---|---|---|----------------|
-| flavors | Body | Object | Instance flavor list object  |
-| flavors.id | Body | UUID | Instance flavor ID     |
-| flavors.links | Body | Object | Instance flavor path object  |
-| flavors.name | Body | String | Instance flavor name     |
-| flavors.ram | Body | Integer | Memory size (MB)     |
-| flavors.OS-FLV-DISABLED:disabled | Body | Boolean | Indicates whether the flavor is enabled         |
-| flavors.vcpus | Body | Integer | Number of vCPUs        |
-| flavors.extra_specs | Body | Object | Extra specifications object       |
-| flavors.swap | Body | Integer | Swap space size (GB)  |
-| flavors.os-flavor-access:is_public | Body | Boolean | Indicates whether the flavor is publicly visible          |
-| flavors.rxtx_factor | Body | Float | Network transmission packet rate |
-| flavors.OS-FLV-EXT-DATA:ephemeral | Body | Integer | Temporary block storage size (GB)     |
-| flavors.disk | Body | Integer | Root block storage size (GB) |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "flavors": [
-    {
-      "name": "x1.c32m256",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/97604802-a090-43fa-a5ce-c7cfd737fbba",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/97604802-a090-43fa-a5ce-c7cfd737fbba",
-          "rel": "bookmark"
-        }
-      ],
-      "ram": 262144,
-      "OS-FLV-DISABLED:disabled": false,
-      "vcpus": 32,
-      "extra_specs": {
-        "flavor_type": "performance"
-      },
-      "swap": "",
-      "os-flavor-access:is_public": true,
-      "rxtx_factor": 1.0,
-      "OS-FLV-EXT-DATA:ephemeral": 0,
-      "disk": 0,
-      "id": "97604802-a090-43fa-a5ce-c7cfd737fbba"
-    },
-    {
-      "name": "x1.c32m128",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/31fa632d-aeec-4f12-8a57-ce9d146228e5",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/31fa632d-aeec-4f12-8a57-ce9d146228e5",
-          "rel": "bookmark"
-        }
-      ],
-      "ram": 131072,
-      "OS-FLV-DISABLED:disabled": false,
-      "vcpus": 32,
-      "extra_specs": {
-        "flavor_type": "performance"
-      },
-      "swap": "",
-      "os-flavor-access:is_public": true,
-      "rxtx_factor": 1.0,
-      "OS-FLV-EXT-DATA:ephemeral": 0,
-      "disk": 0,
-      "id": "31fa632d-aeec-4f12-8a57-ce9d146228e5"
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="availability-zones"></a>
-## Availability Zones
-
-<a id="list-availability-zones"></a>
-### List Availability Zones
-
-```
-GET /v2/{tenantId}/os-availability-zone
-X-Auth-Token: {tokenId}
-```
-
+<a id="get-a-service-gateway-request"></a>
 #### Request
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| tenantId | URL | String | O | Tenant ID |
 | tokenId | Header | String | O | Token ID |
+| serviceGatewayId | URL | UUID | O | The ID of the service gateway |
 
+<a id="get-a-service-gateway-response"></a>
 #### Response
+
 | Name | Type | Format | Description |
 |---|---|---|---|
-| availabilityZoneInfo | Body | Object | Availability zone info object |
-| availabilityZoneInfo.zoneName | Body | String | Availability zone name |
-| availabilityZoneInfo.zoneState | Body | Object | Availability zone state info object |
-| availabilityZoneInfo.available | Body | Object | Availability zone state |
+| servicegateway | Body | Object | Service gateway information object|
+| servicegateway.id | Body | UUID | The ID of the service gateway |
+| servicegateway.name | Body | String | The name of the service gateway |
+| servicegateway.port_id | Body | UUID | Port ID |
+| servicegateway.tenant_id | Body | String | Tenant ID |
+| servicegateway.network_id | Body | UUID | VPC ID |
+| servicegateway.subnet_id | Body | UUID | Subnet ID |
+| servicegateway.fixed_ip | Body | String | The IP address of the service gateway |
+| servicegateway.include_gateway_identity| Body | Boolean | Whether to use fixed NAT IP address |
+| servicegateway.service_endpoint_id | Body | UUID | Service endpoint (or custom endpoint) ID |
+| servicegateway.service_provider | Body | String | Connection type (value of the connected endpoint). `csp`=Service Endpoint / `user`=Custom endpoint |
+| servicegateway.api_endpoints | Body | Array | List of API endpoint information objects |
+| servicegateway.api_endpoints.domain_name | Body | String | API endpoint domain |
+| servicegateway.description | Body | String | The description for the service gateway |
 
 <details><summary>Example</summary>
-<p>
 
 ```json
 {
-    "availabilityZoneInfo": [
+  "servicegateway": {
+    "status": "AVAILABLE",
+    "include_gateway_identity": true,
+    "description": "",
+    "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+    "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "fixed_ip": "192.168.0.82",
+    "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+    "api_endpoints": [
       {
-        "zoneState": {
-          "available": true
-        },
-        "zoneName": "kr-pub-a"
-      },
-      {
-        "zoneState": {
-          "available": true
-        },
-        "zoneName": "kr-pub-b"
-      }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="key-pairs"></a>
-## Key Pairs
-
-<a id="list-key-pairs"></a>
-### List Key Pairs
-```
-GET /v2/{tenantId}/os-keypairs
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-This API does not require a request body.
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|---|
-| tenantId | URL | String | O | Tenant ID |
-| tokenId | Header | String | O | Token ID |
-
-#### Response
-
-| Name | Type | Format | Description |
-|---|---|---|---|
-| keypairs | Body | Array | List of key pair objects |
-| keypairs.keypair | Body | Object | Key pair object |
-| keypairs.keypair.name | Body | String | Key pair name |
-| keypairs.keypair.public_key | Body | String | Pubic key |
-| keypairs.keypair.fingerprint | Body | String | Key pair fingerprint |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "keypairs": [
-    {
-      "keypair": {
-        "public_key": "ssh-rsa ... Generated-by-Nova",
-        "name": "keypair",
-        "fingerprint": "SHA256:..."
-      }
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="show-key-pair"></a>
-### Show Key Pair
-```
-GET /v2/{tenantId}/os-keypairs/{keypairName}
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-This API does not require a request body.
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|---|
-| tenantId | URL | String | O | Tenant ID |
-| keypairName | URL | String | O | Key pair name |
-| tokenId | Header | String | O | Token ID |
-
-#### Response
-
-| Name | Type | Format | Description |
-|---|---|---|---|
-| keypair | Body | Object | List of key pair objects |
-| keypair.public_key | Body | String | Pulbic key |
-| keypair.user_id | Body | String | Key pair owner ID |
-| keypair.name | Body | String | Key pair name |
-| keypair.deleted | Body | Boolean | Indicates whether the key pair has been deleted |
-| keypair.created_at | Body | Datetime | Key pair created time<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.updated_at | Body | Datetime | Key pair updated time<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.deleted_at | Body | Datetime | Key pair deleted time<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.fingerprint | Body | String | Key pair fingerprint |
-| keypair.id | Body | Integer | Key pair ID |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "keypair": {
-    "public_key": "ssh-rsa ... Generated-by-Nova",
-    "user_id": "826a1213b3f746829515486965690dfe",
-    "name": "keypair",
-    "deleted": false,
-    "created_at": "2020-02-07T03:46:48.000000",
-    "updated_at": null,
-    "fingerprint": "SHA256:...",
-    "deleted_at": null,
-    "id": 51
-  }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="createregister-key-pair"></a>
-### Create/Register Key Pair
-
-```
-POST /v2/{tenantId}/os-keypairs
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|---|
-| tenantId | URL | String | O | Tenant ID |
-| tokenId | Header | String | O | Token ID |
-| keypair | Body | Object | O | Key pair object |
-| keypair.name | Body | String | O | Key pair name to create or register |
-| keypair.public_key | Body | String | - | Public key to register. If left blank, a new key pair is created. |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "keypair": {
-        "name": "keypair-d20a3d59-9433-4b79-8726-20b431d89c78",
-        "public_key": "ssh-rsa ... Generated-by-Nova"
-    }
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-| Name | Type | Format | Description |
-|---|---|---|---|
-| keypair | Body | Object | Key pair object |
-| keypair.public_key | Body | String | Public key |
-| keypair.private_key | Body | String | Private key. Visible if a key pair has been newly generated. |
-| keypair.user_id | Body | String | Key pair owner ID |
-| keypair.name | Body | String | Key pair name |
-| keypair.fingerprint | Body | String | Key pair fingerprint |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "keypair": {
-        "fingerprint": "SHA256:+EZoD ... /DKiGnY4zf5tYrcix0",
-        "name": "keypair",
-        "public_key": "ssh-rsa ... Generated-by-Nova",
-        "user_id": "436f727b7c9142f896ddd56be591dd7f"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="delete-key-pair"></a>
-### Delete Key Pair
-```
-DELETE /v2/{tenantId}/os-keypairs/{keypairName}
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-This API does not require a request body.
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|---|
-| tenantId | URL | String | O | Tenant ID |
-| keypairName | URL | String | O | Key pair name |
-| tokenId | Header | String | O | Token ID |
-
-#### Response
-This API does not return a response body.
-
-
-## Instance
-
-<a id="instance-status"></a>
-### Instance Status
-
-Instances exist in various statuses, and each status defines its own set of permissible operations. See the following list of instance statuses.
-
-| Status Name              | Description                                                                                                |
-|-------------------|---------------------------------------------------------------------------------------------------|
-| `ACTIVE` | Instance is activated |
-| `BUILD` | Instance is building |
-| `DELETED` | Instance is deleted |
-| `ERROR` | Previous operation on the instance has failed |
-| `HARD_REBOOT` | Instance is forcefully rebooted<br> Same as turning the physical server's power switch off and back on again |
-| `MIGRATING` | Instance is migrating<br> This is caused by a real-time migration (moving active instances) |
-| `PASSWORD` | Password is being reset on instance |
-| `PAUSED` | Instance is paused<br>Paused instances are saved in hypervisor memory |
-| `REBOOT` | Instance is in a soft reboot state<br> Reboot command is passed to the virtual machine operating system |
-| `REBUILD` | Instance is rebuilt from the original image used for creation |
-| `RESCUE` | Instance is running in recovery mode |
-| `RESIZE` | Instance is changing flavors or migrating to another host<br>Instance is stopped and restarted |
-| `REVERT_RESIZE` | Instance is restored to its original state when a failure occurs while changing flavors or migrating to another host |
-| `VERIFY_RESIZE` | Instance is waiting for confirmation after changing flavors or migrating to another host<br>In NHN Cloud, the status is automatically changed to `ACTIVE`. |
-| `SHELVED_OFFLOADED` | Instance is terminated |
-| `SHUTOFF` | Instance is stopped |
-| `SUSPENDED` | Instance has entered maximum power saving mode by the administrator |
-| `UNKNOWN` | Instance status is unknown<br>`Contact the administrator if the instance is in this status.` | 
-
-<a id="list-instances"></a>
-### List Instances
-
-```
-GET /v2/{tenantId}/servers
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-
-This API does not require a request body.
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|---|
-| tenantId | URL | String | O | Tenant ID |
-| tokenId | Header | String | O | Token ID |
-| reservation_id | Query | String | - | Reservation ID for instance creation. <br>If specified, only returns list of instances that have been created simultaneously |
-| changes-since | Query | Datetime | - | Returns list of instances changed since the specified time. `YYYY-MM-DDThh:mm:ss` format. |
-| image | Query | UUID | - | Image ID<br>Return list of instances with specified image |
-| flavor | Query | UUID | - | Instance flavor ID<br>Return list of instances with specified flavor |
-| name | Query | String | - | Instance name<br>Return list of instances with specified name, regex is supported |
-| status | Query | Enum | - | Instance status<br>Return list of instances with specified status |
-| limit | Query | Integer | - | Number of instances to query<br>Return list with up to specified number of instances |
-| marker | Query | UUID | - | UUID of first instance in the list <br>Return list of up to `limit` instances from the instance specified as the `marker`, according to the sort order |
-
-#### Response
-
-| Name | Type | Format | Description |
-|---|---|---|---|
-| servers | Body | Object | Instance list object |
-| id | Body | UUID | Instance UUID |
-| links | body | Object | Instance path object |
-| name | body | String | Instance name |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "servers": [
-    {
-      "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "Web-Server"
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="list-instances-with-details"></a>
-### List Instances with Details
-
-Return the list of instances created in the current tenant, same as List Instances. However, detailed instance information is returned.
-
-```
-GET /v2/{tenantId}/servers/detail
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-
-The request format is the same as List Instances.
-
-#### Response
-
-| Name | Type | Format | Description                                                                                                                                                                                                        |
-|---|---|---|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| servers | body | Object | Instance list object                                                                                                                                                                                                |
-| status | body | Enum | Instance Status                                                                                                                                                                                                   |
-| servers.id | Body | UUID | Instance ID                                                                                                                                                                                                   |
-| servers.name | Body | String | Instance name, max 255 characters                                                                                                                                                                                          |
-| servers.updated | Body | Datetime | Last updated time of instance in `YYYY-MM-DDThh:mm:ssZ` format                                                                                                                                                                  |
-| servers.hostId | Body | String | ID of host running instance                                                                                                                                                                                        |
-| servers.addresses | Body | Object | Instance IP list object. <br>The size of the list is the number of ports attached to the instance.                                                                                                                                                             |
-| servers.addresses."Network Name" | Body | Object | Port information of each network associated with instance                                                                                                                                                                                  |
-| servers.addresses."Network Name".OS-EXT-IPS-MAC:mac_addr | Body | String | MAC address of port associated with instance                                                                                                                                                                                      |
-| servers.addresses."Network Name".version | Body | Integer | IP version of port associated with instance<br>NHN Cloud supports only IPv4                                                                                                                                                                |
-| servers.addresses."Network Name".addr | Body | String | IP address of port associated with instance                                                                                                                                                                                       |
-| servers.addresses."Network Name".OS-EXT-IPS:type | Body | Enum | IP address type of port<br>Either `fixed` or `floating`                                                                                                                                                                |
-| servers.links | Body | Object | Instance path object                                                                                                                                                                                                |
-| servers.key_name | Body | String | Instance key pair name                                                                                                                                                                                               |
-| servers.image | Body | Object | Instance image object                                                                                                                                                                                               |
-| servers.image.id | Body | UUID | Instance image ID                                                                                                                                                                                               |
-| servers.image.links | Body | Object | Instance image path object                                                                                                                                                                                            |
-| servers.OS-EXT-STS:task_state | Body | String | Instance task status<br>Shows the status of a task operating on an instance                                                                                                                                                               |
-| servers.OS-EXT-STS:vm_state | Body | String | Current instance status                                                                                                                                                                                                |
-| servers.OS-SRV-USG:launched_at | Body | Datetime | Last instance booted time<br>`YYYY-MM-DDThh:mm:ss.ssssss` format                                                                                                                                                         |
-| servers.OS-SRV-USG:terminated_at | Body | Datetime | Instance deleted time<br>`YYYY-MM-DDThh:mm:ssZ` format                                                                                                                                                                   |
-| servers.flavor | Body | Object | Instance flavor information object                                                                                                                                                                                             |
-| servers.flavor.id | Body | UUID | Instance flavor ID                                                                                                                                                                                                |
-| servers.flavor.links | Body | Object | Instance flavor path object                                                                                                                                                                                             |
-| servers.security_groups | Body | Object | List object of security groups assigned to instance                                                                                                                                                                                     |
-| servers.security_groups.name | Body | String | Name of security group assigned to instance                                                                                                                                                                                        |
-| servers.user_id | Body | String | ID of user creating instance                                                                                                                                                                                          |
-| servers.created | Body | Datetime | Instance created time. `YYYY-MM-DDThh:mm:ssZ` format                                                                                                                                                                     |
-| servers.tenant_id | Body | String | Tenant ID that instance belongs to                                                                                                                                                                                           |
-| servers.os-extended-volumes:volumes_attached | Body | Object | List object of additional block storage attached to the instance                                                                                                                                                                                |
-| servers.os-extended-volumes:volumes_attached.id | Body | UUID | ID of additional block storage attached to the instance                                                                                                                                                                                   |
-| servers.OS-EXT-STS:power_state | Body | Integer | Power state of instance<br>- `1`: On<br>- `4`: Off                                                                                                                                                                    |
-| servers.metadata | Body | Object | Instance metadata object<br>Stores instance metadata as key-value pairs                                                                                                                                                                   |
-| server.NHN-EXT-ATTR:ephemeral_disk_size | Body | Integer | Size of an additional local block storage attached to the instance                                                                                                                                                                   |
-| server.NHN-EXT-ATTR:protect | Body | Boolean | Whether to protect instance deletion                                                                                                                                                                   |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "servers": [
-    {
-      "status": "ACTIVE",
-      "updated": "2020-02-25T01:22:24Z",
-      "hostId": "078d06f898889699f8731d030812e43d2c417edb2cf641dda598c7bd",
-      "addresses": {
-        "vpc2": [
-          {
-            "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:54:a7:64",
-            "version": 4,
-            "addr": "172.16.0.40",
-            "OS-EXT-IPS:type": "fixed"
-          }
-        ]
-      },
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "bookmark"
-        }
-      ],
-      "key_name": "access-key",
-      "image": {
-        "id": "8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-        "links": [
-          {
-            "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/images/8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-            "rel": "bookmark"
-          }
-        ]
-      },
-      "OS-EXT-STS:task_state": null,
-      "OS-EXT-STS:vm_state": "active",
-      "OS-SRV-USG:launched_at": "2020-02-25T01:22:23.000000",
-      "flavor": {
-        "id": "35a73b57-58a7-434d-aa08-5249aaa95b3e",
-        "links": [
-          {
-            "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/35a73b57-58a7-434d-aa08-5249aaa95b3e",
-            "rel": "bookmark"
-          }
-        ]
-      },
-      "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-      "security_groups": [
-        {
-          "name": "default"
-        }
-      ],
-      "OS-SRV-USG:terminated_at": null,
-      "OS-EXT-AZ:availability_zone": "kr-pub-b",
-      "user_id": "b6ab578c20c94306ac1f41ffc4415b29",
-      "name": "Web-Server",
-      "created": "2020-02-25T01:15:46Z",
-      "tenant_id": "6cdebe3eb0094910bc41f1d42ebe4cb7",
-      "os-extended-volumes:volumes_attached": [
-        {
-          "id": "90712f4f-2faa-4e4f-8eb1-9313a8595570"
-        }
-      ],
-      "accessIPv4": "",
-      "accessIPv6": "",
-      "progress": 0,
-      "OS-EXT-STS:power_state": 1,
-      "config_drive": "",
-      "metadata": {
-        "os_distro": "Windows",
-        "description": "Windows 2012 R2 STD (2020.02.18)",
-        "os_version": "2012 R2 STD",
-        "project_domain": "NORMAL",
-        "hypervisor_type": "qemu",
-        "monitoring_agent": "sysmon",
-        "image_name": "Windows 2012 R2 STD (2020.02.18) EN",
-        "volume_size": "50",
-        "os_architecture": "amd64",
-        "login_username": "Administrator",
-        "os_type": "Windows",
-        "tc_env": "sysmon"
-      },
-      "NHN-EXT-ATTR:ephemeral_disk_size": 0,
-      "NHN-EXT-ATTR:protect": false
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-### Get Instance
-
-```
-GET /v2/{tenantId}/servers/{serverId}
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-
-This API does not require a request body.
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|---|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Instance ID |
-| tokenId | Header | String | O | Token ID |
-
-#### Response
-
-| Name | Type | Format | Description                                                                                                                                                                                                       |
-|---|---|---|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| server | body | Object | Instance object                                                                                                                                                                                                  |
-| status | body | Enum | Instance Status                                                                                                                                                                                                  |
-| server.id | Body | UUID | Instance ID                                                                                                                                                                                                  |
-| server.name | Body | String | Instance name, max 255 characters                                                                                                                                                                                         |
-| server.updated | Body | Datetime | Last updated time of instance in `YYYY-MM-DDThh:mm:ssZ` format                                                                                                                                                                 |
-| server.hostId | Body | String | ID of host running instance                                                                                                                                                                                       |
-| server.addresses | Body | Object | Instance IP list object. <br>The size of the list is the number of ports attached to the instance.                                                                                                                                                              |
-| server.addresses."Network Name" | Body | Object | Port information of each network associated with instance                                                                                                                                                                                 |
-| server.addresses."Network Name".OS-EXT-IPS-MAC:mac_addr | Body | String | MAC address of port associated with instance                                                                                                                                                                                     |
-| server.addresses."Network Name".version | Body | Integer | IP version of port associated with instance<br>NHN Cloud supports only IPv4                                                                                                                                                               |
-| server.addresses."Network Name".addr | Body | String | IP address of port associated with instance                                                                                                                                                                                      |
-| server.addresses."Network Name".OS-EXT-IPS:type | Body | Enum | IP address type of port<br>Either `fixed` or `floating`                                                                                                                                                               |
-| server.links | Body | Object | Instance path object                                                                                                                                                                                               |
-| server.key_name | Body | String | Instance key pair name                                                                                                                                                                                              |
-| server.image | Body | Object | Instance image object                                                                                                                                                                                              |
-| server.image.id | Body | UUID | Instance image ID                                                                                                                                                                                              |
-| server.image.links | Body | Object | Instance image path object                                                                                                                                                                                           |
-| server.OS-EXT-STS:task_state | Body | String | Instance task status<br>Shows the status of a task operating on an instance                                                                                                                                                               |
-| server.OS-EXT-STS:vm_state | Body | String | Current instance status                                                                                                                                                                                               |
-| server.OS-SRV-USG:launched_at | Body | Datetime | Last instance booted time<br>`YYYY-MM-DDThh:mm:ss.ssssss` format                                                                                                                                                        |
-| server.OS-SRV-USG:terminated_at | Body | Datetime | Instance deleted time<br>`YYYY-MM-DDThh:mm:ssZ` format                                                                                                                                                                  |
-| server.flavor | Body | Object | Instance flavor information object                                                                                                                                                                                            |
-| server.flavor.id | Body | UUID | Instance flavor ID                                                                                                                                                                                               |
-| server.flavor.links | Body | Object | Instance flavor path object                                                                                                                                                                                            |
-| server.security_groups | Body | Object | List object of security groups assigned to instance                                                                                                                                                                                    |
-| server.security_groups.name | Body | String | Name of security group assigned to instance                                                                                                                                                                                       |
-| server.user_id | Body | String | ID of user creating instance                                                                                                                                                                                         |
-| server.created | Body | Datetime | Instance created time. `YYYY-MM-DDThh:mm:ssZ` format                                                                                                                                                                    |
-| server.tenant_id | Body | String | Tenant ID that instance belongs to                                                                                                                                                                                          |
-| server.os-extended-volumes:volumes_attached | Body | Object | List object of additional block storage attached to the instance                                                                                                                                                                               |
-| server.os-extended-volumes:volumes_attached.id | Body | UUID | ID of additional block storage attached to the instance                                                                                                                                                                                  |
-| server.OS-EXT-STS:power_state | Body | Integer | Power state of instance<br>- `1`: On<br>- `4`: Off                                                                                                                                                                   |
-| server.metadata | Body | Object | Instance metadata object<br>Stores instance metadata as key-value pairs                                                                                                                                                                  |
-| server.NHN-EXT-ATTR:ephemeral_disk_size | Body | Integer | Size of an additional local block storage attached to the instance                                                                                                                                                                  |
-| server.NHN-EXT-ATTR:protect | Body | Boolean | Whether to protect instance deletion                                                                                                                                                                  |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "server": {
-    "status": "ACTIVE",
-    "updated": "2020-02-25T01:22:24Z",
-    "hostId": "078d06f898889699f8731d030812e43d2c417edb2cf641dda598c7bd",
-    "addresses": {
-      "vpc2": [
-        {
-          "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:54:a7:64",
-          "version": 4,
-          "addr": "172.16.0.40",
-          "OS-EXT-IPS:type": "fixed"
-        }
-      ]
-    },
-    "links": [
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-        "rel": "self"
-      },
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-        "rel": "bookmark"
+        "domain_name": "test.test.com"
       }
     ],
-    "key_name": "access-key",
-    "image": {
-      "id": "8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/images/8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-          "rel": "bookmark"
-        }
-      ]
-    },
-    "OS-EXT-STS:task_state": null,
-    "OS-EXT-STS:vm_state": "active",
-    "OS-SRV-USG:launched_at": "2020-02-25T01:22:23.000000",
-    "flavor": {
-      "id": "35a73b57-58a7-434d-aa08-5249aaa95b3e",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/35a73b57-58a7-434d-aa08-5249aaa95b3e",
-          "rel": "bookmark"
-        }
-      ]
-    },
-    "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-    "security_groups": [
-      {
-        "name": "default"
-      }
-    ],
-    "OS-SRV-USG:terminated_at": null,
-    "OS-EXT-AZ:availability_zone": "kr-pub-b",
-    "user_id": "b6ab578c20c94306ac1f41ffc4415b29",
-    "name": "Web-Server",
-    "created": "2020-02-25T01:15:46Z",
-    "tenant_id": "6cdebe3eb0094910bc41f1d42ebe4cb7",
-    "os-extended-volumes:volumes_attached": [
-      {
-        "id": "90712f4f-2faa-4e4f-8eb1-9313a8595570"
-      }
-    ],
-    "accessIPv4": "",
-    "accessIPv6": "",
-    "progress": 0,
-    "OS-EXT-STS:power_state": 1,
-    "config_drive": "",
-    "metadata": {
-      "os_distro": "Windows",
-      "description": "Windows 2012 R2 STD (2020.02.18)",
-      "os_version": "2012 R2 STD",
-      "project_domain": "NORMAL",
-      "hypervisor_type": "qemu",
-      "monitoring_agent": "sysmon",
-      "image_name": "Windows 2012 R2 STD (2020.02.18) EN",
-      "volume_size": "50",
-      "os_architecture": "amd64",
-      "login_username": "Administrator",
-      "os_type": "Windows",
-      "tc_env": "sysmon"
-    },
-    "NHN-EXT-ATTR:ephemeral_disk_size": 0,
-    "NHN-EXT-ATTR:protect": false
+    "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+    "service_provider": "csp",
+    "create_time": "2023-08-31 02:11:09",
+    "project_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "port_id": "182a31be-9e29-400d-983b-f701cf9b4bbc",
+    "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+    "name": "sgw_test"
   }
 }
 ```
 
-</p>
 </details>
 
 ---
-
-<a id="create-instance"></a>
-### Create Instance
-
-Create an instance.
-
-After calling the Create Instance API, query the instance and check its status.
-
-* If the status becomes **ACTIVE**, the instance has been created successfully.
-* If the status remains in **BUILDING** for a long time or becomes **ERROR**, check parameters used for instance creation and try creating again.
-
-Windows instances have the following additional restrictions that apply to facilitate stable usage.
-
-* Use an instance flavor with at least 2GB RAM capacity.
-* Require 50 GB or more of root block storage.
-* U2 flavor instances cannot use Windows images.
-
-The root block storage size that can be specified is 10GB for Linux and 50GB for Windows.
-
-You can assign placement policies via scheduler hints when requesting instance creation.
-
+<a id="create-a-service-gateway"></a>
+### Create a Service Gateway { #create-a-service-gateway }
 
 ```
-POST /v2/{tenantId}/servers
+POST /v2.0/gateways/servicegateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-a-service-gateway-request"></a>
 #### Request
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| tenantId | URL | String | O | Tenant ID |
 | tokenId | Header | String | O | Token ID |
-| server.security_groups | body | Object | - | List object of security groups<br>If left blank, the `default` group is added. |
-| server | body | Object | O | Server Objects |
-| server.security_groups.name | body | String | - | **(Conditionally required)** Name of security group to be added to instance |
-| server.user_data | body | String | - | Script to be executed or settings to apply after instance boot<br>Allows up to 65535 bytes of base 64-encoded character strings |
-| server.availability_zone | body | String | - | Availability zone where instance will be created<br>If left blank, a random zone will be selected<br>If the source type of the root block storage is `volume`, `snapshot`, it must be set to the same availability zone as the source block storage |
-| server.imageRef | Body | String | - | Image ID to create instance<br>No configuration required if the source type of the root block storage is `volume`, `snapshot` |
-| server.flavorRef | Body | String | O | Instance flavor ID to create instance |
-| server.networks | Body | Object | O | Network information object to use when creating instance<br>A NIC is added for each network specified. Specify each network using Network ID, Subnet ID, Port ID, or Fixed IP. |
-| server.networks.uuid | Body | UUID | - | **(Conditionally required)** Network ID to create instance |
-| server.networks.subnet | Body | UUID | - | **(Conditionally required)** Subnet ID within network to create instance |
-| server.networks.port | Body | UUID | - | **(Conditionally required)** Port ID to create instance<br>Security groups requested when specifying a port ID are not applied to existing specified ports |
-| server.networks.fixed_ip | Body | String | - | **(Conditionally required)** Fixed IP to create instance |
-| server.name | Body | String | O | Instance name<br>Up to 255 alphabetical characters allowed, max 15 characters for Windows images |
-| server.metadata | Body | Object | - | Metadata object to add to instance<br>Key-value pairs of max 255 characters |
-| server.block_device_mapping_v2 | Body | Object | O | Block storage information object<br>**Must be specified for any instance flavors other than U2 flavor which uses local block storage** |
-| server.block_device_mapping_v2.source_type | Body | Enum | O | Source type of block storage to create<br>- `image`: Use an image to create a block storage<br>- `blank`: Create an empty block storage (cannot be used as root block storage)<br>- `volume`: Use previously created block storage<br>- `snapshot`: Create block storage with snapshots |
-| server.block_device_mapping_v2.uuid | Body | String | - | **(Conditionally required)** Different settings required for different types of block storage sources<br>- Set the image ID if the source type is `image`<br>- Set an existing created block storage ID if the source type is `volume`<br>- Set `snapshot` ID if the source type is `snapshot`<br>- No settings required if source type is ` blank`<br>For root block storage, it must be a bootable source. |
-| server.block_device_mapping_v2.boot_index | Body | Integer | O | Order to boot the specified block storage<br>- If `, root block storage<br>- If not, additional block storage<br>A larger value indicates lower booting priority |
-| server.block_device_mapping_v2.destination_type | Body | Enum | O | Requires different settings depending on the location of instance’s block storage or flavor<br>- `local`: For GPU and U2 instance flavors<br>- `volume`: For other instance flavors |
-| server.block_device_mapping_v2.volume_type | Body | Enum    | - | **(Conditionally required)** Type of block storage to create<br>No configuration required if the source type of block storage is `volume`, `snapshot`<br>See `Name` from the response of **List Block Storage Types** in the `User Guide > Storage > Block Storage > API v2 guide`. |
-| server.block_device_mapping_v2.delete_on_termination | Body | Boolean | - | Indicates whether block storage is deleted when an instance is terminated. Default value is `false`.<br>Delete the volume if `true`, keep the volume if `false`. |
-| server.block_device_mapping_v2.volume_size | Body | Integer | - | **(Conditionally required)** Size of block storage to create<br>Different settings required for different types of block storage sources<br>- No configuration required if source type is `volume`<br>- Set equal to or larger than the original block storage size if the source type is `snapshot`<br>GB (unit)<br>Uses the U2 instance type and root block storage is created with the size specified in the U2 instance type and this value will be ignored<br>Different instance types have different sizes of root block storage that can be created. For more details, see `User Guide > Compute > Instance > Console User Guide > Create Instance > Block Storage Size`. |
-| server.block_device_mapping_v2.nhn_encryption                   | Body | Object | - | **(Conditionally required)** Block storage encryption information                                                                                                                                                                                        |
-| server.block_device_mapping_v2.nhn_encryption.skm_appkey        | Body | String | - | **(Conditionally required)** AppKeys for Secure Key Manager products                                                                                                                                                                              |
-| server.block_device_mapping_v2.nhn_encryption.skm_key_id        | Body | String | - | **(Conditionally required)** Symmetric key ID of Secure Key Manager to be used to create encrypted block storage.                                            |               
-| server.key_name | Body | String | O | Key pair to access instance |
-| server.min_count | Body | Integer | - | Minimum number of instances to create with this request.<br>Default value is 1.<br>Can only be set to `1` if the source type of the block storage is `volume` |
-| server.max_count | Body | Integer | - | Maximum number of instances to create with this request.<br>Default value is min_count, max value is 10.<br>Can only be set to `1` if the source type of the block storage is `volume` |
-| server.return_reservation_id | Body | Boolean | - | Instance creation request reservation ID.<br>If set to True, reservation ID is returned instead of instance creation information.<br>Default value is False |
-| os:scheduler_hints | Body | Object | - | Scheduler Hint Objects |
-| os:scheduler_hints.group | Body | String | - | Placement Policy ID |
+| servicegateway | Body | Object | O | Service gateway information object |
+| servicegateway.name | Body | String | - | The name of the service gateway |
+| servicegateway.description | Body | String | - | The description for the service gateway |
+| servicegateway.network_id | Body | UUID | O | VPC ID |
+| servicegateway.subnet_id | Body | UUID | O | Subnet ID |
+| servicegateway.fixed_ip | Body | String | - | Service gateway IP address |
+| servicegateway.include_gateway_identity| Body | Boolean | - | Whether to use fixed NAT IP address |
+| servicegateway.service_endpoint_id | Body | UUID | O | Service endpoint (or custom endpoint) ID |
+> To connect to a custom endpoint, use the `service_endpoint_id` obtained by calling [Get a List of Service Endpoints](#get-a-list-of-service-endpoints) with the `service_name` provided by the publisher. The connection type (`service_provider`) is determined automatically from the connected endpoint and is not specified as a request value.
 
 <details><summary>Example</summary>
-<p>
 
 ```json
 {
-  "server": {
-    "name": "DB-Master",
-    "imageRef": "9956f822-29c9-4f81-9410-0c392d9c8c24",
-    "flavorRef": "a4b6a0f7-aeff-4d78-a8d5-7de9f007012d",
-    "networks": [{
-      "subnet": "b83863ff-0355-4c73-8c10-0bdf66a69aab"
-    }],
-    "availability_zone": "kr-pub-a",
-    "key_name": "access-key",
-    "max_count": 1,
-    "min_count": 1,
-    "block_device_mapping_v2": [{
-      "source_type": "image",
-      "uuid": "9956f822-29c9-4f81-9410-0c392d9c8c24",
-      "boot_index": 0,
-      "volume_size": 1000,
-      "destination_type": "volume",
-      "delete_on_termination": 1
-    }],
-    "security_groups": [{
-      "name": "default"
-    }]
-  },
-  "os:scheduler_hints": {
-    "group": "f878bd5b-49a7-499f-966e-1eceb21cb06b"
+  "servicegateway": {
+    "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+    "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+    "fixed_ip": "192.168.0.82",
+    "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+    "name": "sgw_test",
+    "description": "test"
   }
 }
 ```
 
-</p>
 </details>
 
+<a id="create-a-service-gateway-response"></a>
 #### Response
 
-| Name | Type | Format | Description                                                                                                                                                                                                           |
-|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| server.security_groups.name | Body | String | Security group name of created instance                                                                                                                                                                                           |
-| server.id | Body | UUID | Created instance ID                                                                                                                                                                                                 |
+| Name | Type | Format | Description |
+|---|---|---|---|
+| servicegateway | Body | Object | A list of service gateway information objects |
+| servicegateway.id | Body | UUID | The ID of the service gateway |
+| servicegateway.name | Body | String | The name of the service gateway |
+| servicegateway.port_id | Body | UUID | Port ID |
+| servicegateway.tenant_id | Body | String | Tenant ID |
+| servicegateway.network_id | Body | UUID | VPC ID |
+| servicegateway.subnet_id | Body | UUID | Subnet ID |
+| servicegateway.fixed_ip | Body | String | The IP address of the service gateway |
+| servicegateway.include_gateway_identity| Body | Boolean | Whether to sue fixed NAT IP address |
+| servicegateway.service_endpoint_id | Body | UUID | Service endpoint (or custom endpoint) ID |
+| servicegateway.service_provider | Body | String | Connection type (value of the connected endpoint). `csp`=Service Endpoint / `user`=Custom endpoint |
+| servicegateway.api_endpoints | Body | Array | List of API endpoint information objects |
+| servicegateway.api_endpoints.domain_name | Body | String | API endpoint domain |
+| servicegateway.description | Body | String | The description for the service gateway |
+
 
 <details><summary>Example</summary>
-<p>
 
 ```json
 {
-  "server": {
-    "security_groups": [
+  "servicegateway": {
+    "status": "BUILD",
+    "include_gateway_identity": false,
+    "description": "",
+    "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+    "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "fixed_ip": "192.168.0.82",
+    "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+    "api_endpoints": [
       {
-        "name": "default"
+        "domain_name": "test.test.com"
       }
     ],
-    "id": "3a005d5b-63cf-4493-bfc6-49db990b5b50",
-    "links": [
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/3a005d5b-63cf-4493-bfc6-49db990b5b50",
-        "rel": "self"
-      },
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/3a005d5b-63cf-4493-bfc6-49db990b5b50",
-        "rel": "bookmark"
-      }
-    ]
+    "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+    "service_provider": "csp",
+    "create_time": "2023-08-31 02:11:09",
+    "project_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "port_id": "182a31be-9e29-400d-983b-f701cf9b4bbc",
+    "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+    "name": "sgw_test"
   }
 }
 ```
 
-</p>
 </details>
 
 ---
-
-<a id="modify-instance"></a>
-### Modify Instance
-Modify created instance. Only some attributes are allowed to be modified.
+<a id="modify-a-service-gateway"></a>
+### Modify a Service Gateway { #modify-a-service-gateway }
 
 ```
-PUT /v2/{tenantId}/servers/{serverId}
+PUT /v2.0/gateways/servicegateways/{serviceGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-a-service-gateway-request"></a>
 #### Request
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Modifying instance ID |
 | tokenId | Header | String | O | Token ID |
-| server | Body | Object | O | Modify instance request object |
-| server.name | Body | String | - | New instance name |
+| serviceGatewayId | URL | UUID | O | The ID of the service gateway |
+| servicegateway | Body | Object | O | Service gateway information object |
+| servicegateway.name | Body | String | - | The name of the service gateway |
+| servicegateway.description | Body | String | - | The description for the service gateway |
+
+> The connection type (`service_provider`) is a read-only field that shows the value of the connected endpoint and cannot be changed by modifying the service gateway.
 
 <details><summary>Example</summary>
-<p>
 
 ```json
 {
-    "server": {
-        "name": "new-server-test"
-    }
-}
-```
-
-</p>
-</details>
-
-#### Response
-Same as Get Instance.
-
----
-
-<a id="delete-instance"></a>
-### Delete Instance
-Delete a created instance.
-
-```
-DELETE /v2/{tenantId}/servers/{serverId}
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-This API does not require a request body.
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|--|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Deleting instance ID |
-| tokenId | Header | String | O | Token ID |
-
-#### Response
-This API does not return a response body.
-
----
-
-<a id="manage-block-storage-attachment"></a>
-## Manage Block Storage Attachment
-
-### List additional block storage attached to the instance
-```
-GET /v2/{tenantId}/servers/{serverId}/os-volume_attachments
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-This API does not require a request body.
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|--|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Modifying instance ID |
-| tokenId | Header | String | O | Token ID |
-| limit | Query | Integer | - | Number of volumes to query |
-| offset | Query | Integer | - | Start point of returned list<br>Return block storage starting from offset of the entire list |
-
-#### Response
-
-| Name | Type | Format | Description |
-|---|---|---|---|
-| volumeAttachments | Body | Array | List of attachment information objects |
-| volumeAttachments.device | Body | String | Block storage name<br>e.g.) `/dev/vdb` |
-| volumeAttachments.id | Body | UUID | Attachment information ID |
-| volumeAttachments.serverId | Body | UUID | Instance ID |
-| volumeAttachments.volumeId | Body | UUID | Block storage ID |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "volumeAttachments": [
-        {
-            "device": "/dev/vda",
-            "id": "227cc671-f30b-4488-96fd-7d0bf13648d8",
-            "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-            "volumeId": "227cc671-f30b-4488-96fd-7d0bf13648d8"
-        },
-        {
-            "device": "/dev/vdb",
-            "id": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113",
-            "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-            "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-### List additional block storage attached to the instance
-```
-GET /v2/{tenantId}/servers/{serverId}/os-volume_attachments/{volumeId}
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-This API does not require a request body.
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|--|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Instance ID |
-| volumeId | URL | UUID | O | ID of block storage to query |
-| tokenId | Header | String | O | Token ID |
-
-#### Response
-
-| Name | Type | Format | Description |
-|---|---|---|---|
-| volumeAttachment | Body | Object | Attachment information object |
-| volumeAttachment.device | Body | String | Block storage name<br>e.g.) `/dev/vdb` |
-| volumeAttachment.id | Body | UUID | Attachment information ID |
-| volumeAttachment.serverId | Body | UUID | Instance ID |
-| volumeAttachment.volumeId | Body | UUID | Block storage ID |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "volumeAttachment": {
-        "device": "/dev/sdb",
-        "id": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113",
-        "serverId": "1ad6852e-6605-4510-b639-d0bff864b49a",
-        "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-### Attach additional block storage to the instance
-```
-POST /v2/{tenantId}/servers/{serverId}/os-volume_attachments
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|--|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Modifying instance ID |
-| tokenId | Header | String | O | Token ID |
-| volumeAttachment | Body | Object | O | Object to request block storage attachment |
-| volumeAttachment.volumeId | Body | UUID | O | ID of block storage to attach |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "volumeAttachment": {
-      "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
+  "servicegateway": {
+    "name": "sgw_test1",
+    "description": "test1"
   }
 }
 ```
 
-</p>
 </details>
 
+<a id="modify-a-service-gateway-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
 |---|---|---|---|
-| volumeAttachment | Body | Object | Attachment information object |
-| volumeAttachment.device | Body | String | Block storage name<br>e.g.) `/dev/vdb` |
-| volumeAttachment.id | Body | UUID | Attachment information ID |
-| volumeAttachment.serverId | Body | UUID | Instance ID |
-| volumeAttachment.volumeId | Body | UUID | Block storage ID |
+| servicegateway | Body | Object | Service gateway information object |
+| servicegateway.id | Body | UUID | The ID of the service gateway |
+| servicegateway.name | Body | String | The name of the service gateway |
+| servicegateway.port_id | Body | UUID | Port ID |
+| servicegateway.tenant_id | Body | String | Tenant ID |
+| servicegateway.network_id | Body | UUID | VPC ID |
+| servicegateway.subnet_id | Body | UUID | Subnet ID |
+| servicegateway.fixed_ip | Body | String | The IP address of the service gateway |
+| servicegateway.include_gateway_identity| Body | Boolean | Whether to use fixed NAT IP address |
+| servicegateway.service_endpoint_id | Body | UUID | Service endpoint (or custom endpoint) ID |
+| servicegateway.service_provider | Body | String | Connection type (value of the connected endpoint). `csp`=Service Endpoint / `user`=Custom Endpoint |
+| servicegateway.api_endpoints | Body | Array | List of API endpoint information objects |
+| servicegateway.api_endpoints.domain_name | Body | String | API endpoint domain |
+| servicegateway.description | Body | String | The description for the service gateway |
+
 
 <details><summary>Example</summary>
-<p>
 
 ```json
 {
-    "volumeAttachment": {
-        "device": "/dev/vdc",
-        "id": "227cc671-f30b-4488-96fd-7d0bf13648d8",
-        "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-        "volumeId": "227cc671-f30b-4488-96fd-7d0bf13648d8"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-### Detach block storage from the instance
-```
-DELETE /v2/{tenantId}/servers/{serverId}/os-volume_attachments/{volumeId}
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-This API does not require a request body.
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|--|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Instance ID |
-| volumeId | URL | UUID | O | ID of block storage to detach |
-| tokenId | Header | String | O | Token ID |
-
-#### Response
-This API does not return a response body.
-
----
-
-<a id="additional-instance-features"></a>
-## Additional Instance Features
-NHN Cloud provides the following additional features to handle instances.
-
-* Start, Stop, Terminate, and Restart Instance
-* Change Instance Flavor
-* Create Instance Image
-* Add/Delete Security Group
-
-### Start Stopped Instance
-
-Restart a stopped instance and change its status to **ACTIVE**. To call this API, the instance status must be **SHUTOFF**.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-| Name | Type | Format | Required | Description |
-|---|---|---|---|--|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Modifying instance ID |
-| tokenId | Header | String | O | Token ID |
-| os-start | Body | none | O | Instance start request |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "os-start" : null
-}
-```
-
-</p>
-</details>
-
-#### Response
-This API does not return a response body.
-
----
-
-### Start Terminated Instance
-
-Restart a terminated instance and changes its status to **ACTIVE**. To call this API, the instance's state must be **SHELVED_OFFLOADED**.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-| Name | Type | Format | Required | Description |
-|--|---|---|---|--|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Modifying instance ID |
-| tokenId | Header | String | O | Token ID |
-| unshelve | Body | none | O | Instance start request |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "unshelve" : null
-}
-```
-
-</p>
-</details>
-
-#### Response
-This API does not return a response body.
-
----
-
-<a id="stop-instance"></a>
-### Stop Instance
-
-Stop instance and change its status to **SHUTOFF**. To call this API, the instance status must be either **ACTIVE** or **ERROR**.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-| Name | Type | Format | Required | Description |
-|---|---|---|---|--|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Modifying instance ID |
-| tokenId | Header | String | O | Token ID |
-| os-stop | Body | none | O | Instance stop request |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "os-stop" : null
-}
-```
-
-</p>
-</details>
-
-#### Response
-This API does not return a response body.
-
----
-
-<a id="terminate-instance"></a>
-## Terminate Instance
-
-Terminate the instance and change its status to **SHELVED_OFFLOADED**. The instance's status must be **ACTIVE** to call this API.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-| Name | Type | Format | Required | Description          |
-|---|---|---|---|-------------|
-| tenantId | URL | String | O | Tenant ID      |
-| serverId | URL | UUID | O | Modifying instance ID |
-| tokenId | Header | String | O | Token ID       |
-| shelve | Body | none | O | Request to terminate instance  |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "shelve" : null
-}
-```
-
-</p>
-</details>
-
-#### Response
-This API does not return a response body.
-
----
-
-<a id="restart-instance"></a>
-### Restart Instance
-
-Restart an instance. An instance can be restarted using either a **SOFT** restart or a **HARD** restart.
-
-* **SOFT**: An instance is stopped via **"Graceful Shutdown"** and restarted. The instance must be in **ACTIVE** status.
-* **HARD**: Forcefully stop the instance and restart it. This works the same way as turning the power switch of a physical server off and on again. An instance can only be forcefully stopped when it is in one of these statuses.
-    * **ACTIVE**
-    * **ERROR**
-    * **HARD_REBOOT**
-    * **PAUSED**
-    * **REBOOT**
-    * **SHUTOFF**
-    * **SUSPENDED**
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-| Name | Type | Format | Required | Description |
-|---|---|---|---|--|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Modifying instance ID |
-| tokenId | Header | String | O | Token ID |
-| reboot | Body | Object | O | Instance reboot request object |
-| reboot.type | Body | Enum | O | Reboot type: **SOFT** or **HARD** |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "reboot" : {
-    "type": "SOFT"
-  }
-}
-```
-
-</p>
-</details>
-
-#### Response
-This API does not return a response body.
-
----
-
-<a id="change-instance-flavor"></a>
-### Change Instance Flavor
-
-Change the flavor of an instance. Flavors can only be changed when an instance is **ACTIVE** or **SHUTOFF**. If an instance is **ACTIVE**, the instance is stopped and restarted while changing flavors.
-
-Depending on the current image and flavor you are using, you may be restricted from changing to some flavors. For more details, see the Console Guide.
-
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-| Name | Type | Format | Required | Description                                                                                                                                                                                                                 |
-|---|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| tenantId | URL | String | O | Tenant ID                                                                                                                                                                                                             |
-| serverId | URL | UUID | O | Modifying instance ID                                                                                                                                                                                                        |
-| tokenId | Header | String | O | Token ID                                                                                                                                                                                                              |
-| resize | Body | Object | O | Instance flavor change request                                                                                                                                                                                                      |
-| resize.flavorRef | Body | UUID | O | New instance flavor ID                                                                                                                                                                                                     |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "resize" : {
-    "flavorRef": "b5f1c148-732c-417d-9d1b-1dffca105dbe"
-  }
-}
-```
-
-</p>
-</details>
-
-#### Response
-This API does not return a response body.
-
----
-
-<a id="create-instance-image"></a>
-### Create Instance Image
-
-Create an image from an instance. Only `U2` flavor instances can create images via this API. To create images of non-`U2` flavor instances, see [Block Storage API\](/Storage/Block Storage/en/public-api/#create-image-with-block-storage).
-
-Images can only be created when an instance is **ACTIVE**, **SHUTOFF**, **SUSPENDED**, or **PAUSED**. It is recommended to stop instances before creating images to ensure data integrity.
-
-When an image is successfully created, the image status becomes `active`. To check if an image is successfully created, use the Get Image API to continuously check its status.
-
-> [Caution]
-> The size of the created image may be larger than the actual usage of the root block storage.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-| Name | Type | Format | Required | Description |
-|---|---|---|---|--|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Modifying instance ID |
-| tokenId | Header | String | O | Token ID |
-| createImage | Body | Object | O | Image create request |
-| createImage.name | Body | String | O | Name of image to create |
-| createImage.metadata | Body | Object | - | Metadata of image to create<br>Written in Key-Value format |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-  "createImage" : {
-      "name" : "foo-image",
-      "metadata": {
-          "meta_var": "meta_val"
+  "servicegateway": {
+    "status": "AVAILABLE",
+    "include_gateway_identity": false,
+    "description": "test1",
+    "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+    "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "fixed_ip": "192.168.0.82",
+    "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+    "api_endpoints": [
+      {
+        "domain_name": "test.test.com"
       }
+    ],
+    "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+    "service_provider": "csp",
+    "create_time": "2023-08-31 02:11:09",
+    "project_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "port_id": "182a31be-9e29-400d-983b-f701cf9b4bbc",
+    "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+    "name": "sgw_test1"
   }
 }
 ```
 
-</p>
 </details>
 
+---
+<a id="delete-a-service-gateway"></a>
+### Delete a Service Gateway { #delete-a-service-gateway }
 
+```
+DELETE /v2.0/gateways/servicegateways/{serviceGatewayId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-a-service-gateway-request"></a>
+#### Request
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| tokenId | Header | String | O | Token ID |
+| serviceGatewayId | URL | UUID | O | The ID of the service gateway |
+
+
+<a id="delete-a-service-gateway-response"></a>
+#### Response
+Stops the specified node group.
+
+
+
+
+
+
+
+
+
+
+<a id="service-endpoint"></a>
+## Service Endpoint { #service-endpoint }
+
+<a id="get-a-list-of-service-endpoints"></a>
+### Get a List of Service Endpoints { #get-a-list-of-service-endpoints }
+
+```
+GET /v2.0/gateways/serviceendpoints/
+X-Auth-Token: {tokenId}
+```
+
+<a id="get-a-list-of-service-endpoints-request"></a>
+#### Request
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| tokenId | Header | String | O | Token ID |
+| id | Query | UUID | - | The ID of the service endpoint to retrieve |
+| display_name | Query | String | - | The name of the service endpoint to retrieve |
+| service_name | Query | String | - | The service name to retrieve (used when connecting to a custom endpoint; format: `{region}.sep-{12 hex}`) |
+> When connecting a service gateway to a Custom endpoint, retrieve the service endpoint ID by querying with the `service_name` provided by the publisher. For security purposes, the `service_name` value is not included in the response, and an empty list is returned if the project is not included in the allowed projects.
+
+<a id="get-a-list-of-service-endpoints-response"></a>
 #### Response
 
-This API does not return a response body. Check the `Location` response header for the created image.
+| Name | Type | Format | Description |
+|---|---|---|---|
+| serviceendpoints | Body | Array | List of service endpoint information objects |
+| serviceendpoints.id | Body | UUID | Service endpoint ID |
+| serviceendpoints.display_name | Body | String | The name of the service endpoint to appear in the console |
+| serviceendpoints.support_gateway_identity | Body | Boolean | Whether to use fixed NAT IP address |
+| serviceendpoints.description | Body | String | The description for the service endpoint |
+
+<details><summary>Example</summary>
+
+```json
+{
+  "serviceendpoints": [
+    {
+      "display_name": "Object Storage",
+      "support_gateway_identity": true,
+      "description": "",
+      "name": "OBS",
+      "id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5"
+    }
+  ]
+}
+```
+</details>
+
+---
+<a id="get-a-service-endpoint"></a>
+### Get a Service Endpoint { #get-a-service-endpoint }
+
+```
+GET /v2.0/gateways/serviceendpoints/{seerviceEndpointId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="get-a-service-endpoint-request"></a>
+#### Request
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| tokenId | Header | String | O | Token ID |
+| serviceEndpointId | URL | UUID | O | Service endpoint ID |
+
+<a id="get-a-service-endpoint-response"></a>
+#### Response
 
 | Name | Type | Format | Description |
-|--|--|--|--|
-| Location | Header | String | Created image URL |
+|---|---|---|---|
+| serviceendpoint | Body | Object | Service endpoint information object  |
+| serviceendpoint.id | Body | UUID | Service endpoint ID |
+| serviceendpoint.display_name | Body | String | The name of the service endpoint to appear in the console |
+| serviceendpoint.support_gateway_identity | Body | Boolean | Whether to use fixed NAT IP address |
+| serviceendpoint.description | Body | String | The description for the service endpoint |
+
+<details><summary>Example</summary>
+
+```json
+{
+  "serviceendpoint": {
+      "display_name": "Object Storage",
+      "support_gateway_identity": true,
+      "description": "",
+      "name": "OBS",
+      "id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5"
+  }
+}
+```
+</details>
 
 ---
 
-<a id="add-security-group"></a>
-### Add Security Group
+<a id="custom-endpoints"></a>
+## Custom Endpoints { #custom-endpoints }
 
-Add a security group to an instance. The added security group is applied to all ports of the instance.
+This feature allows you to publish your own resources (load balancers) as endpoints to share with other projects. The publisher (owner) creates and manages them. When created, a service name (`service_name`) for sharing is issued.
+
+<a id="view-custom-endpoint-list"></a>
+### View Custom Endpoint List { #view-custom-endpoint-list }
 
 ```
-POST /v2/{tenantId}/servers/{serverId}/action
+GET /v2.0/gateways/myserviceendpoints
 X-Auth-Token: {tokenId}
 ```
 
-#### Request
-| Name | Type | Format | Required | Description |
-|---|---|---|---|--|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Modifying instance ID |
-| tokenId | Header | String | O | Token ID |
-| addSecurityGroup | Body | Object | O | Add security group request object |
-| addSecurityGroup.name | Body | String | O | Name of security group to add |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "addSecurityGroup": {
-        "name": "test"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### Response
-This API does not return a response body.
-
----
-
-<a id="delete-security-group"></a>
-### Delete Security Group
-
-Delete a security group from an instance. The specified security group is deleted from all ports of the instance.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-| Name | Type | Format | Required | Description |
-|---|---|---|---|--|
-| tenantId | URL | String | O | Tenant ID |
-| serverId | URL | UUID | O | Modifying instance ID |
-| tokenId | Header | String | O | Token ID |
-| removeSecurityGroup | Body | Object | O | Delete security group request object |
-| removeSecurityGroup.name | Body | String | O | Name of security group to delete |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "removeSecurityGroup": {
-        "name": "test"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### Response
-This API does not return a response body.
-
-
-<a id="instance-metadata"></a>
-## Instance Metadata
-
-The values of the instance metadata determine the content of the instance details screen on the **Compute > Instance** service page in the console. The contents by instance metadata are as follows
-
-| Instance Metadata     | Content                                           |
-|----------------|----------------------------------------------|
-| os_distro      | Name of the **OS** in **Basic Information**<br>Used in combination with os_version |
-| os_version     | Version of the **OS** in **Basic Information**<br>Used in combination with os_distro  |
-| image_name     | **Image name** for **Basic Information**                        |
-| os_type      | **Access Information** format                                 |
-| login_username | Username in **Access Information**                            |
-
-> [Caution] Changing and deleting instance metadata can affect related services and features, and you are responsible for the consequences.
-
-### View a List of Instance Metadata
-
-```
-GET /v2/{tenantId}/servers/{serverId}/metadata
-X-Auth-Token: {tokenId}
-```
-
+<a id="view-custom-endpoint-list-request"></a>
 #### Request
 This API does not require a request body.
 
-| Name       | Type | Format | Required | Description                                               |
-|----------|---|---|---|--------------------------------------------------|
-| tenantId | URL | String | O | Tenant ID                                           |
-| serverId | URL | UUID | O | Instance ID                                          |
-| tokenId  | Header | String | O | Token ID                                            |
-
-#### Response
-
-| Name       | Type | Format | Description                                               |
-|----------|---|---|--------------------------------------------------|
-| metadata | Body | Object | Metadata objects to create or modify on the instance<br>Key-value pairs of max 255 characters |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "metadata": {
-        "os_distro": "ubuntu",
-        "description": "Ubuntu Server 20.04.6 LTS (2023.11.21)",
-        "volume_size": "20",
-        "project_domain": "NORMAL",
-        "monitoring_agent": "sysmon",
-        "image_name": "Ubuntu Server 20.04.6 LTS (2023.11.21)",
-        "os_version": "Server 20.04 LTS",
-        "os_architecture": "amd64",
-        "login_username": "ubuntu",
-        "os_type": "linux",
-        "tc_env": "sysmon,dfeac7db42a192a73959d5646117af58"
-    }
-}
-```
-
-</p>
-</details>
-
-
-<a id="view-instance-metadata"></a>
-### View Instance Metadata
-
-```
-GET /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-This API does not require a request body.
-
-| Name       | Type | Format | Required | Description                       |
-|----------|---|---|---|--------------------------|
-| tenantId | URL | String | O | Tenant ID                   |
-| serverId | URL | UUID | O | Instance ID                  |
-| key      | URL | String | O | Key for metadata to create or modify on the instance |
-| tokenId  | Header | String | O | Token ID                    |
-
-#### Response
-
-| Name   | Type | Format | Description                                               |
-|------|---|---|--------------------------------------------------|
-| meta | Body | Object | Metadata objects to create or modify on the instance<br>Key-value pairs of max 255 characters |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-<a id="createmodify-instance-metadata"></a>
-### Create/Modify Instance Metadata
-
-Create or modify metadata for the instance.
-If the key you are requesting matches an existing key, change the key-value to the requested value.
-
-```
-PUT /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-| Name       | Type | Format | Required | Description                                               |
-|----------|---|---|---|--------------------------------------------------|
-| tenantId | URL | String | O | Tenant ID                                           |
-| serverId | URL | UUID | O | Instance ID                                          |
-| key      | URL | String | O | Key for metadata to create or modify on the instance                         |
-| tokenId  | Header | String | O | Token ID                                            |
-| meta     | Body | Object | O | Metadata objects to create or modify on the instance<br>Key-value pairs of max 255 characters |
-
-<details>
-<summary>Example</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### Response
-
-| Name   | Type | Format | Description                                               |
-|------|---|---|--------------------------------------------------|
-| meta | Body | Object | Metadata objects to create or modify on the instance<br>Key-value pairs of max 255 characters |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-
-<a id="delete-instance-metadata"></a>
-### Delete Instance Metadata
-
-Delete metadata for instances that match the key you're requesting.
-
-```
-DELETE /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### Request
-This API does not require a request body.
-
-| Name       | Type | Format | Required | Description                  |
-|----------|---|---|---|---------------------|
-| tenantId | URL | String | O | Tenant ID              |
-| serverId | URL | UUID | O | Instance ID             |
-| key      | URL | String | O | The key to the metadata you want to delete from the instance |
-| tokenId  | Header | String | O | Token ID               |
-
-#### Response
-This API does not return a response body.
-
-
-## Placement Policy
-
-### Create a Placement policy
-
-Creates a placement policy.
-Provides only the `anti-affinity` placement policy type for distributed placement.
-
-```
-POST /v2/{tenantId}/os-server-groups
-X-Auth-Token: {tokenId}
-```
-
-#### Request
 | Name | Type | Format | Required | Description |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | Tenant ID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | Token ID |
-| server_group | Body | Object | O | Placement policy object |
-| server_group.name | Body | String | O | Placement policy name |
-| server_group.policies | Body | Array | O | Placement policy type<br>`Only anti-affinity` can be set |
+| id | Query | UUID | - | Custom endpoint ID to retrieve |
+| endpoint_type | Query | String | - | Endpoint type to retrieve (e.g., `lb.type1`) |
+| port_id | Query | UUID | - | Port ID of the target resource (load balancer) to retrieve |
 
-<details>
-<summary>Example</summary>
-<p>
-
-```json
-{
-    "server_group": {
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"            
-        ]
-    }
-}
-```
-
-</p>
-</details>
-
+<a id="view-custom-endpoint-list-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
-|-----|-----|-----|-----|
-| server_group | Body | Object | Placement policy object |
-| server_group.id | Body | String | Placement policy ID |
-| server_group.name | Body | String | Placement policy name |
-| server_group.policies | Body | Array | Placement policy type |
-| server_group.members | Body | Array | List of instance IDs assigned to the placement policy |
-| server_group.metadata | Body | Object | Placement policy metadata object<br>Always displayed as an empty value |
+|---|---|---|---|
+| myserviceendpoints | Body | Array | List of custom endpoint information objects |
+| myserviceendpoints.id | Body | UUID | Custom endpoint ID |
+| myserviceendpoints.name | Body | String | Name |
+| myserviceendpoints.display_name | Body | String | Display name (the name exposed in the service gateway) |
+| myserviceendpoints.endpoint_type | Body | String | Endpoint type (resource type, e.g., `lb.type1`) |
+| myserviceendpoints.port_id | Body | UUID | Target resource (load balancer) port ID. You can find the target load balancer by using `GET /v2.0/lbaas/loadbalancers?vip_port_id={port_id}`. |
+| myserviceendpoints.service_name | Body | String | Service name for sharing (format: `{region}.sep-{12 hex}`) |
+| myserviceendpoints.max_count | Body | Integer | Maximum number of instances that can be created (the maximum number of service gateways that can be created using this endpoint). `0` = creation blocked, not set = unlimited |
+| myserviceendpoints.current_count | Body | Integer | Current usage (the number of service gateways currently created using this endpoint) |
+| myserviceendpoints.service_provider | Body | String | Connection type (custom endpoints use `user`) |
+| myserviceendpoints.description | Body | String | Description |
+| myserviceendpoints.project_id | Body | String | Tenant ID |
 
 <details><summary>Example</summary>
-<p>
 
 ```json
 {
-    "server_group": {
-        "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"
-        ],
-        "members": [],
-        "metadata": {}
+  "myserviceendpoints": [
+    {
+      "id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+      "name": "my-lb-service",
+      "display_name": "My LB Service",
+      "endpoint_type": "lb.type1",
+      "port_id": "a6e6ff53-8c70-48db-95ec-8b4895f002c2",
+      "service_name": "kr1.sep-0a1b2c3d4e5f",
+      "max_count": 10,
+      "current_count": 3,
+      "service_provider": "user",
+      "description": "",
+      "project_id": "302406c4a1d44b2cb2bc07a652c0b202"
     }
+  ]
 }
 ```
 
-</p>
 </details>
 
-### View the list of Placement policies
+<a id="get-a-custom-endpoint"></a>
+### Get a Custom Endpoint { #get-a-custom-endpoint }
 
 ```
-GET /v2/{tenantId}/os-server-groups
+GET /v2.0/gateways/myserviceendpoints/{serviceEndpointId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="get-a-custom-endpoint-request"></a>
 #### Request
-
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | Tenant ID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | Token ID |
+| serviceEndpointId | URL | UUID | O | Custom endpoint ID |
 
+<a id="get-a-custom-endpoint-response"></a>
 #### Response
 
 | Name | Type | Format | Description |
-|-----|-----|-----|-----|
-| server_groups | Body | Array | List of placement policy objects |
-| server_groups.id | Body | String | Placement policy ID |
-| server_groups.name | Body | String | Placement policy name |
-| server_groups.policies | Body | Array | Placement policy type |
-| server_groups.members | Body | Array | List of instance IDs assigned to the placement policy |
-| server_groups.metadata | Body | Object | Placement policy metadata object<br>Always displayed as an empty value |
+|---|---|---|---|
+| myserviceendpoint | Body | Object | Custom endpoint information object |
+| myserviceendpoint.id | Body | UUID | Custom endpoint ID |
+| myserviceendpoint.name | Body | String | Name |
+| myserviceendpoint.display_name | Body | String | Display name |
+| myserviceendpoint.endpoint_type | Body | String | Endpoint type (resource type) |
+| myserviceendpoint.port_id | Body | UUID | Target resource (load balancer) port ID. You can find the target load balancer using `GET /v2.0/lbaas/loadbalancers?vip_port_id={port_id}`. |
+| myserviceendpoint.service_name | Body | String | Service name for sharing |
+| myserviceendpoint.max_count | Body | Integer | Maximum number of instances that can be created |
+| myserviceendpoint.current_count | Body | Integer | Current usage (number of service gateways currently created) |
+| myserviceendpoint.service_provider | Body | String | Connection type (`user`) |
+| myserviceendpoint.description | Body | String | Description |
+| myserviceendpoint.project_id | Body | String | Tenant ID |
 
 <details><summary>Example</summary>
-<p>
 
 ```json
 {
-    "server_groups": [
-        {
-            "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-            "name": "policy-test1",
-            "policies": [
-                "anti-affinity"
-            ],
-            "members": [
-                "c040455d-6495-4628-ad81-ade79cf7b8d6",
-                "524e7d81-f373-43a0-b2ff-0a15f8255bb5"            
-            ],
-            "metadata": {}
-        },
-        {
-            "id": "f947c657-cbe0-4bf2-a2aa-59d198f8e096",
-            "name": "policy-test2",
-            "policies": [
-                "anti-affinity"
-            ],
-            "members": [],
-            "metadata": {}
-        }
-    ]
+  "myserviceendpoint": {
+    "id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+    "name": "my-lb-service",
+    "display_name": "My LB Service",
+    "endpoint_type": "lb.type1",
+    "port_id": "a6e6ff53-8c70-48db-95ec-8b4895f002c2",
+    "service_name": "kr1.sep-0a1b2c3d4e5f",
+    "max_count": 10,
+    "current_count": 3,
+    "service_provider": "user",
+    "description": "",
+    "project_id": "302406c4a1d44b2cb2bc07a652c0b202"
+  }
 }
 ```
 
-</p>
 </details>
 
-### View Placement Policies
+<a id="create-a-custom-endpoint"></a>
+### Create a Custom Endpoint { #create-a-custom-endpoint }
 
 ```
-GET /v2/{tenantId}/os-server-groups/{servergroupId}
+POST /v2.0/gateways/myserviceendpoints
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-a-custom-endpoint-request"></a>
 #### Request
 
-This API does not require a request body.
-
 | Name | Type | Format | Required | Description |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | Tenant ID |
-| servergroupId | URL | String | O | Placement policy ID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | Token ID |
+| myserviceendpoint | Body | Object | O | Custom endpoint information object |
+| myserviceendpoint.name | Body | String | O | Name (up to 255 characters; letters, numbers, `-`, `_`) |
+| myserviceendpoint.display_name | Body | String | - | Display name (if omitted, same as `name`) |
+| myserviceendpoint.port_id | Body | UUID | O | Target resource (load balancer) port ID. Use the `vip_port_id` from the response of Get a load balancer (`GET /v2.0/lbaas/loadbalancers/{loadbalancerId}`). |
+| myserviceendpoint.max_count | Body | Integer | - | Maximum number of endpoints to create (0–1,000). 0: block creation, null or not entered: unlimited |
+| myserviceendpoint.description | Body | String | - | Description |
 
-#### Response
-
-| Name | Type | Format | Description |
-|-----|-----|-----|-----|
-| server_group | Body | Object | Placement policy object |
-| server_group.id | Body | String | Placement policy ID |
-| server_group.name | Body | String | Placement policy name |
-| server_group.policies | Body | Array | Placement policy type |
-| server_group.members | Body | Array | List of instance IDs assigned to the placement policy |
-| server_group.metadata | Body | Object | Placement policy metadata object<br>Always displayed as an empty value |
+> If you specify a load balancer as the target resource, `endpoint_type` is automatically set to `lb.type1` and `service_provider` is automatically set to `user`. Once creation is complete, a `service_name` for sharing is automatically issued. You can create up to 5 per project by default.
 
 <details><summary>Example</summary>
-<p>
 
 ```json
 {
-    "server_group": {
-        "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"
-        ],
-        "members": [
-            "c040455d-6495-4628-ad81-ade79cf7b8d6",
-            "524e7d81-f373-43a0-b2ff-0a15f8255bb5"            
-        ],
-        "metadata": {}
-    }
+  "myserviceendpoint": {
+    "name": "my-lb-service",
+    "display_name": "My LB Service",
+    "port_id": "a6e6ff53-8c70-48db-95ec-8b4895f002c2",
+    "max_count": 10,
+    "description": ""
+  }
 }
 ```
 
-</p>
 </details>
 
-### Deleting a Placement policy
+<a id="create-a-custom-endpoint-response"></a>
+#### Response
+The response body is the same as [Get a Custom Endpoint](#get-a-custom-endpoint), and includes the automatically issued `service_name`.
+
+<a id="modify-a-custom-endpoint"></a>
+### Modify a Custom Endpoint { #modify-a-custom-endpoint }
 
 ```
-DELETE /v2/{tenantId}/os-server-groups/{servergroupId}
+PUT /v2.0/gateways/myserviceendpoints/{serviceEndpointId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-a-custom-endpoint-request"></a>
 #### Request
 
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| tokenId | Header | String | O | Token ID |
+| serviceEndpointId | URL | UUID | O | Custom endpoint ID |
+| myserviceendpoint | Body | Object | O | Custom endpoint information object |
+| myserviceendpoint.name | Body | String | - | Name |
+| myserviceendpoint.display_name | Body | String | - | Display name |
+| myserviceendpoint.max_count | Body | Integer | - | Maximum number of instances to create (0–1000). 0: block creation, null: change to unlimited, if the field is not included, the existing value is retained |
+| myserviceendpoint.description | Body | String | - | Description |
+
+> The resource type (`endpoint_type`) and the target resource (`port_id`) cannot be changed. Reducing the maximum number does not affect existing service gateways, and no additional service gateways can be created while the current count exceeds the maximum.
+
+<details><summary>Example</summary>
+
+```json
+{
+  "myserviceendpoint": {
+    "name": "my-lb-renamed",
+    "display_name": "My LB (renamed)",
+    "max_count": 20,
+    "description": "renamed"
+  }
+}
+```
+
+</details>
+
+<a id="modify-a-custom-endpoint-response"></a>
+#### Response
+The response body is the same as [Get a Custom Endpoint](#get-a-custom-endpoint).
+
+<a id="delete-custom-endpoint"></a>
+### Delete Custom Endpoint { #delete-custom-endpoint }
+
+```
+DELETE /v2.0/gateways/myserviceendpoints/{serviceEndpointId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-custom-endpoint-request"></a>
+#### Request
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | Tenant ID |
-| servergroupId | URL | String | O | Placement policy ID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | Token ID |
+| serviceEndpointId | URL | UUID | O | Custom endpoint ID |
 
+> If there is a service gateway using this endpoint, it cannot be deleted. When deleted, the registered allowed projects are also deleted.
+
+<a id="delete-custom-endpoint-response"></a>
 #### Response
-
 This API does not return a response body.
+
+<a id="reissue-a-service-name"></a>
+### Reissue a Service Name { #reissue-a-service-name }
+
+```
+PUT /v2.0/gateways/serviceendpoints/{serviceEndpointId}/generate_service_name
+X-Auth-Token: {tokenId}
+```
+
+<a id="reissue-a-service-name-request"></a>
+#### Request
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| tokenId | Header | String | O | Token ID |
+| serviceEndpointId | URL | UUID | O | Custom endpoint ID |
+
+> Only a member (owner) of the project that created the endpoint can perform this action. Upon reissuance, the existing `service_name` is immediately invalidated and can no longer be retrieved. Service gateways created with the existing `service_name` continue to function normally, but the reissued `service_name` must be used when creating new ones.
+
+<a id="reissue-a-service-name-response"></a>
+#### Response
+
+| Name | Type | Format | Description |
+|---|---|---|---|
+| service_name | Body | String | Reissued service name for sharing |
+
+<details><summary>Example</summary>
+
+```json
+{
+  "service_name": "kr1.sep-9f8e7d6c5b4a"
+}
+```
+
+</details>
+
+<a id="allowed-projects"></a>
+## Allowed Projects { #allowed-projects }
+
+This is a list (whitelist) that manages the targets (tenants) that are allowed to connect to a custom endpoint (create a service gateway). It is a pure allowlist (permissions) and does not cover creation count limits (count limits are managed in the endpoint's `max_count`).
+
+<a id="view-allow-project-list"></a>
+### View Allow Project List { #view-allow-project-list }
+
+```
+GET /v2.0/gateways/serviceendpointallowprojects
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-allow-project-list-request"></a>
+#### Request
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| tokenId | Header | String | O | Token ID |
+| service_endpoint_id | Query | UUID | - | Custom endpoint ID to retrieve |
+| target_tenant_id | Query | String | - | Allowed target tenant ID to retrieve |
+
+<a id="view-allow-project-list-response"></a>
+#### Response
+
+| Name | Type | Format | Description |
+|---|---|---|---|
+| serviceendpointallowprojects | Body | Array | List of allowed project information objects |
+| serviceendpointallowprojects.id | Body | UUID | Allowed project ID |
+| serviceendpointallowprojects.service_endpoint_id | Body | UUID | Custom endpoint ID |
+| serviceendpointallowprojects.target_tenant_id | Body | String | Allowed target. `*` = all projects / tenant ID = specific project |
+| serviceendpointallowprojects.name | Body | String | Name (for reference) |
+| serviceendpointallowprojects.description | Body | String | Description |
+
+<details><summary>Example</summary>
+
+```json
+{
+  "serviceendpointallowprojects": [
+    {
+      "id": "d9e0f111-2222-3333-4444-555566667777",
+      "service_endpoint_id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+      "target_tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+      "name": "allow-b",
+      "description": "allow b-tenant"
+    }
+  ]
+}
+```
+
+</details>
+
+<a id="view-allowed-projects"></a>
+### View Allowed Projects { #view-allowed-projects }
+
+```
+GET /v2.0/gateways/serviceendpointallowprojects/{allowProjectId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-allowed-projects-request"></a>
+#### Request
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| tokenId | Header | String | O | Token ID |
+| allowProjectId | URL | UUID | O | Allowed project ID |
+
+<a id="view-allowed-projects-response"></a>
+#### Response
+The response body is the same as the single object (`serviceendpointallowproject`) in [View Allowed Project List](#view-allow-project-list).
+
+<a id="create-an-allowed-project"></a>
+### Create an Allowed Project { #create-an-allowed-project }
+
+```
+POST /v2.0/gateways/serviceendpointallowprojects
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-an-allowed-project-request"></a>
+#### Request
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| tokenId | Header | String | O | Token ID |
+| serviceendpointallowproject | Body | Object | O | Allow project information object |
+| serviceendpointallowproject.service_endpoint_id | Body | UUID | O | Custom endpoint ID |
+| serviceendpointallowproject.target_tenant_id | Body | String | O | Allow target. `*` = all projects / Tenant ID (32 hex) = specific project |
+| serviceendpointallowproject.name | Body | String | - | Name (for reference) |
+| serviceendpointallowproject.description | Body | String | - | Description |
+
+> If you register both all-allow (`*`) and a specific project at the same time, the narrower scope (specific project) takes effect. You can use this to switch the allowed scope without downtime. The tenant ID of the endpoint owner cannot be registered (the owner is always allowed). If the same (endpoint, tenant) combination already exists, a 409 is returned.
+
+<details><summary>Example</summary>
+
+```json
+{
+  "serviceendpointallowproject": {
+    "service_endpoint_id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+    "target_tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "name": "allow-b",
+    "description": "allow b-tenant"
+  }
+}
+```
+
+</details>
+
+<a id="create-an-allowed-project-response"></a>
+#### Response
+The response body is identical to a single object (`serviceendpointallowproject`) from [View Allowing Project List](#view-allow-project-list).
+
+<a id="modify-allowed-projects"></a>
+### Modify Allowed Projects { #modify-allowed-projects }
+
+```
+PUT /v2.0/gateways/serviceendpointallowprojects/{allowProjectId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-allowed-projects-request"></a>
+#### Request
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| tokenId | Header | String | O | Token ID |
+| allowProjectId | URL | UUID | O | Allowed project ID |
+| serviceendpointallowproject | Body | Object | O | Allowed project information object |
+| serviceendpointallowproject.name | Body | String | - | Name (for reference) |
+| serviceendpointallowproject.description | Body | String | - | Description |
+
+> The allowed target (`target_tenant_id`) and endpoint (`service_endpoint_id`) cannot be changed. Only `name` and `description` can be modified.
+
+<details><summary>Example</summary>
+
+```json
+{
+  "serviceendpointallowproject": {
+    "name": "allow-b-renamed",
+    "description": "Project B integration"
+  }
+}
+```
+
+</details>
+
+<a id="modify-allowed-projects-response"></a>
+#### Response
+The response body is the same as a single object (`serviceendpointallowproject`) in [View Allowed Project List](#view-allow-project-list).
+
+<a id="delete-an-allowed-project"></a>
+### Delete an Allowed Project { #delete-an-allowed-project }
+
+```
+DELETE /v2.0/gateways/serviceendpointallowprojects/{allowProjectId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-an-allowed-project-request"></a>
+#### Request
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| tokenId | Header | String | O | Token ID |
+| allowProjectId | URL | UUID | O | Allowed project ID |
+
+<a id="delete-an-allowed-project-response"></a>
+#### Response
+This API does not return a response body.
+
+<a id="usage-status"></a>
+## Usage Status { #usage-status }
+
+Retrieves the list of consumer-side service gateways that are using (connected to) the custom endpoint.
+
+<a id="view-usage-status-list"></a>
+### View Usage Status List { #view-usage-status-list }
+
+```
+GET /v2.0/gateways/serviceendpointusages
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-usage-status-list-request"></a>
+#### Request
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| tokenId | Header | String | O | Token ID |
+| id | Query | UUID | - | Custom endpoint ID to retrieve (multiple values allowed; if omitted, all owned endpoints are targeted) |
+| network_id | Query | UUID | - | The VPC ID of the service gateway to retrieve (multiple values allowed) |
+| subnet_id | Query | UUID | - | The subnet ID of the service gateway to retrieve (multiple values allowed) |
+| limit | Query | Integer | - | Maximum number of items to retrieve at once (if omitted, all items are returned) |
+| marker | Query | UUID | - | Service gateway ID of the last item on the previous page (used when requesting the next page) |
+| page_reverse | Query | Boolean | - | If set to `true`, retrieves in the previous page direction |
+| sort_key | Query | String | - | Field to sort by (multiple values allowed) |
+| sort_dir | Query | String | - | Sort direction (`asc` or `desc`). Must be paired with `sort_key` and specified in the same quantity |
+
+> By default, results are sorted in ascending order by service gateway ID (`id`). To retrieve results in order of creation time, you must specify it explicitly, such as `sort_key=create_time&sort_dir=desc`. The following response fields can be used for `sort_key`: `id`, `name`, `fixed_ip`, `status`, `tenant_id`, `network_id`, `subnet_id`, `service_endpoint_id`, `create_time`.
+> If `limit` is specified, the response includes links to the next/previous pages (`serviceendpointusages_links`). To retrieve the next page, either call the URL in the link directly, or specify the `id` of the last item on the current page as the `marker`. The same filter and sort conditions must be maintained while paginating.
+
+<a id="view-usage-status-list-response"></a>
+#### Response
+
+| Name | Type | Format | Description |
+|---|---|---|---|
+| serviceendpointusages | Body | Array | List of usage information objects |
+| serviceendpointusages.id | Body | UUID | Service gateway ID |
+| serviceendpointusages.name | Body | String | Service gateway name |
+| serviceendpointusages.fixed_ip | Body | String | The IP address of the service gateway |
+| serviceendpointusages.status | Body | String | Service gateway status |
+| serviceendpointusages.tenant_id | Body | String | Tenant ID of the consumer project that created the service gateway |
+| serviceendpointusages.network_id | Body | UUID | Service gateway VPC ID |
+| serviceendpointusages.subnet_id | Body | UUID | Service gateway subnet ID |
+| serviceendpointusages.service_endpoint_id | Body | UUID | ID of the associated custom endpoint |
+| serviceendpointusages.create_time | Body | String | Time at which the service gateway was created |
+| serviceendpointusages_links | Body | Array | List of pagination links (included only when `limit` is specified) |
+| serviceendpointusages_links.rel | Body | String | Link type. `next` = next page / `previous` = previous page |
+| serviceendpointusages_links.href | Body | String | URL for retrieving the corresponding page |
+
+<details><summary>Example</summary>
+
+```json
+{
+  "serviceendpointusages": [
+    {
+      "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+      "name": "sgw_partner",
+      "fixed_ip": "192.168.0.51",
+      "status": "AVAILABLE",
+      "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+      "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+      "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+      "service_endpoint_id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+      "create_time": "2023-08-31 02:11:09"
+    }
+  ],
+  "serviceendpointusages_links": [
+    {
+      "rel": "next",
+      "href": "https://kr1-api-network-infrastructure.nhncloudservice.com/v2.0/gateways/serviceendpointusages?limit=20&marker=d383a4a3-dae7-4609-b2db-ecdf5859fac5"
+    },
+    {
+      "rel": "previous",
+      "href": "https://kr1-api-network-infrastructure.nhncloudservice.com/v2.0/gateways/serviceendpointusages?limit=20&marker=d383a4a3-dae7-4609-b2db-ecdf5859fac5&page_reverse=True"
+    }
+  ]
+}
+```
+
+</details>
