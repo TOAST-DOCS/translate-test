@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=0428bc2a1d3f -->
 
 <a id="security-vaccine-overview"></a>

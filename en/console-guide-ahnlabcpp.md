@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=f05aff1b6142 -->
 
 <a id="security-vaccine-console-user-guide-ahnlabahnlab-cpp"></a>
@@ -12,7 +14,7 @@ To communicate with the vaccine server, add the following to the security group:
 
 | Direction | Port | Region | CIDR |
 | --- | --- | --- | ---- |
-| Egress | 5465, 5645, 8803, 8804, 8807, 8809, 8810 | Korea (Pangyo), Korea (Pyeongchon) | 114.110.145.157/32 or {SG IP}|
+| Egress | 5465, 5645, 8803, 8804, 8807, 8809, 8810 | Korea (Pangyo), Korea (Pyeongchon) | 114.110.144.193/32 or {SG IP}|
 
 
 <a id="integrate-vaccine-service-gateway"></a>
