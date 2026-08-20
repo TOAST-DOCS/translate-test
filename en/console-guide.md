@@ -20,7 +20,7 @@ Creates a new volume. The created volume can be accessed from instances by using
 
 | Item | Description |
 | --- | --- |
-| Name | Name of the volume to be created. The NFS access path is created using the volume name. The volume name is limited to up to 100 characters, including letters, numbers, and some symbols (-, _). |
+| Name | Name of the volume to be created. The NFS access path is created using the volume name. The volume name is limited to up to 100 characters, including letters, numbers, and some symbols ('-', '_'). |
 | Description | Description of the volume. |
 | VPC | The virtual private cloud (VPC) to access the volume. |
 | Subnet | The subnet to access the volume. Only subnets in the selected VPC can be chosen. |
@@ -55,7 +55,7 @@ A snapshot is a read-only copy that saves the state of a volume at a specific po
 | Item | Description |
 | --- | --- |
 | Name | Name of the snapshot. If created by the system, the name is determined according to specified rules. |
-| Created at | The date and time when the snapshot was created. |
+| Created on | Date and time when the snapshot was created. |
 
 <a id="snapshots.create"></a>
 ### Create a Snapshot Immediately { #snapshots.create }
@@ -116,5 +116,5 @@ sudo mount -t nfs <nas-source> <mount-point>
 
 | Item | Description |
 | --- | --- |
-| &lt;nas-source&gt; | Connection path of the volume (`NFS server address:export path`)<br>Example: 192.168.0.11:/GJ\_SHARE\_FS8/bacb62d4-f271-44ad-a5d2-505d21037b45 |
+| &lt;nas-source&gt; | Volume connection path (`NFS server address:export path`)<br>Example: 192.168.0.11:/GJ\_SHARE\_FS8/bacb62d4-f271-44ad-a5d2-505d21037b45 |
 | &lt;mount-point&gt; | Directory to mount the volume<br>Example: /mnt |
