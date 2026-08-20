@@ -1,0 +1,86 @@
+<!-- pre-align:aligned sig=3d4c5fafe732 -->
+
+<a id="sender-console-guide"></a>
+## Notification > KakaoTalk Bizmessage > 送信元プロフィール > コンソールガイド { #sender-console-guide }
+
+<a id="registerauthenticate-sender-profiles"></a>
+## 発信プロフィールの登録/認証 { #registerauthenticate-sender-profiles }
+* カカオトークBizメッセージを送信するには、発信プロフィールを先に登録する必要があります。
+* カカオトークチャンネルはカカオトークWebサイト( https://center-pf.kakao.com )にて無料で作成できます。
+* ビジネス認証済みのカカオトークチャンネルのみNHN Cloud KakaoTalk Bizmessageサービスに追加できます。([プラスフレンドビジネス認証](https://static.toastoven.net/prod_alimtalk/plusfriend_business_certify_guide_20190311.pdf)参考)
+
+<a id="add-a-sender-profile"></a>
+## 発信プロフィールの追加 { #add-a-sender-profile }
+
+発信プロフィールの登録が完了すると、管理者の携帯電話にカカオトークトークンメッセージが送信されます。
+管理者に登録された携帯電話にのみカカオトークトークンメッセージが送信されます。
+
+![発信プロフィール追加](https://static.toastoven.net/prod_alimtalk/plusfriend_01_201904.png)
+
+* プラスフレンドIDは、プラスフレンドを開設する時に登録した検索用IDを入力する必要があります。
+* 顧客が受け取るカカオトークBizメッセージは、カカオトークに登録したプラスフレンドの名前で表示されます。
+
+<a id="token-registration"></a>
+## トークンの登録 { #token-registration }
+
+管理者の携帯電話で受け取ったトークンメッセージを入力すると、登録が完了します。
+
+![トークン登録](https://static.toastoven.net/prod_alimtalk/plusfriend_02_201904.png)
+
+<b><span style="color:red">発信プロフィール登録時、初期の一日最大送信量は1,000件に制限されます。</span></b>
+一日の最大送信量を変更するには、サポート(support@toast.com)にリクエストする必要があります。
+
+<a id="manage-a-fallback-delivery"></a>
+## 代替送信の管理 { #manage-a-fallback-delivery }
+
+発信プロフィールごとに**代替送信設定**が可能です。
+
+* 送信失敗設定をした発信プロフィールのメッセージのみ、LMSまたはSMSで代替送信されます。
+* SMSアプリケーションキー修正時、すべての発信プロフィールの送信失敗設定は初期化されます。
+
+![代替送信管理](https://static.toastoven.net/prod_alimtalk/plusfriend_03_201812.png)
+
+<a id="view-kakao-statistics"></a>
+## カカオ統計照会 { #view-kakao-statistics }
+
+発信プロフィール管理で**カカオ統計ショートカット**をクリックすると、新しいウィンドウでカカオ統計を照会できます。統計基準には送信統計とテンプレート統計があり、メッセージチャネルによって照会条件が異なります。照会結果をチャートと表で確認できます。
+
+* リアルタイム統計は提供しておらず、前日収集したデータを毎日午前7時頃に提供します。
+* お知らせトークの統計はD+1に初回提供し、D+2に確定します。
+* 有効既読数は、同じメッセージに対して重複集計しません。
+* クリック数は、同じメッセージに対して重複集計します。
+* 送信成功件数が10件以下の場合は、有効既読数とクリック数を提供しません。
+
+<a id="delivery-statistics"></a>
+### 送信統計 { #delivery-statistics }
+
+発信プロフィールを基準に、日別の送信数、有効既読数、クリック数を照会します。期間、送信識別子、メッセージタイプなどを設定して照会できます。
+
+<a id="template-statistics"></a>
+### テンプレート統計 { #template-statistics }
+
+テンプレート及びグループタグを基準に、日別の送信数、有効既読数、クリック数を照会します。期間、メッセージタイプなどを設定して照会できます。
+
+* ブランドメッセージのフリータイプは、グループタグを使用した場合にのみ提供します。
+
+<a id="group-tag-management"></a>
+## グループタグ管理 { #group-tag-management }
+
+グループタグは、ブランドメッセージのテンプレート統計照会時に使用する識別タグです。**カカオ統計ショートカット**の新しいウィンドウで**グループタグ管理**タブをクリックして管理できます。
+
+<b><span style="color:red">グループタグはブランドメッセージでのみ使用できます。お知らせトークは該当しません。</span></b>
+
+* **+ グループタグ登録**をクリックしてグループタグ名を入力し、登録します。
+* 修正または削除するグループタグのチェックボックスを選択し、**グループタグ修正**または**グループタグ削除**をクリックします。
+
+<a id="notice-of-personal-information-consignee"></a>
+## 個人情報受託社告知案内 { #notice-of-personal-information-consignee }
+'お客様がNHN Cloud > Notification > KakaoTalk Bizmessageサービスを利用すると、お客様と当社との間に個人情報の取り扱いに関する業務委受託関係が発生します。 情報通信網法及び個人情報保護法に基づき、委託者である｢顧客｣は、個人情報処理ポリシーを通して｢当社｣に個人情報を委託した状況(受託者及び業務の内容)を公開する必要があります。
+
+'当社では、お客様がNHN CloudのKakaoTalk Bizmessageサービスを利用する際に、関連法令を遵守し、委託状況の未公開によって過怠料などの不利益を受けないように、以下のようにご案内します。
+
+(例)<br>
+[個人情報受託社の告知案内]<br>
+KakaoTalk Bizmessageをサービスする利用時、顧客社が運営する｢個人情報処理ポリシー > 委託状況｣に次の内容を表記してください。<br>
+受託社：NHN<br>
+業務の内容：カカオトークBizメッセージの送信代行<br>
