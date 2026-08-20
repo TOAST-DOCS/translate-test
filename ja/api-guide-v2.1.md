@@ -1,0 +1,291 @@
+<!-- pre-align:aligned sig=c189227c350c -->
+
+<a id="ai-service-speech-to-text-api-guide"></a>
+## AI Service > Speech to Text > APIガイド { #ai-service-speech-to-text-api-guide }
+
+Speech to Text API v2.1は、より豊富な音声認識結果を提供します。
+Speech to Text API v2.1は、旧バージョンのレスポンス構造を大幅に改善し、多様な後処理やユーザーエクスペリエンスの向上に必要な情報を、より精巧に提供します。
+
+<a id="api-common-information"></a>
+## API共通情報 { #api-common-information }
+
+<a id="preliminary-preparation"></a>
+### 事前準備 { #preliminary-preparation }
+
+Speech to Text APIは、認証/認可のためにUser Access Keyトークンを使用します。User Access Keyトークンは、User Access Keyを基に発行されるBearerタイプの一時的なアクセストークンです。User Access Keyトークンの発行及び使用に関する詳細については、[User Access Key トークン](/nhncloud/ko/public-api/user-access-key-token)をご参照ください。
+
+[リクエストヘッダ]
+
+| 名前                  | 値                              | 説明                   |
+|---------------------|--------------------------------|----------------------|
+| X-NHN-Authorization | Bearer {User Access Key Token} | User Access Key トークン |
+
+<a id="response-common-information"></a>
+### レスポンス共通情報 { #response-common-information }
+
+- 全てのAPIリクエストに **200 OK**でレスポンスします。詳細なレスポンス結果はレスポンス本文のヘッダを参照してください。
+
+[成功レスポンス本文]
+
+```
+{
+    "header": {
+        "isSuccessful": true,
+        "resultCode": 0,
+        "resultMessage": "Success"
+    }
+}
+```
+
+[失敗レスポンス本文]
+```
+{
+    "header": {
+        "isSuccessful": false,
+        "resultCode": 404,
+        "resultMessage": "Please check your API Url, HTTP Method."
+    }
+}
+```
+
+[ヘッダ]
+
+| 名前            | タイプ     | 説明                             |
+|---------------|---------|--------------------------------|
+| isSuccessful  | Boolean | 分析API成否                        |
+| resultCode    | Integer | 結果コード                          |
+| resultMessage | String  | 結果メッセージ(成功時はSUCCESS、失敗時はエラー内容) |
+
+<a id="voice-recognition-api"></a>
+## 音声認識API { #voice-recognition-api }
+
+<a id="voice-recognition"></a>
+### 音声認識 { #voice-recognition }
+- オーディオファイルの音声データをテキスト形式で抽出します。
+
+[URI]
+
+| メソッド | URI                                                              |
+|------|------------------------------------------------------------------|
+| POST | https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt |
+
+[リクエスト本文]
+
+- 音声ファイルのバイナリデータを入力します。
+- ユーザー単語リスト(biasingList)に入力された値に基づき、「しゃだんけ」と認識された単語は「遮断機」に、「安全 運転」と認識された単語は「安全運転」に置換された結果が提供されます。
+
+```
+curl -X POST 'https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt' \
+-F 'audio=@sample.mp3' \
+-F 'biasingList="遮断機_しゃだんけ"' \
+-F 'biasingList="安全運行_安全運行"' \ 
+-H 'X-NHN-Authorization: Bearer ${User Access Key Token}'
+```
+
+[フィールド]
+
+| 名前          | タイプ                 | 必須かどうか | 説明                                                                                                         |
+|-------------|---------------------|-------|--------------------------------------------------------------------------------------------------------------------|
+| audio       | multipart/form–data | 必須     | 音声ファイル(WAV, WebM, MP3, OGG, FLAC, AAC, AC3)                                                                |
+| biasingList | String[]            | 任意     | 特定の単語やフレーズを優先的に認識または置換するためのパラメータ。想定される誤認識の結果を訂正したり、特定のキーワードを強化したりする場合に使用します。各項目は**「正解_モデル認識値」**の形式で構成されます。 |
+
+<a id="voice-recognition-response"></a>
+#### レスポンス
+
+[レスポンス本文]
+```
+{
+    "header": {
+        "isSuccessful": true,
+        "resultCode": 0,
+        "resultMessage": "Success"
+    },
+    "result": {
+        "inputLength": 220.1,
+        "fileType": "mp3float",
+        "text": [
+            "レスポンステキストの例です",
+        ],
+        "timeslot": [
+            {
+                "startTime": "390",
+                "endTime": "12090"
+            },
+        ],
+		"confidence": [
+			0
+		]
+    }
+}
+```
+
+
+[フィールド]
+
+| 名前                    | タイプ      | 説明                      |
+|-----------------------|----------|-------------------------|
+| inputLength           | Double   | 認識された音声ファイルの長さ(単位：秒)    |
+| fileType              | String   | 認識された音声ファイルのタイプ         |
+| text                  | String[] | 認識された音声のテキスト変換結果        |
+| timeslot              | List     | 同じインデックスのテキストが認識された区間情報 |
+| timeslot[0].startTime | Long     | 区間開始時間(millisecond)     |
+| timeslot[0].endTime   | Long     | 区間の終了時間(millisecond)    |
+| confidence            | Double[] | 同じインデックスのテキスト認識結果の信頼度   |
+
+
+<a id="voice-recognition-api-asynchronous"></a>
+## 音声認識API (非同期) { #voice-recognition-api-asynchronous }
+
+<a id="voice-recognition-asynchronous"></a>
+### 音声認識(非同期) { #voice-recognition-asynchronous }
+- オーディオファイルの音声データをテキスト形式で抽出します。(非同期)
+
+[URI]
+
+| メソッド | URI                                                                    |
+|------|------------------------------------------------------------------------|
+| POST | https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/async |
+
+[リクエスト本文]
+
+- オーディオファイルをダウンロード可能なURLで提供し、音声認識をリクエストします。
+- {appKey}はコンソールで確認した値に変更し、{User Access Key Token}は発行されたUser Access Keyトークンに変更してください。
+- ユーザー単語リスト(biasingList)に入力された値に基づき、「しゃだんけ」と認識された単語は「遮断機」に、「安全 運転」と認識された単語は「安全運転」に置換された結果が提供されます。
+
+```
+curl -X POST 'https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/async' \
+-H 'X-NHN-Authorization: Bearer ${User Access Key Token}' \
+-H 'Content-Type: application/json' \
+--data '{"audioUrl": "https://url/to/audioFile", "biasingList": ["遮断機_しゃだんけ", "安全運転_安全 運転"]}'
+```
+
+[フィールド]
+
+| 名前          | タイプ      | 必須かどうか | 説明                                                                                                  |
+|-------------|----------|-------|--------------------------------------------------------------------------------------------------------------|
+| audioUrl    | String   | 必須     | 最大150MBサイズのダウンロード可能な音声ファイルURL(WAV, WebM, MP3, OGG, FLAC, AAC, AC3)                                  |
+| biasingList | String[] | 任意     | 特定の単語やフレーズを優先的に認識または置換するためのパラメータ。想定される誤認識の結果を訂正したり、特定のキーワードを強化したりする場合に使用。各項目は**「正解_モデル認識値」**の形式で構成。 |
+
+<a id="voice-recognition-asynchronous-response"></a>
+#### レスポンス
+
+[レスポンス本文]
+
+```
+{
+    "header": {
+        "isSuccessful": true,
+        "resultCode": 0,
+        "resultMessage": "SUCCESS"
+    },
+    "taskId": "6acb2d15-2180-4e79-b92f-45b1e887e920"
+}
+```
+
+[フィールド]
+
+| 名前     | タイプ    | 説明                       |
+|--------|--------|--------------------------|
+| taskId | String | 結果照会、再試行をリクエストできるタスクUUID |
+
+
+<a id="check-status"></a>
+### ヘルスチェック { #check-status }
+- リクエストしたタスクの現在の状態を照会します。
+
+[URI]
+
+| メソッド | URI                                                                                    |
+|------|----------------------------------------------------------------------------------------|
+| GET  | https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/async/{taskId}/status |
+
+[フィールド]
+
+| 名前     | タイプ    | 必須かどうか | 説明                            |
+|--------|--------|-------|-------------------------------|
+| taskId | String | 必須     | 非同期音声認識APIの呼び出し後に受け取ったタスクUUID |
+
+<a id="check-status-response"></a>
+#### レスポンス
+
+[レスポンス本文]
+
+```
+{
+    "header": {
+        "isSuccessful": true,
+        "resultCode": 0,
+        "resultMessage": "success"
+    },
+    "taskId": "d3dc604c-ebef-411a-959e-16f99770f2cf",
+    "taskStatus": "COMPLETED",
+    "result": {
+        "inputLength": 220.1,
+        "fileType": "mp3float",
+        "text": [
+            "レスポンステキストの例です",
+        ],
+        "timeslot": [
+            {
+                "startTime": "390",
+                "endTime": "12090"
+            }
+        ],
+		"confidence": [
+			0
+		]
+    }
+}
+```
+
+[フィールド]
+
+| 名前         | タイプ    | 説明                                               |
+|------------|--------|--------------------------------------------------|
+| taskId     | String | 状態照会をリクエストしたタスクUUID                              |
+| taskStatus | String | 作業の現在状態(PENDING, IN_PROGRESS, COMPLETED, FAILED) |
+| result     | Result | 作業の状態がCOMPLETEDの場合の結果値                           |
+
+[Result]
+
+| 名前                    | タイプ      | 説明                      |
+|-----------------------|----------|------------------------|
+| inputLength           | Double   | 認識された音声ファイルの長さ(単位：秒)    |
+| fileType              | String   | 認識された音声ファイルタイプ          |
+| text                  | String[] | 認識された音声のテキスト変換結果        |
+| timeslot              | List     | 同じインデックスのテキストが認識された区間情報 |
+| timeslot[0].startTime | Long     | 区間開始時間(ミリ秒)             |
+| timeslot[0].endTime   | Long     | 区間の終了時間(ミリ秒)            |
+| confidence            | Double[] | 同じインデックスのテキスト認識結果信頼度    |
+
+<a id="retry"></a>
+### 再試行 { #retry }
+- 失敗した作業の再試行をリクエストします。
+
+[URI]
+
+| メソッド | URI                                                                                   |
+|------|---------------------------------------------------------------------------------------|
+| GET  | https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/async/{taskId}/retry |
+
+[フィールド]
+
+| 名前     | タイプ    | 必須かどうか | 説明                           |
+|--------|--------|--------|------------------------------|
+| taskId | String | 必須     | 非同期音声認識API呼び出し後に受け取ったタスクUUID |
+
+<a id="retry-response"></a>
+#### レスポンス
+
+[レスポンス本文]
+
+```
+{
+	"header": {
+		// 省略
+	},
+	"result": {
+		"taskId": "c337256d-b17e-42ce-9f63-a792a05ae0ef"
+	}
+}
+```
