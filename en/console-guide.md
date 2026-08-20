@@ -1,7 +1,5 @@
 <!-- machine_translated: true -->
 
-{% include-markdown '../_nas-for-big-data-vars.md' %}
-
 <!-- pre-align:aligned sig=d48e0cc2304b -->
 
 <a id="storage-nas-for-bigdata-console-user-guide"></a>
@@ -20,12 +18,12 @@ Creates a new volume. The created volume can be accessed from instances by using
 
 | Item | Description |
 | --- | --- |
-| Name | Name of the volume to be created. The NFS access path is created using the volume name. The volume name is limited to up to 100 characters, including letters, numbers, and some symbols (-, _). |
+| Name | Name of the volume to be created. The NFS access path is created using the volume name. The volume name is limited to up to 100 characters, including letters, numbers, and some symbols ('-', '_'). |
 | Description | Description of the volume. |
 | VPC | The virtual private cloud (VPC) to access the volume. |
 | Subnet | The subnet to access the volume. Only subnets in the selected VPC can be chosen. |
-| Size | Size of the volume to be created. It can be entered from a minimum of $[ min_size ]$ to a maximum of $[ max_size ]$. |
-| Access Control List (ACL) | Access control lists (ACLs) can be configured in the Network ACL service. For more information, see the [Network ACL service user guide]($[ network_acl_guide_url ]$). |
+| Size | Size of the volume to be created. It can be entered from a minimum of 1,000 GB to a maximum of 50,000 GB. |
+| Access Control List (ACL) | Access control lists (ACLs) can be configured in the Network ACL service. For more information, see the [Network ACL service user guide](/Network/Network%20ACL/en/overview). |
 | Auto Create Snapshot | A snapshot is automatically created according to the configured cycle. When the configured limit is exceeded, the oldest snapshots are automatically deleted first. |
 
 <a id="delete_volume"></a>
@@ -46,7 +44,7 @@ Changes the size of a volume. The size can be changed even while the volume is i
 <a id="change_acl"></a>
 ### Change Access Control Settings { #change_acl }
 
-Access control lists (ACLs) can be configured in the Network ACL service. For more information, see the [Network ACL service user guide]($[ network_acl_guide_url ]$).
+Access control lists (ACLs) can be configured in the Network ACL service. For more information, see the [Network ACL service user guide](/Network/Network%20ACL/en/overview).
 
 <a id="snapshots"></a>
 ## Snapshot { #snapshots }
@@ -55,7 +53,7 @@ A snapshot is a read-only copy that saves the state of a volume at a specific po
 | Item | Description |
 | --- | --- |
 | Name | Name of the snapshot. If created by the system, the name is determined according to specified rules. |
-| Created at | The date and time when the snapshot was created. |
+| Created on | The date and time when the snapshot was created. |
 
 <a id="snapshots.create"></a>
 ### Create a Snapshot Immediately { #snapshots.create }
@@ -65,7 +63,7 @@ Creates a snapshot immediately. The name is limited to up to 32 characters, incl
 <a id="snapshots.restore"></a>
 ### Restore a Snapshot { #snapshots.restore }
 
-Restores the volume to the point in time when the snapshot was created. Contact [customer support]($[ support_url ]$) to restore the snapshot.
+Restores the volume to the point in time when the snapshot was created. Contact [customer support](https://www.nhncloud.com/kr/support/inquiry) to restore the snapshot.
 
 <a id="snapshots.delete"></a>
 ### Delete a Snapshot { #snapshots.delete }
@@ -86,7 +84,6 @@ The created volume can be mounted on an instance using the connection informatio
 ```
 sudo apt-get install nfs-common rpcbind
 ```
-
 <br>
 
 <a id="connect_volume.nfs-rocky"></a>
@@ -95,7 +92,6 @@ sudo apt-get install nfs-common rpcbind
 ```
 sudo dnf install nfs-utils rpcbind
 ```
-
 <br>
 
 <a id="connect_volume.rpcbind"></a>
@@ -104,7 +100,6 @@ sudo dnf install nfs-utils rpcbind
 ```
 sudo service rpcbind start
 ```
-
 <br>
 
 <a id="connect_volume.mount"></a>
