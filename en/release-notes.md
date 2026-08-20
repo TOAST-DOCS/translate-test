@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=d29522461c5f -->
+<!-- pre-align:aligned sig=a64bf08e342e -->
 
 <a id="container-nhn-container-servicencs-release-notes"></a>
 ## Container > NHN Container Service(NCS) > Release Notes { #container-nhn-container-servicencs-release-notes }
