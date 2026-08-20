@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=8eda339a3204 -->
 
 <a id="api-v10-guide"></a>
