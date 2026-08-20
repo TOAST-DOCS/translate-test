@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=bfea2e9c91d3 -->
 
 <a id="data-lake-storage-overview"></a>
@@ -26,7 +28,7 @@ AWS S3 APIとの高い互換性をベースに、既存の分析エコシステ�
 
 <a id="how-it-works"></a>
 ## 動作方式 { #how-it-works }
-![Data Lake Storageの動作方式](../static/images/15_data&analytics_data-lake-storage_img_jp.png)
+![Data Lake Storage 動作方式](../static/images/15_data&analytics_data-lake-storage_img_kr.png)
 
 <a id="glossary"></a>
 ## 用語集 { #glossary }
