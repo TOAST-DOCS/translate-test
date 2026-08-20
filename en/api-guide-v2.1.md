@@ -1,31 +1,33 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=c189227c350c -->
 
 <a id="ai-service-speech-to-text-api-guide"></a>
 ## AI Service > Speech to Text > API Guide { #ai-service-speech-to-text-api-guide }
 
-Speech to Text API v2.1 provides more varied results for voice recognition.
-Speech to Text API v2.1 significantly improves the response structure of previous verions, providing more sophisticated information needed for various post-processing and improving the user experience.
+Speech to Text API v2.1 provides richer speech recognition results.
+Speech to Text API v2.1 significantly improves the response structure of previous versions, providing more detailed information needed for various post-processing tasks and user experience improvements.
 
 <a id="api-common-information"></a>
 ## API Common Information { #api-common-information }
 
 <a id="preliminary-preparation"></a>
-### Preliminary preparation { #preliminary-preparation }
+### Preliminary Preparation { #preliminary-preparation }
 
-Speech to Text API uses User Access Key tokens for authentication and authorization. The User Access Key token is a temporary, Bearer-type access token issued from a User Access Key. For more information on issuing and using User Access Key tokens, see the [User Access Key Token](/nhncloud/en/public-api/user-access-key-token).
+The Speech to Text API uses a User Access Key token for authentication and authorization. A User Access Key token is a temporary access token of the Bearer type that is issued based on a User Access Key. For more information on issuing and using User Access Key tokens, please refer to the [User Access Key Token](/nhncloud/en/public-api/user-access-key-token).
 
 [Request Header]
 
-| Name                | Value                          | Description            |
-|---------------------|--------------------------------|------------------------|
+| Name | Value | Description |
+|---------------------|--------------------------------|---------------------|
 | X-NHN-Authorization | Bearer {User Access Key Token} | User Access Key token |
 
 <a id="response-common-information"></a>
 ### Response Common Information { #response-common-information }
 
-- Respond **200 OK** for every API request. For the detailed response result, refer to the header of the response body.
+- The API responds with **200 OK** to all API requests. For more information on the response results, see Response Body Header.
 
-[Success Response Body]
+[Successful Response Body]
 
 ```
 {
@@ -37,7 +39,7 @@ Speech to Text API uses User Access Key tokens for authentication and authorizat
 }
 ```
 
-[Failure Response Body]
+[Failed Response Body]
 ```
 {
     "header": {
@@ -50,29 +52,29 @@ Speech to Text API uses User Access Key tokens for authentication and authorizat
 
 [Header]
 
-| Name          | Type    | Description                                                     |
-|---------------|---------|-----------------------------------------------------------------|
-| isSuccessful  | Boolean | Analysis API success or failure                                 |
-| resultCode    | Integer | Result Code                                                     |
-| resultMessage | String  | Result Message (SUCCESS for success, error message for failure) |
+| Name | Type | Description |
+|---------------|---------|----------------------------------|
+| isSuccessful  | Boolean | Whether the analysis API call was successful |
+| resultCode    | Integer | Result code |
+| resultMessage | String  | Result message (SUCCESS on success, error details on failure) |
 
 <a id="voice-recognition-api"></a>
 ## Voice Recognition API { #voice-recognition-api }
 
 <a id="voice-recognition"></a>
 ### Voice Recognition { #voice-recognition }
-- Extract the voice data from the audio file into text format.
+- Extracts speech data from an audio file and converts it to text.
 
 [URI]
 
-| Method  | URI                                                              |
-|---------|------------------------------------------------------------------|
-| POST    | https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt |
+| Method | URI |
+|------|------------------------------------------------------------------|
+| POST | https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt |
 
 [Request Body]
 
-- Insert binary data of the voice file.
-- As per the user word list (biasingList), the word recognized "차단계" is replaced with "차단기", and the word recognized "안전 운행" is replaced with "안전운행".
+- Enter the binary data of the audio file.
+- Based on the values entered in the user word list (biasingList), words recognized as "차단계" are replaced with "차단기", and words recognized as "안전 운행" are replaced with "안전운행".
 
 ```
 curl -X POST 'https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt' \
@@ -82,12 +84,12 @@ curl -X POST 'https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt' 
 -H 'X-NHN-Authorization: Bearer ${User Access Key Token}'
 ```
 
-[Field]
+[Fields]
 
-| Name        | Type                | Required     | Description                                                                                                                 |
+| Name | Type | Required | Description |
 |-------------|---------------------|-------|--------------------------------------------------------------------------------------------------------------------|
-| audio       | multipart/form–data | Required     | Voice file (WAV, WebM, MP3, OGG, FLAC, AAC, AC3)                                                                         |
-| biasingList | String[]            | Not required | Parameters that help to prioritize recognition or replacement of specific words or phrases. It's used for when you want to correct expected misrecognition results or strengthen specific keywords. Each item is structured in the form **"answer_modelRecognitionValue**. |
+| audio       | multipart/form–data | Required | Audio file (WAV, WebM, MP3, OGG, FLAC, AAC, AC3) |
+| biasingList | String[]            | Optional | A parameter that helps prioritize recognition or replace specific words or phrases. Use this when you want to correct expected misrecognition results or reinforce specific keywords. Each entry is structured in the format **"correct_answer_model_recognition_value"**. |
 
 <a id="voice-recognition-response"></a>
 #### Response
@@ -104,7 +106,7 @@ curl -X POST 'https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt' 
         "inputLength": 220.1,
         "fileType": "mp3float",
         "text": [
-            "An example response text",
+            "This is an example response text.",
         ],
         "timeslot": [
             {
@@ -120,37 +122,37 @@ curl -X POST 'https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt' 
 ```
 
 
-[Field]
+[Fields]
 
-| Name                  | Type     | Description                                                        |
-|-----------------------|----------|--------------------------------------------------------------------|
-| inputLength           | Double   | Recognized voice file length (unit: second)                        |
-| fileType              | String   | Recognized voice file type                                         |
-| text                  | String[] | Result for text conversion of recognized voice                     |
-| timeslot              | List     | Section information where the text of the same index is recognized |
-| timeslot[0].startTime | Long     | Section start time (millisecond)                                   |
-| timeslot[0].endTime   | Long     | Section end time (millisecond)                                     |
-| confidence            | Double[] | Reliability of text recognition results for the same index         |
+| Name | Type | Description |
+|-----------------------|----------|------------------------|
+| inputLength           | Double   | Length of the recognized audio file (in seconds) |
+| fileType              | String   | Type of the recognized audio file |
+| text                  | String[] | Text conversion result of the recognized speech |
+| timeslot              | List     | Section information for the text recognized at the same index |
+| timeslot[0].startTime | Long     | Section start time (milliseconds) |
+| timeslot[0].endTime   | Long     | Section end time (milliseconds) |
+| confidence            | Double[] | Confidence of the text recognition result at the same index |
 
 
 <a id="voice-recognition-api-asynchronous"></a>
-## Voice Recognition API (asynchronous) { #voice-recognition-api-asynchronous }
+## Voice Recognition API (Asynchronous) { #voice-recognition-api-asynchronous }
 
 <a id="voice-recognition-asynchronous"></a>
-### Voice Recognition (asynchronous) { #voice-recognition-asynchronous }
-- Extract voice data from audio files in text format (asynchronous).
+### Voice Recognition (Asynchronous) { #voice-recognition-asynchronous }
+- Extracts speech data from an audio file and converts it to text (asynchronous).
 
 [URI]
 
-| Method  | URI                                                                    |
-|---------|------------------------------------------------------------------------|
-| POST    | https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/async |
+| Method | URI |
+|------|------------------------------------------------------------------------|
+| POST | https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/async |
 
 [Request Body]
 
-- Request speech recognition by providing an audio file as a downloadable URL.
-- Change {appKey} to the value you checked in the console, and replace {User Access Key Token} with your issued User Access Key token.
-- As per the user word list (biasingList), the word recognized "차단계" is replaced with "차단기", and the word recognized "안전 운행" is replaced with "안전운행".
+- Requests speech recognition by providing a downloadable URL for the audio file.
+- Replace {appKey} with the value obtained from the console, and replace {User Access Key Token} with the issued User Access Key token.
+- Based on the values entered in the user word list (biasingList), words recognized as "차단계" are replaced with "차단기", and words recognized as "안전 운행" are replaced with "안전운행".
 
 ```
 curl -X POST 'https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/async' \
@@ -159,12 +161,12 @@ curl -X POST 'https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/a
 --data '{"audioUrl": "https://url/to/audioFile", "biasingList": ["차단기_차단계", "안전운행_안전 운행"]}'
 ```
 
-[Field]
+[Fields]
 
-| Name        | Type      | Required     | Description                                                                                                           |
+| Name | Type | Required | Description |
 |-------------|----------|-------|--------------------------------------------------------------------------------------------------------------|
-| audioUrl    | String    | Required     | Downloadable audio files up to 150MB in size (WAV, WebM, MP3, OGG, FLAC, AAC, AC3)                                         |
-| biasingList | String[]  | Not required | Parameters that help to prioritize recognition or replacement of specific words or phrases. It's used for when you want to correct expected misrecognition results or strengthen specific keywords. Each item is structured in the form **"answer_modelRecognitionValue**. |
+| audioUrl    | String   | Required | Downloadable audio file URL of up to 150 MB (WAV, WebM, MP3, OGG, FLAC, AAC, AC3) |
+| biasingList | String[] | Optional | A parameter that helps prioritize recognition or replace specific words or phrases. Use this when you want to correct expected misrecognition results or reinforce specific keywords. Each entry is structured in the format **"correct_answer_model_recognition_value"**. |
 
 <a id="voice-recognition-asynchronous-response"></a>
 #### Response
@@ -182,28 +184,28 @@ curl -X POST 'https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/a
 }
 ```
 
-[Field]
+[Fields]
 
-| Name   | Type   | Description                                 |
-|--------|--------|---------------------------------------------|
-| taskId | String | Task UUID that can request results, retries |
+| Name | Type | Description |
+|--------|--------|------------------------------|
+| taskId | String | Task UUID that can be used to request result retrieval or retry |
 
 
 <a id="check-status"></a>
 ### Check Status { #check-status }
-- Retrieve the current status of the task requested.
+- Retrieves the current status of the requested task.
 
 [URI]
 
-| Method  | URI                                                                                    |
-|---------|----------------------------------------------------------------------------------------|
-| GET     | https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/async/{taskId}/status |
+| Method | URI |
+|-----|----------------------------------------------------------------------------------------|
+| GET | https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/async/{taskId}/status |
 
-[Field]
+[Fields]
 
-| Name   | Type   | Required  | Description                            |
+| Name | Type | Required | Description |
 |--------|--------|-------|-------------------------------|
-| taskId | String | Required  | Task UUID received after calling the asynchronous speech recognition API |
+| taskId | String | Required | Task UUID received after calling the asynchronous voice recognition API |
 
 <a id="check-status-response"></a>
 #### Response
@@ -223,7 +225,7 @@ curl -X POST 'https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/a
         "inputLength": 220.1,
         "fileType": "mp3float",
         "text": [
-            "An example response text",
+            "This is an example response text.",
         ],
         "timeslot": [
             {
@@ -238,41 +240,41 @@ curl -X POST 'https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/a
 }
 ```
 
-[Field]
+[Fields]
 
-| Name       | Type   | Description                                                   |
-|------------|--------|---------------------------------------------------------------|
-| taskId     | String | Task UUID requesting status inquiry                           |
-| taskStatus | String | Current task status (PENDING, IN_PROGRESS, COMPLETED, FAILED) |
-| result     | Result | Result value in case the task status is COMPLETED             |
+| Name | Type | Description |
+|------------|--------|----------------------------------------------------|
+| taskId     | String | Task UUID for which the status was requested |
+| taskStatus | String | Current status of the task (PENDING, IN_PROGRESS, COMPLETED, FAILED) |
+| result     | Result | Result value when the task status is COMPLETED |
 
 [Result]
 
-| Name                  | Type     | Description                     |
+| Name | Type | Description |
 |-----------------------|----------|------------------------|
-| inputLength           | Double   | Recognized voice file length (unit: second)                        |
-| fileType              | String   | Recognized voice file type                                         |
-| text                  | String[] | Result for text conversion of recognized voice                     |
-| timeslot              | List     | Section information where the text of the same index is recognized |
-| timeslot[0].startTime | Long     | Section start time (millisecond)                                   |
-| timeslot[0].endTime   | Long     | Section end time (millisecond)                                     |
-| confidence            | Double[] | Reliability of text recognition results for the same index         |
+| inputLength           | Double   | Length of the recognized audio file (in seconds) |
+| fileType              | String   | Type of the recognized audio file |
+| text                  | String[] | Text conversion result of the recognized speech |
+| timeslot              | List     | Section information for the text recognized at the same index |
+| timeslot[0].startTime | Long     | Section start time (milliseconds) |
+| timeslot[0].endTime   | Long     | Section end time (milliseconds) |
+| confidence            | Double[] | Confidence of the text recognition result at the same index |
 
 <a id="retry"></a>
 ### Retry { #retry }
-- Request to retry failed task.
+- Requests a retry for a failed task.
 
 [URI]
 
-| Method  | URI                                                                                   |
-|---------|---------------------------------------------------------------------------------------|
-| GET     | https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/async/{taskId}/retry |
+| Method | URI |
+|-----|---------------------------------------------------------------------------------------|
+| GET | https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/async/{taskId}/retry |
 
-[Field]
+[Fields]
 
-| Name   | Type   | Required | Description                                                              |
-|--------|--------|----------|--------------------------------------------------------------------------|
-| taskId | String | Required | Task UUID received after calling the asynchronous speech recognition API |
+| Name | Type | Required | Description |
+|--------|--------|-------|-------------------------------|
+| taskId | String | Required | Task UUID received after calling the asynchronous voice recognition API |
 
 <a id="retry-response"></a>
 #### Response
@@ -282,7 +284,7 @@ curl -X POST 'https://api-speech.nhncloudservice.com/v2.1/appkeys/{appKey}/stt/a
 ```
 {
 	"header": {
-		// Omitteds
+		// omitted
 	},
 	"result": {
 		"taskId": "c337256d-b17e-42ce-9f63-a792a05ae0ef"
