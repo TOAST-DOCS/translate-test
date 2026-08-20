@@ -1,234 +1,73 @@
-<a id="compute-instance-overview"></a>
-## Compute > Instance > Overview
+<!-- pre-align:aligned sig=0eb4ce54bb90 -->
 
-An instance is a virtual server composed of virtual CPUs, memory, and root block storage. You can install your services and applications on this server and use it in combination with the various services provided by NHN Cloud.
+<a id="foundry.overview"></a>
+## Machine Learning > NHN Cloud Foundry > 개요 { #foundry.overview }
 
-<a id="components"></a>
-## Components
+NHN Cloud Foundry는 고객의 데이터를 통합한 후, 머신러닝 모델(추천, 시계열 예측/이상탐지, 정형 데이터 분류/수치예측 등)을 이용하여 효과적인 의사결정을 도와드리는 서비스입니다.
+데이터를 적재하고 시각적 워크플로우로 가공한 뒤, 쿼리/차트/대시보드로 분석하거나 추천 모델을 연결한 앱을 만들어 추천 결과를 서비스에 활용할 수 있습니다.
 
-An instance consists of the following components:
+<a id="main.feature"></a>
+## 주요 기능 { #main.feature }
 
-- **Image**: Virtual disk that contains the operating system of an instance
-- **Flavor**: Virtual hardware performance specifications of an instance
-- **Availability Zone** (AZ): Physical location where an instance will be created
-- **Key Pair**: Key used to access an instance
-- **Security Groups**: Network security settings for an instance
-- **Network**: Virtual network where an instance will be connected
+| 기능 | 설명 |
+| --- | --- |
+| **데이터 소스** | 분석할 데이터를 저장하는 단위입니다. 스키마를 정의하여 데이터 소스를 만들고 데이터를 적재하며, 이미 만든 데이터 소스는 Ingest API로 데이터를 추가하거나 갱신할 수 있습니다. |
+| **파이프라인** | 데이터 소스의 데이터를 노드를 연결한 워크플로우로 가공하여 분석이나 모델 학습에 사용할 데이터셋으로 변환합니다. 배치 스케줄에 따른 자동 실행을 지원합니다. |
+| **분석** | 데이터를 SQL **쿼리**로 조회하고, **차트**로 시각화하고, **대시보드**로 통합 모니터링할 수 있습니다. |
+| **앱** | 추천 모델을 데이터에 연결하여 추천 시스템 앱을 생성하고 관리합니다. 추천 결과는 콘솔과 API로 확인할 수 있습니다. |
 
-Instance properties and usage change depending on these components. While settings for these components, with the exception of image and availability zone, can be modified after the creation of an instance, some flavors cannot be modified after an instance has been created. For more details on modifying instance flavors, see [Modify Flavor in the Console Guide](./console-guide/#modify-flavor).
+<a id="datasource"></a>
+## 데이터 소스 { #datasource }
 
-<a id="image"></a>
-### Image
+데이터 소스는 NHN Cloud Foundry에서 분석할 데이터를 저장하는 단위입니다.
+스키마를 정의하여 데이터 소스를 생성하면 데이터가 테이블로 적재되고, 이후 파이프라인/분석/앱에서 이 데이터를 사용합니다.
 
-An image is a virtual disk that contains an operating system. NHN Cloud currently supports Debian, Ubuntu, Rocky, and Windows.
+데이터 소스는 콘솔에서 생성하며, 생성할 때 데이터를 함께 업로드할 수 있습니다.
+이미 만든 데이터 소스에 데이터를 추가하거나 갱신해야 할 때는 Ingest API를 사용합니다.
+데이터 전체를 교체하는 스냅샷 업로드와 기존 데이터를 유지한 채 새 데이터를 추가하는 이벤트 방식을 제공합니다.
 
-All images are configured to run optimally on an instance's virtual hardware and are safe to use as they have undergone security inspection by NHN Cloud. For more details on images, see [Image Overview](/Compute/Image/en/overview/).
+<a id="pipeline"></a>
+## 파이프라인 { #pipeline }
 
-<a id="flavor"></a>
-### Flavor
+데이터 소스의 데이터를 노드를 연결한 시각적 워크플로우로 가공하여 분석 가능한 데이터셋으로 변환하는 기능입니다.
+변환된 데이터셋은 데이터 소스로 등록되어 분석이나 앱의 추천 모델 학습 데이터로 사용할 수 있습니다.
 
-NHN Cloud provides various instance flavors to support a wide range of use cases. Instances can be created with flavors that best match the requirements of your services or applications. Flavors can be easily modified from the web console, even after an instance has been created.
+- 소스 데이터 연결 및 스키마 자동 감지
+- 행 필터링, 칼럼 가공, 집계, 조인, 유니온 등의 변환 작업
+- 배치 스케줄 설정에 따른 자동 실행
+- 컴퓨팅 리소스 설정 및 실행 이력 관리
 
-| Type    | Description                                                                                                                                               |
-| ------- |--------------------------------------------------------------------------------------------------------------------------------------------------|
-| m2 | A flavor with a balanced setting between CPU and memory. Recommended when performance requirements of a service or an application are not clear.                                                                               |
-| c2 | A flavor optimized for high CPU performance. Recommended for web application servers or analytics systems that require high-performance computations.                                                                           |
-| r2 | A flavor optimized for high memory utilization. Recommended for in-memory databases or cache servers.                                                                               |
-| t2 | A low-cost instance. Recommended for servers with low workloads.                                                                                                          |
-| u2 | The cheapest instance. Recommended for servers with low workloads.<br>This flavor utilizes local block storage, which makes it a less stable but more affordable option compared to other flavors.<br>Instances of this flavor do not guarantee I/O performance. |
-| x1 | A flavor that supports high-end CPU and memory. Recommended for services or applications that require high performance.                                                                                        |
+<a id="analysis"></a>
+## 분석 { #analysis }
 
-<a id="availability-zone"></a>
-### Availability Zone
+데이터 소스에 저장된 데이터를 조회/시각화/모니터링합니다.
+쿼리로 데이터를 확인하고, 차트를 만들어 대시보드에 배치하는 순서로 사용합니다.
 
-NHN Cloud has divided the entire system into multiple availability zones to prepare for potential failures caused by physical hardware issues. Each availability zone has its own storage system, network switch, data center space, and power supply units. A failure that occurs within one availability zone does not affect other zones, thereby increasing the availability of the whole service. You can ensure increased service availability by creating instances across multiple availability zones.
+| 기능 | 설명 |
+| --- | --- |
+| 쿼리 | SQL을 사용하여 데이터 소스의 데이터를 조회하고 실행 이력을 관리합니다. |
+| 차트 | 조회한 데이터를 시각화합니다. |
+| 대시보드 | 여러 차트를 한 화면에 배치하여 통합 모니터링합니다. |
 
-The following properties hold across different availability zones.
+<a id="app"></a>
+## 앱 { #app }
 
-- Instances dispersed across different availability zones can communicate with each other over the network without incurring additional network usage costs.
-- Block storage can be shared between instances created within the same availability zone, but not between instances in different availability zones.
-- Floating IP can be shared across different availability zones. If one availability zone experiences a failure, floating IP can quickly be relocated to another availability zone in order to minimize downtime.
+추천 모델을 데이터에 연결하여 추천 시스템 앱을 생성하고 관리하는 기능입니다.
+사용할 추천 모델을 선택하고 사용자/아이템/히스토리 데이터 소스를 연결하면 학습과 배포가 자동으로 진행되며, 앱이 활성 상태가 되면 추천 결과를 활용할 수 있습니다.
 
-<a id="key-pair"></a>
-### Key Pair
+추천 결과는 콘솔에서 직접 호출해 확인하거나 API로 요청할 수 있습니다. 사용자 반응을 추천 이벤트 API로 수집하면 적재된 이벤트 데이터로 추천 성공률을 분석할 수 있습니다.
 
-A key pair is a pair of [PKI](https://en.wikipedia.org/wiki/Public_key_infrastructure)-based public and private SSH keys. To access an instance created in NHN Cloud, a key pair is required instead of keyboard-inputted ID/PW authentication which is vulnerable to security attacks. You can safely access an instance once you have been authenticated after sending the instance your login information encoded by your key pair's private key. For more details on how to access instances using key pairs, see [How to Access Instances](#how-to-access-instances).
+<a id="public.api"></a>
+## API { #public.api }
 
-Key pairs can be newly generated from the NHN Cloud console during instance creation, or you can register your own existing key pairs. For more details on how to register key pairs, see [Import Key Pairs in the Console Guide](./console-guide/#key-pairs).
+NHN Cloud Foundry는 콘솔 외에도 API를 제공합니다.
+이미 만든 데이터 소스에 데이터를 추가·갱신하는 Ingest API와, 생성한 앱의 추천 결과를 요청하고 사용자 반응 이벤트를 전송하는 API를 사용할 수 있습니다.
 
-> [Caution]
-When a key pair is newly generated, its private key is downloaded. As private keys cannot be reissued, be sure to store them in a safe disk or USB drive. If a private key is exposed, anyone can access the instance using the exposed private key, so it must be managed carefully.
+자세한 내용은 [API 가이드](../api-guide/)를 참고하세요.
 
-> [Note]
-> Key pair is a resource assigned to the user account, so it's not deleted when you delete a project.
+<a id="target"></a>
+## 서비스 대상 { #target }
 
-<a id="security-groups"></a>
-### Security Groups
-
-A security group is a virtual firewall that determines network traffic delivered to an instance. For more details on security groups, see [VPC Overview](/Network/VPC/en/overview/).
-
-> [Note]
-The default security group is configured to ignore all inbound network traffic. Before accessing an instance using SSH, configure the instance's security group to allow access to the SSH port.
-
-<a id="network"></a>
-### Network
-
-An instance must be connected to at least one network defined in the VPC in order to communicate externally. An instance that is not connected to a network cannot be accessed. To create or modify networks, see [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="pricing"></a>
-## Pricing
-
-Instances are charged using the following criteria.
-
-* Instances are charged from the moment they are created.
-* Instance root block storage are charged separately according to the block storage pricing policy.
-* When an instance is stopped, a 90% discount based on the website rate is applied for 90 days. If your suspension exceeds 90 days, you will revert to normal rates while maintaining your suspension.
-* Terminated instances are not billed.
-
-For more details on pricing, see [Pricing](https://www.toast.com/kr/service/compute/instance#price).
-
-<a id="how-to-access-instances"></a>
-## How to Access Instances
-
-<a id="how-to-access-linux-instances"></a>
-### How to Access Linux Instances
-
-You can access your Linux instances using an SSH client. An instance cannot be accessed if its security group does not have SSH ports (22 by default) allowed. See [VPC Overview](/Network/VPC/en/overview/) for more details on how to allow SSH access. If a floating IP is not assigned to an instance, the instance cannot be accessed from outside NHN Cloud. See [VPC Overview](/Network/VPC/en/overview/) for more details on how to assign floating IP.
-
-#### How to Access Linux Instances from Mac or Linux Using an SSH Client
-
-Generally, Mac and Linux have SSH clients installed by default. Use a key pair's private key to access an instance from an SSH client as shown below.
-
-Ubuntu instances
-
-	$ ssh -i my_private_key.pem ubuntu@<instance IP>
-
-Debian instances
-
-	$ ssh -i my_private_key.pem debian@<instance IP>
-
-Rocky instances
-
-	$ ssh -i my_private_key.pem rocky@<instance IP>
-
-#### How to Access Linux Instances from Windows Using PuTTY SSH Client
-
-PuTTY SSH client is a widely used SSH client program for Windows. Install [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) before proceeding to the next steps.
-
-Follow these three steps in order to access Linux instances from Windows using the PuTTY SSH client.
-
-* Convert your key pair's private key to a PuTTY-compatible private key
-* Register your PuTTY-compatible private key with PuTTY
-* Access instances with PuTTY
-
-##### 1. Convert Your Key Pair’s Private Key to a PuTTY-Compatible Private Key
-
-In order to use PuTTY, you must convert your private key into a PuTTY-compatible private key format. To convert your key, use puttygen which is installed along with PuTTY.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
-
-At the bottom of the **PuTTY Key Generator** window under **Parameters**, select **RSA** for the **Type of key to generate**, and enter the default value '2048' bits for the **Number of bits in a generated key**. Under **Actions**, click **Load** next to **Load an existing private key file** to import your key pair's private key file.
-
-![Image2](http://static.toastoven.net/prod_instance/putty002-en.png)
-
-Under **Actions**, click **Save private key** next to **Save the generated key** to save the converted PuTTY-compatible private key. If you save the private key leaving the **Key passphrase** blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to save your converted private key more securely, set a passphrase before saving.
-
-> [Caution]
-If you wish to be able to automatically log in to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
-
-##### 2. Register Your PuTTY-Compatible Private Key With Putty
-
-Your PuTTY-compatible private key generated in the previous step can be registered by the following two methods.
-
-* By registering a private key file for authentication in PuTTY
-* By registering a private key file for authentication in pageant (PuTTY's authentication agent)
-
-**A. Registering a Private Key File for Authentication in PuTTY**
-
-Run PuTTY and select **Connection > SSH > Auth** from the **Category** on the left. Under **Authentication parameters** on the right, register your PuTTY-compatible private key in **Private key file for authentication**.
-
-![Image3](http://static.toastoven.net/prod_instance/putty005-en.png)
-
-Once you register your private key, you do not have to re-register your private key file each time you access your instance if you save your access information. For details on how to save your access information, see the section below on accessing instances.
-
-**B. Registering a Private Key File for Authentication in pageant (PuTTY's Authentication Agent)**
-
-When you run pageant, which is installed along with PuTTY, the icon shown below appears in the Windows tray. Right-click the pageant icon and select **Add Key** to add your PuTTY-compatible private key.
-
-![Image4](http://static.toastoven.net/prod_instance/putty006.png)
-
-To confirm that your private key has been added, select **View Keys**. If successful, the added key is displayed as below.
-
-![Image5](http://static.toastoven.net/prod_instance/putty008-en.png)
-
-Once you run pageant, it remains running in the Windows tray, so there is no need for you to rerun it every time you access an instance. However, you must run pageant again when you restart Windows.
-
-##### 3. Access Instances With PuTTY
-
-Now that the PuTTY-compatible private key has been successfully registered, run PuTTY.
-
-![Image6](http://static.toastoven.net/prod_instance/putty009-en.png)
-
-Set the **Host Name** as the following.
-
-Ubuntu
-
-	ubuntu@<Instance IP>
-
-Debian
-
-	debian@<Instance IP>
-
-Rocky
-
-	rocky@<Instance IP>
-
-Select 22, the default SSH port, for the **Port**, and **SSH** for the **Connection type**.
-
-If all of the information is correct, save the session. Under **Load, save or delete a stored session**, enter the name of the session to save in **Saved Sessions** and click **Save** to save the session. If you do not save the session, your private key settings registered in 2-A are also not preserved.
-
-Now click **Open** to access your instance.
-
-<a id="how-to-access-windows-instances"></a>
-### How to Access Windows Instances
-
-To access your Windows server, select a Windows instance to access from the NHN Cloud console. In the instance details page under the **Access Information** tab, click **Confirm Password** to check the password set in the Windows server.
-
-Your key pair's private key that you input in **Confirm Password** is not sent to the server, but is instead only used in your browser to decrypt the password.
-
-Click **Connect** next to **Confirm Password** to receive the rdp file configured for remote desktop access and run it to access your Windows server. Use `Administrator` for your Windows server ID, and use the password that you checked from the NHN Cloud console.
-
-### How to Connect Serial Console
-
-You can connect to your instance via the serial console in situations where the SSH client is unavailable, such as a boot failure or network configuration issue.
-
-The serial console feature has the following limitations:
-
-* Only one serial console connection is allowed per instance, and multiple connection attempts may not connect properly.
-* Serial console access is not guaranteed for instances created with personally uploaded images or instances created with personal images.
-* Serial console connections last up to 10 minutes.
-* Windows instances do not support the serial console feature.
-* Instances created before the January 27, 2026 release require **Stop the instance** and **Start the instance**. **Reboot the instance** feature does not apply.
-
-> [Caution]
-> Changing the boot method while accessing an instance via the serial console may result in a boot failure, and users are responsible for any resulting consequences.
-> Under normal circumstances, we recommend using an SSH client connection.
-
-#### Change GRUB Bootloader Settings
-
-GRUB configuration is required to manipulate the bootloader on instances created before the November 26, 2024 deployment.
-
-Edit the GRUB configuration file.
-
-```
-$ sudo vi /etc/default/grub.d/50-cloudimg-settings.cfg
-GRUB_TIMEOUT=3
-GRUB_TERMINAL="console serial"
-GRUB_SERIAL_COMMAND="serial --speed=9600 --unit=0 --word=8 --parity=no --stop=1"
-```
-
-Apply the changed setting. The command to apply GRUB settings may vary depending on the OS.
-
-```
-$ sudo update-grub
-```
+- 데이터 인프라를 직접 구축하지 않고 데이터 적재/가공/분석 환경이 필요한 팀
+- 흩어진 데이터를 한곳에 모아 정기적으로 가공하고 지표로 확인하려는 서비스
+- 별도의 모델 학습·서빙 환경 없이 추천 결과를 서비스에 적용하려는 팀
