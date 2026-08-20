@@ -1,0 +1,1325 @@
+<!-- pre-align:aligned sig=4f8e70a69f3c -->
+
+<a id="friendtalk-api-guide-v2-2"></a>
+## Notification > KakaoTalk Bizmessage > FriendTalk > API v2.2 Guide { #friendtalk-api-guide-v2-2 }
+
+<a id="friendtalk-service-termination-notice"></a>
+## FriendTalk Service Termination Notice { #friendtalk-service-termination-notice }
+
+<!-- TODO: translate body -->
+
+<a id="friendtalk"></a>
+## FriendTalk { #friendtalk }
+
+<a id="api-domain"></a>
+#### [API Domain]
+
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>https://kakaotalk-bizmessage.api.nhncloudservice.com</td>
+</tr>
+</tbody>
+</table>
+
+<a id="overview-of-v22-api"></a>
+## Overview of v2.2 API { #overview-of-v22-api }
+1. Added FriendTalk mass delivery query API.
+2. Added `chatExtra`, `chatEvent`, and `target` fields to the buttons field when sending messages.
+3. Added `chatExtra`, `chatEvent`, and `target` fields to the buttons field when querying messages.
+
+<a id="send-messages"></a>
+## Send Messages { #send-messages }
+<a id="request-of-sending"></a>
+#### Request of Sending
+
+[URL]
+
+```
+POST  /friendtalk/v2.2/appkeys/{appkey}/messages
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+|appkey|    String| Unique appkey|
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|X-Secret-Key|  String| O | Can be created on console.  |
+
+[Request body]
+
+```
+{
+    "plusFriendId": String,
+    "requestDate": String,
+    "senderGroupingKey": String,
+    "createUser" : String,
+    "recipientList": [{
+        "recipientNo": String,
+        "content": String,
+        "imageSeq": Integer,
+        "imageLink": String,
+        "buttons": [
+                {
+                    "ordering": Integer,
+                    "type": String,
+                    "name": String,
+                    "linkMo": String,
+                    "linkPc": String,
+                    "schemeIos": String,
+                    "schemeAndroid": String,
+                    "chatExtra": String,
+                    "chatEvent": String,
+                    "target": String
+                }
+        ],
+        "resendParameter": {
+            "isResend" : boolean,
+            "resendType" : String,
+            "resendTitle" : String,
+            "resendContent" : String,
+            "resendSendNo" : String,
+            "resendUnsubscribeNo": String
+        },
+        "isAd": Boolean,
+        "recipientGroupingKey": String
+    }],
+    "statsId": String
+}
+```
+
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|senderKey| String| O | Sender key(40 characters) |
+|requestDate|   String| X | Date and time of request(yyyy-MM-dd HH:mm), to be sent immediately if field is not sent |
+|senderGroupingKey| String | X| Sender's grouping key(up to 100 characters) |
+| createUser | String | X | Registrant(saved as user UUID when sending from console) |
+|recipientList| List|   O|  List of recipients(up to 1000) |
+|- recipientNo| String| O|  Recipient number |
+|- content| String| O| Body message(up to 1000 characters)<br>Up to 400, if image is included<br>Up to 76, if wide image is included |
+|- imageSeq|    Integer|    X|  Image number |
+|- imageLink|   String| X|  Image link   |
+|- buttons| List|   X|  Button<br>1 link button, if wide image is included |
+|-- ordering|   Integer|    X | Button sequence(required, if there is a button)|
+|-- type| String |  X | Button type(WL: Web Link, AL: App Link, BK: Bot Keyword, MD: Message Delivery) |
+|-- name| String |  X | Button name(required, if there is a button)|
+|-- linkMo| String |    X | Mobile web link(required for the WL type)|
+|-- linkPc | String |   X |PC web link(optional for the WL type) |
+|-- schemeIos | String | X |    iOS app link(required for the AL type) |
+|-- schemeAndroid | String | X |    Android app link(required for the AL type) |
+|-- chatExtra|  String| X| Meta information to send for BC(Bot for Consultation) or BT(Bot Transfer) type buttons |
+|-- chatEvent|  String| X| Bot event name to connect for BT(Bot Transfer) type button |
+|-- target| String| X | In the case of a web link button, out link used when adding "target":"out" attribute<br>Send with the default in-app link |
+|- resendParameter| Object| X| Alternative delivery information |
+|-- isResend|   boolean|    X|  Whether to resend text, if delivery fails<br/>Resent by default, if alternative delivery is set on console. |
+|-- resendType| String| X|  Alternative delivery type(SMS,LMS)<br>Categorized by the length of template body, if value is unavailable. |
+|-- resendTitle|    String| X|  Title of alternative delivery for LMS<br/>(resent with PlusFriend ID if value is unavailable.) |
+|-- resendContent|  String| X|  Alternative delivery content<br/>(resent with [Message body and web link button name - web link mobile link] if value is unavailable.) |
+|-- resendSendNo | String| X| Sender number for alternative delivery(up to 13 characters)<br><span style="color:red">(Alternative delivery may fail, if the sender number is not registered on the SMS service.)</span> |
+|-- resendUnsubscribeNo | String| X| Alternative delivery 080 blocked number <br> <span style="color:red">(If it is not the 080 blocked number registered in the SMS service, alternative delivery may fail.) </span> |
+|- isAd | Boolean | X | Ad or not(default is true) |
+|- recipientGroupingKey|    String| X|  Recipient's grouping key(up to 100 characters) |
+| statsId | String |	X | Statistics ID(not included in the delivery search conditions, up to 8 characters) |
+
+* <b> Request date and time can be configured up to 90 days after a point of calling </b>
+* <b> Delivery restricted during night(20:50~08:00 on the following day)</b>
+* <b> Delivery is to be replaced by SMS, and field input must follow delivery API specifications of the SMS service(e.g. sender number registered at SMS service, 080 unsubscription, and field length restrictions) </b>
+* <b> Title or message of an alternative delivery may be cut in length, if the byte size exceeds restrictions(see [[Cautions for SMS](https://docs.toast.com/en/Notification/SMS/en/api-guide/#_1)])</b>
+* <b> FriendTalk ad message can be replaced by Ad SMS API, so it must be registered at the 080 Unsubscription Service to enable alternative delivery. </b>
+* <b> When the resendContent field of a FriendTalk ad message is available, ad phrase for SMS Ad API is required to enable alternative delivery.(Ad) Content [Unsubscribe for Free] 080XXXXXXX </b>
+* <b> When the resendContent field of a FriendTalk ad message is missing, ad phrase is automatically created with registered 080 number for unsubscription to enable alternative delivery. </b>
+
+[Example]
+```
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appkey}/messages -d '{"plusFriendId":"@Plus Friend","requestDate":"yyyy-MM-dd HH:mm","recipientList":[{"recipientNo":"010-0000-0000","imageSeq":1,"imageLink":"https://toast.com","content":"message","buttons":[{"ordering":1,"type":"WL","name":"button1","linkMo":"https://toast.com","linkPc":"https://toast.com"}]}]}'
+```
+
+<a id="response"></a>
+#### Response
+
+```
+{
+  "header": {
+    "resultCode": Integer,
+    "resultMessage": String,
+    "isSuccessful": boolean
+  },
+  "message": {
+    "requestId": String,
+    "senderGroupingKey": String,
+    "sendResults": [
+      {
+        "recipientSeq": Integer,
+        "recipientNo": String,
+        "resultCode": Integer,
+        "resultMessage": String,
+        "recipientGroupingKey": String
+      }
+    ]
+  }
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+|header|    Object| Header area|
+|- resultCode|  Integer|    Result code|
+|- resultMessage|   String| Result message|
+|- isSuccessful|    Boolean| Successful or not|
+|message|   Object| Body area|
+|- requestId | String | Request ID |
+|- senderGroupingKey | String | Sender's grouping key |
+|- sendResults | Object | Result of delivery request |
+|-- recipientSeq | Integer | Recipient's sequence number |
+|-- recipientNo | String | Recipient number |
+|-- resultCode | Integer | Result code of delivery request |
+|-- resultMessage | String | Result message of delivery request |
+|-- recipientGroupingKey | String | Recipient's grouping key |
+
+<a id="list-deliveries"></a>
+## List Deliveries { #list-deliveries }
+
+<a id="request"></a>
+#### Request
+
+[URL]
+
+```
+GET  /friendtalk/v2.2/appkeys/{appkey}/messages
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+|appkey|    String| Unique appkey|
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|X-Secret-Key|  String| O | Can be created on console.  |
+
+[Query parameter] No.1 or(2, 3) is conditionally required
+
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|requestId| String| Conditionally required(no.1) | Request ID |
+|startRequestDate|  String| Conditionally required(no.2) | Start date of delivery request(yyyy-MM-dd HH:mm)|
+|endRequestDate|    String| Conditionally required(no.2) | End date of delivery request(yyyy-MM-dd HH:mm) |
+|startCreateDate| String| Conditionally required(no.3) | Start date of registration(mm:HH dd-MM-yyyy)|
+|endCreateDate|  String| Conditionally required(no.3) |  End date of registration(mm:HH dd-MM-yyyy) |
+|recipientNo|   String| X | Recipient number |
+|senderKey| String| X | Sender key |
+|senderGroupingKey| String | X| Sender's grouping key |
+|recipientGroupingKey|  String| X|  Recipient's grouping key |
+|messageStatus| String |    X | Request status(COMPLETED: successful, FAILED: failed)   |
+|resultCode| String |   X | Delivery result(MRC01: successful, MRC02: failed) |
+|createUser| String | X | Registrant(saved as user UUID when sending from console) |
+|pageNum|   Integer|    X|  Page number(default: 1)|
+|pageSize|  Integer|    X|  Number of queries(default: 15, max: 1000)|
+
+<a id="response-2"></a>
+#### Response
+```
+{
+  "header" : {
+      "resultCode" :  Integer,
+      "resultMessage" :  String,
+      "isSuccessful" :  boolean
+  },
+  "messageSearchResultResponse" : {
+    "messages" : [
+        {
+          "requestId" :  String,
+          "recipientSeq" : Integer,
+          "plusFriendId" :  String,
+          "senderKey" : String,
+          "recipientNo" :  String,
+          "requestDate" : String,
+          "createDate" : String,
+          "receiveDate" : String,
+          "content" :  String,
+          "messageStatus" :  String,
+          "resendStatus" :  String,
+          "resendStatusName" :  String,
+          "resultCode" :  String,
+          "resultCodeName" : String,
+          "createUser" : String,
+          "senderGroupingKey": String,
+          "recipientGroupingKey": String
+        }
+    ],
+    "totalCount" :  Integer
+  }
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+|header|    Object| Header area|
+|- resultCode|  Integer|    Result code|
+|- resultMessage|   String| Result message|
+|- isSuccessful|    Boolean| Successful or not|
+|messageSearchResultResponse|   Object| Body area|
+|- messages | List |    List of messages |
+|-- requestId | String |    Request ID |
+|-- recipientSeq | Integer |    Recipient sequence number |
+|-- plusFriendId | String | Plus Friend ID |
+|-- senderKey   | String | Sender Key   |
+|-- recipientNo | String |  Recipient number |
+|-- requestDate | String |  Date and time of request |
+|-- createDate | String | Registered date and time |
+|-- receiveDate | String |  Date and time of receiving |
+|-- content | String |  Body |
+|-- messageStatus | String |    Request status(COMPLETED: successful, FAILED: failed) |
+|-- resendStatus | String | Status code of resending |
+|-- resendStatusName | String | Status code name of resending |
+|-- resultCode | String |   Result code of receiving |
+|-- resultCodeName | String |   Result code name of receiving |
+|-- createUser | String | Registrant(saved as user UUID when sending from console) |
+|-- senderGroupingKey | String | Sender's grouping key |
+|-- recipientGroupingKey | String | Recipient's grouping key |
+|- totalCount | Integer | Total count |
+
+[Example]
+```
+curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appkey}/messages?startRequestDate=2018-05-01%2000:00&endRequestDate=2018-05-30%2023:59"
+```
+
+<a id="status-of-resending"></a>
+#### Status of Resending
+| Name |  Description|
+|---|---|
+|RSC01| No target of resending|
+|RSC02| Target of resending(If sending fails, resending is performed.)|
+|RSC03| Resending in progress|
+|RSC04| Resending successful|
+|RSC05| Resending failed|
+
+<a id="get-deliveries"></a>
+## Get Deliveries { #get-deliveries }
+
+<a id="request-2"></a>
+#### Request
+
+[URL]
+
+```
+GET  /friendtalk/v2.2/appkeys/{appkey}/messages/{requestId}/{recipientSeq}
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+|appkey|    String| Unique appkey|
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|X-Secret-Key|  String| O | Can be created on console.  |
+
+[Query parameter]
+
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|requestId| String| O | Request ID |
+|recipientSeq|  Integer |   O | Recipient sequence number |
+
+[Example]
+```
+curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appkey}/messages/{requestId}/{recipientSeq}"
+```
+
+<a id="response-3"></a>
+#### Response
+```
+{
+  "header" : {
+      "resultCode" :  Integer,
+      "resultMessage" :  String,
+      "isSuccessful" :  boolean
+  },
+  "message" : {
+      "requestId" :  String,
+      "recipientSeq" : Integer,
+      "plusFriendId" :  String,
+      "senderKey" :  String,
+      "recipientNo" :  String,
+      "requestDate" :  String,
+      "createDate" : String,
+      "receiveDate" : String,
+      "content" :  String,
+      "messageStatus" :  String,
+      "resendStatus" :  String,
+      "resendStatusName" :  String,
+      "resendResultCode" : String,
+      "resendRequestId" : String,
+      "resultCode" :  String,
+      "resultCodeName" : String,
+      "createUser" : String,
+      "imageSeq" : Integer,
+      "imageName" : String,
+      "imageUrl" : String,
+      "imageLink" : String,
+      "wide" : Boolean,
+      "buttons" : [
+        {
+          "ordering" :  Integer,
+          "type" :  String,
+          "name" :  String,
+          "linkMo" :  String,
+          "linkPc": String,
+          "schemeIos": String,
+          "schemeAndroid": String,
+          "chatExtra": String,
+          "chatEvent": String,
+          "target": String
+        }
+      ],
+      "isAd" : Boolean,
+      "senderGroupingKey": String,
+      "recipientGroupingKey": String
+  }
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+|header|    Object| Header area|
+|- resultCode|  Integer|    Result code|
+|- resultMessage|   String| Result message|
+|- isSuccessful|    Boolean| Successful or not|
+|message|   Object| Message|
+|- requestId | String | Request ID |
+|- recipientSeq | Integer | Recipient sequence number |
+|- plusFriendId | String |  Plus Friend ID |
+|- senderKey   | String | Sender Key   |
+|- recipientNo | String |   Recipient number |
+|- requestDate | String |   Date and time of request |
+|- createDate | String | Registered date and time |
+|- receiveDate | String |   Date and time of receiving |
+|- content | String |   Body |
+|- messageStatus | String | Status of request(COMPLETED: successful, FAILED: failed) |
+|- resendStatus | String |  Status code of resending |
+|- resendStatusName | String |  Status code name of resending |
+|- resendResultCode | String | Alternative delivery result code SMS result code |
+|- resendRequestId | String | Resending SMS request ID |
+|- resultCode | String |    Result code of receiving |
+|- resultCodeName | String |    Result code name of receiving |
+|- createUser | String | Registrant(saved as user UUID when sending from console) |
+|- imageSeq|    Integer|  Image number |
+|- imageName|   String|  Image name(name of uploaded file) |
+|- imageUrl|    String|  Image URL |
+|- imageLink|   String| Image link   |
+|- wide     | Boolean | Image is wide or not |
+|- buttons | List | List of buttons |
+|-- ordering | Integer |    Button sequence |
+|-- type | String | Button type(WL: Web Link, AL: App Link, BK: Bot Keyword, MD: Message Delivery) |
+|-- name | String | Button name |
+|-- linkMo | String |   Mobile web link(required for the WL type) |
+|-- linkPc | String |   PC web link(optional for the WL type) |
+|-- schemeIos | String |    iOS app link(required for the AL type) |
+|-- schemeAndroid | String |    Android app link(required for the AL type) |
+|-- chatExtra|  String| Meta information to send for BC(Bot for Consultation) or BT(Bot Transfer) type buttons |
+|-- chatEvent|  String| Bot event name to connect for BT(Bot Transfer) type button |
+|-- target| String| In the case of a web link button, out link used when adding "target":"out" attribute<br>Send with the default in-app link |
+|- isAd | Boolean | Ad or not |
+|- senderGroupingKey | String | Sender's grouping key |
+|- recipientGroupingKey | String |  Recipient's grouping key |
+
+<a id="message"></a>
+## Message { #message }
+<a id="cancel-sending-messages"></a>
+### Cancel Sending Messages { #cancel-sending-messages }
+
+<a id="request-3"></a>
+#### Request
+
+[URL]
+
+```
+DELETE  /friendtalk/v2.2/appkeys/{appkey}/messages/{requestId}
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+|appkey|    String| Unique appkey|
+|requestId| String| Request ID|
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|X-Secret-Key|  String| O | Can be created on console.  |
+
+[Query parameter]
+
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|recipientSeq|  String| X | Recipient sequence number<br>(to cancel all deliveries of request ID, if the value is left blank) |
+
+* Both general and authentication messages can be canceled by the same API.
+
+<a id="response-4"></a>
+#### Response
+```
+{
+  "header" : {
+      "resultCode" :  Integer,
+      "resultMessage" :  String,
+      "isSuccessful" :  boolean
+  }
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+|header|    Object| Header area|
+|- resultCode|  Integer|    Result code|
+|- resultMessage|   String| Result message|
+|- isSuccessful|    Boolean| Successful or not|
+
+[Example]
+```
+curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appkey}/messages/{requestId}?recipientSeq=1,2,3"
+```
+
+<a id="query-updated-message-results"></a>
+### Query Updated Message Results { #query-updated-message-results }
+
+<a id="request-4"></a>
+#### Request
+
+[URL]
+
+```
+GET  /friendtalk/v2.2/appkeys/{appkey}/message-results
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+|appkey|    String| Unique appkey|
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|X-Secret-Key|  String| O | Can be created on console.  |
+
+[Query parameter]
+
+| Value |  Type| Required| Description|
+|---|---|---|---|
+|startUpdateDate|   String| O | Start time of querying result updates(yyyy-MM-dd HH:mm)|
+|endUpdateDate| String| O | End time of querying result updates(yyyy-MM-dd HH:mm) |
+|pageNum|   Integer|    X|  Page number(default: 1)|
+|pageSize|  Integer|    X|  Number of queries(default: 15)|
+
+<a id="response-5"></a>
+#### Response
+```
+{
+  "header" : {
+      "resultCode" :  Integer,
+      "resultMessage" :  String,
+      "isSuccessful" :  boolean
+  },
+  "messageSearchResultResponse" : {
+    "messages" : [
+    {
+      "requestId" :  String,
+      "recipientSeq" : Integer,
+      "plusFriendId" :  String,
+      "senderKey"    :  String,
+      "recipientNo" :  String,
+      "requestDate" :  String,
+      "receiveDate" : String,
+      "content" :  String,
+      "messageStatus" :  String,
+      "resendStatus" :  String,
+      "resendStatusName" :  String,
+      "resultCode" :  String,
+      "resultCodeName" : String,
+      "senderGroupingKey": String,
+      "recipientGroupingKey": String
+    }
+    ],
+    "totalCount" :  Integer
+  }
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+|header|    Object| Header area|
+|- resultCode|  Integer|    Result code|
+|- resultMessage|   String| Result message|
+|- isSuccessful|    Boolean| Successful or not|
+|messageSearchResultResponse|   Object| Body area|
+|- messages | List |    List of messages |
+|-- requestId | String |    Request ID |
+|-- recipientSeq | Integer |    Recipient's sequence number |
+|-- plusFriendId | String | Plus Friend ID |
+|-- senderKey | String |    Sender Key |
+|-- recipientNo | String |  Recipient number |
+|-- requestDate | String |  Date and time of request |
+|-- receiveDate | String |  Date and time of receiving |
+|-- content | String |  Body |
+|-- messageStatus | String |    Request status(COMPLETED -> successful, FAILED -> failed, CANCEL -> canceled) |
+|-- resendStatus | String | Status code of resending |
+|-- resendStatusName | String | Status code name of resending |
+|-- resultCode | String |   Result code of receiving |
+|-- resultCodeName | String |   Result code name of receiving |
+|-- senderGroupingKey | String | Sender's grouping key |
+|-- recipientGroupingKey | String | Recipient's grouping key |
+|- totalCount | Integer | Total count |
+
+[Example]
+```
+curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appkey}/message-results?startUpdateDate=2018-05-01%20:00&endUpdateDate=2018-05-30%20:59"
+```
+
+<a id="list-mass-delivery-requests"></a>
+### List Mass Delivery Requests { #list-mass-delivery-requests }
+
+<a id="request-5"></a>
+#### Request
+[URL]
+```
+GET /friendtalk/v2.2/appkeys/{appKey}/mass-messages
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+| appKey | String | Unique appkey |
+
+[Header]
+
+```
+{
+  "X-Secret-Key": String
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+| X-Secret-Key | String | Unique secret key |
+
+[Query parameter]
+* One of the following is required: requestId, startRequestDate + endRequestDate, or startCreateDate + endCreateDate.
+
+| Name |  Type| Max. Length | Required| Description|
+|---|---|---|---|---|
+| requestId | String | - | O | Request ID |
+| startRequestDate | String | - | O | Start date of delivery |
+| endRequestDate | String | - | O | End date of delivery |
+| startCreateDate | String| - | O | Start date of registration |
+| endCreateDate |   String| - | O | End date of registration |
+| pageNum | optional, Integer | - | X | Page number |
+| pageSize | optional, Integer | 1000 | X | Search count |
+
+<a id="curl"></a>
+#### cURL
+```
+curl -X GET \
+'https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appKey}/'"${APP_KEY}"'/mass-messages?requestId='"${REQUEST_ID}" \
+-H 'Content-Type: application/json;charset=UTF-8' \
+-H 'X-Secret-Key:{secretkey}'
+```
+
+<a id="response-6"></a>
+#### Response
+```
+{
+    "header": {
+      "resultCode" :  Integer,
+      "resultMessage" :  String,
+      "isSuccessful" :  boolean
+    },
+    "body": {
+        "messages": [
+            {
+                "requestId": String,
+                "requestDate": String,
+                "plusFriendId": String,
+                "senderKey": String,
+                "masterStatusCode": String,
+                "content": String,
+                "buttons": [
+                    {
+                        "ordering": Integer,
+                        "type": String,
+                        "name": String,
+                        "linkMo": String,
+                        "linkPc": String,
+                        "schemeIos": String,
+                        "schemeAndroid": String,
+                        "chatExtra": String,
+                        "chatEvent": String,
+                        "target": String
+                    }
+                ],
+                "isAd": Boolean,
+                "imageSeq": Integer,
+                "imageLink": String,
+                "fileId": String,
+                "autoSendYn": String,
+                "statsId": String,
+                "createDate": String,
+                "createUser": String
+            }
+        ],
+        "totalCount": Integer
+    }
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+| header | Object | Header area |
+| - resultCode |    Integer |   Result code |
+| - resultMessage | String | Result message |
+| - isSuccessful |  Boolean | Successful or not |
+| body | Object | Body area |
+| - messages | Object | List of messages |
+| -- requestId | String | Request ID |
+| -- requestDate | String | Date of request |
+| -- plusFriendId | String | PlusFriend ID |
+| -- senderKey | String | Sender ID |
+| -- masterStatusCode | String | Mass delivery status code(WAIT, READY, SENDREADY, SENDWAIT, SENDING, COMPLETE, CANCEL, FAIL) |
+| -- content | String | Content |
+| -- buttons | List | Button sequence |
+| --- ordering | String | Button sequence |
+| --- type | String | Button type<br/> - WL: Web Link<br/> - AL: App Link<br/> - DS: Delivery Search<br/> - BK: Bot Keyword<br/> - MD: Message Delivery<br/> - BC: Bot for Consultation<br/> - BT: Bot Transfer<br/> - AC: Channel Added [only for Ad Included/Mixed Purposes Type] |
+| --- name | String | Button name |
+| --- linkMo | String | Mobile web link(required for the WL type) |
+| --- linkPc | String | PC web link(optional for the WL type)|
+| --- schemeIos | String | iOS app link(required for the AL type) |
+| --- schemeAndroid | String | Android app link(required for the AL type) |
+| --- chatExtra | String | BC: Meta information to be delivered when switching to consultation talk<br/> BT: Meta information to be delivered when switching to bot |
+| --- chatEvent | String | BT: Bot event name to connect when switching to bot |
+| --- target|   String| In the case of a web link button, out link used when adding "target":"out" attribute<br>Send with the default in-app link |
+| -- isAd | Boolean | Ad or not |
+| -- imageSeq | Integer | Image sequence |
+| -- imageLink | Boolean | Image URL |
+| -- fileId | String | Attachment ID |
+| -- autoSendYn | String | Auto sending or not |
+| -- statsId | String | Statistics ID |
+| -- createDate | String | Date of creation |
+| -- createUser | String | User who created the request(saved as user UUID when sending from console) |
+| - totalCount | Integer | Total count |
+
+
+<a id="list-mass-delivery-recipients"></a>
+### List Mass Delivery Recipients { #list-mass-delivery-recipients }
+
+<a id="request-6"></a>
+#### Request
+[URL]
+```
+GET /friendtalk/v2.2/appkeys/{appKey}/mass-messages/{requestId}/recipients
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+| appKey |  String |    Unique appkey |
+| requestId |   String |    Request ID |
+
+[Header]
+
+```
+{
+  "X-Secret-Key": String
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+| X-Secret-Key | String | Unique secret key |
+
+
+| Name |  Type| Max. Length | Required| Description|
+|---|---|---|---|---|
+| requestId | String | - | O | Request ID |
+| startRequestDate | String | - | X | - |
+| endRequestDate | String | - | X | - |
+| startCreateDate | String| - | X | - |
+| endCreateDate |   String| - | X | End date of registration |
+| pageNum | optional, Integer | - | X | Page number |
+| pageSize | optional, Integer | 1000 | X | Search count |
+
+<a id="curl-2"></a>
+#### cURL
+```
+curl -X GET \
+'https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appKey}/'"${APP_KEY}"'/mass-messages/recipients?requestId='"${REQUEST_ID}" \
+-H 'Content-Type: application/json;charset=UTF-8' \
+-H 'X-Secret-Key:{secretkey}'
+```
+
+<a id="response-7"></a>
+#### Response
+```
+{
+    "header": {
+      "resultCode" :  Integer,
+      "resultMessage" :  String,
+      "isSuccessful" :  boolean
+    },
+    "body": {
+        "recipients": [
+            {
+                "requestId": String,
+                "recipientSeq": Integer,
+                "recipientNo": String,
+                "requestDate": String,
+                "receiveDate": String,
+                "messageStatus": String,
+                "resultCode": String,
+                "resultCodeName": String
+            }
+        ],
+        "totalCount": Integer
+    }
+}
+```
+
+| Name | Type| Description |
+|---|---|---|
+| header | Object | Header area |
+| - resultCode |    Integer |   Result code |
+| - resultMessage | String | Result message |
+| - isSuccessful |  Boolean| Successful or not |
+| body | Object | Body area |
+| - recipients | List | List of recipients |
+| -- requestId | String | Request ID |
+| -- recipientSeq | Integer | Recipient sequence number |
+| -- recipientNo | String | Recipient number |
+| -- requestDate | String | Date of request |
+| -- receiveDate | String | Date of receiving |
+| -- messageStatus | String | Mass recipient delivery status code(READY, COMPLETED, FAILED, CANCEL) |
+| -- resultCode | String | Result code of receiving |
+| -- resultCodeName | String | Result code name of receiving |
+| - totalCount | Integer | Total count |
+
+<a id="get-a-mass-delivery-recipient"></a>
+### Get a Mass Delivery Recipient { #get-a-mass-delivery-recipient }
+
+<a id="request-7"></a>
+#### Request
+[URL]
+```
+GET /friendtalk/v2.2/appkeys/{appKey}/mass-messages/{requestId}/recipients/{recipientSeq}
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+| appKey |  String | Unique appkey |
+| requestId |   String | Request ID |
+| recipientSeq | String | Recipient sequence |
+
+[Header]
+
+```
+{
+  "X-Secret-Key": String
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+|X-Secret-Key|  String| Unique secret key |
+
+
+| Name |  Type| Max. Length | Required| Description|
+|---|---|---|---|---|
+| requestId | String | - | O | Request ID |
+| startRequestDate | String | - | X | Start date of delivery |
+| endRequestDate | String | - | X | End date of delivery |
+| startCreateDate | String| - | X | Start date of registration |
+| endCreateDate |   String| - | X | End date of registration |
+
+
+<a id="curl-3"></a>
+#### cURL
+```
+curl -X GET \
+'https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appKey}/'"${APP_KEY}"'/mass-messages/recipients/${RECIPIENT_SEQ}?requestId='"${REQUEST_ID}" \
+-H 'Content-Type: application/json;charset=UTF-8' \
+-H 'X-Secret-Key:{secretkey}'
+```
+
+<a id="response-8"></a>
+#### Response
+```
+{
+    "header": {
+      "resultCode" :  Integer,
+      "resultMessage" :  String,
+      "isSuccessful" :  boolean
+    },
+    "body": {
+        "requestId": String,
+        "recipientSeq": Integer,
+        "plusFriendId": String,
+        "senderKey": String,
+        "recipientNo": String,
+        "requestDate": String,
+        "receiveDate": String,
+        "content": String,
+        "messageStatus": String,
+        "resendStatus": String,
+        "resendStatusName": String,
+        "resendRequestId": String,
+        "resendResultCode": String,
+        "resultCode": String,
+        "resultCodeName": String,
+        "imageSeq": Integer,
+        "imageLink": String,
+        "buttons": [
+            {
+                "ordering": Integer,
+                "type": String,
+                "name": String,
+                "linkMo": String,
+                "linkPc": String,
+                "schemeIos": String,
+                "schemeAndroid": String,
+                "chatExtra": String,
+                "chatEvent": String,
+                "target": String
+            }
+        ],
+        "isAd": Boolean,
+        "createDate": String
+    }
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+| header | Object | Header area |
+| - resultCode |    Integer |   Result code |
+| - resultMessage | String | Result message |
+| - isSuccessful |  Boolean| Successful or not |
+| body | Object | Body area |
+| - requestId | String | Request ID |
+| - recipientSeq | Integer | Recipient sequence number |
+| - plusFriendId | String | PlusFriend ID |
+| - senderKey | String | Sender key(40 characters)|
+| - recipientNo | String | Recipient number |
+| - requestDate | String | Date of request |
+| - receiveDate | String | Date of receiving |
+| - content | String | Body message |
+| - messageStatus | String | Mass recipient delivery status code(READY, COMPLETED, FAILED, CANCEL) |
+| - resendStatus | String | Status code of resending(RSC01, RSC02, RSC03, RSC04, RSC05)<br>([Refer to [Status code of resending table](http://docs.toast.com/en/Notification/KakaoTalk%20Bizmessage/en/alimtalk-api-guide/#smslms)] below) |
+| - resendStatusName | String | Status code name of resending |
+| - resendRequestId | String | Resending SMS request ID |
+| - resendResultCode | String | Result code of resending [Result code of SMS sending](https://docs.toast.com/en/Notification/SMS/en/error-code/#api) |
+| - resultCode | String |   Result code of receiving |
+| - resultCodeName | String |   Result code name of receiving |
+| - imageSeq | Integer | Image sequence |
+| - imageLink | Integer | Image URL |
+| - buttons | List | Button sequence |
+| -- ordering | String | Button sequence |
+| -- type | String | Button type<br/> - WL: Web Link<br/> - AL: App Link<br/> - DS: Delivery Search<br/> - BK: Bot Keyword<br/> - MD: Message Delivery<br/> - BC: Bot for Consultation<br/> - BT: Bot Transfer<br/> - AC: Channel Added [only for Ad Included/Mixed Purposes Type] |
+| -- name | String | Button name |
+| -- linkMo | String | Mobile web link(required for the WL type) |
+| -- linkPc | String | PC web link(optional for the WL type)|
+| -- schemeIos | String | iOS app link(required for the AL type) |
+| -- schemeAndroid | String | Android app link(required for the AL type) |
+| -- chatExtra | String | BC: Meta information to be delivered when switching to consultation talk<br/> BT: Meta information to be delivered when switching to bot |
+| -- chatEvent | String | BT: Bot event name to connect when switching to bot |
+| -- target|    String| In the case of a web link button, out link used when adding "target":"out" attribute<br>Send with the default in-app link |
+| - isAd | Boolean | Ad or not |
+| - createDate | String | Request |
+
+
+<a id="image-management"></a>
+## Image Management { #image-management }
+
+<a id="register-images"></a>
+### Register Images { #register-images }
+<a id="request-8"></a>
+#### Request
+
+[URL]
+
+```
+POST  /friendtalk/v2.2/appkeys/{appkey}/images
+Content-Type: multipart/form-data
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+|appkey|    String| Unique appkey|
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|X-Secret-Key|  String| O | Can be created on console.  |
+
+[Request parameter]
+
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|image| File|   O | Image |
+|wide| boolean | X | Image is wide or not(Default: false) |
+
+[Example]
+```
+curl -X POST -H "Content-Type: multipart/form-data" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appkey}/images" -F "image=@friend-ricecake02.jpeg"
+```
+
+<a id="response-9"></a>
+#### Response
+```
+
+{
+  "header" : {
+      "resultCode" :  Integer,
+      "resultMessage" :  String,
+      "isSuccessful" :  boolean
+  },
+  "image": {
+      "imageSeq" : Integer,
+      "imageUrl" : String,
+      "imageName" : String
+    }
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+|header|    Object| Header area|
+|- resultCode|  Integer|    Result code|
+|- resultMessage|   String| Result message|
+|- isSuccessful|    Boolean| Successful or not|
+|image| Object| Body area|
+|- imageSeq | Integer | Image number(to send FriendTalk messages)|
+|- imageUrl | String |  Image URL |
+|- imageName | String | Image name(name of uploaded file) |
+
+
+<a id="query-images"></a>
+### Query Images { #query-images }
+<a id="request-9"></a>
+#### Request
+
+[URL]
+
+```
+GET  /friendtalk/v2.2/appkeys/{appkey}/images
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+|appkey|    String| Unique appkey|
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|X-Secret-Key|  String| O | Can be created on console.  |
+
+[Query parameter]
+
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|pageNum|   Integer|    X|  Page number(default: 1)|
+|pageSize|  Integer|    X|  Number of queries(default: 15)|
+
+[Example]
+```
+curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appkey}/images?pageNum=1&pageSize=15"
+```
+
+<a id="response-10"></a>
+#### Response
+```
+
+{
+  "header" : {
+      "resultCode" :  Integer,
+      "resultMessage" :  String,
+      "isSuccessful" :  boolean
+  },
+  "imagesResponse": {
+    "images" : [
+        {
+            "imageSeq" : Integer,
+            "imageUrl" : String,
+            "imageName" : String,
+            "wide": String,
+            "createDate" : String
+        }
+    ],
+    "totalCount" : Integer
+  }
+
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+|header|    Object| Header area|
+|- resultCode|  Integer|    Result code|
+|- resultMessage|   String| Result message|
+|- isSuccessful|    Boolean| Successful or not|
+|imagesResponse| Object| Body area|
+|- image|   Object| Body area|
+|-- imageSeq | Integer |    Image number(to send FriendTalk messages)|
+|-- imageUrl | String | Image URL |
+|-- imageName | String |    Image name(name of uploaded file) |
+|-- wide | boolean |    Image is wide or not |
+|-- createDate | String |   Date and time of creation |
+|- totalCount | Integer | Total count |
+
+* Response is sent in the order of latest registration.
+
+<a id="delete-images"></a>
+### Delete Images { #delete-images }
+<a id="request-10"></a>
+#### Request
+
+[URL]
+
+```
+DELETE  /friendtalk/v2.2/appkeys/{appkey}/images
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+|appkey|    String| Unique appkey|
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|X-Secret-Key|  String| O | Can be created on console.  |
+
+[Query parameter]
+
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|imageSeq|  String| O|  Image number |
+
+[Example]
+```
+curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appkey}/images?imageSeq=1,2,3"
+```
+
+<a id="response-11"></a>
+#### Response
+```
+
+{
+  "header" : {
+      "resultCode" :  Integer,
+      "resultMessage" :  String,
+      "isSuccessful" :  boolean
+  }
+}
+```
+
+| Name |  Type| Description|
+|---|---|---|
+|header|    Object| Header area|
+|- resultCode|  Integer|    Result code|
+|- resultMessage|   String| Result message|
+|- isSuccessful|    Boolean| Successful or not|
+
+
+<a id="manage-alternative-delivery"></a>
+## Manage Alternative Delivery { #manage-alternative-delivery }
+<a id="register-an-sms-appkey"></a>
+### Register an SMS AppKey { #register-an-sms-appkey }
+
+[URL]
+
+```
+POST  /friendtalk/v2.2/appkeys/{appkey}/failback/appkey
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+|appkey|    String| Unique appkey|
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|X-Secret-Key|  String| O | Can be created on console.  |
+
+
+[Request body]
+
+```
+{
+    "resendAppKey": String
+}
+```
+
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|resendAppKey|  String| O | SMS service appkey to set for alternative delivery |
+
+[Example]
+```
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appkey}/failback/appkey -d '{"resendAppKey": "smsAppKey"}
+```
+
+<a id="response-12"></a>
+#### Response
+```
+
+{
+  "header" : {
+      "resultCode" :  Integer,
+      "resultMessage" :  String,
+      "isSuccessful" :  boolean
+  }
+}
+```
+
+<a id="register-alternative-delivery-settings"></a>
+### Register Alternative Delivery Settings { #register-alternative-delivery-settings }
+
+[URL]
+
+```
+POST  /friendtalk/v2.2/appkeys/{appkey}/failback
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name |  Type| Description|
+|---|---|---|
+|appkey|    String| Unique appkey|
+
+[Header]
+```
+{
+  "X-Secret-Key": String
+}
+```
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|X-Secret-Key|  String| O | Can be created on console.  |
+
+
+[Request body]
+
+```
+{  
+   "senderKey": String,
+   "isResend": Boolean,
+   "resendSendNo": String,
+   "resendUnsubscribeNo": String
+}
+```
+
+| Name |  Type| Required| Description|
+|---|---|---|---|
+|senderKey| String| O | Sender Key |
+|isResend|  Boolean|    O | Whether to resend text, if delivery fails<br/>Resent by default, if alternative delivery is set on console. |
+|resendSendNo|  String| O | Sender number for alternative delivery<br/><span style="color:red">(Alternative delivery may fail, if the sender number is not registered on the SMS service.)</span> |
+|resendUnsubscribeNo|   String| X | Alternative delivery 080 blocked number <br> <span style="color:red">(If it is not the 080 blocked number registered in the SMS service, alternative delivery may fail.) </span> |
+
+[Example]
+```
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/friendtalk/v2.2/appkeys/{appkey}/failback/appkey -d '{"senderKey": "9e0afe2c12aaaaaaaaaa7520052880b555f1a60a","isResend": true,"resendSendNo": "01012341234", "resendUnsubscribeNo": "0801234567" }
+```
+
+<a id="response-13"></a>
+#### Response
+```
+
+{
+  "header" : {
+      "resultCode" :  Integer,
+      "resultMessage" :  String,
+      "isSuccessful" :  boolean
+  }
+}
+```
