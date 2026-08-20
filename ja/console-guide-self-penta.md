@@ -24,21 +24,24 @@ WEB Firewallサービスを利用するには、**NHN Cloud Console**にログ�
 
 > [参考]
 > * インスタンスが作成されると、すぐに利用料金が発生します。
-> * WAPPLE SA(PENTA WAF)の最小推奨インスタンス仕様は2vCore / Memory 8GBであり、推奨仕様未満のインスタンスを使用すると正常に動作しない可能性があります。**そのため、必ず推奨仕様以上のインスタンスタイプを使用する**必要があります。
+> * WAPPLE SA(PENTA WAF)の最小推奨インスタンス仕様は2vCore / Memory 4GBであり、推奨仕様未満のインスタンスを使用すると正常に動作しない可能性があります。**そのため、必ず推奨仕様以上のインスタンスタイプを使用する**必要があります。
 
 <br>
 
 <a id="create-web-firewall"></a>
-### Webファイアウォール作成 { #create-web-firewall }
+### Webファイアウォールの作成 { #create-web-firewall }
 
-![webfirewall_public_ja_console-guide-self-penta_04_241119.png](https://static.toastoven.net/prod_web_firewall/Penta/public/ja/webfirewall_public_ja_console-guide-self-penta_04_241119.png)
+![
+webfirewall_public_kr_console-guide-self-penta_02_241113.png](https://static.toastoven.net/prod_web_firewall/Penta/public/kr/webfirewall_public_kr_console-guide-self-penta_02_241113.png)
+![
+webfirewall_public_kr_console-guide-self-penta_03_241113.png](https://static.toastoven.net/prod_web_firewall/Penta/public/kr/webfirewall_public_kr_console-guide-self-penta_03_241113.png)
 
-1. インスタンスリストからWAFインスタンスを選択します。
-2. 「…」ボタンをクリックし、**「インスタンスの削除」** を選択してインスタンスを削除します。
+1. **WEB Firewall** コンソールの **[Selfサービス利用申請]** で **[ショートカット]** をクリックし、「Compute > Instance」ページに移動します。
+2. **[+ インスタンス作成]** をクリックし、イメージ一覧から PENTA WAF を選択してインスタンス情報を入力します。詳細な手順については、下記の **Webファイアウォールインスタンス作成の詳細手順** を参照してください。
 
-> [注意]
-> * ウェブサービスがWAFを経由して提供されている場合、インスタンスを削除するとサービス障害が発生する可能性があります。
-> * WAFインスタンスを削除する際は、関連するサービスに注意して削除してください。
+> [注記]
+> * インスタンスが作成され次第、利用料金が発生します。
+> * WAPPLE SA（PENTA WAF）の推奨最小インスタンススペックは 2vCore / Memory 4GB です。推奨スペック未満のインスタンスを使用した場合、正常に動作しない可能性があります。**そのため、必ず推奨スペック以上のインスタンスタイプを使用する**必要があります。
 
 <br>
 
@@ -56,7 +59,7 @@ WAFインスタンスを作成する際の詳細な手順をガイドします�
 ### 1. イメージ { #image }
 ![webfirewall_public_ja_console-guide-self-penta_05_241119.png](https://static.toastoven.net/prod_web_firewall/Penta/public/ja/webfirewall_public_ja_console-guide-self-penta_05_241119.png)
 
-1. 公用イメージ一覧から「PENTA WAF」イメージを選択します。表示される WAF バージョンは異なる場合があります。
+1. パブリックイメージリストから「PENTA WAF」イメージを選択します。
 
 <br>
 
@@ -73,12 +76,12 @@ WAFインスタンスを作成する際の詳細な手順をガイドします�
 
 > [参考]
 > 
-> ※ WAPPLE SA(PENTA WAF)の最小推奨インスタンス仕様は2vCore / Memory 8GBであり、推奨仕様未満のインスタンスを使用すると正常に動作しない可能性があります
+> ※ WAPPLE SA(PENTA WAF)の最小推奨インスタンス仕様は2vCore / Memory 4GBであり、推奨仕様未満のインスタンスを使用すると正常に動作しない可能性があります
 > **そのため、必ず推奨仕様以上のインスタンスタイプを使用する必要があります。**
 
 | Throughput (Mbps) | インスタンスタイプ | vCPU | Memory(GB) |
 | :-------: | :-----: | :---: | :---: |
-| 100 | r2.c2m8 | 2 | 8 |
+| 100 | m2.c2m4 | 2 | 4 | 
 | 300 | m2.c4m8 | 4 | 8 | 
 | 700 | m2.c8m16 | 8 | 16 |
 | 1,500 | m2.c16m32 | 16 | 32 |
