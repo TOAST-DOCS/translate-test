@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=cd25e9b09cb4 -->
+<!-- pre-align:aligned sig=832fc1568328 -->
 
 <a id="data-lake-storage-release-notes"></a>
 ## Data Lake Storage Release Notes { #data-lake-storage-release-notes }
