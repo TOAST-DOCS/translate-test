@@ -1,287 +1,539 @@
-<a id="compute-instance-api-v2-guide"></a>
-## Compute > Instance > API v2ガイド
+<!-- pre-align:aligned sig=fed248a1eb32 -->
 
-APIを使用するにはAPIエンドポイントとトークンなどが必要です。 [API使用準備](/Compute/Compute/ja/identity-api/)を参照してAPIを使用するのに必要な情報を準備します。
+<a id="network-load-balancer-api-v2-guide"></a>
+## Network > Load Balancer > API v2 ガイド { #network-load-balancer-api-v2-guide }
 
-インスタンスAPIは`compute`タイプエンドポイントを利用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
+NHN Cloud Networkサービスは、APIの呼び出し時に認証/認可のためにIaaSトークンを使用します。IaaSトークンは、NHN CloudのOpenStackベースのインフラサービス(IaaS)で使用する認証トークンです。IaaSトークンの発行及び使用に関する詳細は、[IaaSトークン](/nhncloud/ko/public-api/iaas-token)をご参照ください。
+
+ロードバランサー、リスナー、プール、ヘルスモニター、メンバーの各APIは、`network`タイプのエンドポイントを利用します。シークレット、シークレットコンテナの各APIは、`key-manager`タイプのエンドポイントを利用して呼び出します。正確なエンドポイントは、トークン発行レスポンスの`serviceCatalog`を参照してください。
 
 | タイプ | リージョン | エンドポイント |
 |---|---|---|
-| compute | 韓国(パンギョ)リージョン<br>韓国(ピョンチョン)リージョン<br>韓国(クァンジュ)リージョン<br>日本リージョン | https://kr1-api-instance-infrastructure.nhncloudservice.com<br>https://kr2-api-instance-infrastructure.nhncloudservice.com<br>https://kr3-api-instance-infrastructure.nhncloudservice.com<br>https://jp1-api-instance-infrastructure.nhncloudservice.com |
+| network | 韓国(パンギョ)リージョン<br>韓国(ピョンチョン)リージョン<br>韓国(クァンジュ)リージョン<br>日本(東京)リージョン | https://kr1-api-network-infrastructure.nhncloudservice.com<br>https://kr2-api-network-infrastructure.nhncloudservice.com<br>https://kr3-api-network-infrastructure.nhncloudservice.com<br>https://jp1-api-network-infrastructure.nhncloudservice.com |
+| key-manager | 韓国(パンギョ)リージョン<br>韓国(ピョンチョン)リージョン<br>韓国(クァンジュ)リージョン<br>日本(東京)リージョン |https://kr1-api-key-manager-infrastructure.nhncloudservice.com<br>https://kr2-api-key-manager-infrastructure.nhncloudservice.com<br>https://kr3-api-key-manager-infrastructure.nhncloudservice.com<br>https://jp1-api-key-manager-infrastructure.nhncloudservice.com |
 
-APIレスポンスにガイドに明示されていないフィールドが表示される場合があります。それらのフィールドは、NHN Cloud内部用途で使用され、事前に告知せずに変更する場合があるため使用しないでください。
 
-<a id="instance-flavors"></a>
-## インスタンスタイプ
+APIレスポンスにガイドに明記されていないフィールドが表示される場合があります。このようなフィールドはNHN Cloudの内部用途で使用されており、事前の通知なしに変更される可能性があるため、使用しないでください。
 
-<a id="list-flavors"></a>
-### タイプリスト表示
+<a id="load-balancer"></a>
+## ロードバランサー { #load-balancer }
+
+<a id="list-load-balancers"></a>
+### ロードバランサー一覧の表示 { #list-load-balancers }
 
 ```
-GET /v2/{tenantId}/flavors
+GET /v2.0/lbaas/loadbalancers
 X-Auth-Token: {tokenId}
 ```
 
+<a id="list-load-balancers-request"></a>
 #### リクエスト
-
-このAPIはリクエスト本文を要求しません。
+このAPIはリクエスト本文(Body)を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
 | tokenId | Header | String | O | トークンID |
-| minDisk | Query | Integer | - | 最小ブロックストレージサイズ(GB)<br>指定したサイズよりブロックストレージサイズが大きいタイプのみ返す |
-| minRam | Query | Integer | - | 最小RAMサイズ(MB)<br>指定したサイズよりRAMサイズが大きいタイプのみ返す |
+| id | Query | UUID | - | 照会するロードバランサーのID |
+| name | Query | String | - | 照会するロードバランサーの名前 |
+| provisioning_status | Query | Enum | - | 照会するロードバランサーのプロビジョニングステータス |
+| description | Query | String | - | 照会するロードバランサーの説明 |
+| vip_address | Query | String | - | 照会するロードバランサーのIP |
+| vip_port_id | Query | UUID | - | 照会するロードバランサーのポートID |
+| vip_subnet_id | Query | UUID | - | 照会するロードバランサーのサブネットID |
+| operating_status | Query | Enum | - | 照会するロードバランサーの運用ステータス |
+| loadbalancer_type | Query | String | - | 照会するロードバランサーのタイプ<br>`shared`/`dedicated`のいずれか |
 
+
+<a id="list-load-balancers-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| flavors | Body | Object | インスタンスタイプリストオブジェクト |
-| flavors.id | Body | UUID | インスタンスタイプID |
-| flavors.links | Body | Object | インスタンスタイプパスオブジェクト |
-| flavors.name | Body | String | インスタンスタイプ名 |
-
+| loadbalancers | Body | Array | ロードバランサー情報オブジェクトの一覧 |
+| loadbalancers.description | Body | String | ロードバランサーの説明 |
+| loadbalancers.provisioning_status | Body | Enum | ロードバランサーのプロビジョニングステータス |
+| loadbalancers.tenant_id | Body | String | テナントID |
+| loadbalancers.provider | Body | String | ロードバランサーのプロバイダー(ベンダー) |
+| loadbalancers.name | Body | String | ロードバランサーの名前 |
+| loadbalancers.listeners | Body | Object | ロードバランサーのリスナーオブジェクトの一覧 |
+| loadbalancers.listeners.id | Body | UUID | リスナーID |
+| loadbalancers.pools | Body | Object | ロードバランサーのプールオブジェクトの一覧 |
+| loadbalancers.pools.id | Body | UUID | プールID |
+| loadbalancers.vip_address | Body | String | ロードバランサーのIP |
+| loadbalancers.vip_port_id | Body | UUID | ロードバランサーのポートID |
+| loadbalancers.vip_subnet_id | Body | UUID | ロードバランサーのサブネットID |
+| loadbalancers.id | Body | UUID | ロードバランサーID |
+| loadbalancers.operating_status | Body | Enum | ロードバランサーの運用ステータス |
+| loadbalancers.admin_state_up | Body | Boolean | ロードバランサーの管理者制御ステータス |
+| loadbalancers.ipacl_groups | Body | Object | ロードバランサーに適用されたIP ACLグループオブジェクト |
+| loadbalancers.ipacl_groups.ipacl_group_id | Body | UUID | IP ACLグループID |
+| loadbalancers.ipacl_group_action | Body | String | ロードバランサーに適用されたIP ACLグループのアクション<br>`null`/`DENY`/`ALLOW`のいずれか |
+| loadbalancers.loadbalancer_type | Body | String | ロードバランサーのタイプ<br>`shared`/`dedicated`のいずれか |
+| loadbalancers.engine_version | Body | String | ロードバランサーエンジンバージョン<br>`v1`/`v2` のいずれか |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-  "flavors": [
+  "loadbalancers": [
     {
-      "id": "013bea75-8541-4c6f-9abe-a03fee3d74fe",
-      "links": [
+      "ipacl_group_action": "DENY",
+      "description": "",
+      "provisioning_status": "ACTIVE",
+      "tenant_id": "8258ab391d854e8b878642b737017a3b",
+      "provider": "haproxy",
+      "ipacl_groups": [
         {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/013bea75-8541-4c6f-9abe-a03fee3d74fe",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/013bea75-8541-4c6f-9abe-a03fee3d74fe",
-          "rel": "bookmark"
+          "ipacl_group_id": "04570ec5-456a-48ac-85ee-38adcc83ee70"
         }
       ],
-      "name": "x1.c32m256"
-    },
-    {
-      "id": "0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-      "links": [
+      "name": "LB-1",
+      "loadbalancer_type": "shared",
+      "listeners": [
         {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-          "rel": "bookmark"
+          "id": "fe192219-0d4c-4145-9855-0af8c949dfe8"
         }
       ],
-      "name": "x1.c32m128"
+      "pools": [
+        {
+          "id": "766e51ff-4d29-4ab4-bfb6-4dab8d62803f"
+        }
+      ],
+      "vip_address": "192.168.0.187",
+      "vip_port_id": "f3764f0d-b0da-4be1-a61f-fc5e8914278a",
+      "workflow_status": "SUCCESS",
+      "vip_subnet_id": "dcb31578-1e16-407f-a117-a716795fabc4",
+      "id": "7b4cef78-72b0-4c3c-9971-98763ef6284c",
+      "operating_status": "ONLINE",
+      "admin_state_up": true,
+      "ipacl_groups": [
+        {
+         "ipacl_group_id": "79ebf206-3463-4df1-a54c-4fc939f8c26c"
+         },
+         {
+         "ipacl_group_id": "947030cc-635f-42d3-b745-770cf7b562fd"
+         }
+       ]
     }
   ]
 }
 ```
-
-</p>
 </details>
 
 ---
-
-<a id="list-flavors-with-details"></a>
-### タイプリスト詳細表示
+<a id="view-load-balancer"></a>
+### ロードバランサーの表示 { #view-load-balancer }
 
 ```
-GET /v2/{tenantId}/flavors/detail
+GET /v2.0/lbaas/loadbalancers/{loadbalancerId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-load-balancer-request"></a>
 #### リクエスト
-
-このAPIはリクエスト本文を要求しません。
+このAPIはリクエスト本文(Body)を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
 | tokenId | Header | String | O | トークンID |
-| minDisk | Query | Integer | - | 最小ブロックストレージサイズ(GB)<br>指定したサイズよりブロックストレージサイズが大きいタイプのみ返す |
-| minRam | Query | Integer | - | 最小RAMサイズ(MB)<br>指定したサイズよりRAMサイズが大きいタイプのみ返す |
+| loadbalancerId | URL | UUID | O | ロードバランサーID |
 
+<a id="view-load-balancer-response"></a>
 #### レスポンス
 
-| 名前 | 種類 | 形式 | 説明            |
-|---|---|---|----------------|
-| flavors | Body | Object | インスタンスタイプリストオブジェクト |
-| flavors.id | Body | UUID | インスタンスタイプID     |
-| flavors.links | Body | Object | インスタンスタイプパスオブジェクト |
-| flavors.name | Body | String | インスタンスタイプ名    |
-| flavors.ram | Body | Integer | メモリサイズ(MB)     |
-| flavors.OS-FLV-DISABLED:disabled | Body | Boolean | 有効/無効         |
-| flavors.vcpus | Body | Integer | vCPU数       |
-| flavors.extra_specs | Body | Object | 追加仕様オブジェクト      |
-| flavors.swap | Body | Integer | スワップ領域サイズ(GB)  |
-| flavors.os-flavor-access:is_public | Body | Boolean | 共有有無          |
-| flavors.rxtx_factor | Body | Float | ネットワーク送信/受信パケット比率 |
-| flavors.OS-FLV-EXT-DATA:ephemeral | Body | Integer | 臨時ブロックストレージサイズ(GB) |
-| flavors.disk | Body | Integer | ルートブロックストレージサイズ(GB) |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "flavors": [
-    {
-      "name": "x1.c32m256",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/97604802-a090-43fa-a5ce-c7cfd737fbba",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/97604802-a090-43fa-a5ce-c7cfd737fbba",
-          "rel": "bookmark"
-        }
-      ],
-      "ram": 262144,
-      "OS-FLV-DISABLED:disabled": false,
-      "vcpus": 32,
-      "extra_specs": {
-        "flavor_type": "performance"
-      },
-      "swap": "",
-      "os-flavor-access:is_public": true,
-      "rxtx_factor": 1.0,
-      "OS-FLV-EXT-DATA:ephemeral": 0,
-      "disk": 0,
-      "id": "97604802-a090-43fa-a5ce-c7cfd737fbba"
-    },
-    {
-      "name": "x1.c32m128",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/31fa632d-aeec-4f12-8a57-ce9d146228e5",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/31fa632d-aeec-4f12-8a57-ce9d146228e5",
-          "rel": "bookmark"
-        }
-      ],
-      "ram": 131072,
-      "OS-FLV-DISABLED:disabled": false,
-      "vcpus": 32,
-      "extra_specs": {
-        "flavor_type": "performance"
-      },
-      "swap": "",
-      "os-flavor-access:is_public": true,
-      "rxtx_factor": 1.0,
-      "OS-FLV-EXT-DATA:ephemeral": 0,
-      "disk": 0,
-      "id": "31fa632d-aeec-4f12-8a57-ce9d146228e5"
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="availability-zones"></a>
-## アベイラビリティゾーン
-
-<a id="list-availability-zones"></a>
-### 可用性リスト表示
-
-```
-GET /v2/{tenantId}/os-availability-zone
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| availabilityZoneInfo.hosts | Body | - | アベイラビリティゾーンに属しているホスト情報オブジェクト<br>常にnullと表示 |
-| availabilityZoneInfo.zoneName | Body | String | アベイラビリティゾーン名 |
-| availabilityZoneInfo.zoneState | Body | Object | アベイラビリティゾーン状態情報オブジェクト |
-| availabilityZoneInfo.available | Body | Object | アベイラビリティゾーンの状態 |
+| loadbalancer | Body | Object | ロードバランサー情報オブジェクト |
+| loadbalancer.description | Body | String | ロードバランサーの説明 |
+| loadbalancer.provisioning_status | Body | Enum | ロードバランサーのプロビジョニングステータス |
+| loadbalancer.tenant_id | Body | String | テナントID |
+| loadbalancer.provider | Body | String | ロードバランサーのプロバイダー(ベンダー) |
+| loadbalancer.name | Body | String | ロードバランサーの名前 |
+| loadbalancer.listeners | Body | Object | ロードバランサーのリスナーオブジェクトの一覧 |
+| loadbalancer.listeners.id | Body | UUID | リスナーID |
+| loadbalancers.pools | Body | Object | ロードバランサーのプールオブジェクトの一覧 |
+| loadbalancers.pools.id | Body | UUID | プールID |
+| loadbalancer.vip_address | Body | String | ロードバランサーのIP |
+| loadbalancer.vip_port_id | Body | UUID | ロードバランサーのポートID |
+| loadbalancer.vip_subnet_id | Body | UUID | ロードバランサーのサブネットID |
+| loadbalancer.id | Body | UUID | ロードバランサーID |
+| loadbalancer.operating_status | Body | Enum | ロードバランサーの運用ステータス |
+| loadbalancer.admin_state_up | Body | Boolean | ロードバランサーの管理者制御ステータス |
+| loadbalancer.ipacl_groups | Body | Object | ロードバランサーに適用されたIP ACLグループオブジェクト |
+| loadbalancer.ipacl_groups.ipacl_group_id | Body | UUID | IP ACLグループID |
+| loadbalancer.ipacl_group_action | Body | String | ロードバランサーに適用されたIP ACLグループのアクション<br>`null`/`DENY`/`ALLOW`のいずれか |
+| loadbalancer.loadbalancer_type | Body | String | ロードバランサーのタイプ<br>`shared`/`dedicated`のいずれか |
+| loadbalancer.engine_version | Body | String | ロードバランサーエンジンバージョン<br>`v1`/`v2` のいずれか |
+
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "availabilityZoneInfo": [
+  "loadbalancer": {
+    "ipacl_group_action": "DENY",
+    "description": "",
+    "provisioning_status": "ACTIVE",
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "provider": "haproxy",
+    "ipacl_groups": [
       {
-        "zoneState": {
-          "available": true
-        },
-        "zoneName": "kr-pub-a"
-      },
-      {
-        "zoneState": {
-          "available": true
-        },
-        "zoneName": "kr-pub-b"
+        "ipacl_group_id": "04570ec5-456a-48ac-85ee-38adcc83ee70"
       }
-    ]
+    ],
+    "name": "LB-1",
+    "loadbalancer_type": "shared",
+    "listeners": [
+      {
+        "id": "fe192219-0d4c-4145-9855-0af8c949dfe8"
+      }
+    ],
+      "pools": [
+        {
+          "id": "766e51ff-4d29-4ab4-bfb6-4dab8d62803f"
+        }
+      ],
+    "vip_address": "192.168.0.187",
+    "vip_port_id": "f3764f0d-b0da-4be1-a61f-fc5e8914278a",
+    "workflow_status": "SUCCESS",
+    "vip_subnet_id": "dcb31578-1e16-407f-a117-a716795fabc4",
+    "id": "7b4cef78-72b0-4c3c-9971-98763ef6284c",
+    "operating_status": "ONLINE",
+    "admin_state_up": true,
+    "ipacl_groups": [
+        {
+         "ipacl_group_id": "79ebf206-3463-4df1-a54c-4fc939f8c26c"
+         },
+         {
+         "ipacl_group_id": "947030cc-635f-42d3-b745-770cf7b562fd"
+         }
+     ]
+  }
 }
 ```
-
-</p>
 </details>
 
 ---
+<a id="create-load-balancer"></a>
+### ロードバランサーの作成 { #create-load-balancer }
 
-<a id="key-pairs"></a>
-## キーペア
-
-<a id="list-key-pairs"></a>
-### キーペアリスト表示
 ```
-GET /v2/{tenantId}/os-keypairs
+POST /v2.0/lbaas/loadbalancers
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-load-balancer-request"></a>
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
 | tokenId | Header | String | O | トークンID |
+| loadbalancer | Body | Object | - | ロードバランサー情報オブジェクト |
+| loadbalancer.name | Body | String | - | ロードバランサーの名前 |
+| loadbalancer.description | Body | String | - | ロードバランサーの説明 |
+| loadbalancer.vip_subnet_id | Body | UUID | O | ロードバランサーのサブネットID |
+| loadbalancer.vip_address | Body | String | - | ロードバランサーのIP |
+| loadbalancer.admin_state_up | Body | Boolean | - | ロードバランサーの管理者制御ステータス。省略した場合は`true`に設定されます |
+| loadbalancer.loadbalancer_type | Body | String | - | ロードバランサーのタイプ。`shared`/`dedicated`を使用可能<br> 省略した場合は`shared`に設定されます |
 
+<details><summary>例</summary>
+
+```json
+{
+    "loadbalancer": {
+        "name": "LB-1",
+        "description": "",
+        "vip_subnet_id": "dcb31578-1e16-407f-a117-a716795fabc4",
+        "vip_address": "192.168.0.187",
+        "admin_state_up": true
+    }
+}
+```
+</details>
+
+<a id="create-load-balancer-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| keypairs | Body | Array | キーペアオブジェクトリスト |
-| keypairs.keypair | Body | Object | キーペアオブジェクト |
-| keypairs.keypair.name | Body | String | キーペア名 |
-| keypairs.keypair.public_key | Body | String | 公開鍵 |
-| keypairs.keypair.fingerprint | Body | String | キーペア指紋 |
+| loadbalancer | Body | Object | ロードバランサー情報オブジェクト |
+| loadbalancer.description | Body | String | ロードバランサーの説明 |
+| loadbalancer.provisioning_status | Body | Enum | ロードバランサーのプロビジョニングステータス |
+| loadbalancer.tenant_id | Body | String | テナントID |
+| loadbalancer.provider | Body | String | ロードバランサーのプロバイダー(ベンダー)名 |
+| loadbalancer.name | Body | String | ロードバランサーの名前 |
+| loadbalancer.listeners | Body | Object | ロードバランサーのリスナーオブジェクトの一覧 |
+| loadbalancer.listeners.id | Body | UUID | リスナーID |
+| loadbalancers.pools | Body | Object | ロードバランサーのプールオブジェクトの一覧 |
+| loadbalancers.pools.id | Body | UUID | プールID |
+| loadbalancer.vip_address | Body | String | ロードバランサーのIP |
+| loadbalancer.vip_port_id | Body | UUID | ロードバランサーのポートID |
+| loadbalancer.vip_subnet_id | Body | UUID | ロードバランサーのサブネットID |
+| loadbalancer.id | Body | UUID | ロードバランサーID |
+| loadbalancer.operating_status | Body | Enum | ロードバランサーの運用ステータス |
+| loadbalancer.admin_state_up | Body | Boolean | ロードバランサーの管理者制御ステータス |
+| loadbalancer.ipacl_groups | Body | Object | ロードバランサーに適用されたIP ACLグループオブジェクト |
+| loadbalancer.ipacl_groups.ipacl_group_id | Body | UUID | IP ACLグループID |
+| loadbalancer.ipacl_group_action | Body | String | ロードバランサーに適用されたIP ACLグループのアクション<br>`null`/`DENY`/`ALLOW`のいずれか |
+| loadbalancer.loadbalancer_type | Body | String | ロードバランサーのタイプ<br>`shared`/`dedicated`のいずれか |
+| loadbalancer.engine_version | Body | String | ロードバランサーエンジンバージョン<br>`v1`/`v2` のいずれか |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "loadbalancer": {
+    "ipacl_group_action": "DENY",
+    "description": "",
+    "provisioning_status": "ACTIVE",
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "provider": "haproxy",
+    "ipacl_groups": [
+      {
+        "ipacl_group_id": "04570ec5-456a-48ac-85ee-38adcc83ee70"
+      }
+    ],
+    "name": "LB-1",
+    "loadbalancer_type": "shared",
+    "listeners": [
+      {
+        "id": "fe192219-0d4c-4145-9855-0af8c949dfe8"
+      }
+    ],
+      "pools": [
+        {
+          "id": "766e51ff-4d29-4ab4-bfb6-4dab8d62803f"
+        }
+      ],
+    "vip_address": "192.168.0.187",
+    "vip_port_id": "f3764f0d-b0da-4be1-a61f-fc5e8914278a",
+    "workflow_status": "SUCCESS",
+    "vip_subnet_id": "dcb31578-1e16-407f-a117-a716795fabc4",
+    "id": "7b4cef78-72b0-4c3c-9971-98763ef6284c",
+    "operating_status": "ONLINE",
+    "admin_state_up": true,
+    "ipacl_groups": []
+  }
+}
+```
+</details>
+
+---
+<a id="modify-load-balancer"></a>
+### ロードバランサーの修正 { #modify-load-balancer }
+
+```
+PUT /v2.0/lbaas/loadbalancers/{loadbalancerId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-load-balancer-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| loadbalancerId | URL | UUID | O | ロードバランサーID |
+| loadbalancer | Body | Object | O | ロードバランサー情報オブジェクト |
+| loadbalancer.name | Body | String | - | ロードバランサーの名前 |
+| loadbalancer.description | Body | String | - | ロードバランサーの説明 |
+| loadbalancer.admin_state_up | Body | Boolean | - | ロードバランサーの管理者制御ステータス |
+| loadbalancer.engine_version | Body | String | - | ロードバランサーエンジンのバージョン（`v1`/`v2`）<br>変更するとトラフィック処理の動作が変わる場合があります |
+
+<details><summary>例</summary>
+
+```json
+{
+    "loadbalancer": {
+        "name": "LB-1",
+        "description": "",
+        "admin_state_up": true
+    }
+}
+```
+</details>
+
+<a id="modify-load-balancer-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| loadbalancer | Body | Object | ロードバランサー情報オブジェクト |
+| loadbalancer.description | Body | String | ロードバランサーの説明 |
+| loadbalancer.provisioning_status | Body | Enum | ロードバランサーのプロビジョニングステータス |
+| loadbalancer.tenant_id | Body | String | テナントID |
+| loadbalancer.provider | Body | String | ロードバランサーのプロバイダー(ベンダー)名 |
+| loadbalancer.name | Body | String | ロードバランサーの名前 |
+| loadbalancer.listeners | Body | Object | ロードバランサーのリスナーオブジェクトの一覧 |
+| loadbalancer.listeners.id | Body | UUID | リスナーID |
+| loadbalancers.pools | Body | Object | ロードバランサーのプールオブジェクトの一覧 |
+| loadbalancers.pools.id | Body | UUID | プールID |
+| loadbalancer.vip_address | Body | String | ロードバランサーのIP |
+| loadbalancer.vip_port_id | Body | UUID | ロードバランサーのポートID |
+| loadbalancer.vip_subnet_id | Body | UUID | ロードバランサーのサブネットID |
+| loadbalancer.id | Body | UUID | ロードバランサーID |
+| loadbalancer.operating_status | Body | Enum | ロードバランサーの運用ステータス |
+| loadbalancer.admin_state_up | Body | Boolean | ロードバランサーの管理者制御ステータス |
+| loadbalancer.ipacl_groups | Body | Object | ロードバランサーに適用されたIP ACLグループオブジェクト |
+| loadbalancer.ipacl_groups.ipacl_group_id | Body | UUID | IP ACLグループID |
+| loadbalancer.ipacl_group_action | Body | String | ロードバランサーに適用されたIP ACLグループのアクション<br>`null`/`DENY`/`ALLOW`のいずれか |
+| loadbalancer.loadbalancer_type | Body | String | ロードバランサーのタイプ<br>`shared`/`dedicated`のいずれか |
+| loadbalancer.engine_version | Body | String | ロードバランサーエンジンバージョン<br>`v1`/`v2` のいずれか |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "loadbalancer": {
+    "ipacl_group_action": "DENY",
+    "description": "",
+    "provisioning_status": "ACTIVE",
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "provider": "haproxy",
+    "ipacl_groups": [
+      {
+        "ipacl_group_id": "04570ec5-456a-48ac-85ee-38adcc83ee70"
+      }
+    ],
+    "name": "LB-1",
+    "loadbalancer_type": "shared",
+    "listeners": [
+      {
+        "id": "fe192219-0d4c-4145-9855-0af8c949dfe8"
+      }
+    ],
+      "pools": [
+        {
+          "id": "766e51ff-4d29-4ab4-bfb6-4dab8d62803f"
+        }
+      ],
+    "vip_address": "192.168.0.187",
+    "vip_port_id": "f3764f0d-b0da-4be1-a61f-fc5e8914278a",
+    "workflow_status": "SUCCESS",
+    "vip_subnet_id": "dcb31578-1e16-407f-a117-a716795fabc4",
+    "id": "7b4cef78-72b0-4c3c-9971-98763ef6284c",
+    "operating_status": "ONLINE",
+    "admin_state_up": true,
+    "ipacl_groups": []
+  }
+}
+```
+</details>
+
+---
+<a id="delete-load-balancer"></a>
+### ロードバランサーの削除 { #delete-load-balancer }
+
+```
+DELETE /v2.0/lbaas/loadbalancers/{loadbalancerId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-load-balancer-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| loadbalancerId | URL | UUID | O | ロードバランサーID |
+
+
+<a id="delete-load-balancer-response"></a>
+#### レスポンス
+このAPIはレスポンスボディ(Body)を返却しません。
+
+<a id="listener"></a>
+## リスナー { #listener }
+<a id="view-listener-list"></a>
+### リスナー一覧の表示 { #view-listener-list }
+
+```
+GET /v2.0/lbaas/listeners
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-listener-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| default_pool_id | Query | UUID | - | リスナーに登録されたデフォルトメンバーグループ(プール)のID |
+| protocol | Query | Enum | - | リスナーのプロトコル<br>`TCP`、`HTTP`、`HTTPS`、`TERMINATED_HTTPS`のいずれか |
+| protocol_version | Query | Enum | - | HTTP プロトコルバージョン<br>`HTTP/1`、`HTTP/2` のいずれか |
+| description | Query | String | - | リスナーの説明 |
+| name | Query | String | - | リスナーの名前 |
+| admin_state_up | Query | Boolean | - | 管理者制御ステータス |
+| connection_limit | Query | Integer | - | リスナーのconnection limit |
+| keepalive_timeout | Query | Integer | - | リスナーのkeepalive timeout |
+| protocol_port | Query | Integer | - | リスナーのポート番号 |
+| id | Query | UUID | - | リスナーID |
+
+
+<a id="view-listener-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| listeners | Body | Array | リスナー情報オブジェクトの一覧 |
+| listeners.default_pool_id | Body | UUID | リスナーに登録されたデフォルトメンバーグループ(プール)のID |
+| listeners.protocol | Body | Enum | リスナーのプロトコル<br>`TCP`、`HTTP`、`HTTPS`、`TERMINATED_HTTPS`のいずれか |
+| listeners.protocol_version | Body | Enum | HTTP プロトコルバージョン<br>`HTTP/1`、`HTTP/2` のいずれか |
+| listeners.description | Body | String | リスナーの説明 |
+| listeners.name | Body | String | リスナーの名前 |
+| listeners.loadbalancers | Body | Array | リスナーが登録されたロードバランサーオブジェクトの一覧 |
+| listeners.loadbalancers.id | Body | UUID | ロードバランサーID |
+| listeners.tenant_id | Body | String | テナントID |
+| listeners.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| listeners.connection_limit | Body | Integer | リスナーのconnection limit |
+| listeners.keepalive_timeout | Body | Integer | リスナーのkeepalive timeout |
+| listeners.default_tls_container_ref | Body | String| key-managerに登録されたTLS証明書のパス |
+| listeners.sni_container_refs | Body | Array | key-managerに登録されたSNI証明書のパス一覧 |
+| listeners.protocol_port | Body | Integer | リスナーポート |
+| listeners.proxy_protocol | Body | Boolean | プロキシプロトコルのon/off<br>デフォルト値：`false` |
+| listeners.block_invalid_http_request | Body | Boolean | 無効なHTTPリクエストブロックのon/off<br>デフォルト値：`true` |
+| listeners.tls_version | Body | String | リスナーのTLSバージョン<br>`SSLv3`、`TLSv1.0`、`TLSv1.0_2016`、`TLSv1.1`、`TLSv1.2`、`TLSv1.3`のいずれか<br>プロトコルが`TERMINATED_HTTPS`の場合にのみ適用 |
+| listeners.ssl_policy_id | Body | UUID | リスナーに接続されたSSLポリシーID<br>接続されたSSLポリシーがない場合は`null`<br>プロトコルが`TERMINATED_HTTPS`の場合にのみ適用 |
+| listeners.keepalive_enable | Body | Boolean | keepalive有効化のon/off<br>デフォルト値：`true` |
+| listeners.id | Body | String| リスナーID |
+
 
 <details><summary>例</summary>
 <p>
 
 ```json
 {
-  "keypairs": [
+  "listeners": [
     {
-      "keypair": {
-        "public_key": "ssh-rsa ... Generated-by-Nova",
-        "name": "keypair",
-        "fingerprint": "SHA256:..."
-      }
+      "proxy_protocol": false,
+      "block_invalid_http_request": true,
+      "default_pool_id": "522a5681-fc4c-4b0b-85ec-bf7777c48a57",
+      "protocol": "TERMINATED_HTTPS",
+      "protocol_version": "HTTP/2",
+      "description": "",
+      "name": "",
+      "loadbalancers": [
+        {
+          "id": "7b4cef78-72b0-4c3c-9971-98763ef6284c"
+        }
+      ],
+      "tenant_id": "8258ab391d854e8b878642b737017a3b",
+      "admin_state_up": true,
+      "connection_limit": 2000,
+      "keepalive_timeout": 300,
+      "keepalive_enable": true,
+      "tls_version": "TLSv1.0",
+      "ssl_policy_id": null,
+      "sni_container_ids": [],
+      "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
+      "sni_container_refs": [],
+      "protocol_port": 443,
+      "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20",
+      "cert_expire_date": "2025-12-27T10:36:20+00:00"
     }
   ]
 }
@@ -290,54 +542,366 @@ X-Auth-Token: {tokenId}
 </p>
 </details>
 
----
 
-<a id="show-key-pair"></a>
-### キーペア表示
+<a id="view-listener"></a>
+### リスナーの表示 { #view-listener }
+
 ```
-GET /v2/{tenantId}/os-keypairs/{keypairName}
+GET /v2.0/lbaas/listeners/{listenerId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-listener-request"></a>
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+このAPIはリクエスト本文(Body)を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| keypairName | URL | String | O | キーペア名 |
 | tokenId | Header | String | O | トークンID |
+| listenerId | URL | UUID | O | リスナーID |
 
+
+<a id="view-listener-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| keypair | Body | Object | キーペアオブジェクトリスト |
-| keypair.public_key | Body | String | 公開鍵 |
-| keypair.user_id | Body | String | キーペアのオーナーID |
-| keypair.name | Body | String | キーペア名 |
-| keypair.deleted | Body | Boolean | キーペアが削除されているかどうか |
-| keypair.created_at | Body | Datetime | キーペア作成日時<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.updated_at | Body | Datetime | キーペア修正日時<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.deleted_at | Body | Datetime | キーペア削除日時<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.fingerprint | Body | String | キーペア指紋 |
-| keypair.id | Body | Integer | キーペアID |
+| listener | Body | Object | リスナー情報オブジェクト |
+| listener.default_pool_id | Body | UUID | リスナーに登録されたデフォルトメンバーグループ(プール)のID |
+| listener.protocol | Body | Enum | リスナーのプロトコル<br>`TCP`、`HTTP`、`HTTPS`、`TERMINATED_HTTPS`のいずれか |
+| listener.protocol_version | Body | Enum | HTTP プロトコルバージョン<br>`HTTP/1`、`HTTP/2` のいずれか |
+| listener.description | Body | String | リスナーの説明 |
+| listener.name | Body | String | リスナーの名前 |
+| listener.loadbalancers | Body | Array | リスナーが登録されたロードバランサーオブジェクトの一覧 |
+| listener.loadbalancers.id | Body | UUID | ロードバランサーID |
+| listener.tenant_id | Body | String | テナントID |
+| listener.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| listener.connection_limit | Body | Integer | リスナーのconnection limit |
+| listener.keepalive_timeout | Body | Integer | リスナーのkeepalive timeout |
+| listener.enable_x_forwarded_proto | Body | Boolean | - | X-Forwarded-Proto/X-Forwarded-Portヘッダのon/off<br>デフォルト値：`true` |
+| listener.enable_x_forwarded_port | Body | Boolean | - | X-Forwarded-Portヘッダのon/off<br>デフォルト値：`true` |
+| listener.enable_x_forwarded_for | Body | Boolean | - | X-Forwarded-Forヘッダのon/off<br>デフォルト値：`true` |
+| listener.default_tls_container_ref | Body | String| key-managerに登録されたTLS証明書のパス |
+| listener.sni_container_refs | Body | Array | key-managerに登録されたSNI証明書のパス一覧 |
+| listener.protocol_port | Body | Integer | リスナーポート |
+| listener.proxy_protocol | Body | Boolean | プロキシプロトコルのon/off<br>デフォルト値：`false` |
+| listener.block_invalid_http_request | Body | Boolean | 無効なHTTPリクエストブロックのon/off<br>デフォルト値：`true` |
+| listener.tls_version | Body | String | リスナーのTLSバージョン<br>`SSLv3`、`TLSv1.0`、`TLSv1.0_2016`、`TLSv1.1`、`TLSv1.2`、`TLSv1.3`のいずれか<br>プロトコルが`TERMINATED_HTTPS`の場合にのみ適用 |
+| listener.ssl_policy_id | Body | UUID | リスナーに接続されたSSLポリシーID<br>接続されたSSLポリシーがない場合は`null`<br>プロトコルが`TERMINATED_HTTPS`の場合にのみ適用 |
+| listener.keepalive_enable | Body | Boolean | keepalive有効化のon/off<br>デフォルト値：`true` |
+| listener.id | Body | UUID | リスナーID |
+
 
 <details><summary>例</summary>
 <p>
 
 ```json
 {
-  "keypair": {
-    "public_key": "ssh-rsa ... Generated-by-Nova",
-    "user_id": "826a1213b3f746829515486965690dfe",
-    "name": "keypair",
-    "deleted": false,
-    "created_at": "2020-02-07T03:46:48.000000",
-    "updated_at": null,
-    "fingerprint": "SHA256:...",
-    "deleted_at": null,
-    "id": 51
+  "listener": {
+    "proxy_protocol": false,
+    "block_invalid_http_request": true,
+    "default_pool_id": "522a5681-fc4c-4b0b-85ec-bf7777c48a57",
+    "protocol": "TERMINATED_HTTPS",
+    "protocol_version": "HTTP/1",
+    "description": "",
+    "name": "",
+    "loadbalancers": [
+      {
+        "id": "7b4cef78-72b0-4c3c-9971-98763ef6284c"
+      }
+    ],
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "admin_state_up": true,
+    "connection_limit": 2000,
+    "keepalive_timeout": 300,
+    "keepalive_enable": true,
+    "enable_x_forwarded_proto": true,
+    "enable_x_forwarded_port": true,
+    "enable_x_forwarded_for": true,
+    "tls_version": "TLSv1.0",
+    "ssl_policy_id": null,
+    "sni_container_ids": [],
+    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
+    "sni_container_refs": [],
+    "protocol_port": 443,
+    "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20",
+    "cert_expire_date": "2025-12-27T10:36:20+00:00"
+  }
+}
+```
+
+</p>
+</details>
+
+
+
+---
+<a id="create-listener"></a>
+### リスナーの作成 { #create-listener }
+
+```
+POST /v2.0/lbaas/listeners
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-listener-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| listener | Body | Object | O | リスナー情報オブジェクト |
+| listener.protocol | Body | Enum | O | リスナーのプロトコル<br>`TCP`、`HTTP`、`HTTPS`、`TERMINATED_HTTPS`のいずれか |
+| listener.protocol_version | Body | Enum | - | HTTP プロトコルバージョン<br>`HTTP/1`、`HTTP/2` のいずれか |
+| listener.description | Body | String | - | リスナーの説明 |
+| listener.name | Body | String | - | リスナーの名前 |
+| listener.default_pool_id | Body | UUID | - | リスナーに登録されたデフォルトメンバーグループ(プール)のID<br>指定しない場合は`使用しない`として作成 |
+| listener.loadbalancer_id | Body | UUID | O | ロードバランサーID |
+| listener.admin_state_up | Body | Boolean | - | 管理者制御ステータス |
+| listener.connection_limit | Body |  Integer | - | リスナーのconnection limit |
+| listener.keepalive_timeout | Body | Integer | - | リスナーのkeepalive timeout |
+| listener.enable_x_forwarded_proto | Body | Boolean | - | X-Forwarded-Proto/X-Forwarded-Portヘッダのon/off<br>デフォルト値：`true` |
+| listener.enable_x_forwarded_port | Body | Boolean | - | X-Forwarded-Portヘッダのon/off<br>デフォルト値：`true` |
+| listener.enable_x_forwarded_for | Body | Boolean | - | X-Forwarded-Forヘッダのon/off<br>デフォルト値：`true` |
+| listener.default_tls_container_ref | Body | String | - | key-managerに登録されたTLS証明書のパス |
+| listener.sni_container_refs | Body | Array | - | key-managerに登録されたSNI証明書のパス一覧 |
+| listener.protocol_port | Body | Integer | O | リスナーポート |
+| listener.proxy_protocol | Body | Boolean | - | プロキシプロトコルのon/off<br>デフォルト値：`false` |
+| listener.block_invalid_http_request | Body | Boolean | - | 無効なHTTPリクエストブロックのon/off<br>デフォルト値：`true` |
+| listener.tls_version | Body | String | - | リスナーのTLSバージョン<br>`SSLv3`、`TLSv1.0`、`TLSv1.0_2016`、`TLSv1.1`、`TLSv1.2`、`TLSv1.3`のいずれか<br>プロトコルが`TERMINATED_HTTPS`の場合にのみ適用<br>`ssl_policy_id`と共に指定する場合は、SSLポリシーの`min_tls_version`と一致する必要があります |
+| listener.ssl_policy_id | Body | UUID | - | リスナーに接続するSSLポリシーID<br>デフォルト値：`null`<br>プロトコルが`TERMINATED_HTTPS`の場合にのみ適用<br>詳細は[カスタムSSLポリシー](/Network/Load%20Balancer/ko/overview/#ssl)を参照してください |
+| listener.keepalive_enable | Body | Boolean | - | keepalive有効化のon/off<br>デフォルト値：`true` |
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "listener": {
+    "protocol": "TERMINATED_HTTPS",
+    "protocol_version": "HTTP/2",
+    "proxy_protocol": false,
+    "block_invalid_http_request": true,
+    "description": "",
+    "name": "",
+    "loadbalancer_id":"7b4cef78-72b0-4c3c-9971-98763ef6284c",
+    "default_pool_id": "522a5681-fc4c-4b0b-85ec-bf7777c48a57",
+    "admin_state_up": true,
+    "connection_limit": 2000,
+    "keepalive_timeout": 300,
+    "enable_x_forwarded_proto": false,
+    "enable_x_forwarded_port": false,
+    "enable_x_forwarded_for": false,
+    "tls_version": "TLSv1.2",
+    "ssl_policy_id": "b5b3f6f2-6c29-4f3a-9a2e-3b2e6b2b5c0a",
+    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
+    "sni_container_refs": [],
+    "protocol_port": 443
+  }
+}
+```
+</p>
+</details>
+
+<a id="create-listener-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| listener | Body | Object | リスナー情報オブジェクト |
+| listener.default_pool_id | Body | UUID | リスナーに登録されたデフォルトメンバーグループ(プール)のID |
+| listener.protocol | Body | Enum | リスナーのプロトコル<br>`TCP`、`HTTP`、`HTTPS`、`TERMINATED_HTTPS`のいずれか |
+| listener.protocol_version | Body | Enum | HTTP プロトコルバージョン<br>`HTTP/1`、`HTTP/2` のいずれか |
+| listener.description | Body | String | リスナーの説明 |
+| listener.name | Body | String | リスナーの名前 |
+| listener.loadbalancers | Body | Array | リスナーが登録されたロードバランサーオブジェクトの一覧 |
+| listener.loadbalancers.id | Body | UUID | ロードバランサーID |
+| listener.tenant_id | Body | String | テナントID |
+| listener.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| listener.connection_limit | Body | Integer | リスナーのconnection limit |
+| listener.keepalive_timeout | Body | Integer | リスナーのkeepalive timeout |
+| listener.enable_x_forwarded_proto | Body | Boolean | - | X-Forwarded-Proto/X-Forwarded-Portヘッダのon/off<br>デフォルト値：`true` |
+| listener.enable_x_forwarded_port | Body | Boolean | - | X-Forwarded-Portヘッダのon/off<br>デフォルト値：`true` |
+| listener.enable_x_forwarded_for | Body | Boolean | - | X-Forwarded-Forヘッダのon/off<br>デフォルト値：`true` |
+| listener.default_tls_container_ref | Body | String | key-managerに登録されたTLS証明書のパス |
+| listener.sni_container_refs | Body | Array | key-managerに登録されたSNI証明書のパス一覧 |
+| listener.protocol_port | Body | Integer | リスナーポート |
+| listener.proxy_protocol | Body | Boolean | プロキシプロトコルのon/off<br>デフォルト値：`false` |
+| listener.block_invalid_http_request | Body | Boolean | 無効なHTTPリクエストブロックのon/off<br>デフォルト値：`true` |
+| listener.tls_version | Body | String | リスナーのTLSバージョン<br>`SSLv3`、`TLSv1.0`、`TLSv1.0_2016`、`TLSv1.1`、`TLSv1.2`、`TLSv1.3`のいずれか<br>プロトコルが`TERMINATED_HTTPS`の場合にのみ適用 |
+| listener.ssl_policy_id | Body | UUID | リスナーに接続されたSSLポリシーID<br>接続されたSSLポリシーがない場合は`null`<br>プロトコルが`TERMINATED_HTTPS`の場合にのみ適用 |
+| listener.keepalive_enable | Body | Boolean | keepalive有効化のon/off<br>デフォルト値：`true` |
+| listener.id | Body | UUID | リスナーID |
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "listener": {
+    "proxy_protocol": false,
+    "block_invalid_http_request": true,
+    "default_pool_id": "522a5681-fc4c-4b0b-85ec-bf7777c48a57",
+    "protocol": "TERMINATED_HTTPS",
+    "protocol_version": "HTTP/2",
+    "description": "",
+    "name": "",
+    "loadbalancers": [
+      {
+        "id": "7b4cef78-72b0-4c3c-9971-98763ef6284c"
+      }
+    ],
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "admin_state_up": true,
+    "connection_limit": 2000,
+    "keepalive_timeout": 300,
+    "keepalive_enable": true,
+    "enable_x_forwarded_proto": false,
+    "enable_x_forwarded_port": false,
+    "enable_x_forwarded_for": false,
+    "tls_version": "TLSv1.2",
+    "ssl_policy_id": "b5b3f6f2-6c29-4f3a-9a2e-3b2e6b2b5c0a",
+    "sni_container_ids": [],
+    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
+    "sni_container_refs": [],
+    "protocol_port": 443,
+    "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20",
+    "cert_expire_date": "2025-12-27T10:36:20+00:00"
+  }
+}
+```
+</p>
+</details>
+
+---
+<a id="modify-listener"></a>
+### リスナーの修正 { #modify-listener }
+
+```
+PUT /v2.0/lbaas/listeners/{listenerId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-listener-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| listenerId | URL | UUID | O | リスナーID |
+| listener | Body | Object | O | リスナー情報オブジェクト |
+| listener.description | Body | String | - | リスナーの説明 |
+| listener.name | Body | String| - | リスナー名 |
+| listener.default_pool_id | Body | UUID | - | リスナーに登録されたデフォルトメンバーグループ(プール)のID<br>該当の値をnullに指定すると`使用しない`に変更されます |
+| listener.admin_state_up | Body | Boolean | - | 管理者制御ステータス |
+| listener.connection_limit | Body |  Integer | - | リスナーのconnection limit |
+| listener.keepalive_timeout | Body | Integer | - | リスナーのkeepalive timeout |
+| listener.enable_x_forwarded_proto | Body | Boolean | - | X-Forwarded-Proto/X-Forwarded-Portヘッダのon/off<br>デフォルト値：`true` |
+| listener.enable_x_forwarded_port | Body | Boolean | - | X-Forwarded-Portヘッダのon/off<br>デフォルト値：`true` |
+| listener.enable_x_forwarded_for | Body | Boolean | - | X-Forwarded-Forヘッダのon/off<br>デフォルト値：`true` |
+| listener.default_tls_container_ref | Body | String | - | key-managerに登録されたTLS証明書のパス |
+| listener.sni_container_refs | Body | Array | - | key-managerに登録されたSNI証明書のパス一覧 |
+| listener.proxy_protocol | Body | Boolean | - | プロキシプロトコルのon/off<br>デフォルト値：`false` |
+| listener.block_invalid_http_request | Body | Boolean | - | 無効なHTTPリクエストブロックのon/off<br>デフォルト値：`true` |
+| listener.tls_version | Body | String | - | リスナーのTLSバージョン<br>`SSLv3`、`TLSv1.0`、`TLSv1.0_2016`、`TLSv1.1`、`TLSv1.2`、`TLSv1.3`のいずれか<br>プロトコルが`TERMINATED_HTTPS`の場合にのみ適用<br>`ssl_policy_id`と共に指定する場合は、SSLポリシーの`min_tls_version`と一致する必要があります |
+| listener.ssl_policy_id | Body | UUID | - | リスナーに接続するSSLポリシーID<br>接続を解除する場合は`null`を送信<br>プロトコルが`TERMINATED_HTTPS`の場合にのみ適用<br>詳細は[カスタムSSLポリシー](/Network/Load%20Balancer/ko/overview/#ssl)を参照してください |
+| listener.keepalive_enable | Body | Boolean | - | keepalive有効化のon/off<br>デフォルト値：`true` |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "listener": {
+    "proxy_protocol": false,
+    "block_invalid_http_request": true,
+    "description": "",
+    "name": "",
+    "default_pool_id": null,
+    "admin_state_up": true,
+    "connection_limit": 2000,
+    "keepalive_timeout": 300,
+    "keepalive_enable": true,
+    "enable_x_forwarded_proto": true,
+    "enable_x_forwarded_port": true,
+    "enable_x_forwarded_for": true,
+    "tls_version": "TLSv1.2",
+    "ssl_policy_id": "b5b3f6f2-6c29-4f3a-9a2e-3b2e6b2b5c0a",
+    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
+    "sni_container_refs": []
+  }
+}
+```
+</p>
+</details>
+
+<a id="modify-listener-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| listener | Body | Object | リスナー情報オブジェクト |
+| listener.default_pool_id | Body | UUID | リスナーに登録されたデフォルトメンバーグループ(プール)のID |
+| listener.protocol | Body | Enum | リスナーのプロトコル<br>`TCP`、`HTTP`、`HTTPS`、`TERMINATED_HTTPS`のいずれか |
+| listener.protocol_version | Body | Enum | HTTP プロトコルバージョン<br>`HTTP/1`、`HTTP/2` のいずれか |
+| listener.description | Body | String | リスナーの説明 |
+| listener.name | Body | String | リスナーの名前 |
+| listener.loadbalancers | Body | Array | リスナーが登録されたロードバランサーオブジェクトの一覧 |
+| listener.loadbalancers.id | Body | UUID | ロードバランサーID |
+| listener.tenant_id | Body | String | テナントID |
+| listener.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| listener.connection_limit | Body | Integer | リスナーのconnection limit |
+| listener.keepalive_timeout | Body | Integer | リスナーのkeepalive timeout |
+| listener.enable_x_forwarded_proto | Body | Boolean | X-Forwarded-Proto/X-Forwarded-Protヘッダのon/off |
+| listener.enable_x_forwarded_port | Body | Boolean | X-Forwarded-Portヘッダのon/off |
+| listener.enable_x_forwarded_for | Body | Boolean | X-Forwarded-Forヘッダのon/off |
+| listener.default_tls_container_ref | Body | String | key-managerに登録されたTLS証明書のパス |
+| listener.sni_container_refs | Body | Array | key-managerに登録されたSNI証明書のパス一覧 |
+| listener.protocol_port | Body | Integer | リスナーポート |
+| listener.proxy_protocol | Body | Boolean | プロキシプロトコルのon/off<br>デフォルト値：`false` |
+| listener.block_invalid_http_request | Body | Boolean | 無効なHTTPリクエストブロックのon/off<br>デフォルト値：`true` |
+| listener.tls_version | Body | String | リスナーのTLSバージョン<br>`SSLv3`、`TLSv1.0`、`TLSv1.0_2016`、`TLSv1.1`、`TLSv1.2`、`TLSv1.3`のいずれか<br>プロトコルが`TERMINATED_HTTPS`の場合にのみ適用 |
+| listener.ssl_policy_id | Body | UUID | リスナーに接続されたSSLポリシーID<br>接続されたSSLポリシーがない場合は`null`<br>プロトコルが`TERMINATED_HTTPS`の場合にのみ適用 |
+| listener.keepalive_enable | Body | Boolean | keepalive有効化のon/off<br>デフォルト値：`true` |
+| listener.id | Body | UUID | リスナーID |
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "listener": {
+    "proxy_protocol": false,
+    "block_invalid_http_request": true,
+    "default_pool_id": null,
+    "protocol": "TERMINATED_HTTPS",
+    "protocol_version": "HTTP/2",
+    "description": "",
+    "name": "",
+    "loadbalancers": [
+      {
+        "id": "7b4cef78-72b0-4c3c-9971-98763ef6284c"
+      }
+    ],
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "admin_state_up": true,
+    "connection_limit": 2000,
+    "keepalive_timeout": 300,
+    "keepalive_enable": true,
+    "enable_x_forwarded_proto": true,
+    "enable_x_forwarded_port": true,
+    "enable_x_forwarded_for": true,
+    "tls_version": "TLSv1.2",
+    "ssl_policy_id": "b5b3f6f2-6c29-4f3a-9a2e-3b2e6b2b5c0a",
+    "sni_container_ids": [],
+    "default_tls_container_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/containers/c8f4503c-1da5-4ec7-9456-51183bd4ad4e",
+    "sni_container_refs": [],
+    "protocol_port": 443,
+    "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20",
+    "cert_expire_date": "2025-12-27T10:36:20+00:00"
   }
 }
 ```
@@ -346,172 +910,387 @@ X-Auth-Token: {tokenId}
 </details>
 
 ---
-
-<a id="createregister-key-pair"></a>
-### キーペアの作成/登録
-
+<a id="delete-listener"></a>
+### リスナーの削除 { #delete-listener }
+指定したリスナーを削除します。
 ```
-POST /v2/{tenantId}/os-keypairs
+DELETE /v2.0/lbaas/listeners/{listenerId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-listener-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| listenerId | URL | UUID | O | リスナーID |
+
+<a id="delete-listener-response"></a>
+#### レスポンス
+
+このAPIはレスポンスボディ(Body)を返却しません。
+
+---
+
+<a id="create-custom-response"></a>
+### カスタムレスポンスの作成 { #create-custom-response }
+
+```
+POST /v2.0/lbaas/listeners/{listenerId}/errorpages
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-custom-response-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
 | tokenId | Header | String | O | トークンID |
-| keypair | Body | Object | O | キーペアオブジェクト |
-| keypair.name | Body | String | O | 作成または登録するキーペア名 |
-| keypair.public_key | Body | String | - | 登録する公開鍵。このフィールドが省略されている場合、新しいキーペアを作成します。|
+| listenerId | URL | UUID | O | リスナーID |
+| errorpage | Body | Object | O | カスタムレスポンス情報オブジェクト |
+| errorpage.code | Body | Integer | O | エラーコード<br>`400`、`403`、`408`、`500`、`502`、`503`、`504`のいずれか |
+| errorpage.content_type | Body | Enum | O | コンテンツタイプ<br>`application/javascript`、`application/json`、`text/css`、`text/html`、`text/plain`のいずれか |
+| errorpage.body | Body | String | O | カスタムレスポンスボディ(1024文字以内) |
+
+!!! tip "ポイント"
+    同一のリスナーに重複するコードは作成できません。(例：504を複数作成する場合)
 
 <details><summary>例</summary>
 <p>
 
 ```json
 {
-    "keypair": {
-        "name": "keypair-d20a3d59-9433-4b79-8726-20b431d89c78",
-        "public_key": "ssh-rsa ... Generated-by-Nova"
-    }
+  "errorpage": {
+    "code": 502,
+    "content_type": "text/html",
+    "body": "<html><body><h1>502 Bad Gateway</h1><p>The server encountered a temporary error and could not complete your request.</p></body></html>"
+  }
 }
 ```
-
 </p>
 </details>
 
+<a id="create-custom-response-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| keypair | Body | Object | キーペアオブジェクト |
-| keypair.public_key | Body | String | 公開鍵 |
-| keypair.private_key | Body | String | 秘密鍵。新しいキーペアを作成した場合に秘密鍵を返します。|
-| keypair.user_id | Body | String | キーペアのオーナーID |
-| keypair.name | Body | String | キーペア名 |
-| keypair.fingerprint | Body | String | キーペア指紋 |
+| errorpage | Body | Object | カスタムレスポンス情報オブジェクト |
+| errorpage.id | Body | UUID | カスタムレスポンスID |
+| errorpage.code | Body | Integer | エラーコード |
+| errorpage.content_type | Body | Enum | コンテンツタイプ |
+| errorpage.body | Body | String | カスタムレスポンスボディ |
+
 
 <details><summary>例</summary>
 <p>
 
 ```json
 {
-    "keypair": {
-        "fingerprint": "SHA256:+EZoD ... /DKiGnY4zf5tYrcix0",
-        "name": "keypair",
-        "public_key": "ssh-rsa ... Generated-by-Nova",
-        "user_id": "436f727b7c9142f896ddd56be591dd7f"
-    }
+  "errorpage": {
+    "id": "9413aeba-b796-46eb-9ae5-862cc20897e2",
+    "code": 502,
+    "content_type": "text/html",
+    "body": "<html><body><h1>502 Bad Gateway</h1><p>The server encountered a temporary error and could not complete your request.</p></body></html>",
+    "tenant_id": "419a823563124dc5b5627f5e79db8174"
+  }
 }
 ```
-
 </p>
 </details>
 
 ---
 
-<a id="delete-key-pair"></a>
-### キーペアを削除する
+<a id="modify-custom-response"></a>
+### カスタムレスポンスの修正 { #modify-custom-response }
+
 ```
-DELETE /v2/{tenantId}/os-keypairs/{keypairName}
+PUT /v2.0/lbaas/listeners/{listenerId}/errorpages/{errorpageId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-custom-response-request"></a>
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| keypairName | URL | String | O | キーペア名 |
 | tokenId | Header | String | O | トークンID |
+| listenerId | URL | UUID | O | リスナーID |
+| errorpageId | URL | UUID | O | カスタムレスポンスID |
+| errorpage | Body | Object | O | カスタムレスポンス情報オブジェクト |
+| errorpage.content_type | Body | Enum | O | コンテンツタイプ<br>`application/javascript`、`application/json`、`text/css`、`text/html`、`text/plain`のいずれか |
+| errorpage.body | Body | String | O | カスタムレスポンスボディ(1024文字以内) |
 
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
-
-<a id="instance"></a>
-## インスタンス
-
-<a id="instance-status"></a>
-### インスタンス状態
-
-インスタンスはさまざまな状態を持ち、状態によって行える動作が決められています。インスタンス状態リストは次のとおりです。
-
-| 状態名              | 説明                                                                                               |
-|-------------------|---------------------------------------------------------------------------------------------------|
-| `ACTIVE` | インスタンスがアクティブな状態の場合 |
-| `BUILD` | インスタンスが作成中中の場合 |
-| `DELETED` | インスタンスが削除された場合 |
-| `ERROR` | 直前にインスタンスに行った動作が失敗した場合 |
-| `HARD_REBOOT` | インスタンスを強制的に再起動した場合<br> 物理サーバーの電源を切って再起動するのと同じ動作 |
-| `MIGRATING` | インスタンスがマイグレーション中の場合<br> これはリアルタイムマイグレーション(アクティブインスタンス移動)作業により発生する |
-| `PASSWORD` | インスタンスでパスワードをリセットしている場合 |
-| `PAUSED` | インスタンスが一時停止した場合<br>一時停止したインスタンスはハイパーバイザのメモリに保存される。 |
-| `REBOOT` | インスタンスがソフト再起動状態である場合<br> 再起動コマンドが仮想マシンのオペレーティングシステムに伝達される。 |
-| `REBUILD` | インスタンスを作成時、イメージから新たに作り出す状態 |
-| `RESCUE` | インスタンスを復旧モードで実行中の場合 |
-| `RESIZE` | インスタンスタイプを変更したり、インスタンスを別のホストに移動する場合<br>インスタンスが停止して再起動した状態 |
-| `REVERT_RESIZE` | インスタンスタイプを変更したり、インスタンスを他のホストに移動する過程で失敗したときに、元の状態に戻すために復旧する場合 |
-| `VERIFY_RESIZE` | インスタンスがタイプ変更またはインスタンスを他のホストに移動する過程を終えてユーザーの承認を待っている場合<br>NHN Cloudでは、この場合、自動的に`ACTIVE`状態になります。 |
-| `SHELVED_OFFLOADED` | インスタンスが終了した場合 |
-| `SHUTOFF` | インスタンスが停止した場合 |
-| `SUSPENDED` | インスタンスが管理者により最大節電モードになっている場合 |
-| `UNKNOWN` | インスタンスの状態が不明な場合<br>`インスタンスがこの状態になった場合、管理者に問い合わせます。` | 
-
-<a id="list-instances"></a>
-### インスタンスリスト表示
-
-```
-GET /v2/{tenantId}/servers
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-| reservation_id | Query | String | - | インスタンス作成予約ID。<br>予約IDを指定すると、同時に作成されたインスタンスリストのみ返す。 |
-| changes-since | Query | Datetime | - | 指定された日時以降に変更されたインスタンスリストを返す。`YYYY-MM-DDThh:mm:ss`の形式。|
-| image | Query | UUID | - | イメージID<br>指定されたイメージを使用したインスタンスリストを返す |
-| flavor | Query | UUID | - | インスタンスタイプID<br>指定されたタイプを使用しているインスタンスリストを返す |
-| name | Query | String | - | インスタンス名<br>指定された名前のインスタンスリストを返す。正規表現を使用可能。|
-| status | Query | Enum | - | インスタンスの状態<br>指定された状態のインスタンスリストを返す |
-| limit | Query | Integer | - | インスタンスリスト数<br>指定された数のインスタンスリストを返す |
-| marker | Query | UUID | - | リストの最初のインスタンスUUID<br>ソート基準に従って`marker`に指定されたインスタンスから`limit`数分のインスタンスリストを返す |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| servers | Body | Object | インスタンスリストオブジェクト |
-| id | Body | UUID | インスタンスUUID |
-| links | body | Object | インスタンスパスオブジェクト |
-| name | body | String | インスタンス名 |
+!!! tip "ポイント"
+    `code`は変更できません。
 
 <details><summary>例</summary>
 <p>
 
 ```json
 {
-  "servers": [
+  "errorpage": {
+    "content_type": "application/json",
+    "body": "{\"error\": {\"code\": 502, \"message\": \"Bad Gateway\"}}"
+  }
+}
+```
+</p>
+</details>
+
+<a id="modify-custom-response-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| errorpage | Body | Object | カスタムレスポンス情報オブジェクト |
+| errorpage.id | Body | UUID | カスタムレスポンスID |
+| errorpage.code | Body | Integer | エラーコード |
+| errorpage.content_type | Body | Enum | コンテンツタイプ |
+| errorpage.body | Body | String | カスタムレスポンスボディ |
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "errorpage": {
+    "id": "9413aeba-b796-46eb-9ae5-862cc20897e2",
+    "code": 502,
+    "content_type": "application/json",
+    "body": "{\"error\": {\"code\": 502, \"message\": \"Bad Gateway\"}}",
+    "tenant_id": "419a823563124dc5b5627f5e79db8174"
+  }
+}
+```
+</p>
+</details>
+
+---
+
+<a id="delete-custom-response"></a>
+### カスタムレスポンスの削除 { #delete-custom-response }
+
+```
+DELETE /v2.0/lbaas/listeners/{listenerId}/errorpages/{errorpageId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-custom-response-request"></a>
+#### リクエスト
+
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| listenerId | URL | UUID | O | リスナーID |
+| errorpageId | URL | UUID | O | カスタムレスポンスID |
+
+<a id="delete-custom-response-response"></a>
+#### レスポンス
+
+このAPIはレスポンスボディ(Body)を返却しません。
+
+---
+
+<a id="view-custom-response"></a>
+### カスタムレスポンスの表示 { #view-custom-response }
+
+```
+GET /v2.0/lbaas/listeners/{listenerId}/errorpages/{errorpageId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-custom-response-request"></a>
+#### リクエスト
+
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| listenerId | URL | UUID | O | リスナーID |
+| errorpageId | URL | UUID | O | カスタムレスポンスID |
+
+<a id="view-custom-response-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| errorpage | Body | Object | カスタムレスポンス情報オブジェクト |
+| errorpage.id | Body | UUID | カスタムレスポンスID |
+| errorpage.code | Body | Integer | エラーコード |
+| errorpage.content_type | Body | Enum | コンテンツタイプ |
+| errorpage.body | Body | String | カスタムレスポンスボディ |
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "errorpage": {
+    "id": "9413aeba-b796-46eb-9ae5-862cc20897e2",
+    "code": 502,
+    "content_type": "text/html",
+    "body": "<html><body><h1>502 Bad Gateway</h1><p>The server encountered a temporary error and could not complete your request.</p></body></html>",
+    "tenant_id": "419a823563124dc5b5627f5e79db8174"
+  }
+}
+```
+</p>
+</details>
+
+---
+
+<a id="view-custom-response-list"></a>
+### カスタムレスポンス一覧の表示 { #view-custom-response-list }
+
+```
+GET /v2.0/lbaas/listeners/{listenerId}/errorpages
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-custom-response-list-request"></a>
+#### リクエスト
+
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| listenerId | URL | UUID | O | リスナーID |
+
+<a id="view-custom-response-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| errorpages | Body | Array | カスタムレスポンス情報オブジェクトの一覧 |
+| errorpages.id | Body | UUID | カスタムレスポンスID |
+| errorpages.code | Body | Integer | エラーコード |
+| errorpages.content_type | Body | Enum | コンテンツタイプ |
+| errorpages.body | Body | String | カスタムレスポンスボディ |
+| errorpages.tenant_id | Body | String | テナントID |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "errorpages": [
     {
-      "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-      "links": [
+      "id": "9413aeba-b796-46eb-9ae5-862cc20897e2",
+      "code": 502,
+      "content_type": "text/html",
+      "body": "<html><body><h1>502 Bad Gateway</h1><p>The server encountered a temporary error and could not complete your request.</p></body></html>",
+      "tenant_id": "419a823563124dc5b5627f5e79db8174"
+    },
+    {
+      "id": "d7dfd308-051a-46aa-a1af-753f2c110133",
+      "code": 503,
+      "content_type": "text/html",
+      "body": "<html><body><h1>503 Service Unavailable</h1><p>The service is temporarily unavailable. Please try again later.</p></body></html>",
+      "tenant_id": "419a823563124dc5b5627f5e79db8174"
+    }
+  ]
+}
+```
+</p>
+</details>
+
+---
+
+<a id="pool"></a>
+## プール { #pool }
+<a id="view-pool-list"></a>
+### プール一覧表示 { #view-pool-list }
+
+```
+GET /v2.0/lbaas/pools
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-pool-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | プールID |
+| name | Query | String | - | プールの名前 |
+| lb_algorithm | Query | Enum | - | プールのロードバランシング方式 <br> `ROUND_ROBIN`、`LEAST_CONNECTIONS`、`SOURCE_IP`のいずれか |
+| protocol | Query | Enum | - | メンバーのプロトコル |
+| protocol_version | Query | Enum | - | メンバーのHTTPプロトコルバージョン |
+| admin_state_up | Query | Boolean | - | 管理者制御ステータス |
+| healthmonitor_id | Query | UUID | - | プールのヘルスモニターID |
+
+<a id="view-pool-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| pools | Body | Array | プール情報オブジェクトの一覧 |
+| pools.lb_algorithm | Body | Enum | プールのロードバランシング方式 <br> `ROUND_ROBIN`、`LEAST_CONNECTIONS`、`SOURCE_IP`のいずれか |
+| pools.protocol | Body | Enum | メンバーのプロトコル |
+| pools.protocol_version | Body | Enum | メンバーの HTTP プロトコルバージョン |
+| pools.description | Body | String | プールの説明 |
+| pools.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| pools.tenant_id | Body | String | テナントID |
+| pools.session_persistence | Body | Object | プールのセッション維持オブジェクト |
+| pools.session_persistence.type | Body | Enum | セッション維持<br> `SOURCE_IP`、`HTTP_COOKIE`、`APP_COOKIE`のいずれかに設定<br> `HTTP_COOKIE`、`APP_COOKIE`に設定する場合、接続されたリスナーのプロトコルを`HTTP`または`TERMINATED_HTTPS`に設定しているか確認することを推奨します。<br> リスナーのプロトコルを`TCP`または`HTTPS`に設定した場合、セッション維持を`HTTP_COOKIE`、`APP_COOKIE`に設定しても、ロードバランサーはセッション維持に関連する動作を実行しません。 |
+| pools.session_persistence.cookie_name | Body | String | Cookie名 <br>セッション維持タイプが`APP_COOKIE`の場合にのみ設定値が適用されます。 |
+| pools.healthmonitor_id | Body | String | ヘルスモニターID |
+| pools.loadbalancers | Body | Array | プールが登録されたロードバランサーオブジェクトの一覧 |
+| pools.loadbalancers.id | Body | UUID | ロードバランサーID |
+| pools.listeners | Body | Array | プールが登録されたリスナーオブジェクトの一覧 |
+| pools.listeners.id | Body | String | リスナーID |
+| pools.members | Body | Array | プールに登録されたメンバーオブジェクトの一覧 |
+| pools.members.id | Body | String | メンバーID |
+| pools.id | Body | UUID | プールID |
+| pools.name | Body | String | プールの名前 |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "pools": [
+    {
+      "lb_algorithm": "ROUND_ROBIN",
+      "protocol": "HTTP",
+      "protocol_version": "HTTP/2",
+      "description": "",
+      "admin_state_up": true,
+      "tenant_id": "8258ab391d854e8b878642b737017a3b",
+      "member_port": 80,
+      "session_persistence": null,
+      "healthmonitor_id": "607c4da1-4fe2-4a3a-9527-82dd5a5c430e",
+      "loadbalancers": [
         {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "bookmark"
+          "id": "2997cb9d-9c31-475d-b679-040569c9e27b"
         }
       ],
-      "name": "Web-Server"
+      "listeners": [
+        {
+          "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20"
+        }
+      ],
+      "members": [
+        {
+          "id": "3e9a04d9-24a6-4304-83cc-6cf1e8deb7a7"
+        },
+        {
+          "id": "2c60e53b-5ca0-4d22-bed8-dffc1e5276be"
+        }
+      ],
+      "id": "522a5681-fc4c-4b0b-85ec-bf7777c48a57",
+      "name": ""
     }
   ]
 }
@@ -520,152 +1299,2551 @@ X-Auth-Token: {tokenId}
 </p>
 </details>
 
----
 
-<a id="list-instances-with-details"></a>
-### インスタンスリスト詳細表示
-
-インスタンスリスト表示と同じように現在テナントに作成されているインスタンスリストを返します。ただし、各インスタンスの詳細な情報が一緒に照会されます。
+<a id="view-pool"></a>
+### プール表示 { #view-pool }
 
 ```
-GET /v2/{tenantId}/servers/detail
+GET /v2.0/lbaas/pools/{poolId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-pool-request"></a>
 #### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
 
-インスタンスリスト表示と同じリクエスト形式です。
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
 
+<a id="view-pool-response"></a>
 #### レスポンス
 
-| 名前 | 種類 | 形式 | 説明                                                                                                                                                                                                       |
-|---|---|---|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| servers | body | Object | インスタンスリストオブジェクト                                                                                                                                                                                               |
-| status | body | Enum | インスタンスの状態                                                                                                                                                                                                  |
-| servers.id | Body | UUID | インスタンスID                                                                                                                                                                                                   |
-| servers.name | Body | String | インスタンス名。最大255文字。                                                                                                                                                                                         |
-| servers.updated | Body | Datetime | インスタンスの最終修正日時。`YYYY-MM-DDThh:mm:ssZ`形式。                                                                                                                                                                 |
-| servers.hostId | Body | String | インスタンスが起動中のホストID                                                                                                                                                                                        |
-| servers.addresses | Body | Object | インスタンスIPリストオブジェクト。<br>インスタンスに接続されたポート数分のリストが作成される。                                                                                                                                                             |
-| servers.addresses."Network名" | Body | Object | インスタンスに接続されている各Networkのポート情報                                                                                                                                                                                 |
-| servers.addresses."Network名".OS-EXT-IPS-MAC:mac_addr | Body | String | インスタンスに接続されたポートのMACアドレス                                                                                                                                                                                     |
-| servers.addresses."Network名".version | Body | Integer | インスタンスに接続されたポートのIPバージョン<br>NHN CloudはIPv4のみサポート                                                                                                                                                               |
-| servers.addresses."Network名".addr | Body | String | インスタンスに接続されたポートのIPアドレス                                                                                                                                                                                      |
-| servers.addresses."Network名".OS-EXT-IPS:type | Body | Enum | ポートのIPアドレスタイプ<br>`fixed`または`floating`のいずれか1つ                                                                                                                                                                |
-| servers.links | Body | Object | インスタンスパスオブジェクト                                                                                                                                                                                               |
-| servers.key_name | Body | String | インスタンスキーペア名                                                                                                                                                                                              |
-| servers.image | Body | Object | インスタンスイメージオブジェクト                                                                                                                                                                                              |
-| servers.image.id | Body | UUID | インスタンスイメージID                                                                                                                                                                                               |
-| servers.image.links | Body | Object | インスタンスイメージパスオブジェクト                                                                                                                                                                                           |
-| servers.OS-EXT-STS:task_state | Body | String | インスタンス作業状態<br>インスタンスに動作を加えた時、動作進行状態を伝える。                                                                                                                                                               |
-| servers.OS-EXT-STS:vm_state | Body | String | インスタンスの現在の状態                                                                                                                                                                                               |
-| servers.OS-SRV-USG:launched_at | Body | Datetime | インスタンスの最終起動日時<br>`YYYY-MM-DDThh:mm:ss.ssssss`形式                                                                                                                                                        |
-| servers.OS-SRV-USG:terminated_at | Body | Datetime | インスタンスの削除日時<br>`YYYY-MM-DDThh:mm:ssZ`形式                                                                                                                                                                  |
-| servers.flavor | Body | Object | インスタンスタイプ情報オブジェクト                                                                                                                                                                                            |
-| servers.flavor.id | Body | UUID | インスタンスタイプID                                                                                                                                                                                                |
-| servers.flavor.links | Body | Object | インスタンスタイプパスオブジェクト                                                                                                                                                                                            |
-| servers.security_groups | Body | Object | インスタンスに割り当てられたセキュリティグループリストオブジェクト                                                                                                                                                                                    |
-| servers.security_groups.name | Body | String | インスタンスに割り当てられたセキュリティグループ名                                                                                                                                                                                       |
-| servers.user_id | Body | String | インスタンスを作成したユーザーID                                                                                                                                                                                          |
-| servers.created | Body | Datetime | インスタンス作成日時。`YYYY-MM-DDThh:mm:ssZ`形式                                                                                                                                                                    |
-| servers.tenant_id | Body | String | インスタンスが属しているテナントID                                                                                                                                                                                           |
-| servers.os-extended-volumes:volumes_attached | Body | Object | インスタンスに接続された追加ブロックストレージリストオブジェクト                                                                                                                                                                               |
-| servers.os-extended-volumes:volumes_attached.id | Body | UUID | インスタンスに接続された追加ブロックストレージID                                                                                                                                                                                   |
-| servers.OS-EXT-STS:power_state | Body | Integer | インスタンスの電源の状態<br>- `1`: On<br>- `4`: Off                                                                                                                                                                    |
-| servers.metadata | Body | Object | インスタンスメタデータオブジェクト<br>インスタンスメタデータをキーと値のペアで保管                                                                                                                                                                  |
-| server.NHN-EXT-ATTR:ephemeral_disk_size | Body | Integer | インスタンスに接続された追加ローカルブロックストレージサイズ                                                                                                                                                                 |
-| server.NHN-EXT-ATTR:protect | Body | Boolean | インスタンス削除保護の有無      
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| pool | Body | Object | プール情報オブジェクト |
+| pool.lb_algorithm | Body | Enum | プールのロードバランシング方式 <br> `ROUND_ROBIN`、`LEAST_CONNECTIONS`、`SOURCE_IP`のいずれか |
+| pool.protocol | Body | Enum | メンバーのプロトコル |
+| pool.protocol_version | Body | Enum | メンバーのHTTPプロトコルバージョン |
+| pool.description | Body | String | プールの説明 |
+| pool.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| pool.tenant_id | Body | String | テナントID |
+| pool.member_port | Body | Integer | メンバーのポート<br> Webコンソールでメンバーを作成する場合に指定されるメンバーのポート値 |
+| pool.session_persistence | Body | Object | プールのセッション維持オブジェクト |
+| pool.session_persistence.type | Body | Enum | セッション維持<br> `SOURCE_IP`、`HTTP_COOKIE`、`APP_COOKIE`のいずれかに設定<br> `HTTP_COOKIE`、`APP_COOKIE`に設定する場合、接続されたリスナーのプロトコルを`HTTP`または`TERMINATED_HTTPS`に設定しているか確認することを推奨します。<br> リスナーのプロトコルを`TCP`または`HTTPS`に設定した場合、セッション維持を`HTTP_COOKIE`、`APP_COOKIE`に設定しても、ロードバランサーはセッション維持に関連する動作を実行しません。 |
+| pool.session_persistence.cookie_name | Body | String | Cookie名 <br>セッション維持タイプが`APP_COOKIE`の場合にのみ設定値が適用されます。 |
+| pool.healthmonitor_id | Body | UUID | ヘルスモニターID |
+| pool.loadbalancers | Body | Array | プールが登録されたロードバランサーオブジェクトの一覧 |
+| pool.loadbalancers.id | Body | UUID | ロードバランサーID |
+| pool.listeners | Body | Array | プールが登録されたリスナーオブジェクトの一覧 |
+| pool.listeners.id | Body | UUID | リスナーID |
+| pool.members | Body | Array | プールに登録されたメンバーオブジェクトの一覧 |
+| pool.members.id | Body | UUID | メンバーID |
+| pool.id | Body | UUID | プールID |
+| pool.name | Body | String | プールの名前 |
 
 <details><summary>例</summary>
 <p>
 
 ```json
 {
-  "servers": [
+  "pool": {
+    "lb_algorithm": "ROUND_ROBIN",
+    "protocol": "HTTP",
+    "protocol_version": "HTTP/1",
+    "description": "",
+    "admin_state_up": true,
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "member_port": 80,
+    "session_persistence": null,
+    "healthmonitor_id": "607c4da1-4fe2-4a3a-9527-82dd5a5c430e",
+    "loadbalancers": [
+      {
+        "id": "2997cb9d-9c31-475d-b679-040569c9e27b"
+      }
+    ],
+    "listeners": [
+      {
+        "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20"
+      }
+    ],
+    "members": [
+      {
+        "id": "3e9a04d9-24a6-4304-83cc-6cf1e8deb7a7"
+      },
+      {
+        "id": "2c60e53b-5ca0-4d22-bed8-dffc1e5276be"
+      }
+    ],
+    "id": "522a5681-fc4c-4b0b-85ec-bf7777c48a57",
+    "name": ""
+  }
+}
+```
+
+</p>
+</details>
+
+
+
+---
+<a id="create-pool"></a>
+### プール作成 { #create-pool }
+
+```
+POST /v2.0/lbaas/pools
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-pool-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| pool | Body | Object | O | プール情報オブジェクト |
+| pool.loadbalancer_id | Body | UUID | - | プールが登録されるロードバランサーID。ロードバランサーIDまたはリスナーIDのいずれかは必須で入力する必要があります。 |
+| pool.listener_id | Body | UUID | - | プールが登録されるリスナーID。ロードバランサーIDまたはリスナーIDのいずれかは必須で入力する必要があります。 |
+| pool.lb_algorithm | Body | Enum | O | プールのロードバランシング方式 <br> `ROUND_ROBIN`、`LEAST_CONNECTIONS`、`SOURCE_IP`のいずれか |
+| pool.protocol | Body | Enum | O | メンバーのプロトコル |
+| pool.protocol_version | Body | Enum | - | メンバーのHTTPプロトコルバージョン |
+| pool.description | Body | String | - | プールの説明 |
+| pool.admin_state_up | Body | Boolean | - | 管理者制御ステータス |
+| pool.member_port | Body | Integer | - | メンバーの受信ポート<br>トラフィックをこのポートに転送します。<br>デフォルト値は-1です。 |
+| pool.session_persistence | Body | Object | - | プールのセッション維持オブジェクト |
+| pool.session_persistence.type | Body | Enum | - | セッション維持<br> `SOURCE_IP`、`HTTP_COOKIE`、`APP_COOKIE`のいずれかに設定<br> `HTTP_COOKIE`、`APP_COOKIE`に設定する場合、接続されたリスナーのプロトコルを`HTTP`または`TERMINATED_HTTPS`に設定しているか確認することを推奨します。<br> リスナーのプロトコルを`TCP`または`HTTPS`に設定した場合、セッション維持を`HTTP_COOKIE`、`APP_COOKIE`に設定しても、ロードバランサーはセッション維持に関連する動作を実行しません。 |
+| pools.session_persistence.cookie_name | Body | String | - | Cookie名 <br>セッション維持タイプが`APP_COOKIE`の場合にのみ設定値が適用されます。 |
+| pool.name | Body | String | - | プールの名前 |
+
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "pool": {
+    "listener_id": "1b5e4950-71ae-4d67-bf97-453f986c9a20",
+    "lb_algorithm": "ROUND_ROBIN",
+    "protocol": "HTTP",
+    "protocol_version": "HTTP/1",
+    "description": "",
+    "admin_state_up": true,
+    "member_port": 80,
+    "session_persistence": null,
+    "name": ""
+  }
+}
+```
+</p>
+</details>
+
+<a id="create-pool-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| pool | Body | Object | プール情報オブジェクト |
+| pool.lb_algorithm | Body | Enum | プールのロードバランシング方式 <br> `ROUND_ROBIN`、`LEAST_CONNECTIONS`、`SOURCE_IP`のいずれか |
+| pool.protocol | Body | Enum | メンバーのプロトコル |
+| pool.protocol_version | Body | Enum | メンバーの HTTP プロトコルバージョン |
+| pool.description | Body | String | プールの説明 |
+| pool.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| pool.tenant_id | Body | String | テナントID |
+| pool.session_persistence | Body | Object | - | プールのセッション維持オブジェクト |
+| pool.session_persistence.type | Body | Enum | セッション維持<br> `SOURCE_IP`、`HTTP_COOKIE`、`APP_COOKIE`のいずれかに設定<br> `HTTP_COOKIE`、`APP_COOKIE`に設定する場合、接続されたリスナーのプロトコルを`HTTP`または`TERMINATED_HTTPS`に設定しているか確認することを推奨します。<br> リスナーのプロトコルを`TCP`または`HTTPS`に設定した場合、セッション維持を`HTTP_COOKIE`、`APP_COOKIE`に設定しても、ロードバランサーはセッション維持に関連する動作を実行しません。 |
+| pool.healthmonitor_id | Body | String | ヘルスモニターID |
+| pool.loadbalancers | Body | Array | プールが登録されたロードバランサーオブジェクトの一覧 |
+| pool.loadbalancers.id | Body | UUID | ロードバランサーID |
+| pool.listeners | Body | Array | プールが登録されたリスナーオブジェクトの一覧 |
+| pool.listeners.id | Body | UUID | リスナーID |
+| pool.members | Body | Array | プールに登録されたメンバーオブジェクトの一覧 |
+| pool.members.id | Body | UUID | メンバーID |
+| pool.id | Body | UUID | プールID |
+| pool.name | Body | String | プールの名前 |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "pool": {
+    "lb_algorithm": "ROUND_ROBIN",
+    "protocol": "HTTP",
+    "protocol_version": "HTTP/1",
+    "description": "",
+    "admin_state_up": true,
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "member_port": 80,
+    "session_persistence": null,
+    "healthmonitor_id": "607c4da1-4fe2-4a3a-9527-82dd5a5c430e",
+    "loadbalancers": [
+      {
+        "id": "2997cb9d-9c31-475d-b679-040569c9e27b"
+      }
+    ],
+    "listeners": [
+      {
+        "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20"
+      }
+    ],
+    "members": [
+      {
+        "id": "3e9a04d9-24a6-4304-83cc-6cf1e8deb7a7"
+      },
+      {
+        "id": "2c60e53b-5ca0-4d22-bed8-dffc1e5276be"
+      }
+    ],
+    "id": "522a5681-fc4c-4b0b-85ec-bf7777c48a57",
+    "name": ""
+  }
+}
+```
+
+</p>
+</details>
+
+---
+<a id="modify-pool"></a>
+### プール変更 { #modify-pool }
+
+```
+PUT /v2.0/lbaas/pools/{poolId}
+X-Auth-Token: {tokenId}
+```
+
+
+<a id="modify-pool-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| poolId | URL | UUID | O | プールID |
+| pool | Body | Object | O | プール情報オブジェクト |
+| pool.lb_algorithm | Body | Enum | - | プールのロードバランシング方式 <br> `ROUND_ROBIN`、`LEAST_CONNECTIONS`、`SOURCE_IP`のいずれか |
+| pool.description | Body | String | - | プールの説明 |
+| pool.admin_state_up | Body | Boolean | - | 管理者制御ステータス |
+| pool.session_persistence | Body | Object | - | プールのセッション維持オブジェクト |
+| pool.session_persistence.type | Body | Enum | - | セッション維持<br> `SOURCE_IP`、`HTTP_COOKIE`、`APP_COOKIE`のいずれかに設定<br> `HTTP_COOKIE`、`APP_COOKIE`に設定する場合、接続されたリスナーのプロトコルを`HTTP`または`TERMINATED_HTTPS`に設定しているか確認することを推奨します。<br> リスナーのプロトコルを`TCP`または`HTTPS`に設定した場合、セッション維持を`HTTP_COOKIE`、`APP_COOKIE`に設定しても、ロードバランサーはセッション維持に関連する動作を実行しません。 |
+| pools.session_persistence.cookie_name | Body | String | - | Cookie名 <br>セッション維持タイプが`APP_COOKIE`の場合にのみ設定値が適用されます。 |
+| pool.name | Body | String | - | プールの名前 |
+
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "pool": {
+    "lb_algorithm": "ROUND_ROBIN",
+    "description": "",
+    "admin_state_up": true,
+    "member_port": 80,
+    "session_persistence": null,
+    "name": ""
+  }
+}
+```
+</p>
+</details>
+
+<a id="modify-pool-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| pool | Body | Object | プール情報オブジェクト |
+| pool.lb_algorithm | Body | Enum | プールのロードバランシング方式 <br> `ROUND_ROBIN`、`LEAST_CONNECTIONS`、`SOURCE_IP`のいずれか |
+| pool.protocol | Body | Enum | メンバーのプロトコル |
+| pool.protocol_version | Body | Enum | メンバーのHTTPプロトコルバージョン |
+| pool.description | Body | String | プールの説明 |
+| pool.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| pool.tenant_id | Body | String | テナントID |
+| pools.session_persistence | Body | Object | プールのセッション維持オブジェクト |
+| pool.session_persistence.type | Body | Enum | セッション維持<br> `SOURCE_IP`、`HTTP_COOKIE`、`APP_COOKIE`のいずれかに設定<br> `HTTP_COOKIE`、`APP_COOKIE`に設定する場合、接続されたリスナーのプロトコルを`HTTP`または`TERMINATED_HTTPS`に設定しているか確認することを推奨します。<br> リスナーのプロトコルを`TCP`または`HTTPS`に設定した場合、セッション維持を`HTTP_COOKIE`、`APP_COOKIE`に設定しても、ロードバランサーはセッション維持に関連する動作を実行しません。 |
+| pools.session_persistence.cookie_name | Body | String | Cookie名 <br>セッション維持タイプが`APP_COOKIE`の場合にのみ設定値が適用されます。 |
+| pool.healthmonitor_id | Body | UUID | ヘルスモニターID |
+| pool.loadbalancers | Body | Array | プールが登録されたロードバランサーオブジェクトの一覧 |
+| pool.loadbalancers.id | Body | UUID | ロードバランサーID |
+| pool.listeners | Body | Array | プールが登録されたリスナーオブジェクトの一覧 |
+| pool.listeners.id | Body | UUID | リスナーID |
+| pool.members | Body | Array | プールに登録されたメンバーオブジェクトの一覧 |
+| pool.members.id | Body | UUID | メンバーID |
+| pool.id | Body | UUID | プールID |
+| pool.name | Body | String | プールの名前 |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "pool": {
+    "lb_algorithm": "ROUND_ROBIN",
+    "protocol": "HTTP",
+    "protocol_version": "HTTP/1",
+    "description": "",
+    "admin_state_up": true,
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "member_port": 80,
+    "session_persistence": null,
+    "healthmonitor_id": "607c4da1-4fe2-4a3a-9527-82dd5a5c430e",
+    "loadbalancers": [
+      {
+        "id": "2997cb9d-9c31-475d-b679-040569c9e27b"
+      }
+    ],
+    "listeners": [
+      {
+        "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20"
+      }
+    ],
+    "members": [
+      {
+        "id": "3e9a04d9-24a6-4304-83cc-6cf1e8deb7a7"
+      },
+      {
+        "id": "2c60e53b-5ca0-4d22-bed8-dffc1e5276be"
+      }
+    ],
+    "id": "522a5681-fc4c-4b0b-85ec-bf7777c48a57",
+    "name": ""
+  }
+}
+```
+
+</p>
+</details>
+
+---
+<a id="delete-pool"></a>
+### プール削除 { #delete-pool }
+指定したプールを削除します。
+```
+DELETE /v2.0/lbaas/pools/{poolId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-pool-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| poolId | URL | UUID | O | プールID |
+
+<a id="delete-pool-response"></a>
+#### レスポンス
+
+このAPIはレスポンスボディ(Body)を返却しません。
+
+<a id="health-monitor"></a>
+## ヘルスモニター { #health-monitor }
+<a id="view-health-monitor-list"></a>
+### ヘルスモニター一覧表示 { #view-health-monitor-list }
+
+```
+GET /v2.0/lbaas/healthmonitors
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-health-monitor-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | ヘルスモニターID |
+| admin_state_up | Query | Boolean | - | 管理者制御ステータス |
+| delay | Query | Integer | - | ヘルスチェック間隔(秒) |
+| expected_codes | Query | String | - | 正常状態と見なすメンバーのHTTPレスポンスコード <br> 単一値(200)、一覧(201,202)、または範囲(201-204)で使用可能<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。 |
+| max_retries | Query | Integer | - | 最大再試行回数 |
+| http_method | Query | Enum | - | ヘルスチェックに使用するHTTP Method <br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| timeout | Query | Integer | - | ヘルスチェックの応答待機時間(秒) |
+| url_path | Query | String | - | ヘルスチェックのリクエストURL<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| type | Query | Enum | - | ヘルスチェックに使用するプロトコル。`TCP`、`HTTP`、`HTTPS`のいずれか |
+| host_header | Query | String | - | ヘルスチェックに使用するホストヘッダのフィールド値<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+
+
+
+<a id="view-health-monitor-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| healthmonitors | Body | Array | ヘルスモニター情報オブジェクトの一覧 |
+| healthmonitors.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| healthmonitors.delay | Body | Integer | ヘルスチェック間隔(秒) |
+| healthmonitors.health_check_port | Body | Integer | ヘルスチェックの対象となるメンバーポート <br> * `member-port` または 0 の場合、各メンバーに指定されたポート番号を対象にヘルスチェックを実行します。 <br> * 正数の場合、各メンバーに指定されたポート番号に関係なく、入力されたポート番号でヘルスチェックを実行します。|
+| healthmonitors.expected_codes | Body | String | 正常状態と見なすメンバーのHTTPレスポンスコード <br> 単一値(200)、一覧(201,202)、または範囲(201-204)で使用可能<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。 |
+| healthmonitors.max_retries | Body | Integer | 最大再試行回数 |
+| healthmonitors.http_method | Body | Enum | ヘルスチェックに使用するHTTP Method <br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitors.timeout | Body | Integer | ヘルスチェックの応答待機時間(秒) |
+| healthmonitors.pools | Body | Array | ヘルスモニターが接続されたプールオブジェクトの一覧 |
+| healthmonitors.pools.id | Body | UUID | プールID |
+| healthmonitors.url_path | Body | String | ヘルスチェックのリクエストURL<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitors.type | Body | Enum | ヘルスチェックに使用するプロトコル。`TCP`、`HTTP`、`HTTPS`のいずれか |
+| healthmonitors.id | Body | UUID | ヘルスモニターID |
+| healthmonitors.host_header | Body | String | ヘルスチェックに使用するホストヘッダのフィールド値<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "healthmonitors": [
+    {
+      "admin_state_up": true,
+      "health_check_port": 80,
+      "delay": 30,
+      "expected_codes": "200",
+      "max_retries": 2,
+      "http_method": "GET",
+      "timeout": 5,
+      "pools": [
+        {
+          "id": "872dc92f-777b-4e0f-9413-0132b98bc60b"
+        }
+      ],
+      "url_path": "/",
+      "type": "HTTP",
+      "id": "a567e19b-260f-4fda-8a66-d5e4c237a780"
+    }
+  ]
+}
+```
+
+</p>
+</details>
+
+
+<a id="view-health-monitor"></a>
+### ヘルスモニター表示 { #view-health-monitor }
+
+```
+GET /v2.0/lbaas/healthmonitors/{healthMonitorId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-health-monitor-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| healthMonitorId | URL | UUID | O | ヘルスモニターID |
+
+<a id="view-health-monitor-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| healthmonitor | Body | Object | ヘルスモニター情報オブジェクト |
+| healthmonitor.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| healthmonitor.delay | Body | Integer | ヘルスチェック間隔(秒) |
+| healthmonitor.health_check_port | Body | Integer | ヘルスチェックの対象となるメンバーポート <br> * `member-port` または 0 の場合、各メンバーに指定されたポート番号を対象にヘルスチェックを実行します。 <br> * 正数の場合、各メンバーに指定されたポート番号に関係なく、入力されたポート番号でヘルスチェックを実行します。|
+| healthmonitor.expected_codes | Body | String | 正常状態と見なすメンバーのHTTPレスポンスコード <br> 単一値(200)、一覧(201,202)、または範囲(201-204)で使用可能<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.max_retries | Body | Integer | 最大再試行回数 |
+| healthmonitor.http_method | Body | Enum | ヘルスチェックに使用するHTTP Method <br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.timeout | Body | Integer | ヘルスチェックの応答待機時間(秒) |
+| healthmonitor.pools | Body | Array | ヘルスモニターが接続されたプールオブジェクトの一覧 |
+| healthmonitor.pools.id | Body | UUID | プールID |
+| healthmonitor.url_path | Body | String | ヘルスチェックのリクエストURL<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.type | Body | Enum | ヘルスチェックに使用するプロトコル。`TCP`、`HTTP`、`HTTPS`のいずれか |
+| healthmonitor.id | Body | UUID | ヘルスモニターID |
+| healthmonitor.host_header | Body | String | ヘルスチェックに使用するホストヘッダのフィールド値<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "healthmonitor": {
+    "admin_state_up": true,
+    "health_check_port": 80,
+    "delay": 30,
+    "expected_codes": "200",
+    "max_retries": 2,
+    "http_method": "GET",
+    "timeout": 5,
+    "pools": [
+      {
+        "id": "872dc92f-777b-4e0f-9413-0132b98bc60b"
+      }
+    ],
+    "url_path": "/",
+    "type": "HTTP",
+    "id": "a567e19b-260f-4fda-8a66-d5e4c237a780"
+  }
+}
+```
+
+</p>
+</details>
+
+
+
+---
+<a id="create-health-monitor"></a>
+### ヘルスモニター作成 { #create-health-monitor }
+
+```
+POST /v2.0/lbaas/healthmonitors
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-health-monitor-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| healthmonitor | Body | Object | O | ヘルスモニター情報オブジェクト |
+| healthmonitor.pool_id | Body | UUID | O | ヘルスモニターが接続されるプールID |
+| healthmonitor.admin_state_up | Body | Boolean | - | 管理者制御ステータス |
+| healthmonitor.health_check_port | Body | Integer | - | ヘルスチェックの対象となるメンバーポート <br> * `member-port` または 0 を指定すると、各メンバーに指定されたポート番号を対象にヘルスチェックを実行します。 <br> * 正数を入力すると、各メンバーに指定されたポート番号に関係なく、入力されたポート番号でヘルスチェックを実行します。|
+| healthmonitor.delay | Body | Integer | O | ヘルスチェック間隔(秒) |
+| healthmonitor.expected_codes | Body | String | - | 正常状態と見なすメンバーのHTTPレスポンスコード。省略した場合は200に設定されます。<br> 単一値(200)、一覧(201,202)、または範囲(201-204)で使用可能<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.max_retries | Body | Integer | O | 最大再試行回数 |
+| healthmonitor.http_method | Body | Enum | - | ヘルスチェックに使用するHTTP Method。省略した場合は`GET`が使用されます。 <br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.timeout | Body | Integer | O | ヘルスチェックの応答待機時間(秒) |
+| healthmonitor.url_path | Body | String | - | ヘルスチェックのリクエストURL。省略した場合は`/`が設定されます。 <br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.type | Body | Enum  | O | ヘルスチェックに使用するプロトコル。`TCP`、`HTTP`、`HTTPS`のいずれか |
+| healthmonitor.host_header | Body | String | - | ヘルスチェックに使用するホストヘッダのフィールド値<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "healthmonitor": {
+    "pool_id": "872dc92f-777b-4e0f-9413-0132b98bc60b",
+    "admin_state_up": true,
+    "health_check_port": 80,
+    "delay": 30,
+    "expected_codes": "200",
+    "max_retries": 2,
+    "http_method": "GET",
+    "timeout": 5,
+    "url_path": "/",
+    "type": "HTTP"
+  }
+}
+```
+</p>
+</details>
+
+<a id="create-health-monitor-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| healthmonitor | Body | Object | ヘルスモニター情報オブジェクト |
+| healthmonitor.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| healthmonitor.delay | Body | Integer | ヘルスチェック間隔(秒) |
+| healthmonitor.health_check_port | Body | Integer | ヘルスチェックの対象となるメンバーポート <br> * `member-port` または 0 の場合、各メンバーに指定されたポート番号を対象にヘルスチェックを実行します。 <br> * 正数の場合、各メンバーに指定されたポート番号に関係なく、入力されたポート番号でヘルスチェックを実行します。|
+| healthmonitor.expected_codes | Body | String | 正常状態と見なすメンバーのHTTPレスポンスコード。省略した場合は200に設定されます。<br> 単一値(200)、一覧(201,202)、または範囲(201-204)で使用可能<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.max_retries | Body | Integer | 最大再試行回数 |
+| healthmonitor.http_method | Body | Enum | ヘルスチェックに使用するHTTP Method <br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.timeout | Body | Integer | ヘルスチェックの応答待機時間(秒) |
+| healthmonitor.pools | Body | Array | ヘルスモニターが接続されたプールオブジェクトの一覧 |
+| healthmonitor.pools.id | Body | UUID | プールID |
+| healthmonitor.url_path | Body | String | ヘルスチェックのリクエストURL<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.type | Body | Enum | ヘルスチェックに使用するプロトコル。`TCP`、`HTTP`、`HTTPS`のいずれか |
+| healthmonitor.id | Body | UUID | ヘルスモニターID |
+| healthmonitor.host_header | Body | String | ヘルスチェックに使用するホストヘッダのフィールド値<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "healthmonitor": {
+    "admin_state_up": true,
+    "health_check_port": 80,
+    "delay": 30,
+    "expected_codes": "200",
+    "max_retries": 2,
+    "http_method": "GET",
+    "timeout": 5,
+    "pools": [
+      {
+        "id": "872dc92f-777b-4e0f-9413-0132b98bc60b"
+      }
+    ],
+    "url_path": "/",
+    "type": "HTTP",
+    "id": "a567e19b-260f-4fda-8a66-d5e4c237a780"
+  }
+}
+```
+
+</p>
+</details>
+
+---
+<a id="modify-health-monitor"></a>
+### ヘルスモニター変更 { #modify-health-monitor }
+
+```
+PUT /v2.0/lbaas/healthmonitors/{healthMonitorId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-health-monitor-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| healthmonitorId | URL | UUID | O | ヘルスモニターID |
+| healthmonitor | Body | Object | O | ヘルスモニター情報オブジェクト |
+| healthmonitor.admin_state_up | Body | Boolean | - | 管理者制御ステータス |
+| healthmonitor.health_check_port | Body | Integer | - | ヘルスチェックの対象となるメンバーポート <br> * `member-port` または 0 に指定すると、各メンバーに指定されたポート番号を対象にヘルスチェックを実行します。 <br> * 正数を入力すると、各メンバーに指定されたポート番号に関係なく、入力されたポート番号でヘルスチェックを実行します。|
+| healthmonitor.delay | Body | Integer | - | ヘルスチェック間隔(秒) |
+| healthmonitor.expected_codes | Body | String | - | 正常状態と見なすメンバーのHTTPレスポンスコード<br>単一値(200)、一覧(201,202)、または範囲(201-204)で使用可能<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.max_retries | Body | Integer | - | 最大再試行回数 |
+| healthmonitor.http_method | Body | Enum | - | ヘルスチェックに使用するHTTP Method <br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.timeout | Body | Integer | - | ヘルスチェックの応答待機時間(秒) |
+| healthmonitor.url_path | Body | String | - | ヘルスチェックのリクエストURL<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.host_header | Body | String | - | ヘルスチェックに使用するホストヘッダのフィールド値<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "healthmonitor": {
+    "admin_state_up": true,
+    "health_check_port": 80,
+    "delay": 30,
+    "expected_codes": "200",
+    "max_retries": 2,
+    "http_method": "GET",
+    "timeout": 5,
+    "url_path": "/"
+  }
+}
+```
+</p>
+</details>
+
+<a id="modify-health-monitor-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| healthmonitor | Body | Object | ヘルスモニター情報オブジェクト |
+| healthmonitor.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| healthmonitor.delay | Body | Integer | ヘルスチェック間隔(秒) |
+| healthmonitor.health_check_port | Body | Integer | ヘルスチェックの対象となるメンバーポート <br> * `member-port` または 0 の場合、各メンバーに指定されたポート番号を対象にヘルスチェックを実行します。 <br> * 正数の場合、各メンバーに指定されたポート番号に関係なく、入力されたポート番号でヘルスチェックを実行します。|
+| healthmonitor.expected_codes | Body | String | 正常状態と見なすメンバーのHTTPレスポンスコード<br>単一値(200)、一覧(201,202)、または範囲(201-204)で使用可能<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.max_retries | Body | Integer | 最大再試行回数 |
+| healthmonitor.http_method | Body | Enum | ヘルスチェックに使用するHTTP Method <br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.timeout | Body | Integer | ヘルスチェックの応答待機時間(秒) |
+| healthmonitor.pools | Body | Array | ヘルスモニターが接続されたプールオブジェクトの一覧 |
+| healthmonitor.pools.id | Body | UUID | プールID |
+| healthmonitor.url_path | Body | String | ヘルスチェックのリクエストURL<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+| healthmonitor.type | Body | Enum | ヘルスチェックに使用するプロトコル。`TCP`、`HTTP`、`HTTPS`のいずれか |
+| healthmonitor.id | Body | UUID | ヘルスモニターID |
+| healthmonitor.host_header | Body | String | ヘルスチェックに使用するホストヘッダのフィールド値<br> ヘルスチェックタイプを`TCP`に設定した場合、このフィールドに設定した値は無視されます。|
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "healthmonitor": {
+    "admin_state_up": true,
+    "health_check_port": 80,
+    "delay": 30,
+    "expected_codes": "200",
+    "max_retries": 2,
+    "http_method": "GET",
+    "timeout": 5,
+    "pools": [
+      {
+        "id": "872dc92f-777b-4e0f-9413-0132b98bc60b"
+      }
+    ],
+    "url_path": "/",
+    "type": "HTTP",
+    "id": "a567e19b-260f-4fda-8a66-d5e4c237a780"
+  }
+}
+```
+
+</p>
+</details>
+
+---
+<a id="delete-health-monitor"></a>
+### ヘルスモニター削除 { #delete-health-monitor }
+
+```
+DELETE /v2.0/lbaas/healthmonitors/{healthMonitorId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-health-monitor-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| healthMonitorId | URL | UUID | O | ヘルスモニターID |
+
+<a id="delete-health-monitor-response"></a>
+#### レスポンス
+
+このAPIはレスポンスボディ(Body)を返却しません。
+
+<a id="member"></a>
+## メンバー { #member }
+<a id="view-member-list"></a>
+### メンバー一覧表示 { #view-member-list }
+
+```
+GET /v2.0/lbaas/pools/{poolId}/members
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-member-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| poolId | URL | UUID | O | メンバーが属するプールID |
+| id | Query | UUID | - | メンバーID |
+| weight | Query | Integer | - | メンバーの重み |
+| admin_state_up | Query | Boolean | - | 管理者制御ステータス |
+| subnet_id | Query | UUID | - | メンバーのサブネットID |
+| tenant_id | Query | String | - | テナントID |
+| address | Query | String | - | メンバーのIPアドレス |
+| protocol_port | Query | Integer | - | メンバーのポート |
+| operating_status | Query | Enum | - | メンバーの運用ステータス |
+
+
+<a id="view-member-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| members | Body | Array | メンバー情報オブジェクトの一覧 |
+| members.weight | Body | Integer | メンバーの重み |
+| members.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| members.subnet_id | Body | UUID | メンバーのサブネットID |
+| members.tenant_id | Body | String | テナントID |
+| members.address | Body | String | メンバーのIPアドレス |
+| members.protocol_port | Body | Integer | メンバーのポート |
+| members.id | Body | UUID | メンバーID |
+| members.operating_status | Body | Enum | メンバーの運用ステータス |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "members": [
+    {
+      "weight": 1,
+      "admin_state_up": true,
+      "subnet_id": "dcb31578-1e16-407f-a117-a716795fabc4",
+      "tenant_id": "8258ab391d854e8b878642b737017a3b",
+      "address": "192.168.0.188",
+      "protocol_port": 80,
+      "id": "699d5013-ce45-4471-9cc3-6c2f5ad56b7f",
+      "operating_status": "INACTIVE"
+    }
+  ]
+}
+```
+
+</p>
+</details>
+
+
+<a id="view-member"></a>
+### メンバー表示 { #view-member }
+
+```
+GET /v2.0/lbaas/pools/{poolId}/members/{memberId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-member-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| poolId | URL | UUID | O | メンバーが属するプールID |
+| memberId | URL | UUID | O | メンバーID |
+
+<a id="view-member-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| member | Body | Object | メンバー情報オブジェクト |
+| member.weight | Body | Integer | メンバーの重み |
+| member.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| member.subnet_id | Body | UUID | メンバーのサブネットID |
+| member.tenant_id | Body | String | テナントID |
+| member.address | Body | String | メンバーのIPアドレス |
+| member.protocol_port | Body | Integer | メンバーのポート |
+| member.id | Body | UUID | メンバーID |
+| member.operating_status | Body | Enum | メンバーの運用ステータス |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "member": {
+    "weight": 1,
+    "admin_state_up": true,
+    "subnet_id": "dcb31578-1e16-407f-a117-a716795fabc4",
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "address": "192.168.0.188",
+    "protocol_port": 80,
+    "id": "699d5013-ce45-4471-9cc3-6c2f5ad56b7f",
+    "operating_status": "INACTIVE"
+  }
+}
+```
+
+</p>
+</details>
+
+---
+<a id="create-member"></a>
+### メンバー作成 { #create-member }
+
+```
+POST /v2.0/lbaas/pools/{poolId}/members
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-member-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| poolId | URL | UUID | O | メンバーが属するプールID |
+| member | Body | Object | O | メンバー情報オブジェクト |
+| member.weight | Body | Integer | - | メンバーの重み |
+| member.admin_state_up | Body | Boolean | - | 管理者制御ステータス |
+| member.subnet_id | Body | UUID | O | メンバーのサブネットID |
+| member.address | Body | String | O | メンバーのIPアドレス |
+| member.protocol_port | Body | Integer | O | メンバーのポート |
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "member": {
+    "weight": 1,
+    "admin_state_up": true,
+    "subnet_id": "dcb31578-1e16-407f-a117-a716795fabc4",
+    "address": "192.168.0.188",
+    "protocol_port": 80
+  }
+}
+```
+</p>
+</details>
+
+<a id="create-member-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| member | Body | Object | メンバー情報オブジェクト |
+| member.weight | Body | Integer | メンバーの重み |
+| member.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| member.subnet_id | Body | UUID | メンバーのサブネットID |
+| member.tenant_id | Body | String | テナントID |
+| member.address | Body | String | メンバーのIPアドレス |
+| member.protocol_port | Body | Integer | メンバーのポート |
+| member.id | Body | UUID | メンバーID |
+| member.operating_status | Body | Enum | メンバーの運用ステータス |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "member": {
+    "weight": 1,
+    "admin_state_up": true,
+    "subnet_id": "dcb31578-1e16-407f-a117-a716795fabc4",
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "address": "192.168.0.188",
+    "protocol_port": 80,
+    "id": "699d5013-ce45-4471-9cc3-6c2f5ad56b7f",
+    "operating_status": "INACTIVE"
+  }
+}
+```
+
+</p>
+</details>
+
+---
+<a id="modify-member"></a>
+### メンバーの修正 { #modify-member }
+
+```
+PUT /v2.0/lbaas/pools/{poolId}/members/{memberId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-member-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| poolId | URL | UUID | O | メンバーが属するプールID |
+| memberId | URL | UUID | O | メンバーID |
+| member | Body | Object | O | メンバー情報オブジェクト |
+| member.weight | Body | Integer | - | メンバーの重み |
+| member.admin_state_up | Body | Boolean | - | 管理者制御ステータス |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "member": {
+    "weight": 1,
+    "admin_state_up": true
+  }
+}
+```
+</p>
+</details>
+
+<a id="modify-member-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| member | Body | Object | メンバー情報オブジェクト |
+| member.weight | Body | Integer | メンバーの重み |
+| member.admin_state_up | Body | Boolean | 管理者制御ステータス |
+| member.subnet_id | Body | UUID | メンバーのサブネットID |
+| member.tenant_id | Body | String | テナントID |
+| member.address | Body | String | メンバーのIPアドレス |
+| member.protocol_port | Body | Integer | メンバーのポート |
+| member.id | Body | UUID | メンバーID |
+| member.operating_status | Body | Enum | メンバーの運用ステータス |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "member": {
+    "weight": 1,
+    "admin_state_up": true,
+    "subnet_id": "dcb31578-1e16-407f-a117-a716795fabc4",
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "address": "192.168.0.188",
+    "protocol_port": 80,
+    "id": "699d5013-ce45-4471-9cc3-6c2f5ad56b7f",
+    "operating_status": "INACTIVE"
+  }
+}
+```
+
+</p>
+</details>
+
+---
+<a id="delete-member"></a>
+### メンバーの削除 { #delete-member }
+
+```
+DELETE /v2.0/lbaas/pools/{poolId}/members/{memberId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-member-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| poolId | URL | UUID | O | メンバーが属するプールID |
+| memberId | URL | UUID | O | メンバーID |
+
+<a id="delete-member-response"></a>
+#### レスポンス
+
+このAPIはレスポンスボディ(Body)を返却しません。
+
+<a id="l7-polilcy"></a>
+## L7ポリシー { #l7-polilcy }
+
+<a id="view-l7-policy-list"></a>
+### L7ポリシー一覧の表示 { #view-l7-policy-list }
+
+```
+GET /v2.0/lbaas/l7policies
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-l7-policy-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会するL7ポリシーID |
+| name | Query | String | - | 照会するL7ポリシー名 |
+| description | Query | String | - | 照会するL7ポリシーの説明 |
+| listener_id | Query | UUID | - | 照会するL7ポリシーのリスナーID |
+| action | Query | Enum | - | 照会するL7ポリシーのアクション<br> `REDIRECT_TO_POOL`/`REDIRECT_TO_URL`/`REJECT`のいずれか |
+| redirect_pool_id | Query | UUID | - | 照会するL7ポリシーのリダイレクトプールID<br>アクションが `REDIRECT_TO_POOL`の場合にのみ適用 |
+| redirect_url | Query | String | - | 照会するL7ポリシーのリダイレクトURL<br>アクションが `REDIRECT_TO_URL`の場合にのみ適用 |
+| redirect_http_code | Query | Integer | - | L7ポリシーのリダイレクトHTTPレスポンスコード |
+| position | Query | Integer | - | 照会するL7ポリシーの優先順位 |
+
+
+<a id="view-l7-policy-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| l7policies | Body | Array | L7ポリシーオブジェクト一覧 |
+| l7policies.description | Body | String | L7ポリシーの説明 |
+| l7policies.tenant_id | Body | String | テナントID |
+| l7policies.listener_id | Body | UUID | L7ポリシーのリスナーID |
+| l7policies.name | Body | String | L7ポリシー名 |
+| l7policies.rules | Body | Object | L7ポリシールールオブジェクト一覧 |
+| l7policies.rules.id | Body | UUID | L7ルールID |
+| l7policies.id | Body | UUID | L7ポリシーID |
+| l7policies.admin_state_up | Body | Boolean | L7ポリシー管理者制御ステータス |
+| l7policies.action | Body | Enum | L7ポリシーのアクション<br> `REDIRECT_TO_POOL`/`REDIRECT_TO_URL`/`REJECT`のいずれか |
+| l7policies.redirect_pool_id | Body | UUID | L7ポリシーのリダイレクトプールID<br>アクションが `REDIRECT_TO_POOL`の場合にのみ適用 |
+| l7policies.redirect_url | Body | String | L7ポリシーのリダイレクトURL<br>アクションが `REDIRECT_TO_URL`の場合にのみ適用 |
+| l7policies.redirect_http_code | Body | Integer | - | L7ポリシーのリダイレクトHTTPレスポンスコード |
+| l7policies.position | Body | Integer | L7ポリシーの優先順位 |
+
+<details><summary>例</summary>
+
+```json
+{
+  "l7policies": [
+    {
+      "redirect_pool_id": null,
+      "description": "",
+      "admin_state_up": true,
+      "rules": [
+        {
+          "id": "1e982fc1-0e54-4e1c-96c3-c9796cba373b"
+        }
+      ],
+      "tenant_id": "8258ab391d854e8b878642b737017a3b",
+      "listener_id": "2a38f448-c898-4694-9808-685dd6360dab",
+      "redirect_url": null,
+      "action": "REJECT",
+      "position": 1,
+      "id": "9376c901-64cc-46a0-bab3-1b4bf42699ad",
+      "name": "L7Policy"
+    }
+  ]
+}
+```
+</details>
+
+---
+<a id="view-l7-policy"></a>
+### L7ポリシーの表示 { #view-l7-policy }
+
+```
+GET /v2.0/lbaas/l7policies/{l7policyId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-l7-policy-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| l7policyId | URL | UUID | O | L7ポリシーID |
+
+<a id="view-l7-policy-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| l7policy | Body | Object | L7ポリシーオブジェクト |
+| l7policy.description | Body | String | L7ポリシーの説明 |
+| l7policy.tenant_id | Body | String | テナントID |
+| l7policy.listener_id | Body | UUID | L7ポリシーのリスナーID |
+| l7policy.name | Body | String | L7ポリシー名 |
+| l7policy.rules | Body | Object | L7ポリシールールオブジェクト一覧 |
+| l7policy.rules.id | Body | UUID | L7ルールID |
+| l7policy.id | Body | UUID | L7ポリシーID |
+| l7policy.admin_state_up | Body | Boolean | L7ポリシー管理者制御ステータス |
+| l7policy.action | Body | Enum | L7ポリシーのアクション<br> `REDIRECT_TO_POOL`/`REDIRECT_TO_URL`/`REJECT`のいずれか |
+| l7policy.redirect_pool_id | Body | UUID | L7ポリシーのリダイレクトプールID<br>アクションが `REDIRECT_TO_POOL`の場合にのみ適用 |
+| l7policy.redirect_url | Body | String | L7ポリシーのリダイレクトURL<br>アクションが `REDIRECT_TO_URL`の場合にのみ適用 |
+| l7policy.redirect_http_code | Body | Integer | - | L7ポリシーのリダイレクトHTTPレスポンスコード |
+| l7policy.position | Body | Integer | L7ポリシーの優先順位 |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "l7policy": {
+    "redirect_pool_id": null,
+    "description": "",
+    "admin_state_up": true,
+    "rules": [
+      {
+        "id": "1e982fc1-0e54-4e1c-96c3-c9796cba373b"
+      }
+    ],
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "listener_id": "2a38f448-c898-4694-9808-685dd6360dab",
+    "redirect_url": null,
+    "action": "REJECT",
+    "position": 1,
+    "id": "9376c901-64cc-46a0-bab3-1b4bf42699ad",
+    "name": "L7Policy"
+  }
+}
+```
+</details>
+
+---
+<a id="create-l7-policy"></a>
+### L7ポリシーの作成 { #create-l7-policy }
+
+```
+POST /v2.0/lbaas/l7policies
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-l7-policy-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| l7policy | Body | Object | - | L7ポリシーオブジェクト |
+| l7policy.description | Body | String | - | L7ポリシーの説明 |
+| l7policy.listener_id | Body | UUID | O | L7ポリシーのリスナーID |
+| l7policy.name | Body | String | - | L7ポリシー名 |
+| l7policy.admin_state_up | Body | Boolean | - | L7ポリシー管理者制御ステータス。省略すると `true` に設定されます |
+| l7policy.action | Body | Enum | O | L7ポリシーのアクション<br> `REDIRECT_TO_POOL`/`REDIRECT_TO_URL`/`REJECT`のいずれか |
+| l7policy.redirect_pool_id | Body | UUID | - | L7ポリシーのリダイレクトプールID<br>アクションが `REDIRECT_TO_POOL`の場合は必須 |
+| l7policy.redirect_url | Body | String | - | L7ポリシーのリダイレクトURL<br>アクションが `REDIRECT_TO_URL`の場合は必須 <br> * 入力可能なフォーマットは `#{protocol}://#{host}:#{port}/#{path}?#{query}` 形式であり、`#{_}` 形式で入力すると既存のリクエストの値を維持します。`#{_}` 以外の値を直接入力した場合、リダイレクトURLに該当する値が適用されてクライアントに返却されます。 <br> * 無限リダイレクトを防止するため、protocol、host、port、pathのうち少なくとも1つ以上は変更する必要があります。 <br> * 正しくない形式で入力した場合、リダイレクトURLが実際の入力とは異なる値に変換される可能性があります。 |
+| l7policy.redirect_http_code | Body | Integer | - | L7ポリシーのリダイレクトHTTPレスポンスコード <br> 301、302のいずれか。デフォルト値は302 |
+| l7policy.position | Body | Integer | - | L7ポリシーの優先順位。省略した場合は最下位に設定されます |
+
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "l7policy": {
+    "action": "REJECT",
+    "position": 1,
+    "listener_id": "2a38f448-c898-4694-9808-685dd6360dab",
+    "admin_state_up": true
+  }
+}
+```
+</details>
+
+<a id="create-l7-policy-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| l7policy | Body | Object | L7ポリシーオブジェクト |
+| l7policy.description | Body | String | L7ポリシーの説明 |
+| l7policy.tenant_id | Body | String | テナントID |
+| l7policy.listener_id | Body | UUID | L7ポリシーのリスナーID |
+| l7policy.name | Body | String | L7ポリシー名 |
+| l7policy.rules | Body | Object | L7ポリシールールオブジェクト一覧 |
+| l7policy.rules.id | Body | UUID | L7ルールID |
+| l7policy.id | Body | UUID | L7ポリシーID |
+| l7policy.admin_state_up | Body | Boolean | L7ポリシー管理者制御ステータス |
+| l7policy.action | Body | Enum | L7ポリシーのアクション<br> `REDIRECT_TO_POOL`/`REDIRECT_TO_URL`/`REJECT`のいずれか |
+| l7policy.redirect_pool_id | Body | UUID | L7ポリシーのリダイレクトプールID<br>アクションが `REDIRECT_TO_POOL`の場合にのみ適用 |
+| l7policy.redirect_url | Body | String | L7ポリシーのリダイレクトURL<br>アクションが `REDIRECT_TO_URL`の場合にのみ適用 |
+| l7policy.redirect_http_code | Body | Integer | - | L7ポリシーのリダイレクトHTTPレスポンスコード |
+| l7policy.position | Body | Integer | L7ポリシーの優先順位 |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "l7policy": {
+    "redirect_pool_id": null,
+    "description": "",
+    "admin_state_up": true,
+    "rules": [
+    ],
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "listener_id": "2a38f448-c898-4694-9808-685dd6360dab",
+    "redirect_url": null,
+    "action": "REJECT",
+    "position": 1,
+    "id": "9376c901-64cc-46a0-bab3-1b4bf42699ad",
+    "name": ""
+  }
+}
+```
+</details>
+
+---
+<a id="modify-l7-policy"></a>
+### L7ポリシーの修正 { #modify-l7-policy }
+
+```
+PUT /v2.0/lbaas/l7policies/{l7policyId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-l7-policy-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| l7policyId | URL | UUID | O | L7ポリシーID |
+| l7policy | Body | Object | O | L7ポリシーオブジェクト |
+| l7policy.name | Body | String | - | L7ポリシー名 |
+| l7policy.description | Body | String | - | L7ポリシーの説明 |
+| l7policy.admin_state_up | Body | Boolean | - | L7ポリシーの管理者制御ステータス |
+| l7policy.action | Body | Enum | - | L7ポリシーのアクション<br> `REDIRECT_TO_POOL`/`REDIRECT_TO_URL`/`REJECT`のいずれか |
+| l7policy.redirect_pool_id | Body | UUID | - | L7ポリシーのリダイレクトプールID<br>アクションが `REDIRECT_TO_POOL`の場合は必須 |
+| l7policy.redirect_url | Body | String | - | L7ポリシーのリダイレクトURL<br>アクションが `REDIRECT_TO_URL`の場合は必須 |
+| l7policy.redirect_http_code | Body | Integer | - | L7ポリシーのリダイレクトHTTPレスポンスコード |
+| l7policy.position | Body | Integer | - | L7ポリシーの優先順位 |
+
+<details><summary>例</summary>
+
+```json
+{
+  "l7policy": {
+    "name": "L7Policy",
+    "position": 255,
+    "admin_state_up": true
+  }
+}
+```
+</details>
+
+<a id="modify-l7-policy-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| l7policy | Body | Object | L7ポリシーオブジェクト |
+| l7policy.description | Body | String | L7ポリシーの説明 |
+| l7policy.tenant_id | Body | String | テナントID |
+| l7policy.listener_id | Body | UUID | L7ポリシーのリスナーID |
+| l7policy.name | Body | String | L7ポリシー名 |
+| l7policy.rules | Body | Object | L7ポリシールールオブジェクト一覧 |
+| l7policy.rules.id | Body | UUID | L7ルールID |
+| l7policy.id | Body | UUID | L7ポリシーID |
+| l7policy.admin_state_up | Body | Boolean | L7ポリシー管理者制御ステータス |
+| l7policy.action | Body | Enum | L7ポリシーのアクション<br> `REDIRECT_TO_POOL`/`REDIRECT_TO_URL`/`REJECT`のいずれか |
+| l7policy.redirect_pool_id | Body | UUID | L7ポリシーのリダイレクトプールID<br>アクションが `REDIRECT_TO_POOL`の場合にのみ適用 |
+| l7policy.redirect_url | Body | String | L7ポリシーのリダイレクトURL<br>アクションが `REDIRECT_TO_URL`の場合にのみ適用 |
+| l7policy.redirect_http_code | Body | Integer | - | L7ポリシーのリダイレクトHTTPレスポンスコード |
+| l7policy.position | Body | Integer | L7ポリシーの優先順位 |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "l7policy": {
+    "redirect_pool_id": null,
+    "description": "",
+    "admin_state_up": true,
+    "rules": [
+    ],
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "listener_id": "2a38f448-c898-4694-9808-685dd6360dab",
+    "redirect_url": null,
+    "action": "REJECT",
+    "position": 255,
+    "id": "9376c901-64cc-46a0-bab3-1b4bf42699ad",
+    "name": "L7Policy"
+  }
+}
+```
+</details>
+
+---
+<a id="delete-l7-policy"></a>
+### L7ポリシーの削除 { #delete-l7-policy }
+
+```
+DELETE /v2.0/lbaas/l7policies/{l7policyId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-l7-policy-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| l7policyId | URL | UUID | O | L7ポリシーID |
+
+
+<a id="delete-l7-policy-response"></a>
+#### レスポンス
+このAPIはレスポンスボディ(Body)を返却しません。
+
+<a id="l7-rule"></a>
+## L7ルール { #l7-rule }
+
+<a id="view-l7-rule-list"></a>
+### L7ルール一覧の表示 { #view-l7-rule-list }
+
+```
+GET /v2.0/lbaas/l7policies/{l7policyId}/rules
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-l7-rule-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| l7policyId | URL | UUID | O | L7ルールが属するL7ポリシーID |
+| id | Query | UUID | - | 照会するL7ルールID |
+| type | Query | Enum | - | 照会するL7ルールのタイプ <br> `COOKIE`/`FILE_TYPE`/`HEADER`/`HOST_NAME`/`PATH`のいずれか |
+| compare_type | Query | Enum | - | 照会するL7ルールの比較方式<br> `CONTAINS`/`ENDS_WITH`/`STARTS_WITH`/`EQUAL_TO`/`REGEX`のいずれか |
+
+
+<a id="view-l7-rule-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| rules | Body | Array | L7ルールオブジェクト一覧 |
+| rules.tenant_id | Body | String | テナントID |
+| rules.id | Body | UUID | L7ルールID |
+| rules.admin_state_up | Body | Boolean | L7ルール管理者制御ステータス |
+| rules.invert | Body | Boolean | マッチング結果に対する反転(invert)設定 |
+| rules.key | Body | String | L7ルールのマッチング時に使用されるキー<br> `COOKIE`/`HEADER`の場合にのみ適用 |
+| rules.value | Body | String | L7ルールのマッチング時に使用される値 |
+| rules.type | Query | Enum | L7ルールのタイプ <br> `COOKIE`/`FILE_TYPE`/`HEADER`/`HOST_NAME`/`PATH`のいずれか |
+| rules.compare_type | Query | Enum | L7ルールの比較方式<br> `CONTAINS`/`ENDS_WITH`/`STARTS_WITH`/`EQUAL_TO`/`REGEX`のいずれか |
+
+<details><summary>例</summary>
+
+```json
+{
+  "rules": [
+    {
+      "compare_type": "EQUAL_TO",
+      "admin_state_up": true,
+      "tenant_id": "8258ab391d854e8b878642b737017a3b",
+      "invert": false,
+      "value": "Value",
+      "key": null,
+      "type": "HOST_NAME",
+      "id": "37492146-9105-40eb-9640-4da2e10c748a"
+    }
+  ]
+}
+```
+</details>
+
+---
+<a id="view-l7-rule"></a>
+### L7ルールの表示 { #view-l7-rule }
+
+```
+GET /v2.0/lbaas/l7policies/{l7policyId}/rules/{l7ruleId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-l7-rule-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| l7policyId | URL | UUID | O | L7ポリシーID |
+| l7ruleId | URL | UUID | O | L7ルールID |
+
+<a id="view-l7-rule-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| rule | Body | Object | L7ルールオブジェクト |
+| rule.tenant_id | Body | String | テナントID |
+| rule.id | Body | UUID | L7ルールID |
+| rule.admin_state_up | Body | Boolean | L7ルール管理者制御ステータス |
+| rule.invert | Body | Boolean | マッチング結果に対する反転(invert)設定 |
+| rule.key | Body | String | L7ルールのマッチング時に使用されるキー<br> `COOKIE`/`HEADER`の場合にのみ適用 |
+| rule.value | Body | String | L7ルールのマッチング時に使用される値 |
+| rule.type | Query | Enum | L7ルールのタイプ <br> `COOKIE`/`FILE_TYPE`/`HEADER`/`HOST_NAME`/`PATH`のいずれか |
+| rule.compare_type | Query | Enum | L7ルールの比較方式<br> `CONTAINS`/`ENDS_WITH`/`STARTS_WITH`/`EQUAL_TO`/`REGEX`のいずれか |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "rule": {
+    "compare_type": "EQUAL_TO",
+    "admin_state_up": true,
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "invert": false,
+    "value": "Value",
+    "key": null,
+    "type": "HOST_NAME",
+    "id": "37492146-9105-40eb-9640-4da2e10c748a"
+  }
+}
+```
+</details>
+
+---
+<a id="create-l7-rule"></a>
+### L7ルールの作成 { #create-l7-rule }
+
+```
+POST /v2.0/lbaas/l7policies/{l7policyId}/rules
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-l7-rule-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| l7policyId | URL | UUID | O | L7ポリシーID |
+| rule | Body | Object | O | L7ルールオブジェクト |
+| rule.admin_state_up | Body | Boolean | - | L7ルール管理者制御ステータス |
+| rule.invert | Body | Boolean | - | マッチング結果に対する反転(invert)設定。省略すると `true` に設定されます |
+| rule.key | Body | String | - | L7ルールのマッチング時に使用されるキー<br> `COOKIE`/`HEADER`の場合は必須 |
+| rule.value | Body | String | O | L7ルールのマッチング時に使用される値 |
+| rule.type | Query | Enum | O | L7ルールのタイプ <br> `COOKIE`/ `FILE_TYPE`/`HEADER`/`HOST_NAME`/`PATH`のいずれか |
+| rule.compare_type | Query | Enum | O | L7ルールの比較方式<br> `CONTAINS`/`ENDS_WITH`/`STARTS_WITH`/`EQUAL_TO`/`REGEX`のいずれか |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "rule": {
+    "compare_type": "STARTS_WITH",
+    "invert": false,
+    "type": "PATH",
+    "value": "/images",
+    "admin_state_up": true
+  }
+}
+```
+</details>
+
+<a id="create-l7-rule-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| rule | Body | Object | L7ルールオブジェクト |
+| rule.tenant_id | Body | String | テナントID |
+| rule.id | Body | UUID | L7ルールID |
+| rule.admin_state_up | Body | Boolean | L7ルール管理者制御ステータス |
+| rule.invert | Body | Boolean | マッチング結果に対する反転(invert)設定 |
+| rule.key | Body | String | L7ルールのマッチング時に使用されるキー<br> `COOKIE`/`HEADER`の場合にのみ適用 |
+| rule.value | Body | String | L7ルールのマッチング時に使用される値 |
+| rule.type | Query | Enum | L7ルールのタイプ <br> `COOKIE`/`FILE_TYPE`/`HEADER`/`HOST_NAME`/`PATH`のいずれか |
+| rule.compare_type | Query | Enum | L7ルールの比較方式<br> `CONTAINS`/`ENDS_WITH`/`STARTS_WITH`/`EQUAL_TO`/`REGEX`のいずれか |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "rule": {
+    "compare_type": "STARTS_WITH",
+    "admin_state_up": true,
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "invert": false,
+    "value": "/images",
+    "key": null,
+    "type": "PATH",
+    "id": "3c88bc9b-8fac-4a73-a611-df85417b656e"
+  }
+}
+```
+</details>
+
+---
+<a id="modify-l7-rule"></a>
+### L7ルールの修正 { #modify-l7-rule }
+
+```
+PUT /v2.0/lbaas/l7policies/{l7policyId}/rules/{l7ruleId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-l7-rule-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| l7policyId | URL | UUID | O | L7ポリシーID |
+| l7ruleId | URL | UUID | O | L7ルールID |
+| rule | Body | Object | O | L7ルールオブジェクト |
+| rule.admin_state_up | Body | Boolean | - | L7ルール管理者制御ステータス |
+| rule.invert | Body | Boolean | - | マッチング結果に対する反転(invert)設定 |
+| rule.key | Body | String | - | L7ルールのマッチング時に使用されるキー<br> `COOKIE`/`HEADER`の場合にのみ適用 |
+| rule.value | Body | String | - | L7ルールのマッチング時に使用される値 |
+| rule.type | Query | Enum | - | L7ルールのタイプ <br> `COOKIE`/`FILE_TYPE`/`HEADER`/`HOST_NAME`/`PATH`のいずれか |
+| rule.compare_type | Query | Enum | - | L7ルールの比較方式<br> `CONTAINS`/`ENDS_WITH`/`STARTS_WITH`/`EQUAL_TO`/`REGEX`のいずれか |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "rule": {
+    "compare_type": "REGEX",
+    "invert": true,
+    "type": "PATH",
+    "value": "/images/modify",
+    "admin_state_up": true
+  }
+}
+```
+</details>
+
+<a id="modify-l7-rule-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| rule | Body | Object | L7ルールオブジェクト |
+| rule.tenant_id | Body | String | テナントID |
+| rule.id | Body | UUID | L7ルールID |
+| rule.admin_state_up | Body | Boolean | L7ルール管理者制御ステータス |
+| rule.invert | Body | Boolean | マッチング結果に対する反転(invert)設定 |
+| rule.key | Body | String | L7ルールのマッチング時に使用されるキー<br> `COOKIE`/`HEADER`の場合にのみ適用 |
+| rule.value | Body | String | L7ルールのマッチング時に使用される値 |
+| rule.type | Query | Enum | L7ルールのタイプ <br> `COOKIE`/`FILE_TYPE`/`HEADER`/`HOST_NAME`/`PATH`のいずれか |
+| rule.compare_type | Query | Enum | L7ルールの比較方式<br> `CONTAINS`/`ENDS_WITH`/`STARTS_WITH`/`EQUAL_TO`/`REGEX`のいずれか |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "rule": {
+    "compare_type": "REGEX",
+    "admin_state_up": true,
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "invert": true,
+    "value": "/images/modify",
+    "key": null,
+    "type": "PATH",
+    "id": "3c88bc9b-8fac-4a73-a611-df85417b656e"
+  }
+}
+```
+</details>
+
+---
+<a id="delete-l7-rule"></a>
+### L7ルールの削除 { #delete-l7-rule }
+
+```
+DELETE /v2.0/lbaas/l7policies/{l7policyId}/rules/{l7ruleId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-l7-rule-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| l7policyId | URL | UUID | O | L7ポリシーID |
+| l7ruleId | URL | UUID | O | L7ルールID |
+
+
+<a id="delete-l7-rule-response"></a>
+#### レスポンス
+このAPIはレスポンスボディ(Body)を返却しません。
+
+<a id="secret"></a>
+## シークレット { #secret }
+
+シークレットAPIは、`key-manager`タイプのエンドポイントを利用して呼び出します。正確なエンドポイントは、トークン発行レスポンスの`serviceCatalog`を参照してください。
+
+| タイプ | リージョン | エンドポイント |
+|---|---|---|
+| key-manager | 韓国(パンギョ)リージョン<br>韓国(ピョンチョン)リージョン<br>韓国(クァンジュ)リージョン<br>日本(東京)リージョン |https://kr1-api-key-manager-infrastructure.nhncloudservice.com<br>https://kr2-api-key-manager-infrastructure.nhncloudservice.com<br>https://kr3-api-key-manager-infrastructure.nhncloudservice.com<br>https://jp1-api-key-manager-infrastructure.nhncloudservice.com |
+
+APIレスポンスにガイドに明記されていないフィールドが表示される場合があります。このようなフィールドはNHN Cloudの内部用途で使用されており、事前の通知なしに変更される可能性があるため、使用しないでください。
+
+
+<a id="view-secret-list"></a>
+### シークレット一覧の表示 { #view-secret-list }
+
+シークレット一覧を返却します。
+
+```
+GET /v1/secrets
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-secret-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| offset | Query | Integer | - | レスポンス一覧のオフセット。デフォルト値：0 |
+| limit | Query | Integer| - | レスポンス一覧に表示する最大件数。デフォルト値：10 |
+| name | Query | String | - | シークレット名 |
+| alg | Query | String | - | シークレットアルゴリズム |
+| mode | Query | String| - | ブロック暗号の運用方式 |
+| bits | Query | Integer| - | 暗号化鍵長 |
+
+<a id="view-secret-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| secrets | Body | Array | シークレットオブジェクト一覧 |
+| secrets.secret_ref | Body | String | シークレットのパス<br>`<barbican endpoint>/v1/secrets/<secret id>` 形式 |
+| secrets.secret_type | Body | Enum | シークレットタイプ <br> `symmetric`, `public`, `private`, `passphrase`, `certificate`, `opaque` のいずれか |
+| secrets.status | Body | Enum | シークレットのステータス |
+| secrets.content_types | Body | Array | シークレットペイロードのコンテンツタイプ一覧 |
+| secrets.content_types.default | Body | String | コンテンツタイプのデフォルト値 |
+| secrets.creator_id | Body | String | シークレットを作成したユーザーID |
+| secrets.mode | Body | String | ブロック暗号の運用方式。ユーザー入力のメタデータ |
+| secrets.algorithm | Body | String | 暗号化アルゴリズム。ユーザー入力のメタデータ |
+| secrets.bit_length | Body | Integer | 暗号化鍵長。ユーザー入力のメタデータ |
+| secrets.expiration | Body | Datetime | 有効期限。ユーザー入力のメタデータ <br>`YYYY-MM-DDThh:mm:ss`<br> 有効期限が切れたシークレットは自動的に削除処理されます |
+| secrets.name| Body | String | シークレット名 |
+| secrets.created | Body | Datetime | 作成日時 <br> `YYYY-MM-DDThh:mm:ss` |
+| secrets.updated | Body | Datetime | 変更日時 <br> `YYYY-MM-DDThh:mm:ss` |
+| total | Body | Integer | リクエストクエリの総シークレット数 |
+| next | Body | String | 現在表示されている一覧の次の一覧のURL |
+| previous | Body | String | 現在表示されている一覧の前の一覧のURL |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "secrets": [
+    {
+      "algorithm": null,
+      "bit_length": null,
+      "content_types": {
+        "default": "text/plain"
+      },
+      "created": "2019-12-17T08:50:39",
+      "creator_id": "1da4ce9f59ed4f6487c9be39fa792be4",
+      "expiration": null,
+      "mode": null,
+      "name": "certificate",
+      "secret_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/secrets/adffcd66-ff63-4c66-8139-2f254e63aef5",
+      "secret_type": "certificate",
+      "status": "ACTIVE",
+      "updated": "2019-12-17T08:50:39"
+    },
+    {
+      "algorithm": null,
+      "bit_length": null,
+      "content_types": {
+        "default": "text/plain"
+      },
+      "created": "2019-12-17T08:50:39",
+      "creator_id": "1da4ce9f59ed4f6487c9be39fa792be4",
+      "expiration": null,
+      "mode": null,
+      "name": "private_key",
+      "secret_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/secrets/36f88d4c-16f0-4db2-80bc-4dda0125589b",
+      "secret_type": "private",
+      "status": "ACTIVE",
+      "updated": "2019-12-17T08:50:39"
+    }
+  ],
+  "total": 10,
+  "next": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/secrets?limit=1&offset=2",
+  "previous": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/secrets?limit=1&offset=0"
+}
+
+```
+
+</p>
+</details>
+
+
+<a id="view-secret"></a>
+### シークレットの表示 { #view-secret }
+指定したシークレット情報を返却します。
+```
+GET /v1/secrets/{secretId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-secret-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| secretId | URL | UUID | O | シークレットID |
+
+<a id="view-secret-response"></a>
+#### レスポンス
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| secret | Body | Object | シークレットオブジェクト |
+| secret.secret_ref | Body | String | シークレットのパス<br>`<barbican endpoint>/v1/secrets/<secret id>` 形式 |
+| secret.secret_type | Body | Enum | シークレットタイプ <br> `symmetric`, `public`, `private`, `passphrase`, `certificate`, `opaque` のいずれか |
+| secret.status | Body | Enum | シークレットのステータス |
+| secret.content_types | Body | Array | シークレットペイロードのコンテンツタイプ一覧 |
+| secret.content_types.default | Body | String | コンテンツタイプのデフォルト値 |
+| secret.creator_id | Body | String | シークレットを作成したユーザーID |
+| secret.mode | Body | String | ブロック暗号の運用方式。ユーザー入力のメタデータ |
+| secret.algorithm | Body | String | 暗号化アルゴリズム。ユーザー入力のメタデータ |
+| secret.bit_length | Body | Integer | 暗号化鍵長。ユーザー入力のメタデータ |
+| secret.expiration | Body | Datetime | 有効期限。ユーザー入力のメタデータ <br>`YYYY-MM-DDThh:mm:ss`<br> 有効期限が切れたシークレットは自動的に削除されます |
+| secret.name| Body | String | シークレット名 |
+| secret.created | Body | Datetime | 作成日時 <br> `YYYY-MM-DDThh:mm:ss` |
+| secret.updated | Body | Datetime | 変更日時 <br> `YYYY-MM-DDThh:mm:ss` |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "status": "ACTIVE",
+  "secret_type": "certificate",
+  "updated": "2019-12-17T08:50:39",
+  "name": "certificate",
+  "algorithm": null,
+  "created": "2019-12-17T08:50:39",
+  "secret_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/secrets/adffcd66-ff63-4c66-8139-2f254e63aef5",
+  "content_types": {
+    "default": "text/plain"
+  },
+  "creator_id": "1da4ce9f59ed4f6487c9be39fa792be4",
+  "mode": null,
+  "bit_length": null,
+  "expiration": null
+}
+```
+</p>
+</details>
+
+---
+<a id="create-secret"></a>
+### シークレットの作成 { #create-secret }
+新しいシークレットを作成します。
+```
+POST /v1/secrets
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-secret-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| name | Body | String | - | シークレット名 |
+| expiration | Body | Datetime | - | 有効期限。ISO8601形式でリクエスト |
+| algorithm | Body | String | - | 暗号化アルゴリズム |
+| bit_length | Body | String | - | 暗号化鍵長 |
+| mode | Body | String | - | ブロック暗号の運用方式 |
+| payload | Body | String | - | 暗号化鍵ペイロード |
+| payload_content_type | Body | String | - | 暗号化鍵ペイロードのコンテンツタイプ<br> payloadを入力する場合は必須です。 <br>サポートするコンテンツタイプ一覧：`text/plain`、`application/octet-stream`、`application/pkcs8`、`application/pkix-cert` |
+| payload_content_encoding | Body | Enum | - | 暗号化鍵ペイロードのエンコーディング方式 <br>payload_content_typeがtext/plainではない場合は必須です。<br> `base64` のみサポート |
+| secret_type | Body | Enum | - | シークレットタイプ <br> `symmetric`, `public`, `private`, `passphrase`, `certificate`, `opaque` のいずれか |
+
+
+
+<details><summary>例</summary>
+メタデータのみ作成
+```json
+{
+    "name": "example key",
+    "expiration": "2025-12-31T00:00:00.000000Z",
+    "algorithm": "example-algorithm",
+    "bit_length": 256,
+    "mode": "example-mode"
+}
+```
+
+textでペイロードを送信
+```json
+{
+    "name": "example key",
+    "expiration": "2025-12-31T00:00:00.000000Z",
+    "algorithm": "example-algorithm",
+    "bit_length": 256,
+    "mode": "example-mode",
+	"payload": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANQE .... nyxm\n-----END PRIVATE KEY-----\n",
+    "payload_content_type": "text/plain"
+}
+```
+
+base64でペイロードを送信
+```json
+{
+    "name": "example key",
+    "expiration": "2025-12-31T00:00:00.000000Z",
+    "algorithm": "example-algorithm",
+    "bit_length": 256,
+    "mode": "example-mode",
+    "payload": "ZXhhbXBsZQo=",
+    "payload_content_type": "application/octet-stream",
+    "payload_content_encoding": "base64"
+}
+```
+</details>
+
+<a id="create-secret-response"></a>
+#### レスポンス
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| secret_ref | Body | String | シークレットのパス<br>`<barbican endpoint>/v1/secrets/<secret id>` 形式 |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+    "secret_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/secrets/9b2dcb7b-51fe-4408-a2bb-23da731758a6"
+}
+```
+</p>
+</details>
+
+---
+<a id="modify-secret"></a>
+### シークレットの修正 { #modify-secret }
+既存のメタデータのみ入力されたシークレットのペイロードデータを入力します。
+```
+PUT /v1/secrets/{secretId}
+X-Auth-Token: {tokenId}
+Content-Type: {ConetentType}
+```
+
+<a id="modify-secret-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| secretId | URL | UUID | O | シークレットID |
+| ContentType| Header | Enum | O | `text/plain`、`application/octet-stream`、`application/pkcs8`、`application/pkix-cert` のいずれか<br> 省略時は `text/plain` に設定されます |
+| payload | Body | String | O | 暗号化鍵ペイロード |
+
+<details><summary>例</summary>
+```
+{
+	"payload": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANQE .... nyxm\n-----END PRIVATE KEY-----\n"
+}
+```
+</details>
+
+<a id="modify-secret-response"></a>
+#### レスポンス
+
+このAPIはレスポンスボディ(Body)を返却しません。
+
+---
+<a id="delete-secret"></a>
+### シークレットの削除 { #delete-secret }
+指定したシークレットを削除します。
+```
+DELETE /v1/secrets/{secretId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-secret-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| secretId | URL | UUID | O | シークレットID |
+
+<a id="delete-secret-response"></a>
+#### レスポンス
+
+このAPIはレスポンスボディ(Body)を返却しません。
+
+<a id="secret-container"></a>
+## シークレットコンテナ { #secret-container }
+
+シークレットコンテナAPIは、`key-manager`タイプのエンドポイントを利用して呼び出します。正確なエンドポイントは、トークン発行レスポンスの`serviceCatalog`を参照してください。
+
+| タイプ | リージョン | エンドポイント |
+|---|---|---|
+| key-manager | 韓国(パンギョ)リージョン<br>韓国(ピョンチョン)リージョン<br>韓国(クァンジュ)リージョン<br>日本(東京)リージョン |https://kr1-api-key-manager-infrastructure.nhncloudservice.com<br>https://kr2-api-key-manager-infrastructure.nhncloudservice.com<br>https://kr3-api-key-manager-infrastructure.nhncloudservice.com<br>https://jp1-api-key-manager-infrastructure.nhncloudservice.com |
+
+APIレスポンスにガイドに明記されていないフィールドが表示される場合があります。このようなフィールドはNHN Cloudの内部用途で使用されており、事前の通知なしに変更される可能性があるため、使用しないでください。
+
+
+<a id="view-secret-container-list"></a>
+### シークレットコンテナ一覧の表示 { #view-secret-container-list }
+
+シークレットコンテナ一覧を返却します。
+
+```
+GET /v1/containers
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-secret-container-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| offset | Query | Integer | - | レスポンス一覧のオフセット。デフォルト値：0 |
+| limit | Query | Integer | - | レスポンス一覧に表示する最大件数。デフォルト値：10 |
+
+<a id="view-secret-container-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| containers | Body | Array | コンテナオブジェクト一覧 |
+| containers.status | Body | Enum | コンテナのステータス |
+| containers.updated | Body | Datetime | 変更日時 `YYYY-MM-DDThh:mm:ss` |
+| containers.name | Body | String | コンテナ名 |
+| containers.consumers | Body | Array | コンシューマー一覧 |
+| containers.consumers.URL | Body | String | コンシューマーURL |
+| containers.consumers.name | Body | String | コンシューマー名 |
+| containers.created | Body | Datetime | 作成日時 `YYYY-MM-DDThh:mm:ss` |
+| containers.container_ref | Body | String | コンテナのパス |
+| containers.creator_id | Body | String | コンテナを作成したユーザーID |
+| containers.secret_refs | Body | Array | シークレット一覧 |
+| containers.secret_refs.secret_ref | Body | String | シークレットのパス |
+| containers.secret_refs.name | Body | String | コンテナが指定したシークレット名<br> コンテナタイプが `certificate` の場合：`certificate`、`private_key`、`private_key_passphrase`、`intermediates` に指定<br> コンテナタイプが `rsa` の場合：`private_key`、`private_key_passphrase`、`public_key` に指定 |
+| containers.type | Body | Enum | コンテナタイプ<br> `generic`, `rsa`, `certificate` のいずれか |
+| containers.common_name | Body | String | コンテナに登録された証明書のCommon Name<br>コンテナタイプが `certificate` の場合のみ表示 |
+| containers.expiration | Body | Datetime | コンテナに登録された証明書の有効期限<br>コンテナタイプが `certificate` の場合のみ表示。例：`YYYY-MM-DDThh:mm:ss` |
+| total | Body | Integer | リクエストクエリのシークレットコンテナの総数 |
+| next | Body | String | 現在表示されている一覧の次の一覧のURL |
+| previous | Body | String | 現在表示されている一覧の前の一覧のURL |
+
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+  "total": 10,
+  "previous": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/containers?limit=1&offset=0",
+  "next": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/containers?limit=1&offset=2",
+  "containers": [
     {
       "status": "ACTIVE",
-      "updated": "2020-02-25T01:22:24Z",
-      "hostId": "078d06f898889699f8731d030812e43d2c417edb2cf641dda598c7bd",
-      "addresses": {
-        "vpc2": [
-          {
-            "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:54:a7:64",
-            "version": 4,
-            "addr": "172.16.0.40",
-            "OS-EXT-IPS:type": "fixed"
-          }
-        ]
-      },
-      "links": [
+      "updated": "2024-10-18T05:07:11",
+      "name": "The Certificate",
+      "consumers": [],
+      "created": "2019-12-17T08:50:39",
+      "container_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/containers/2d1dcf4d-2e92-475e-bde7-e469880be924",
+      "creator_id": "1da4ce9f59ed4f6487c9be39fa792be4",
+      "secret_refs": [
         {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "self"
+          "secret_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/secrets/adffcd66-ff63-4c66-8139-2f254e63aef5",
+          "name": "certificate"
         },
         {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "bookmark"
+          "secret_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/secrets/36f88d4c-16f0-4db2-80bc-4dda0125589b",
+          "name": "private_key"
         }
       ],
-      "key_name": "access-key",
-      "image": {
-        "id": "8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-        "links": [
-          {
-            "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/images/8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-            "rel": "bookmark"
-          }
-        ]
-      },
-      "OS-EXT-STS:task_state": null,
-      "OS-EXT-STS:vm_state": "active",
-      "OS-SRV-USG:launched_at": "2020-02-25T01:22:23.000000",
-      "flavor": {
-        "id": "35a73b57-58a7-434d-aa08-5249aaa95b3e",
-        "links": [
-          {
-            "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/35a73b57-58a7-434d-aa08-5249aaa95b3e",
-            "rel": "bookmark"
-          }
-        ]
-      },
-      "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-      "security_groups": [
+      "type": "certificate",
+      "common_name": "nhn.com.",
+      "expiration": "2025-10-18T05:07:11"
+    }
+  ]
+}
+
+
+```
+</p>
+</details>
+
+
+<a id="view-secret-container"></a>
+### シークレットコンテナの表示 { #view-secret-container }
+指定したシークレットコンテナ情報を返却します。
+```
+GET /v1/containers/{containerId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-secret-container-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| containerId | URL | UUID | O | シークレットコンテナID |
+
+<a id="view-secret-container-response"></a>
+#### レスポンス
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| status | Body | Enum | コンテナのステータス |
+| updated | Body | Datetime | 更新時刻 `YYYY-MM-DDThh:mm:ss` |
+| name | Body | String | コンテナ名 |
+| consumers | Body | Array | コンシューマー一覧 |
+| consumers.URL | Body | String | コンシューマーURL |
+| consumers.name | Body | String | コンシューマー名 |
+| created | Body | Datetime | 作成時刻 `YYYY-MM-DDThh:mm:ss` |
+| container_ref | Body | String | コンテナアドレス |
+| creator_id | Body | String | コンテナを作成したユーザーID |
+| secret_refs | Body | Array | コンテナに登録したシークレット一覧 |
+| secret_refs.secret_ref | Body | String | シークレットアドレス |
+| secret_refs.name | Body | String | コンテナが指定したシークレット名<br>コンテナタイプが`certificate`の場合：`certificate`、`private_key`、`private_key_passphrase`、`intermediates`に指定<br>コンテナタイプが`rsa`の場合：`private_key`、`private_key_passphrase`、`public_key`に指定 |
+| type | Body | Enum | コンテナタイプ<br>`generic`、`rsa`、`certificate`のいずれか |
+| common_name | Body | String | コンテナに登録された証明書のCommon Name<br>コンテナタイプが`certificate`の場合のみ表示 |
+| expiration | Body | Datetime | コンテナに登録された証明書の有効期限<br>コンテナタイプが`certificate`の場合のみ表示。例：`YYYY-MM-DDThh:mm:ss` |
+
+
+<details><summary>例</summary>
+
+```json
+{
+    "status": "ACTIVE",
+    "updated": "2024-10-18T05:07:11",
+    "name": "The Certificate",
+    "consumers": [],
+    "created": "2019-12-17T08:50:39",
+    "container_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/containers/2d1dcf4d-2e92-475e-bde7-e469880be924",
+    "creator_id": "1da4ce9f59ed4f6487c9be39fa792be4",
+    "secret_refs": [
         {
-          "name": "default"
-        }
-      ],
-      "OS-SRV-USG:terminated_at": null,
-      "OS-EXT-AZ:availability_zone": "kr-pub-b",
-      "user_id": "b6ab578c20c94306ac1f41ffc4415b29",
-      "name": "Web-Server",
-      "created": "2020-02-25T01:15:46Z",
-      "tenant_id": "6cdebe3eb0094910bc41f1d42ebe4cb7",
-      "os-extended-volumes:volumes_attached": [
+            "secret_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/secrets/36f88d4c-16f0-4db2-80bc-4dda0125589b",
+            "name": "private_key"
+        },
         {
-          "id": "90712f4f-2faa-4e4f-8eb1-9313a8595570"
+            "secret_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/secrets/adffcd66-ff63-4c66-8139-2f254e63aef5",
+            "name": "certificate"
+        }
+    ],
+    "type": "certificate",
+    "common_name": "nhn.com.",
+    "expiration": "2025-10-18T05:07:11"
+}
+```
+</details>
+
+---
+<a id="create-secret-container"></a>
+### シークレットコンテナ作成 { #create-secret-container }
+新しいシークレットコンテナを作成します。
+```
+POST /v1/containers
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-secret-container-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| type | Body | Enum | O | コンテナタイプ<br>`generic`、`rsa`、`certificate`のいずれか |
+| name | Body | String | - | コンテナ名 |
+| secret_refs | Body | Array | - | コンテナに登録するシークレット一覧 |
+| secret_refs.secret_ref | Body | String | - | シークレットアドレス |
+| secret_refs.name | Body | String | - | コンテナが指定したシークレット名<br>コンテナタイプが`certificate`の場合：`certificate`、`private_key`、`private_key_passphrase`、`intermediates`に指定<br>コンテナタイプが`rsa`の場合：`private_key`、`private_key_passphrase`、`public_key`に指定 |
+
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+    "type": "certificate",
+    "name": "test cert",
+    "secret_refs": [
+        {
+            "name": "private_key",
+            "secret_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/cf11edcf-f475-47f3-92c3-29de8bcdd639"
+        }
+    ]
+}
+```
+</p>
+</details>
+
+<a id="create-secret-container-response"></a>
+#### レスポンス
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| container_ref | Body | String | シークレットコンテナアドレス |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+    "container_ref": "https://kr1-api-key-manager-infrastructure.nhncloudservice.com/v1/containers/ea2e90fc-1ba2-412b-b7a0-61da4402bf58"
+}
+```
+</p>
+</details>
+
+---
+<a id="delete-secret-container"></a>
+### シークレットコンテナ削除 { #delete-secret-container }
+指定したシークレットコンテナを削除します。
+```
+DELETE /v1/containers/{containerId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-secret-container-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| containerId | URL | UUID | シークレットコンテナID |
+
+
+<a id="delete-secret-container-response"></a>
+#### レスポンス
+
+このAPIはレスポンスボディ(Body)を返却しません。
+
+<a id="ip-acl-group"></a>
+## IP ACLグループ { #ip-acl-group }
+
+<a id="view-ip-acl-group-list"></a>
+### IP ACLグループ一覧 { #view-ip-acl-group-list }
+
+IP ACLグループ一覧を返却します。
+
+```
+GET /v2.0/lbaas/ipacl-groups
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-ip-acl-group-list-request"></a>
+#### リクエスト
+
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| tokenId | Header | String | O | トークンID |
+| id | Query | String | - | IP ACLグループID |
+| name | Query | String | - | IP ACLグループ名 |
+| description | Query | String | - | IP ACLグループの説明 |
+| action | Query | Enum | - | IP ACLグループの制御アクション<br>`ALLOW`、`DENY`のいずれか |
+
+<a id="view-ip-acl-group-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+| --- | --- | --- | --- |
+| ipacl_groups | Body | Array | IP ACLグループオブジェクト一覧 |
+| ipacl_groups.ipacl_target_count | Body | String | IP ACLグループに含まれるターゲット数 |
+| ipacl_groups.description | Body | String | IP ACLグループの説明 |
+| ipacl_groups.loadbalancers | Body | Object | IP ACLグループが適用されたロードバランサーオブジェクト一覧 |
+| ipacl_groups.loadbalancers.loadbalancer_id | Body | String | ロードバランサーID |
+| ipacl_groups.tenant_id | Body | String | テナントID |
+| ipacl_groups.action | Body | Enum | IPアクセス制御グループの制御アクション<br>`ALLOW`、`DENY`のいずれか |
+| ipacl_groups.id | Body | UUID | IP ACLグループID |
+| ipacl_groups.name | Body | String | IP ACLグループ名 |
+
+<details><summary>例</summary>
+<p>
+
+``` json
+{
+  "ipacl_groups": [
+      {
+      "ipacl_target_count": "1",
+      "description": "",
+      "loadbalancers": [
+        {
+          "loadbalancer_id": "7b4cef78-72b0-4c3c-9971-98763ef6284c"
         }
       ],
-      "accessIPv4": "",
-      "accessIPv6": "",
-      "progress": 0,
-      "OS-EXT-STS:power_state": 1,
-      "config_drive": "",
-      "metadata": {
-        "os_distro": "Windows",
-        "description": "Windows 2012 R2 STD (2020.02.18)",
-        "os_version": "2012 R2 STD",
-        "project_domain": "NORMAL",
-        "hypervisor_type": "qemu",
-        "monitoring_agent": "sysmon",
-        "image_name": "Windows 2012 R2 STD (2020.02.18) EN",
-        "volume_size": "50",
-        "os_architecture": "amd64",
-        "login_username": "Administrator",
-        "os_type": "Windows",
-        "tc_env": "sysmon"
-      },
-      "NHN-EXT-ATTR:ephemeral_disk_size": 0,
-      "NHN-EXT-ATTR:protect": false
+      "tenant_id": "8258ab391d854e8b878642b737017a3b",
+      "action": "DENY",
+      "id": "04570ec5-456a-48ac-85ee-38adcc83ee70",
+      "name": "ip-acl-group-1"
+    }
+  ]
+}
+```
+</p>
+</details>
+
+<a id="view-ip-acl-group"></a>
+### IP ACLグループ表示 { #view-ip-acl-group }
+
+指定したIP ACLグループを返却します。
+
+```
+GET /v2.0/lbaas/ipacl-groups/{ipaclGroupId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-ip-acl-group-request"></a>
+#### リクエスト
+
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| tokenId | Header | String | O | トークンID |
+| ipaclGroupId | Header | String | O | トークンID |
+
+<a id="view-ip-acl-group-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+| --- | --- | --- | --- |
+| ipacl_group | Body | Object | IP ACLグループオブジェクト |
+| ipacl_group.ipacl_target_count | Body | String | IP ACLグループに含まれるターゲット数 |
+| ipacl_group.description | Body | String | IP ACLグループの説明 |
+| ipacl_group.loadbalancers | Body | Object | IP ACLグループが適用されたロードバランサーオブジェクト一覧 |
+| ipacl_group.loadbalancers.loadbalancer_id | Body | String | ロードバランサーID |
+| ipacl_group.tenant_id | Body | String | テナントID |
+| ipacl_group.action | Body | Enum | IP ACLグループの制御アクション<br>`ALLOW`、`DENY`のいずれか |
+| ipacl_group.id | Body | UUID | IP ACLグループID |
+| ipacl_group.name | Body | String | IP ACLグループ名 |
+
+<details><summary>例</summary>
+<p>
+
+``` json
+{
+  "ipacl_group": {
+    "ipacl_target_count": "1",
+    "description": "",
+    "loadbalancers": [
+      {
+        "loadbalancer_id": "7b4cef78-72b0-4c3c-9971-98763ef6284c"
+      }
+    ],
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "action": "DENY",
+    "id": "04570ec5-456a-48ac-85ee-38adcc83ee70",
+    "name": "ip-acl-group-1"
+  }
+}
+```
+</p>
+</details>
+
+- - -
+
+<a id="create-ip-acl-group"></a>
+### IP ACLグループ作成 { #create-ip-acl-group }
+
+新しいIP ACLグループを作成します。
+
+```
+POST /v2.0/lbaas/ipacl-groups
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-ip-acl-group-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| tokenId | Header | String | O | トークンID |
+| ipacl_group | Body | Object | O | IP ACLグループオブジェクト |
+| ipacl_group.description | Body | String | - | IP ACLグループの説明 |
+| ipacl_group.action | Body | Enum | O | IP ACLグループの制御アクション<br>`ALLOW`、`DENY`のいずれか |
+| ipacl_group.name | Body | String | - | IP ACLグループ名 |
+| ipacl_group.ipacl_targets | Body | Object | - | IP ACLターゲットオブジェクト。値を入力するとターゲットも一緒に作成されます |
+| ipacl_group.ipacl_targets.cidr_address | Body | String | O (ipacl_targetsオブジェクトが追加された場合) | IP ACLターゲットのCIDR<br>単独のIPアドレス、またはCIDR形式のIP RANGEを入力 |
+| ipacl_group.ipacl_targets.descripion | Body | String | - | IP ACLターゲットの説明 |
+
+<details><summary>例</summary>
+<p>
+
+``` json
+{
+  "ipacl_group": {
+    "action": "ALLOW",
+    "name": "example",
+    "description": "description",
+    "ipacl_targets": [
+			{
+				"cidr_address" : "192.168.0.5",
+				"description": "My Friend"
+			},
+			{
+				"cidr_address" : "10.10.22.3/24",
+				"description": "Your Friends"
+			}
+     ]
+  }
+}
+```
+</p>
+</details>
+
+<a id="create-ip-acl-group-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+| --- | --- | --- | --- |
+| ipacl_group | Body | Object | IP ACLグループオブジェクト |
+| ipacl_group.ipacl_target_count | Body | String | IP ACLグループに含まれるターゲット数 |
+| ipacl_group.description | Body | String | IP ACLグループの説明 |
+| ipacl_group.loadbalancers | Body | String | IP ACLグループが適用されたロードバランサーオブジェクト一覧 |
+| ipacl_group.loadbalancers.loadbalancer_id | Body | String | ロードバランサーID |
+| ipacl_group.tenant_id | Body | String | テナントID |
+| ipacl_group.action | Body | Enum | IP ACLグループの制御アクション<br>`ALLOW`、`DENY`のいずれか |
+| ipacl_group.id | Body | UUID | IP ACLグループID |
+| ipacl_group.name | Body | String | IP ACLグループ名 |
+
+<details><summary>例</summary>
+<p>
+
+``` json
+{
+  "ipacl_group": {
+    "ipacl_target_count": "0",
+    "description": "description",
+    "loadbalancers": [],
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "action": "ALLOW",
+    "id": "e5e2627e-c1fc-4deb-a96d-f1213bb8227e",
+    "name": "example"
+  }
+}
+```
+</p>
+</details>
+
+- - -
+
+<a id="modify-ip-acl-group"></a>
+### IP ACLグループ修正 { #modify-ip-acl-group }
+
+既存のIP ACLグループを修正します。
+ipacl_group.actionは変更できません。
+下位のIP ACLターゲット一覧を全体的に置き換える際に、このAPIを使用できます。
+ただし、IP ACLグループに属していた既存の全てのターゲットが削除され、入力したターゲット一覧に置き換えられます。 
+入力したターゲットの`cidr_address`は重複してはいけません。
+
+```
+PUT /v2.0/lbaas/ipacl-groups/{ipaclGroupId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-ip-acl-group-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| tokenId | Header | String | O | トークンID |
+| ipaclGroupId | URL | UUID | O | IP ACLグループID |
+| ipacl_group | Body | String | O | IP ACLグループオブジェクト |
+| ipacl_group.name | Body | String | - | IP ACLグループ名 |
+| ipacl_group.description | Body | String | - | IP ACLグループの説明 |
+| ipacl_group.ipacl_targets | Body | Object | - | IP ACLターゲットオブジェクト。値を入力するとターゲットも一緒に作成されます |
+| ipacl_group.ipacl_targets.cidr_address | Body | String | O (ipacl_targetsオブジェクトが追加された場合) | IP ACLターゲットのCIDR<br>単独のIPアドレス、またはCIDR形式のIP RANGEを入力 |
+| ipacl_group.ipacl_targets.descripion | Body | String | - | IP ACLターゲットの説明 |
+
+
+<details><summary>例</summary>
+<p>
+
+``` json
+{
+    "ipacl_group" : {
+    "name" : "HouseLannister",
+    "description" : "A Lannister always pays his debts",
+    "ipacl_targets" : [
+        {
+            "cidr_address" : "11.11.11.11",
+            "description" : "Jamie"
+        },
+        {
+            "cidr_address" : "22.22.22.22",
+            "description" : "Cercei"
+        },
+        {
+            "cidr_address" : "33.33.33.33",
+            "description" : "Tyrion"
+        }
+    ]
+    }
+}
+```
+</p>
+</details>
+
+<a id="modify-ip-acl-group-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+| --- | --- | --- | --- |
+| ipacl_group | Body | Object | IP ACLグループオブジェクト |
+| ipacl_group.ipacl_target_count | Body | String | IP ACLグループに含まれるターゲット数 |
+| ipacl_group.description | Body | String | IP ACLグループの説明 |
+| ipacl_group.loadbalancers | Body | String | IP ACLグループが適用されたロードバランサーオブジェクト一覧 |
+| ipacl_group.loadbalancers.loadbalancer_id | Body | String | ロードバランサーID |
+| ipacl_group.tenant_id | Body | String | テナントID |
+| ipacl_group.action | Body | Enum | IP ACLグループの制御アクション<br>`ALLOW`、`DENY`のいずれか |
+| ipacl_group.id | Body | UUID | IP ACLグループID |
+| ipacl_group.name | Body | String | IP ACLグループ名 |
+
+<details><summary>例</summary>
+<p>
+
+``` json
+{
+  "ipacl_group": {
+    "ipacl_target_count": "3",
+    "description": "A Lannister always pays his debts",
+    "loadbalancers": [],
+    "tenant_id": "18717b5d8a9d45b9af440c75d61235c7",
+    "action": "DENY",
+    "id": "acc655d4-4735-4892-b32b-669cc21925ff",
+    "name": "HouseLannister"
+  }
+}
+```
+</p>
+</details>
+
+- - -
+
+<a id="delete-ip-acl-group"></a>
+### IP ACLグループ削除 { #delete-ip-acl-group }
+
+指定したIP ACLグループを削除します。
+
+```
+DELETE /v2.0/lbaas/ipacl-groups/{ipaclGroupId}
+X-Auth-Token: {tokenId}
+```
+
+IP ACLグループの削除時に、下位のIP ACLターゲットも全て削除されます。
+削除されるIP ACLグループを使用している全てのロードバランサーから、このIP ACLグループに関連するルールが削除されます。
+
+<a id="delete-ip-acl-group-request"></a>
+#### リクエスト
+
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| tokenId | Header | String | O | トークンID |
+| ipaclGroupId | URL | UUID | O | IP ACLグループID |
+
+<a id="delete-ip-acl-group-response"></a>
+#### レスポンス
+
+このAPIはレスポンスボディ(Body)を返却しません。
+
+- - -
+
+
+<a id="apply-ip-acl-group-to-load-balancer"></a>
+### ロードバランサーにIP ACLグループを適用 { #apply-ip-acl-group-to-load-balancer }
+
+ロードバランサーにIP ACLグループを適用します。
+IP ACLグループが適用されたロードバランサーには、グループに含まれるIP ACLターゲットのルールが適用されます。
+複数のグループをロードバランサーに適用できます。ただし、グループの`action`は全て同一である必要があります。
+既存のロードバランサーに適用されていたIP ACLグループは全て削除され、入力されたグループ一覧で再適用されます。
+
+```
+PUT /v2.0/lbaas/loadbalancers/{lb_id}/bind_ipacl_groups
+X-auth-Token: {tokenId}
+```
+
+<a id="apply-ip-acl-group-to-load-balancer-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| tokenId | Header | String | O | トークンID |
+| lb_id | URL | UUID | O | ロードバランサーID |
+| ipacl_groups_binding | Body | Object | O | IP ACLバインディングオブジェクト |
+| ipacl_groups_binding.ipacl_group_id | Body | UUID | O | ロードバランサーに適用するIP ACLグループID |
+
+<details><summary>例</summary>
+<p>
+
+``` json
+{
+  "ipacl_groups_binding": [
+    {
+      "ipacl_group_id": "acc655d4-4735-4892-b32b-669cc21925ff"
+    },
+    {
+      "ipacl_group_id": "ef33c087-2dc9-4be6-a0d2-d24c9d84e66e"
     }
   ]
 }
@@ -674,295 +3852,133 @@ X-Auth-Token: {tokenId}
 </p>
 </details>
 
----
-
-<a id="get-instance"></a>
-### インスタンス表示
-
-```
-GET /v2/{tenantId}/servers/{serverId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | インスタンスID |
-| tokenId | Header | String | O | トークンID |
-
+<a id="apply-ip-acl-group-to-load-balancer-response"></a>
 #### レスポンス
-
-| 名前 | 種類 | 形式 | 説明                                                                                                                                                                                                      |
-|---|---|---|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| server | body | Object | インスタンスオブジェクト                                                                                                                                                                                                 |
-| status | body | Enum | インスタンスの状態                                                                                                                                                                                                 |
-| server.id | Body | UUID | インスタンスID                                                                                                                                                                                                  |
-| server.name | Body | String | インスタンス名、最大255文字                                                                                                                                                                                        |
-| server.updated | Body | Datetime | インスタンスの最終修正日時。`YYYY-MM-DDThh:mm:ssZ`形式。                                                                                                                                                                |
-| server.hostId | Body | String | インスタンスが起動中のホストID                                                                                                                                                                                       |
-| server.addresses | Body | Object | インスタンスIPリストオブジェクト。<br>インスタンスに接続されたポート数分のリストが作成される。                                                                                                                                                             |
-| server.addresses."Network名" | Body | Object | インスタンスに接続された各Networkのポート情報                                                                                                                                                                                |
-| server.addresses."Network名".OS-EXT-IPS-MAC:mac_addr | Body | String | インスタンスに接続されたポートのMACアドレス                                                                                                                                                                                    |
-| server.addresses."Network名".version | Body | Integer | インスタンスに接続されたポートのIPバージョン<br>NHN CloudはIPv4のみサポート                                                                                                                                                              |
-| server.addresses."Network名".addr | Body | String | インスタンスに接続されたポートのIPアドレス                                                                                                                                                                                     |
-| server.addresses."Network名".OS-EXT-IPS:type | Body | Enum | ポートのIPアドレスタイプ<br>`fixed`または`floating`のいずれか1つ。                                                                                                                                                               |
-| server.links | Body | Object | インスタンスパスオブジェクト                                                                                                                                                                                              |
-| server.key_name | Body | String | インスタンスキーペア名                                                                                                                                                                                             |
-| server.image | Body | Object | インスタンスイメージオブジェクト                                                                                                                                                                                             |
-| server.image.id | Body | UUID | インスタンスイメージID                                                                                                                                                                                              |
-| server.image.links | Body | Object | インスタンスイメージパスオブジェクト                                                                                                                                                                                          |
-| server.OS-EXT-STS:task_state | Body | String | インスタンス作業状態<br>インスタンスに動作を加えた時、動作進行状態を伝える。                                                                                                                                                              |
-| server.OS-EXT-STS:vm_state | Body | String | インスタンスの現在状態                                                                                                                                                                                              |
-| server.OS-SRV-USG:launched_at | Body | Datetime | インスタンスの最終起動日時<br>`YYYY-MM-DDThh:mm:ss.ssssss`形式                                                                                                                                                       |
-| server.OS-SRV-USG:terminated_at | Body | Datetime | インスタンスの削除日時<br>`YYYY-MM-DDThh:mm:ssZ`形式                                                                                                                                                                 |
-| server.flavor | Body | Object | インスタンスタイプ情報オブジェクト                                                                                                                                                                                           |
-| server.flavor.id | Body | UUID | インスタンスタイプID                                                                                                                                                                                               |
-| server.flavor.links | Body | Object | インスタンスタイプパスオブジェクト                                                                                                                                                                                           |
-| server.security_groups | Body | Object | インスタンスに割り当てられたセキュリティグループリストオブジェクト                                                                                                                                                                                   |
-| server.security_groups.name | Body | String | インスタンスに割り当てられたセキュリティグループ名                                                                                                                                                                                      |
-| server.user_id | Body | String | インスタンスを作成したユーザーID                                                                                                                                                                                         |
-| server.created | Body | Datetime | インスタンスの作成日時。`YYYY-MM-DDThh:mm:ssZ`形式                                                                                                                                                                   |
-| server.tenant_id | Body | String | インスタンスが属しているテナントID                                                                                                                                                                                          |
-| server.os-extended-volumes:volumes_attached | Body | Object | インスタンスに接続された追加ブロックストレージリストオブジェクト                                                                                                                                                                              |
-| server.os-extended-volumes:volumes_attached.id | Body | UUID | インスタンスに接続された追加ブロックストレージID                                                                                                                                                                                  |
-| server.OS-EXT-STS:power_state | Body | Integer | インスタンスの電源の状態<br>- `1`: On<br>- `4`: Off                                                                                                                                                                   |
-| server.metadata | Body | Object | インスタンスメタデータオブジェクト<br>インスタンスメタデータをキーと値のペアで保管                                                                                                                                                                 |
-| server.NHN-EXT-ATTR:ephemeral_disk_size | Body | Integer | インスタンスに接続された追加ローカルブロックストレージサイズ                                                                                                                                                                |
-| server.NHN-EXT-ATTR:protect | Body | Boolean | インスタンス削除保護の有無                                                                                                                                                                 |
+| 名前 | 種類 | 形式 | 説明 |
+| --- | --- | --- | --- |
+| loadbalancer_id | Body | UUID | ロードバランサーID |
+| ipacl_group_id | Body | UUID | IP ACLグループID |
 
 <details><summary>例</summary>
 <p>
 
-```json
-{
-  "server": {
-    "status": "ACTIVE",
-    "updated": "2020-02-25T01:22:24Z",
-    "hostId": "078d06f898889699f8731d030812e43d2c417edb2cf641dda598c7bd",
-    "addresses": {
-      "vpc2": [
-        {
-          "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:54:a7:64",
-          "version": 4,
-          "addr": "172.16.0.40",
-          "OS-EXT-IPS:type": "fixed"
-        }
-      ]
-    },
-    "links": [
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-        "rel": "self"
-      },
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-        "rel": "bookmark"
-      }
-    ],
-    "key_name": "access-key",
-    "image": {
-      "id": "8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/images/8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-          "rel": "bookmark"
-        }
-      ]
-    },
-    "OS-EXT-STS:task_state": null,
-    "OS-EXT-STS:vm_state": "active",
-    "OS-SRV-USG:launched_at": "2020-02-25T01:22:23.000000",
-    "flavor": {
-      "id": "35a73b57-58a7-434d-aa08-5249aaa95b3e",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/35a73b57-58a7-434d-aa08-5249aaa95b3e",
-          "rel": "bookmark"
-        }
-      ]
-    },
-    "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-    "security_groups": [
-      {
-        "name": "default"
-      }
-    ],
-    "OS-SRV-USG:terminated_at": null,
-    "OS-EXT-AZ:availability_zone": "kr-pub-b",
-    "user_id": "b6ab578c20c94306ac1f41ffc4415b29",
-    "name": "Web-Server",
-    "created": "2020-02-25T01:15:46Z",
-    "tenant_id": "6cdebe3eb0094910bc41f1d42ebe4cb7",
-    "os-extended-volumes:volumes_attached": [
-      {
-        "id": "90712f4f-2faa-4e4f-8eb1-9313a8595570"
-      }
-    ],
-    "accessIPv4": "",
-    "accessIPv6": "",
-    "progress": 0,
-    "OS-EXT-STS:power_state": 1,
-    "config_drive": "",
-    "metadata": {
-      "os_distro": "Windows",
-      "description": "Windows 2012 R2 STD (2020.02.18)",
-      "os_version": "2012 R2 STD",
-      "project_domain": "NORMAL",
-      "hypervisor_type": "qemu",
-      "monitoring_agent": "sysmon",
-      "image_name": "Windows 2012 R2 STD (2020.02.18) EN",
-      "volume_size": "50",
-      "os_architecture": "amd64",
-      "login_username": "Administrator",
-      "os_type": "Windows",
-      "tc_env": "sysmon"
-    },
-    "NHN-EXT-ATTR:ephemeral_disk_size": 0,
-    "NHN-EXT-ATTR:protect": false
-  }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="create-instance"></a>
-### インスタンスを作成する
-
-インスタンスを作成します。
-
-インスタンス作成APIを呼び出し、インスタンス照会でインスタンスの状態を確認します。
-
-* インスタンスの状態が**ACTIVE**になるとインスタンスが正常に作成完了します。
-* インスタンスの状態が**BUILDING**から長時間変わらなかったり、**ERROR**の場合は、インスタンス作成引数を確認し、再度作成してください。
-
-* RAMが2GB以上のインスタンスタイプを使用します。
-
-* Windowsインスタンスは2GB以上のRAMが必要です。RAM 2GB以上のインスタンスタイプを使用します。
-* 50GB以上のルートブロックストレージが必要です。
-* U2タイプはWindowsイメージを使用できません。
-
-ルートブロックストレージサイズは、Linuxは10GB、Windowsは50GBから指定できます。
-
-インスタンス作成リクエスト時にスケジューラヒントで配置ポリシーを割り当てることができます。
-
-
-
-```
-POST /v2/{tenantId}/servers
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-| server | body | Object | O | サーバーオブジェクト |
-| server.security_groups | body | Object | - | セキュリティグループリストオブジェクト<br>省略する場合`default`グループが追加される |
-| server.security_groups.name | body | String | - | **(条件付き必須)** インスタンスに追加するセキュリティグループ名 |
-| server.user_data | body | String | - | インスタンス起動後に実行するスクリプトおよび設定<br>base64エンコーディングされた文字列で65535バイトまで許可 |
-| server.availability_zone | body | String | - | インスタンスを作成するアベイラビリティゾーン<br>指定しない場合、任意のゾーンが選択される<br>ルートブロックストレージのソースタイプが`volume`, `snapshot`の場合、元のブロックストレージのアベイラビリティゾーンと同じに設定する必要があります。 |
-| server.imageRef | Body | String | - | インスタンスを作成する際に使用するイメージID<br>ルートブロックストレージのソースタイプが`volume`, `snapshot`の場合は設定不要 |
-| server.flavorRef | Body | String | O | インスタンスを作成する時に使用するインスタンスタイプID |
-| server.networks | Body | Object | O | インスタンスを作成する時に使用するネットワーク情報オブジェクト<br>指定した数のNICが追加される。ネットワークID、サブネットID、ポートID、固定IPの中から1つ指定 |
-| server.networks.uuid | Body | UUID | - |  **(条件付き必須)**インスタンスを作成する時に使用するネットワークID |
-| server.networks.subnet | Body | UUID | - |  **(条件付き必須)**インスタンスを作成する時に使用するネットワークのサブネットID |
-| server.networks.port | Body | UUID | - |  **(条件付き必須)**インスタンスを作成する際に使用するポートID<br>ポートIDを指定する際に要求したセキュリティグループは、指定した既存のポートには適用されない。 |
-| server.networks.fixed_ip | Body | String | - |  **(条件付き必須)**インスタンスを作成する時に使用する固定IP |
-| server.name | Body | String | O | インスタンスの名前<br>英字基準255文字まで許可、ただし、Windowsイメージの場合は15文字以下にする必要がある。 |
-| server.metadata | Body | Object | - | インスタンスに追加するメタデータオブジェクト<br>255文字以下のキーと値のペア |
-| server.block_device_mapping_v2 | Body | Object | O | インスタンスのブロックストレージ情報オブジェクト<br>**ローカルブロックストレージを使用するU2以外のインスタンスタイプを使用する場合は必ず指定する必要がある。** |
-| server.block_device_mapping_v2.source_type | Body | Enum | O | 作成するブロックストレージ原本のタイプ<br>- `image`:イメージを利用してブロックストレージを作成<br>- `blank`:空のブロックストレージ作成(ルートブロックストレージとして使用できない)<br>- `volume`:既存のブロックストレージを使用<br>- `snapshot`:スナップショットを利用してブロックストレージ作成 |
-| server.block_device_mapping_v2.uuid | Body | String | - |  **(条件付き必須)**ブロックストレージのソースタイプによって異なる設定が必要<br>- ソースタイプが`image`の場合、イメージIDを設定<br>- ソースタイプが`volume`の場合、既存のブロックストレージIDを設定<br>- ソースタイプが`snapshot`の場合、スナップショットIDを設定<br>- ソースタイプが`blank`の場合、設定不要<br>ルートブロックストレージの場合、必ず起動可能な原本である必要があります。 |
-| server.block_device_mapping_v2.boot_index | Body | Integer | O | 指定したブロックストレージの起動順序<br>-`0`はルートブロックストレージ<br>- それ以外は追加ブロックストレージ<br>サイズが大きいほど起動順序が下がる。 |
-| server.block_device_mapping_v2.destination_type | Body | Enum | O | インスタンスブロックストレージの位置。インスタンスタイプに応じて別々に設定必要。<br>- `local`：GPUインスタンス、U2インスタンスタイプを利用する場合。<br>- `volume`：その他のインスタンスタイプを利用する場合。 |
-| server.block_device_mapping_v2.volume_type | Body | Enum    | - |  **(条件付き必須)**作成するブロックストレージのタイプ<br>ブロックストレージのソースタイプが`volume`, `snapshot`の場合設定不要<br>`ユーザーガイド > Storage > Block Storage > API v2ガイド`で**ブロックストレージタイプリスト表示**レスポンスの`name`参考 |
-| server.block_device_mapping_v2.delete_on_termination | Body | Boolean | - | インスタンスを削除する時のブロックストレージ処理。デフォルト値は`false`。<br>`true`なら削除、`false`なら維持 |
-| server.block_device_mapping_v2.volume_size | Body | Integer | - | **(条件付き必須)**作成するブロックストレージサイズ<br>ブロックストレージのソースタイプによって異なる設定が必要<br>- ソースタイプが`volume`の場合は設定不要<br>- ソースタイプが`snapshot`の場合は原本ブロックストレージサイズ以上に設定<br>`GB`単位<br>U2インスタンスタイプを使用してルートブロックストレージを作成する場合にはU2インスタンスタイプに明示されたサイズで作成され、この値は無視される。<br>インスタンスタイプによって作成できるルートブロックストレージのサイズが異なるため、詳細は`ユーザーガイド > Compute > Instance > コンソール使用ガイド > インスタンス作成 > ブロックストレージサイズ`を参考 |
-| server.block_device_mapping_v2.nhn_encryption                   | Body | Object | - | **(条件付き必須)**ブロックストレージの暗号化情報                                                                                                                                                                                      |
-| server.block_device_mapping_v2.nhn_encryption.skm_appkey        | Body | String | - | **(条件付き必須)**Secure Key Managerサービスのアプリケーションキー                                                                                                                                                                            |
-| server.block_device_mapping_v2.nhn_encryption.skm_key_id        | Body | String | - | **(条件付き必須)**暗号化ブロックストレージの作成に使用するSecure Key Managerの対称鍵ID                                                                                                                                  |
-| server.key_name | Body | String | O | インスタンスの接続に使用するキーペア |
-| server.min_count | Body | Integer | - | 現在のリクエストで作成するインスタンス数の最小値。<br>デフォルト値は1。<br>ブロックストレージのソースタイプが`volume`の場合、`1`のみ設定可能 |
-| server.max_count | Body | Integer | - | 現在のリクエストで作成するインスタンス数の最大値。<br>デフォルト値はmin_count、最大値は10。<br>ブロックストレージのソースタイプが`volume`の場合、`1`のみ設定可能 |
-| server.return_reservation_id | Body | Boolean | - | インスタンス作成リクエスト予約ID。<br>Trueに指定すると、インスタンス作成情報の代わりに予約IDを返す。<br>デフォルト値はFalse |
-| os:scheduler_hints | Body | Object | - | スケジューラヒントオブジェクト |
-| os:scheduler_hints.group | Body | String | - | 配置ポリシーID |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "server": {
-    "name": "DB-Master",
-    "imageRef": "9956f822-29c9-4f81-9410-0c392d9c8c24",
-    "flavorRef": "a4b6a0f7-aeff-4d78-a8d5-7de9f007012d",
-    "networks": [{
-      "subnet": "b83863ff-0355-4c73-8c10-0bdf66a69aab"
-    }],
-    "availability_zone": "kr-pub-a",
-    "key_name": "access-key",
-    "max_count": 1,
-    "min_count": 1,
-    "block_device_mapping_v2": [{
-      "source_type": "image",
-      "uuid": "9956f822-29c9-4f81-9410-0c392d9c8c24",
-      "boot_index": 0,
-      "volume_size": 1000,
-      "destination_type": "volume",
-      "delete_on_termination": 1
-    }],
-    "security_groups": [{
-      "name": "default"
-    }]
+``` json
+[
+  {
+    "loadbalancer_id": "096ddfbf-aaf9-42d6-b93d-0036ec219479",
+    "ipacl_group_id": "acc655d4-4735-4892-b32b-669cc21925ff"
   },
-  "os:scheduler_hints": {
-    "group": "f878bd5b-49a7-499f-966e-1eceb21cb06b"    
+  {
+    "loadbalancer_id": "096ddfbf-aaf9-42d6-b93d-0036ec219479",
+    "ipacl_group_id": "ef33c087-2dc9-4be6-a0d2-d24c9d84e66e"
   }
-}
+]
 ```
 
 </p>
 </details>
 
+<a id="ip-acl-target"></a>
+## IP ACLターゲット { #ip-acl-target }
+
+<a id="view-ip-acl-target-list"></a>
+### IP ACLターゲット一覧 { #view-ip-acl-target-list }
+
+IP ACLターゲット一覧を返却します。
+
+```
+GET /v2.0/lbaas/ipacl-targets
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-ip-acl-target-list-request"></a>
+#### リクエスト
+
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| tokenId | Header | String | O | トークンID |
+| id | Query | String | - | IP ACLターゲットID |
+| cidr_address | Query | String | - | IP ACLターゲットのCIDR<br>単独のIPアドレス、またはCIDR形式のIP RANGE |
+| ipacl_group_id | Query | String | - | IP ACLグループID |
+| description | Query | String | - | IP ACLグループの説明 |
+
+<a id="view-ip-acl-target-list-response"></a>
 #### レスポンス
 
-| 名前 | 種類 | 形式 | 説明                                                                                                                                                                                                          |
-|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| server.security_groups.name | Body | String | 作成したインスタンスのセキュリティグループ名                                                                                                                                                                                          |
-| server.id | Body | UUID | 作成したインスタンスのID                                                                                                                                                                                                 |
+| 名前 | 種類 | 形式 | 説明 |
+| --- | --- | --- | --- |
+| ipacl_targets | Body | Array | IP ACLターゲット情報オブジェクト一覧 |
+| ipacl_targets.ipacl_group_id | Body | UUID | IP ACLグループID |
+| ipacl_targets.tenant_id | Body | String | テナントID |
+| ipacl_targets.cidr_address | Body | String | IP ACLターゲットのCIDR |
+| ipacl_targets.description | Body | String | IP ACLターゲットの説明 |
+| ipacl_targets.id | Body | UUID | IP ACLターゲットID |
 
 <details><summary>例</summary>
 <p>
 
-```json
+``` json
 {
-  "server": {
-    "security_groups": [
-      {
-        "name": "default"
-      }
-    ],
-    "id": "3a005d5b-63cf-4493-bfc6-49db990b5b50",
-    "links": [
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/3a005d5b-63cf-4493-bfc6-49db990b5b50",
-        "rel": "self"
-      },
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/3a005d5b-63cf-4493-bfc6-49db990b5b50",
-        "rel": "bookmark"
-      }
-    ]
+  "ipacl_targets": [
+    {
+      "ipacl_group_id": "d240300b-53f2-4729-a6bb-b6f84f9be076",
+      "tenant_id": "8258ab391d854e8b878642b737017a3b",
+      "cidr_address": "10.0.0.0/24",
+      "description": "description",
+      "id": "08d06560-919d-4383-a491-70fd2aca3fb2"
+    }
+  ]
+}
+```
+
+</p>
+</details>
+
+<a id="view-ip-acl-target"></a>
+### IP ACLターゲット表示 { #view-ip-acl-target }
+
+指定したIP ACLターゲット情報を返却します。
+
+```
+GET /v2.0/lbaas/ipacl-targets/{ipaclTargetId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-ip-acl-target-request"></a>
+#### リクエスト
+
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| tokenId | Header | String | O | トークンID |
+| ipaclTargetId | URL | UUID | O | IP ACLターゲットID |
+
+<a id="view-ip-acl-target-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+| --- | --- | --- | --- |
+| ipacl_target | Body | Array | IP ACLターゲット情報オブジェクト |
+| ipacl_target.ipacl_group_id | Body | UUID | IP ACLグループID |
+| ipacl_target.tenant_id | Body | String | テナントID |
+| ipacl_target.cidr_address | Body | String | IP ACLターゲットのCIDR<br>単独のIPアドレス、またはCIDR形式のIP RANGE |
+| ipacl_target.description | Body | String | IP ACLターゲットの説明 |
+| ipacl_target.id | Body | UUID | IP ACLターゲットID |
+
+<details><summary>例</summary>
+<p>
+
+``` json
+{
+  "ipacl_target": {
+    "ipacl_group_id": "d240300b-53f2-4729-a6bb-b6f84f9be076",
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "cidr_address": "10.0.0.0/24",
+    "description": "description",
+    "id": "08d06560-919d-4383-a491-70fd2aca3fb2"
   }
 }
 ```
@@ -970,1000 +3986,440 @@ X-Auth-Token: {tokenId}
 </p>
 </details>
 
----
+- - -
 
-<a id="modify-instance"></a>
-### インスタンスを修正する
-作成されたインスタンスを修正します。変更できるプロパティは一部の項目に制限されます。
+<a id="create-ip-acl-target"></a>
+### IP ACLターゲット作成 { #create-ip-acl-target }
+
+IP ACLターゲットを作成します。
 
 ```
-PUT /v2/{tenantId}/servers/{serverId}
+POST /v2.0/lbaas/ipacl-targets
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-ip-acl-target-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| tokenId | Header | String | O | トークンID |
+| ipacl_target | Body | Object | O | IP ACLターゲット情報オブジェクト |
+| ipacl_target.ipacl_group_id | Body | UUID | O | IP ACLグループID |
+| ipacl_target.cidr_address | Body | String | O | IP ACLターゲットのCIDR<br>単独のIPアドレス、またはCIDR形式のIP RANGE |
+| ipacl_target.description | Body | String | - | IP ACLターゲットの説明 |
+
+<details><summary>例</summary>
+<p>
+
+``` json
+{
+  "ipacl_target": {
+    "ipacl_group_id": "d240300b-53f2-4729-a6bb-b6f84f9be076",
+    "cidr_address": "10.0.0.0/24",
+    "description": "description"
+  }
+}
+```
+
+</p>
+</details>
+
+<a id="create-ip-acl-target-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+| --- | --- | --- | --- |
+| ipacl_target | Body | Object | IP ACLターゲット情報オブジェクト |
+| ipacl_target.ipacl_group_id | Body | UUID | IP ACLグループID |
+| ipacl_target.tenant_id | Body | String | テナントID |
+| ipacl_target.cidr_address | Body | String | IP ACLターゲットのCIDR<br>単独のIPアドレス、またはCIDR形式のIP RANGE |
+| ipacl_target.description | Body | String | IP ACLターゲットの説明 |
+| ipacl_target.id | Body | UUID | IP ACLターゲットID |
+
+<details><summary>例</summary>
+<p>
+
+``` json
+{
+  "ipacl_target": {
+    "ipacl_group_id": "d240300b-53f2-4729-a6bb-b6f84f9be076",
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "cidr_address": "10.0.0.0/24",
+    "description": "description",
+    "id": "08d06560-919d-4383-a491-70fd2aca3fb2"
+  }
+}
+```
+
+</p>
+</details>
+
+- - -
+
+<a id="modify-ip-acl-target"></a>
+### IP ACLターゲット修正 { #modify-ip-acl-target }
+
+既存のIP ACLターゲットを変更します。
+`description`のみ変更できます。
+
+```
+PUT /v2.0/lbaas/ipacl-targets/{ipaclTargetId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-ip-acl-target-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| tokenId | Header | String | O | トークンID |
+| ipaclTargetId | URL | UUID | O | IP ACLターゲットID |
+| ipacl_target | Body | Object | O | IP ACLターゲット情報オブジェクト |
+| ipacl_target.description | Body | String | - | IP ACLターゲットの説明 |
+
+<details><summary>例</summary>
+<p>
+
+``` json
+{
+  "ipacl_target": {
+    "description": "description"
+  }
+}
+```
+
+</p>
+</details>
+
+<a id="modify-ip-acl-target-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+| --- | --- | --- | --- |
+| ipacl_target | Body | Object | IP ACLターゲット情報オブジェクト |
+| ipacl_target.ipacl_group_id | Body | UUID | IP ACLグループID |
+| ipacl_target.tenant_id | Body | String | テナントID |
+| ipacl_target.cidr_address | Body | String | IP ACLターゲットのCIDR<br>単独のIPアドレス、またはCIDR形式のIP RANGE |
+| ipacl_target.description | Body | String | IP ACLターゲットの説明 |
+| ipacl_target.id | Body | UUID | IP ACLターゲットID |
+
+<details><summary>例</summary>
+<p>
+
+``` json
+{
+  "ipacl_target": {
+    "ipacl_group_id": "d240300b-53f2-4729-a6bb-b6f84f9be076",
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "cidr_address": "10.0.0.0/24",
+    "description": "description",
+    "id": "08d06560-919d-4383-a491-70fd2aca3fb2"
+  }
+}
+```
+
+</p>
+</details>
+
+- - -
+
+<a id="delete-ip-acl-target"></a>
+### IP ACLターゲット削除 { #delete-ip-acl-target }
+
+指定したIP ACLターゲットを削除します。
+
+```
+DELETE /v2.0/lbaas/ipacl-targets/{ipaclTargetId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-ip-acl-target-request"></a>
+#### リクエスト
+
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| tokenId | Header | String | O | トークンID |
+| ipaclTargetId | URL | UUID | O | IP ACLターゲットID |
+
+<a id="delete-ip-acl-target-response"></a>
+#### レスポンス
+
+このAPIはレスポンスボディ(Body)を返却しません。
+
+- - -
+
+<a id="ssl-policy"></a>
+## SSLポリシー { #ssl-policy }
+
+カスタムSSLポリシーを作成してリスナーに適用できます。SSLポリシーには、最小TLSバージョンと、該当バージョンで使用する暗号化スイート(cipher suite)を指定します。SSLポリシーの概念と選択可能な暗号化スイートの一覧については、[カスタムSSLポリシー](/Network/Load%20Balancer/ko/overview/#ssl)をご参照ください。
+
+!!! tip "ポイント"
+    - SSLポリシーはテナントあたり最大10個まで作成できます。
+    - SSLポリシーは、プロトコルが`TERMINATED_HTTPS`であるリスナーにのみ適用されます。
+
+<a id="list-ssl-policies"></a>
+### SSLポリシー一覧 { #list-ssl-policies }
+
+```
+GET /v2.0/lbaas/ssl_policies
+X-Auth-Token: {tokenId}
+```
+
+<a id="list-ssl-policies-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会するSSLポリシーID |
+| name | Query | String | - | 照会するSSLポリシー名 |
+| description | Query | String | - | 照会するSSLポリシーの説明 |
+| min_tls_version | Query | Enum | - | 照会するSSLポリシーの最小TLSバージョン |
+
+<a id="list-ssl-policies-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| ssl_policies | Body | Array | SSLポリシーオブジェクト一覧 |
+| ssl_policies.id | Body | UUID | SSLポリシーID |
+| ssl_policies.tenant_id | Body | String | テナントID |
+| ssl_policies.name | Body | String | SSLポリシー名 |
+| ssl_policies.description | Body | String | SSLポリシーの説明 |
+| ssl_policies.min_tls_version | Body | Enum | SSLポリシーの最小TLSバージョン<br>`SSLv3`、`TLSv1.0`、`TLSv1.0_2016`、`TLSv1.1`、`TLSv1.2`、`TLSv1.3`のいずれか |
+| ssl_policies.ciphers | Body | String | 使用する暗号化スイート一覧<br>TLS 1.2以下の暗号化スイートとTLS 1.3の暗号化スイートを`:`で連結した1つの文字列<br>レスポンスは、TLS 1.2以下の暗号化スイートが先、TLS 1.3の暗号化スイートが後にくる順序に正規化されて返却されます |
+| ssl_policies.listeners | Body | Array | SSLポリシーが適用されたリスナー一覧 |
+| ssl_policies.listeners.id | Body | UUID | リスナーID |
+| ssl_policies.listeners.loadbalancer_id | Body | UUID | リスナーが属するロードバランサーID |
+| ssl_policies.created_at | Body | String | 作成時刻 |
+| ssl_policies.updated_at | Body | String | 最終更新時刻 |
+
+<details><summary>例</summary>
+
+```json
+{
+  "ssl_policies": [
+    {
+      "id": "b5b3f6f2-6c29-4f3a-9a2e-3b2e6b2b5c0a",
+      "tenant_id": "8258ab391d854e8b878642b737017a3b",
+      "name": "secure-tls12",
+      "description": "TLS 1.2以上のみ許可",
+      "min_tls_version": "TLSv1.2",
+      "ciphers": "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384",
+      "listeners": [
+        {
+          "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20",
+          "loadbalancer_id": "7b4cef78-72b0-4c3c-9971-98763ef6284c"
+        }
+      ],
+      "created_at": "2026-04-01T10:00:00",
+      "updated_at": "2026-04-01T10:00:00"
+    }
+  ]
+}
+```
+
+</details>
+
+- - -
+
+<a id="get-ssl-policy"></a>
+### SSLポリシー表示 { #get-ssl-policy }
+
+```
+GET /v2.0/lbaas/ssl_policies/{sslPolicyId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="get-ssl-policy-request"></a>
+#### リクエスト
+このAPIはリクエスト本文(Body)を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| sslPolicyId | URL | UUID | O | SSLポリシーID |
+
+<a id="get-ssl-policy-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| ssl_policy | Body | Object | SSLポリシーオブジェクト |
+| ssl_policy.id | Body | UUID | SSLポリシーID |
+| ssl_policy.tenant_id | Body | String | テナントID |
+| ssl_policy.name | Body | String | SSLポリシー名 |
+| ssl_policy.description | Body | String | SSLポリシーの説明 |
+| ssl_policy.min_tls_version | Body | Enum | SSLポリシーの最小TLSバージョン |
+| ssl_policy.ciphers | Body | String | 使用する暗号化スイート一覧<br>TLS 1.2以下の暗号化スイートとTLS 1.3の暗号化スイートを`:`で連結した1つの文字列<br>レスポンスは、TLS 1.2以下の暗号化スイートが先、TLS 1.3の暗号化スイートが後にくる順序に正規化されて返却されます |
+| ssl_policy.listeners | Body | Array | SSLポリシーが適用されたリスナー一覧 |
+| ssl_policy.listeners.id | Body | UUID | リスナーID |
+| ssl_policy.listeners.loadbalancer_id | Body | UUID | リスナーが属するロードバランサーID |
+| ssl_policy.created_at | Body | String | 作成時刻 |
+| ssl_policy.updated_at | Body | String | 最終更新時刻 |
+
+<details><summary>例</summary>
+
+```json
+{
+  "ssl_policy": {
+    "id": "b5b3f6f2-6c29-4f3a-9a2e-3b2e6b2b5c0a",
+    "tenant_id": "8258ab391d854e8b878642b737017a3b",
+    "name": "secure-tls12",
+    "description": "TLS 1.2以上のみ許可",
+    "min_tls_version": "TLSv1.2",
+    "ciphers": "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384",
+    "listeners": [
+      {
+        "id": "1b5e4950-71ae-4d67-bf97-453f986c9a20",
+        "loadbalancer_id": "7b4cef78-72b0-4c3c-9971-98763ef6284c"
+      }
+    ],
+    "created_at": "2026-04-01T10:00:00",
+    "updated_at": "2026-04-01T10:00:00"
+  }
+}
+```
+
+</details>
+
+- - -
+
+<a id="create-ssl-policy"></a>
+### SSLポリシー作成 { #create-ssl-policy }
+
+```
+POST /v2.0/lbaas/ssl_policies
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-ssl-policy-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
 | tokenId | Header | String | O | トークンID |
-| server | Body | Object | O | インスタンス変更リクエストオブジェクト |
-| server.name | Body | String | - | インスタンスの新しい名前 |
+| ssl_policy | Body | Object | O | SSLポリシーオブジェクト |
+| ssl_policy.name | Body | String | - | SSLポリシー名 |
+| ssl_policy.description | Body | String | - | SSLポリシーの説明 |
+| ssl_policy.min_tls_version | Body | Enum | O | SSLポリシーの最小TLSバージョン<br>`SSLv3`、`TLSv1.0`、`TLSv1.0_2016`、`TLSv1.1`、`TLSv1.2`、`TLSv1.3`のいずれか<br>作成後は変更できません |
+| ssl_policy.ciphers | Body | String | O | 使用する暗号化スイート一覧<br>TLS 1.2以下の暗号化スイートとTLS 1.3の暗号化スイートを`:`で連結した1つの文字列<br>サーバーが名前プレフィックス(`TLS_`で始まればTLS 1.3)で自動分類します<br>最低1つ以上指定する必要があります |
+
+!!! danger "注意"
+    - `min_tls_version`が`TLSv1.3`の場合、`ciphers`にTLS 1.2以下の暗号化スイートを含めることはできません。含めた場合はエラーが返却されます。
+    - 選択可能な暗号化スイートは、[カスタムSSLポリシー](/Network/Load%20Balancer/ko/overview/#ssl)に定義された値のみ使用できます。
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "server": {
-        "name": "new-server-test"
-    }
+  "ssl_policy": {
+    "name": "secure-tls12",
+    "description": "TLS 1.2以上のみ許可",
+    "min_tls_version": "TLSv1.2",
+    "ciphers": "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384"
+  }
 }
 ```
 
-</p>
 </details>
 
-#### レスポンス
-インスタンスの表示と同じです。
-
----
-
-<a id="delete-instance"></a>
-### インスタンスを削除する
-作成されたインスタンスを削除します。
-
-```
-DELETE /v2/{tenantId}/servers/{serverId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 削除するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-<a id="manage-block-storage-attachment"></a>
-## ブロックストレージ接続管理
-
-<a id="list-additional-block-storage-attached-to-the-instance"></a>
-### インスタンスに接続されたブロックストレージリスト表示
-```
-GET /v2/{tenantId}/servers/{serverId}/os-volume_attachments
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| limit | Query | Integer | - | 照会するリストの数 |
-| offset | Query | Integer | - | 返されるリストの開始点<br>全てのリストの中からoffset番目のブロックストレージから返す |
-
+<a id="create-ssl-policy-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| volumeAttachments | Body | Array | 接続情報オブジェクトリスト |
-| volumeAttachments.device | Body | String | インスタンスのブロックストレージ名<br>例) `/dev/vdb` |
-| volumeAttachments.id | Body | UUID | 接続情報ID |
-| volumeAttachments.serverId | Body | UUID | インスタンスID |
-| volumeAttachments.volumeId | Body | UUID | ブロックストレージID |
+| ssl_policy | Body | Object | 作成されたSSLポリシーオブジェクト |
+| ssl_policy.id | Body | UUID | SSLポリシーID |
+| ssl_policy.tenant_id | Body | String | テナントID |
+| ssl_policy.name | Body | String | SSLポリシー名 |
+| ssl_policy.description | Body | String | SSLポリシーの説明 |
+| ssl_policy.min_tls_version | Body | Enum | SSLポリシーの最小TLSバージョン |
+| ssl_policy.ciphers | Body | String | 使用する暗号化スイート一覧<br>TLS 1.2以下の暗号化スイートが先、TLS 1.3の暗号化スイートが後にくる順序に正規化されて返却されます |
+| ssl_policy.listeners | Body | Array | SSLポリシーが適用されたリスナー一覧<br>作成直後は空の配列になります |
+| ssl_policy.created_at | Body | String | 作成時刻 |
+| ssl_policy.updated_at | Body | String | 最終更新時刻 |
 
-<details><summary>例</summary>
-<p>
+- - -
 
-```json
-{
-    "volumeAttachments": [
-        {
-            "device": "/dev/vda",
-            "id": "227cc671-f30b-4488-96fd-7d0bf13648d8",
-            "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-            "volumeId": "227cc671-f30b-4488-96fd-7d0bf13648d8"
-        },
-        {
-            "device": "/dev/vdb",
-            "id": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113",
-            "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-            "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-        }
-    ]
-}
+<a id="modify-ssl-policy"></a>
+### SSLポリシー修正 { #modify-ssl-policy }
+
 ```
-
-</p>
-</details>
-
----
-
-<a id="list-additional-block-storage-attached-to-the-instance"></a>
-### インスタンスに接続されたブロックストレージ表示
-```
-GET /v2/{tenantId}/servers/{serverId}/os-volume_attachments/{volumeId}
+PUT /v2.0/lbaas/ssl_policies/{sslPolicyId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-ssl-policy-request"></a>
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | インスタンスID |
-| volumeId | URL | UUID | O | 照会するブロックストレージID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | トークンID |
+| sslPolicyId | URL | UUID | O | SSLポリシーID |
+| ssl_policy | Body | Object | O | SSLポリシーオブジェクト |
+| ssl_policy.name | Body | String | - | SSLポリシー名 |
+| ssl_policy.description | Body | String | - | SSLポリシーの説明 |
+| ssl_policy.ciphers | Body | String | - | 使用する暗号化スイート一覧<br>TLS 1.2以下の暗号化スイートとTLS 1.3の暗号化スイートを`:`で連結した1つの文字列<br>リクエストに含めると、新しい値が既存の保存値を完全に上書きします(TLS 1.2以下/TLS 1.3のいずれか一方のみを修正する場合でも、両方を含める必要があります) |
 
+!!! danger "注意"
+    `min_tls_version`は作成後に変更できません。リクエストに含めるとエラーが発生します。
+
+!!! tip "ポイント"
+    SSLポリシーを修正すると、該当ポリシーが適用された全てのリスナーの設定が自動的に更新されます。
+
+<details><summary>例</summary>
+
+```json
+{
+  "ssl_policy": {
+    "description": "暗号化スイートの強化",
+    "ciphers": "ECDHE-RSA-AES256-GCM-SHA384:TLS_AES_256_GCM_SHA384"
+  }
+}
+```
+
+</details>
+
+<a id="modify-ssl-policy-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| volumeAttachment | Body | Object | 接続情報オブジェクト |
-| volumeAttachment.device | Body | String | インスタンスのブロックストレージ名<br>例) `/dev/vdb` |
-| volumeAttachment.id | Body | UUID | 接続情報ID |
-| volumeAttachment.serverId | Body | UUID | インスタンスID |
-| volumeAttachment.volumeId | Body | UUID | ブロックストレージID |
+| ssl_policy | Body | Object | 修正されたSSLポリシーオブジェクト |
 
-<details><summary>例</summary>
-<p>
+レスポンスの構造は `SSLポリシー表示` と同じです。
 
-```json
-{
-    "volumeAttachment": {
-        "device": "/dev/sdb",
-        "id": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113",
-        "serverId": "1ad6852e-6605-4510-b639-d0bff864b49a",
-        "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-    }
-}
+- - -
+
+<a id="delete-ssl-policy"></a>
+### SSLポリシー削除 { #delete-ssl-policy }
+
 ```
-
-</p>
-</details>
-
----
-
-<a id="attach-additional-block-storage-to-the-instance"></a>
-### インスタンスに追加ブロックストレージを接続する
-```
-POST /v2/{tenantId}/servers/{serverId}/os-volume_attachments
+DELETE /v2.0/lbaas/ssl_policies/{sslPolicyId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-ssl-policy-request"></a>
 #### リクエスト
+
+このAPIはリクエスト本文(Body)を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | トークンID |
-| volumeAttachment | Body | Object | O | ブロックストレージ接続リクエストオブジェクト |
-| volumeAttachment.volumeId | Body | UUID | O | 接続するブロックストレージID |
+| sslPolicyId | URL | UUID | O | SSLポリシーID |
 
-<details><summary>例</summary>
-<p>
+!!! danger "注意"
+    SSLポリシーが1つ以上のリスナーに適用されている場合は削除できません。先に該当リスナーの`ssl_policy_id`を`null`に修正して接続を解除した後に削除してください。
 
-```json
-{
-  "volumeAttachment": {
-      "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-  }
-}
-```
-
-</p>
-</details>
-
+<a id="delete-ssl-policy-response"></a>
 #### レスポンス
 
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| volumeAttachment | Body | Object | 接続情報オブジェクト |
-| volumeAttachment.device | Body | String | インスタンスのブロックストレージ名<br>例) `/dev/vdb` |
-| volumeAttachment.id | Body | UUID | 接続情報ID |
-| volumeAttachment.serverId | Body | UUID | インスタンスID |
-| volumeAttachment.volumeId | Body | UUID | ブロックストレージID |
+このAPIはレスポンスボディ(Body)を返却しません。
 
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "volumeAttachment": {
-        "device": "/dev/vdc",
-        "id": "227cc671-f30b-4488-96fd-7d0bf13648d8",
-        "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-        "volumeId": "227cc671-f30b-4488-96fd-7d0bf13648d8"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="detach-block-storage-from-the-instance"></a>
-### インスタンスブロックストレージの接続を切る
-```
-DELETE /v2/{tenantId}/servers/{serverId}/os-volume_attachments/{volumeId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | インスタンスID |
-| volumeId | URL | UUID | O | 接続を切るブロックストレージID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-<a id="additional-instance-features"></a>
-## インスタンス追加機能
-NHN Cloudは、次のようなインスタンス制御および付加機能を提供します。
-
-* インスタンスの起動、停止、終了、再起動
-* インスタンスタイプ変更
-* インスタンスイメージ作成
-* セキュリティグループの追加および削除
-
-<a id="start-stopped-instance"></a>
-### 停止したインスタンスの起動
-
-停止したインスタンスを再び起動し、状態を**ACTIVE**に変更します。このAPIを呼び出すにはインスタンスの状態が**SHUTOFF**になっている必要があります。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| os-start | Body | none | O | インスタンス起動リクエスト |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "os-start" : null
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-<a id="start-terminated-instance"></a>
-### 終了したインスタンスの起動
-
-停止したインスタンスを再起動し、状態を**ACTIVE**に変更します。このAPIを呼び出すには、インスタンスの状態が**SHELVED_OFFLOADED**である必要があります。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|--|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| unshelve | Body | none | O | インスタンス起動リクエスト |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "unshelve" : null
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-<a id="stop-instance"></a>
-### インスタンス停止
-
-インスタンスを停止し、状態を**SHUTOFF**に変更します。このAPIを呼び出すにはインスタンスの状態が**ACTIVE**または**ERROR**になっている必要があります。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| os-stop | Body | none | O | インスタンス停止リクエスト |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "os-stop" : null
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-### インスタンス停止
-
-インスタンスを終了し、状態を**SHELVED_OFFLOADED**に変更します。このAPIを呼び出すためには、インスタンスの状態が**ACTIVE**でなければなりません。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明         |
-|---|---|---|---|-------------|
-| tenantId | URL | String | O | テナントID      |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID       |
-| shelve | Body | none | O | インスタンス停止リクエスト |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "shelve" : null
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-### インスタンス再起動
-
-インスタンスを再起動します。再起動の方法は**SOFT**と**HARD**があります。
-
-* **SOFT**方式：**「優雅な接続停止(Graceful shutdown)」**でインスタンスを停止し、再起動します。インスタンスが**ACTIVE**状態になっている必要があります。
-* **HARD**方式：強制停止してインスタンスを再起動します。物理サーバーの電源を落とし、再び入れるのと同じ動作です。インスタンスが次の状態の時のみ強制停止できます。
-    * **ACTIVE**
-    * **ERROR**
-    * **HARD_REBOOT**
-    * **PAUSED**
-    * **REBOOT**
-    * **SHUTOFF**
-    * **SUSPENDED**
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| reboot | Body | Object | O | インスタンス再起動リクエストオブジェクト |
-| reboot.type | Body | Enum | O | 再起動方法。**SOFT**または**HARD** |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "reboot" : {
-    "type": "SOFT"
-  }
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-### インスタンスタイプ変更
-
-インスタンスタイプを変更します。インスタンスが**ACTIVE**または**SHUTOFF**状態の時のみインスタンスタイプを変更できます。インスタンスの状態が**ACTIVE**の場合はインスタンスタイプ変更過程でインスタンスは停止し、再起動します。
-
-使用するイメージやインスタンスタイプによって、変更できるタイプが制限される場合があります。詳細はコンソールユーザーガイドを参照してください。
-
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明                                                                                                                                                                                                                |
-|---|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| tenantId | URL | String | O | テナントID                                                                                                                                                                                                             |
-| serverId | URL | UUID | O | 変更するインスタンスID                                                                                                                                                                                                        |
-| tokenId | Header | String | O | トークンID                                                                                                                                                                                                              |
-| resize | Body | Object | O | インスタンスタイプ変更リクエスト                                                                                                                                                                                                     |
-| resize.flavorRef | Body | UUID | O | 変更するインスタンスタイプID                                                                                                                                                                                                     |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "resize" : {
-    "flavorRef": "b5f1c148-732c-417d-9d1b-1dffca105dbe"
-  }
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-### インスタンスイメージ作成
-
-インスタンスからイメージを作成します。`U2`タイプのインスタンスのみ、このAPIでイメージを作成できます。`U2`タイプ以外のインスタンスイメージを作成するには[ブロックストレージAPI](/Storage/Block Storage/ja/public-api/#create-image-with-block-storage)を参照します。
-
-インスタンスの状態が**ACTIVE**、**SHUTOFF**、**SUSPENDED**、**PAUSED**の時のみイメージを作成できます。イメージの作成は、データの整合性を保障するためにインスタンスを停止した状態で進行することを推奨します。
-
-イメージの作成に成功すると、イメージの状態が`active`に変わります。イメージの作成が完了したことを確認するにはイメージ照会APIで持続的に状態を確認します。
-
-> [注意]
-> 作成されたイメージのサイズはルートブロックストレージの実際の使用量より大きくなる可能性があります。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| createImage | Body | Object | O | イメージ作成リクエスト |
-| createImage.name | Body | String | O | 作成するイメージの名前 |
-| createImage.metadata | Body | Object | - | 作成するイメージのメタデータ<br>Key-Value形式で記述 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "createImage" : {
-      "name" : "foo-image",
-      "metadata": {
-          "meta_var": "meta_val"
-      }
-  }
-}
-```
-
-</p>
-</details>
-
-
-#### レスポンス
-
-このAPIはレスポンス本文を返しません。作成されたイメージはレスポンスヘッダの`Location`で確認します。
-
-| 名前 | 種類 | 形式 | 説明 |
-|--|--|--|--|
-| Location | Header | String | 作成したイメージURL |
-
----
-
-### セキュリティグループ追加
-
-インスタンスにセキュリティグループを追加します。追加したセキュリティグループはインスタンスのすべてのポートに適用されます。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| addSecurityGroup | Body | Object | O | セキュリティグループ追加リクエストオブジェクト |
-| addSecurityGroup.name | Body | String | O | 追加するセキュリティグループ名 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "addSecurityGroup": {
-        "name": "test"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-### セキュリティグループ削除
-
-インスタンスからセキュリティグループを削除します。インスタンスのすべてのポートから指定したセキュリティグループが削除されます。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| removeSecurityGroup | Body | Object | O | セキュリティグループ削除リクエストオブジェクト |
-| removeSecurityGroup.name | Body | String | O | 削除するセキュリティグループ名 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "removeSecurityGroup": {
-        "name": "test"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
-
-<a id="terminate-instance"></a>
-## インスタンスメタデータ
-
-インスタンスメタデータ値に基づいてコンソールの**Compute > Instance**サービスページでインスタンス詳細情報画面の内容を決定します。インスタンスメタデータの内容は次のとおりです。
-
-| インスタンスメタデータ   | 内容                                         |
-|----------------|----------------------------------------------|
-| os_distro      | **基本情報**の**OS**の名前<br>os_versionと組み合わせて使用 |
-| os_version     | **基本情報**の**OS**のバージョン<br>os_distroと組み合わせて使用 |
-| image_name     | **基本情報**の**イメージ名**                        |
-| os_type      | **接続情報**形式                               |
-| login_username | **接続情報**のユーザー名                          |
-
-> [注意]インスタンスメタデータの変更及び削除の際、関連サービス及び機能に影響が発生する可能性があり、これによる結果に対する責任はユーザーにあります。
-### インスタンスメタデータリスト表示
-
-```
-GET /v2/{tenantId}/servers/{serverId}/metadata
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前     | 種類 | 形式 | 必須 | 説明                                             |
-|----------|---|---|---|--------------------------------------------------|
-| tenantId | URL | String | O | テナントID                                           |
-| serverId | URL | UUID | O | インスタンスID                                          |
-| tokenId  | Header | String | O | トークンID                                            |
-
-#### レスポンス
-
-| 名前     | 種類 | 形式 | 説明                                             |
-|----------|---|---|--------------------------------------------------|
-| metadata | Body | Object | インスタンスに作成または修正するメタデータオブジェクト<br>最大長さ255文字以下のキーと値のペア |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "metadata": {
-        "os_distro": "ubuntu",
-        "description": "Ubuntu Server 20.04.6 LTS (2023.11.21)",
-        "volume_size": "20",
-        "project_domain": "NORMAL",
-        "monitoring_agent": "sysmon",
-        "image_name": "Ubuntu Server 20.04.6 LTS (2023.11.21)",
-        "os_version": "Server 20.04 LTS",
-        "os_architecture": "amd64",
-        "login_username": "ubuntu",
-        "os_type": "linux",
-        "tc_env": "sysmon,dfeac7db42a192a73959d5646117af58"
-    }
-}
-```
-
-</p>
-</details>
-
-
-<a id="restart-instance"></a>
-### インスタンスメタデータ表示
-
-```
-GET /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前     | 種類 | 形式 | 必須 | 説明                     |
-|----------|---|---|---|--------------------------|
-| tenantId | URL | String | O | テナントID                   |
-| serverId | URL | UUID | O | インスタンスID                  |
-| key      | URL | String | O | インスタンスに作成または修正するメタデータのキー |
-| tokenId  | Header | String | O | トークンID                    |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明                                             |
-|------|---|---|--------------------------------------------------|
-| meta | Body | Object | インスタンスに作成または修正するメタデータオブジェクト<br>最大長さ255文字以下のキーと値のペア |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-<a id="change-instance-flavor"></a>
-### インスタンスメタデータを作成/修正する
-
-インスタンスのメタデータを作成または修正します。
-リクエストするキーが既存のキーと一致する場合、キーと値をリクエスト値に変更します。
-
-```
-PUT /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前     | 種類 | 形式 | 必須 | 説明                                             |
-|----------|---|---|---|--------------------------------------------------|
-| tenantId | URL | String | O | テナントID                                           |
-| serverId | URL | UUID | O | インスタンスID                                          |
-| key      | URL | String | O | インスタンスに作成または修正するメタデータのキー                        |
-| tokenId  | Header | String | O | トークンID                                            |
-| meta     | Body | Object | O | インスタンスに作成または修正するメタデータオブジェクト<br>最大長さ255文字以下のキーと値のペア |
-
-<details>
-<summary>例</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明                                             |
-|------|---|---|--------------------------------------------------|
-| meta | Body | Object | インスタンスに作成または修正するメタデータオブジェクト<br>最大長さ255文字以下のキーと値のペア |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-
-<a id="create-instance-image"></a>
-### インスタンスメタデータを削除する
-
-リクエストするキーと一致するインスタンスのメタデータを削除します。
-
-```
-DELETE /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前     | 種類 | 形式 | 必須 | 説明                |
-|----------|---|---|---|---------------------|
-| tenantId | URL | String | O | テナントID              |
-| serverId | URL | UUID | O | インスタンスID             |
-| key      | URL | String | O | インスタンスから削除するメタデータのキー |
-| tokenId  | Header | String | O | トークンID               |
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
-
-## 配置ポリシー
-
-<a id="add-security-group"></a>
-### 配置ポリシーを作成する
-
-配置ポリシーを作成します。
-分散バッチのための`anti-affinity`配置ポリシータイプのみ提供します。
-
-```
-POST /v2/{tenantId}/os-server-groups
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-| server_group | Body | Object | O | 配置ポリシーオブジェクト |
-| server_group.name | Body | String | O | 配置ポリシー名 |
-| server_group.policies | Body | Array | O | 配置ポリシータイプ<br>`anti-affinity`のみ設定可能 |
-
-<details>
-<summary>例</summary>
-<p>
-
-```json
-{
-    "server_group": {
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"            
-        ]
-    }
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|-----|-----|-----|-----|
-| server_group | Body | Object | 配置ポリシーオブジェクト |
-| server_group.id | Body | String | 配置ポリシーID |
-| server_group.name | Body | String | 配置ポリシー名 |
-| server_group.policies | Body | Array | 配置ポリシータイプ |
-| server_group.members | Body | Array | 配置ポリシーに割り当てられたインスタンスIDリスト |
-| server_group.metadata | Body | Object | 配置ポリシーメタデータオブジェクト<br>常に空の値で表示されます |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "server_group": {
-        "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"
-        ],
-        "members": [],
-        "metadata": {}
-    }
-}
-```
-
-</p>
-</details>
-
-<a id="delete-security-group"></a>
-### 配置ポリシーリスト表示
-
-```
-GET /v2/{tenantId}/os-server-groups
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|-----|-----|-----|-----|
-| server_groups | Body | Array | 配置ポリシーオブジェクトリスト |
-| server_groups.id | Body | String | 配置ポリシーID |
-| server_groups.name | Body | String | 配置ポリシー名 |
-| server_groups.policies | Body | Array | 配置ポリシータイプ |
-| server_groups.members | Body | Array | 配置ポリシーに割り当てられたインスタンスIDリスト |
-| server_groups.metadata | Body | Object | 配置ポリシーメタデータオブジェクト<br>常に空の値で表示されます |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "server_groups": [
-        {
-            "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-            "name": "policy-test1",
-            "policies": [
-                "anti-affinity"
-            ],
-            "members": [
-                "c040455d-6495-4628-ad81-ade79cf7b8d6",
-                "524e7d81-f373-43a0-b2ff-0a15f8255bb5"            
-            ],
-            "metadata": {}
-        },
-        {
-            "id": "f947c657-cbe0-4bf2-a2aa-59d198f8e096",
-            "name": "policy-test2",
-            "policies": [
-                "anti-affinity"
-            ],
-            "members": [],
-            "metadata": {}
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
-### 配置ポリシー表示
-
-```
-GET /v2/{tenantId}/os-server-groups/{servergroupId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | テナントID |
-| servergroupId | URL | String | O | 配置ポリシーID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|-----|-----|-----|-----|
-| server_group | Body | Object | 配置ポリシーオブジェクト |
-| server_group.id | Body | String | 配置ポリシーID |
-| server_group.name | Body | String | 配置ポリシー名 |
-| server_group.policies | Body | Array | 配置ポリシータイプ |
-| server_group.members | Body | Array | 配置ポリシーに割り当てられたインスタンスIDリスト |
-| server_group.metadata | Body | Object | 配置ポリシーメタデータオブジェクト<br>常に空の値で表示されます |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "server_group": {
-        "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"
-        ],
-        "members": [
-            "c040455d-6495-4628-ad81-ade79cf7b8d6",
-            "524e7d81-f373-43a0-b2ff-0a15f8255bb5"            
-        ],
-        "metadata": {}
-    }
-}
-```
-
-</p>
-</details>
-
-### 配置ポリシーを削除する
-
-```
-DELETE /v2/{tenantId}/os-server-groups/{servergroupId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | テナントID |
-| servergroupId | URL | String | O | 配置ポリシーID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-
-このAPIはレスポンス本文を返しません。
+- - -
