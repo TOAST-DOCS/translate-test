@@ -1,130 +1,86 @@
-## Compute > Instance > 問題解決ガイド
+<!-- pre-align:aligned sig=800defce3427 -->
 
-NHN Cloudの使用時に問題が発生した場合、それを解決する方法を説明します。
+<a id="troubleshooting-guide"></a>
+## Notification > KakaoTalk Bizmessage > 問題解決ガイド { #troubleshooting-guide }
 
-<h3>現在NHN Cloudで基本提供するOSバージョン以外のバージョンを使用したいです。個人イメージをアップロードして使用できますか？</h3>
+<a id="message-for-query-delivery-button"></a>
+### 配送照会ボタン文言 { #message-for-query-delivery-button }
 
-NHN Cloudで提供するOSバージョンのみ利用できます。個人イメージのアップロードはサポートしません。
-個人OSイメージを使用するにはNHN Cloudが提供するイメージでインスタンスを作成した後、**イメージ作成**機能を利用してください。
-<br>
+カカオメッセージに運送会社名と送り状番号を記載し、配送照会ボタンを追加すると、メッセージ内容から運送会社名と送り状番号を抽出して、各運送会社が提供する照会ページへのリンクが自動的に作成されます。カカオでサポートしていない運送会社と送り状番号がメッセージに含まれる場合は、配送照会ボタンが露出されません。
 
-<h3>インスタンスに接続すると、「Permissions 0644 for '/Users/username/.ssh/your-key.pem' are too open.」というメッセージが表示されて接続できません。</h3>
+配送照会ボタンをサポートする運送会社リストは下記の通りです。
 
-インスタンス接続に使用するキーペアの秘密鍵(PEMキー)の権限が正しくないため生じる問題です。
-下記のように秘密鍵ファイルの権限を調整します。
+カカオトークで配送照会可能な運送会社リスト:
 
-    $ chmod 600 your-key.pem
-<br>
+KGB택배 우체국택배 로젠택배 일양로지스 GTX로지스 FedEx 한진택배 경동택배 합동택배 롯데택배 농협택배 호남택배 CU 편의점택배 CVSnet편의점택배 TNT Express USPS EMS 천일택배 DHL 대신택배 건영택배 한덱스
 
-<h3>CentOSインスタンスでどうやってroot権限を取得しますか？</h3>
+<span style="color:red">**このリストは、カカオと各運送会社の契約に応じて変動する場合があります。**</span>
+<b>CJ대한통운</b>
+* 카카오 비즈메시지의 배송조회 버튼 관련 변경으로 인해, 메시지 내 CJ대한통운 송장번호가 포함된 경우, '배송조회' 버튼 없이 발송됩니다.(추후 카카오에서 변경 시, 재공지)
 
-CentOSインスタンスでroot権限を取得するには、次のように`sudo`コマンドを利用します。
-
-    $ sudo su
-<br>
-
-<h3>個人イメージを作り、インスタンスを作成して起動しましたがマウント(mount)エラーが発生します。</h3>
-
-2つ以上のブロックストレージを使用するインスタンスでイメージを作成し、作成したイメージでインスタンスを作って起動すると上記のような問題が発生します。
-
-2つ以上のブロックストレージを使用するインスタンスは、基本ディスク以外のディスクを`/etc/fstab`ファイルに設定します。イメージ作成時にこのファイルも複製されるため、新しいインスタンスが起動する時、`/etc/fstab`ファイルが参照するブロックストレージがなくてマウントエラーが発生します。
-
-この問題を解消するには、`/etc/fstab`ファイルで基本ディスク以外のブロックストレージ設定をコメント処理してイメージを作成する必要があります。
-<br>
-<br>
-
-<h3>SSH接続が遅すぎます</h3>
-
-インスタンスが属すセキュリティグループの送信部分でDNSをブロックした場合に発生します。DNS送信ができるようにセキュリティグループを調整します。
-<br>
-<br>
-
-<h3>「Could not resolve the host」メッセージが表示され、yumなどを使用できません。</h3>
-
-インスタンスが属すセキュリティグループの送信部分でDNSをブロックした場合に発生します。DNS送信ができるようにセキュリティグループを調整します。
-<br>
-<br>
-
-<a id="proxy-instance-issue">
-<h3>プロキシを使用しているインスタンスでの動作がおかしいです。</h3>
-</a>
-
-プロキシを使用するインスタンスでNHN CloudのMonitoringサービス(System Monitoring, Service Monitoring, Cloud Monitoring)が正常に動作しない場合があります。また、Windows OSの場合、パスワード初期化どの問題が発生する可能性があります。
-
-このような問題を防止するには、プロキシを使用するインスタンスで`169.254.0.0/16`帯域については、プロキシを使用できないように設定する必要があります。一般的には、`no_proxy`という環境変数にこの値を設定しますが、使用するプロキシによってはこの環境変数を無視する場合もありますので、使用するプロキシのガイドを参考にして設定してください。
-<br>
-<br>
-
-<h3>CentOS インスタンスでパッケージアップデートに失敗します。</h3>
-
-次のように`yum repository`ファイルを修正して使用します。
-公式サポートが終了したOSは追加アップデートがサポートされないため、上位バージョンOSの使用を推奨します。
-
-<h4>CentOS 6.x</h4>
+運送会別社送り状番号形式
 
 ```
-$ sudo vi /etc/yum.repos.d/CentOS-Base.repo
+우체국택배: 数字 13席 または 数字 6席 + 数字 7席(区切り記号 '-' または '_')
+例示) 1234567890123, 123456-1234567, 123456_1234567
 
-[base]
-…
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
-baseurl=https://vault.centos.org/6.10/os/$basearch/
-…
+로젠택배: 数字 11席 または 数字 3席 + 数字 4席 + 数字 4席(区切り記号 '-' または '_'))
+例示) 12345678901, 123-1234-1234, 123_1234_1234
 
-[updates]
-…
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
-baseurl=https://vault.centos.org/6.10/updates/$basearch/
-…
+일양로지스: 数字 9~11席
+例示) 123456789, 1234567890, 12345678901
 
-#additional packages that may be useful
-[extras]
-name=CentOS-$releasever - Extras
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
-baseurl=https://vault.centos.org/6.10/extras/$basearch/
-...
+FedEx: 数字 12席
+例示) 123456789012
 
+한진택배: 数字 10席 または 数字 12席
+例示) 1234567890, 123456789012
+
+경동택배: 数字 9~16席 または 数字 4席 + 数字 3席 + 数字 6席(区切り記号 '-')
+例示) 123456789, 1234567890123456, 1234-123-123456
+
+합동택배: 数字 9~16席
+例示) 123456789, 1234567890123456
+
+롯데택배: 数字 12席 または 数字 4席 + 数字 4席 + 数字 4席(区切り記号 '-')
+例示) 123456789012, 1234-1234-1234
+
+농협택배: 数字 12席
+例示) 123456789012
+
+호남택배: 数字 10席
+例示) 1234567890
+
+천일택배: 数字 11席
+例示) 12345678901
+
+대신택배: 数字 13席
+例示) 1234567890123
+
+건영택배: 数字 10席
+例示) 1234567890
+
+CU편의점택배: 数字 10席 または 数字 12席 または 数字 4席 + 数字 4席 + 数字 4席(区切り記号 '-' または '_')
+例示) 1234567890, 123456789012, 1234-1234-1234, 1234_1234_1234
+
+CVSnet편의점택배: 数字 10席 または 数字 12席 または 数字 4席 + 数字 4席 + 数字 4席(区切り記号 '-' または '_')
+例示) 1234567890, 123456789012, 1234-1234-1234, 1234_1234_1234
+
+한덱스: 数字 10席 または 数字 14席
+例示) 1234567890, 12345678901234
+
+TNT Express: 数字 8~9席
+例示) 12345678, 123456789
+
+USPS: 数字 10席 または 数字 22席 または 大文字 アルファベット 2席 + 数字 9席 + 大文字 アルファベット 2席(区切り記号 無い)
+例示) 1234567890, 1234567890123456789012, AB123456789AB
+
+EMS: 大文字 アルファベット 2席 + 数字 9席 + 大文字 アルファベット 2席(区切り記号 無い)
+例示) AB1234567890AB
+
+DHL: 数字 10席
+例示) 1234567890
+
+굿투럭: 数字 4席 + 数字 4席 + 数字 4席(区切り記号 '-')
+예시) 1234-1234-1234
 ```
-
-<h4>CentOS 7.x</h4>
-
-```
-$ sudo vi /etc/yum.repos.d/CentOS-Base.repo
-[base]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/os/$basearch/
-...
-[updates]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/updates/$basearch/
-...
-[extras]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/extras/$basearch/
-...
-[centosplus]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/centosplus/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/centosplus/$basearch/
-...
-```
-
-<h4>共通</h4>
-
-```
-$ sudo yum clean all
-$ sudo yum repolist
-```
-
-<br>
-<br>
