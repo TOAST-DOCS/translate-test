@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=4f53951e6d9e -->
 
 <a id="friendtalkupgrade-overview"></a>
