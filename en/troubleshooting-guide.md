@@ -1,135 +1,74 @@
-## Compute > Instance > Troubleshooting Guide
+<!-- pre-align:aligned sig=c775a568be8f -->
 
-The document describes how to resolve issues you may encounter while using NHN Cloud.
+# Solution Guide
+**Security > Secure Key Manager > Solution Guide**
 
-<h3> I want to use a different version, other than the default OS version of NHN Cloud. Can I upload my personal images? </h3>
+The following describes the solutions for main issues that may arise while using Secure Key Manager.
 
-You can only use the OS version provided by NHN Cloud. And uploading personal images is not allowed.
-To use personal OS images, create an instance with NHN Cloud image and apply **Create Image**.
-<br>
+<a id="api-call-failure-returns-invalid-appkey-error-message"></a>
+## API call failure returns Invalid Appkey error message. { #api-call-failure-returns-invalid-appkey-error-message }
+* Occurs when API is called with an invalid appkey.
+    * Check if appkey was correctly applied as displayed on the URL & Appkey window in the Secure Key Manager management page.
 
-<h3> When I try to access instance, I find "Permissions 0644 for '/Users/username/.ssh/your-key.pem' are too open." and access is not available. </h3>
+<a id="api-call-failure-returns-invalid-key-id-error-message"></a>
+## API call failure returns Invalid Key ID error message. { #api-call-failure-returns-invalid-key-id-error-message }
+* Occurs when Key ID for an API call is invalid.
+    * Check if the used key ID is correct.
+    * See if the status of the key is In Service.
 
-It happens when the personal key (PEM key) applied to access instance has invalid authority.
-Adjust the authority of personal key file like below.
+<a id="api-call-failure-returns-invalid-key-version-error-message"></a>
+## API call failure returns Invalid Key Version error message. { #api-call-failure-returns-invalid-key-version-error-message }
+* Occurs when API is called with invalid key version.
+    * If it comes from Decrypt Symmetric Keys API, check if the key version applied for encryption still exists.
+    * If it comes from Verify Asymmetric Keys API, check if the key version applied for signature still exists.
 
-    $ chmod 600 your-key.pem
-<br>
+<a id="api-call-failure-returns-invalid-user-data-error-message"></a>
+## API call failure returns Invalid User Data error message. { #api-call-failure-returns-invalid-user-data-error-message }
+* Occurs when API is called with invalid user data.
+    * If it comes from Decrypt Symmetric Keys API, check if the data for decryption is correct.
+    * If it comes from Verify Asymmetric Keys API, check if the signature value is correct.
 
-<h3> How do I get the root authority from CentOS instance?  </h3>
+<a id="api-call-failure-returns-invalid-key-status-error-message"></a>
+## API call failure returns Invalid Key Status error message. { #api-call-failure-returns-invalid-key-status-error-message }
+* Occurs when API is called with invalid key.
+    * If it comes from Decrypt Asymmetric Keys API, check if the key for encryption is 'In Service'.
+    * If it comes from Verify Asymmetric Keys API, check if the key for signature is 'In Service'.
 
-To get root authority from CentOS instance, use the 'sudo' command like follows.
+<a id="api-call-failure-returns-invalid-key-version-status-error-message"></a>
+## API call failure returns Invalid Key Version Status error message. { #api-call-failure-returns-invalid-key-version-status-error-message }
+* Occurs when API is called with invalid key version.
+    * If it comes from Decrypt Asymmetric Keys API, check if the key version for encryption is 'In Service'.
+    * If it comes from Verify Asymmetric Keys API, check if the key version for signature is 'In Service'.
 
-    $ sudo su
-<br>
+<a id="api-call-failure-returns-ipv4-auth-failure-error-message"></a>
+## API call failure returns IPv4 Auth Failure error message. { #api-call-failure-returns-ipv4-auth-failure-error-message }
+* Occurs when it fails to certify IPv4 address.
+    * Check if the IPv4 address of API caller client has been registered in Secure Key Manager.
+    * Check if the client IPv4 address registered in Secure Key Manager is 'In Service'.
 
-<h3> I find error mounting, after creating image and instance, and booting it. </h3>
+<a id="api-call-failure-returns-mac-auth-failure-error-message"></a>
+## API call failure returns MAC Auth Failure error message. { #api-call-failure-returns-mac-auth-failure-error-message }
+* Occurs when it fails to certify MAC address.
+    * Check if the MAC address of API caller client has been registered in Secure Key Manager.
+    * Check if the MAC address registered in Secure Key Manager is 'In Service'.
+    * Check if the client's MAC address has been added to the request header of X-TOAST-CLIENT-MAC-ADDR to call API.
 
-You shall encounter with such error, when an image is created with instance using two or more block storages and instance is created and booted with such image.
+<a id="api-call-failure-returns-certificate-auth-failure-error-message"></a>
+## API call failure returns Certificate Auth Failure error message. { #api-call-failure-returns-certificate-auth-failure-error-message }
+* Occurs when it fails to certify client's certificate.
+    * Check if the certificate has been issued by Secure Key Manager.
+    * Check if the certificate registered in Secure Key Manager is 'In Service'.
 
-For instances that use more than two block storages, set disks other than default disk in the `/etc/fstab` file. Since the file is to be replicated as well, when image is created, error occurs in mounting due to lack of a block storage referenced by the`/etc/fstab` file.
+<a id="api-call-failure-returns-certificate-related-error-messages"></a>
+## API call failure returns certificate-related error messages. { #api-call-failure-returns-certificate-related-error-messages }
+* Occurs when certificate is not correct.
+    * Check if the certificate has been issued by Secure Key Manager.
+    * Check valid period of the certificate.
 
-To resolve this issue, set block storage of the `/etc/fstab` file, except default disk, as footnote, before creating an image.
-<br>
-<br>
+<a id="api-call-failure-returns-url-not-found-error-message"></a>
+## API call failure returns URL NOT FOUND error message. { #api-call-failure-returns-url-not-found-error-message }
+* Occurs when a request is made with an invalid URL.
+    * Check if the URL is correct.
 
-<h3> It takes too long to access SSH. </h3>
-
-It happens when DNS is blocked at the receiving part of the security group to which instance belongs. Adjust the security group to be allowed to receive DNS.
-<br>
-<br>
-
-<h3> I find "Could not resolve the host" and cannot use yum. </h3>
-
-It happens when DNS is blocked at the receiving part of the security group to which instance belongs. Adjust the security group to be allowed to receive DNS.
-<br>
-<br>
-
-<a id="proxy-instance-issue">
-<h3>Something goes wrong on instances using proxies</h3>
-</a>
-
-NHN Cloud's Monitoring services (System Monitoring, Service Monitoring, Cloud Monitoring) may not work properly on instances that use proxies. Also, in the case of Windows operating systems, problems such as password reset may occur.
-
-To avoid this issue, you must disable proxying for the `169.254.0.0/16` band on instances that use proxies. Typically, you would set this value in an environment variable called `no_proxy`, but some proxies ignore this environment variable, so refer to the proxy guide to set this up.
-<br>
-<br>
-
-<h3> Package update fails on CentOS instances. </h3>
-
-Use the `yum repository` file after modifying the file as follows.
-Additional updates are not supported for OS for which official support has ended, so it is recommended that you use a higher version of the OS.
-
-<h4>CentOS 6.x</h4>
-
-```
-$ sudo vi /etc/yum.repos.d/CentOS-Base.repo
-
-[base]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
-baseurl=https://vault.centos.org/6.10/os/$basearch/
-...
-
-[updates]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
-baseurl=https://vault.centos.org/6.10/updates/$basearch/
-...
-
-[extras]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
-baseurl=https://vault.centos.org/6.10/extras/$basearch/
-...
-
-```
-
-<h4>CentOS 7.x</h4>
-
-```
-
-$ sudo vi /etc/yum.repos.d/CentOS-Base.repo
-
-[base]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/os/$basearch/
-...
-
-[updates]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/updates/$basearch/
-...
-
-[extras]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/extras/$basearch/
-...
-
-[centosplus]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/centosplus/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/centosplus/$basearch/
-...
-```
-
-<h4>Common</h4>
-
-```
-$ sudo yum clean all
-$ sudo yum repolist
-```
-
-<br>
-<br>
-
+<a id="api-call-failure-returns-url-not-found-error-message-for-any-other-errors-that-occur-during-an-api-request-contact-us-at-customer-support-contact-us"></a>
+#### For any other errors that occur during an API request, contact us at Customer Support > [Contact us](https://www.nhncloud.com/KR/support/inquiry)
