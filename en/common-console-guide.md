@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=81b14e4f383d -->
 
 <a id="common-console-guide"></a>
