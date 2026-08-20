@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=6a9497a9cc76 -->
 
 <a id="content-delivery-cdn-api-v30-guide"></a>
@@ -726,9 +728,8 @@ curl -X GET "https://cdn.api.nhncloudservice.com/v3.0/appKeys/{appKey}/distribut
 | multipleWildcardPath | String | 任意 |   |             | 生成されたトークンを利用してアクセスする複数のワイルドカードパス |
 | sessionId |           String | 任意 |    |  文字列の長さは最大36バイト           | 単一のアクセスリクエストに対してsessionIdを含めてトークンを生成 |
 
-* `singlePath`、`singleWildcardPath`、`multipleWildcardPath`のうち、1つ以上の値が必須で存在する必要があります。
-* トークンの生成及び使用に関する詳細な内容は、[コンソール使用ガイド > Auth Token 認証アクセス管理 > 2. トークン生成](./console-guide/#access-control-for-auth-token-authentication-create-a-token)をご参照ください。
-
+* `singlePath`、`singleWildcardPath`、`multipleWildcardPath` のうち、1つ以上の値が必須です。
+* トークンの生成および使用に関する詳細については、[コンソール使用ガイド > Auth Token認証のアクセス管理 > 2. トークン生成](./console-guide/#access-control-for-auth-token-authentication-create-a-token)を参照してください。
 
 <a id="create-auth-token-response"></a>
 #### レスポンス
