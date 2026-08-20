@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=f05aff1b6142 -->
 
 <a id="security-vaccine-console-user-guide-ahnlabahnlab-cpp"></a>
@@ -6,13 +8,13 @@
 ここではVaccine Agentの有効化および無効化手の順と、サービス使用方法を説明します。
 
 <a id="set-up-security-groups"></a>
-## セキュリティグループ(Security Groups) 設定 { #set-up-security-groups }
+## Security Groups 設定 { #set-up-security-groups }
 
 ワクチンサーバーと通信するには、セキュリティグループに以下の内容を追加します。
 
 | 方向 | ポート | リージョン | CIDR |
 | --- | --- | --- | ---- |
-| Egress | 5465, 5645, 8803, 8804, 8807, 8809, 8810 | 韓国(パンギョ)、韓国(ピョンチョン) | 114.110.145.157/32 or {SG IP} |
+| Egress | 5465, 5645, 8803, 8804, 8807, 8809, 8810 | 韓国(板橋)、韓国(平村) | 114.110.144.193/32 or {SG IP}|
 
 
 <a id="integrate-vaccine-service-gateway"></a>
