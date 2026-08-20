@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=b8bad82ac65c -->
 
 <a id="security-vaccine-console-guide"></a>
