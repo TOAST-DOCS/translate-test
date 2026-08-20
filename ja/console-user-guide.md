@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=a1a3882f94e2 -->
 
 <a id="data-analytics-dataquery-console-user-guide"></a>
@@ -373,7 +375,7 @@ system.register_partition(schema_name, table_name, partition_columns, partition_
 
 1. サンプルCSVファイルを[ダウンロード](https://static.toastoven.net/prod_dataquery/files/facility-boundary-us-all.csv)してObject Storageにアップロードします。
 
-![Object Storage アップロード画面](../static/images/dataquery_console_04.png)
+![Object Storage 업로드 화면](../static/images/dataquery_console_04.png)
 
 2. Object Storageコンソールでアクセスキー、シークレットキーを発行します。
 3. Object Storageのアクセスキー、シークレットキー、エンドポイントを利用してObject Storageデータソースを入力します。
@@ -407,7 +409,7 @@ with (
 
 6. テーブルが正常に追加されたことを確認するためにテーブルを更新します。
 
-![テーブル更新画面](../static/images/dataquery_console_05.png){ width="220" }
+![テーブルのリフレッシュ画面](../static/images/dataquery_console_05.png){ width="220" }
 
 7. 該当テーブルで、次のようにクエリを実行します。
 
