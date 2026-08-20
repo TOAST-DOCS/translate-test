@@ -15,7 +15,7 @@ This document describes how to manage storage accounts, containers, and objects 
 <a id="endpoint"></a>
 ### API Endpoint { #endpoint }
 
-To use the API, you need an API endpoint and a token. Refer to [IaaS Token]($[ identity_guide_url ]$) to prepare the information required to use the API.
+To use the API, you need an API endpoint and a token. Refer to [IaaS Token]($[ identity_guide_url ]$) to prepare the information required for API use.
 Object Storage API uses the `object-store` type endpoint. Refer to the `serviceCatalog` in the token issuance response for the valid endpoint.
 
 | Region | Endpoint |
@@ -132,7 +132,7 @@ public class AuthService {
     public String requestToken() {
         String identityUrl = this.authUrl + "/tokens";
 
-        // Create headers
+        // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
@@ -503,11 +503,11 @@ public class AccountService {
 
         List<String> containerList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
-            // Convert the list received as a String to an array
+            // Convert the list received as a String into an array
             containerList = Arrays.asList(response.getBody().split("\\r?\\n"));
         }
 
-        // Convert the array to a List and return
+        // Convert the array to a List and return it
         return new ArrayList<String>(containerList);
     }
 
@@ -1074,7 +1074,7 @@ A request body is not required.
 
 <a id="set-container-rbac-policy"></a>
 ##### Access Policy Configuration
-You can set container access policies by using the `X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, and `X-Container-Ip-Acl-Service-Gateway-Control` headers. For more information, see the [Access Policy Configuration Guide](acl-guide$[ file_suffix ]$/).
+You can use the `X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, and `X-Container-Ip-Acl-Service-Gateway-Control` headers to set container access policies. For more information, see the [Access Policy Configuration Guide](acl-guide$[ file_suffix ]$/).
 
 <br>
 
@@ -1084,7 +1084,7 @@ You can use the `X-Container-Object-Lifecycle` header to set the lifecycle of ob
 You can use the `X-Container-Object-Transfer-To` header to move objects whose lifecycle has expired to a specified container for storage. If no container is specified, expired objects are deleted.
 
 !!! tip "Tip"
-    You can set detailed lifecycle rules through container policies.
+    You can configure detailed lifecycle rules through container policies.
     For more information, see [Container Policy Configuration Guide](container-policy-guide$[ file_suffix ]$/#lifecycle).
 
 <!-- Line break comment -->
@@ -1098,7 +1098,7 @@ You can use the `X-Container-Object-Transfer-To` header to move objects whose li
 
 <a id="set-container-object-version-policy"></a>
 ##### Set Version Control Policy
-As described in [Update an Object](api-guide$[ file_suffix ]$/#update-an-object), if an object with the same name already exists when you upload an object, the object is updated. If you want to keep the content of the existing object, you can use the `X-History-Location` header to specify an **archive container** to store previous versions.
+As described in the [Update an Object](api-guide$[ file_suffix ]$/#update-an-object) section, if an object with the same name already exists when uploading an object, the object is updated. If you want to keep the contents of the existing object, you can use the `X-History-Location` header to specify an **archive container** in which previous versions are stored.
 
 Previous version objects are stored in the archive container in the following format:
 ```
@@ -1135,8 +1135,8 @@ The name for an error document of a static website has the form of `{response co
 
 If you directly call the Object Storage API from the browser, you need to set Cross-Origin Resource Sharing (CORS). Set an allowed-origin list using the `X-Container-Meta-Access-Control-Allow-Origin` header. You can enter one or more origins separated by spaces (` `) or allow all origins by entering `*`.
 
-!!! tip "Note"
-    The maximum number of allowed origins that can be set in `X-Container-Meta-Access-Control-Allow-Origin` is 100. This limit also applies when configuring via [container policy](container-policy-guide$[ file_suffix ]$/#cors).
+!!! tip "알아두기"
+    The maximum number of allowed origins that can be set in `X-Container-Meta-Access-Control-Allow-Origin` is 100. This limit also applies when setting via [Container Policy](container-policy-guide$[ file_suffix ]$/#cors).
 
 <details>
 <summary>View CORS configuration example</summary>
@@ -1370,7 +1370,7 @@ public class ContainerService {
         // Create headers
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Container-Read", permission);    // Add permission to headers
+        headers.add("X-Container-Read", permission);    // Add permission to header
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
@@ -1696,7 +1696,7 @@ public class ObjectService {
             }
         };
 
-        // Configure settings to use the overridden RequestCallback
+        // Configure to use the overridden RequestCallback
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setBufferRequestBody(false);
         RestTemplate restTemplate = new RestTemplate(requestFactory);
@@ -1704,7 +1704,7 @@ public class ObjectService {
         HttpMessageConverterExtractor<String> responseExtractor
             = new HttpMessageConverterExtractor<String>(String.class, restTemplate.getMessageConverters());
 
-        // Call API
+        // Call the API
         restTemplate.execute(url, HttpMethod.PUT, requestCallback, responseExtractor);
     }
 
@@ -1718,7 +1718,7 @@ public class ObjectService {
         ObjectService objectService = new ObjectService(storageUrl, tokenId);
 
         try {
-            // Create InputStream from file
+            // Create an InputStream from a file
             File objFile = new File(objectPath + "/" + objectName);
             InputStream inputStream = new FileInputStream(objFile);
 
@@ -1964,7 +1964,7 @@ DLO method multipart upload example
 <summary>cURL</summary>
 
 ```
-# Split the file into 200 MB parts
+# Split the file into 200 MB segments
 $ split -d -b 209715200 large_obj.img large_obj.img.
 
 # Upload the split objects
@@ -2010,7 +2010,7 @@ public class ObjectService {
         // Create headers
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Object-Manifest", manifestName);  // Add manifest to header
+        headers.add("X-Object-Manifest", manifestName);  // Specify manifest in header
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
@@ -2030,13 +2030,13 @@ public class ObjectService {
         File objFile = new File(objectPath + "/" + objectName);
         int fileSize = (int)objFile.length();
 
-        final int defaultChunkSize = 100 * 1024; // Split into 100 KB chunks
+        final int defaultChunkSize = 100 * 1024; // Split in 100 KB units
         int chunkSize = defaultChunkSize;
-        int chunkNo = 0;  // Chunk number used to generate segment object names
+        int chunkNo = 0;  // Chunk number used to generate the name of each split object
         int totalBytesRead = 0;
 
         try {
-            // Create InputStream from file
+            // Create an InputStream from the file
             InputStream inputStream = new BufferedInputStream(new FileInputStream(objFile));
             while(totalBytesRead < fileSize) {
 
@@ -2046,12 +2046,12 @@ public class ObjectService {
                     chunkSize = remainedBytes;
                 }
 
-                // Read chunk-sized data into byte buffer
+                // Read data of chunk size into a byte buffer
                 byte[] chunkBuffer = new byte[chunkSize];
                 int bytesRead = inputStream.read(chunkBuffer, 0, chunkSize);
 
                 if(bytesRead > 0) {
-                    // Convert buffer data to InputStream and upload using the uploadObject() method from the object upload example
+                    // Convert buffer data to an InputStream and upload; uses the uploadObject() method from the object upload example
                     String objPartName = String.format("%s/%03d", objectName, ++chunkNo);
                     InputStream chunkInputStream = new ByteArrayInputStream(chunkBuffer);
                     objectService.uploadObject(containerName, objPartName, chunkInputStream);
@@ -2060,7 +2060,7 @@ public class ObjectService {
                 }
             }
 
-            // Upload manifest file
+            // Upload the manifest file
             objectService.uploadManifestObject(containerName, objectName);
 
             System.out.println("Upload OK");
@@ -2366,14 +2366,14 @@ public class ObjectService {
     public File downloadObject(String containerName, String objectName, String downloadPath) {
         String url = this.getUrl(containerName, objectName);
 
-        // RequestCallback that adds a token to the request header
+        // RequestCallback that adds the token to the request header
         RequestCallback callback = (request) -> {
             HttpHeaders headers = request.getHeaders();
             headers.add("X-Auth-Token", tokenId);
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
         };
 
-        // Extractor that receives and saves the response
+        // Extractor that receives the response and saves it
         ResponseExtractor<File> extractor = (clientHttpResponse) -> {
             File ret = new File(downloadPath + "/" + objectName);
             StreamUtils.copy(clientHttpResponse.getBody(), Files.newOutputStream(ret.toPath()));
@@ -2393,7 +2393,7 @@ public class ObjectService {
         ObjectService objectService = new ObjectService(storageUrl, tokenId);
 
         try {
-            // Download the object
+            // Download object
             objectService.downloadObject(containerName, objectName, downloadPath);
             System.out.println("\nDownload OK");
         } catch (Exception e) {
@@ -2570,7 +2570,7 @@ This request does not return a response body. For a valid request, return status
 <details>
 <summary>cURL</summary>
 
-**Copy Single Object**
+**Copy a Single Object**
 ```
 # COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
@@ -2583,7 +2583,7 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 $[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/copy_con/3a45e9.jpg
 ```
 
-**Copy Multipart Manifest Object**
+**Copy multipart manifest object**
 ```
 # COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
@@ -2860,7 +2860,7 @@ class ObjectService {
   function set_metadata($container, $object, $key, $value) {
     $req_url = $this->get_url($container, $object);
     $req_header = $this->get_request_header();
-    $req_header[] = 'X-Object-Meta-'.$key.': '.$value;  // Add metadata to the header
+    $req_header[] = 'X-Object-Meta-'.$key.': '.$value;  // Add metadata to header
 
     $curl  = curl_init($req_url);
     curl_setopt_array($curl, array(

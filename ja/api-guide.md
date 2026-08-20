@@ -15,8 +15,8 @@
 <a id="endpoint"></a>
 ### API エンドポイント { #endpoint }
 
-APIを使用するには、APIエンドポイントとトークンが必要です。[IaaS トークン]($[ identity_guide_url ]$)を参考に、API使用に必要な情報を準備します。
-Object Storage APIは`object-store`タイプのエンドポイントを使用します。正確なエンドポイントは、トークン発行レスポンスの`serviceCatalog`を参照してください。
+API を使用するには、API エンドポイントとトークンが必要です。[IaaS トークン]($[ identity_guide_url ]$)を参照して、API の使用に必要な情報を準備します。
+オブジェクトストレージ API は `object-store` タイプのエンドポイントを使用します。正確なエンドポイントは、トークン発行レスポンスの `serviceCatalog` を参照してください。
 
 | リージョン | エンドポイント |
 | --- | --- |
@@ -25,7 +25,7 @@ Object Storage APIは`object-store`タイプのエンドポイントを使用し
 <a id="auth"></a>
 ### 認証および権限 { #auth }
 
-オブジェクトストレージは、API 呼び出し時の認証・認可に IaaS トークンを使用します。IaaS トークンは、NHN Cloud の OpenStack ベースのインフラサービス (IaaS) で使用する認証トークンです。
+オブジェクトストレージは、API 呼び出し時の認証/認可に IaaS トークンを使用します。IaaS トークンは、NHN Cloud の OpenStack ベースのインフラサービス (IaaS) で使用する認証トークンです。
 IaaS トークンの発行および使用方法については、[IaaS トークン]($[ identity_guide_url ]$)を参照してください。
 
 !!! danger "注意"
@@ -214,19 +214,19 @@ function get_token($auth_url, $tenant_id, $username, $password) {
         'password' => $password
       )
     )
-  );  // リクエスト本文の生成
+  );  // リクエスト本文を作成
   $req_header = array(
     'Content-Type: application/json'
-  );  // リクエストヘッダーの生成
+  );  // リクエストヘッダーを作成
 
-  $curl  = curl_init($url); // curl の初期化
+  $curl  = curl_init($url); // curl を初期化
   curl_setopt_array($curl, array(
     CURLOPT_POST => TRUE,
     CURLOPT_RETURNTRANSFER => TRUE,
     CURLOPT_HTTPHEADER => $req_header,
     CURLOPT_POSTFIELDS => json_encode($req_body)
-  )); // パラメータの設定
-  $response = curl_exec($curl); // API の呼び出し
+  )); // パラメータを設定
+  $response = curl_exec($curl); // API を呼び出し
   curl_close($curl);
 
   return $response;
@@ -489,15 +489,15 @@ package com.nhn.cloud.obs;
 
 @Data
 public class AccountService {
-    // AccountService クラス ...
+    // AccountService Class ...
     public List<String> getContainerList() {
-        // ヘッダー作成
+        // ヘッダーの作成
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 呼び出し
+        // API の呼び出し
         ResponseEntity<String> response
             = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
 
@@ -604,27 +604,22 @@ foreach($container_list as $container) {
 !!! tip "ヒント"
     コンテナ名に特殊文字 ``' " ` < > ;`` および空白、相対パス文字 (`. ..`) は使用できません。
 
-IP アドレス形式の名前は使用できません。
+コンテナを作成する際、`X-Storage-Policy` ヘッダーを使用してコンテナのストレージクラスを指定できます。頻繁にアクセスするデータ向けの Standard クラスと、アクセス頻度の低いデータを低コストで長期保管できる Economy クラスを選択できます。ストレージクラスを指定しない場合は、Standard クラスが適用されます。
 
-コンテナまたはオブジェクト名に特殊文字 `! * ' ( ) ; : @ & = + $ , / ? # [ ]` が含まれている場合、API を使用する際は必ず URL エンコード（パーセントエンコード）を行う必要があります。これらの文字は URL で重要な役割を持つ予約文字です。これらの文字を含むパスを URL エンコードせずに API リクエストを送信した場合、期待どおりのレスポンスを受け取ることはできません。
+コンテナまたはオブジェクト名に特殊文字 `! * ' ( ) ; : @ & = + $ , / ? # [ ]` が含まれている場合、API を使用する際は必ず URL エンコード（パーセントエンコード）を行う必要があります。これらの文字は URL において重要な役割を持つ予約文字です。これらの文字を含むパスを URL エンコードせずに API リクエストを送信すると、期待どおりのレスポンスを受け取ることはできません。
 
 {% if ec %}
 コンテナを作成する際に `X-Storage-Policy` ヘッダーを使用して、コンテナのストレージクラスを指定できます。頻繁にアクセスするデータ向けの Standard クラスと、アクセス頻度が低いデータを低コストで長期保管できる Economy クラスを選択できます。ストレージクラスを指定しない場合は、Standard クラスが適用されます。
 
 !!! tip "ヒント"
-    コンテナ名に特殊文字 ``' " ` < > ;`` および空白、相対パス文字 (`. ..`) は使用できません。
-    IP アドレス形式の名前は使用できません。
-    コンテナまたはオブジェクト名に特殊文字 `! * ' ( ) ; : @ & = + $ , / ? # [ ]` が含まれている場合、API を使用する際は必ず URL エンコード（パーセントエンコーディング）を行う必要があります。これらの文字は URL において重要な役割を持つ予約文字です。これらの文字が含まれるパスを URL エンコードせずに API リクエストを送信すると、意図したレスポンスを受け取れない場合があります。
+    既に作成されたコンテナのストレージクラスは変更することはできません。
 
-コンテナを作成する際、`X-Storage-Policy` ヘッダーを使用してコンテナのストレージクラスを指定できます。頻繁にアクセスするデータ向けの Standard クラスと、アクセス頻度の低いデータを低コストで長期保管できる Economy クラスを選択できます。ストレージクラスを指定しない場合は、Standard クラスが適用されます。
+Economy クラスのコンテナにアップロードされたオブジェクトには、最低保管期間 30 日が適用されます。30 日以前に削除したオブジェクトにも、残りの保管期間分の料金が請求されます。
 
-!!! tip "ヒント"
-    作成済みコンテナのストレージクラスは変更できません。
-    Economy クラスコンテナにアップロードされたオブジェクトには、最低保管期間 30 日が適用されます。30 日以前に削除されたオブジェクトに対しても、残余保管期間分の料金が課金されます。
-    Economy クラスコンテナは API リクエスト 1,000 件ごとに料金が適用されます（HEAD/DELETE リクエストを除く）。
+Economy クラスのコンテナは、API リクエスト 1,000 件ごとに料金が発生します（HEAD/DELETE リクエストを除く）。
 
 {% endif %}
-コンテナを作成する際に `X-Container-Worm-Retention-Day` ヘッダーを使用してオブジェクトロック周期を設定すると、オブジェクトロックコンテナを作成できます。オブジェクトロックコンテナにアップロードしたオブジェクトは、**WORM (Write-Once-Read-Many)** モデルを使用して保存されます。オブジェクトロックコンテナにアップロードしたオブジェクトには、ロック有効期限が設定されます。各オブジェクトに設定されたロック有効期限より前は、オブジェクトを上書きまたは削除することはできません。
+コンテナを作成するときに `X-Container-Worm-Retention-Day` ヘッダーを使用してオブジェクトのロック周期を設定すると、オブジェクトロックコンテナを作成できます。オブジェクトロックコンテナにアップロードしたオブジェクトは、**WORM（Write-Once-Read-Many）** モデルを使用して保存されます。オブジェクトロックコンテナにアップロードしたオブジェクトには、ロック有効期限日が設定されます。各オブジェクトに設定されたロック有効期限日より前は、オブジェクトを上書きまたは削除することはできません。
 
 <br>
 
@@ -643,7 +638,7 @@ X-Auth-Token: {token-id}
 | Account | URL | String | Y | ストレージアカウント。API エンドポイント設定ダイアログボックスで確認 |
 | Container | URL | String | Y | 作成するコンテナ名 |
 {%- if ec %}
-| X-Storage-Policy | Header | String | N | コンテナのストレージクラス<br>**Standard**: 頻繁にアクセスするデータのためのデフォルトクラス<br>**Economy**: アクセス頻度が低いデータを長期保管するのに適したクラス |
+| X-Storage-Policy | Header | String | N | コンテナのストレージクラス<br>**Standard**: 頻繁にアクセスするデータのための基本クラス<br>**Economy**: アクセス頻度が低いデータを長期保管するのに適したクラス |
 {%- endif %}
 | X-Container-Worm-Retention-Day | Header | Integer | N | コンテナのデフォルトオブジェクトロック期間を日単位で設定 |
 
@@ -904,7 +899,7 @@ public class ContainerService {
     }
 
     public List<String> getList(String url) {
-        // ヘッダーを作成
+        // ヘッダーの作成
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
@@ -1089,21 +1084,21 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 `X-Container-Object-Transfer-To` ヘッダーを使用すると、ライフサイクルが期限切れになったオブジェクトを指定したコンテナに移動して保管できます。コンテナが指定されていない場合、期限切れのオブジェクトは削除されます。
 
 !!! tip "ヒント"
-    コンテナポリシーを使用して、詳細なライフサイクルルールを設定できます。
+    コンテナポリシーを通じて、詳細なライフサイクルルールを設定できます。
     詳細については、[コンテナポリシー設定ガイド](container-policy-guide$[ file_suffix ]$/#lifecycle)を参照してください。
 
 <!-- 改行用コメント -->
 
 {% if ec %}
 !!! tip "ヒント"
-    Standard クラスのコンテナに保存されたオブジェクトを、ライフサイクルに従って Economy クラスのコンテナに移動することで、長期保管にかかるコストを削減できます。
+    Standard クラスコンテナに保存されたオブジェクトをライフサイクルに従って Economy クラスコンテナに移動することで、長期保管にかかるコストを削減できます。
 
 {% endif %}
 <br>
 
 <a id="set-container-object-version-policy"></a>
 ##### バージョン管理ポリシー設定
-[オブジェクトの内容の変更](api-guide$[ file_suffix ]$/#update-an-object) に記載のとおり、オブジェクトをアップロードする際に同じ名前のオブジェクトがすでに存在する場合は、オブジェクトを更新します。既存のオブジェクトの内容を保管したい場合は、`X-History-Location` ヘッダーを使用して、以前のバージョンを保管する**アーカイブコンテナ**を指定できます。
+[オブジェクトの内容を修正する](api-guide$[ file_suffix ]$/#update-an-object) の説明のとおり、オブジェクトをアップロードする際に同じ名前のオブジェクトがすでに存在する場合、オブジェクトは更新されます。既存のオブジェクトの内容を保持したい場合は、`X-History-Location` ヘッダーを使用して、以前のバージョンを保管する**アーカイブコンテナ**を指定できます。
 
 旧バージョンのオブジェクトはアーカイブコンテナに次の形式で保管されます。
 ```
@@ -1121,7 +1116,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 アーカイブコンテナとして使用するコンテナ名には、できる限りUnicode文字を使用しないことをお勧めします。アーカイブコンテナとして指定するコンテナ名にUnicode文字が含まれている場合は、必ずURLエンコード後にリクエストヘッダーに入力してください。
 
 {% if encrypt %}
-    暗号化コンテナをアーカイブコンテナとして指定した後、暗号化コンテナの対称キーを Secure Key Manager サービスから削除すると、元のコンテナへのオブジェクトのアップロードと削除が失敗します。
+    暗号化コンテナをアーカイブコンテナとして指定した後、暗号化コンテナの対称キーを Secure Key Manager サービスで削除すると、元のコンテナへのオブジェクトのアップロードと削除が失敗します。
 
 {% endif %}
 
@@ -1141,7 +1136,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 ブラウザから Object Storage API を直接呼び出すには、Cross-Origin Resource Sharing (CORS) の設定が必要です。`X-Container-Meta-Access-Control-Allow-Origin` ヘッダーを使用して、許可するオリジンのリストを設定します。スペース（` `）区切りで1つ以上のオリジンを入力するか、`*` を入力してすべてのオリジンを許可できます。
 
 !!! tip "ヒント"
-    `X-Container-Meta-Access-Control-Allow-Origin` に設定できる許可オリジンは最大 100 件です。この制限は、[コンテナポリシー](container-policy-guide$[ file_suffix ]$/#cors)で設定する場合にも同様に適用されます。
+    `X-Container-Meta-Access-Control-Allow-Origin` に設定できる許可オリジンは最大 100 件です。この制限は[コンテナポリシー](container-policy-guide$[ file_suffix ]$/#cors)で設定する場合も同様に適用されます。
 
 <details>
 <summary>CORS設定確認の例</summary>
@@ -1155,7 +1150,7 @@ $ curl -X POST \
 $[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 ```
 <br>
-ブラウザで CORS を許可したサイトに移動してから、次のスクリプトを実行します。スクリプトは、ブラウザが提供する開発者ツールのコンソールで実行できます。
+ブラウザで CORS を許可したサイトに移動した後、次のスクリプトを実行します。スクリプトは、ブラウザが提供する開発者ツールのコンソールで実行できます。
 
 <br>
 例） `https://example.com/`
@@ -1216,7 +1211,7 @@ Status: 0
 !!! tip "ヒント"
     通常のコンテナをオブジェクトロックコンテナに変更したり、オブジェクトロックコンテナを通常のコンテナに変更したりすることはできません。
 
-オブジェクトロックコンテナは、アーカイブコンテナ$[ " または複製対象コンテナとして" if replication else "として" ]$指定することはできません。
+オブジェクトロックコンテナは、アーカイブコンテナ$[ " または複製先コンテナとして" if replication else "として" ]$指定できません。
 
 <br>
 
@@ -1362,7 +1357,7 @@ package com.nhn.cloud.obs;
 
 public class ContainerService {
 
-    // ContainerService クラス ...
+    // ContainerService Class ...
 
     public void setContainerReadACL(String containerName, boolean isPublic) {
         final String PUBLIC_ACL = ".r:*";
@@ -1375,7 +1370,7 @@ public class ContainerService {
         // ヘッダーの作成
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Container-Read", permission);    // ヘッダーに権限を追加
+        headers.add("X-Container-Read", permission);    // ヘッダーにアクセス許可を追加
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
@@ -1440,7 +1435,7 @@ class Container {
 
     $permission = $is_public ? self::PUBLIC_ACL : self::PRIVATE_ACL;
     $req_header = $this->get_request_header();
-    $req_header[] = 'X-Container-Read: ' . $permission;  // ヘッダーにアクセス許可を追加
+    $req_header[] = 'X-Container-Read: ' . $permission;  // ヘッダーに権限を追加
 
     $curl  = curl_init($req_url);
     curl_setopt_array($curl, array(
@@ -1816,7 +1811,7 @@ class ObjectService {
     curl_setopt_array($curl, array(
       CURLOPT_PUT => TRUE,
       CURLOPT_RETURNTRANSFER => TRUE,
-      CURLOPT_INFILE => $fd,  // ファイルストリームをパラメータとして渡す。
+      CURLOPT_INFILE => $fd,  // ファイルストリームをパラメータに渡す。
       CURLOPT_HTTPHEADER => $req_header
     ));
     $response = curl_exec($curl);
@@ -1835,7 +1830,7 @@ $OBJ_PATH = '/home/example';
 
 $object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
-// オブジェクトをアップロードする
+// upload object
 $filename = $OBJ_PATH.'/'.$OBJECT_NAME;
 $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 ?>
@@ -1969,7 +1964,7 @@ DLO 方式を使用したマルチパートアップロードの例
 <summary>cURL</summary>
 
 ```
-# 200MB単位でファイルを分割
+# 200MB 単位でファイルを分割
 $ split -d -b 209715200 large_obj.img large_obj.img.
 
 # 分割されたオブジェクトをアップロード
@@ -2005,21 +2000,21 @@ package com.nhn.cloud.obs;
 @Data
 public class ObjectService {
 
-    // ObjectService Class ...
+    // ObjectService クラス ...
 
     // マニフェストオブジェクトのアップロード
     public void uploadManifestObject(String containerName, String objectName) {
         String url = this.getUrl(containerName, objectName);
-        String manifestName = containerName + "/" + objectName + "/"; // マニフェスト名の生成
+        String manifestName = containerName + "/" + objectName + "/"; // マニフェスト名を生成
 
-        // ヘッダーの生成
+        // ヘッダーを生成
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
         headers.add("X-Object-Manifest", manifestName);  // ヘッダーにマニフェストを設定
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 呼び出し
+        // API を呼び出す
         this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);
     }
 
@@ -2045,7 +2040,7 @@ public class ObjectService {
             InputStream inputStream = new BufferedInputStream(new FileInputStream(objFile));
             while(totalBytesRead < fileSize) {
 
-                // 残りデータサイズの計算
+                // 残りのデータサイズを計算
                 int remainedBytes = fileSize - totalBytesRead;
                 if(remainedBytes < chunkSize) {
                     chunkSize = remainedBytes;
@@ -2056,7 +2051,7 @@ public class ObjectService {
                 int bytesRead = inputStream.read(chunkBuffer, 0, chunkSize);
 
                 if(bytesRead > 0) {
-                    // バッファのデータを InputStream にして アップロード、オブジェクトアップロード例の uploadObject() メソッドを使用
+                    // バッファのデータを InputStream に変換してアップロード。オブジェクトアップロード例の uploadObject() メソッドを使用
                     String objPartName = String.format("%s/%03d", objectName, ++chunkNo);
                     InputStream chunkInputStream = new ByteArrayInputStream(chunkBuffer);
                     objectService.uploadObject(containerName, objPartName, chunkInputStream);
@@ -2187,7 +2182,7 @@ class ObjectService {
         CURLOPT_PUT => TRUE,
         CURLOPT_HEADER => TRUE,
         CURLOPT_RETURNTRANSFER => TRUE,
-        CURLOPT_INFILE => $part_fd,  // パートファイルのストリームをパラメータとして入力
+        CURLOPT_INFILE => $part_fd,  // パートファイルストリームをパラメータとして入力
         CURLOPT_HTTPHEADER => $req_header
       ));
       $response = curl_exec($curl);
@@ -2575,7 +2570,7 @@ X-Copy-From: {SourceContainer}/{SourceObject}; multipart-manifest=get
 <details>
 <summary>cURL</summary>
 
-**単一オブジェクトのコピー**
+**シングルオブジェクトのコピー**
 ```
 # COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
@@ -2620,13 +2615,13 @@ public class ObjectService {
         String url = this.getUrl(destContainerName, objectName);
         String srcObject = "/" + srcContainerName + "/" + objectName;
 
-        // ヘッダーを作成する
+        // ヘッダーの作成
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Copy-From", srcObject);    // コピー元オブジェクトを指定する
+        headers.add("X-Copy-From", srcObject);    // コピー元オブジェクトを指定
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // HttpMethod は COPY メソッドをサポートしていないため、PUT メソッドを使用する代替 API を呼び出す。
+        // HttpMethod は COPY メソッドをサポートしていないため、PUT メソッドを使用する代替 API を呼び出します。
         this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);
     }
 
@@ -2760,12 +2755,12 @@ X-Object-Meta-{Key}: {Value}
 <summary>cURL</summary>
 
 ```
-# オブジェクトへのメタデータ追加
+# オブジェクトへのメタデータの追加
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo" \
 $[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 
-# オブジェクトヘッダーから追加したメタデータを確認
+# オブジェクトヘッダーで追加したメタデータを確認
 $ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
 $[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 HTTP/1.1 200 OK
@@ -2782,27 +2777,27 @@ X-Object-Meta-Type: photo
 // ObjectService.java
 package com.nhn.cloud.obs;
 
-// ... import list
+// ... インポートリスト
 
 @Data
 public class ObjectService {
 
-    // ObjectService Class ...
+    // ObjectService クラス ...
 
     public void setObjectMetadata(String containerName, String objectName, String key, String value) {
         String url = this.getUrl(containerName, objectName);
 
-        // メタデータキーを作成
+        // メタデータキーを生成
         String metaKey = "X-Object-Meta-" + key;
 
-        // ヘッダーを作成
+        // ヘッダーを生成
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
         headers.add(metaKey, value);    // ヘッダーにメタデータを設定
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 呼び出し
+        // API を呼び出し
         this.restTemplate.exchange(url, HttpMethod.POST, requestHttpEntity, String.class);
     }
 
