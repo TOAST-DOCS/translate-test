@@ -3,7 +3,6 @@
 <!-- pre-align:aligned sig=7b3576dbe008 -->
 
 <a id='network-load-balancer-console-guide'></a>
-
 ## Network > Load Balancer > Console User Guide { #network-load-balancer-console-guide }
 
 <a id='manage-loadbalancers'></a>
