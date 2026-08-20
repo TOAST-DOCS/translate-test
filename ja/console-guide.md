@@ -1,512 +1,794 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > コンソール使用ガイド
+<!-- machine_translated: true -->
 
-<a id="create-instances"></a>
-## インスタンス生成
+<!-- pre-align:aligned sig=e20de7487902 -->
 
-インスタンスを作成するには、以下の設定を行うか、インスタンステンプレート(Instance Template)を利用します。インスタンステンプレートを利用してインスタンスを作成するにはインスタンス作成画面で**インスタンステンプレート使用**を選択します。インスタンステンプレートの作成方法は[インスタンステンプレートコンソールガイド](/Compute/Instance%20Template/ja/console-guide/)を参照します。
+<a id="nhn-cloud-console-policy-guide"></a>
+## NHN Cloud > コンソールポリシーガイド { #nhn-cloud-console-policy-guide }
 
-<a id="os-settings"></a>
-### OS設定
+NHN Cloudコンソールは、NHN Cloudサービスを利用するための管理ツールと作業ウィンドウの役割を担います。
+ここではNHN Cloudコンソールの基本的な設定と使用方法を案内します。
 
-インスタンス作成時に使用されるルートブロックストレージの作成方式を決定します。
+NHN Cloudコンソールは下記の機能を提供します。
 
-- **新規作成及び設定**または**既存リソース指定**のいずれかを選択します。
-- **新規作成及び設定**を選択した場合、イメージを利用してルートブロックストレージを作成します。
-- **既存リソース指定**を選択した場合、既存のブロックストレージまたはスナップショットを利用します。
+- サービスを利用するための基本情報管理(組織、プロジェクト)
+- サービス有効化/無効化
+- サービスを利用するメンバーの管理
+- 決済情報提供
 
-<a id="image"></a>
-### イメージ
+<a id="quick-guide"></a>
+## コンソールクイックガイド { #quick-guide }
+コンソールで提供する基本機能のクイックガイドです。 
 
-希望のオペレーションシステムがインストールされているイメージを選択します。イメージはNHN Cloudが提供するパブリックイメージ、作成済のユーザーイメージ、共有イメージから選択できます。
+![tutorial_1_jp.png](http://static.toastoven.net/toast/console_guide/consoleguide_01_202109_jp.png)
+![tutorial_2_jp.png](http://static.toastoven.net/toast/console_guide/consoleguide_02_202109_jp.png)
 
-使用するイメージによってインスタンスタイプ(flavor)が異なるので、インスタンス生成の際は、まず初めにイメージを選択してください。
+<a id="organization-management"></a>
+## 組織管理 { #organization-management }
 
-| オペレーションシステム                  | ブロックストレージ    | メモリ  |
-| ---------------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu、Debian、Rocky | 20GB以上  | 1GB以上 |
-| Windows                           | 50GB以上  | 2GB以上 |
+組織は、NHN Cloudサービスを効率的に使用し、管理するために作られたグループです。
+組織では同じサービスポリシーをユーザーに共有して使用できます。
+組織を通して多様なNHN Cloudサービスを効率的に使用できます。
 
-<a id="root-block-storage"></a>
-### ルートブロックストレージ
+<a id="create-an-organization"></a>
+### 組織作成 { #create-an-organization }
 
-**OS設定**に従ってルートブロックストレージを設定します。
+- NHN Cloudサービスを利用するには組織を作成する必要があります。
+- 組織は個人/事業者会員、どちらでも作成できます。
+- 組織を作成した会員は自動的に組織のOWNERになります。
+- 組織を作成するには会員の決済方法が登録されている必要があります。
+- 組織は組織名/ドメイン情報を管理します。
+- 組織のドメイン情報はサービスで使用する必要がある情報で、固有の情報でなければいけません。
 
-- **新規作成及び設定**を選択した場合、**ブロックストレージタイプ**及び**ブロックストレージサイズ**を指定してルートブロックストレージを作成します。
-- **既存リソース指定**を選択した場合、**原本リソース**を指定してルートブロックストレージとして使用します。
+<a id="guide-to-creating-an-organization"></a>
+### 組織作成ガイド { #guide-to-creating-an-organization }
 
-#### 原本リソース
+![console_guide_1_jp.png](http://static.toastoven.net/toast/console_guide/consoleguide_03_202109_jp.png)
+![console_guide_2_jp.png](http://static.toastoven.net/toast/console_guide/consoleguide_04_202109_jp.png)
 
-既存の**ブロックストレージ**または**スナップショット**のいずれかを選択できます。
+1. コンソールに移動した後、上段メニューから**組織を作成してください。**横の**+**ボタンをクリックします。
+2. **組織作成**ウィンドウで組織名を入力します。組織名には日本語、アルファベット、特殊文字、数字を使用できます。
+3. **確認**ボタンをクリックすると組織の作成が完了します。
+4. コンソール上段メニューに作成された組織名が表示されます。
+5. **設定**ボタンをクリックし、作成された組織情報を確認します。組織の追加情報にドメイン情報を入力します。ドメインはNHN Cloudで唯一の値に設定する必要があります。
 
-- **ブロックストレージ**を選択した場合、既存のブロックストレージをルートブロックストレージとして使用します。
-- **スナップショット**を選択した場合、既存のスナップショットを利用してルートブロックストレージを作成します。
 
-#### ブロックストレージサイズ
+<a id="organization-services"></a>
+### 組織サービス { #organization-services }
 
-インスタンスのルートブロックストレージを決定します。
+組織が作成されると、サービスを選択できます。
+組織単位で有効にできるサービスは次のとおりです。
 
-- ブロックストレージのサイズはイメージが要求する最小サイズ以上にする必要があります。
+- Dooray!
+- Contact Center
+- CloudTrail
+- Resource Watcher
 
-インスタンスのルートブロックストレージサイズはインスタンスタイプによって異なります。
 
-| 仕様              | サポートするブロックストレージのサイズ             |
-| ---------------- | -------------------------------- |
-| u2タイプ            | 20 ～ 100 GB (仕様ごとに固定)        |
-| t2、m2、c2、r2、x1タイプ   | 20 ～2000GB       　               |
 
-> [参考]
-> ブロックストレージサイズに応じて課金されるため、基本ブロックストレージのサイズを無条件に大きくすることは非効率的です。必要に応じてブロックストレージを追加して使用することを推奨します。
-> **OS設定**で**既存リソース指定**を**ブロックストレージ**に選択した場合、ブロックストレージサイズを変更することはできません。
-> **OS設定**で**既存リソース指定**を**スナップショット**に選択した場合、ブロックストレージサイズは原本ブロックストレージサイズと同じか、それより大きく設定する必要があります。
+<a id="delete-an-organization"></a>
+### 組織の削除 { #delete-an-organization }
 
-#### ブロックストレージタイプ
+- 組織の削除は組織のOWNERだけができます。
+- 組織を削除するには、利用中のサービスをすべて削除する必要があります。
+- 組織を削除すると、組織のすべての情報は削除され、復旧できません。
 
-インスタンスの基本ブロックストレージタイプを決定します。
+<a id="organization-governance-setting"></a>
+### 組織ガバナンス設定 { #organization-governance-setting }
 
-- **HDD**または**SSD**のいずれかを選択します。タイプによって料金と性能が異なります。
-- 一度選択したブロックストレージタイプは変更できません。 
+NHN Cloudサービスを安定的かつ効率的に利用するために必要なポリシーを設定して管理できます。 ログインおよび個人情報など、セキュリティコンプライアンス遵守のための組織の共通ポリシーを策定し、組織内のメンバーがポリシーを遵守できるように管理します。
 
-> [参考] 
-> **OS設定**で**既存リソース指定**を選択した場合、ブロックストレージタイプの変更はできません。
+<a id="organization-governance-setting-ip-acl-setting"></a>
+#### IP ACL設定
+IP ACL設定に登録されたIPからのみNHN Cloudサービスを利用できます。
+コンソール接続及びUser Access Keyトークン認証方式のPublic API呼び出し時にIP ACLが適用されます。 [認証方式サポート状況の表示](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/supported-authentication-methods/)
+Dooray!サービスは各サービスコンソール画面からIP ACLを設定できます。
 
-<a id="availability-zone"></a>
-### アベイラビリティゾーン(availability zone)
+1. **コンソール**に移動した後、設定したい組織の**組織管理**ページに接続します。
+2. サブタブメニューから**ガバナンス設定**を選択します。
+3. 組織ガバナンス設定の**IP ACL設定**でIP ACLを設定し、管理できます。
+   * サービス
+       * 共通設定：すべてのサービスに同じようにIP ACLを設定できます。
+       * サービスの設定：各サービス(Cloud、Contiple など)ごとにIP ACLを設定できます。
+    * IP ACL設定
+        * 設定しない: 全てのIP(またはIP範囲)からコンソールアクセス及びAPI呼び出しが許可されます。
+        * 許可したIPまたはサービスゲートウェイのみアクセス許可: 登録されたIP(またはIP範囲)とサービスゲートウェイからのみコンソールアクセス及びAPI呼び出しが許可されます。
+            * IP/IP範囲: 許可するIPまたはIP範囲を入力します。
+            * サービスゲートウェイ: サービスゲートウェイIDを入力します。
+                * API Gatewayサービス接続及びNAT IP固定が設定されたサービスゲートウェイの場合にのみIP ACLが適用されます。
+                * サービスゲートウェイIDが登録されている場合、該当サービスゲートウェイに設定されたNAT IPを照会してIP ACLに適用されます。
+                
+                
+* 注意：海外接続遮断を同時に設定する場合、IP ACLに登録されたIPアドレスであっても、接続許可国に含まれていない場合はコンソール接続が制限される可能性があります。
 
-アベイラビリティゾーンを明示的に設定しない場合、任意のゾーンに設定されます。ノクターナルによって、このインスタンスが使用できるブロックストレージが決定されます。使用したいブロックストレージが特定のノクターナルに存在する場合は、そのノクターナルに設定して使用します。
+<a id="organization-governance-setting-overseas-access-block-settings"></a>
+#### 海外接続遮断設定
+海外からの接続を制限したい場合、接続許可国からのみコンソールにアクセスできるように設定する機能を提供します。
 
-> [参考] 
-> VPCのリソースは全てのアベイラビリティゾーンで使用できます。
-> **OS設定**で**既存リソース指定**を選択した場合、アベイラビリティゾーンは変更できません。
+* **海外接続遮断設定**で設定するかどうかを選択できます。
+    * 設定しない：すべての国からコンソールアクセスが可能です。
+    * 設定する：接続許可国からのみコンソールアクセスが可能です。
+* 接続許可国
+    * 海外接続遮断を設定した場合、接続を許可する国を設定できます。
+    * 少なくとも1か国以上の接続許可国を選択する必要があります。
+* 注意：IP ACLを同時に設定する場合、接続許可国のIPがIP ACLに含まれていないとコンソール接続が制限される可能性があります。
 
-アベイラビリティゾーンの詳細は[インスタンス概要のアベイラビリティゾーン](./overview/#availability-zone)を参照してください。
+<a id="organization-governance-setting-set-approval-process-management"></a>
+#### 承認プロセス管理設定
+サービス利用時、承認プロセスが必要な場合、承認権限者の承認手続きを進めるサービス別機能を提供します。
 
-<a id="flavor"></a>
-### タイプ(flavor)
+* **承認プロセス管理設定**で設定しない/設定を選択できます。
+* 承認プロセス管理設定で**設定**を選択すると、各サービスで提供する承認手続きを利用できます。
+* 承認プロセス提供サービス
+    * Secure Key Manager
 
-仮想ハードウェアの性能によって様々なタイプを選択できます。ただし、イメージで要求する仮想ハードウェアの性能によって選択できるタイプが制限される場合があります。詳細は[インスタンス概要](./overview)を参照してください。
+<a id="organization-governance-setting-set-instance-name-management"></a>
+#### Instance名管理設定
+Instanceサービス利用時、 Instance名管理ルールを設定できます。
 
-> [参考]
-> 1 vCPUは、スレッド1つとコア1つで構成されたソケット1つを意味し、ソケット1つ当たりのスレッド数とコア数はそれぞれ1つで一定です。
+* **重複許可管理**を選択すると、 Instance名をユーザーが入力した名前で管理し、重複したInstance名を許可します。
+* **Unique管理**を選択すると、Instance名をユーザーが入力した名前とシステムで作成した文字を組み合わせて唯一のInstance名で管理します。
 
-インスタンスのタイプは、作成後もNHN Cloudコンソールで変更できます。高いタイプから低いタイプに変更することができ、低いタイプから高いタイプに変更することもできます。一部のタイプは変更できない場合もありますので、詳細は[インスタンスタイプ変更](./console-guide/#modify-flavor)を参照してください。
+<a id="organization-governance-setting-set-control-of-resource-permissions-and-restriction-on-terminal-access"></a>
+#### リソース権限制御および接続端末制限設定
+NHN Cloud運営者が障害対応など運営上の目的で顧客のリソース(インスタンスなど)情報の照会が必要な場合、プロジェクト ADMIN/MEMBER 権限を持つユーザーにメールで通知した後、セキュリティが強化された隔離された環境でリソース情報を照会するように設定します。
 
-> [注意]インスタンスのルートブロックストレージはタイプ変更で変更できません。
+* リソースの権限制御及び接続端末制限設定で設定しない/設定を選択できます。
+* 設定を選択した場合、NHN Cloud運営者の顧客リソース照会機能が制限され、障害などの緊急時に対応遅延が発生する可能性があります。
 
-<a id="number-of-instances"></a>
-### インスタンス数
+<a id="organization-governance-setting-privacy-setting"></a>
+#### 個人情報保護設定
+個人情報保護設定機能は、個人情報保護が必要な場合使用できます。
+サービス上で表示される個人情報をマスキング処理したり、個人情報のダウンロードが必要な場合にインターネット網分離環境でのみ可能に設定できます。
 
-イメージ、アベイラビリティゾーン、インスタンスタイプ、ブロックストレージサイズ、キーペア、ネットワーク設定が、全て同じインスタンスを複数生成する場合に使用します。インスタンスの名前には、設定した名前の後ろに「-1」、「-2」のような番号が振られます。例えば、インスタンス名を「my-instance」にしてインスタンスを2個生成すると、「my-instance-1」、「my-instance-2」が生成されます。一度に生成できる最大インスタンス数は10個です。
+* 個人情報保護設定機能
+    * 組織/プロジェクト > メンバー管理 > IAMアカウント > メンバーリストのダウンロード機能
+        * 設定しないを選択した場合、IAMアカウントリストをダウンロードできる全てのメンバーがメンバーリストをダウンロードできます。
+        * 設定を選択した場合、メンバーリストのダウンロード機能が無効になり、例外的に許可されたIPまたはIP範囲でのみメンバーリストのダウンロードが可能です。
+    * 組織 > CloudTrail > 個人情報
+        * 設定しないを選択した場合、ログ一覧の照会が可能な全てのメンバーにログ一覧内の全情報を提供します。
+        * 設定を選択した場合、ログ一覧内の個人情報(メールアドレス、名前、ID)がマスク処理されて提供されます。
 
-任意のアベイラビリティゾーンにインスタンスを複数生成した場合、それぞれのインスタンスは任意のアベイラビリティゾーンに生成されます。たとえば、2個のインスタンスを任意のアベイラビリティゾーンに生成した場合、2個が同じアベイラビリティゾーンに生成されることもあれば、別のアベイラビリティゾーンに生成されることもあります。全てのインスタンスを同じアベイラビリティゾーンに生成する必要がある時は、特定アベイラビリティゾーンを選択して生成します。
+<a id="iam-governance-setting"></a>
+### IAMガバナンス設定 { #iam-governance-setting }
 
-> [参考]
-> **OS設定**で**既存リソース指定**を**ブロックストレージ**に選択した場合、または**ネットワーク設定**で**既存ネットワークインターフェイス指定**を選択した場合、インスタンス数は`1`に制限されます。
+<a id="iam-governance-setting-login-security-setting"></a>
+#### ログインセキュリティ設定
 
-<a id="key-pair"></a>
-### キーペア
+* IAMアカウントのコンソール接続セキュリティを強化するためにログインセキュリティ設定機能を提供します。
+* すべての組織サービス(Cloud、Contiple、Dooray!など)に同じように設定したり、サービスごとに設定できます。
+![console_guide_4_jp.png](http://static.toastoven.net/toast/console_guide/consoleguide_06_202303_jp.png)
 
-既存のキーペアを使用したり、新たにキーペアを生成して使用します。既存キーペアの登録はWindowsユーザーの場合、[キーペアインポート(Windowsユーザー)](./console-guide/#import-key-pairs-windows)、Mac、Linuxユーザーの場合は[キーペアインポート(Mac、Linuxユーザー)](./console-guide/#import-key-pairs-mac-and-linux)を参照してください。
+1. コンソールに移動した後、設定したい組織の組織管理ページに接続します。
+2. サブメニューのガバナンス設定を選択します。
+3. IAMガバナンス設定のログインセキュリティ設定を設定して管理できます。
 
-> [参考]
-> キーペアはユーザーアカウントに割り当てられたリソースなので、プロジェクトを削除しても削除されずに維持されます。
+<a id="iam-governance-setting-two-factor-authentication"></a>
+#### 2次認証
 
-<a id="network"></a>
-### ネットワーク
+2次認証を必須に設定して使用するようにできます。
 
-VPCで定義されたサブネットの中からインスタンスに接続するサブネットを選択します。サブネットを一つ選択するたびに、インスタンスに該当のサブネットに接続するネットワークインターフェイスが作られます。選択されたサブネットの順序を変えてネットワークインターフェイスを変更することもできます。この場合、最初のネットワークインターフェイス(`eth0`)が基本ゲートウェイに設定されます。
+* サービス
+    * 共通設定：すべての組織サービスに同じように2次認証を設定します。
+    * サービス別設定：各サービス(Cloud, Contiple, Dooray!など)ごとに2次認証を設定できます。
+* 2次認証
+    * 設定しない：2次認証を行わず、IDとパスワードの入力だけでログインできます。
+    * Google OTP：IDとパスワードを入力した後、Google OTPアプリで提供したOne Time Passwordを入力してログインできます。
+    * メールアドレス/携帯電話：IDとパスワードを入力した後、メールアドレスに送信された**認証**ボタンをクリックして認証した後にログインできます。
+* 例外IP設定
+    * 設定しない：ログイン時、すべてのIP帯域で2次認証後にログインできます。
+    * 設定：設定したIPまたはIP帯域からログインした時、2次認証を行わずにログインできます。
 
-ネットワーク作成と管理の詳細については[VPC概要](/Network/VPC/ja/overview/)を参照してください。
+<a id="iam-governance-setting-maximum-login-attempts"></a>
+#### 最大ログイン試行回数
 
-<a id="floating-ip"></a>
-### Floating IP
+ログインを繰り返し失敗した時、一定時間が経過した後に再度ログインできるように設定できます。
 
-インスタンス作成後、Floating IPを使用するかどうかを指定します。Floating IP使用を選択すると、Floating IPを新たに作成して最初のネットワークインターフェイスに接続します。この時、最初のネットワークインターフェイスは必ずインターネットゲートウェイが設定されているサブネットに接続されている必要があります。
+* サービス設定
+    * 共通設定: 全ての組織サービスに同一の最大ログイン試行回数設定を適用します。 (サービス別設定機能は未提供)
+* 最大ログイン試行回数
+    * 設定しない：ログインに失敗しても継続してログインを試行できます。
+    * 設定：失敗回数とロック時間を設定すると、設定した回数ログインに失敗した時、入力したロック時間中はログインを試行できません。
 
-Floating IP管理は、Instance > 管理ページまたはInstance > Floating IPページで行えます。Floating IPの詳細は、[VPCコンソール使用ガイド](/Network/VPC/ja/console-guide/)を参照してください。
+<a id="iam-governance-setting-login-session"></a>
+#### ログインセッション
 
-<a id="security-group"></a>
-### セキュリティグループ
+ログインセッション設定に基づいてログインセッションが維持されるか、自動的に終了します。
+ログインが終了した後は、再度ログインするとコンソールに接続できます。
+該当設定は共通設定としてIAMコンソールに同一に適用され、サービス別設定はサポートしていません。
+* ログインセッション数
+    * 複数の端末から同じIDで同時にログインすることができる数を設定します。
+    * 1に設定すると、同じIDでPC、スマートフォンなど複数の端末から同時にログインできません。
+  例：PC- ログイン維持。スマートフォン - 自動ログアウト
+* ログインセッション維持時間
+    * クリックなどの操作がなくてもログインを維持する時間を設定します。
+    * 設定した時間の間にクリックなどの操作を行わなかった場合、自動的にログアウトされます。
+    * あまりにも長く設定すると、セキュリティ上良くないため、考慮して設定してください。
 
-インスタンスが属すセキュリティグループを指定します。一つのインスタンスは複数のセキュリティグループに属すことがあります。インスタンスが複数のセキュリティグループに属す場合は、次を参照してください。
+<a id="iam-governance-setting-password-policy-settings"></a>
+#### パスワードポリシー設定
+* IAMアカウントのパスワードを設定するために、パスワードポリシー設定機能を提供します。
+* パスワードポリシーはすべての組織サービス(Cloud, Contiple, Dooray!など)に同じように設定されます。
+* IAMガバナンス設定 > パスワードポリシー設定で管理できます。
+    * 基本パスワードポリシー
+        * 基本パスワードポリシー下記のような基本パスワードポリシーを提供します。
+            * 英字、数字、特殊文字を含めて8桁以上で構成します。
+            * 大文字/小文字を区別します。
+            * 4桁以上の連続した文字や数字（例：1111、1234、abcdなど）は使用できません。
+            * パスワードは90日ごとに変更する必要があり、90日が過ぎるとパスワード変更案内画面が表示されます。
+    * ユーザーパスワードポリシー
+        * パスワードの最小長さ、パスワードの強度、パスワードの有効期限、パスワードの再利用制限などを設定できるパスワードポリシーを提供します。
+            * パスワードの最小長さ：パスワードの最小長さを8～15文字に設定します。 (最大長さは15文字で提供されます。)
+            * パスワード強度：連続した文字、大文字、小文字、数字、特殊文字などを組み合わせてパスワードの強度を設定します。
+            * パスワードの有効期限：パスワードの有効期限の有無を選択し、設定時に有効期限、有効期限の延長可否を設定します。
+            * パスワードの再使用制限：パスワードの再使用制限の有無を選択し、設定時に再使用制限数を1～3の中から選択して設定します。
+            * パスワードポリシーの適用時期：パスワード変更時に適用、即時適用から選択してパスワードポリシーの適用時期を設定します。
+                * パスワード変更時に適用を選択した場合、IAMアカウントのパスワード変更時に新しいポリシーとして適用されます。
+                * 即時適用を選択した場合、パスワード設定後すぐに適用され、IAMアカウントのログイン時に新しいポリシーとして適用されます。
 
-- 各セキュリティグループに属している全てのインスタンスとネットワーク通信ができます。別のインスタンスの意図していないアクセスを防ぐ必要のある機密データを持つインスタンスの場合は、慎重にセキュリティグループを指定する必要があります。
-- 各セキュリティグループの全てのルールが合わさって、該当のインスタンスの外部通信に適用されます。
+<a id="project-common-role-group-setting"></a>
+### プロジェクト共通ロールグループ設定 { #project-common-role-group-setting }
 
-セキュリティグループの詳細については[VPC概要](/Network/VPC/ja/overview/)を参照してください。
+組織に属しているプロジェクトにおいて共通で使用するロールグループを作成し、管理できます。
+設定されたロールグループはプロジェクトのロールグループ管理からNHN Cloudアカウント及びIAMアカウントを選択してロールを一括付与できます。
 
-<a id="additional-block-storage"></a>
-### 追加ブロックストレージ
+1. 組織設定を選択した後、プロジェクト共通ロールグループ設定メニューをクリックします。
+2. **ロールグループ追加**を選択して、サービスごとにロールを追加します。
+3. ロールグループ名、説明を入力し、サービスごとにロールを追加します。
+    * ロールグループ名は日本語、アルファベット、特殊文字を使用可能で、最大40文字まで入力できます。
+    * 説明は最大100文字まで入力できます。
+4. ロールは**サービスごとに細分化された利用ロール**を選択できます。
+    * サービス名を左側の領域から検索した後、右側の領域でロールを選択します。
+5. 選択されたロールを確認して追加または削除できます。
+    * サービス名の横にあるxボタンをクリックして、選択されたサービスを削除できます。
+6. 追加ボタンをクリックしてロールグループを追加します。
+7. ロールグループが追加されると、ロールグループリストに名前が表示されます。ロールグループ名を選択して、詳細ロール内容を確認できます。
+8. ロール追加をクリックすると、3回ロールグループ追加画面に移動します。ロールを追加または削除できます。
 
-インスタンス作成後、追加ブロックストレージに接続するかどうかを指定します。追加ブロックストレージ使用を選択すると、ルートブロックストレージとは別の新しいブロックストレージを作成してインスタンスに接続します。ルートブロックストレージ同様、追加ブロックストレージを作成する時に、名前、ストレージタイプ、サイズを指定できます。
+<a id="project-management"></a>
+## プロジェクト管理 { #project-management }
 
-ルートブロックストレージはOS用途でのみ使用し、追加ブロックストレージにはよく使用するソフトウェアやデータを保管すると、ブロックストレージ接続/解除またはスナップショット機能で簡単に移行や複製ができます。またインスタンスに障害が発生した時、追加ブロックストレージのみ解除して他のインスタンスに接続することで、簡単にサービスを復旧できます。
+プロジェクトは組織作成後、NHN Cloudサービスを利用するために作成します。
+プロジェクトではプロジェクトサービスを有効にして利用できます。
+プロジェクトサービスはプロジェクト単位で利用し、これに応じて課金します。
 
-ブロックストレージ管理は、Instance > Block Storageページでもできます。ブロックストレージの詳細は[ブロックストレージガイド](/Storage/Block%20Storage/ja/overview/)を参照してください。
+<a id="create-a-project"></a>
+### プロジェクトの作成 { #create-a-project }
 
-<a id="placement-policy"></a>
-### 配置ポリシー
+* プロジェクトを作成するには、組織を作成する必要があります。
+* プロジェクトを作成した会員は、プロジェクトのAdminロールを持ちます。
+* プロジェクト作成時、プロジェクト名とプロジェクトの説明を入力します。
+* プロジェクト作成後、プロジェクトサービスを有効にして利用できます。
+* プロジェクト作成後、協業が必要な場合はプロジェクトメンバーに追加して一緒に使用できます。
 
-配置ポリシーを使用して、インスタンスを異なるハイパーバイザーに配置することができます。インスタンス作成時に配置ポリシーを設定すると、同じ配置ポリシーに割り当てられたインスタンスは異なるハイパーバイザーに作成されます。
+<a id="create-a-project-guide-to-creating-a-project"></a>
+#### プロジェクト作成ガイド
+![console_guide_5_jp.png](http://static.toastoven.net/toast/console_guide/consoleguide_07_202109_jp.png)
+![console_guide_6_jp.png](http://static.toastoven.net/toast/console_guide/consoleguide_08_202109_jp.png)
 
-> [注意]
-> 分散配置が不可能な状況の場合、インスタンス生成に失敗する可能性があります。
 
-<a id="user-script"></a>
-### ユーザースクリプト
+1. 組織を作成すると、**新しいプロジェクト作成**ボタンが有効になります。**新しいプロジェクト作成**ボタンをクリックし、プロジェクトを作成します。
+2. **プロジェクト名**と**プロジェクトの説明**を入力します。
+3. **確認**ボタンをクリックし、プロジェクトを作成します。
+4. プロジェクトが作成されると、メニューにプロジェクト名が表示されます。
+5. **プロジェクト設定**ボタンをクリックし、プロジェクト情報を確認します。
 
-インスタンス作成後に実行するスクリプトを指定します。ユーザースクリプトは、インスタンスの最初の起動が完了した後、ネットワーク設定などの初期化プロセスが終わった後に実行されます。NHN Cloudのユーザースクリプトは公式イメージに含まれているcloud-init (Linux)、Cloudbase-init (Windows)などの自動化ツールにより実行されます。
+<a id="project-services"></a>
+### プロジェクトサービス { #project-services }
 
-> [注意]
-> ユーザースクリプトはroot (Linux)/Administrator (Windows)ユーザー権限で実行されます。
+プロジェクトが作成されると、サービスを選択できます。
+プロジェクト単位で有効にすることができるサービスは次のとおりです。
 
-#### Linux
-ユーザースクリプトの最初の行は必ず`#!`で始まる必要があります。
+* Compute
+* Container
+* Network
+* Storage
+* Database
+* Monitoring
+* Hybrid & Private Cloud
+* Game
+* Security
+* Content Delivery
+* Notification
+* AI Service
+* Machine Learning
+* Application Service
+* Mobile Service
+* Search
+* Data & Analytics
+* Dev Tools
+* Management
+* Bill
+
+<a id="guide-to-enabling-project-services"></a>
+### プロジェクトサービス有効化ガイド { #guide-to-enabling-project-services }
+
+![console_guide_6_jp.png](http://static.toastoven.net/toast/console_guide/consoleguide_09_202109_jp.png)
+![console_guide_7_jp.png](http://static.toastoven.net/toast/console_guide/consoleguide_10_202109_jp.png)
+
+1. プロジェクト作成後、**サービス選択**ボタンをクリックし、プロジェクトで使用するサービスを選択できます。
+2. サービス選択画面で、有効にするサービスを選択します。サービスを有効にするかどうかの確認メッセージが表示されたら、**確認**をクリックします。
+3. 有効にしたサービスリストは、コンソール左のメニューで確認できます。リストからサービスをクリックすると、サービス利用画面が表示されます。
+
+<a id="delete-a-project"></a>
+### プロジェクトの削除 { #delete-a-project }
+
+プロジェクトで利用中のサービスがない場合、プロジェクトを削除できます。
+プロジェクトを削除すると、プロジェクトのすべてのリソースは削除され、復旧できません。
+現在まで利用したすべてのリソースに対する利用内訳を即時決済して削除できます。
+ただし、即時決済せずに削除する場合、現在まで利用した料金内訳は次の決済日に自動請求されます。
+
+<a id="member-management"></a>
+## メンバーの管理 { #member-management }
+
+メンバー管理でユーザー別認証(ログイン)とロールを制限できます。
+プロジェクトと組織でメンバー管理を別々に行えます。
+
+
+<a id="policy-for-nhn-cloud-members-iam-members-and-service-accounts"></a>
+### NHN CloudアカウントとIAMアカウント、サービスアカウントポリシー { #policy-for-nhn-cloud-members-iam-members-and-service-accounts }
+
+| 区分 | [NHN Cloud](http://nhncloud.com)アカウント | IAMアカウント | サービスアカウント |
+| --- | --- | --- | --- |
+| 定義      | - 組織管理のためのメンバー<br>- NHN Cloud利用約款に同意したNHN Cloud会員で、サービス利用に対する責任と義務を有するメンバー<br>- NHN Cloudサービス全体で有効なメンバーで、所属した組織が削除されてもNHN Cloudアカウントとして存在 | - サービス利用のためのメンバー<br>- NHN Cloud利用約款に同意しないメンバー<br>- 組織内でのみ有効なメンバー、所属した組織が削除されると削除されるメンバー | - 人が直接ログインして使用するアカウントではなく、サービス内でタスクを実行したり、あるサービスが他のサービスにアクセスする際の権限分離のために使用するメンバー<br>&nbsp;&nbsp;- ユーザーアカウント(NHN Cloudアカウント、IAMアカウント)が実行する作成・管理権限と、サービスがタスクを実行する際に使用する権限を分離可能<br>- システムサービスアカウントとユーザーサービスアカウントに区分 |
+| メンバー登録方法 | - 組織のOWNERまたはAdminがNHN Cloud IDを入力して登録 | - 組織のOWNERまたはAdminが組織内で唯一のIDを入力して登録<br>- SSO連動/API連携などを通して登録 | - システムサービスアカウント<br>&nbsp;&nbsp;- NHN Cloudがサービス別に事前定義して提供<br>&nbsp;&nbsp;- ADMIN、MEMBER_ADMINによる任意の変更及び削除は不可<br>- ユーザーサービスアカウント<br>&nbsp;&nbsp;- ADMIN、MEMBER_ADMINが名前/ロールなどを直接定義して作成<br>- 外部サービスアカウント登録機能を使用して、必要に応じて組織のサービスアカウントをプロジェクトに、またはプロジェクトのサービスアカウントを組織に登録し、相互に行き来して使用可能 |
+| コンソールアクセス | - NHN Cloudコンソール([https://console.nhncloud.com/](https://console.nhncloud.com/))アクセス<br>- NHN Cloud> 会員ID/パスワードでログイン<br>- (任意) 2次(メールまたはSMS)認証 | - IAMコンソール(https://組織ドメイン.console.nhncloud.com/)アクセス<br>- (Dooray!、ERPサービスは該当サービスドメインでアクセス)<br>- 組織のOWNER(またはADMIN)が設定したID/PWでログイン<br>- 組織で設定したログインセキュリティ(2次認証、サービス別設定)認証 | - コンソールへのログイン不可 |
+
+<a id="member-roles"></a>
+### 会員 ロール { #member-roles }
+
+* NHN Cloud会員が保有しているロールを、他のNHN Cloud会員に付与できます。
+
+| ロール | 説明 |
+| --- | --- |
+| OWNER | 決済管理、ステーション管理などメンバーアカウントの全サービスに関する作成(Create)/参照(Read)/更新(Update)/削除(Delete)  |
+| BILLING VIEWER | メンバー決済管理の参照(Read)  |
+| STATION VIEWER | ステーション一覧及び詳細情報の参照(Read) |
+| MEMBER NOTICE_GROUP MANAGEMENT ADMIN | メンバー通知受信グループ管理の作成(Create)/参照(Read)/更新(Update)/削除(Delete)、メンバー一覧の参照(Read) | 
+| MEMBER NOTICE_GROUP MANAGEMENT VIEWER | メンバー通知受信グループ管理の参照(Read)、メンバー一覧の参照(Read) |
+
+
+<a id="organization-member-roles"></a>
+### 組織メンバーロール { #organization-member-roles }
+
+* IAMアカウントは組織サービス別(Contipleなど)に設定できるロールが異なります。
+* NHN CloudアカウントとIAMアカウントのクラウドサービスロールは次のとおりです。
+* ただし、IAMアカウントは初回登録時にNoneロールが付与され、登録後にロール設定を通じて必要なロールを付与する必要があります。
+
+<a id="organization-member-roles-organization-management"></a>
+#### 組織管理
+
+| ロール | 説明 |
+| --- | --- |
+| OWNER | 組織作成、組織管理、メンバー管理、組織サービス管理、決済管理、プロジェクト管理など、組織全体に対するCreate(作成)/Read(読み取り)/Update(更新)/Delete(削除) |
+| ADMIN | 組織管理、メンバー管理、組織サービス管理、決済管理、プロジェクト管理など組織全体に対するCreate(作成)/Read(読み取り)/Update(更新)/Delete(削除) |
+| MEMBER | プロジェクトCreate(作成)、組織ダッシュボードRead(読み取り)、プロジェクトに対するRead(読み取り) |
+| ORG_MEMBER_ADMIN | 組織メンバーCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 組織ロールグループCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| ORG_MEMBER_VIEWER | 組織メンバーRead(読み取り)<br> 組織ロールグループRead(読み取り) |
+| BILLING\_VIEWER | 決済管理利用現況Read(読み取り)、予算管理に対するRead(読み取り), 組織下位プロジェクトの利用状況 Read(読む) |
+| BUDGET\_ADMIN | 予算管理に対するCreate(作成)/Read(読み取り)/Update(更新)/Delete(削除) |
+| BUDGET\_VIEWER | 予算管理に対するRead(読み取り) |
+| LOG\_VIEWER | ユーザーActionログ管理Read(読み取り)、リソース管理Create(作成)/Read(読み取り)/Update(更新)/Delete(削除) |
+| ORG\_DASHBOARD\_ADMIN | 組織ダッシュボードCreate(作成)/Read(読み取り)/Update(更新)/Delete(削除) |
+| ORG\_DASHBOARD\_VIEWER | 組織ダッシュボードRead(読み取り) |
+| ORG_SUPPORT_ADMIN | 組織お問い合わせCreate(作成) |
+| ORG_AUTHENTICATION_MANAGEMENT_ADMIN | 組織認証情報管理Create(作成)/Read(読み取り)/Update(更新)/Delete(削除) |
+| NONE | 組織ダッシュボードRead(読み取り)、組織基本設定Read(読み取り) |
+
+<a id="organization-member-roles-service-use"></a>
+#### 組織サービス利用
+
+| サービス | ロール | 説明 |
+| --- | --- | --- |
+| Contiple | ADMIN | ContipleサービスCreate(作成)/Read(読み取り)/Update(更新)/Delete(削除) |
+| Contiple | VIEWER | ContipleサービスRead(読み取り) |
+| CloudTrail | ADMIN | CloudTrailサービスCreate(作成)/Read(読み取り)/Update(更新)/Delete(削除) |
+| CloudTrail | VIEWER | CloudTrailサービスRead(読み取り) |
+| CloudTrail | External Storage Config ADMIN | CloudTrailサービス外部ストレージ設定Create(作成)/Read(読み取り)/Update(更新)/Delete(削除) |
+| Resource Watcher | ADMIN | Resource WatcherサービスCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Resource Watcher | VIEWER | Resource WatcherサービスRead(読み取り) |
+
+<a id="organization-member-roles-service-permission"></a>
+#### 組織サービス有効化
+
+* 組織サービスPERMISSIONロールは個別サービスを有効化または無効にできます。
+* ただし、組織作成時に有効になっているサービス(CloudTrail、Resource Watcherなど)は、別途PERMISSIONロールを提供しません。
+
+| ロール | 説明 |
+| --- | --- |
+| サービス名PERMISSION | サービスEnable(有効化), Disable(無効化) |
+
+<a id="project-member-roles"></a>
+### プロジェクトメンバーロール { #project-member-roles }
+
+* プロジェクトメンバーに必要なロールを複数付与できます。 
+
+<a id="project-member-roles-project-management"></a>
+#### プロジェクト管理
+
+| ロール | 説明 |
+| --- | --- |
+| ADMIN | プロジェクト全体に対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| MARKETPLACE_ADMIN | Marketplace サービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| MARKETPLACE_VIEWER | Marketplace サービス Read(読み取り) |
+| MEMBER | プロジェクト内のすべてのサービスのリソース Create(作成), Read(読み取り), Update(更新), Delete(削除) - 一部のサービスを除く(関連するロール/権限の確認) |
+| BILLING VIEWER | 利用現況 Read(読み取り) |
+| PROJECT MANAGEMENT ADMIN | プロジェクト基本情報 Update(更新)<br>プロジェクト統合Appkey Create(作成), Read(読み取り), Update(更新), Delete(削除)<br>プロジェクトサービス有効化(Enable)、無効化(Disable)<br>プロジェクト Delete(削除) |
+| PROJECT MANAGEMENT VIEWER | プロジェクト基本情報 Read(読み取り)<br>プロジェクト統合Appkey Read(読み取り) |
+| PROJECT MEMBER ADMIN | プロジェクトメンバー Create(作成), Read(読み取り), Update(更新), Delete(削除)<br>プロジェクトロールグループ Create(作成), Read(読み取り), Update(更新), Delete(削除) |
+| PROJECT MEMBER VIEWER | プロジェクトメンバー Read(読み取り)<br>プロジェクトロールグループ Read(読み取り) |
+| PROJECT NOTICE GROUP MANAGEMENT ADMIN | プロジェクト通知受信グループ管理 Create(作成), Read(読み取り), Update(更新), Delete(削除) <br> プロジェクトメンバー Read(読み取り) <br> プロジェクトロールグループ Read(読み取り)| 
+| PROJECT NOTICE GROUP MANAGEMENT VIEWER | プロジェクト通知受信グループ管理 Read(読み取り) <br> プロジェクトロールグループ Read(読み取り)| 
+| PROJECT NOTICE MANAGEMENT ADMIN | プロジェクト通知管理 Create(作成), Read(読み取り), Update(更新), Delete(削除) <br> プロジェクトメンバー Read(読み取り) <br> プロジェクトロールグループ Read(読み取り)| プロジェクト通知受信グループ管理 Read(読み取り)
+| PROJECT NOTICE MANAGEMENT VIEWER | プロジェクト通知管理 Read(読み取り) <br> プロジェクトロールグループ Read(読み取り)| プロジェクト通知受信グループ管理 Read(読み取り)
+| PROJECT API SECURITY SETTING ADMIN | プロジェクト API セキュリティ設定 Create(作成)/Read(読み取り)/Update(更新)/Delete(削除)|
+| PROJECT API SECURITY SETTING VIEWER | プロジェクト API セキュリティ設定 Read(読み取り)|
+| PROJECT AUTHENTICATION MANAGEMENT ADMIN | プロジェクト認証情報管理 Create(作成), Read(読み取り), Update(更新), Delete(削除)|
+| PROJECT QUOTA MANAGEMENT ADMIN| プロジェクトクォータ管理 Create(作成), Read(読み取り), Update(更新), Delete(削除)|
+| PROJECT QUOTA MANAGEMENT VIEWER| プロジェクトクォータ管理 Read(読み取り)|
+| PROJECT_SUPPORT_ADMIN| プロジェクトお問い合わせ Create(作成)|
+
+
+<a id="project-member-roles-service-use"></a>
+#### サービス利用  
+
+* [基本インフラサービス(Infrastructure)](../ja/overview.md#service-composition)のロール別詳細権限は、[全権限マトリックス表示](../etc/infrastructure_roles_guide.html){:target="_blank" rel="noopener"}で確認してください。
+
+| サービス | ロール | 説明 |
+| --- | --- | --- |
+| Infrastructure | ADMIN | 基本インフラサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | MEMBER | ネットワークサービス(Network Interface、フローティングIP、Direct Connectを除く)及びNKS、NCS、NAS、Storage Gateway Read(読み取り)<br> その他の基本インフラサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | VIEWER | Key Pair、Direct Connect、NAS (Offline) Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)<br> その他の基本インフラサービス Read(読み取り) |
+| Infrastructure | Routing ADMIN | Infrastructure MEMBER ロール及びRouting Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | Security Group ADMIN | Infrastructure MEMBER ロール及びSecurity Groups Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | Load Balancer ADMIN | Infrastructure MEMBER ロール及びLoad Balancer Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | Transit Hub ADMIN | Infrastructure MEMBER ロール及びTransit Hub Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | Peering Gateway ADMIN | Infrastructure MEMBER ロール及びPeering Gateway Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | Colocation Gateway ADMIN | Infrastructure MEMBER ロール及びColocation Gateway Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | NAT Gateway ADMIN | Infrastructure MEMBER ロール及びNAT Gateway Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | Service Gateway ADMIN | Infrastructure MEMBER ロール及びService Gateway Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | Private DNS ADMIN | Infrastructure MEMBER ロール及びPrivate DNS Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | Flow Log ADMIN | Infrastructure MEMBER ロール及びFlow Log Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | NCS ADMIN | Infrastructure MEMBER ロール及びNCS Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | NKS ADMIN | Infrastructure MEMBER ロール及びNKS Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Infrastructure | NAS ADMIN | Infrastructure MEMBER ロール及びNAS Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Virtual Desktop | ADMIN | Virtual Desktopサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Cloud Functions | ADMIN | Cloud Functionsサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| NHN Container Registry (NCR) | ADMIN | NHN Container Registry (NCR)サービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| NHN Container Registry (NCR) | VIEWER | NHN Container Registry (NCR)サービスに対するRead(読み取り) |
+| NHN Container Registry (NCR) | IMAGE UPLOADER | NHN Container Registry (NCR) サービスに対するRead(読み取り) <br> イメージ アップロード、アーティファクト Create(作成)、タグ Create(作成) |
+| DNS Plus | ADMIN | DNS Plusサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| DNS Plus | VIEWER | DNS Plusサービスに対するRead(読み取り) |
+| Object Storage | ADMIN | Object Storageサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Object Storage | Container OPERATOR | Object Storageサービス内のコンテナリストおよび、すべての情報詳細を照会Read(読み取り)。コンテナ管理Create(作成)、Update(更新)、Delete(削除) |
+| Object Storage | Container VIEWER | Object Storageサービス内のコンテナリストを照会Read(読み取り)  |
+| Object Storage | Object READER | Object Storageサービス内のコンテナリストおよび、一部の情報詳細を照会Read(読み取り) <br> オブジェクトリストおよび詳細照会Read(読み取り) <br> オブジェクトダウンロードRead(読み取り)  |
+| Object Storage | Object WRITER | Object Storageサービス内のコンテナリストおよび、一部の情報詳細を照会Read(読み取り) <br> オブジェクト管理Create(作成)、Update(更新)、Delete(削除)  |
+| Object Storage | Object VIEWER | Object Storageサービス内のコンテナリストおよび、一部の情報詳細を照会Read(読み取り) <br> オブジェクトリストおよび詳細照会Read(読み取り)  |
+| Backup | ADMIN | Backupサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| RDS for MySQL | ADMIN | RDS for MySQLサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| RDS for MySQL | VIEWER | RDS for MySQLサービスに対するRead(読み取り) |
+| RDS for PostgreSQL | ADMIN | RDS for PostgreSQLサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| RDS for PostgreSQL | VIEWER | RDS for PostgreSQLサービスに対するRead(読み取り) |
+| RDS for MariaDB | ADMIN | RDS for MariaDBサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| RDS for MariaDB | VIEWER | RDS for MariaDBサービスに対するRead(読み取り) |
+| RDS for MS-SQL | ADMIN | RDS for MS-SQLサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| EasyCache | ADMIN | EasyCacheサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| EasyCache | VIEWER | EasyCacheサービスレプリケーショングループメニューRead(読込)、モニタリングメニューRead(読込) |
+| Cloud Monitoring | ADMIN | Cloud Monitoringサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Cloud Monitoring | VIEWER | Cloud Monitoring Read(読み取り) |
+| Gamebase | ADMIN | Gamebase サービス Create(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Gamebase | ANALYTICS VIEWER - ALL | すべての指標 Read(読み取り) |
+| Gamebase | ANALYTICS VIEWER - EXCLUDING SALES | 売上を除くすべての指標 Read(読み取り) |
+| Gamebase | ANALYTICS VIEWER - ONLY REAL-TIME | リアルタイム指標 Read(読み取り) |
+| Gamebase | APP ADMIN | APPメニュー Create(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Gamebase | APP VIEWER | APPメニュー Read(読み取り) |
+| Gamebase | BAN ADMIN | 利用停止メニュー Create(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Gamebase | BAN VIEWER | 利用停止メニュー Read(読み取り) |
+| Gamebase | COUPON ADMIN | クーポンメニュー Create(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Gamebase | COUPON VIEWER | クーポンメニューRead(読み取り) |
+| Gamebase | CS ADMIN | サポートメニューCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Gamebase | CS INQUIRY SUPPORT | サポートお問い合わせメニューRead(読み取り)、Update(更新)およびメンバーメニューRead(読み取り) |
+| Gamebase | IAP ADMIN | 購入メニューCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Gamebase | IAP VIEWER | 購入メニューRead(読み取り) |
+| Gamebase | LEADERBOARD ADMIN | リーダーボードメニューCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Gamebase | LEADERBOARD VIEWER | リーダーボードメニューRead(読み取り) |
+| Gamebase | MANAGEMENT ADMIN | 管理メニューCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Gamebase | MEMBER ADMIN | メンバーメニューCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Gamebase | MEMBER VIEWER | メンバーメニューRead(読み取り) |
+| Gamebase | MEMBER FILE DOWNLOAD | 指標、売上、メンバーなどのメニューRead(読み取り)およびダウンロード |
+| Gamebase | OPERATION ADMIN | 運営メニューCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Gamebase | OPERATION VIEWER | 運営メニューRead(読み取り) |
+| Gamebase | PUSH ADMIN | プッシュメニューCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Gamebase | PUSH VIEWER | プッシュメニューRead(読み取り) |
+| GameAnvil  | ADMIN | GameAnvil サービス Create(作成)、Read(読込)、Update(更新)、Delete(削除)  |
+| GameAnvil  | MEMBER | GameAnvil サービス Read(読込), モニタリング メニュー Create(作成)、Read(読込)、Update(更新)、Delete(削除)  |
+| GameAnvil  | VIEWER | GameAnvil サービス Read(読込)  |
+| GameStarter  | ADMIN | ゲーム設定, 配布メニュー Create(作成),  Read(読み取り),  Update(更新)  |
+| GameStarter  | VIEWER | ゲーム設定, 配布メニュー Read(読み取り)  |
+| Leaderboard | ADMIN | Leaderboardサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Leaderboard | VIEWER | Leaderboardサービスに対するRead(読み取り) |
+| Launching | ADMIN | Launchingサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Smart Downloader | ADMIN | Smart Downloaderサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| NHN AppGuard | ADMIN | AppGuardサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Server Security Check | ADMIN | Server Security Check サービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Server Security Check | VIEWER |Server Security Check サービスに対するRead(読み取り) |
+| Security Monitoring | ADMIN | Security Monitoringサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| CAPTCHA | ADMIN | CAPTCHAサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| WEB Firewall | ADMIN | WEB Firewallサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Vaccine | ADMIN | Vaccineサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Secure Key Manager | ADMIN | Secure Key Managerサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Secure Key Manager | APPROVAL ADMIN | Secure Key Manager承認要請に対する承認, 拒否, 照会および承認要請生成, 照会  |
+| Secure Key Manager | VIEWER | Secure Key Managerサービスに対するRead(読み取り) |
+| Security  Compliance | ADMIN | Security  Complianceサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Webshell Threat Detector | ADMIN | Webshell Threat Detectorサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Security Advisor | ADMIN | Security Advisorサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Security Advisor | VIEWER | Security Advisorサービスに対するRead(読み取り)  |
+| Network Firewall | ADMIN | Network Firewallサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Network Firewall | VIEWER | Network Firewallサービスに対するRead(読み取り)  |
+| NHN Bastion | ADMIN | NHN Bastionサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) | 
+| NHN Bastion | VIEWER | NHN Bastionサービスに対するRead(読み取り) | 
+| NHN Bastion | USER | NHN Bastionサービスターミナルの利用 |
+| Cloud Access | ADMIN | Cloud Accessサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Cloud Access | VIEWER | Cloud Accessサービスに対するRead(読み取り) | 
+| CDN | ADMIN | CDNサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Image Manager | ADMIN | Image Managerサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Notification Hub | ADMIN | Notification Hubサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Push | ADMIN | Pushサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| SMS | ADMIN | SMSサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| SMS | SEND ADMIN | SMSサービス送信メニューCreate(作成), Read(読み取り) |
+| SMS | DELIVERY RESULT ADMIN | SMSサービスSMSリクエスト別照会メニューRead(読み取り)、照会結果ダウンロードCreate(作成)<br> 大量SMS送信照会メニューRead(読み取り)、照会結果ダウンロードCreate(作成)<br> タグSMS送信照会メニューRead(読み取り)、照会結果ダウンロードCreate(作成) |
+| SMS | SETTING ADMIN | SMSサービステンプレート管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 発信番号 事前登録 メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 発信番号照会メニューRead(読み取り)、タグ管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> UID管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> Webフック管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 080受信拒否設定メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 送信設定メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 統計イベントキー設定メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| SMS | STATISTICS ADMIN | SMSサービス統計メニューRead(読み取り)、照会結果ダウンロードCreate(作成) |
+| RCS Bizmessage | ADMIN | RCS Bizmessageサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Email | ADMIN | Emailサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Email | SEND ADMIN | Emailサービスメール送信メニューCreate(作成), Read(読み取り) |
+| Email | DELIVERY RESULT ADMIN | Emailサービスメールリクエスト別照会メニュー Read(読み取り)、照会結果ダウンロードCreate(作成)<br> メール予約送信照会メニュー Read(読み取り)、照会結果ダウンロードCreate(作成)<br> 大量メール送信照会メニュー Read(読み取り)、照会結果ダウンロードCreate(作成)<br> タグメール送信照会メニュー Read(読み取り)、照会結果ダウンロードCreate(作成) |
+| Email | SETTING ADMIN | Emailサービステンプレート管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 受信拒否管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> メールドメイン管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> タグ管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> UID管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 送信設定Create(作成), Read(読み取り), Update(更新), Delete(削除)<br> Webフック管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Email | STATISTICS ADMIN | Emailサービス統計照会メニューRead(読み取り)、照会結果ダウンロードCreate(作成) |
+| KakaoTalk Bizmessage | ADMIN | KakaoTalk Bizmessageサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| KakaoTalk Bizmessage | SEND ADMIN | KakaoTalk Bizmessageサービス(お知らせトーク)送信メニューCreate(作成), Read(読み取り)|
+| KakaoTalk Bizmessage | DELIVERY RESULT ADMIN | KakaoTalk Bizmessageサービス(お知らせトーク)送信結果照会 Read(読み取り)、照会履歴のダウンロードCreate(作成)<br> (お知らせトーク)大量送信照会 Read(読み取り)、照会結果ダウンロードCreate(作成)<br>(カカともへのメッセージ)送信結果照会 Read(読み取り)、照会結果ダウンロードCreate(作成)|
+| KakaoTalk Bizmessage | SETTING ADMIN | KakaoTalk Bizmessageサービス発信プロフィール管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> (お知らせトーク)テンプレート管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> (お知らせトーク)代替送信管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> (お知らせトーク)発信プロフィールグループ管理Create(作成), Read(読み取り), Update(更新), Delete(削除)<br> (カカともへのメッセージ)イメージ管理 Read(読み取り), Delete(削除) <br> (カカともへのメッセージ)代替送信管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除) <br> 送信設定メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> Webフック管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 統計イベントキー 設定メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| KakaoTalk Bizmessage | STATISTICS ADMIN | KakaoTalk Bizmessageサービス統計メニューRead(読み取り)、照会結果ダウンロードCreate(作成)  |
+| Face Recognition | ADMIN | Face Recognitionサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| OCR | ADMIN | OCRサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Text to Speech | ADMIN | Text to Speechサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Speech to Text | ADMIN | Speech to Textサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| AI EasyMaker | ADMIN | AI EasyMakerサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| NHN Cloud Foundry | ADMIN | NHN Cloud Foundry サービスの Create（作成）、Read（読み取り）、Update（更新）、Delete（削除）  |
+| IAP | ADMIN | IAPサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Mobile Device Info | ADMIN | Mobile Device Infoサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Log & Crash Search | ADMIN | Log & Crash Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| DataFlow | ADMIN | DataFlowサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| DataQuery | ADMIN | DataQueryサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Data Lake Storage | ADMIN | Data Lake StorageサービスCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
+| Data Lake Storage | OPERATOR | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)。バケット管理Create(作成)、Update(更新)、Delete(削除)  |
+| Data Lake Storage | VIEWER | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)  |
+| EasyQueue | ADMIN | EasyQueueサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)、メッセージの送受信  |
+| EasyQueue | CLIENT | EasyQueueサービスの参照(Read)、メッセージの送受信  |
+| EasyQueue | VIEWER | EasyQueueサービス Read(読み取り)  |
+| ROLE | ADMIN | ROLEサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| API Gateway | ADMIN | API Gatewayサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| RTCS | ADMIN | RTCSサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| ShortURL | ADMIN | ShortURLサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| File-Crafter | ADMIN | File-Crafterサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Cloud Scheduler | ADMIN | Cloud Schedulerサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| IAP | ADMIN | IAPサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Mobile Device Info | ADMIN | Mobile Device Infoサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Cloud Search | ADMIN | Cloud Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Autocomplete | ADMIN | Autocompleteサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Corporation Search | ADMIN | Corporation Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Log & Crash Search | ADMIN | Log & Crash Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| DataFlow | ADMIN | DataFlowサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| DataQuery | ADMIN | DataQueryサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| DataQuery | CLUSTER ADMIN | DataQuery サービスクラスターの On（起動）、Off（停止）、Spec Configuration（スペック設定） |
+| DataQuery | DATASOURCE ADMIN | DataQuery サービスデータソースの Create（作成）、Update（修正）、Delete（削除）  |
+| Data Lake Storage | ADMIN | Data Lake StorageサービスCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
+| Data Lake Storage | OPERATOR | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)。バケット管理Create(作成)、Update(更新)、Delete(削除)  |
+| Data Lake Storage | VIEWER | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)  |
+| EasyQueue | ADMIN | EasyQueueサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)、メッセージの送受信  |
+| EasyQueue | CLIENT | EasyQueueサービスの参照(Read)、メッセージの送受信  |
+| EasyQueue | VIEWER | EasyQueueサービス Read(読み取り)  |
+| Pipeline | ADMIN | Pipelineサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Deploy | ADMIN | Deployサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Deploy | VIEWER | Deployサービスに対するRead(読み取り)  |
+| Managed | ADMIN | Managedサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Service Monitoring | ADMIN | Service Monitoringサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Certificate Manager | ADMIN | Certificate Managerサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Certificate Manager | VIEWER | Certificate Managerサービスに対するRead(読み取り)  |
+| Private CA | ADMIN | Private CAサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Private CA | VIEWER | Private CAサービスに対するRead(読み取り) |
+| eTax | ADMIN | eTax サービスCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| eTax | VIEWER | eTaxサービスに対するRead(読み取り) |
+
+
+<a id="project-member-roles-service-permission"></a>
+#### サービス 有効化
+サービスPERMISSIONロールは、個別サービスを有効化または無効化できます。
+
+| ロール | 説明 |
+| --- | --- |
+| Service Name PERMISSION | サービス Enable(有効), Disable(無効)  |
+
+<a id="billing-management"></a>
+## 決済管理 { #billing-management }
+
+NHN Cloudサービス利用料金を確認し、決済できます。
+**情報表示 > 決済管理**メニューで決済方法を登録したNHN Cloudアカウントの請求書と決済予定金額、使用量情報を確認できます。
+
+決済方法を通して、該当の月に決済する内訳と下記の機能を提供します。
+
+- 即時決済：毎月8日の自動決済前に即時決済機能で決済できます。
+- 売上伝票：クレジットカードで決済した場合、売上伝票を照会できます。
+- 税金計算書：口座振替で決済した場合、税金計算書を照会できます。
+
+決済管理請求書で照会する内訳は下記のとおりです。
+
+- 利用金額：サービス使用量と単価を計算した金額
+- 割引/割増金額：約定割引、管理者割引/割増など
+- 付加税：(利用金額 - 割引金額 + 割増金額)の10%
+- 延滞料
+    - 韓国会員：最終決済金額が未払いの時、該当金額の2%
+    - 日本会員：日本消費者契約法により延滞料が発生しません。
+- 最終決済金額：(利用金額 - 割引金額 + 割増金額) + 付加税
+
+
+<a id="manage-notifications"></a>
+## 通知管理 { #manage-notifications }
+
+通知管理機能は、NHN Cloudで送信する通知ごとに、受信する対象者と通知方法(Email、SMS)を設定できる機能です。
+
+1. **組織 > 通知管理**または**プロジェクト > 通知管理**をクリックします。
+    - 組織、プロジェクトごとに受信する通知を管理できます。
+
+2. 通知リストで受信対象者を変更する通知を探し、**受信対象修正 > 修正** ボタンをクリックします。
+    - 左側のリストから通知を選択するか、右上の検索領域で通知名、受信先などを検索して通知を探すことができます。
+    - 複数の通知の受信者を一度に変更するには、通知のチェックボックスを選択した後、通知リスト上部の**受信対象一括修正**ボタンをクリックします。
+
+3. メンバー、通知受信グループ、**役割別に通知受信対象および通知方法(Email、SMS)**を選択します。
+    - 該当通知はWebhookをサポートしていません。
+    - 通知ごとにサポートする通知方法が異なります。
+    - 受信対象を通知受信グループを追加する場合、そのグループに設定された通知方法と各通知でサポートする通知方法が一致しなければ、その方法で通知を受信できません。
+
+4. **保存**ボタンをクリックして設定内容を保存します。
+
+<a id="notification-receiver-group-management"></a>
+## 通知受信グループ管理 { #notification-receiver-group-management }
+
+通知受信グループ管理は、NHN Cloudから送信する通知に対する受信グループを設定する機能です。
+
+Email、SMS通知は、組織/プロジェクトロールベースの受信対象設定及びメンバーに対する受信対象設定を通じてサポートします。
+Webhook通知は基本WebhookとカスタムWebhookを提供します。
+該当する通知受信グループは**サービス**で通知設定時に使用できます。
+
+<a id="create-notification-receiver-group"></a>
+### 通知受信グループ作成方法 { #create-notification-receiver-group }
+
+1. **通知受信グループ**を作成するには、組織またはプロジェクトメニューにある**通知受信グループ管理**ボタンをクリックします。
+2. **+ 通知受信グループ追加**ボタンをクリックします。
+3. **基本情報**欄に通知受信グループ名、説明を入力します。
+    - **通知受信グループ名**はハングル、英字、数字、記号で最大40文字まで入力できます。
+    - **説明**は通知受信グループ名を区分するために文字数制限なしで最大100文字まで入力できます。
+
+4. **受信ロール設定**
+    - 組織 > 受信ロール設定
+        * 組織/プロジェクトロール、組織/プロジェクトロールグループ、サービス別ロールに対するEmail、SMS通知設定をサポートします。
+    * プロジェクト > 受信ロール設定
+        * プロジェクトロール、プロジェクトロールグループ、サービス別ロールに対してEmail、SMS通知設定をサポートします。
+
+5. **受信対象の直接設定**
+    - 通知受信グループ追加で受信対象を直接設定できます。
+    - メンバー別にEmail、SMS通知設定をサポートします。
+
+6. **Webhook設定**
+    - 通知送信時にユーザーが任意のWebhookに設定できます。
+    - タイプ別に基本WebhookとカスタムWebhookを提供します。  (5個までサポート)
+
+<a id="webhook-settings"></a>
+### Webhook設定 { #webhook-settings }
+1. コンソール組織、プロジェクト上部のタブで**[通知受信グループ管理]**タブを選択します。
+2. 下部の**Webhook設定**メニューにある**+Webhook追加**ボタンを選択します。
+3. **Webhook追加**ポップアップではタイプ別に基本WebhookとカスタムWebhookを提供します。
+    - 基本Webhook
+        - 基本Webhookはサポートするサービス通知時にのみ送信できます。
+        - Webhook名
+            - 設定する基本Webhookの名前を文字制限なしで最大40文字以内で入力できます。
+            - 同じ通知受信グループ内でWebhook名は重複できません。
+        - 受信対象
+            - Webhookを受信するURLを入力できます。
+        - シークレットキー
+            - シークレットキーはURIとid、source、type、timeをSHA256ハッシュアルゴリズムで暗号化するシークレットキーです。
+                - シークレットキーが設定されている場合にのみ、基本WebhookのHeaderにAuthorizationを含めて送信します。
+                - 例: Authorization: HMAC-SHA256 Signature={暗号化した文字}"
+                    - Authorization Headerを確認して、受信したリクエストが中間攻撃者によって改ざんされるのを防ぐことができます。
+        - HTTP MethodはPOSTであり、Request Bodyは以下の形式で提供され、bodyフィールドはサービスごとに異なります。
+
+```json
+   {
+   "id": "String",
+   "source": "String",
+   "specversion": "String",
+   "type": "String",
+   "body" : "Object"
+   }
 ```
-#!/bin/bash
-...
-```
 
-ユーザースクリプトが正常に動作するには、インスタンス内部のログファイルを確認する必要があります。スクリプトで標準出力/エラー装置に出力したログは`/var/log/cloud-init-output.log`で確認できます。
+- カスタムWebhook
+    - カスタムWebhookはサポートするサービス通知時にのみ送信できます。
+    - Webhook名
+        - 設定するカスタムWebhookの名前を文字制限なしで最大40文字以内で入力できます。
+        * 同じ通知受信グループ内でWebhook名は重複できません。
+    * 送信対象
+        * Webhookを送信する対象(カスタムダッシュボードまたはサービス)を選択できます。
+        * カスタムWebhookを提供するメニューまたはサービスのみ選択できます。
+    * 受信対象
+        * Webhookを受信するURLとHTTP Methodを入力できます。
 
-#### Windows
+      | 提供対象 | 提供範囲 | 
+      | -- | -- | 
+      | HTTP Method | POST <br> PUT | 
+      | 送信プロトコル | HTTP<br> HTTPS | 
 
-Windowsイメージではユーザースクリプト形式にBatchスクリプト形式、 Powershellスクリプト形式をすべてサポートします。各形式は最初の行に明示する表示子により区別されます。
 
-* Batchスクリプト
-```
-rem cmd
-...
-```
+  - リクエストデータ
+      - リクエストデータには送信対象で提供するパラメータを入力できます。
+          - Ctrlキー + スペースキーを押して、該当する送信対象がサポートするパラメータを確認できます。
+          - 右下のプレビューを通じて提供されるValueを確認できます。
+              - \"alertId\": \"${alertId}\", <br> \"orgName\" : \"${orgName}\"
 
-* PowerShellスクリプト
-```
-#ps1_sysnative
-...
-```
+  - ヘッダ
+      - 受信対象に渡すヘッダを入力できます。
+      - 受信対象に渡すContent-typeヘッダはapplication/jsonをサポートしており、修正できません。
 
-BatchスクリプトとPowerShellスクリプトを一緒に使用したい場合は、下記のように記述します。
+    | ヘッダ項目 | ヘッダ値 | 
+    | -- | -- | 
+    | Custom-Header1 | Value1 | 
+    | Custom-Header2 | Value2 | 
+    
+  - 名前、送信対象、受信対象を入力した後、**確認**ボタンをクリックしてWebhookを作成します。
 
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
+4. 追加したWebhookはWebhook設定の一覧で確認できます。
+    * **表示**ボタンをクリックしてWebhookの詳細情報を確認できます。
+    * 鉛筆アイコンをクリックしてWebhook情報を修正できます。
+    * ゴミ箱アイコンをクリックしてWebhookを削除できます。
 
-ユーザースクリプトのログは、`C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`で確認できます。
+5. 作成されたWebhookは、Webhook送信を提供するサービスに**通知受信グループ**を追加して使用できます。
 
-ユーザースクリプト関連の詳細は、[cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html)または[Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html)ガイドを参照してください。
 
-<a id="additional-instance-features"></a>
-## インスタンス追加機能
+<a id="technical-support"></a>
+## テクニカルサポート { #technical-support }
 
-<a id="change-instance-status"></a>
-### インスタンスの状態変更
+テクニカルサポートは、組織またはプロジェクトメンバーと共にお問い合わせを登録したり管理できる機能です。
+登録したお問い合わせは同じ組織またはプロジェクト内の全てのメンバーが確認できます。必要な場合、他のメンバーが登録したお問い合わせに追加の質問を残すことができます。
 
-インスタンスの停止、終了、削除、起動でインスタンスの状態を変更できます。
+個別のお問い合わせが必要な場合、NHN Cloudカスタマーセンターの[1:1お問い合わせ](https://www.nhncloud.com/kr/support/inquiry)をご利用ください。
 
-インスタンスの停止、終了、削除のハイパーバイザリソース及び料金関連情報は下表を参照してください。
+<a id="list-of-inquiries"></a>
+### お問い合わせ一覧 { #list-of-inquiries }
 
-| 区分 | インスタンス停止 | インスタンス終了 | インスタンス削除 |
-| --- | -- | --- | --- |
-| ハイパーバイザリソース | リソース割り当て状態維持 | リソース返却及びインスタンス起動時に再割り当て | リソース削除 |
-| インスタンス料金 | 停止料金ポリシーの適用 | 無料 | 無料 |
-| 接続された他のリソースの料金 | 課金される| 課金される | 課金される |
+1. コンソールで**組織 > テクニカルサポート**または**プロジェクト > テクニカルサポート**タブをクリックします。
+    * 各組織、プロジェクトで受け付けた**お問い合わせ一覧**を確認できます。
 
-> [参考] GPU Instanceは終了することができず、停止時にも通常(100%)料金が発生します。
+<a id="submit-inquiry"></a>
+### お問い合わせ受付 { #submit-inquiry }
 
-<a id="create-image"></a>
-### イメージ作成
+1. **お問い合わせ一覧**画面で**お問い合わせ受付**ボタンをクリックします。
+2. 受け付けるお問い合わせのタイプを選択し、各フィールドを案内に従って入力します。
+    * お問い合わせのタイプによって入力フィールドが異なる場合があります。
+3. 下部にある**受付**ボタンをクリックします。
+    * 有効性検証(必須値 など)に失敗した場合、該当する入力フィールドに警告メッセージが表示されます。
 
-インスタンスのルートブロックストレージからイメージを作成します。イメージ作成は、データの整合性を保障するために、インスタンスを停止した状態で行うことを推奨します。
+<a id="submit-additional-questions"></a>
+### 追加質問受付 { #submit-additional-questions }
 
-インスタンスのルートブロックストレージに空き容量が全くない場合、イメージの作成はできますが、イメージを別のインスタンスで使用するための初期化作業は行えないので正常に使用できません。イメージを作成する前にインスタンスで最低100KBの空き容量を確保する必要があります。
+1. **お問い合わせ一覧**画面の既存のお問い合わせ一覧から、追加質問を受け付けるお問い合わせの行をクリックします。
+2. **詳細お問い合わせ**履歴画面の下部にある**追加質問**受付フォームを入力します。
+3. **追加質問**受付フォーム内の**受付**ボタンをクリックします。
+    * 追加質問内容と電話番号は必須値です。
+    * 会員情報に登録された電話番号が存在する場合、入力フィールドにデフォルト値として自動入力されます。
 
-作成されたイメージは**Compute > Image**にプライベートイメージとして登録されます。登録されたイメージを利用して、元のインスタンスと同じブロックストレージを持つインスタンスを作成できます。
+<a id="check-response-to-inquiry"></a>
+### お問い合わせ回答内容の確認 { #check-response-to-inquiry }
 
-> [注意]
-> 作成されたイメージのサイズはルートブロックストレージの実際の使用量より大きくなる可能性があります。
-
-<a id="associatedisassociate-floating-ip"></a>
-### Floating IP接続と解除
-
-インスタンスの状態にかかわらずFloating IPを接続または解除できます。使用できるFloating IPがない場合や、希望するFloating IPがない場合、**生成**ボタンをクリックしてFloating IPを生成して接続できます。また**Network > VPC > Floating IP**でFloating IPを生成して使用することもできます。
-
-Floating IPの詳細については[VPC概要](/Network/VPC/ja/overview/)を参照してください。
-
-<a id="modify-security-group"></a>
-### セキュリティグループ修正
-
-インスタンスの状態に関わらずインスタンスのセキュリティグループを修正できます。修正されたセキュリティグループはすぐに適用されます。
-
-セキュリティグループの詳細については[セキュリティグループ](./console-guide/#security-group)と[VPC概要](/Network/VPC/ja/overview/)を参照してください。
-
-<a id="change-network-subnet"></a>
-### サブネット変更
-
-インスタンスのネットワークサブネットはインスタンスが停止した状態でのみ変更できます。サブネットを追加すると、自動的にインスタンスに該当サブネットに接続されるネットワークインターフェイスが作成されます。この時、一度に複数のサブネットを追加するとインスタンスに新たに作成されるネットワークインターフェイスの順序は任意で指定されます。サブネットをインスタンスから削除すると作成されていたネットワークインターフェイスも自動的に削除されます。
-
-<a id="modify-flavor"></a>
-### インスタンスタイプ変更
-
-インスタンスの仕様は、インスタンスを停止した後に変更できます。インスタンスが実行中の場合は**追加機能**の**インスタンス停止**をクリックしてインスタンスを停止します。
-
-現在の仕様に応じて、変更できるインスタンスの仕様が異なります。
-
-* m2、c2、r2、t2、x1タイプのインスタンスはm2、c2、r2、t2、x1タイプのインスタンスタイプに変更できます。
-* m2、c2、r2、t2、x1タイプのインスタンスはu2タイプのインスタンスタイプに変更できません。
-* u2タイプは生成後に仕様を変更できません。同じu2タイプのインスタンスタイプへも変更できません。
-
-インスタンスの仕様を変更すると、変更作業と変更確認作業が行われます。全ての作業が完了するとVM状態が**Shutoff**状態になり、**追加機能**の**Start instance**をクリックしてインスタンスを起動できます。
-
-> [参考]インスタンスのルートブロックストレージサイズは変更できません。インスタンスのブロックストレージ容量が足りない場合は、ブロックストレージを追加して使用します。ブロックストレージ追加方法については[ブロックストレージ概要](/Storage/Block%20Storage/ja/overview/)を参照してください。
-
-インスタンスは変更時点を基準に変更された仕様で課金されます。
-
-<a id="change-instance-os-details"></a>
-### インスタンスOS情報の変更
-
-インスタンスの状態に関係なく インスタンスOS情報を変更できます。 
-
-**Compute > Instance**サービスページで、OS情報を変更するインスタンスをクリックします。該当インスタンスの詳細情報画面の**基本情報**タブで**OS > 変更**をクリックします。
-
-> [参考] OS区分は変更できません。
-
-<a id="change-instance-description"></a>
-### インスタンス説明の変更
-
-インスタンスの状態に関係なくインスタンス説明を変更できます。 
-
-**Compute > Instance**サービスページで説明を変更するインスタンスをクリックします。該当インスタンス詳細情報画面の**基本情報**タブで**説明 > 変更**をクリックします。
-
-<a id="change-instance-key-pair"></a>
-### インスタンスキーペアの変更
-
-インスタンスキーペアはインスタンスが有効状態の場合にのみ変更できます。
-
-**Compute > Instance** サービスページでキーペア情報を変更するインスタンスをクリックします。該当インスタンス詳細情報画面の **基本情報**タブで**キーペア > 変更**をクリックします。
-
-インスタンス基本アカウントのキーペアを選択したキーペアに変更します。インスタンス基本アカウントはインスタンス下部の詳細情報画面の**接続情報**タブで確認できます。
-
-> [注意]インスタンスのキーペアを変更すると、選択したキーペアを除いたインスタンス内のすべての公開鍵の内容が削除されます。
-> [参考]基本インフラサービスADMIN権限を持つプロジェクトメンバーのみインスタンスキーペアを変更することができ、Windows OSインスタンスの場合は変更できません。
-> [参考]インスタンス作成に使用したイメージのバージョンが低い場合、キーペア変更機能をサポートしない場合があります。
-
-<a id="manage-placement-policies"></a>
-### 配置ポリシー管理
-
-配置ポリシーを作成及び削除することができ、配置ポリシーに割り当てられたインスタンスのリストを表示します。
-
-分散配置のための`anti-affinity`配置ポリシータイプのみ提供します。
-
-配置ポリシーにインスタンスが割り当てられている場合でも、配置ポリシーの削除が可能で、この場合、インスタンスは削除されません。
-
-<a id="key-pairs"></a>
-## キーペア
-
-<a id="import-key-pairs-windows"></a>
-### キーペアをインポートする(Windowsユーザー)
-
-PuTTY SSHクライアントをインストールすると一緒にインストールされるputtygenプログラムでキーペアを生成し、NHN Cloudに登録して使用できます。
-
-[PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)をインストールします。
-
-Puttygenを実行します。
-
-![イメージ1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
-
-**パラメータ**で**RSA**(旧バージョンのputtygenではSSH-2 RSA)を選択します。 **Actions**にある**「Generate」**ボタンをクリックします。キーを生成するために空欄の中でマウスを動かします。
-
-キーが生成されたら下図のように公開鍵ファイル内容が表示されます。公開鍵全体を**キーペア作成**の**公開鍵:**入力欄に貼り付けてキーペアを登録します。
-
-![イメージ1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
-
-** Actions **の**「Save private key」**をクリックして秘密鍵を保存します。キーパスフレーズを空欄のまま秘密鍵を保存すると、**キーパスフレーズで保護されないままこのキーを保存しますか？**というメッセージが表示されます。変換された秘密鍵をより安全に使用するには、キーパスフレーズを設定して保存します。
-
-> [注意]
-インスタンスに自動的にログインするには、キーパスフレーズを使わないでください。キーパスフレーズを使用するとログインする際に秘密鍵のパスワードを直接入力する必要があります。
-
-登録したキーペアはインスタンスを生成する時に使用でき、インスタンス接続時にはこのキーペアの秘密鍵で接続する必要があります。インスタンス接続方法は[インスタンス接続方法](./overview/#how-to-access-instances)を参照してください。
-
-NHN Cloudで生成したキーペア同様、このように作成されたキーペアの秘密鍵も外部に流出すると、誰でも流出した秘密鍵でそのインスタンスにアクセスできるようになるので、慎重に管理する必要があります。
-
-
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### キーペアインポート(Mac、Linuxユーザー)
-
-MacやLinuxの「ssh-keygen」で作成したキーペアをNHN Cloudに登録して使用できます。キーペアは次のコマンドで作成します。
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-キーペアのパスワードは設定しても構いませんが、設定しなくても問題はありません。セキュリティレベルを上げるならば、パスワードの設定を推奨します。入力したキーペアの名前に拡張子「.pub」が追加されたファイル内にキーペア公開鍵が入っています。
-
-	$ cat my_key.key.pub
-	ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-
-この内容全体を**キーペア作成**の**公開鍵:**入力欄に貼り付けてキーペアを登録します。
-
-登録したキーペアはインスタンスを生成する時に使用でき、インスタンス接続時にはこのキーペアの秘密鍵で接続する必要があります。インスタンス接続方法は[インスタンス接続方法](./overview/#how-to-access-instances)を参照してください。
-
-NHN Cloudで生成したキーペア同様、このように作成されたキーペアの秘密鍵も外部に流出すると誰でも流出した秘密鍵でそのインスタンスにアクセスできるようになるので慎重に管理する必要があります。
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## 付録1. Windows言語パックの変更
-
-NHN CloudのWindowsイメージは、英語版が基本設定になっています。他の言語を基本設定にする方法は次のとおりです。
-
-1. **START > Control Panel > Clock, Language, and Region > Add a language**を選択します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. **言語基本設定変更 > 言語追加**を選択します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. **言語追加(Add a language)**で使用したい言語を選択し、**追加(Add)**をクリックします。
-![イメージ1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. 追加された言語パックを確認します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. 追加された言語パックをダウンロードし、インストールします。
-![イメージ1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. アップデートをダウンロードし、インストールします。
-![イメージ1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. インストールされた言語パックを変更するには、選択した言語をダブルクリックするか、**オプション(Options)**を選択します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. 言語オプションで、**基本言語に設定**を選択します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. 基本言語設定を適用するには、**いまログオフ(Log off now)**をクリックします。
-![イメージ1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. 再度ログインすると、ユーザーが選択した言語パックへの変更を確認できます。
-![イメージ1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## 付録2. Windowsルーティングの変更
-
-NHN CloudWindowsでルーティングを変更する方法は次のとおりです。
-
-
-* **Windowsキー + R**を押すと「ファイル名を指定して実行」ダイアログが表示されるので、名前に`cmd`と入力してOKボタンをクリックし、コマンドプロンプトウィンドウを開きます。
-
-
-  Routeコマンドを入力します。
-
-* 現在設定の出力：route print
-* 追加：route add "宛先" mask "subnet" "gateway" metric "メトリック値" if "インターフェイス番号"
-* 変更：route change "宛先" mask "subnet" "gateway" metric "メトリック値" if "インターフェイス番号"
-* 削除：route delete "宛先" mask "宛先subnet" "gateway" metric "メトリック値" if "インターフェイス番号"
-* オプション：-p (永久ルート指定)
-
-
-説明
-
-
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* メトリック値：値が小さいほど優先順位が高い
-* インターフェイス番号：route printで確認可能(上の図で赤色の枠)
-* 永久ルート：-pオプションを使用しない場合、システム再起動時に、設定したルートが初期化されるため使用(上の図で青色の枠)
-
-事例1 - 特定インターフェイスのみ外部通信設定
-
-* route changeコマンドを使用し、外部通信をしたくないインターフェイスルートのmetricを修正するか、固定IP設定でデフォルトゲートウェイ情報を入力しない方法などがあります。
-
-* Metricの修正方法
-    * インターフェイスのmetric増加
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* 固定IPの設定方法
-    1. ipconfig /allを入力し、IP情報を確認します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. 確認したIP情報を利用し、IP設定ウィンドウでデフォルトゲートウェイを除いて入力します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. route printで確認します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-事例2 - 特定帯域に対するルート設定
-
-* route addコマンドで、特定帯域に対するルートを設定します。
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-
-事例3 - 特定ルートの除去
-
-* route deleteを使用し、指定したルートを除去します。
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## 付録3. システムロケールの変更
-
-NHN CloudのWindowsで、システムロケールを変更する方法は次の通りです。
-
-1. **スタート > コントロールパネル > 時計、言語、および地域**を選択します。
-![画像1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. **地域と言語**を選択します。
-![画像1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. **管理**タブで**システムロケール変更**をクリックします。
-![画像1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. 変更するシステムロケールを選択します。
-![画像1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. 適用するにはシステムを再起動します。
-![画像1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## 付録4. ハイパーバイザーのメンテナンスのためのインスタンス再起動ガイド
-NHN Cloudは周期的にハイパーバイザーのソフトウェアをアップデートして、基本インフラサービスのセキュリティと安定性を向上させています。
-メンテナンス対象のハイパーバイザーで起動中のインスタンスは再起動を行い、メンテナンスが完了したハイパーバイザーに移動する必要があります。
-
-インスタンスを再起動するには、コンソールでインスタンス名の横に作成された**!再起動** ボタンを使用する必要があります。
-`コンソールにあるインスタンス再起動またはOSの再起動機能では、インスタンスが別のハイパーバイザに移動しません。`
-下記のガイドに従って、コンソールの再起動機能を利用してください。
-
-メンテナンス対象に指定されたインスタンスがあるプロジェクトに移動します。
-
-**1. メンテナンス対象インスタンスを確認します。**
-
-インスタンス名の前に**!再起動**ボタンがあるインスタンスが、メンテナンス対象のインスタンスです。
-**再起動**ボタンの上にマウスオーバーすると、詳細なメンテナンス時間を確認できます。
-![イメージ1](http://static.toastoven.net/prod_instance/instance_p_migration_jp_1.png)    
-
-**2. メンテナンス対象インスタンスで起動中のアプリケーションを無効化するか、終了します。**
-
-メンテナンス対象インスタンスで起動中のアプリケーションを無効化するか終了して、サービスに影響を与えないようにする必要があります。 
-やむを得ずサービスに影響を与えてしまう時は、NHN Cloudサポートに連絡してくだされば、適切な措置を案内いたします。
-
-**3. メンテナンス対象インスタンス名の横に作成された[!再起動]ボタンをクリックします。**
-
-![イメージ2](http://static.toastoven.net/prod_instance/instance_p_migration_jp_2.png)
-
-**4. インスタンスの再起動を確認するウィンドウが表示されたら、[確認] ボタンをクリックします。**
-
-![イメージ3](http://static.toastoven.net/prod_instance/instance_p_migration_jp_3.png)
-
-**5. インスタンス状態表示灯が緑に変わり、[!再起動] ボタンが消えるまで待機します。**
-
-インスタンス状態表示灯が変わらない場合や、**!再起動**ボタンが無効化されない場合は、「更新」を行ってみてください。
-
-
-インスタンスの再起動中は、該当インスタンスを一切操作できません。
-インスタンスの再起動が正常に完了しない場合は、自動的に管理者に報告され、NHN Cloudから別途連絡いたします。
+1. **お問い合わせ一覧**画面のお問い合わせ一覧から、回答内容を確認するお問い合わせの行をクリックします。
+2. **詳細お問い合わせ**履歴画面で、お問い合わせ内容、追加質問内容、回答内容を確認できます。
