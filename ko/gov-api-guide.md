@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=a929413d0034 -->
+
 ## Data & Analytics > Log & Crash Search > API 가이드
 ### Appkey와 SecretKey
 Log & Crash Search API를 사용하려면 Appkey와 SecretKey가 필요합니다.
