@@ -408,23 +408,23 @@ NHN Cloud運営者が障害対応など運営上の目的で顧客のリソー�
 | ロール | 説明 |
 | --- | --- |
 | ADMIN | プロジェクト全体に対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
-| MARKETPLACE_ADMIN | Marketplace サービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
-| MARKETPLACE_VIEWER | Marketplace サービス Read(読み取り) |
-| MEMBER | プロジェクト内のすべてのサービスのリソース Create(作成), Read(読み取り), Update(更新), Delete(削除) - 一部のサービスを除く(関連するロール/権限の確認) |
+| MARKETPLACE_ADMIN | マーケットプレイスサービス Create(作成), Read(読み取り), Update(更新), Delete(削除) |
+| MARKETPLACE_VIEWER | マーケットプレイスサービス Read(読み取り) |
+| MEMBER | プロジェクト内のすべてのサービスのリソースCreate(作成), Read(読み取り), Update(更新), Delete(削除) - 一部のサービスを除く(関連するロール/権限の確認) |
 | BILLING VIEWER | 利用現況 Read(読み取り) |
-| PROJECT MANAGEMENT ADMIN | プロジェクト基本情報 Update(更新)<br>プロジェクト統合Appkey Create(作成), Read(読み取り), Update(更新), Delete(削除)<br>プロジェクトサービス有効化(Enable)、無効化(Disable)<br>プロジェクト Delete(削除) |
+| PROJECT MANAGEMENT ADMIN | プロジェクト基本情報 Update(更新)<br>プロジェクト統合Appkey Create(作成), Read(読み取り), Update(更新), Delete(削除)<br>プロジェクトサービス有効化(Enable), 無効化(Disable)<br>プロジェクト Delete(削除) |
 | PROJECT MANAGEMENT VIEWER | プロジェクト基本情報 Read(読み取り)<br>プロジェクト統合Appkey Read(読み取り) |
 | PROJECT MEMBER ADMIN | プロジェクトメンバー Create(作成), Read(読み取り), Update(更新), Delete(削除)<br>プロジェクトロールグループ Create(作成), Read(読み取り), Update(更新), Delete(削除) |
 | PROJECT MEMBER VIEWER | プロジェクトメンバー Read(読み取り)<br>プロジェクトロールグループ Read(読み取り) |
-| PROJECT NOTICE GROUP MANAGEMENT ADMIN | プロジェクト通知受信グループ管理 Create(作成), Read(読み取り), Update(更新), Delete(削除) <br> プロジェクトメンバー Read(読み取り) <br> プロジェクトロールグループ Read(読み取り)| 
-| PROJECT NOTICE GROUP MANAGEMENT VIEWER | プロジェクト通知受信グループ管理 Read(読み取り) <br> プロジェクトロールグループ Read(読み取り)| 
+| PROJECT NOTICE GROUP MANAGEMENT ADMIN | プロジェクト通知受信グループ管理 Create(作成), Read(読み取り), Update(更新), Delete(削除) <br> プロジェクトメンバー Read(読み取り) <br> プロジェクトロールグループ Read(読み取り)|
+| PROJECT NOTICE GROUP MANAGEMENT VIEWER | プロジェクト通知受信グループ管理 Read(読み取り) <br> プロジェクトロールグループ Read(読み取り)|
 | PROJECT NOTICE MANAGEMENT ADMIN | プロジェクト通知管理 Create(作成), Read(読み取り), Update(更新), Delete(削除) <br> プロジェクトメンバー Read(読み取り) <br> プロジェクトロールグループ Read(読み取り)| プロジェクト通知受信グループ管理 Read(読み取り)
 | PROJECT NOTICE MANAGEMENT VIEWER | プロジェクト通知管理 Read(読み取り) <br> プロジェクトロールグループ Read(読み取り)| プロジェクト通知受信グループ管理 Read(読み取り)
-| PROJECT API SECURITY SETTING ADMIN | プロジェクト API セキュリティ設定 Create(作成)/Read(読み取り)/Update(更新)/Delete(削除)|
-| PROJECT API SECURITY SETTING VIEWER | プロジェクト API セキュリティ設定 Read(読み取り)|
+| PROJECT API SECURITY SETTING ADMIN | プロジェクトAPIセキュリティ設定 Create(作成)/Read(読み取り)/Update(更新)/Delete(削除)|
+| PROJECT API SECURITY SETTING VIEWER | プロジェクトAPIセキュリティ設定 Read(読み取り)|
 | PROJECT AUTHENTICATION MANAGEMENT ADMIN | プロジェクト認証情報管理 Create(作成), Read(読み取り), Update(更新), Delete(削除)|
-| PROJECT QUOTA MANAGEMENT ADMIN| プロジェクトクォータ管理 Create(作成), Read(読み取り), Update(更新), Delete(削除)|
-| PROJECT QUOTA MANAGEMENT VIEWER| プロジェクトクォータ管理 Read(読み取り)|
+| PROJECT QUOTA MANAGEMENT ADMIN| プロジェクトクォーター管理 Create(作成), Read(読み取り), Update(更新), Delete(削除)|
+| PROJECT QUOTA MANAGEMENT VIEWER| プロジェクトクォーター管理 Read(読み取り)|
 | PROJECT_SUPPORT_ADMIN| プロジェクトお問い合わせ Create(作成)|
 
 
@@ -480,8 +480,8 @@ NHN Cloud運営者が障害対応など運営上の目的で顧客のリソー�
 | Gamebase | ANALYTICS VIEWER - ALL | すべての指標 Read(読み取り) |
 | Gamebase | ANALYTICS VIEWER - EXCLUDING SALES | 売上を除くすべての指標 Read(読み取り) |
 | Gamebase | ANALYTICS VIEWER - ONLY REAL-TIME | リアルタイム指標 Read(読み取り) |
-| Gamebase | APP ADMIN | APPメニュー Create(作成), Read(読み取り), Update(更新), Delete(削除) |
-| Gamebase | APP VIEWER | APPメニュー Read(読み取り) |
+| Gamebase | APP ADMIN | APP メニュー Create(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Gamebase | APP VIEWER | APP メニュー Read(読み取り) |
 | Gamebase | BAN ADMIN | 利用停止メニュー Create(作成), Read(読み取り), Update(更新), Delete(削除) |
 | Gamebase | BAN VIEWER | 利用停止メニュー Read(読み取り) |
 | Gamebase | COUPON ADMIN | クーポンメニュー Create(作成), Read(読み取り), Update(更新), Delete(削除) |
@@ -525,16 +525,16 @@ NHN Cloud運営者が障害対応など運営上の目的で顧客のリソー�
 | Security Advisor | VIEWER | Security Advisorサービスに対するRead(読み取り)  |
 | Network Firewall | ADMIN | Network Firewallサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | Network Firewall | VIEWER | Network Firewallサービスに対するRead(読み取り)  |
-| NHN Bastion | ADMIN | NHN Bastionサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) | 
-| NHN Bastion | VIEWER | NHN Bastionサービスに対するRead(読み取り) | 
+| NHN Bastion | ADMIN | NHN Bastionサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| NHN Bastion | VIEWER | NHN Bastionサービスに対するRead(読み取り) |
 | NHN Bastion | USER | NHN Bastionサービスターミナルの利用 |
 | Cloud Access | ADMIN | Cloud Accessサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
-| Cloud Access | VIEWER | Cloud Accessサービスに対するRead(読み取り) | 
-| CDN | ADMIN | CDNサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Image Manager | ADMIN | Image Managerサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Notification Hub | ADMIN | Notification Hubサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Push | ADMIN | Pushサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| SMS | ADMIN | SMSサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Cloud Access | VIEWER | Cloud Accessサービスに対するRead(読み取り) |
+| CDN | ADMIN | CDNサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Image Manager | ADMIN | Image Managerサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Notification Hub | ADMIN | Notification Hubサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Push | ADMIN | Pushサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| SMS | ADMIN | SMSサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
 | SMS | SEND ADMIN | SMSサービス送信メニューCreate(作成), Read(読み取り) |
 | SMS | DELIVERY RESULT ADMIN | SMSサービスSMSリクエスト別照会メニューRead(読み取り)、照会結果ダウンロードCreate(作成)<br> 大量SMS送信照会メニューRead(読み取り)、照会結果ダウンロードCreate(作成)<br> タグSMS送信照会メニューRead(読み取り)、照会結果ダウンロードCreate(作成) |
 | SMS | SETTING ADMIN | SMSサービステンプレート管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 発信番号 事前登録 メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 発信番号照会メニューRead(読み取り)、タグ管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> UID管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> Webフック管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 080受信拒否設定メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 送信設定メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 統計イベントキー設定メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
@@ -555,34 +555,23 @@ NHN Cloud運営者が障害対応など運営上の目的で顧客のリソー�
 | Text to Speech | ADMIN | Text to Speechサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | Speech to Text | ADMIN | Speech to Textサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | AI EasyMaker | ADMIN | AI EasyMakerサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| NHN Cloud Foundry | ADMIN | NHN Cloud Foundry サービスの Create（作成）、Read（読み取り）、Update（更新）、Delete（削除）  |
-| IAP | ADMIN | IAPサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Mobile Device Info | ADMIN | Mobile Device Infoサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Log & Crash Search | ADMIN | Log & Crash Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| DataFlow | ADMIN | DataFlowサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| DataQuery | ADMIN | DataQueryサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Data Lake Storage | ADMIN | Data Lake StorageサービスCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
-| Data Lake Storage | OPERATOR | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)。バケット管理Create(作成)、Update(更新)、Delete(削除)  |
-| Data Lake Storage | VIEWER | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)  |
-| EasyQueue | ADMIN | EasyQueueサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)、メッセージの送受信  |
-| EasyQueue | CLIENT | EasyQueueサービスの参照(Read)、メッセージの送受信  |
-| EasyQueue | VIEWER | EasyQueueサービス Read(読み取り)  |
-| ROLE | ADMIN | ROLEサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| API Gateway | ADMIN | API Gatewayサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| RTCS | ADMIN | RTCSサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| ShortURL | ADMIN | ShortURLサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| File-Crafter | ADMIN | File-Crafterサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Cloud Scheduler | ADMIN | Cloud Schedulerサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| IAP | ADMIN | IAPサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
-| Mobile Device Info | ADMIN | Mobile Device Infoサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Cloud Search | ADMIN | Cloud Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| NHN Cloud Foundry | ADMIN | NHN Cloud Foundry サービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| ROLE | ADMIN | ROLE サービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| API Gateway | ADMIN | API Gateway サービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| RTCS | ADMIN | RTCS サービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| ShortURL | ADMIN | ShortURL サービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| File-Crafter | ADMIN | File-Crafter サービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Cloud Scheduler | ADMIN | Cloud Scheduler サービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| IAP | ADMIN | IAP サービス Create(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Mobile Device Info | ADMIN | Mobile Device Info サービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Cloud Search | ADMIN | Cloud Search サービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | Autocomplete | ADMIN | Autocompleteサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | Corporation Search | ADMIN | Corporation Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | Log & Crash Search | ADMIN | Log & Crash Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | DataFlow | ADMIN | DataFlowサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | DataQuery | ADMIN | DataQueryサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | DataQuery | CLUSTER ADMIN | DataQuery サービスクラスターの On（起動）、Off（停止）、Spec Configuration（スペック設定） |
-| DataQuery | DATASOURCE ADMIN | DataQuery サービスデータソースの Create（作成）、Update（修正）、Delete（削除）  |
+| DataQuery | DATASOURCE ADMIN | DataQuery サービスデータソースの Create（作成）、Update（更新）、Delete（削除）  |
 | Data Lake Storage | ADMIN | Data Lake StorageサービスCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
 | Data Lake Storage | OPERATOR | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)。バケット管理Create(作成)、Update(更新)、Delete(削除)  |
 | Data Lake Storage | VIEWER | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)  |
