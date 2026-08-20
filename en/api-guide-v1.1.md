@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=52fa21e7a0e7 -->
 
 <a id="ai-service-speech-to-text-api-guide"></a>
@@ -9,23 +11,23 @@
 <a id="speech-recognition-api-request"></a>
 #### Request
 
-Speech to Text API uses User Access Key tokens for authentication and authorization. The User Access Key token is a temporary, Bearer-type access token issued from a User Access Key. For more information on issuing and using User Access Key tokens, see the [User Access Key Token](/nhncloud/en/public-api/user-access-key-token).
+The Speech to Text API uses a User Access Key token for authentication/authorization. A User Access Key token is a temporary, Bearer-type access token issued from a User Access Key. For more information on issuing and using User Access Key tokens, please refer to the [User Access Key Token](/nhncloud/en/public-api/user-access-key-token).
 
 [URI]
 
-| Method  | URI                                                              |
-|---------|------------------------------------------------------------------|
-| POST    | https://api-speech.nhncloudservice.com/v1.1/appkeys/{appKey}/stt |
+| Method | URI                                                              |
+|--------|------------------------------------------------------------------|
+| POST | https://api-speech.nhncloudservice.com/v1.1/appkeys/{appKey}/stt |
 
 [Request Header]
 
-| Name                | Value                          | Description            |
-|---------------------|--------------------------------|------------------------|
+| Name                  | Value                           | Description            |
+|-----------------------|---------------------------------|------------------------|
 | X-NHN-Authorization | Bearer {User Access Key Token} | User Access Key token |
 
 [Request Body]
 
-- Input the binary data of the voice file.
+- Enter the binary data of the audio file.
 
 ```
 curl -X POST 'https://api-speech.nhncloudservice.com/v1.1/appkeys/{appKey}/stt' \
@@ -33,11 +35,11 @@ curl -X POST 'https://api-speech.nhncloudservice.com/v1.1/appkeys/{appKey}/stt' 
 -H 'X-NHN-Authorization: Bearer ${User Access Key Token}'
 ```
 
-[Field]
+[Fields]
 
-| Name  | Type                | Description                                      |
-|-------|---------------------|--------------------------------------------------|
-| audio | multipart/form–data | Voice file (WAV, WebM, MP3, OGG, FLAC, AAC, AC3) |
+| Name  | Type                  | Description                                              |
+|-------|-----------------------|----------------------------------------------------------|
+| audio | multipart/form–data | Audio file (WAV, WebM, MP3, OGG, FLAC, AAC, AC3) |
 
 <a id="speech-recognition-api-response"></a>
 #### Response
@@ -61,17 +63,17 @@ curl -X POST 'https://api-speech.nhncloudservice.com/v1.1/appkeys/{appKey}/stt' 
 
 [Header]
 
-| Name          | Type    | Description                                                   |
-|---------------|---------|---------------------------------------------------------------|
-| isSuccessful  | Boolean | Analysis API successful or not                                |
-| resultCode    | Integer | Result code                                                   |
+| Name          | Type    | Description                                                           |
+|---------------|---------|-----------------------------------------------------------------------|
+| isSuccessful  | Boolean | Whether the analysis API succeeded                                    |
+| resultCode    | Integer | Result code                                                           |
 | resultMessage | String  | Result message (SUCCESS on success, error details on failure) |
 
-[Field]
+[Fields]
 
-| Name        | Type   | Description                                    |
-|-------------|--------|------------------------------------------------|
-| inputLength | Double | Recognized voice file duration (unit: seconds) |
-| fileType    | String | Recognized voice file type                     |
-| text        | String | Text conversion result of recognized speech    |
-| confidence  | Double | Recognition result confidence                  |
+| Name        | Type   | Description                                  |
+|-------------|--------|----------------------------------------------|
+| inputLength | Double | Length of the recognized audio file (in seconds) |
+| fileType    | String | Type of the recognized audio file            |
+| text        | String | Text conversion result of the recognized speech |
+| confidence  | Double | Confidence of the recognition result         |

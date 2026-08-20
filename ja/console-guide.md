@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=7021c27b1465 -->
+<!-- machine_translated: true -->
 
 <a id="ai-service-speech-to-text-console-user-guide"></a>
 ## AI Service > Speech to Text > コンソール使用ガイド { #ai-service-speech-to-text-console-user-guide }

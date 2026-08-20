@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=6a53191beba7 -->
 
 <a id="ai-service-speech-to-text-overview"></a>
@@ -40,9 +42,9 @@ Speech to Text(STT)はNHN Cloudの音声認識および文字合成技術を利�
 <a id="synchronous-api"></a>
 ### 同期(Synchronous) API { #synchronous-api }
 
-* 最大容量：150MB
-* 音声ファイルの認識可能時間：最小0.36秒、最大3,600秒
-* 短い音声に対して迅速なレスポンスが必要な場合に適しています。
+* 最大容量: 150MB
+* 音声ファイル認識可能時間: 最小 0.36 秒、最大 3,600 秒
+* 短い音声に対して素早いレスポンスが必要な場合に適しています。
 
 <a id="asynchronous-api"></a>
 ### 非同期(Asynchronous) API { #asynchronous-api }
