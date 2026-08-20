@@ -7,9 +7,9 @@
 <a id="storage-nas-for-bigdata-overview"></a>
 ## Storage > NAS for BigData > 概要 { #storage-nas-for-bigdata-overview }
 
-NAS for BigData は、クラウド環境で大容量ファイルストレージを手軽に活用できるフルマネージド NAS (Network-Attached Storage) サービスです。標準の NFS (Network File System) プロトコルをベースに、クラウドインスタンスから簡単にマウントでき、ローカルディスクのようにデータの読み書きができます。
+NAS for BigData は、クラウド環境で大容量ファイルストレージを手軽に活用できる完全マネージド型の NAS（Network-Attached Storage）サービスです。標準 NFSプロトコル（Network File System）をベースに、クラウドインスタンスから簡単にマウントでき、ローカルディスクと同様にデータの読み書きができます。
 
-$[ overview_capacity_prefix ]$拡張可能な大容量ストレージを提供し、インスタンス間のファイル共有、大規模データ分析、バックアップなど、さまざまな業務に柔軟に対応できます。
+$[ overview_capacity_prefix ]$拡張可能な大容量ストレージを提供し、インスタンス間のファイル共有、大規模データ分析、バックアップなど、さまざまな用途に柔軟に対応できます。
 
 <a id="features"></a>
 ## 特徴 { #features }
@@ -17,7 +17,7 @@ $[ overview_capacity_prefix ]$拡張可能な大容量ストレージを提供�
 <a id="features.capacity"></a>
 ### 大容量ストレージの提供 { #features.capacity }
 
-{% if overview_capacity_prefix %}最大 $[ max_size_text ]$ までストレージ容量を拡張できます。$[ scale_description ]$ {% endif %}大規模なデータを扱うプロジェクトでも、物理機器の増設なしにコンソールからリアルタイムで容量を調整でき、運用負担を軽減できます。ボリュームサイズの変更はデータを失うことなく反映され、このような拡張性と弾力性を基盤に柔軟にデータを管理できます。
+{% if overview_capacity_prefix %}最大 $[ max_size_text ]$までストレージ容量を拡張できます。$[ scale_description ]$ {% endif %}大規模なデータを扱うプロジェクトでも、物理機器の増設なしにコンソールからリアルタイムで容量を調整でき、運用負担を軽減します。ボリュームサイズの変更はデータ損失なしに反映され、このような拡張性と弾力性を基盤として、柔軟にデータを管理できます。
 
 <a id="features.sharing"></a>
 ### NFSベースの効率的なファイル共有 { #features.sharing }
@@ -27,7 +27,7 @@ NFSプロトコルをサポートし、インスタンス間のファイル共�
 <a id="features.access_control"></a>
 ### 簡単な作成と柔軟なアクセス制御 { #features.access_control }
 
-コンソールで複雑な設定なしに、素早くファイルレベルのストレージを構成できます。また、Network ACL サービスで IP ベースのアクセス制御ポリシーを設定でき、多数のインスタンスが接続された環境でもセキュリティと柔軟性を同時に確保できます。
+コンソールから複雑な設定を行わなくても、迅速にファイル水準のストレージを構成できます。また、Network ACL サービスで IP ベースのアクセス制御ポリシーを設定できるため、多数のインスタンスが接続された環境でも、セキュリティと柔軟性を同時に確保できます。
 
 <a id="glossary"></a>
 ## 用語 { #glossary }
