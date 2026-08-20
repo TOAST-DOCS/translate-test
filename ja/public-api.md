@@ -1,1969 +1,989 @@
-<a id="compute-instance-api-v2-guide"></a>
-## Compute > Instance > API v2ガイド
+<!-- pre-align:aligned sig=fbbff493af43 -->
 
-APIを使用するにはAPIエンドポイントとトークンなどが必要です。 [API使用準備](/Compute/Compute/ja/identity-api/)を参照してAPIを使用するのに必要な情報を準備します。
+<a id="network-service-gateway-api-v2-guide"></a>
+## Network > Service Gateway > API v2ガイド { #network-service-gateway-api-v2-guide }
 
-インスタンスAPIは`compute`タイプエンドポイントを利用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
+NHN Cloud Networkサービスは、API呼び出し時の認証/認可のためにIaaSトークンを使用します。IaaSトークンは、NHN CloudのOpenStackベースのインフラサービス(IaaS)で使用する認証トークンです。IaaSトークンの発行及び使用に関する詳細は、[IaaSトークン](/nhncloud/ja/public-api/iaas-token)を参照してください。
+
+サービスゲートウェイAPIは`network`タイプエンドポイントを利用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
 
 | タイプ | リージョン | エンドポイント |
 |---|---|---|
-| compute | 韓国(パンギョ)リージョン<br>韓国(ピョンチョン)リージョン<br>韓国(クァンジュ)リージョン<br>日本リージョン | https://kr1-api-instance-infrastructure.nhncloudservice.com<br>https://kr2-api-instance-infrastructure.nhncloudservice.com<br>https://kr3-api-instance-infrastructure.nhncloudservice.com<br>https://jp1-api-instance-infrastructure.nhncloudservice.com |
+| network | 韓国(パンギョ)リージョン<br>韓国(ピョンチョン)リージョン<br>韓国(光州)リージョン | https://kr1-api-network-infrastructure.nhncloudservice.com<br>https://kr2-api-network-infrastructure.nhncloudservice.com<br>https://kr3-api-network-infrastructure.nhncloudservice.com |
 
-APIレスポンスにガイドに明示されていないフィールドが表示される場合があります。それらのフィールドは、NHN Cloud内部用途で使用され、事前に告知せずに変更する場合があるため使用しないでください。
+APIレスポンスにガイドに記載されていないフィールドが表示される場合があります。このようなフィールドは、NHN Cloudの内部用途に使用され、事前告知なしに変更される可能性があるため、使用しないでください。
 
-<a id="instance-flavors"></a>
-## インスタンスタイプ
+<a id="service-gateway"></a>
+## サービスゲートウェイ { #service-gateway }
 
-<a id="list-flavors"></a>
-### タイプリスト表示
+<a id="get-a-list-of-service-gateways"></a>
+### サービスゲートウェイリスト表示 { #get-a-list-of-service-gateways }
 
 ```
-GET /v2/{tenantId}/flavors
+GET /v2.0/gateways/servicegateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="get-a-list-of-service-gateways-request"></a>
 #### リクエスト
-
 このAPIはリクエスト本文を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
 | tokenId | Header | String | O | トークンID |
-| minDisk | Query | Integer | - | 最小ブロックストレージサイズ(GB)<br>指定したサイズよりブロックストレージサイズが大きいタイプのみ返す |
-| minRam | Query | Integer | - | 最小RAMサイズ(MB)<br>指定したサイズよりRAMサイズが大きいタイプのみ返す |
+| id | Query | UUID | - | 照会するサービスゲートウェイID |
+| name | Query | String | - | 照会するサービスゲートウェイ名 |
+| service_endpoint_id | Query | UUID | - | 照会するサービスゲートウェイのサービスエンドポイント（またはユーザー定義エンドポイント）ID |
+| network_id | Query | UUID | - | 照会するサービスゲートウェイVPC ID |
+| subnet_id | Query | UUID | - | 照会するサービスゲートウェイサブネットID |
+| port_id | Query | UUID | - | 照会するサービスゲートウェイポートID |
+| fixed_ip| Query | String | - | 照会するサービスゲートウェイIPアドレス |
+| include_gateway_identity| Query | Boolean | - | NAT IPアドレス固定の使用有無 |
 
+
+<a id="get-a-list-of-service-gateways-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| flavors | Body | Object | インスタンスタイプリストオブジェクト |
-| flavors.id | Body | UUID | インスタンスタイプID |
-| flavors.links | Body | Object | インスタンスタイプパスオブジェクト |
-| flavors.name | Body | String | インスタンスタイプ名 |
-
+| servicegateways | Body | Array | サービスゲートウェイ情報オブジェクトリスト |
+| servicegateways.id | Body | UUID | サービスゲートウェイID |
+| servicegateways.name | Body | String | サービスゲートウェイ名 |
+| servicegateways.port_id | Body | UUID | ポートID |
+| servicegateways.tenant_id | Body | String | テナントID |
+| servicegateways.network_id | Body | UUID | VPC ID |
+| servicegateways.subnet_id | Body | UUID | サブネットID |
+| servicegateways.fixed_ip | Body | String | サービスゲートウェイIPアドレス |
+| servicegateways.include_gateway_identity| Body | Boolean | NAT IPアドレス固定の使用有無 |
+| servicegateways.service_endpoint_id | Body | UUID | サービスエンドポイント（またはユーザー定義エンドポイント）ID |
+| servicegateways.service_provider | Body | String | 接続タイプ（接続されたエンドポイントの値）。`csp`=サービスエンドポイント / `user`=ユーザー定義エンドポイント |
+| servicegateways.description | Body | String | サービスゲートウェイの説明 |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-  "flavors": [
+  "servicegateways": [
     {
-      "id": "013bea75-8541-4c6f-9abe-a03fee3d74fe",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/013bea75-8541-4c6f-9abe-a03fee3d74fe",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/013bea75-8541-4c6f-9abe-a03fee3d74fe",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "x1.c32m256"
-    },
-    {
-      "id": "0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "x1.c32m128"
+      "status": "AVAILABLE",
+      "include_gateway_identity": true,
+      "description": "",
+      "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+      "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+      "fixed_ip": "192.168.0.82",
+      "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+      "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+      "service_provider": "csp",
+      "create_time": "2023-08-31 02:11:09",
+      "project_id": "302406c4a1d44b2cb2bc07a652c0b202",
+      "port_id": "182a31be-9e29-400d-983b-f701cf9b4bbc",
+      "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+      "name": "sgw_test"
     }
   ]
 }
 ```
 
-</p>
 </details>
 
 ---
-
-<a id="list-flavors-with-details"></a>
-### タイプリスト詳細表示
+<a id="get-a-service-gateway"></a>
+### サービスゲートウェイ表示 { #get-a-service-gateway }
 
 ```
-GET /v2/{tenantId}/flavors/detail
+GET /v2.0/gateways/servicegateways/{serviceGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
-#### リクエスト
-
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-| minDisk | Query | Integer | - | 最小ブロックストレージサイズ(GB)<br>指定したサイズよりブロックストレージサイズが大きいタイプのみ返す |
-| minRam | Query | Integer | - | 最小RAMサイズ(MB)<br>指定したサイズよりRAMサイズが大きいタイプのみ返す |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明            |
-|---|---|---|----------------|
-| flavors | Body | Object | インスタンスタイプリストオブジェクト |
-| flavors.id | Body | UUID | インスタンスタイプID     |
-| flavors.links | Body | Object | インスタンスタイプパスオブジェクト |
-| flavors.name | Body | String | インスタンスタイプ名    |
-| flavors.ram | Body | Integer | メモリサイズ(MB)     |
-| flavors.OS-FLV-DISABLED:disabled | Body | Boolean | 有効/無効         |
-| flavors.vcpus | Body | Integer | vCPU数       |
-| flavors.extra_specs | Body | Object | 追加仕様オブジェクト      |
-| flavors.swap | Body | Integer | スワップ領域サイズ(GB)  |
-| flavors.os-flavor-access:is_public | Body | Boolean | 共有有無          |
-| flavors.rxtx_factor | Body | Float | ネットワーク送信/受信パケット比率 |
-| flavors.OS-FLV-EXT-DATA:ephemeral | Body | Integer | 臨時ブロックストレージサイズ(GB) |
-| flavors.disk | Body | Integer | ルートブロックストレージサイズ(GB) |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "flavors": [
-    {
-      "name": "x1.c32m256",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/97604802-a090-43fa-a5ce-c7cfd737fbba",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/97604802-a090-43fa-a5ce-c7cfd737fbba",
-          "rel": "bookmark"
-        }
-      ],
-      "ram": 262144,
-      "OS-FLV-DISABLED:disabled": false,
-      "vcpus": 32,
-      "extra_specs": {
-        "flavor_type": "performance"
-      },
-      "swap": "",
-      "os-flavor-access:is_public": true,
-      "rxtx_factor": 1.0,
-      "OS-FLV-EXT-DATA:ephemeral": 0,
-      "disk": 0,
-      "id": "97604802-a090-43fa-a5ce-c7cfd737fbba"
-    },
-    {
-      "name": "x1.c32m128",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/31fa632d-aeec-4f12-8a57-ce9d146228e5",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/31fa632d-aeec-4f12-8a57-ce9d146228e5",
-          "rel": "bookmark"
-        }
-      ],
-      "ram": 131072,
-      "OS-FLV-DISABLED:disabled": false,
-      "vcpus": 32,
-      "extra_specs": {
-        "flavor_type": "performance"
-      },
-      "swap": "",
-      "os-flavor-access:is_public": true,
-      "rxtx_factor": 1.0,
-      "OS-FLV-EXT-DATA:ephemeral": 0,
-      "disk": 0,
-      "id": "31fa632d-aeec-4f12-8a57-ce9d146228e5"
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="availability-zones"></a>
-## アベイラビリティゾーン
-
-<a id="list-availability-zones"></a>
-### 可用性リスト表示
-
-```
-GET /v2/{tenantId}/os-availability-zone
-X-Auth-Token: {tokenId}
-```
-
+<a id="get-a-service-gateway-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
 | tokenId | Header | String | O | トークンID |
+| serviceGatewayId | URL | UUID | O | サービスゲートウェイID |
 
+<a id="get-a-service-gateway-response"></a>
 #### レスポンス
+
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| availabilityZoneInfo.hosts | Body | - | アベイラビリティゾーンに属しているホスト情報オブジェクト<br>常にnullと表示 |
-| availabilityZoneInfo.zoneName | Body | String | アベイラビリティゾーン名 |
-| availabilityZoneInfo.zoneState | Body | Object | アベイラビリティゾーン状態情報オブジェクト |
-| availabilityZoneInfo.available | Body | Object | アベイラビリティゾーンの状態 |
+| servicegateway | Body | Object | サービスゲートウェイ情報オブジェクト|
+| servicegateway.id | Body | UUID | サービスゲートウェイID |
+| servicegateway.name | Body | String | サービスゲートウェイ名 |
+| servicegateway.port_id | Body | UUID | ポートID |
+| servicegateway.tenant_id | Body | String | テナントID |
+| servicegateway.network_id | Body | UUID | VPC ID |
+| servicegateway.subnet_id | Body | UUID | サブネットID |
+| servicegateway.fixed_ip | Body | String | サービスゲートウェイIPアドレス |
+| servicegateway.include_gateway_identity| Body | Boolean | NAT IPアドレス固定の使用有無 |
+| servicegateway.service_endpoint_id | Body | UUID | サービスエンドポイント（またはユーザー定義エンドポイント）ID |
+| servicegateway.service_provider | Body | String | 接続タイプ（接続されたエンドポイントの値）。`csp`=サービスエンドポイント / `user`=ユーザー定義エンドポイント |
+| servicegateway.api_endpoints | Body | Array | APIエンドポイント情報オブジェクトリスト |
+| servicegateway.api_endpoints.domain_name | Body | String | APIエンドポイントドメイン |
+| servicegateway.description | Body | String | サービスゲートウェイの説明 |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "availabilityZoneInfo": [
+  "servicegateway": {
+    "status": "AVAILABLE",
+    "include_gateway_identity": true,
+    "description": "",
+    "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+    "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "fixed_ip": "192.168.0.82",
+    "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+    "api_endpoints": [
       {
-        "zoneState": {
-          "available": true
-        },
-        "zoneName": "kr-pub-a"
-      },
-      {
-        "zoneState": {
-          "available": true
-        },
-        "zoneName": "kr-pub-b"
-      }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="key-pairs"></a>
-## キーペア
-
-<a id="list-key-pairs"></a>
-### キーペアリスト表示
-```
-GET /v2/{tenantId}/os-keypairs
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| keypairs | Body | Array | キーペアオブジェクトリスト |
-| keypairs.keypair | Body | Object | キーペアオブジェクト |
-| keypairs.keypair.name | Body | String | キーペア名 |
-| keypairs.keypair.public_key | Body | String | 公開鍵 |
-| keypairs.keypair.fingerprint | Body | String | キーペア指紋 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "keypairs": [
-    {
-      "keypair": {
-        "public_key": "ssh-rsa ... Generated-by-Nova",
-        "name": "keypair",
-        "fingerprint": "SHA256:..."
-      }
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="show-key-pair"></a>
-### キーペア表示
-```
-GET /v2/{tenantId}/os-keypairs/{keypairName}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| keypairName | URL | String | O | キーペア名 |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| keypair | Body | Object | キーペアオブジェクトリスト |
-| keypair.public_key | Body | String | 公開鍵 |
-| keypair.user_id | Body | String | キーペアのオーナーID |
-| keypair.name | Body | String | キーペア名 |
-| keypair.deleted | Body | Boolean | キーペアが削除されているかどうか |
-| keypair.created_at | Body | Datetime | キーペア作成日時<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.updated_at | Body | Datetime | キーペア修正日時<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.deleted_at | Body | Datetime | キーペア削除日時<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.fingerprint | Body | String | キーペア指紋 |
-| keypair.id | Body | Integer | キーペアID |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "keypair": {
-    "public_key": "ssh-rsa ... Generated-by-Nova",
-    "user_id": "826a1213b3f746829515486965690dfe",
-    "name": "keypair",
-    "deleted": false,
-    "created_at": "2020-02-07T03:46:48.000000",
-    "updated_at": null,
-    "fingerprint": "SHA256:...",
-    "deleted_at": null,
-    "id": 51
-  }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="createregister-key-pair"></a>
-### キーペアの作成/登録
-
-```
-POST /v2/{tenantId}/os-keypairs
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-| keypair | Body | Object | O | キーペアオブジェクト |
-| keypair.name | Body | String | O | 作成または登録するキーペア名 |
-| keypair.public_key | Body | String | - | 登録する公開鍵。このフィールドが省略されている場合、新しいキーペアを作成します。|
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "keypair": {
-        "name": "keypair-d20a3d59-9433-4b79-8726-20b431d89c78",
-        "public_key": "ssh-rsa ... Generated-by-Nova"
-    }
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| keypair | Body | Object | キーペアオブジェクト |
-| keypair.public_key | Body | String | 公開鍵 |
-| keypair.private_key | Body | String | 秘密鍵。新しいキーペアを作成した場合に秘密鍵を返します。|
-| keypair.user_id | Body | String | キーペアのオーナーID |
-| keypair.name | Body | String | キーペア名 |
-| keypair.fingerprint | Body | String | キーペア指紋 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "keypair": {
-        "fingerprint": "SHA256:+EZoD ... /DKiGnY4zf5tYrcix0",
-        "name": "keypair",
-        "public_key": "ssh-rsa ... Generated-by-Nova",
-        "user_id": "436f727b7c9142f896ddd56be591dd7f"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="delete-key-pair"></a>
-### キーペアを削除する
-```
-DELETE /v2/{tenantId}/os-keypairs/{keypairName}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| keypairName | URL | String | O | キーペア名 |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
-
-<a id="instance"></a>
-## インスタンス
-
-<a id="instance-status"></a>
-### インスタンス状態
-
-インスタンスはさまざまな状態を持ち、状態によって行える動作が決められています。インスタンス状態リストは次のとおりです。
-
-| 状態名              | 説明                                                                                               |
-|-------------------|---------------------------------------------------------------------------------------------------|
-| `ACTIVE` | インスタンスがアクティブな状態の場合 |
-| `BUILD` | インスタンスが作成中中の場合 |
-| `DELETED` | インスタンスが削除された場合 |
-| `ERROR` | 直前にインスタンスに行った動作が失敗した場合 |
-| `HARD_REBOOT` | インスタンスを強制的に再起動した場合<br> 物理サーバーの電源を切って再起動するのと同じ動作 |
-| `MIGRATING` | インスタンスがマイグレーション中の場合<br> これはリアルタイムマイグレーション(アクティブインスタンス移動)作業により発生する |
-| `PASSWORD` | インスタンスでパスワードをリセットしている場合 |
-| `PAUSED` | インスタンスが一時停止した場合<br>一時停止したインスタンスはハイパーバイザのメモリに保存される。 |
-| `REBOOT` | インスタンスがソフト再起動状態である場合<br> 再起動コマンドが仮想マシンのオペレーティングシステムに伝達される。 |
-| `REBUILD` | インスタンスを作成時、イメージから新たに作り出す状態 |
-| `RESCUE` | インスタンスを復旧モードで実行中の場合 |
-| `RESIZE` | インスタンスタイプを変更したり、インスタンスを別のホストに移動する場合<br>インスタンスが停止して再起動した状態 |
-| `REVERT_RESIZE` | インスタンスタイプを変更したり、インスタンスを他のホストに移動する過程で失敗したときに、元の状態に戻すために復旧する場合 |
-| `VERIFY_RESIZE` | インスタンスがタイプ変更またはインスタンスを他のホストに移動する過程を終えてユーザーの承認を待っている場合<br>NHN Cloudでは、この場合、自動的に`ACTIVE`状態になります。 |
-| `SHELVED_OFFLOADED` | インスタンスが終了した場合 |
-| `SHUTOFF` | インスタンスが停止した場合 |
-| `SUSPENDED` | インスタンスが管理者により最大節電モードになっている場合 |
-| `UNKNOWN` | インスタンスの状態が不明な場合<br>`インスタンスがこの状態になった場合、管理者に問い合わせます。` | 
-
-<a id="list-instances"></a>
-### インスタンスリスト表示
-
-```
-GET /v2/{tenantId}/servers
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-| reservation_id | Query | String | - | インスタンス作成予約ID。<br>予約IDを指定すると、同時に作成されたインスタンスリストのみ返す。 |
-| changes-since | Query | Datetime | - | 指定された日時以降に変更されたインスタンスリストを返す。`YYYY-MM-DDThh:mm:ss`の形式。|
-| image | Query | UUID | - | イメージID<br>指定されたイメージを使用したインスタンスリストを返す |
-| flavor | Query | UUID | - | インスタンスタイプID<br>指定されたタイプを使用しているインスタンスリストを返す |
-| name | Query | String | - | インスタンス名<br>指定された名前のインスタンスリストを返す。正規表現を使用可能。|
-| status | Query | Enum | - | インスタンスの状態<br>指定された状態のインスタンスリストを返す |
-| limit | Query | Integer | - | インスタンスリスト数<br>指定された数のインスタンスリストを返す |
-| marker | Query | UUID | - | リストの最初のインスタンスUUID<br>ソート基準に従って`marker`に指定されたインスタンスから`limit`数分のインスタンスリストを返す |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| servers | Body | Object | インスタンスリストオブジェクト |
-| id | Body | UUID | インスタンスUUID |
-| links | body | Object | インスタンスパスオブジェクト |
-| name | body | String | インスタンス名 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "servers": [
-    {
-      "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "Web-Server"
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="list-instances-with-details"></a>
-### インスタンスリスト詳細表示
-
-インスタンスリスト表示と同じように現在テナントに作成されているインスタンスリストを返します。ただし、各インスタンスの詳細な情報が一緒に照会されます。
-
-```
-GET /v2/{tenantId}/servers/detail
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-インスタンスリスト表示と同じリクエスト形式です。
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明                                                                                                                                                                                                       |
-|---|---|---|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| servers | body | Object | インスタンスリストオブジェクト                                                                                                                                                                                               |
-| status | body | Enum | インスタンスの状態                                                                                                                                                                                                  |
-| servers.id | Body | UUID | インスタンスID                                                                                                                                                                                                   |
-| servers.name | Body | String | インスタンス名。最大255文字。                                                                                                                                                                                         |
-| servers.updated | Body | Datetime | インスタンスの最終修正日時。`YYYY-MM-DDThh:mm:ssZ`形式。                                                                                                                                                                 |
-| servers.hostId | Body | String | インスタンスが起動中のホストID                                                                                                                                                                                        |
-| servers.addresses | Body | Object | インスタンスIPリストオブジェクト。<br>インスタンスに接続されたポート数分のリストが作成される。                                                                                                                                                             |
-| servers.addresses."Network名" | Body | Object | インスタンスに接続されている各Networkのポート情報                                                                                                                                                                                 |
-| servers.addresses."Network名".OS-EXT-IPS-MAC:mac_addr | Body | String | インスタンスに接続されたポートのMACアドレス                                                                                                                                                                                     |
-| servers.addresses."Network名".version | Body | Integer | インスタンスに接続されたポートのIPバージョン<br>NHN CloudはIPv4のみサポート                                                                                                                                                               |
-| servers.addresses."Network名".addr | Body | String | インスタンスに接続されたポートのIPアドレス                                                                                                                                                                                      |
-| servers.addresses."Network名".OS-EXT-IPS:type | Body | Enum | ポートのIPアドレスタイプ<br>`fixed`または`floating`のいずれか1つ                                                                                                                                                                |
-| servers.links | Body | Object | インスタンスパスオブジェクト                                                                                                                                                                                               |
-| servers.key_name | Body | String | インスタンスキーペア名                                                                                                                                                                                              |
-| servers.image | Body | Object | インスタンスイメージオブジェクト                                                                                                                                                                                              |
-| servers.image.id | Body | UUID | インスタンスイメージID                                                                                                                                                                                               |
-| servers.image.links | Body | Object | インスタンスイメージパスオブジェクト                                                                                                                                                                                           |
-| servers.OS-EXT-STS:task_state | Body | String | インスタンス作業状態<br>インスタンスに動作を加えた時、動作進行状態を伝える。                                                                                                                                                               |
-| servers.OS-EXT-STS:vm_state | Body | String | インスタンスの現在の状態                                                                                                                                                                                               |
-| servers.OS-SRV-USG:launched_at | Body | Datetime | インスタンスの最終起動日時<br>`YYYY-MM-DDThh:mm:ss.ssssss`形式                                                                                                                                                        |
-| servers.OS-SRV-USG:terminated_at | Body | Datetime | インスタンスの削除日時<br>`YYYY-MM-DDThh:mm:ssZ`形式                                                                                                                                                                  |
-| servers.flavor | Body | Object | インスタンスタイプ情報オブジェクト                                                                                                                                                                                            |
-| servers.flavor.id | Body | UUID | インスタンスタイプID                                                                                                                                                                                                |
-| servers.flavor.links | Body | Object | インスタンスタイプパスオブジェクト                                                                                                                                                                                            |
-| servers.security_groups | Body | Object | インスタンスに割り当てられたセキュリティグループリストオブジェクト                                                                                                                                                                                    |
-| servers.security_groups.name | Body | String | インスタンスに割り当てられたセキュリティグループ名                                                                                                                                                                                       |
-| servers.user_id | Body | String | インスタンスを作成したユーザーID                                                                                                                                                                                          |
-| servers.created | Body | Datetime | インスタンス作成日時。`YYYY-MM-DDThh:mm:ssZ`形式                                                                                                                                                                    |
-| servers.tenant_id | Body | String | インスタンスが属しているテナントID                                                                                                                                                                                           |
-| servers.os-extended-volumes:volumes_attached | Body | Object | インスタンスに接続された追加ブロックストレージリストオブジェクト                                                                                                                                                                               |
-| servers.os-extended-volumes:volumes_attached.id | Body | UUID | インスタンスに接続された追加ブロックストレージID                                                                                                                                                                                   |
-| servers.OS-EXT-STS:power_state | Body | Integer | インスタンスの電源の状態<br>- `1`: On<br>- `4`: Off                                                                                                                                                                    |
-| servers.metadata | Body | Object | インスタンスメタデータオブジェクト<br>インスタンスメタデータをキーと値のペアで保管                                                                                                                                                                  |
-| server.NHN-EXT-ATTR:ephemeral_disk_size | Body | Integer | インスタンスに接続された追加ローカルブロックストレージサイズ                                                                                                                                                                 |
-| server.NHN-EXT-ATTR:protect | Body | Boolean | インスタンス削除保護の有無      
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "servers": [
-    {
-      "status": "ACTIVE",
-      "updated": "2020-02-25T01:22:24Z",
-      "hostId": "078d06f898889699f8731d030812e43d2c417edb2cf641dda598c7bd",
-      "addresses": {
-        "vpc2": [
-          {
-            "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:54:a7:64",
-            "version": 4,
-            "addr": "172.16.0.40",
-            "OS-EXT-IPS:type": "fixed"
-          }
-        ]
-      },
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "bookmark"
-        }
-      ],
-      "key_name": "access-key",
-      "image": {
-        "id": "8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-        "links": [
-          {
-            "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/images/8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-            "rel": "bookmark"
-          }
-        ]
-      },
-      "OS-EXT-STS:task_state": null,
-      "OS-EXT-STS:vm_state": "active",
-      "OS-SRV-USG:launched_at": "2020-02-25T01:22:23.000000",
-      "flavor": {
-        "id": "35a73b57-58a7-434d-aa08-5249aaa95b3e",
-        "links": [
-          {
-            "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/35a73b57-58a7-434d-aa08-5249aaa95b3e",
-            "rel": "bookmark"
-          }
-        ]
-      },
-      "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-      "security_groups": [
-        {
-          "name": "default"
-        }
-      ],
-      "OS-SRV-USG:terminated_at": null,
-      "OS-EXT-AZ:availability_zone": "kr-pub-b",
-      "user_id": "b6ab578c20c94306ac1f41ffc4415b29",
-      "name": "Web-Server",
-      "created": "2020-02-25T01:15:46Z",
-      "tenant_id": "6cdebe3eb0094910bc41f1d42ebe4cb7",
-      "os-extended-volumes:volumes_attached": [
-        {
-          "id": "90712f4f-2faa-4e4f-8eb1-9313a8595570"
-        }
-      ],
-      "accessIPv4": "",
-      "accessIPv6": "",
-      "progress": 0,
-      "OS-EXT-STS:power_state": 1,
-      "config_drive": "",
-      "metadata": {
-        "os_distro": "Windows",
-        "description": "Windows 2012 R2 STD (2020.02.18)",
-        "os_version": "2012 R2 STD",
-        "project_domain": "NORMAL",
-        "hypervisor_type": "qemu",
-        "monitoring_agent": "sysmon",
-        "image_name": "Windows 2012 R2 STD (2020.02.18) EN",
-        "volume_size": "50",
-        "os_architecture": "amd64",
-        "login_username": "Administrator",
-        "os_type": "Windows",
-        "tc_env": "sysmon"
-      },
-      "NHN-EXT-ATTR:ephemeral_disk_size": 0,
-      "NHN-EXT-ATTR:protect": false
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="get-instance"></a>
-### インスタンス表示
-
-```
-GET /v2/{tenantId}/servers/{serverId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | インスタンスID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明                                                                                                                                                                                                      |
-|---|---|---|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| server | body | Object | インスタンスオブジェクト                                                                                                                                                                                                 |
-| status | body | Enum | インスタンスの状態                                                                                                                                                                                                 |
-| server.id | Body | UUID | インスタンスID                                                                                                                                                                                                  |
-| server.name | Body | String | インスタンス名、最大255文字                                                                                                                                                                                        |
-| server.updated | Body | Datetime | インスタンスの最終修正日時。`YYYY-MM-DDThh:mm:ssZ`形式。                                                                                                                                                                |
-| server.hostId | Body | String | インスタンスが起動中のホストID                                                                                                                                                                                       |
-| server.addresses | Body | Object | インスタンスIPリストオブジェクト。<br>インスタンスに接続されたポート数分のリストが作成される。                                                                                                                                                             |
-| server.addresses."Network名" | Body | Object | インスタンスに接続された各Networkのポート情報                                                                                                                                                                                |
-| server.addresses."Network名".OS-EXT-IPS-MAC:mac_addr | Body | String | インスタンスに接続されたポートのMACアドレス                                                                                                                                                                                    |
-| server.addresses."Network名".version | Body | Integer | インスタンスに接続されたポートのIPバージョン<br>NHN CloudはIPv4のみサポート                                                                                                                                                              |
-| server.addresses."Network名".addr | Body | String | インスタンスに接続されたポートのIPアドレス                                                                                                                                                                                     |
-| server.addresses."Network名".OS-EXT-IPS:type | Body | Enum | ポートのIPアドレスタイプ<br>`fixed`または`floating`のいずれか1つ。                                                                                                                                                               |
-| server.links | Body | Object | インスタンスパスオブジェクト                                                                                                                                                                                              |
-| server.key_name | Body | String | インスタンスキーペア名                                                                                                                                                                                             |
-| server.image | Body | Object | インスタンスイメージオブジェクト                                                                                                                                                                                             |
-| server.image.id | Body | UUID | インスタンスイメージID                                                                                                                                                                                              |
-| server.image.links | Body | Object | インスタンスイメージパスオブジェクト                                                                                                                                                                                          |
-| server.OS-EXT-STS:task_state | Body | String | インスタンス作業状態<br>インスタンスに動作を加えた時、動作進行状態を伝える。                                                                                                                                                              |
-| server.OS-EXT-STS:vm_state | Body | String | インスタンスの現在状態                                                                                                                                                                                              |
-| server.OS-SRV-USG:launched_at | Body | Datetime | インスタンスの最終起動日時<br>`YYYY-MM-DDThh:mm:ss.ssssss`形式                                                                                                                                                       |
-| server.OS-SRV-USG:terminated_at | Body | Datetime | インスタンスの削除日時<br>`YYYY-MM-DDThh:mm:ssZ`形式                                                                                                                                                                 |
-| server.flavor | Body | Object | インスタンスタイプ情報オブジェクト                                                                                                                                                                                           |
-| server.flavor.id | Body | UUID | インスタンスタイプID                                                                                                                                                                                               |
-| server.flavor.links | Body | Object | インスタンスタイプパスオブジェクト                                                                                                                                                                                           |
-| server.security_groups | Body | Object | インスタンスに割り当てられたセキュリティグループリストオブジェクト                                                                                                                                                                                   |
-| server.security_groups.name | Body | String | インスタンスに割り当てられたセキュリティグループ名                                                                                                                                                                                      |
-| server.user_id | Body | String | インスタンスを作成したユーザーID                                                                                                                                                                                         |
-| server.created | Body | Datetime | インスタンスの作成日時。`YYYY-MM-DDThh:mm:ssZ`形式                                                                                                                                                                   |
-| server.tenant_id | Body | String | インスタンスが属しているテナントID                                                                                                                                                                                          |
-| server.os-extended-volumes:volumes_attached | Body | Object | インスタンスに接続された追加ブロックストレージリストオブジェクト                                                                                                                                                                              |
-| server.os-extended-volumes:volumes_attached.id | Body | UUID | インスタンスに接続された追加ブロックストレージID                                                                                                                                                                                  |
-| server.OS-EXT-STS:power_state | Body | Integer | インスタンスの電源の状態<br>- `1`: On<br>- `4`: Off                                                                                                                                                                   |
-| server.metadata | Body | Object | インスタンスメタデータオブジェクト<br>インスタンスメタデータをキーと値のペアで保管                                                                                                                                                                 |
-| server.NHN-EXT-ATTR:ephemeral_disk_size | Body | Integer | インスタンスに接続された追加ローカルブロックストレージサイズ                                                                                                                                                                |
-| server.NHN-EXT-ATTR:protect | Body | Boolean | インスタンス削除保護の有無                                                                                                                                                                 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "server": {
-    "status": "ACTIVE",
-    "updated": "2020-02-25T01:22:24Z",
-    "hostId": "078d06f898889699f8731d030812e43d2c417edb2cf641dda598c7bd",
-    "addresses": {
-      "vpc2": [
-        {
-          "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:54:a7:64",
-          "version": 4,
-          "addr": "172.16.0.40",
-          "OS-EXT-IPS:type": "fixed"
-        }
-      ]
-    },
-    "links": [
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-        "rel": "self"
-      },
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-        "rel": "bookmark"
+        "domain_name": "test.test.com"
       }
     ],
-    "key_name": "access-key",
-    "image": {
-      "id": "8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/images/8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-          "rel": "bookmark"
-        }
-      ]
-    },
-    "OS-EXT-STS:task_state": null,
-    "OS-EXT-STS:vm_state": "active",
-    "OS-SRV-USG:launched_at": "2020-02-25T01:22:23.000000",
-    "flavor": {
-      "id": "35a73b57-58a7-434d-aa08-5249aaa95b3e",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/35a73b57-58a7-434d-aa08-5249aaa95b3e",
-          "rel": "bookmark"
-        }
-      ]
-    },
-    "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-    "security_groups": [
-      {
-        "name": "default"
-      }
-    ],
-    "OS-SRV-USG:terminated_at": null,
-    "OS-EXT-AZ:availability_zone": "kr-pub-b",
-    "user_id": "b6ab578c20c94306ac1f41ffc4415b29",
-    "name": "Web-Server",
-    "created": "2020-02-25T01:15:46Z",
-    "tenant_id": "6cdebe3eb0094910bc41f1d42ebe4cb7",
-    "os-extended-volumes:volumes_attached": [
-      {
-        "id": "90712f4f-2faa-4e4f-8eb1-9313a8595570"
-      }
-    ],
-    "accessIPv4": "",
-    "accessIPv6": "",
-    "progress": 0,
-    "OS-EXT-STS:power_state": 1,
-    "config_drive": "",
-    "metadata": {
-      "os_distro": "Windows",
-      "description": "Windows 2012 R2 STD (2020.02.18)",
-      "os_version": "2012 R2 STD",
-      "project_domain": "NORMAL",
-      "hypervisor_type": "qemu",
-      "monitoring_agent": "sysmon",
-      "image_name": "Windows 2012 R2 STD (2020.02.18) EN",
-      "volume_size": "50",
-      "os_architecture": "amd64",
-      "login_username": "Administrator",
-      "os_type": "Windows",
-      "tc_env": "sysmon"
-    },
-    "NHN-EXT-ATTR:ephemeral_disk_size": 0,
-    "NHN-EXT-ATTR:protect": false
+    "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+    "service_provider": "csp",
+    "create_time": "2023-08-31 02:11:09",
+    "project_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "port_id": "182a31be-9e29-400d-983b-f701cf9b4bbc",
+    "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+    "name": "sgw_test"
   }
 }
 ```
 
-</p>
 </details>
 
 ---
-
-<a id="create-instance"></a>
-### インスタンスを作成する
-
-インスタンスを作成します。
-
-インスタンス作成APIを呼び出し、インスタンス照会でインスタンスの状態を確認します。
-
-* インスタンスの状態が**ACTIVE**になるとインスタンスが正常に作成完了します。
-* インスタンスの状態が**BUILDING**から長時間変わらなかったり、**ERROR**の場合は、インスタンス作成引数を確認し、再度作成してください。
-
-* RAMが2GB以上のインスタンスタイプを使用します。
-
-* Windowsインスタンスは2GB以上のRAMが必要です。RAM 2GB以上のインスタンスタイプを使用します。
-* 50GB以上のルートブロックストレージが必要です。
-* U2タイプはWindowsイメージを使用できません。
-
-ルートブロックストレージサイズは、Linuxは10GB、Windowsは50GBから指定できます。
-
-インスタンス作成リクエスト時にスケジューラヒントで配置ポリシーを割り当てることができます。
-
-
+<a id="create-a-service-gateway"></a>
+### サービスゲートウェイを作成する { #create-a-service-gateway }
 
 ```
-POST /v2/{tenantId}/servers
+POST /v2.0/gateways/servicegateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-a-service-gateway-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
 | tokenId | Header | String | O | トークンID |
-| server | body | Object | O | サーバーオブジェクト |
-| server.security_groups | body | Object | - | セキュリティグループリストオブジェクト<br>省略する場合`default`グループが追加される |
-| server.security_groups.name | body | String | - | **(条件付き必須)** インスタンスに追加するセキュリティグループ名 |
-| server.user_data | body | String | - | インスタンス起動後に実行するスクリプトおよび設定<br>base64エンコーディングされた文字列で65535バイトまで許可 |
-| server.availability_zone | body | String | - | インスタンスを作成するアベイラビリティゾーン<br>指定しない場合、任意のゾーンが選択される<br>ルートブロックストレージのソースタイプが`volume`, `snapshot`の場合、元のブロックストレージのアベイラビリティゾーンと同じに設定する必要があります。 |
-| server.imageRef | Body | String | - | インスタンスを作成する際に使用するイメージID<br>ルートブロックストレージのソースタイプが`volume`, `snapshot`の場合は設定不要 |
-| server.flavorRef | Body | String | O | インスタンスを作成する時に使用するインスタンスタイプID |
-| server.networks | Body | Object | O | インスタンスを作成する時に使用するネットワーク情報オブジェクト<br>指定した数のNICが追加される。ネットワークID、サブネットID、ポートID、固定IPの中から1つ指定 |
-| server.networks.uuid | Body | UUID | - |  **(条件付き必須)**インスタンスを作成する時に使用するネットワークID |
-| server.networks.subnet | Body | UUID | - |  **(条件付き必須)**インスタンスを作成する時に使用するネットワークのサブネットID |
-| server.networks.port | Body | UUID | - |  **(条件付き必須)**インスタンスを作成する際に使用するポートID<br>ポートIDを指定する際に要求したセキュリティグループは、指定した既存のポートには適用されない。 |
-| server.networks.fixed_ip | Body | String | - |  **(条件付き必須)**インスタンスを作成する時に使用する固定IP |
-| server.name | Body | String | O | インスタンスの名前<br>英字基準255文字まで許可、ただし、Windowsイメージの場合は15文字以下にする必要がある。 |
-| server.metadata | Body | Object | - | インスタンスに追加するメタデータオブジェクト<br>255文字以下のキーと値のペア |
-| server.block_device_mapping_v2 | Body | Object | O | インスタンスのブロックストレージ情報オブジェクト<br>**ローカルブロックストレージを使用するU2以外のインスタンスタイプを使用する場合は必ず指定する必要がある。** |
-| server.block_device_mapping_v2.source_type | Body | Enum | O | 作成するブロックストレージ原本のタイプ<br>- `image`:イメージを利用してブロックストレージを作成<br>- `blank`:空のブロックストレージ作成(ルートブロックストレージとして使用できない)<br>- `volume`:既存のブロックストレージを使用<br>- `snapshot`:スナップショットを利用してブロックストレージ作成 |
-| server.block_device_mapping_v2.uuid | Body | String | - |  **(条件付き必須)**ブロックストレージのソースタイプによって異なる設定が必要<br>- ソースタイプが`image`の場合、イメージIDを設定<br>- ソースタイプが`volume`の場合、既存のブロックストレージIDを設定<br>- ソースタイプが`snapshot`の場合、スナップショットIDを設定<br>- ソースタイプが`blank`の場合、設定不要<br>ルートブロックストレージの場合、必ず起動可能な原本である必要があります。 |
-| server.block_device_mapping_v2.boot_index | Body | Integer | O | 指定したブロックストレージの起動順序<br>-`0`はルートブロックストレージ<br>- それ以外は追加ブロックストレージ<br>サイズが大きいほど起動順序が下がる。 |
-| server.block_device_mapping_v2.destination_type | Body | Enum | O | インスタンスブロックストレージの位置。インスタンスタイプに応じて別々に設定必要。<br>- `local`：GPUインスタンス、U2インスタンスタイプを利用する場合。<br>- `volume`：その他のインスタンスタイプを利用する場合。 |
-| server.block_device_mapping_v2.volume_type | Body | Enum    | - |  **(条件付き必須)**作成するブロックストレージのタイプ<br>ブロックストレージのソースタイプが`volume`, `snapshot`の場合設定不要<br>`ユーザーガイド > Storage > Block Storage > API v2ガイド`で**ブロックストレージタイプリスト表示**レスポンスの`name`参考 |
-| server.block_device_mapping_v2.delete_on_termination | Body | Boolean | - | インスタンスを削除する時のブロックストレージ処理。デフォルト値は`false`。<br>`true`なら削除、`false`なら維持 |
-| server.block_device_mapping_v2.volume_size | Body | Integer | - | **(条件付き必須)**作成するブロックストレージサイズ<br>ブロックストレージのソースタイプによって異なる設定が必要<br>- ソースタイプが`volume`の場合は設定不要<br>- ソースタイプが`snapshot`の場合は原本ブロックストレージサイズ以上に設定<br>`GB`単位<br>U2インスタンスタイプを使用してルートブロックストレージを作成する場合にはU2インスタンスタイプに明示されたサイズで作成され、この値は無視される。<br>インスタンスタイプによって作成できるルートブロックストレージのサイズが異なるため、詳細は`ユーザーガイド > Compute > Instance > コンソール使用ガイド > インスタンス作成 > ブロックストレージサイズ`を参考 |
-| server.block_device_mapping_v2.nhn_encryption                   | Body | Object | - | **(条件付き必須)**ブロックストレージの暗号化情報                                                                                                                                                                                      |
-| server.block_device_mapping_v2.nhn_encryption.skm_appkey        | Body | String | - | **(条件付き必須)**Secure Key Managerサービスのアプリケーションキー                                                                                                                                                                            |
-| server.block_device_mapping_v2.nhn_encryption.skm_key_id        | Body | String | - | **(条件付き必須)**暗号化ブロックストレージの作成に使用するSecure Key Managerの対称鍵ID                                                                                                                                  |
-| server.key_name | Body | String | O | インスタンスの接続に使用するキーペア |
-| server.min_count | Body | Integer | - | 現在のリクエストで作成するインスタンス数の最小値。<br>デフォルト値は1。<br>ブロックストレージのソースタイプが`volume`の場合、`1`のみ設定可能 |
-| server.max_count | Body | Integer | - | 現在のリクエストで作成するインスタンス数の最大値。<br>デフォルト値はmin_count、最大値は10。<br>ブロックストレージのソースタイプが`volume`の場合、`1`のみ設定可能 |
-| server.return_reservation_id | Body | Boolean | - | インスタンス作成リクエスト予約ID。<br>Trueに指定すると、インスタンス作成情報の代わりに予約IDを返す。<br>デフォルト値はFalse |
-| os:scheduler_hints | Body | Object | - | スケジューラヒントオブジェクト |
-| os:scheduler_hints.group | Body | String | - | 配置ポリシーID |
+| servicegateway | Body | Object | O | サービスゲートウェイ情報オブジェクト |
+| servicegateway.name | Body | String | - | サービスゲートウェイ名 |
+| servicegateway.description | Body | String | - | サービスゲートウェイの説明 |
+| servicegateway.network_id | Body | UUID | O | VPC ID |
+| servicegateway.subnet_id | Body | UUID | O | サブネットID |
+| servicegateway.fixed_ip | Body | String | - | サービスゲートウェイIPアドレス |
+| servicegateway.include_gateway_identity| Body | Boolean | - | NAT IPアドレス固定の使用有無 |
+| servicegateway.service_endpoint_id | Body | UUID | O | サービスエンドポイント（またはユーザー定義エンドポイント）ID |
+> カスタムエンドポイントに接続するには、パブリッシャーから受け取った `service_name` を使用して[サービスエンドポイントリスト表示](#get-a-list-of-service-endpoints)を照会し、取得した `service_endpoint_id` を使用します。接続タイプ（`service_provider`）は接続されたエンドポイントから自動的に決定されるため、リクエスト値として指定しません。
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-  "server": {
-    "name": "DB-Master",
-    "imageRef": "9956f822-29c9-4f81-9410-0c392d9c8c24",
-    "flavorRef": "a4b6a0f7-aeff-4d78-a8d5-7de9f007012d",
-    "networks": [{
-      "subnet": "b83863ff-0355-4c73-8c10-0bdf66a69aab"
-    }],
-    "availability_zone": "kr-pub-a",
-    "key_name": "access-key",
-    "max_count": 1,
-    "min_count": 1,
-    "block_device_mapping_v2": [{
-      "source_type": "image",
-      "uuid": "9956f822-29c9-4f81-9410-0c392d9c8c24",
-      "boot_index": 0,
-      "volume_size": 1000,
-      "destination_type": "volume",
-      "delete_on_termination": 1
-    }],
-    "security_groups": [{
-      "name": "default"
-    }]
-  },
-  "os:scheduler_hints": {
-    "group": "f878bd5b-49a7-499f-966e-1eceb21cb06b"    
+  "servicegateway": {
+    "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+    "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+    "fixed_ip": "192.168.0.82",
+    "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+    "name": "sgw_test",
+    "description": "test"
   }
 }
 ```
 
-</p>
 </details>
 
+<a id="create-a-service-gateway-response"></a>
 #### レスポンス
 
-| 名前 | 種類 | 形式 | 説明                                                                                                                                                                                                          |
-|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| server.security_groups.name | Body | String | 作成したインスタンスのセキュリティグループ名                                                                                                                                                                                          |
-| server.id | Body | UUID | 作成したインスタンスのID                                                                                                                                                                                                 |
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| servicegateway | Body | Object | サービスゲートウェイ情報オブジェクトリスト |
+| servicegateway.id | Body | UUID | サービスゲートウェイID |
+| servicegateway.name | Body | String | サービスゲートウェイ名 |
+| servicegateway.port_id | Body | UUID | ポートID |
+| servicegateway.tenant_id | Body | String | テナントID |
+| servicegateway.network_id | Body | UUID | VPC ID |
+| servicegateway.subnet_id | Body | UUID | サブネットID |
+| servicegateway.fixed_ip | Body | String | サービスゲートウェイIPアドレス |
+| servicegateway.include_gateway_identity| Body | Boolean | NAT IPアドレス固定の使用有無 |
+| servicegateway.service_endpoint_id | Body | UUID | サービスエンドポイント（またはユーザー定義エンドポイント）ID |
+| servicegateway.service_provider | Body | String | 接続タイプ（接続されたエンドポイントの値）。`csp`=サービスエンドポイント / `user`=ユーザー定義エンドポイント |
+| servicegateway.api_endpoints | Body | Array | APIエンドポイント情報オブジェクトリスト |
+| servicegateway.api_endpoints.domain_name | Body | String | APIエンドポイントドメイン |
+| servicegateway.description | Body | String | サービスゲートウェイの説明 |
+
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-  "server": {
-    "security_groups": [
+  "servicegateway": {
+    "status": "BUILD",
+    "include_gateway_identity": false,
+    "description": "",
+    "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+    "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "fixed_ip": "192.168.0.82",
+    "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+    "api_endpoints": [
       {
-        "name": "default"
+        "domain_name": "test.test.com"
       }
     ],
-    "id": "3a005d5b-63cf-4493-bfc6-49db990b5b50",
-    "links": [
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/3a005d5b-63cf-4493-bfc6-49db990b5b50",
-        "rel": "self"
-      },
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/3a005d5b-63cf-4493-bfc6-49db990b5b50",
-        "rel": "bookmark"
-      }
-    ]
+    "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+    "service_provider": "csp",
+    "create_time": "2023-08-31 02:11:09",
+    "project_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "port_id": "182a31be-9e29-400d-983b-f701cf9b4bbc",
+    "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+    "name": "sgw_test"
   }
 }
 ```
 
-</p>
 </details>
 
 ---
-
-<a id="modify-instance"></a>
-### インスタンスを修正する
-作成されたインスタンスを修正します。変更できるプロパティは一部の項目に制限されます。
+<a id="modify-a-service-gateway"></a>
+### サービスゲートウェイを修正する { #modify-a-service-gateway }
 
 ```
-PUT /v2/{tenantId}/servers/{serverId}
+PUT /v2.0/gateways/servicegateways/{serviceGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-a-service-gateway-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
 | tokenId | Header | String | O | トークンID |
-| server | Body | Object | O | インスタンス変更リクエストオブジェクト |
-| server.name | Body | String | - | インスタンスの新しい名前 |
+| serviceGatewayId | URL | UUID | O | サービスゲートウェイID |
+| servicegateway | Body | Object | O | サービスゲートウェイ情報オブジェクト |
+| servicegateway.name | Body | String | - | サービスゲートウェイ名 |
+| servicegateway.description | Body | String | - | サービスゲートウェイの説明 |
+
+> 接続タイプ (`service_provider`) は、接続されているエンドポイントの値を示す読み取り専用の項目であり、サービスゲートウェイの変更では変更できません。
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "server": {
-        "name": "new-server-test"
-    }
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-インスタンスの表示と同じです。
-
----
-
-<a id="delete-instance"></a>
-### インスタンスを削除する
-作成されたインスタンスを削除します。
-
-```
-DELETE /v2/{tenantId}/servers/{serverId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 削除するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-<a id="manage-block-storage-attachment"></a>
-## ブロックストレージ接続管理
-
-<a id="list-additional-block-storage-attached-to-the-instance"></a>
-### インスタンスに接続されたブロックストレージリスト表示
-```
-GET /v2/{tenantId}/servers/{serverId}/os-volume_attachments
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| limit | Query | Integer | - | 照会するリストの数 |
-| offset | Query | Integer | - | 返されるリストの開始点<br>全てのリストの中からoffset番目のブロックストレージから返す |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| volumeAttachments | Body | Array | 接続情報オブジェクトリスト |
-| volumeAttachments.device | Body | String | インスタンスのブロックストレージ名<br>例) `/dev/vdb` |
-| volumeAttachments.id | Body | UUID | 接続情報ID |
-| volumeAttachments.serverId | Body | UUID | インスタンスID |
-| volumeAttachments.volumeId | Body | UUID | ブロックストレージID |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "volumeAttachments": [
-        {
-            "device": "/dev/vda",
-            "id": "227cc671-f30b-4488-96fd-7d0bf13648d8",
-            "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-            "volumeId": "227cc671-f30b-4488-96fd-7d0bf13648d8"
-        },
-        {
-            "device": "/dev/vdb",
-            "id": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113",
-            "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-            "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="list-additional-block-storage-attached-to-the-instance"></a>
-### インスタンスに接続されたブロックストレージ表示
-```
-GET /v2/{tenantId}/servers/{serverId}/os-volume_attachments/{volumeId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | インスタンスID |
-| volumeId | URL | UUID | O | 照会するブロックストレージID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| volumeAttachment | Body | Object | 接続情報オブジェクト |
-| volumeAttachment.device | Body | String | インスタンスのブロックストレージ名<br>例) `/dev/vdb` |
-| volumeAttachment.id | Body | UUID | 接続情報ID |
-| volumeAttachment.serverId | Body | UUID | インスタンスID |
-| volumeAttachment.volumeId | Body | UUID | ブロックストレージID |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "volumeAttachment": {
-        "device": "/dev/sdb",
-        "id": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113",
-        "serverId": "1ad6852e-6605-4510-b639-d0bff864b49a",
-        "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="attach-additional-block-storage-to-the-instance"></a>
-### インスタンスに追加ブロックストレージを接続する
-```
-POST /v2/{tenantId}/servers/{serverId}/os-volume_attachments
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| volumeAttachment | Body | Object | O | ブロックストレージ接続リクエストオブジェクト |
-| volumeAttachment.volumeId | Body | UUID | O | 接続するブロックストレージID |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "volumeAttachment": {
-      "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
+  "servicegateway": {
+    "name": "sgw_test1",
+    "description": "test1"
   }
 }
 ```
 
-</p>
 </details>
 
+<a id="modify-a-service-gateway-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| volumeAttachment | Body | Object | 接続情報オブジェクト |
-| volumeAttachment.device | Body | String | インスタンスのブロックストレージ名<br>例) `/dev/vdb` |
-| volumeAttachment.id | Body | UUID | 接続情報ID |
-| volumeAttachment.serverId | Body | UUID | インスタンスID |
-| volumeAttachment.volumeId | Body | UUID | ブロックストレージID |
+| servicegateway | Body | Object | サービスゲートウェイ情報オブジェクト |
+| servicegateway.id | Body | UUID | サービスゲートウェイID |
+| servicegateway.name | Body | String | サービスゲートウェイ名 |
+| servicegateway.port_id | Body | UUID | ポートID |
+| servicegateway.tenant_id | Body | String | テナントID |
+| servicegateway.network_id | Body | UUID | VPC ID |
+| servicegateway.subnet_id | Body | UUID | サブネットID |
+| servicegateway.fixed_ip | Body | String | サービスゲートウェイIPアドレス |
+| servicegateway.include_gateway_identity| Body | Boolean | NAT IPアドレス固定の使用有無 |
+| servicegateway.service_endpoint_id | Body | UUID | サービスエンドポイント(またはユーザー定義エンドポイント) ID |
+| servicegateway.service_provider | Body | String | 接続タイプ（接続されたエンドポイントの値）。`csp`=サービスエンドポイント / `user`=ユーザー定義エンドポイント |
+| servicegateway.api_endpoints | Body | Array | APIエンドポイント情報オブジェクトリスト |
+| servicegateway.api_endpoints.domain_name | Body | String | APIエンドポイントドメイン |
+| servicegateway.description | Body | String | サービスゲートウェイの説明 |
+
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "volumeAttachment": {
-        "device": "/dev/vdc",
-        "id": "227cc671-f30b-4488-96fd-7d0bf13648d8",
-        "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-        "volumeId": "227cc671-f30b-4488-96fd-7d0bf13648d8"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="detach-block-storage-from-the-instance"></a>
-### インスタンスブロックストレージの接続を切る
-```
-DELETE /v2/{tenantId}/servers/{serverId}/os-volume_attachments/{volumeId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | インスタンスID |
-| volumeId | URL | UUID | O | 接続を切るブロックストレージID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-<a id="additional-instance-features"></a>
-## インスタンス追加機能
-NHN Cloudは、次のようなインスタンス制御および付加機能を提供します。
-
-* インスタンスの起動、停止、終了、再起動
-* インスタンスタイプ変更
-* インスタンスイメージ作成
-* セキュリティグループの追加および削除
-
-<a id="start-stopped-instance"></a>
-### 停止したインスタンスの起動
-
-停止したインスタンスを再び起動し、状態を**ACTIVE**に変更します。このAPIを呼び出すにはインスタンスの状態が**SHUTOFF**になっている必要があります。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| os-start | Body | none | O | インスタンス起動リクエスト |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "os-start" : null
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-<a id="start-terminated-instance"></a>
-### 終了したインスタンスの起動
-
-停止したインスタンスを再起動し、状態を**ACTIVE**に変更します。このAPIを呼び出すには、インスタンスの状態が**SHELVED_OFFLOADED**である必要があります。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|--|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| unshelve | Body | none | O | インスタンス起動リクエスト |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "unshelve" : null
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-<a id="stop-instance"></a>
-### インスタンス停止
-
-インスタンスを停止し、状態を**SHUTOFF**に変更します。このAPIを呼び出すにはインスタンスの状態が**ACTIVE**または**ERROR**になっている必要があります。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| os-stop | Body | none | O | インスタンス停止リクエスト |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "os-stop" : null
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-### インスタンス停止
-
-インスタンスを終了し、状態を**SHELVED_OFFLOADED**に変更します。このAPIを呼び出すためには、インスタンスの状態が**ACTIVE**でなければなりません。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明         |
-|---|---|---|---|-------------|
-| tenantId | URL | String | O | テナントID      |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID       |
-| shelve | Body | none | O | インスタンス停止リクエスト |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "shelve" : null
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-### インスタンス再起動
-
-インスタンスを再起動します。再起動の方法は**SOFT**と**HARD**があります。
-
-* **SOFT**方式：**「優雅な接続停止(Graceful shutdown)」**でインスタンスを停止し、再起動します。インスタンスが**ACTIVE**状態になっている必要があります。
-* **HARD**方式：強制停止してインスタンスを再起動します。物理サーバーの電源を落とし、再び入れるのと同じ動作です。インスタンスが次の状態の時のみ強制停止できます。
-    * **ACTIVE**
-    * **ERROR**
-    * **HARD_REBOOT**
-    * **PAUSED**
-    * **REBOOT**
-    * **SHUTOFF**
-    * **SUSPENDED**
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| reboot | Body | Object | O | インスタンス再起動リクエストオブジェクト |
-| reboot.type | Body | Enum | O | 再起動方法。**SOFT**または**HARD** |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "reboot" : {
-    "type": "SOFT"
-  }
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-### インスタンスタイプ変更
-
-インスタンスタイプを変更します。インスタンスが**ACTIVE**または**SHUTOFF**状態の時のみインスタンスタイプを変更できます。インスタンスの状態が**ACTIVE**の場合はインスタンスタイプ変更過程でインスタンスは停止し、再起動します。
-
-使用するイメージやインスタンスタイプによって、変更できるタイプが制限される場合があります。詳細はコンソールユーザーガイドを参照してください。
-
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明                                                                                                                                                                                                                |
-|---|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| tenantId | URL | String | O | テナントID                                                                                                                                                                                                             |
-| serverId | URL | UUID | O | 変更するインスタンスID                                                                                                                                                                                                        |
-| tokenId | Header | String | O | トークンID                                                                                                                                                                                                              |
-| resize | Body | Object | O | インスタンスタイプ変更リクエスト                                                                                                                                                                                                     |
-| resize.flavorRef | Body | UUID | O | 変更するインスタンスタイプID                                                                                                                                                                                                     |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "resize" : {
-    "flavorRef": "b5f1c148-732c-417d-9d1b-1dffca105dbe"
-  }
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-### インスタンスイメージ作成
-
-インスタンスからイメージを作成します。`U2`タイプのインスタンスのみ、このAPIでイメージを作成できます。`U2`タイプ以外のインスタンスイメージを作成するには[ブロックストレージAPI](/Storage/Block Storage/ja/public-api/#create-image-with-block-storage)を参照します。
-
-インスタンスの状態が**ACTIVE**、**SHUTOFF**、**SUSPENDED**、**PAUSED**の時のみイメージを作成できます。イメージの作成は、データの整合性を保障するためにインスタンスを停止した状態で進行することを推奨します。
-
-イメージの作成に成功すると、イメージの状態が`active`に変わります。イメージの作成が完了したことを確認するにはイメージ照会APIで持続的に状態を確認します。
-
-> [注意]
-> 作成されたイメージのサイズはルートブロックストレージの実際の使用量より大きくなる可能性があります。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| createImage | Body | Object | O | イメージ作成リクエスト |
-| createImage.name | Body | String | O | 作成するイメージの名前 |
-| createImage.metadata | Body | Object | - | 作成するイメージのメタデータ<br>Key-Value形式で記述 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "createImage" : {
-      "name" : "foo-image",
-      "metadata": {
-          "meta_var": "meta_val"
+  "servicegateway": {
+    "status": "AVAILABLE",
+    "include_gateway_identity": false,
+    "description": "test1",
+    "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+    "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "fixed_ip": "192.168.0.82",
+    "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+    "api_endpoints": [
+      {
+        "domain_name": "test.test.com"
       }
+    ],
+    "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+    "service_provider": "csp",
+    "create_time": "2023-08-31 02:11:09",
+    "project_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "port_id": "182a31be-9e29-400d-983b-f701cf9b4bbc",
+    "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+    "name": "sgw_test1"
   }
 }
 ```
 
-</p>
 </details>
 
+---
+<a id="delete-a-service-gateway"></a>
+### サービスゲートウェイを削除する { #delete-a-service-gateway }
 
+```
+DELETE /v2.0/gateways/servicegateways/{serviceGatewayId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-a-service-gateway-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| serviceGatewayId | URL | UUID | O | サービスゲートウェイID |
+
+
+<a id="delete-a-service-gateway-response"></a>
+#### レスポンス
+このAPIはレスポンス本文を返しません。
+
+
+
+
+
+
+
+
+
+
+<a id="service-endpoint"></a>
+## サービスエンドポイント { #service-endpoint }
+
+<a id="get-a-list-of-service-endpoints"></a>
+### サービスエンドポイントリスト表示 { #get-a-list-of-service-endpoints }
+
+```
+GET /v2.0/gateways/serviceendpoints/
+X-Auth-Token: {tokenId}
+```
+
+<a id="get-a-list-of-service-endpoints-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会するサービスエンドポイントID |
+| display_name | Query | String | - | 照会するサービスエンドポイント名 |
+| service_name | Query | String | - | 照会するサービス名（ユーザー定義エンドポイント接続時に使用、形式 `{region}.sep-{12 hex}`） |
+> サービスゲートウェイをカスタムエンドポイントに接続する際は、パブリッシャーから提供された `service_name` で照会してサービスエンドポイント ID を取得します。セキュリティのため、`service_name` の値はレスポンスに含まれず、許可プロジェクトに含まれていない場合は空のリストが返されます。
+
+<a id="get-a-list-of-service-endpoints-response"></a>
 #### レスポンス
 
-このAPIはレスポンス本文を返しません。作成されたイメージはレスポンスヘッダの`Location`で確認します。
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| serviceendpoints | Body | Array | サービスエンドポイント情報オブジェクトリスト |
+| serviceendpoints.id | Body | UUID | サービスエンドポイントID |
+| serviceendpoints.display_name | Body | String | コンソールに出力されるサービスエンドポイントの名前 |
+| serviceendpoints.support_gateway_identity | Body | Boolean | NAT IPアドレス固定の使用有無 |
+| serviceendpoints.description | Body | String | サービスエンドポイントの説明 |
+
+<details><summary>例</summary>
+
+```json
+{
+  "serviceendpoints": [
+    {
+      "display_name": "Object Storage",
+      "support_gateway_identity": true,
+      "description": "",
+      "name": "OBS",
+      "id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5"
+    }
+  ]
+}
+```
+</details>
+
+---
+<a id="get-a-service-endpoint"></a>
+### サービスエンドポイント表示 { #get-a-service-endpoint }
+
+```
+GET /v2.0/gateways/serviceendpoints/{seerviceEndpointId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="get-a-service-endpoint-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| serviceEndpointId | URL | UUID | O | サービスエンドポイントID |
+
+<a id="get-a-service-endpoint-response"></a>
+#### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
-|--|--|--|--|
-| Location | Header | String | 作成したイメージURL |
+|---|---|---|---|
+| serviceendpoint | Body | Object | サービスエンドポイント情報オブジェクト |
+| serviceendpoint.id | Body | UUID | サービスエンドポイントID |
+| serviceendpoint.display_name | Body | String | コンソールに出力されるサービスエンドポイントの名前 |
+| serviceendpoint.support_gateway_identity | Body | Boolean | NAT IPアドレス固定の使用有無 |
+| serviceendpoint.description | Body | String | サービスエンドポイントの説明 |
+
+<details><summary>例</summary>
+
+```json
+{
+  "serviceendpoint": {
+      "display_name": "Object Storage",
+      "support_gateway_identity": true,
+      "description": "",
+      "name": "OBS",
+      "id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5"
+  }
+}
+```
+</details>
 
 ---
 
-### セキュリティグループ追加
+<a id="custom-endpoints"></a>
+## カスタムエンドポイント { #custom-endpoints }
 
-インスタンスにセキュリティグループを追加します。追加したセキュリティグループはインスタンスのすべてのポートに適用されます。
+ユーザーが自分のリソース（ロードバランサー）をエンドポイントとして公開し、他のプロジェクトと共有する機能です。公開者（オーナー）が作成・管理し、作成時に共有用のサービス名（`service_name`）が発行されます。
+
+<a id="view-custom-endpoint-list"></a>
+### カスタムエンドポイントリスト表示 { #view-custom-endpoint-list }
 
 ```
-POST /v2/{tenantId}/servers/{serverId}/action
+GET /v2.0/gateways/myserviceendpoints
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-custom-endpoint-list-request"></a>
 #### リクエスト
+この API はリクエスト本文を必要としません。
+
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| addSecurityGroup | Body | Object | O | セキュリティグループ追加リクエストオブジェクト |
-| addSecurityGroup.name | Body | String | O | 追加するセキュリティグループ名 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 認証トークン ID |
+| id | Query | UUID | - | 照会するユーザー定義エンドポイント ID |
+| endpoint_type | Query | String | - | 照会するエンドポイントの種類(例: `lb.type1`) |
+| port_id | Query | UUID | - | 照会する対象リソース(ロードバランサー)のポート ID |
+
+<a id="view-custom-endpoint-list-response"></a>
+#### 応答
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| myserviceendpoints | Body | Array | ユーザー定義エンドポイント情報オブジェクトのリスト |
+| myserviceendpoints.id | Body | UUID | ユーザー定義エンドポイント ID |
+| myserviceendpoints.name | Body | String | 名前 |
+| myserviceendpoints.display_name | Body | String | 表示名（サービスゲートウェイに公開される名前） |
+| myserviceendpoints.endpoint_type | Body | String | エンドポイントタイプ（リソースタイプ、例: `lb.type1`） |
+| myserviceendpoints.port_id | Body | UUID | 対象リソース（ロードバランサー）のポート ID。`GET /v2.0/lbaas/loadbalancers?vip_port_id={port_id}` で対象ロードバランサーを検索できます。 |
+| myserviceendpoints.service_name | Body | String | 共有用サービス名（形式: `{region}.sep-{12 hex}`） |
+| myserviceendpoints.max_count | Body | Integer | 最大作成数（このエンドポイントで作成可能なサービスゲートウェイの最大数）。`0` = 作成ブロック、未設定 = 無制限 |
+| myserviceendpoints.current_count | Body | Integer | 使用状況（このエンドポイントで現在作成されているサービスゲートウェイ数） |
+| myserviceendpoints.service_provider | Body | String | 接続タイプ（ユーザー定義エンドポイントは `user`） |
+| myserviceendpoints.description | Body | String | 説明 |
+| myserviceendpoints.project_id | Body | String | テナント ID |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "addSecurityGroup": {
-        "name": "test"
+  "myserviceendpoints": [
+    {
+      "id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+      "name": "my-lb-service",
+      "display_name": "My LB Service",
+      "endpoint_type": "lb.type1",
+      "port_id": "a6e6ff53-8c70-48db-95ec-8b4895f002c2",
+      "service_name": "kr1.sep-0a1b2c3d4e5f",
+      "max_count": 10,
+      "current_count": 3,
+      "service_provider": "user",
+      "description": "",
+      "project_id": "302406c4a1d44b2cb2bc07a652c0b202"
     }
+  ]
 }
 ```
 
-</p>
 </details>
 
+<a id="get-a-custom-endpoint"></a>
+### ユーザー定義エンドポイント表示 { #get-a-custom-endpoint }
 
+```
+GET /v2.0/gateways/myserviceendpoints/{serviceEndpointId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="get-a-custom-endpoint-request"></a>
+#### リクエスト
+この API はリクエスト本文を必要としません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 認証トークン |
+| serviceEndpointId | URL | UUID | O | ユーザー定義エンドポイント ID |
+
+<a id="get-a-custom-endpoint-response"></a>
+#### 応答
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| myserviceendpoint | Body | Object | ユーザー定義エンドポイント情報オブジェクト |
+| myserviceendpoint.id | Body | UUID | ユーザー定義エンドポイント ID |
+| myserviceendpoint.name | Body | String | 名前 |
+| myserviceendpoint.display_name | Body | String | 表示名 |
+| myserviceendpoint.endpoint_type | Body | String | エンドポイントタイプ（リソースタイプ） |
+| myserviceendpoint.port_id | Body | UUID | 対象リソース（ロードバランサー）のポート ID。`GET /v2.0/lbaas/loadbalancers?vip_port_id={port_id}` で対象ロードバランサーを検索できます。 |
+| myserviceendpoint.service_name | Body | String | 共有用サービス名 |
+| myserviceendpoint.max_count | Body | Integer | 最大作成数 |
+| myserviceendpoint.current_count | Body | Integer | 使用状況（現在作成されているサービスゲートウェイ数） |
+| myserviceendpoint.service_provider | Body | String | 接続タイプ（`user`） |
+| myserviceendpoint.description | Body | String | 説明 |
+| myserviceendpoint.project_id | Body | String | テナント ID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "myserviceendpoint": {
+    "id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+    "name": "my-lb-service",
+    "display_name": "My LB Service",
+    "endpoint_type": "lb.type1",
+    "port_id": "a6e6ff53-8c70-48db-95ec-8b4895f002c2",
+    "service_name": "kr1.sep-0a1b2c3d4e5f",
+    "max_count": 10,
+    "current_count": 3,
+    "service_provider": "user",
+    "description": "",
+    "project_id": "302406c4a1d44b2cb2bc07a652c0b202"
+  }
+}
+```
+
+</details>
+
+<a id="create-a-custom-endpoint"></a>
+### カスタムエンドポイントの作成 { #create-a-custom-endpoint }
+
+```
+POST /v2.0/gateways/myserviceendpoints
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-a-custom-endpoint-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 認証トークン ID |
+| myserviceendpoint | Body | Object | O | ユーザー定義エンドポイント情報オブジェクト |
+| myserviceendpoint.name | Body | String | O | 名前（255文字以内、英字/数字/-/_） |
+| myserviceendpoint.display_name | Body | String | - | 表示名（省略時は `name` と同じ値が適用されます） |
+| myserviceendpoint.port_id | Body | UUID | O | 対象リソース（ロードバランサー）のポート ID。ロードバランサー表示（`GET /v2.0/lbaas/loadbalancers/{loadbalancerId}`）レスポンスの `vip_port_id` を使用します。 |
+| myserviceendpoint.max_count | Body | Integer | - | 最大作成数（0〜1,000）。0: 作成をブロック、null または未入力: 無制限 |
+| myserviceendpoint.description | Body | String | - | 説明 |
+
+> 対象リソースとしてロードバランサーを指定すると、`endpoint_type` が `lb.type1`、`service_provider` が `user` に自動設定されます。作成が完了すると、共有用の `service_name` が自動的に発行されます。プロジェクトあたりデフォルトで最大 5 個まで作成できます。
+
+<details><summary>例</summary>
+
+```json
+{
+  "myserviceendpoint": {
+    "name": "my-lb-service",
+    "display_name": "My LB Service",
+    "port_id": "a6e6ff53-8c70-48db-95ec-8b4895f002c2",
+    "max_count": 10,
+    "description": ""
+  }
+}
+```
+
+</details>
+
+<a id="create-a-custom-endpoint-response"></a>
 #### レスポンス
-このAPIはレスポンス本文を返しません。
+レスポンス本文は[ユーザー定義エンドポイント表示](#get-a-custom-endpoint)と同じで、自動発行された `service_name` が含まれます。
 
 ---
 
-### セキュリティグループ削除
-
-インスタンスからセキュリティグループを削除します。インスタンスのすべてのポートから指定したセキュリティグループが削除されます。
+<a id="modify-a-custom-endpoint"></a>
+### カスタムエンドポイントの変更 { #modify-a-custom-endpoint }
 
 ```
-POST /v2/{tenantId}/servers/{serverId}/action
+PUT /v2.0/gateways/myserviceendpoints/{serviceEndpointId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-a-custom-endpoint-request"></a>
 #### リクエスト
+
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| removeSecurityGroup | Body | Object | O | セキュリティグループ削除リクエストオブジェクト |
-| removeSecurityGroup.name | Body | String | O | 削除するセキュリティグループ名 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 認証トークン ID |
+| serviceEndpointId | URL | UUID | O | ユーザー定義エンドポイント ID |
+| myserviceendpoint | Body | Object | O | ユーザー定義エンドポイント情報オブジェクト |
+| myserviceendpoint.name | Body | String | - | 名前 |
+| myserviceendpoint.display_name | Body | String | - | 表示名 |
+| myserviceendpoint.max_count | Body | Integer | - | 最大作成数 (0〜1000)。0: 作成をブロック、null: 無制限に変更、フィールド未指定時は既存の値を維持 |
+| myserviceendpoint.description | Body | String | - | 説明 |
+
+> リソースタイプ (`endpoint_type`) とターゲットリソース (`port_id`) は変更できません。最大作成数を減らしても既存のサービスゲートウェイは維持されます。現在の数が最大作成数を超えている間は、追加作成することはできません。
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "removeSecurityGroup": {
-        "name": "test"
-    }
+  "myserviceendpoint": {
+    "name": "my-lb-renamed",
+    "display_name": "My LB (renamed)",
+    "max_count": 20,
+    "description": "renamed"
+  }
 }
 ```
 
-</p>
 </details>
 
-
+<a id="modify-a-custom-endpoint-response"></a>
 #### レスポンス
-このAPIはレスポンス本文を返しません。
+レスポンス本文は[ユーザー定義エンドポイント表示](#get-a-custom-endpoint)と同じです。
 
-
-<a id="terminate-instance"></a>
-## インスタンスメタデータ
-
-インスタンスメタデータ値に基づいてコンソールの**Compute > Instance**サービスページでインスタンス詳細情報画面の内容を決定します。インスタンスメタデータの内容は次のとおりです。
-
-| インスタンスメタデータ   | 内容                                         |
-|----------------|----------------------------------------------|
-| os_distro      | **基本情報**の**OS**の名前<br>os_versionと組み合わせて使用 |
-| os_version     | **基本情報**の**OS**のバージョン<br>os_distroと組み合わせて使用 |
-| image_name     | **基本情報**の**イメージ名**                        |
-| os_type      | **接続情報**形式                               |
-| login_username | **接続情報**のユーザー名                          |
-
-> [注意]インスタンスメタデータの変更及び削除の際、関連サービス及び機能に影響が発生する可能性があり、これによる結果に対する責任はユーザーにあります。
-### インスタンスメタデータリスト表示
+<a id="delete-custom-endpoint"></a>
+### カスタムエンドポイントの削除 { #delete-custom-endpoint }
 
 ```
-GET /v2/{tenantId}/servers/{serverId}/metadata
+DELETE /v2.0/gateways/myserviceendpoints/{serviceEndpointId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-custom-endpoint-request"></a>
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+このAPIはリクエスト本文を必要としません。
 
-| 名前     | 種類 | 形式 | 必須 | 説明                                             |
-|----------|---|---|---|--------------------------------------------------|
-| tenantId | URL | String | O | テナントID                                           |
-| serverId | URL | UUID | O | インスタンスID                                          |
-| tokenId  | Header | String | O | トークンID                                            |
-
-#### レスポンス
-
-| 名前     | 種類 | 形式 | 説明                                             |
-|----------|---|---|--------------------------------------------------|
-| metadata | Body | Object | インスタンスに作成または修正するメタデータオブジェクト<br>最大長さ255文字以下のキーと値のペア |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "metadata": {
-        "os_distro": "ubuntu",
-        "description": "Ubuntu Server 20.04.6 LTS (2023.11.21)",
-        "volume_size": "20",
-        "project_domain": "NORMAL",
-        "monitoring_agent": "sysmon",
-        "image_name": "Ubuntu Server 20.04.6 LTS (2023.11.21)",
-        "os_version": "Server 20.04 LTS",
-        "os_architecture": "amd64",
-        "login_username": "ubuntu",
-        "os_type": "linux",
-        "tc_env": "sysmon,dfeac7db42a192a73959d5646117af58"
-    }
-}
-```
-
-</p>
-</details>
-
-
-<a id="restart-instance"></a>
-### インスタンスメタデータ表示
-
-```
-GET /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前     | 種類 | 形式 | 必須 | 説明                     |
-|----------|---|---|---|--------------------------|
-| tenantId | URL | String | O | テナントID                   |
-| serverId | URL | UUID | O | インスタンスID                  |
-| key      | URL | String | O | インスタンスに作成または修正するメタデータのキー |
-| tokenId  | Header | String | O | トークンID                    |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明                                             |
-|------|---|---|--------------------------------------------------|
-| meta | Body | Object | インスタンスに作成または修正するメタデータオブジェクト<br>最大長さ255文字以下のキーと値のペア |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-<a id="change-instance-flavor"></a>
-### インスタンスメタデータを作成/修正する
-
-インスタンスのメタデータを作成または修正します。
-リクエストするキーが既存のキーと一致する場合、キーと値をリクエスト値に変更します。
-
-```
-PUT /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前     | 種類 | 形式 | 必須 | 説明                                             |
-|----------|---|---|---|--------------------------------------------------|
-| tenantId | URL | String | O | テナントID                                           |
-| serverId | URL | UUID | O | インスタンスID                                          |
-| key      | URL | String | O | インスタンスに作成または修正するメタデータのキー                        |
-| tokenId  | Header | String | O | トークンID                                            |
-| meta     | Body | Object | O | インスタンスに作成または修正するメタデータオブジェクト<br>最大長さ255文字以下のキーと値のペア |
-
-<details>
-<summary>例</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明                                             |
-|------|---|---|--------------------------------------------------|
-| meta | Body | Object | インスタンスに作成または修正するメタデータオブジェクト<br>最大長さ255文字以下のキーと値のペア |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-
-<a id="create-instance-image"></a>
-### インスタンスメタデータを削除する
-
-リクエストするキーと一致するインスタンスのメタデータを削除します。
-
-```
-DELETE /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前     | 種類 | 形式 | 必須 | 説明                |
-|----------|---|---|---|---------------------|
-| tenantId | URL | String | O | テナントID              |
-| serverId | URL | UUID | O | インスタンスID             |
-| key      | URL | String | O | インスタンスから削除するメタデータのキー |
-| tokenId  | Header | String | O | トークンID               |
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
-
-## 配置ポリシー
-
-<a id="add-security-group"></a>
-### 配置ポリシーを作成する
-
-配置ポリシーを作成します。
-分散バッチのための`anti-affinity`配置ポリシータイプのみ提供します。
-
-```
-POST /v2/{tenantId}/os-server-groups
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-| server_group | Body | Object | O | 配置ポリシーオブジェクト |
-| server_group.name | Body | String | O | 配置ポリシー名 |
-| server_group.policies | Body | Array | O | 配置ポリシータイプ<br>`anti-affinity`のみ設定可能 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 認証トークン ID |
+| serviceEndpointId | URL | UUID | O | ユーザー定義エンドポイント ID |
 
-<details>
-<summary>例</summary>
-<p>
+> このエンドポイントを使用中のサービスゲートウェイがある場合は削除できません。削除すると、登録されている許可プロジェクトも合わせて削除されます。
 
-```json
-{
-    "server_group": {
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"            
-        ]
-    }
-}
+<a id="delete-custom-endpoint-response"></a>
+#### レスポンス
+この API はレスポンス本文を返しません。
+
+<a id="reissue-a-service-name"></a>
+### サービス名の再発行 { #reissue-a-service-name }
+
+```
+PUT /v2.0/gateways/serviceendpoints/{serviceEndpointId}/generate_service_name
+X-Auth-Token: {tokenId}
 ```
 
-</p>
-</details>
+<a id="reissue-a-service-name-request"></a>
+#### リクエスト
+この API はリクエスト本文を必要としません。
 
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 認証トークン ID |
+| serviceEndpointId | URL | UUID | O | ユーザー定義エンドポイント ID |
+
+> エンドポイントを作成したプロジェクトのメンバー（オーナー）のみ実行できます。再発行時、既存の `service_name` は即時廃棄され、以降は照会できなくなります。既存の `service_name` で作成したサービスゲートウェイは正常に動作しますが、新規作成時は再発行された `service_name` を使用する必要があります。
+
+<a id="reissue-a-service-name-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
-|-----|-----|-----|-----|
-| server_group | Body | Object | 配置ポリシーオブジェクト |
-| server_group.id | Body | String | 配置ポリシーID |
-| server_group.name | Body | String | 配置ポリシー名 |
-| server_group.policies | Body | Array | 配置ポリシータイプ |
-| server_group.members | Body | Array | 配置ポリシーに割り当てられたインスタンスIDリスト |
-| server_group.metadata | Body | Object | 配置ポリシーメタデータオブジェクト<br>常に空の値で表示されます |
+|---|---|---|---|
+| service_name | Body | String | 再発行された共有用サービス名 |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "server_group": {
-        "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"
-        ],
-        "members": [],
-        "metadata": {}
-    }
+  "service_name": "kr1.sep-9f8e7d6c5b4a"
 }
 ```
 
-</p>
 </details>
 
-<a id="delete-security-group"></a>
-### 配置ポリシーリスト表示
+<a id="allowed-projects"></a>
+## 許可プロジェクト { #allowed-projects }
+
+ユーザー定義エンドポイントへの接続（サービスゲートウェイの作成）を許可する対象（テナント）を管理するリスト（ホワイトリスト）です。純粋な許可リスト（権限）であり、作成数の制限は扱いません（数の制限はエンドポイントの `max_count` で管理）。
+
+<a id="view-allow-project-list"></a>
+### 許可プロジェクトリスト表示 { #view-allow-project-list }
 
 ```
-GET /v2/{tenantId}/os-server-groups
+GET /v2.0/gateways/serviceendpointallowprojects
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-allow-project-list-request"></a>
 #### リクエスト
-
-このAPIはリクエスト本文を要求しません。
+この API はリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 認証トークン ID |
+| service_endpoint_id | Query | UUID | - | 照会するユーザー定義エンドポイント ID |
+| target_tenant_id | Query | String | - | 照会する許可対象テナント ID |
 
-#### レスポンス
+<a id="view-allow-project-list-response"></a>
+#### 応答
 
 | 名前 | 種類 | 形式 | 説明 |
-|-----|-----|-----|-----|
-| server_groups | Body | Array | 配置ポリシーオブジェクトリスト |
-| server_groups.id | Body | String | 配置ポリシーID |
-| server_groups.name | Body | String | 配置ポリシー名 |
-| server_groups.policies | Body | Array | 配置ポリシータイプ |
-| server_groups.members | Body | Array | 配置ポリシーに割り当てられたインスタンスIDリスト |
-| server_groups.metadata | Body | Object | 配置ポリシーメタデータオブジェクト<br>常に空の値で表示されます |
+|---|---|---|---|
+| serviceendpointallowprojects | Body | Array | 許可プロジェクト情報オブジェクトのリスト |
+| serviceendpointallowprojects.id | Body | UUID | 許可プロジェクト ID |
+| serviceendpointallowprojects.service_endpoint_id | Body | UUID | ユーザー定義エンドポイント ID |
+| serviceendpointallowprojects.target_tenant_id | Body | String | 許可対象。`*`=全プロジェクト / テナント ID=特定プロジェクト |
+| serviceendpointallowprojects.name | Body | String | 名前（参考用） |
+| serviceendpointallowprojects.description | Body | String | 説明 |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "server_groups": [
-        {
-            "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-            "name": "policy-test1",
-            "policies": [
-                "anti-affinity"
-            ],
-            "members": [
-                "c040455d-6495-4628-ad81-ade79cf7b8d6",
-                "524e7d81-f373-43a0-b2ff-0a15f8255bb5"            
-            ],
-            "metadata": {}
-        },
-        {
-            "id": "f947c657-cbe0-4bf2-a2aa-59d198f8e096",
-            "name": "policy-test2",
-            "policies": [
-                "anti-affinity"
-            ],
-            "members": [],
-            "metadata": {}
-        }
-    ]
+  "serviceendpointallowprojects": [
+    {
+      "id": "d9e0f111-2222-3333-4444-555566667777",
+      "service_endpoint_id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+      "target_tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+      "name": "allow-b",
+      "description": "allow b-tenant"
+    }
+  ]
 }
 ```
 
-</p>
 </details>
 
-### 配置ポリシー表示
+<a id="view-allowed-projects"></a>
+### 許可プロジェクト表示 { #view-allowed-projects }
 
 ```
-GET /v2/{tenantId}/os-server-groups/{servergroupId}
+GET /v2.0/gateways/serviceendpointallowprojects/{allowProjectId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-allowed-projects-request"></a>
 #### リクエスト
-
-このAPIはリクエスト本文を要求しません。
+この API はリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | テナントID |
-| servergroupId | URL | String | O | 配置ポリシーID |
-| tokenId | Header | String | O | トークンID |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 認証トークン |
+| allowProjectId | URL | UUID | O | 許可プロジェクト ID |
 
+<a id="view-allowed-projects-response"></a>
 #### レスポンス
+レスポンス本文は、[許可プロジェクトリスト表示](#view-allow-project-list)の単一オブジェクト(`serviceendpointallowproject`)と同じです。
+
+<a id="create-an-allowed-project"></a>
+### 許可プロジェクトの作成 { #create-an-allowed-project }
+
+```
+POST /v2.0/gateways/serviceendpointallowprojects
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-an-allowed-project-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 認証トークン ID |
+| serviceendpointallowproject | Body | Object | O | 許可プロジェクト情報オブジェクト |
+| serviceendpointallowproject.service_endpoint_id | Body | UUID | O | ユーザー定義エンドポイント ID |
+| serviceendpointallowproject.target_tenant_id | Body | String | O | 許可対象。`*`=全プロジェクト / テナント ID（32 hex）=特定プロジェクト |
+| serviceendpointallowproject.name | Body | String | - | 名前（参考用） |
+| serviceendpointallowproject.description | Body | String | - | 説明 |
+
+> 全許可（`*`）と特定プロジェクトを同時に登録した場合、より狭い範囲（特定プロジェクト）が適用されます。これを利用して、無停止で許可範囲を切り替えることができます。エンドポイントオーナーのテナント ID は登録できません（オーナーは常に許可）。同一（エンドポイント、テナント）の組み合わせがすでに存在する場合は 409 が返されます。
+
+<details><summary>例</summary>
+
+```json
+{
+  "serviceendpointallowproject": {
+    "service_endpoint_id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+    "target_tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "name": "allow-b",
+    "description": "allow b-tenant"
+  }
+}
+```
+
+</details>
+
+<a id="create-an-allowed-project-response"></a>
+#### レスポンス
+レスポンス本文は、[許可プロジェクトリスト表示](#view-allow-project-list)の単一オブジェクト(`serviceendpointallowproject`)と同じです。
+
+<a id="modify-allowed-projects"></a>
+### 許可プロジェクトの修正 { #modify-allowed-projects }
+
+```
+PUT /v2.0/gateways/serviceendpointallowprojects/{allowProjectId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-allowed-projects-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 認証トークン ID |
+| allowProjectId | URL | UUID | O | 許可プロジェクト ID |
+| serviceendpointallowproject | Body | Object | O | 許可プロジェクト情報オブジェクト |
+| serviceendpointallowproject.name | Body | String | - | 名前（参考用） |
+| serviceendpointallowproject.description | Body | String | - | 説明 |
+
+> 許可対象（`target_tenant_id`）とエンドポイント（`service_endpoint_id`）は変更できません。変更できるのは `name`・`description` のみです。
+
+<details><summary>例</summary>
+
+```json
+{
+  "serviceendpointallowproject": {
+    "name": "allow-b-renamed",
+    "description": "Bプロジェクト連携"
+  }
+}
+```
+
+</details>
+
+<a id="modify-allowed-projects-response"></a>
+#### レスポンス
+レスポンス本文は、[許可プロジェクトリスト表示](#view-allow-project-list)の単一オブジェクト（`serviceendpointallowproject`）と同じです。
+
+<a id="delete-an-allowed-project"></a>
+### 許可プロジェクトの削除 { #delete-an-allowed-project }
+
+```
+DELETE /v2.0/gateways/serviceendpointallowprojects/{allowProjectId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-an-allowed-project-request"></a>
+#### リクエスト
+この API はリクエスト本文を必要としません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 認証トークン |
+| allowProjectId | URL | UUID | O | 許可プロジェクト ID |
+
+<a id="delete-an-allowed-project-response"></a>
+#### レスポンス
+この API はレスポンス本文を返しません。
+
+<a id="usage-status"></a>
+## 使用状況 { #usage-status }
+
+カスタムエンドポイントを使用中(接続中)のコンシューマー側サービスゲートウェイのリストを照会します。
+
+<a id="view-usage-status-list"></a>
+### 使用状況リスト表示 { #view-usage-status-list }
+
+```
+GET /v2.0/gateways/serviceendpointusages
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-usage-status-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を必要としません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 認証トークン |
+| id | Query | UUID | - | 照会するユーザー定義エンドポイントID（複数指定可能。省略時は所有するすべてのエンドポイントが対象） |
+| network_id | Query | UUID | - | 照会するサービスゲートウェイのVPC ID（複数指定可能） |
+| subnet_id | Query | UUID | - | 照会するサービスゲートウェイのサブネットID（複数指定可能） |
+| limit | Query | Integer | - | 一度に照会する最大件数（省略時は全件返却） |
+| marker | Query | UUID | - | 直前ページの最後の項目のサービスゲートウェイID（次のページを照会する際に使用） |
+| page_reverse | Query | Boolean | - | `true` を指定すると、前のページ方向に照会します |
+| sort_key | Query | String | - | 並び替え基準フィールド（複数指定可能） |
+| sort_dir | Query | String | - | 並び替え方向（`asc` または `desc`）。`sort_key` と必ずペアで、同じ個数を指定してください |
+
+> 結果はデフォルトでサービスゲートウェイID（`id`）の昇順で並び替えられます。作成日時順に照会するには、`sort_key=create_time&sort_dir=desc` のように明示する必要があります。`sort_key` には、レスポンスフィールド（`id`、`name`、`fixed_ip`、`status`、`tenant_id`、`network_id`、`subnet_id`、`service_endpoint_id`、`create_time`）を使用できます。
+> `limit` を指定すると、レスポンスに次/前ページのリンク（`serviceendpointusages_links`）が含まれます。次のページはリンクのURLをそのまま呼び出すか、現在のページの最後の項目の `id` を `marker` に指定して照会します。ページを順に参照する間は、同一のフィルター/並び替え条件を維持する必要があります。
+
+<a id="view-usage-status-list-response"></a>
+#### 応答
 
 | 名前 | 種類 | 形式 | 説明 |
-|-----|-----|-----|-----|
-| server_group | Body | Object | 配置ポリシーオブジェクト |
-| server_group.id | Body | String | 配置ポリシーID |
-| server_group.name | Body | String | 配置ポリシー名 |
-| server_group.policies | Body | Array | 配置ポリシータイプ |
-| server_group.members | Body | Array | 配置ポリシーに割り当てられたインスタンスIDリスト |
-| server_group.metadata | Body | Object | 配置ポリシーメタデータオブジェクト<br>常に空の値で表示されます |
+|---|---|---|---|
+| serviceendpointusages | Body | Array | 使用状況情報オブジェクトのリスト |
+| serviceendpointusages.id | Body | UUID | サービスゲートウェイ ID |
+| serviceendpointusages.name | Body | String | サービスゲートウェイ名 |
+| serviceendpointusages.fixed_ip | Body | String | サービスゲートウェイの IP アドレス |
+| serviceendpointusages.status | Body | String | サービスゲートウェイのステータス |
+| serviceendpointusages.tenant_id | Body | String | サービスゲートウェイを作成したコンシューマープロジェクトのテナント ID |
+| serviceendpointusages.network_id | Body | UUID | サービスゲートウェイの VPC ID |
+| serviceendpointusages.subnet_id | Body | UUID | サービスゲートウェイのサブネット ID |
+| serviceendpointusages.service_endpoint_id | Body | UUID | 接続されたユーザー定義エンドポイント ID |
+| serviceendpointusages.create_time | Body | String | サービスゲートウェイの作成日時 |
+| serviceendpointusages_links | Body | Array | ページネーションリンクのリスト(`limit` 指定時のみ含まれる) |
+| serviceendpointusages_links.rel | Body | String | リンクの種類。`next`=次のページ / `previous`=前のページ |
+| serviceendpointusages_links.href | Body | String | 該当ページを照会できる URL |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "server_group": {
-        "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"
-        ],
-        "members": [
-            "c040455d-6495-4628-ad81-ade79cf7b8d6",
-            "524e7d81-f373-43a0-b2ff-0a15f8255bb5"            
-        ],
-        "metadata": {}
+  "serviceendpointusages": [
+    {
+      "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+      "name": "sgw_partner",
+      "fixed_ip": "192.168.0.51",
+      "status": "AVAILABLE",
+      "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+      "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+      "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+      "service_endpoint_id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+      "create_time": "2023-08-31 02:11:09"
     }
+  ],
+  "serviceendpointusages_links": [
+    {
+      "rel": "next",
+      "href": "https://kr1-api-network-infrastructure.nhncloudservice.com/v2.0/gateways/serviceendpointusages?limit=20&marker=d383a4a3-dae7-4609-b2db-ecdf5859fac5"
+    },
+    {
+      "rel": "previous",
+      "href": "https://kr1-api-network-infrastructure.nhncloudservice.com/v2.0/gateways/serviceendpointusages?limit=20&marker=d383a4a3-dae7-4609-b2db-ecdf5859fac5&page_reverse=True"
+    }
+  ]
 }
 ```
 
-</p>
 </details>
-
-### 配置ポリシーを削除する
-
-```
-DELETE /v2/{tenantId}/os-server-groups/{servergroupId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | テナントID |
-| servergroupId | URL | String | O | 配置ポリシーID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-
-このAPIはレスポンス本文を返しません。
