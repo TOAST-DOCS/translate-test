@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=be0be57a5d82 -->
 
 <a id="security-secure-key-manager-console-user-guide-approval-feature"></a>
