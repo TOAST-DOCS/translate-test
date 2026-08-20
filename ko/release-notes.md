@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=cd25e9b09cb4 -->
+<!-- pre-align:aligned sig=832fc1568328 -->
 
 <a id="data-lake-storage-release-notes"></a>
 ## Data Lake Storage 릴리스 노트 { #data-lake-storage-release-notes }
