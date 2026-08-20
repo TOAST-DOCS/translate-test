@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=8eda339a3204 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=6e030e03347a -->
 
 <a id="api-v10-guide"></a>
 ## API v1.0 Guide { #api-v10-guide }

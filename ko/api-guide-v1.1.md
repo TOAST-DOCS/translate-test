@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=2c9270a88b89 -->
+<!-- pre-align:aligned sig=eba51726b9a8 -->
 
 <a id="management-certificate-manager-api-v11-guide"></a>
 ## Management > Certificate Manager > API v1.1 가이드 { #management-certificate-manager-api-v11-guide }

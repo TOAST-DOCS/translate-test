@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=8eda339a3204 -->
+<!-- pre-align:aligned sig=6e030e03347a -->
 
 <a id="api-v10-guide"></a>
 ## API v1.0 가이드 { #api-v10-guide }

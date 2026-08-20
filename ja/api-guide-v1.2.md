@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=62797d4ab3bf -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=18ef49a96491 -->
 
 <a id="management-certificate-manager-api-v12-guide"></a>
 ## Management > Certificate Manager > API v1.2 ガイド { #management-certificate-manager-api-v12-guide }

@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=39caf24ddae0 -->
 
 <a id="management-certificate-manager-release-notes"></a>
