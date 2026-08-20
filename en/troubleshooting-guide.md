@@ -1,135 +1,86 @@
-## Compute > Instance > Troubleshooting Guide
+<!-- pre-align:aligned sig=800defce3427 -->
 
-The document describes how to resolve issues you may encounter while using NHN Cloud.
+<a id="troubleshooting-guide"></a>
+## Notification > KakaoTalk Bizmessage > 문제 해결 가이드 { #troubleshooting-guide }
 
-<h3> I want to use a different version, other than the default OS version of NHN Cloud. Can I upload my personal images? </h3>
+<a id="message-for-query-delivery-button"></a>
+### Message for Query Delivery Button { #message-for-query-delivery-button }
 
-You can only use the OS version provided by NHN Cloud. And uploading personal images is not allowed.
-To use personal OS images, create an instance with NHN Cloud image and apply **Create Image**.
-<br>
+Fill out the courier name and invoice number, and add a button to query delivery. Then, the courier name and invoice number are exported from the message, and the links for each courier’s query delivery page are automatically created. In case an AlimTalk message includes any courier and invoice number which are not supported by KakaoTalk, the query delivery button is not created.
 
-<h3> When I try to access instance, I find "Permissions 0644 for '/Users/username/.ssh/your-key.pem' are too open." and access is not available. </h3>
+Here is the list of couriers for which KakaoTalk supports the query of delivery.
 
-It happens when the personal key (PEM key) applied to access instance has invalid authority.
-Adjust the authority of personal key file like below.
+List of Couriers Available to Query :
+KGB택배 우체국택배 로젠택배 일양로지스 GTX로지스 FedEx 한진택배 경동택배 합동택배 롯데택배 농협택배 호남택배 CU 편의점택배 CVSnet편의점택배 TNT Express USPS EMS 천일택배 DHL 대신택배 건영택배 한덱스
 
-    $ chmod 600 your-key.pem
-<br>
+<span style="color:red">**Please note that the list is subject to change by contracts between Kakotalk and each courier.**</span>
+<b>CJ대한통운</b>
+* 카카오 비즈메시지의 배송조회 버튼 관련 변경으로 인해, 메시지 내 CJ대한통운 송장번호가 포함된 경우, '배송조회' 버튼 없이 발송됩니다.(추후 카카오에서 변경 시, 재공지)
 
-<h3> How do I get the root authority from CentOS instance?  </h3>
-
-To get root authority from CentOS instance, use the 'sudo' command like follows.
-
-    $ sudo su
-<br>
-
-<h3> I find error mounting, after creating image and instance, and booting it. </h3>
-
-You shall encounter with such error, when an image is created with instance using two or more block storages and instance is created and booted with such image.
-
-For instances that use more than two block storages, set disks other than default disk in the `/etc/fstab` file. Since the file is to be replicated as well, when image is created, error occurs in mounting due to lack of a block storage referenced by the`/etc/fstab` file.
-
-To resolve this issue, set block storage of the `/etc/fstab` file, except default disk, as footnote, before creating an image.
-<br>
-<br>
-
-<h3> It takes too long to access SSH. </h3>
-
-It happens when DNS is blocked at the receiving part of the security group to which instance belongs. Adjust the security group to be allowed to receive DNS.
-<br>
-<br>
-
-<h3> I find "Could not resolve the host" and cannot use yum. </h3>
-
-It happens when DNS is blocked at the receiving part of the security group to which instance belongs. Adjust the security group to be allowed to receive DNS.
-<br>
-<br>
-
-<a id="proxy-instance-issue">
-<h3>Something goes wrong on instances using proxies</h3>
-</a>
-
-NHN Cloud's Monitoring services (System Monitoring, Service Monitoring, Cloud Monitoring) may not work properly on instances that use proxies. Also, in the case of Windows operating systems, problems such as password reset may occur.
-
-To avoid this issue, you must disable proxying for the `169.254.0.0/16` band on instances that use proxies. Typically, you would set this value in an environment variable called `no_proxy`, but some proxies ignore this environment variable, so refer to the proxy guide to set this up.
-<br>
-<br>
-
-<h3> Package update fails on CentOS instances. </h3>
-
-Use the `yum repository` file after modifying the file as follows.
-Additional updates are not supported for OS for which official support has ended, so it is recommended that you use a higher version of the OS.
-
-<h4>CentOS 6.x</h4>
+invoice number format
 
 ```
-$ sudo vi /etc/yum.repos.d/CentOS-Base.repo
+우체국택배: 13 Numeric or 6 Numeric + 7 Numeric(Separator '-' or '_')
+example) 1234567890123, 123456-1234567, 123456_1234567
 
-[base]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
-baseurl=https://vault.centos.org/6.10/os/$basearch/
-...
+로젠택배: 11 Numeric or 3 Numeric + 4 Numeric + 4 Numeric(Separator '-' or '_'))
+example) 12345678901, 123-1234-1234, 123_1234_1234
 
-[updates]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
-baseurl=https://vault.centos.org/6.10/updates/$basearch/
-...
+일양로지스: 9~11 Numeric
+example) 123456789, 1234567890, 12345678901
 
-[extras]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
-baseurl=https://vault.centos.org/6.10/extras/$basearch/
-...
+FedEx: 12 Numeric
+example) 123456789012
+
+한진택배: 10 Numeric or 12 Numeric
+example) 1234567890, 123456789012
+
+경동택배: 9~16 Numeric or 4 Numeric + 3 Numeric + 6 Numeric(Separator '-')
+example) 123456789, 1234567890123456, 1234-123-123456
+
+합동택배: 9~16 Numeric
+example) 123456789, 1234567890123456
+
+롯데택배: 12 Numeric or 4 Numeric + 4 Numeric + 4 Numeric(Separator '-')
+example) 123456789012, 1234-1234-1234
+
+농협택배: 12 Numeric
+example) 123456789012
+
+호남택배: 10 Numeric
+example) 1234567890
+
+천일택배: 11 Numeric
+example) 12345678901
+
+대신택배: 13 Numeric
+example) 1234567890123
+
+건영택배: 10 Numeric
+example) 1234567890
+
+CU편의점택배: 10 Numeric or 12 Numeric or 4 Numeric + 4 Numeric + 4 Numeric(Separator '-' or '_')
+example) 1234567890, 123456789012, 1234-1234-1234, 1234_1234_1234
+
+CVSnet편의점택배: 10 Numeric or 12 Numeric or 4 Numeric + 4 Numeric + 4 Numeric(Separator '-' or '_')
+example) 1234567890, 123456789012, 1234-1234-1234, 1234_1234_1234
+
+한덱스: 10 Numeric or 14 Numeric
+example) 1234567890, 12345678901234
+
+TNT Express: 8~9 Numeric
+example) 12345678, 123456789
+
+USPS: 10 Numeric or 22 Numeric or 2 capital Alphabet + 9 Numeric + 2 capital Alphabet(No Separator)
+example) 1234567890, 1234567890123456789012, AB123456789AB
+
+EMS: 2 capital Alphabet + 9 Numeric + 2 capital Alphabet(No Separator)
+example) AB1234567890AB
+
+DHL: 10 Numeric
+example) 1234567890
+
+굿투럭: 12 Numeric or 4 Numeric + 4 Numeric + 4 Numeric(Separator '-')
+예시) 1234-1234-1234
 
 ```
-
-<h4>CentOS 7.x</h4>
-
-```
-
-$ sudo vi /etc/yum.repos.d/CentOS-Base.repo
-
-[base]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/os/$basearch/
-...
-
-[updates]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/updates/$basearch/
-...
-
-[extras]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/extras/$basearch/
-...
-
-[centosplus]
-...
-#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra&cc=$cc
-#baseurl=http://mirror.centos.org/centos/$releasever/centosplus/$basearch/
-baseurl=https://vault.centos.org/7.9.2009/centosplus/$basearch/
-...
-```
-
-<h4>Common</h4>
-
-```
-$ sudo yum clean all
-$ sudo yum repolist
-```
-
-<br>
-<br>
-
