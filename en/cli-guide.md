@@ -1,13 +1,11 @@
 <!-- machine_translated: true -->
 
-{% include-markdown '../_object-storage-vars.md' %}
-
 <!-- pre-align:aligned sig=4d6c14c57aab -->
 
 <a id="storage-object-storage-cli-guide"></a>
 ## Storage > Object Storage > CLI Guide { #storage-object-storage-cli-guide }
 
-This document explains how to use NHN Cloud Object Storage with the OpenStack Swift command-line interface (CLI).
+This document describes how to use NHN Cloud Object Storage with the OpenStack Swift command-line interface (CLI).
 
 <a id="python-swiftclient"></a>
 ## python-swiftclient { #python-swiftclient }
@@ -15,23 +13,23 @@ This document explains how to use NHN Cloud Object Storage with the OpenStack Sw
 <a id="install"></a>
 ### Install { #install }
 
-python-swiftclient is provided as a Python package. Install it using pip.
+python-swiftclient is provided as a Python package. Install it by using pip.
 
-```
+```bash
 pip install python-swiftclient python-keystoneclient
 ```
 
 !!! tip "Note"
-    Python 3.7 or later is required. If Python is not installed, refer to the [Python download page](https://www.python.org/downloads/) for installation instructions.
+    Python 3.7 or later is required. If Python is not installed, see the [Python download page](https://www.python.org/downloads/) to install it.
 
 Once the installation is complete, you can verify it with the following command.
 
-```
+```bash
 $ swift --version
 python-swiftclient x.x.x
 ```
 
-<br/>
+<br>
 
 <a id="configuration"></a>
 ### Configuration { #configuration }
@@ -39,24 +37,24 @@ python-swiftclient x.x.x
 To use the Swift CLI, you must configure the environment variables required for authentication. Click the **API Endpoint Settings** button on the Object Storage service page to find the required information.
 
 ```bash
-export OS_AUTH_URL=$[ identity_url ]$/v2.0
+export OS_AUTH_URL=https://api-identity-infrastructure.nhncloudservice.com/v2.0
 export OS_TENANT_ID=<Tenant ID>
 export OS_USERNAME=<NHN Cloud account ID>
 export OS_PASSWORD=<API password>
 export OS_REGION_NAME=<Region name>
 ```
 
-<br/>
+<br>
 
 | Environment Variable | Description |
 | --- | --- |
-| OS_AUTH_URL | Identity API URL<br>$[ identity_url ]$/v2.0 |
+| OS_AUTH_URL | Identity API URL<br>https://api-identity-infrastructure.nhncloudservice.com/v2.0 |
 | OS_TENANT_ID | Tenant ID available in **API Endpoint Settings** on the Object Storage service page |
 | OS_USERNAME | NHN Cloud account ID (email format) or IAM account ID |
 | OS_PASSWORD | API password configured in **API Endpoint Settings** |
-| OS_REGION_NAME | Region name<br>{% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
+| OS_REGION_NAME | Region name<br>KR1 - Korea (Pangyo) region<br>KR2 - Korea (Pyeongchon) region<br>KR3 - Korea (Gwangju) region<br>JP1 - Japan (Tokyo) region |
 
-<br/>
+<br>
 
 !!! danger "Caution"
     Object Storage has a different tenant ID from the basic infrastructure service. Click the **API Endpoint Settings** button on the Object Storage service page to verify.
@@ -66,28 +64,28 @@ export OS_REGION_NAME=<Region name>
 !!! tip "Note"
     The API password can be configured by clicking the **API Endpoint Settings** button on the Object Storage service page.
 
-<br/>
+<br>
 
 Creating a configuration file allows you to use the CLI conveniently without setting environment variables each time.
 
 ```bash
 $ cat ~/swiftrc
-export OS_AUTH_URL=$[ identity_url ]$/v2.0
+export OS_AUTH_URL=https://api-identity-infrastructure.nhncloudservice.com/v2.0
 export OS_TENANT_ID=<Tenant ID>
 export OS_USERNAME=<NHN Cloud account ID>
 export OS_PASSWORD=<API password>
 export OS_REGION_NAME=<Region name>
 ```
 
-```
+```bash
 $ source ~/swiftrc
 ```
 
-<br/>
+<br>
 
 To verify that the configuration is correct, run the `swift stat` command. If account information is displayed without errors, the configuration is set up correctly.
 
-```
+```bash
 $ swift stat
         Account: AUTH_6dbc368b94894416bec4cdfc65b5e067
      Containers: 0
@@ -97,17 +95,17 @@ $ swift stat
 ...
 ```
 
-<br/>
+<br>
 
 <a id="basic-usage"></a>
 ## Basic usage { #basic-usage }
 The basic usage is as follows.
 
-```
+```bash
 swift <subcommand> [<options>] [<container> [<object>]]
 ```
 
-<br/>
+<br>
 
 <a id="subcommands"></a>
 ### Subcommands { #subcommands }
@@ -117,7 +115,7 @@ The main subcommands are as follows.
 | --- | --- |
 | stat | Retrieves information about accounts, containers, or objects. |
 | list | Retrieves a list of containers or objects. |
-| post | Creates a container or changes the settings of containers and objects. |
+| post | Creates a container or changes the settings of a container or object. |
 | upload | Uploads objects. |
 | download | Downloads objects. |
 | copy | Copies objects. |
@@ -125,71 +123,71 @@ The main subcommands are as follows.
 | tempurl | Generates a signed URL. |
 | auth | Outputs authentication-related environment variables. |
 
-<br/>
+<br>
 
 <a id="options"></a>
 ### Common options { #options }
 
-These are the main options that can be used with all subcommands.
+All major options that can be commonly used across all subcommands.
 
 | Option | Description |
 | --- | --- |
 | --help | Displays usage instructions for each subcommand. |
 | --debug | Displays the actual API call details. |
-| --quiet | Does not output the progress status. |
+| --quiet | Does not print the progress status. |
 | --retries &lt;num&gt; | Specifies the number of retries when a request fails. |
 
-<br/>
+<br>
 
 <a id="auth-info"></a>
 ### How it works and using authentication information { #auth-info }
 
-By default, the Swift CLI calls the Identity API each time a command is executed to obtain a token and service catalog, then calls the Swift API corresponding to the subcommand.
+Swift CLI calls the Identity API every time a command is executed to obtain a token and service catalog, and then calls the Swift API corresponding to the subcommand.
 
-<br/>
+<br>
 
 Using the `auth` subcommand, you can check the storage URL and authentication token in advance.
 
 ```bash
 $ swift auth
-export OS_STORAGE_URL=$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
+export OS_STORAGE_URL=https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
 export OS_AUTH_TOKEN=gAAAAABi...
 ```
 
-<br/>
+<br>
 
-Applying the output environment variables to the shell allows subsequent commands to skip token issuance and catalog queries, resulting in faster execution.
+By applying the output environment variables to your shell, subsequent commands skip authentication token issuance and catalog queries, allowing them to run faster.
 
-```
+```bash
 $ eval $(swift auth)
 ```
 
 !!! tip "Note"
     Authentication tokens have an expiration time. If a request fails due to a token expiry, run `eval $(swift auth)` again to renew it.
 
-<br/>
+<br>
 
 <a id="stat"></a>
 ## View information { #stat }
 Retrieves information about storage accounts, containers, and objects.
 
-```
+```bash
 swift stat [<options>] [<container> [<object>]]
 ```
 
-<br/>
+<br>
 
 | Option | Description |
 | --- | --- |
 | --lh | Displays capacity in human-readable units (KB, MB, etc.). |
 
-<br/>
+<br>
 
 <a id="stat-account"></a>
 ### View storage account information { #stat-account }
 Retrieves information about the storage account.
 
-```
+```bash
 $ swift stat
                Account: AUTH_6dbc368b94894416bec4cdfc65b5e067
             Containers: 3
@@ -200,13 +198,13 @@ $ swift stat
                     ...
 ```
 
-<br/>
+<br>
 
 <a id="stat-container"></a>
 ### View container information { #stat-container }
 Retrieves information about a container.
 
-```
+```bash
 $ swift stat media
                Account: AUTH_6dbc368b94894416bec4cdfc65b5e067
              Container: media
@@ -221,13 +219,13 @@ $ swift stat media
                     ...
 ```
 
-<br/>
+<br>
 
 <a id="stat-object"></a>
 ### View object information { #stat-object }
 Retrieves information about an object.
 
-```
+```bash
 $ swift stat media 797619b171a455e9eec8a87f94ee77f4.jpg
                Account: AUTH_6dbc368b94894416bec4cdfc65b5e067
              Container: media
@@ -240,17 +238,17 @@ $ swift stat media 797619b171a455e9eec8a87f94ee77f4.jpg
                     ...
 ```
 
-<br/>
+<br>
 
 <a id="list"></a>
 ## List { #list }
 Retrieves a list of containers or objects.
 
-```
+```bash
 swift list [<options>] [<container>]
 ```
 
-<br/>
+<br>
 
 | Option | Description |
 | --- | --- |
@@ -259,64 +257,64 @@ swift list [<options>] [<container>]
 | --totals | When used with `--long` or `--lh`, outputs only the totals. |
 | --json | Outputs the list in JSON format. |
 | --prefix &lt;prefix&gt; | Retrieves only items that start with the specified prefix. |
-| --delimiter &lt;delimiter&gt; | Can only be used when retrieving object lists.<br/>Groups and displays object names based on the delimiter.<br/>For example, using `--delimiter /` excludes objects with names such as `pics/9b171a455e9e.png` from the list and displays them as `pics/`, similar to a folder. |
+| --delimiter &lt;delimiter&gt; | Can only be used when retrieving object lists.<br>Groups and displays object names based on the delimiter.<br>For example, using `--delimiter /` excludes objects with names such as `pics/9b171a455e9e.png` from the list and displays them as `pics/`, similar to a folder. |
 
-<br/>
+<br>
 
 <a id="list-containers"></a>
 ### List containers { #list-containers }
 Retrieves a list of containers.
 
-```
+```bash
 $ swift list
 media
 ```
 
-<br/>
+<br>
 
 <a id="list-objects"></a>
 ### List objects { #list-objects }
 Retrieves a list of objects.
 
-```
+```bash
 $ swift list media
 153206025029118e96e38b95b78281c8.jpg
 300e5522b971c2159e65f95e3c89d981.jpg
 797619b171a455e9eec8a87f94ee77f4.jpg
 ```
 
-<br/>
+<br>
 
 <a id="create-container"></a>
 ## Create container { #create-container }
 Creates a new container.
 
-```
+```bash
 swift post <container>
 ```
 
-```
+```bash
 $ swift post docs
 $ swift list
 docs
 media
 ```
 
-<br/>
+<br>
 
 <a id="upload"></a>
 ## Upload objects { #upload }
 Uploads or updates (overwrites) objects. Multiple objects can be uploaded at once.
 
-```
+```bash
 swift upload <container> <file_or_directory> [<file_or_directory>] [...]
 ```
 
-<br/>
+<br>
 
 | Option | Description |
 | --- | --- |
-| --object-name &lt;name&gt; | Specifies the name of the object to upload.<br/>If omitted, the file name is used. |
+| --object-name &lt;name&gt; | Specifies the name of the object to upload.<br>If omitted, the file name is used. |
 | --changed | If an object with the same name exists in the container, compares the modification time and size, and uploads only if changed. |
 | --skip-identical | Skips the upload if an identical object exists in the container. |
 | --segment-size &lt;size&gt; | Splits the file into the specified size and uploads it as a multipart upload using the SLO method. |
@@ -327,9 +325,9 @@ swift upload <container> <file_or_directory> [<file_or_directory>] [...]
 | --meta &lt;name:value&gt; | Configures metadata. Can be used multiple times. |
 | --ignore-checksum | Disables checksum verification during upload. |
 
-<br/>
+<br>
 
-```
+```bash
 $ swift upload media 4287b656254e69e948c3cab237f3fb03.jpg
 4287b656254e69e948c3cab237f3fb03.jpg
 
@@ -340,21 +338,21 @@ $ swift list media
 797619b171a455e9eec8a87f94ee77f4.jpg
 ```
 
-<br/>
+<br>
 
 <a id="multipart-upload"></a>
 ### Multipart upload { #multipart-upload }
 Specifying the segment size with the `--segment-size` option splits the file and uploads it as a multipart upload.
 
-```
+```bash
 swift upload --segment-size <size> [--segment-container <segment-container>] <container> <file>
 ```
 
-<br/>
+<br>
 
-If `--segment-container` is not specified, a container named `<container>_segments` is created and the segment objects are uploaded to it.
+If `--segment-container` is not specified, a container named `<container>_segments` is created and segment objects are uploaded.
 
-```
+```bash
 $ swift upload --segment-size 10m media test.mp4
 test.mp4 segment 1
 test.mp4 segment 0
@@ -373,21 +371,21 @@ test.mp4/slo/1635487628.192050/20971520/10485760/00000000
 test.mp4/slo/1635487628.192050/20971520/10485760/00000001
 ```
 
-<br/>
+<br>
 
 <a id="download"></a>
 ## Download objects { #download }
 Downloads objects to the current path. Multiple objects can be downloaded.
 
-```
+```bash
 swift download <container> [<obj>] [...]
 ```
 
-<br/>
+<br>
 
 | Option | Description |
 | --- | --- |
-| --output &lt;out_file&gt; | Specifies the file name to save the object as.<br/>Specifying `-` outputs the object content to standard output. |
+| --output &lt;out_file&gt; | Specifies the file name to save the object as.<br>Specifying `-` outputs the object content to standard output. |
 | --output-dir &lt;out_directory&gt; | Specifies the path to download to. |
 | --prefix &lt;prefix&gt; | Downloads only objects that start with the specified prefix. |
 | --remove-prefix | When used with `--prefix`, downloads the objects with the prefix removed from the name. |
@@ -396,75 +394,75 @@ swift download <container> [<obj>] [...]
 | --ignore-checksum | Disables checksum verification during download. |
 | --no-download | Executes the download but does not write the file to disk. |
 
-<br/>
+<br>
 
-```
+```bash
 $ swift download media 153206025029118e96e38b95b78281c8.jpg
 153206025029118e96e38b95b78281c8.jpg [auth 0.117s, headers 0.288s, total 0.393s, 2.344 MB/s]
 ```
 
-<br/>
+<br>
 
 <a id="download-all"></a>
 ### Download by container { #download-all }
 If the object to download is omitted, all objects in the specified container are downloaded.
 
-```
+```bash
 $ swift download media
 300e5522b971c2159e65f95e3c89d981.jpg [auth 0.111s, headers 0.249s, total 0.264s, 0.376 MB/s]
 797619b171a455e9eec8a87f94ee77f4.jpg [auth 0.303s, headers 0.451s, total 0.460s, 0.202 MB/s]
 ...
 ```
 
-<br/>
+<br>
 
 <a id="copy"></a>
 ## Copy objects { #copy }
 Copies an object to the specified path. Metadata can be added or changed during the copy.
 
-```
+```bash
 swift copy [--destination </container/object>] [--fresh-metadata] [--meta <name:value>] <container> <object>
 ```
 
-<br/>
+<br>
 
 | Option | Description |
 | --- | --- |
-| --destination &lt;/container/object&gt; | Specifies the destination container and object name to copy to.<br>If the object name is omitted, it is copied with the same name as the source. |
+| --destination &lt;/container/object&gt; | Specifies the destination container and object name to copy to.<br>If the object name is omitted, the object is copied with the same name as the source. |
 | --meta &lt;name:value&gt; | Configures metadata. Can be used multiple times. |
 | --fresh-metadata | Does not copy the metadata from the source.<br>When used with `--meta`, only the newly specified metadata is set. |
 
-<br/>
+<br>
 
 <a id="copy-same-container"></a>
 ### Copy within the same container { #copy-same-container }
 The destination object name must be different from the source.
 
-```
+```bash
 $ swift copy --destination "/media/copied_object.jpg" media 797619b171a455e9eec8a87f94ee77f4.jpg
 created container media
 /media/797619b171a455e9eec8a87f94ee77f4.jpg copied to /media/copied_object.jpg
 ```
 
-<br/>
+<br>
 
 <a id="copy-other-container"></a>
 ### Copy to a different container { #copy-other-container }
 If the destination object name is omitted, it is copied with the same name as the source.
 
-```
+```bash
 $ swift copy --destination "/pics" media 797619b171a455e9eec8a87f94ee77f4.jpg
 created container pics
 /media/797619b171a455e9eec8a87f94ee77f4.jpg copied to /pics/797619b171a455e9eec8a87f94ee77f4.jpg
 ```
 
-<br/>
+<br>
 
 <a id="copy-with-metadata"></a>
 ### Copy with additional metadata { #copy-with-metadata }
 Metadata can be added during copying using the `--meta` option.
 
-```
+```bash
 $ swift copy --destination "/media/copied_object.jpg" --meta "Color:Blue" media 797619b171a455e9eec8a87f94ee77f4.jpg
 created container media
 /media/797619b171a455e9eec8a87f94ee77f4.jpg copied to /media/copied_object.jpg
@@ -472,89 +470,87 @@ created container media
 
 Using the `--fresh-metadata` option together removes existing metadata and sets only the newly specified metadata.
 
-<br/>
+<br>
 
 <a id="post"></a>
 ## Change settings { #post }
 Changes the settings of a container or object.
 
-<br/>
+<br>
 
 <a id="post-container"></a>
 ### Change container settings { #post-container }
-Changes the settings of a container. Container settings can be verified with the [view container information command](#stat-container).
+Changes the container settings. The container settings can be checked using the [get container info command](#stat-container).
 
-Changes the container settings. The container settings can be found by using the [retrieve container information command](#stat-container).
-
-```
+```bash
 swift post [<options>] <container>
 ```
 
-<br/>
+<br>
 
 | Option | Description |
 | --- | --- |
 | --meta &lt;key:value&gt; | Configures container metadata. Can be used multiple times. |
 | --read-acl &lt;acl&gt; | Sets the read ACL for the container. |
 | --write-acl &lt;acl&gt; | Sets the write ACL for the container. |
-| --header &lt;key:value&gt; | Adds a user-defined HTTP header. Settings not provided as options by the Swift CLI can also be specified directly with this option. |
+| --header &lt;key:value&gt; | Adds a custom HTTP header. You can also use this option to directly specify settings that the Swift CLI does not provide as options. |
 
-<br/>
+<br>
 
 !!! tip "Note"
-    For ACL setting values, see the [Access Policy Configuration Guide](acl-guide$[ file_suffix ]$/).
+    For ACL setting values, see the [Access Policy Configuration Guide](acl-guide/).
 
-The list of headers that can be set with the `--header` option can be found in the [Change Container Settings](api-guide$[ file_suffix ]$/#change-container-settings) section of the API guide.
+Refer to the [Change Container Settings](api-guide/#change-container-settings) section in the API guide for the list of headers that can be set with the `--header` option.
 
-<br/>
+<br>
 
-```
+```bash
 $ swift post --meta "Type:photo" media
 $ swift post --header "X-Container-Object-Lifecycle: 90" media
 $ swift post --read-acl ".r:*" media
 ```
 
-<br/>
+<br>
 
 <a id="post-object"></a>
 ### Change object metadata { #post-object }
-Changes the metadata of an object. Object metadata can be verified with the [view object information command](#stat-object).
+Changes the metadata of an object. The object metadata can be found by using the [Query object information](#stat-object) command.
 
-```
+```bash
 swift post [<options>] <container> <object>
 ```
 
-<br/>
+<br>
 
 | Option | Description |
 | --- | --- |
 | --meta &lt;key:value&gt; | Configures object metadata. Can be used multiple times. |
-| --header &lt;key:value&gt; | Adds a user-defined HTTP header. Object properties such as `Content-Type` can be changed. |
+| --header &lt;key:value&gt; | Adds a custom HTTP header. You can change object properties such as `Content-Type`. |
 
-<br/>
+<br>
 
-```
+```bash
 $ swift post --meta "Color:Blue" media 797619b171a455e9eec8a87f94ee77f4.jpg
 $ swift post --header "Content-Type:image/png" media 797619b171a455e9eec8a87f94ee77f4.jpg
 ```
 
-<br/>
+<br>
 
 <a id="delete"></a>
 ## Delete { #delete }
 Deletes containers or objects.
 
-<br/>
+<br>
 
 <a id="delete-container"></a>
 ### Delete container { #delete-container }
-Deletes all objects in the specified container, then deletes the container.
+Deletes all objects inside the specified container, and then deletes the container.
 
-```
+```bash
 swift delete <container>
 ```
 
-<br/>
+<br>
 
 | Option | Description |
 | --- | --- |
@@ -562,91 +558,91 @@ swift delete <container>
 | --object-threads &lt;threads&gt; | Specifies the number of threads to use for object deletion. The default value is 10. |
 | --container-threads &lt;threads&gt; | Specifies the number of threads to use for container deletion. The default value is 10. |
 
-<br/>
+<br>
 
-```
+```bash
 $ swift delete media
 797619b171a455e9eec8a87f94ee77f4.jpg
 153206025029118e96e38b95b78281c8.jpg
 300e5522b971c2159e65f95e3c89d981.jpg
 ```
 
-<br/>
+<br>
 
 <a id="delete-object"></a>
 ### Delete object { #delete-object }
 Deletes the specified object.
 
-```
+```bash
 swift delete <container> <object> [<object>] [...]
 ```
+
+<br>
 
 | Option | Description |
 | --- | --- |
 | --leave-segments | Retains segments of the manifest object without deleting them. |
 | --object-threads &lt;threads&gt; | Specifies the number of threads to use for object deletion. The default value is 10. |
 
-<br/>
+<br>
 
-```
+```bash
 $ swift delete media 797619b171a455e9eec8a87f94ee77f4.jpg
 797619b171a455e9eec8a87f94ee77f4.jpg
 ```
 
-<br/>
+<br>
 
 <a id="tempurl"></a>
 ## Create signed URL { #tempurl }
 Generates a signed URL that allows access to a container or object without a token.
 
-Create a signed URL that allows access to a container or object without a token.
-
-```
+```bash
 swift tempurl <method> <time> <path> <key>
 ```
 
-<br/>
+<br>
 
 | Argument | Description |
 | --- | --- |
 | method | The HTTP method to allow. Generally `GET` or `PUT` is used. |
-| time | The expiration time of the signed URL.<br/>Enter in ISO8601 format (`2026-03-01`, `2026-03-01T23:59:59`, `2026-03-01T23:59:59Z`).<br/>Can also be entered in seconds, in which case the URL expires after the specified duration from the current time. |
+| time | The expiration time of the signed URL.<br>Enter in ISO8601 format (`2026-03-01`, `2026-03-01T23:59:59`, `2026-03-01T23:59:59Z`).<br>Can also be entered in seconds, in which case the URL expires after the specified duration from the current time. |
 | path | Enter in the format `/v1/AUTH_*****/<container>` or `/v1/AUTH_*****/<container>/<object>`. |
 | key | The Temp-URL-Key registered in the container in advance. |
 
-<br/>
+<br>
 
 | Option | Description |
 | --- | --- |
 | --prefix-based | Generates a prefix-based signed URL. |
 | --ip-range &lt;ip_range&gt; | Restricts access via the signed URL to a specific IP or IP range. |
-| --digest &lt;algorithm&gt; | Specifies the hash algorithm.<br/>`sha256` (default) or `sha512` can be used. |
+| --digest &lt;algorithm&gt; | Specifies the hash algorithm.<br>`sha256` (default) or `sha512` can be used. |
 | --absolute | When `<time>` is entered in seconds, the value is interpreted as a Unix timestamp rather than a relative time from the current time. Does not affect ISO8601 format. |
 | --iso8601 | Includes the expiration time in ISO8601 format in the generated URL instead of a Unix timestamp. |
 
-<br/>
+<br>
 
 ```bash
 $ swift tempurl GET 2026-03-05T23:59:59 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg 398dded8-b1be
 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg?temp_url_sig=8244bff5037316dbe8aebcda9cd679c1b331e479&temp_url_expires=1772755199
 
-$ curl $[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg\?temp_url_sig\=8244bff5037316dbe8aebcda9cd679c1b331e479\&temp_url_expires\=1772755199 --output 797619b171a455e9eec8a87f94ee77f4.jpg
+$ curl https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg\?temp_url_sig\=8244bff5037316dbe8aebcda9cd679c1b331e479\&temp_url_expires\=1772755199 --output 797619b171a455e9eec8a87f94ee77f4.jpg
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100 31661  100 31661    0     0  1043k      0 --:--:-- --:--:-- --:--:-- 1058k
 ```
 
-<br/>
+<br>
 
 <a id="tempurl-key"></a>
 ### Register Temp-URL-Key { #tempurl-key }
-To generate a signed URL, a Temp-URL-Key must be registered in the container in advance. The configured key can be verified with the [view container information command](#stat-container).
+To create a signed URL, you must register a Temp-URL-Key in the container in advance. You can check the configured key by using the [query container information command](#stat-container).
 
-```
+```bash
 swift post --meta "Temp-URL-Key:<key>" <container>
 ```
 
-```
+```bash
 $ swift post --meta "Temp-URL-Key:398dded8-b1be" media
 $ swift stat media
                Account: AUTH_6dbc368b94894416bec4cdfc65b5e067
