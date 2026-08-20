@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=24efee552792 -->
 
 <style>
@@ -10,25 +12,22 @@
 **Notification > Notification Hub > 利用ポリシー及び事前設定案内 > RCS**
 
 <a id="brand-creation-and-registration"></a>
-
-## ブランド作成及び登録
+## ブランド作成及び登録 { #brand-creation-and-registration }
 
 RCS Bizmessageサービスを利用するためには、RCS Biz Centerに登録後、ブランドを登録する必要があります。 [[RCS Biz Center]](https://www.rcsbizcenter.com/main)
 
 <a id="create-a-brand"></a>
-
-### ブランド作成
-1. RCS Biz Centerで**会員登録** > **企業担当者会員登録**をクリックして会員登録後、承認を受けます。
-    * 会員登録の際、事業者登録証のコピーが必要です。
-    * RCS担当者が承認し、会員登録処理まで2営業日程度かかります。
-2. RCSブランドは企業プロフィールです。ブランドを開設した後、承認をリクエストします。
-    * **ブランド開設ガイド**をクリックすると、関連ガイドを参照できます。
-      * [ブランド開設ガイド](https://docs.rcsbizcenter.com/useguide/readme/brandopen)
-    * RCS担当者が承認し、ブランド作成承認まで2営業日程度かかります。
+### ブランド作成 { #create-a-brand }
+1. RCS Biz Center で **[会員登録]** > **[企業担当者会員登録]** をクリックし、会員登録後に承認を受けます。
+    * 会員登録時に事業者登録証のコピーが必要です。
+    * RCS 担当者が承認を行い、会員登録の処理には 2 営業日程度かかります。
+2. RCS ブランドは企業プロフィールです。ブランドを開設した後、承認を申請します。
+    * **[ブランド開設ガイド]** をクリックして、関連ガイドを参照できます。
+        * [ブランド開設ガイドへ](https://docs.rcsbizcenter.com/useguide/readme/brandopen)
+    * RCS 担当者が承認を行い、ブランド作成の承認には 2 営業日程度かかります。
 
 <a id="set-up-a-brand-agency"></a>
-
-### ブランド代理店設定
+### ブランド代理店設定 { #set-up-a-brand-agency }
 RCSブランド承認完了後、代理店を「엔이치엔클라우드」に設定します。
 
 1. RCS Biz Centerで**企業ダッシュボード > ブランドダッシュボード > ブランド運営管理**に移動します。
@@ -36,61 +35,54 @@ RCSブランド承認完了後、代理店を「엔이치엔클라우드」に�
 2. **代理店権限追加**をクリックした後、代理店名から「엔이치엔클라우드」を検索して選択します。
 
 <a id="register-chat-room-sender-number"></a>
-
-### チャットルーム(発信番号)登録
+### チャットルーム(発信番号)登録 { #register-chat-room-sender-number }
 メッセージアプリのチャットルームでメッセージを受信・確認できます。チャットルーム単位でメッセージを送信・確認できます。
 
-1. **企業ダッシュボード > ブランドダッシュボード > チャットルーム登録**に移動して、発信番号でチャットルームを登録します。
-    * **チャットルーム登録ガイド**で関連ガイドを参照できます。
-      * [RCS Biz Center - チャットルーム登録ガイド](https://docs.rcsbizcenter.com/useguide/readme/chatbot#id-1)
-    * 最近1か月以内に発行された通信サービス利用証明書が必要です。
-    * RCS企業メッセージは010番号をサポートしません。
-    * RCS担当者が承承認し、チャットルームの承認まで2営業日程度かかります。
+1. **企業ダッシュボード > ブランドダッシュボード > 対話ルームの登録**に移動し、発信番号で対話ルームを登録します。
+    * **対話ルーム登録ガイド**で関連ガイドを参照できます。
+      * [RCS Biz Center - 対話ルーム登録ガイドへ](https://docs.rcsbizcenter.com/useguide/readme/chatbot#id-1)
+    * 最近 1 か月以内に発行された通信サービス利用証明書が必要です。
+    * RCS 企業メッセージは 010 番号をサポートしていません。
+    * RCS 担当者が承認を行い、対話ルームの承認まで 2 営業日程度かかります。
 
 2. チャットルーム登録が完了(承認)したら、**Notification Hub** > **発信情報** > **ブランド管理**タブでブランド連動が可能です。
 
 <a id="register-templates"></a>
-
-### テンプレート登録
+### テンプレート登録 { #register-templates }
 テンプレートは、ブランド別にメッセージの内容やスタイルをあらかじめ登録しておいて使用できるRCS企業メッセージです。
 テンプレートメッセージを送信するには、RCS Biz Centerでテンプレートを登録する必要があります。 (RCS SMS/LMS/MMSメッセージで送信する場合には別途のテンプレートを登録する必要はありません)
 
-1. **企業ダッシュボード > ブランドダッシュボード > テンプレート登録**に移動して、テンプレートを登録します。
-    * **テンプレートガイド**をクリックして関連ガイドを参考できます。
-      * [RCS Biz Center - テンプレートガイド](https://docs.rcsbizcenter.com/useguide/readme/msg#id-1)
-    * テキスト/画像テンプレートのみ登録が可能です。下記の**サポートする送信タイプ**項目を参照してください。
-    * RCS担当者が承認し、チャットルーム承認まで2営業日程度かかります。
+1. **企業ダッシュボード > ブランドダッシュボード > テンプレート登録**に移動し、テンプレートを登録します。
+    * **[テンプレートガイド]**をクリックして、関連ガイドを参照できます。
+      * [RCS Biz Center - テンプレートガイドへ](https://docs.rcsbizcenter.com/useguide/readme/msg#id-1)
+    * テキスト/イメージテンプレートに限り登録が可能です。下記の**サポートする送信タイプ**項目を参照してください。
+    * RCS 担当者が承認を行い、テンプレートの承認まで約 2 営業日かかります。
 
 2. テンプレート登録が完了(承認)したら、**Notification** > **RCS Bizmessage** > **RCS Bizmessage管理** > **ブランド管理**タブでNHN Cloudコンソールに連動が可能です。
 
 <a id="link-branding-in-notification-hub-console"></a>
-
-### Notification Hubコンソールでブランド連動
+### Notification Hubコンソールでブランド連動 { #link-branding-in-notification-hub-console }
 ブランド作成及び代理店設定、チャットルーム(発信番号)登録、テンプレート登録が完了(承認)したら、コンソールでブランドを連動します。
 
 **Notification Hub** > **発信情報** > **ブランド管理** タブで連動が可能です。連動後に変更がある場合には**+ブランド連動**ボタンを押すと同期が行われます。
 
 <a id="introduction-to-integrated-rcs"></a>
-
-## 統合RCSの紹介
+## 統合RCSの紹介 { #introduction-to-integrated-rcs }
 
 <!-- TODO: translate body -->
 
 <a id="android-rcs-vs-integrated-rcs"></a>
-
-### Android RCS vs 統合RCS
+### Android RCS vs 統合RCS { #android-rcs-vs-integrated-rcs }
 
 <!-- TODO: translate body -->
 
 <a id="notes"></a>
-
-### 参考事項
+### 参考事項 { #notes }
 
 <!-- TODO: translate body -->
 
 <a id="send-type-that-supports"></a>
-
-## サポートする送信タイプ
+## サポートする送信タイプ { #send-type-that-supports }
 - 下表の「統合RCS対応」が「O」の送信タイプは統合RCSタイプであり、Androidだけでなく、iPhoneの端末でも受信できます。(「X」の送信タイプはAndroid RCSタイプであり、Androidの端末でのみ受信できます。)
 
 <table class="custom-table" style="text-align: center">
