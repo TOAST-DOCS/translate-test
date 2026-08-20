@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=a1a3882f94e2 -->
 
 <a id="data-analytics-dataquery-console-user-guide"></a>
@@ -165,7 +167,7 @@ You can create a Data Lake Storage data source by selecting **Data Lake Storage*
 
 * Query Editor is divided into Cluster area, Schema area, Saved query area, Editor area, and Result/Console execution area.
 
-![query editor screen](../static/images/dataquery_console_01.png)
+![Query Editor screen](../static/images/dataquery_console_01.png)
 
 <a id="cluster-area"></a>
 ### 1. Cluster Area { #cluster-area }
@@ -236,7 +238,7 @@ You can create a Data Lake Storage data source by selecting **Data Lake Storage*
     * ① Click Query History.
     * ② Additional query window is created where the corresponding query is entered.
 
-![query history screen](../static/images/dataquery_console_02.png)
+![Query History screen](../static/images/dataquery_console_02.png)
 
 * You can check the cluster status metrics.
 
@@ -248,7 +250,7 @@ You can create a Data Lake Storage data source by selecting **Data Lake Storage*
 * Click the collapse button in rightmost column to check additional execution information for query, or click **Download** to download full execution information for query.
     * Downloaded file does not include the query results.
 
-![query history screen](../static/images/dataquery_console_03.png)
+![Query History screen](../static/images/dataquery_console_03.png)
 
 <a id="settings"></a>
 ## Settings { #settings }
@@ -405,7 +407,7 @@ with (
 
 6. Refresh the table to check if the table is added normally.
 
-![table refresh screen](../static/images/dataquery_console_05.png){ width="220" }
+![Refresh table screen](../static/images/dataquery_console_05.png){ width="220" }
 
 7. Run the query from the table as follows.
 
