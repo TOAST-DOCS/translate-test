@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=314527acb4bf -->
 
 <a id="friendtalk-console-guide"></a>
