@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=85ea3c2abeb1 -->
 
 <a id="friendtalk-api-guide-v1-5"></a>

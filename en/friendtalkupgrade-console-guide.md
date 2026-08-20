@@ -18,93 +18,93 @@ You can set up an outgoing profile and enter content to send messages in the for
 
 ![friendtalkupgrade_04_20250616.png](https://static.toastoven.net/prod_alimtalk/friendtalkupgrade/friendtalkupgrade_04_20250729.png)
 
-1. Select an outgoing profile.
-    * You can check the outgoing profile from the Notification > KakaoTalk Bizmessage > Manage Outgoing Profiles tab.
-2. Select push notification status.
-    * If you select **Disable**, the push notification for messages is not sent.
-3. Select “Enable” for using template, then select the template you wish to request sending.
-    * The template can be registered from the **Notification > KakaoTalk Bizmessage > Brand Message > Manage Templates** tab.
-4. Select whether to set fallback messages.
-    * To enable fallback, you must set the fallback option to **Enable** in the **Manage 080 Opt Out** tab and integrate the SMS service.
-5. Select whether to set 080 opt-out number.
-    * If you select **Not Set (send using outgoing profile settings)** for the 080 opt-out number setting, the 080 opt-out number set in the outgoing profile will be used.
-    * If you select **Set as Common Content** or **Set by User**, the 080 opt-out number you entered will be used for sending.
-    * When using the SMS service from the **Manage 080 Opt Out** tab, only 080 opt-out numbers registered in the SMS service are available.
-6. Add a recipient.
-    * A recipient can be written in phone number format.
-7. Select a targeting type by recipient.
-    * Brand Message is an advertising message that can be sent to users who have agreed to receive marketing messages from advertisers (hereinafter referred to as "marketing consent") and channel friend users.
-    * Depending on the targeting type, whether the specified recipients receive your message may vary.
-      * M: Advertisers’ users with marketing consent
-        * Send advertising messages to Advertisers’ users with marketing consent (KakaoTalk message consent)
-      * N: Advertisers’ users with marketing consent- channel friend
-        * Send advertising messages to advertisers’ users with marketing consent (KakaoTalk message consent), except channel friends.
-      * I: Target of advertiser sending request ∩ Channel friend
-        * For advertiser sending requests, advertising messages are sent only to channel friends.
-8. Enter the group tag key. (Optional)
-    * If you specify a group tag key, you can check the KakaoTalk template statistics for each group tag.
-    * Group tags can be registered in the **Notification > KakaoTalk Bizmessage > 그룹 태그 관리** tab.
-9. After completing the input, click Send to send.
+1. Select a sender profile.
+    * You can check the sender profile in the **Notification > KakaoTalk Bizmessage > Sender Profile Management** tab.
+2. Select whether to use push notifications.
+    * If you select **Do Not Use** for push notifications, message push notifications will not be sent.
+3. Enable **Use Templates** and select the template to use for the delivery request.
+    * Templates can be registered in the **Notification > KakaoTalk Bizmessage > Brand Message > Template Management** tab.
+4. Select whether to configure alternative delivery message settings.
+    * Alternative delivery is available only if you set alternative delivery to **Use** in the **080 Opt-out Management** tab and integrate the SMS service.
+5. Select whether to configure an 080 opt-out number.
+    * If you select **Do Not Set (Send with Sender Profile Settings)**, the 080 opt-out number configured in the sender profile will be used.
+    * If you select **Set with Common Content** or **Set per User**, the 080 opt-out number that you entered will be used for delivery.
+    * If you use the SMS service in the **080 Opt-out Management** tab, only the 080 opt-out numbers registered in the SMS service can be used.
+6. Add recipients.
+    * Recipients can be entered in the form of a mobile phone number.
+7. Select the targeting type for each recipient.
+    * Brand Message is an advertising message that can be sent to users who have consented to receive marketing messages from the advertiser (hereinafter referred to as "marketing consent users") and to channel friend users.
+    * Depending on the targeting type, whether the specified recipient receives the message may vary.
+        * M: Advertiser marketing consent users (KakaoTalk receive consent)
+            * Sends an advertising message to the advertiser's marketing consent users (KakaoTalk receive consent).
+        * N: Advertiser marketing consent users (KakaoTalk receive consent) - Channel friends
+            * Sends an advertising message to the advertiser's marketing consent users (KakaoTalk receive consent), excluding channel friends.
+        * I: Advertiser delivery request targets ∩ Channel friends
+            * Among the advertiser's delivery request targets, sends an advertising message only to those who are channel friends.
+8. Enter a group tag key. (Optional)
+    * If you specify a group tag key, you can check KakaoTalk template statistics by group tag.
+    * Group tags can be registered in the **Notification > KakaoTalk Bizmessage > Group Tag Management** tab.
+9. After completing the input, click **Send** to deliver the message.
 
 <a id="when-not-using-a-template"></a>
 ### When not using a template { #when-not-using-a-template }
 
 ![friendtalkupgrade_05_20250616.png](https://static.toastoven.net/prod_alimtalk/friendtalkupgrade/friendtalkupgrade_05_20250729.png)
 
-1. Select an outgoing profile.
-    * You can check the outgoing profile from the Notification > KakaoTalk Bizmessage > Manage Outgoing Profiles tab.
-2. Select push notification status.
-    * If you select **Disable**, the push notification for messages is not sent.
-3. Select whether the message is for adults or not.
-    * For adult messages, chat room messages will be covered until age verification is completed, and only those over 20 years of age can view the content.
+1. Select a Sender Profile.
+    * You can check the Sender Profile in the **Notification > KakaoTalk Bizmessage > Sender Profile Management** tab.
+2. Select whether to use push notifications.
+    * If you select **Disable** for push notifications, message push notifications will not be sent.
+3. Select whether the message is for adults only.
+    * For adult-only messages, the chat room message will be covered until age verification is completed, and only users aged 20 or older can view the content.
 4. Select a message type.
     * Text
-      * 1,300 characters of text including spaces, in both Korean and English + up to 5 link buttons (vertically arranged)
+        * 1,300 characters of text, including spaces both for Korean and English + up to 5 link buttons (vertically arranged)
     * Image
-      * 1,300 characters of text including spaces, in both Korean and English + one image + up to 5 link buttons (vertically arranged)
-    * Wide image
-      * 76 characters of text including spaces, in both Korean and English + one image + up to 2 link buttons
-    * Wide item list
-      * An ad-type product that allows you to add 3 to 4 lists (images + items) to one title.
-      * First item title 25 characters, including spaces, regardless of Korean/English, 24 + up to 2 link buttons (horizontally aligned)
-    * Carousel feed
-      * An ad-type product that can contain up to 10 images and various text information.
-      * Up to 6 items consisting of a title of 20 characters including spaces, a phrase of 180 characters, an image, and 2 link buttons (horizontally aligned), regardless of Korean/English
-    * Premium video
-      * This type of video is automatically played in a speech bubble.
-      * Video links can only be used for videos uploaded to Kakao TV (e.g. [https://tv.kakao.com/v/#{number}](https://tv.kakao.com/v/#%7B%EC%88%AB%EC%9E%90%7D) / [https://tv.kakao.com/channel/#{number}/cliplink/#{number}](https://tv.kakao.com/channel/#%7B%EC%88%AB%EC%9E%90%7D/cliplink/#%7B%EC%88%AB%EC%9E%90%7D)).
-      * 20-character header text including spaces, regardless of Korean/English, + 76-character text for the text + 1 video uploaded to Kakao TV + 1 link button
+        * 1,300 characters of text, including spaces both for Korean and English + 1 image + up to 5 link buttons (vertically arranged)
+    * Wide Image
+        * 76 characters of text, including spaces both for Korean and English + 1 image + up to 2 link buttons
+    * Wide Item List
+        * It is an advertisement-type product that allows you to add 3 to 4 lists (image + item) under one title.
+        * Up to 25 characters for the first item title and up to 30 characters for the 2nd to 4th item titles, including spaces both for Korean and English + 3 to 4 image items + up to 2 link buttons (horizontally arranged)
+    * Carousel Feed
+        * It is an advertisement-type product that can contain up to 10 images and various text information.
+        * Up to 6 items, each consisting of a title of up to 20 characters + body text of up to 180 characters + image + 2 link buttons (horizontally arranged), including spaces both for Korean and English
+    * Premium Video
+        * This is a type in which the attached video plays automatically in the message bubble.
+        * Only videos uploaded to Kakao TV can be used as video links (e.g., [https://tv.kakao.com/v/#{number}](https://tv.kakao.com/v/#%7B%EC%88%AB%EC%9E%90%7D) / [https://tv.kakao.com/channel/#{number}/cliplink/#{number}](https://tv.kakao.com/channel/#%7B%EC%88%AB%EC%9E%90%7D/cliplink/#%7B%EC%88%AB%EC%9E%90%7D)).
+        * Up to 20 characters for the header + up to 76 characters for the body text + 1 video uploaded to Kakao TV + 1 link button, including spaces both for Korean and English
     * Commerce
-      * A speech bubble that can highlight product prices and discount information.
-      * 20-character title text including spaces, regardless of Korean/English, 34-character text for additional information + 2 link buttons (horizontally aligned)
-    * Carousel commerce
-      * A speech bubble that can organize information on various products in a catalog format.
-      * Up to 6 items consisting of a title text of 30 characters including spaces, a phrase of 34 characters, and up to 2 link buttons (horizontally aligned), regardless of Korean/English
-      * Every image used for carousel commerce must have the same ratio.
-5. If you have an image, select it.
-    * To attach an image to a message, first register the image in the Manage Image tab.
-    * Image link: Enter the link you want to connect to when the image is clicked (URL including http://, https://).
-    * Every image used for carousel commerce must have the same ratio.
-6. You can insert web links, app links, bot keywords, message forwarding, add channel, chat conversion, bot conversion, and business form buttons.
-    * Up to 5 basic items, up to 2 carousel/wide item lists
-7. If you need to highlight a coupon in your message, you can add a button that takes users to the attached coupon when they click on it.
-8. Select whether to set fallback messages.
-    * To enable fallback, you must set the fallback option to **Enable** in the **080 Opt Out Management** tab and integrate the SMS service.
-9. Add a recipient.
-   * A recipient can be written in phone number format.
-10. Select a targeting type by recipient.
-    * Brand Message is an advertising message that can be sent to users who have agreed to receive marketing messages from advertisers (hereinafter referred to as "marketing consent"') and channel friend users.
-    * Depending on the targeting type, whether the specified recipients receive your message may vary.
-      * M: Advertisers’ users with marketing consent
-        * Send advertising messages to Advertisers’ users with marketing consent (KakaoTalk message consent)
-      * N: Advertisers’ users with marketing consent- channel friend
-        * Send advertising messages to advertisers’ users with marketing consent (KakaoTalk message consent), except channel friends.
-      * I: Target of advertiser sending request ∩ Channel friend
-        * For advertiser sending requests, advertising messages are sent only to channel friends.
-11. Enter the group tag key. (Optional)
-    * If you specify a group tag key, you can check the KakaoTalk template statistics for each group tag.
-    * Group tags can be registered in the **Notification > KakaoTalk Bizmessage > 그룹 태그 관리** tab.
-12. After completing the input, click Send to send.
+        * This is a message bubble that highlights the price and discount information of a product.
+        * Up to 20 characters for the title + up to 34 characters for additional information + up to 2 link buttons (horizontally arranged), including spaces both for Korean and English
+    * Carousel Commerce
+        * This is a message bubble that allows you to organize information about various products in a catalog format.
+        * Up to 6 items, each consisting of a title of up to 30 characters + additional information of up to 34 characters + up to 2 link buttons (horizontally arranged), including spaces both for Korean and English
+        * All images used in Carousel Commerce must have the same aspect ratio.
+5. If there is an image, select an image.
+    * To attach an image to a message, you must first register the image in the **Image Management** tab.
+    * Image link: Enter the link to open when the image is clicked (URL including http:// or https://).
+    * All images used in Carousel Commerce must have the same aspect ratio.
+6. You can insert web link, app link, bot keyword, message forwarding, add channel, switch to consultation, switch to bot, and business form buttons.
+    * Up to 5 buttons for the standard type, and up to 2 buttons for carousel/wide item list types
+7. If you need to highlight a coupon in the message, you can add a button so that clicking it navigates to the attached coupon.
+8. Select whether to configure an alternative delivery message.
+    * Alternative delivery is available only when you set alternative delivery to **Enable** in the **080 Rejection Management** tab and integrate the SMS service.
+9. Add recipients.
+    * Recipients can be entered in mobile phone number format.
+10. Select a targeting type for each recipient.
+    * Brand Message is an advertising message that can be sent to users who have agreed to receive the advertiser's marketing messages (hereinafter referred to as 'marketing consent') and to channel friend users.
+    * Depending on the targeting type, whether a specified recipient receives the message may vary.
+        * M: Advertiser's marketing consent users (KakaoTalk receive consent)
+            * Sends advertising messages to the advertiser's marketing consent users (KakaoTalk receive consent).
+        * N: Advertiser's marketing consent users (KakaoTalk receive consent) - Channel friends
+            * Sends advertising messages to the advertiser's marketing consent users (KakaoTalk receive consent), excluding channel friends.
+        * I: Advertiser's delivery request targets ∩ Channel friends
+            * Among the advertiser's delivery request targets, sends advertising messages only to those who are channel friends.
+11. Enter a group tag key. (Optional)
+    * If you specify a group tag key, you can view KakaoTalk template statistics by group tag.
+    * Group tags can be registered in the **Notification > KakaoTalk Bizmessage > Group Tag Management** tab.
+12. After completing the input, click **Send** to deliver the message.
 
 <a id="mass-delivery"></a>
 ### Mass Delivery { #mass-delivery }

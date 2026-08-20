@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=5759c1161cf3 -->
 
 <a id="webhook-api-guide"></a>
@@ -115,7 +117,7 @@ Hook data per event type when generating a POST request to the URL defined in th
 #### Update the message sending result code
 |Value|	Type|	Descriptions|
 |---|---|---|
-|hooks|	List<Map> | Data when a webhook event occurs |
+|hooks|	List\<Map\> | Data when a webhook event occurs |
 |- kakaoMessageType|	String| Kakao Message Types<br>ALIMTALK_NORMAL<br>ALIMTALK_AUTH<br>ALIMTALK_MASS<br>FRIENDTALK_NORMAL<br>FRIENDTALK_MASS<br>BRAND_MESSAGE_NORMAL<br>BRAND_MESSAGE_MASS  |
 |- requestId|	String| Request ID |
 |- recipientSeq|	Integer| Recipient sequence number |
@@ -126,6 +128,7 @@ Hook data per event type when generating a POST request to the URL defined in th
 |- resultCode|	String| Result code of receiving |
 |- senderGroupingKey|	String| Sender's grouping key |
 |- recipientGroupingKey|	String| Recipient's grouping key |
+|- isAddedChannel|	Boolean| Whether the recipient is a channel-added friend<br>Brand Message (BRAND_MESSAGE_NORMAL, BRAND_MESSAGE_MASS): true/false<br>Other Kakao message types: null |
 |- _links|	Object|	Link |
 |- self|	Object|	- |
 |- href|	String|	Query Message API link |

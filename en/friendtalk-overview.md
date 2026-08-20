@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=bd3f19d0b406 -->
 
 <a id="friendtalk-overview"></a>

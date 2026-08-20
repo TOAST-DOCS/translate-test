@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=047e290ab86c -->
 
 <a id="sender-api-guide-v2-1"></a>
@@ -238,10 +240,15 @@ Content-Type: application/json;charset=UTF-8
 
 | Value           | Type    | Description       |
 | --------------- | ------- | ----------------- |
-| header          | Object  | Header area       |
-| - resultCode    | Integer | Result code       |
-| - resultMessage | String  | Result message    |
-| - isSuccessful  | Boolean | Successful or not |
+| header | Object | Header area |
+| - resultCode | Integer | Result code |
+| - resultMessage | String | Result message |
+| - isSuccessful | Boolean | Successful or not |
+| sender | Object | Sender Profile |
+| - plusFriendId | String | PlusFriend ID |
+| - senderKey | String | Sender Key |
+| - categoryCode | String | Category code |
+| - status | String | NHN Cloud PlusFriend status code <br>(YSC02: Pending Registration, YSC03: Normal registration) |
 
 <a id="delete-sender"></a>
 ### Delete Sender { #delete-sender }
@@ -391,12 +398,11 @@ Content-Type: application/json;charset=UTF-8
 |-- isResend                | String  | Whether to send text as alternative, if delivery fails       |
 |-- resendSendNo            | String  |	Sender number for alternative delivery                       |
 |-- resendUnsubscribeNo     | String  |	080 unsubscription number for alternative delivery           |
-|-- dailyMaxCount           | Integer |	친구톡 일별 최대 발송 건수<br>(값이 0일 경우 건수 제한없음)              |
-|-- sentCount               | Integer |	친구톡 일별 발송 건수<br>(값이 0일 경우 건수 제한없음)                  |
+|-- dailyMaxCount           | Integer |	Maximum daily FriendTalk delivery count(no limits for 0)    |
+|-- sentCount               | Integer |	Daily FriendTalk delivery count(no limits for 0)            |
 | - dormant                 | Boolean |	Sender dormant or not                                        |
 | - block                   | Boolean |	Sender block or not                                          |
 | - createDate              | String  | Date and time of registration                                |
-| totalCount                | Integer | Total count                                                  |
 
 <a id="list-sender"></a>
 ### List Sender { #list-sender }

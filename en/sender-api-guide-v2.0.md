@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=00bdf32ae823 -->
 
 <a id="sender-api-guide-v2-0"></a>
@@ -240,10 +242,15 @@ Content-Type: application/json;charset=UTF-8
 
 | Value           | Type    | Description       |
 | --------------- | ------- | ----------------- |
-| header          | Object  | Header area       |
-| - resultCode    | Integer | Result code       |
-| - resultMessage | String  | Result message    |
-| - isSuccessful  | Boolean | Successful or not |
+| header | Object | Header area |
+| - resultCode | Integer | Result code |
+| - resultMessage | String | Result message |
+| - isSuccessful | Boolean | Successful or not |
+| sender | Object | Sender Profile |
+| - plusFriendId | String | PlusFriend ID |
+| - senderKey | String | Sender Key |
+| - categoryCode | String | Category code |
+| - status | String | NHN Cloud PlusFriend status code <br>(YSC02: Pending Registration, YSC03: Normal registration) |
 
 <a id="delete-sender"></a>
 ### Delete Sender { #delete-sender }
@@ -366,35 +373,34 @@ Content-Type: application/json;charset=UTF-8
 
 | Value                     | Type    | Description                                                  |
 | ------------------------- | ------- | ------------------------------------------------------------ |
-| header                    | Object  | Header area                                                  |
-| - resultCode              | Integer | Result code                                                  |
-| - resultMessage           | String  | Result message                                               |
-| - isSuccessful            | Boolean | Successful or not                                            |
-| sender                | Object  | Sender                                                   |
-| - plusFriendId            | String  | PlusFriend ID                                                |
-| - senderKey               | String  | Sender key                                                   |
-| - categoryCode            | String  | Category code                                                |
-| - status                  | String  | Status code of NHN Cloud PlusFriend(YSC02: Ready for registeration, YSC03: Normally registered) |
-| - statusName              | String  | Status name of NHN Cloud PlusFriend(ready for registration, normally registered) |
-| - kakaoStatus             | String  | Status code of Kakao PlusFriend(A: Normal, S: Blocked) kakaoStatus is null if the status is YSC02. |
-| - kakaoStatusName         | String  | Status name of Kakao PlusFriend(normal, blocked) kakaoStatusName is null if the status is YSC02. |
-| - kakaoProfileStatus      | String  | Status code of Kakao PlusFriend profile(A: Activated, B: Blocked, C: Deactivated, D:Deleted, E: Deleting) kakaoProfileStatus is null if the status is YSC02. |
-| - kakaoProfileStatusName  | String  | Status name of Kakao PlusFriend profile(Activated, Deactivated, Blocked, Deleted, or Deleting) kakaoProfileStatusName is null if the status is YSC02. |
-|- alimtalk                 |	Object  |	AlimTalk information                                         |
-|-- resendAppKey            | String  | Alternative sms appkey                                       |
-|-- isResend                | String  | Whether to send text as alternative, if delivery fails       |
-|-- resendSendNo            | String  |	Sender number for alternative delivery                       |
-|-- dailyMaxCount           | Integer |	Maximum daily AlimTalk delivery count(no limits for 0)      |
-|-- sentCount               | Integer |	Daily AlimTalk delivery count(no limits for 0)              |
-|- friendtalk               |	Object  |	FriendTalk information                                       |
-|-- resendAppKey            | String  | Alternative sms appkey                                       |
-|-- isResend                | String  | Whether to send text as alternative, if delivery fails       |
-|-- resendSendNo            | String  |	Sender number for alternative delivery                       |
-|-- resendUnsubscribeNo     | String  |	080 unsubscription number for alternative delivery           |
-|-- dailyMaxCount           | Integer |	친구톡 일별 최대 발송 건수<br>(값이 0일 경우 건수 제한없음)              |
-|-- sentCount               | Integer |	친구톡 일별 발송 건수<br>(값이 0일 경우 건수 제한없음)                  |
-| - createDate              | String  | Date and time of registration                                |
-| totalCount                | Integer | Total count                                                  |
+|header| Object | Header area |
+|- resultCode| Integer | Result code |
+|- resultMessage| String | Result message |
+|- isSuccessful| Boolean | Successful or not |
+|sender | Object | Sender Profile |
+|- plusFriendId | String | PlusFriend ID |
+|- senderKey | String | Sender key |
+|- categoryCode | String | Category code |
+|- status | String | Status code of NHN Cloud PlusFriend <br>(YSC02: Ready for registration, YSC03: Normally registered) |
+|- statusName | String | Status name of NHN Cloud PlusFriend (ready for registration, normally registered) |
+|- kakaoStatus | String | Status code of Kakao PlusFriend<br>(A: Normal, S: Blocked)<br>kakaoStatus is null if the status is YSC02. |
+|- kakaoStatusName | String | Status name of Kakao PlusFriend (normal, blocked)<br>kakaoStatusName is null if the status is YSC02. |
+|- kakaoProfileStatus | String | Status code of Kakao PlusFriend profile<br>(A: Activated, B: Blocked, C: Deactivated, D: Deleted, E: Deleting)<br>kakaoProfileStatus is null if the status is YSC02. |
+|- kakaoProfileStatusName | String | Status name of Kakao PlusFriend profile (Activated, Deactivated, Blocked, Deleting, Deleted)<br>kakaoProfileStatusName is null if the status is YSC02. |
+|- alimtalk| Object | AlimTalk information |
+|-- resendAppKey | String | SMS service appkey to set for fallback |
+|-- isResend | String | Whether to send text as alternative, if delivery fails |
+|-- resendSendNo | String | Sender number for alternative delivery |
+|-- dailyMaxCount | Integer | Maximum daily AlimTalk delivery count<br>(no limits if value is 0) |
+|-- sentCount | Integer | Daily AlimTalk delivery count<br>(no limits if value is 0) |
+|- friendtalk| Object | FriendTalk information |
+|-- resendAppKey | String | SMS service appkey to set for fallback |
+|-- isResend | String | Whether to send text as alternative, if delivery fails |
+|-- resendSendNo | String | Sender number for alternative delivery |
+|-- resendUnsubscribeNo | String | 080 opt out number for alternative delivery |
+|-- dailyMaxCount | Integer | Maximum daily FriendTalk delivery count<br>(no limits if value is 0) |
+|-- sentCount | Integer | Daily FriendTalk delivery count<br>(no limits if value is 0) |
+|- createDate | String | Date and time of registration |
 
 <a id="list-sender"></a>
 ### List Sender { #list-sender }

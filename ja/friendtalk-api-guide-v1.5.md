@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=85ea3c2abeb1 -->
 
 <a id="friendtalk-api-guide-v1-5"></a>
@@ -392,41 +394,43 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 
 | 値                | タイプ | 説明                                 |
 | ---------------------- | ------- | ---------------------------------------- |
-| header                 | Object  | ヘッダ領域                              |
-| - resultCode           | Integer | 結果コード                              |
-| - resultMessage        | String  | 結果メッセージ                             |
-| - isSuccessful         | Boolean | 成否                               |
-| message                | Object  | メッセージ                                |
-| - requestId            | String  | リクエストID                                    |
-| - recipientSeq         | Integer | 受信者シーケンス番号                         |
-| - plusFriendId         | String  | プラスフレンドID                                 |
-| - recipientNo          | String  | 受信番号                              |
-| - requestDate          | String  | リクエスト日時                              |
-| - createDate           | String  | 登録日時                             |
-| - receiveDate          | String  | 受信日時                              |
-| - content              | String  | 本文                                 |
-| - messageStatus        | String  | リクエストステータス(COMPLETED：成功、FAILED：失敗)      |
-| - resendStatus         | String  | 再送信ステータスコード                          |
-| - resendStatusName     | String  | 再送信ステータスコード名                             |
-| - resultCode           | String  | 受信結果コード                           |
-| - resultCodeName       | String  | 受信結果コード名                              |
-| - createUser           | String  | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存)|
-| - imageSeq             | Integer | イメージ番号                             |
-| - imageName            | String  | イメージ名(アップロードしたファイル名)                           |
-| - imageUrl             | String  | イメージURL                                  |
-| - imageLink            | String  | イメージリンク(イメージ番号を入力した場合は必須)                |
-| - wide                 | Boolean | ワイドイメージの可否                        |
-| - buttons              | List    | ボタンリスト                              |
-| -- ordering            | Integer | ボタン順序                              |
-| -- type                | String  | ボタンタイプ(WL：Webリンク、AL：アプリリンク、BK：Botキーワード、MD：メッセージ伝達) |
-| -- name                | String  | ボタン名                              |
-| -- linkMo              | String  | モバイルWebリンク(WLタイプの場合は必須フィールド)                |
-| -- linkPc              | String  | PC Webリンク(WLタイプの場合は任意フィールド)                |
-| -- schemeIos           | String  | iOSアプリリンク(ALタイプの場合は必須フィールド)                |
-| -- schemeAndroid       | String  | Androidアプリリンク(ALタイプの場合は必須フィールド)            |
-| - isAd                 | Boolean | 広告かどうか                                   |
-| - senderGroupingKey    | String  | 発信グルーピングキー                               |
-| - recipientGroupingKey | String  | 受信者グルーピングキー                              |
+| header | Object | ヘッダ領域 |
+| - resultCode | Integer | 結果コード |
+| - resultMessage | String | 結果メッセージ |
+| - isSuccessful | Boolean | 成否 |
+| message | Object | メッセージ |
+| - requestId | String | リクエストID |
+| - recipientSeq | Integer | 受信者シーケンス番号 |
+| - plusFriendId | String | プラスフレンドID |
+| - recipientNo | String | 受信番号 |
+| - requestDate | String | リクエスト日時 |
+| - createDate | String | 登録日時 |
+| - receiveDate | String | 受信日時 |
+| - content | String | 本文 |
+| - messageStatus | String | リクエストステータス(COMPLETED：成功、FAILED：失敗) |
+| - resendStatus | String | 再送信ステータスコード |
+| - resendStatusName | String | 再送信ステータスコード名 |
+| - resendResultCode | String | 再送信結果コード SMS結果コード |
+| - resendRequestId | String | 再送信SMS リクエストID |
+| - resultCode | String | 受信結果コード |
+| - resultCodeName | String | 受信結果コード名 |
+| - createUser | String | 登録者(コンソールから送信する場合、ユーザーUUIDとして保存) |
+| - imageSeq | Integer | イメージ番号 |
+| - imageName | String | イメージ名(アップロードしたファイル名) |
+| - imageUrl | String | イメージURL |
+| - imageLink | String | イメージリンク |
+| - wide | boolean | ワイドイメージの可否 |
+| - buttons | List | ボタンリスト |
+| -- ordering | Integer | ボタン順序 |
+| -- type | String | ボタンタイプ(WL：Webリンク、AL：アプリリンク、BK：Botキーワード、MD：メッセージ伝達) |
+| -- name | String | ボタン名 |
+| -- linkMo | String | モバイルWebリンク(WLタイプの場合は必須フィールド) |
+| -- linkPc | String | PC Webリンク(WLタイプの場合は任意フィールド) |
+| -- schemeIos | String | iOSアプリリンク(ALタイプの場合は必須フィールド) |
+| -- schemeAndroid | String | Androidアプリリンク(ALタイプの場合は必須フィールド) |
+| - isAd | Boolean | 広告かどうか |
+| - senderGroupingKey | String | 発信グルーピングキー |
+| - recipientGroupingKey | String | 受信者グルーピングキー |
 
 <a id="message"></a>
 ## メッセージ { #message }
@@ -908,9 +912,10 @@ Content-Type: application/json;charset=UTF-8
 
 | 値                | タイプ | 必須 | 説明                                 |
 | ---------------------- | ------- | ---- | ---------------------------------------- |
-| plusFriendId           | String  | O    | プラスフレンドID(最大30文字)                         |
-| isResend             | boolean | O    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
-| resendSendNo         | String  | O    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+|plusFriendId| String| O | プラスフレンドID |
+|isResend| Boolean| O | 送信失敗時、文字代替送信するかどうか<br>Consoleで代替送信設定時、defaultで再送信されます。 |
+|resendSendNo| String| O | 代替送信発信番号<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+|resendUnsubscribeNo| String| X | 代替送信080受信拒否番号<br><span style="color:red">(SMSサービスに登録された080受信拒否番号ではない場合、代替送信が失敗することがあります。)</span> |
 
 [例]
 ```

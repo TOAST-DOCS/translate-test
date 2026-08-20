@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ff759f130d61 -->
 
 <a id="friendtalk-api-guide-v1-4"></a>
@@ -886,9 +888,10 @@ Content-Type: application/json;charset=UTF-8
 
 | 値                | タイプ | 必須 | 説明                                 |
 | ---------------------- | ------- | ---- | ---------------------------------------- |
-| plusFriendId           | String  | O    | プラスフレンドID(最大30文字)                         |
-| isResend             | boolean | O    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
-| resendSendNo         | String  | O    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+|plusFriendId| String| O | プラスフレンドID |
+|isResend| Boolean| O | 送信失敗時、文字代替送信するかどうか<br>コンソールで代替送信設定をした時、デフォルト設定は再送信になっています。 |
+|resendSendNo| String| O | 代替送信発信番号<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+|resendUnsubscribeNo| String| X | 代替送信080受信拒否番号<br><span style="color:red">(SMSサービスに登録された080受信拒否番号ではない場合、代替送信が失敗することがあります。)</span> |
 
 [例]
 ```
