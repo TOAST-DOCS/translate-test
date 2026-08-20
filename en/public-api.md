@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=08050b417a83 -->
 
 # NCS API Guide
@@ -157,8 +159,8 @@ This API does not require a request body.
 | templates.containers.probe.exec | Body | String List | O | Probe execution commands |
 | templates.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
 | templates.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| templates.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory settings<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| templates.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for container (MiB) |
+| templates.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings were changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| templates.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -259,6 +261,7 @@ This API does not require a request body.
 </details>
 
 <a id="view-template"></a>
+
 ### View Template { #view-template }
 
 Retrieves information about an individual template.
@@ -269,6 +272,7 @@ x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-template-request"></a>
+
 #### Request
 
 This API does not require a request body.
@@ -278,7 +282,9 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | templateId | URL | String | O | Template ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="view-template-response"></a>
+
 #### Response
 
 | Name | Type | Format | Required | Description |
@@ -339,9 +345,9 @@ This API does not require a request body.
 | template.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout |
 | template.containers.probe.exec | Body | String List | O | Command to run a probe |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
-| template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
+| template.containers.sharedMemory | Body | Object | X | Container shared memory settings information |
 | template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings have been changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for the container (MiB) |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -400,6 +406,7 @@ This API does not require a request body.
 </details>
 
 <a id="create-template"></a>
+
 ### Create Template { #create-template }
 
 Creates a template.
@@ -473,8 +480,8 @@ x-nhn-authorization: Bearer {accessToken}
 | template.containers.probe.exec | Body | String List | O | Probe execution command |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds)<ul><li>30 to 120 (default: 30)</li></ul>|
 | template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings were changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for the container (MiB) |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings have changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -514,6 +521,7 @@ x-nhn-authorization: Bearer {accessToken}
 </details>
 
 <a id="create-template-response"></a>
+
 #### Response
 
 | Name | Type | Format | Required | Description |
@@ -573,8 +581,8 @@ x-nhn-authorization: Bearer {accessToken}
 | template.containers.probe.exec | Body | String List | O | Probe execution commands |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
 | template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings have been changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory settings<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -632,6 +640,7 @@ x-nhn-authorization: Bearer {accessToken}
 </details>
 
 <a id="delete-template"></a>
+
 ### Delete Template { #delete-template }
 
 Deletes a template.
@@ -651,12 +660,14 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | templateId | URL | String | O | Template ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="delete-template-response"></a>
 #### Response
 
 This API responds with common information.
 
 <a id="view-a-list-of-template-versions"></a>
+
 ### View a List of Template Versions { #view-a-list-of-template-versions }
 
 ```bash
@@ -665,6 +676,7 @@ x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-a-list-of-template-versions-request"></a>
+
 #### Request
 
 This API does not require a request body.
@@ -680,6 +692,7 @@ This API does not require a request body.
 | sort | Query | String | X | Field name to sort by<br>Prefix field names with `-` for reverse sorting<br>Example: `sort=-name` |
 
 <a id="view-a-list-of-template-versions-response"></a>
+
 #### Response
 
 | Name | Type | Format | Required | Description |
@@ -741,7 +754,7 @@ This API does not require a request body.
 | templates.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout |
 | templates.containers.probe.exec | Body | String List | O | Command to run a probe |
 | templates.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
-| templates.containers.sharedMemory | Body | Object | X | Container shared memory settings information |
+| templates.containers.sharedMemory | Body | Object | X | Container shared memory settings |
 | templates.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory settings<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
 | templates.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
 
@@ -871,6 +884,7 @@ This API does not require a request body.
 </details>
 
 <a id="view-template-versions"></a>
+
 ### View Template Versions { #view-template-versions }
 
 Retrieves information on an individual template version.
@@ -881,6 +895,7 @@ x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-template-versions-request"></a>
+
 #### Request
 
 This API does not require a request body.
@@ -891,7 +906,9 @@ This API does not require a request body.
 | templateId | URL | String | O | Template ID |
 | version | URL | String | O | Template version |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="view-template-versions-response"></a>
+
 #### Response
 
 * Same as retrieving template details
@@ -955,8 +972,8 @@ This API does not require a request body.
 | template.containers.probe.exec | Body | String List | O | Command to run a probe |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
 | template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings have been changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory (MiB) to set for the container |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory setting<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -1040,6 +1057,7 @@ This API does not require a request body.
 </details>
 
 <a id="create-template-version"></a>
+
 ### Create Template Version { #create-template-version }
 
 Creates a version of the template.
@@ -1115,8 +1133,8 @@ x-nhn-authorization: Bearer {accessToken}
 | template.containers.probe.exec | Body | String List | O | Probe execution command |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
 | template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings were changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory setting was changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -1154,6 +1172,7 @@ x-nhn-authorization: Bearer {accessToken}
 </details>
 
 <a id="create-template-version-response"></a>
+
 #### Response
 
 | Name | Type | Format | Required | Description |
@@ -1214,7 +1233,7 @@ x-nhn-authorization: Bearer {accessToken}
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
 | template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
 | template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings were changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -1272,6 +1291,7 @@ x-nhn-authorization: Bearer {accessToken}
 </details>
 
 <a id="delete-template-version"></a>
+
 ### Delete Template Version { #delete-template-version }
 
 ```bash
@@ -1290,15 +1310,18 @@ This API does not require a request body.
 | templateId | URL | String | O | Template ID |
 | version | URL | String | O | Template version |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="delete-template-version-response"></a>
 #### Response
 
 This API responds with common information.
 
 <a id="workload"></a>
+
 ## Workload { #workload }
 
 <a id="list-workloads"></a>
+
 ### List Workloads { #list-workloads }
 
 Retrieves a list of workloads.
@@ -1309,6 +1332,7 @@ x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="list-workloads-request"></a>
+
 #### Request
 
 This API does not require a request body.
@@ -1322,6 +1346,7 @@ This API does not require a request body.
 | size | Query | Integer | X | Page size to retrieve (default: 10) |
 
 <a id="list-workloads-response"></a>
+
 #### Response
 
 | Name | Type | Format | Required | Description |
@@ -1342,7 +1367,7 @@ This API does not require a request body.
 | workloads.loadBalancing | Body | Object | O | Workload load balancer information |
 | workloads.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workloads.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
-| workloads.loadBalancing.ipAddress | Body | String | O | Workload load balancer IP information (vip, floating ip) |
+| workloads.loadBalancing.ipAddress | Body | String | O | Load balancer IP information for the workload (vip, floating ip) |
 | workloads.loadBalancing.vipAddress | Body | String | X | Specified IP of workload load balancer |
 | workloads.loadBalancing.healthMonitor | Body | Object | X | About checking the health of the load balancer |
 | workloads.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
@@ -1448,6 +1473,7 @@ This API does not require a request body.
 </details>
 
 <a id="view-workload"></a>
+
 ### View Workload { #view-workload }
 
 Retrieves an individual workload.
@@ -1458,6 +1484,7 @@ x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-workload-request"></a>
+
 #### Request
 
 This API does not require a request body.
@@ -1467,7 +1494,9 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="view-workload-response"></a>
+
 #### Response
 
 | Name | Type | Format | Required | Description |
@@ -1488,7 +1517,7 @@ This API does not require a request body.
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
 | workload.loadBalancing.ipAddress | Body | String | O | Workload load balancer IP information (vip, floating ip) |
-| workload.loadBalancing.vipAddress | Body | String | X | Specified IP of workload load balancer |
+| workload.loadBalancing.vipAddress | Body | String | X | Specify workload load balancer IP |
 | workload.loadBalancing.healthMonitor | Body | Object | X | About checking the health of the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -1582,9 +1611,9 @@ This API does not require a request body.
 | workload.tasks.containers.probe.timeoutSeconds | Body | String | O | Probe execution timeout |
 | workload.tasks.containers.probe.exec | Body | String List | O | Command to run a probe |
 | workload.tasks.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
-| workload.tasks.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| workload.tasks.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory settings<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| workload.tasks.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory (MiB) set for the container |
+| workload.tasks.containers.sharedMemory | Body | Object | X | Container shared memory settings information |
+| workload.tasks.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings have been changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| workload.tasks.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
 | workload.tasks.containers.state | Body | String | O | Container status |
 | workload.tasks.containers.startedAt | Body | String | O | Container start time |
 | workload.tasks.containers.finishedAt | Body | String | X | Initialization container completion time |
@@ -1703,6 +1732,7 @@ This API does not require a request body.
 </details>
 
 <a id="view-workload-log"></a>
+
 ### View Workload Log { #view-workload-log }
 
 Retrieves the container logs for your workload.
@@ -1764,6 +1794,7 @@ This API does not require a request body.
 </details>
 
 <a id="view-workload-event"></a>
+
 ### View Workload Events { #view-workload-event }
 
 Retrieves the events of a workload.
@@ -1830,6 +1861,7 @@ This API does not require a request body.
 </details>
 
 <a id="view-a-list-of-workload-run-history"></a>
+
 ### View a List of Workload Run History { #view-a-list-of-workload-run-history }
 
 Retrieves a list of workload run history.
@@ -1895,6 +1927,7 @@ This API does not require a request body.
 </details>
 
 <a id="view-workload-run-history"></a>
+
 ### View Workload Run History { #view-workload-run-history }
 
 Retrieves the run history of an individual workload.
@@ -1905,6 +1938,7 @@ x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-workload-run-history-request"></a>
+
 #### Request
 
 This API does not require a request body.
@@ -1915,7 +1949,9 @@ This API does not require a request body.
 | workloadId | URL | String | O | Workload ID |
 | historyId | URL | Integer | O | History ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="view-workload-run-history-response"></a>
+
 #### Response
 
 | Name | Type | Format | Required | Description |
@@ -1982,7 +2018,7 @@ This API does not require a request body.
 | template.containers.probe.exec | Body | String List | O | Probe execution command |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
 | template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory setting has been changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory settings<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
 | template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
 
 <details>
@@ -2076,6 +2112,7 @@ This API does not require a request body.
 </details>
 
 <a id="view-workload-scheduled-run-history"></a>
+
 ### View workload scheduled run history { #view-workload-scheduled-run-history }
 
 Views the history of a scheduled run.
@@ -2134,6 +2171,7 @@ This API does not require a request body.
 </details>
 
 <a id="create-workload"></a>
+
 ### Create a Workload { #create-workload }
 
 Creates a workload.
@@ -2145,6 +2183,7 @@ x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="create-workload-request"></a>
+
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -2161,7 +2200,7 @@ x-nhn-authorization: Bearer {accessToken}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
-| workload.loadBalancing.vipAddress | Body | String | X | Specify workload load balancer IP |
+| workload.loadBalancing.vipAddress | Body | String | X | Specify internal load balancer IP |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -2235,6 +2274,7 @@ x-nhn-authorization: Bearer {accessToken}
 </details>
 
 <a id="create-workload-response"></a>
+
 #### Response
 
 | Name | Type | Format | Required | Description |
@@ -2251,7 +2291,7 @@ x-nhn-authorization: Bearer {accessToken}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
-| workload.loadBalancing.vipAddress | Body | String | X | Specified IP of workload load balancer |
+| workload.loadBalancing.vipAddress | Body | String | X | Specify workload load balancer IP |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -2338,6 +2378,7 @@ x-nhn-authorization: Bearer {accessToken}
 </details>
 
 <a id="change-workload"></a>
+
 ### Change Workload { #change-workload }
 
 Changes a workload.
@@ -2349,6 +2390,7 @@ x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="change-workload-request"></a>
+
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -2365,7 +2407,7 @@ x-nhn-authorization: Bearer {accessToken}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
-| workload.loadBalancing.vipAddress | Body | String | X | Specified IP of workload load balancer |
+| workload.loadBalancing.vipAddress | Body | String | X | Specified IP address of the workload load balancer |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -2435,6 +2477,7 @@ x-nhn-authorization: Bearer {accessToken}
 </details>
 
 <a id="change-workload-response"></a>
+
 #### Response
 
 | Name | Type | Format | Required | Description |
@@ -2451,7 +2494,7 @@ x-nhn-authorization: Bearer {accessToken}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
-| workload.loadBalancing.vipAddress | Body | String | X | Specified IP of workload load balancer |
+| workload.loadBalancing.vipAddress | Body | String | X | Specify IP address of workload load balancer |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -2544,11 +2587,13 @@ x-nhn-authorization: Bearer {accessToken}
 </details>
 
 <a id="changing-workload-parts"></a>
+
 ### Change Workload Parts { #changing-workload-parts }
 
 You can modify only part of a workload.
 
 <a id="changing-workload-parts-request"></a>
+
 #### Request
 
 * When using this API, the Content-Type must be set to application/json-patch+json.
@@ -2585,6 +2630,7 @@ x-nhn-authorization: Bearer {accessToken}
 </details>
 
 <a id="changing-workload-parts-response"></a>
+
 #### Response
 
 | Name | Type | Format | Required | Description |
@@ -2601,7 +2647,7 @@ x-nhn-authorization: Bearer {accessToken}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
-| workload.loadBalancing.vipAddress | Body | String | X | Specify workload load balancer IP |
+| workload.loadBalancing.vipAddress | Body | String | X | Specify IP address for workload load balancer |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | X | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | X | Maximum response wait time |
@@ -2694,6 +2740,7 @@ x-nhn-authorization: Bearer {accessToken}
 </details>
 
 <a id="stop-workload"></a>
+
 ### Stop Workload { #stop-workload }
 Stops a workload.
 
@@ -2712,11 +2759,13 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Template ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="stop-workload-response"></a>
 #### Response
 This API responds with common information.
 
 <a id="restart-workload"></a>
+
 ### Restart Workload { #restart-workload }
 Restarts a workload that is stopped.
 
@@ -2735,11 +2784,13 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="restart-workload-response"></a>
 #### Response
 This API responds with common information.
 
 <a id="delete-workload"></a>
+
 ### Restart Workload Task { #delete-workload }
 Restarts a task in the workload.
 
@@ -2759,11 +2810,13 @@ This API does not require a request body.
 | workloadId | URL | String | O | Workload ID |
 | taskId | URL | String | O | Task ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="delete-workload-response"></a>
 #### Response
 This API responds with common information.
 
 <a id="workload-1"></a>
+
 ### Delete Workload { #workload-1 }
 
 Deletes a workload.
@@ -2783,12 +2836,14 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="workload-1-2"></a>
 #### Response
 
 This API responds with common information.
 
 <a id="view-malware-scan-settings"></a>
+
 ### View Malware Scan Settings { #view-malware-scan-settings }
 Retrieves the configured malware scan settings.
 
@@ -2806,6 +2861,8 @@ This API does not require a request body.
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | token | Header | String | O | NHN Cloud Token |
+
+
 <a id="view-malware-scan-settings-respose"></a>
 #### Response
 
@@ -2829,6 +2886,7 @@ This API does not require a request body.
 </details>
 
 <a id="configure-malware-scan"></a>
+
 ### Configure Malware Scan { #configure-malware-scan }
 Configures the malware scan settings.
 
@@ -2878,6 +2936,7 @@ x-nhn-authorization: Bearer {accessToken}
 </details>
 
 <a id="view-malware-scan-result"></a>
+
 ### View Malware Scan Result { #view-malware-scan-result }
 
 Retrieves the malware scan result.
@@ -2986,6 +3045,7 @@ This API does not require a request body.
 </details>
 
 <a id="response-code"></a>
+
 ## Response Codes { #response-code }
 | resultCode | resultMessage | Description |
 | --- | --- | --- |
