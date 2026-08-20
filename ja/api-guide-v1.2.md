@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=62797d4ab3bf -->
 
 <a id="management-certificate-manager-api-v12-guide"></a>
