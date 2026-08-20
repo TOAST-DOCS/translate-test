@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=08050b417a83 -->
 
 # NCS API Guide
@@ -157,8 +159,8 @@ This API does not require a request body.
 | templates.containers.probe.exec | Body | String List | O | Probe execution commands |
 | templates.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
 | templates.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| templates.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory settings<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| templates.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for container (MiB) |
+| templates.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings were changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| templates.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -278,6 +280,7 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | templateId | URL | String | O | Template ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="view-template-response"></a>
 #### Response
 
@@ -339,9 +342,9 @@ This API does not require a request body.
 | template.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout |
 | template.containers.probe.exec | Body | String List | O | Command to run a probe |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
-| template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
+| template.containers.sharedMemory | Body | Object | X | Container shared memory settings information |
 | template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings have been changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for the container (MiB) |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -473,8 +476,8 @@ x-nhn-authorization: Bearer {accessToken}
 | template.containers.probe.exec | Body | String List | O | Probe execution command |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds)<ul><li>30 to 120 (default: 30)</li></ul>|
 | template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings were changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for the container (MiB) |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings have changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -573,8 +576,8 @@ x-nhn-authorization: Bearer {accessToken}
 | template.containers.probe.exec | Body | String List | O | Probe execution commands |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
 | template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings have been changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory settings<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -651,6 +654,7 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | templateId | URL | String | O | Template ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="delete-template-response"></a>
 #### Response
 
@@ -741,7 +745,7 @@ This API does not require a request body.
 | templates.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout |
 | templates.containers.probe.exec | Body | String List | O | Command to run a probe |
 | templates.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
-| templates.containers.sharedMemory | Body | Object | X | Container shared memory settings information |
+| templates.containers.sharedMemory | Body | Object | X | Container shared memory settings |
 | templates.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory settings<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
 | templates.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
 
@@ -891,6 +895,7 @@ This API does not require a request body.
 | templateId | URL | String | O | Template ID |
 | version | URL | String | O | Template version |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="view-template-versions-response"></a>
 #### Response
 
@@ -955,8 +960,8 @@ This API does not require a request body.
 | template.containers.probe.exec | Body | String List | O | Command to run a probe |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
 | template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings have been changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory (MiB) to set for the container |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory setting<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -1115,8 +1120,8 @@ x-nhn-authorization: Bearer {accessToken}
 | template.containers.probe.exec | Body | String List | O | Probe execution command |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
 | template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings were changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory setting was changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -1214,7 +1219,7 @@ x-nhn-authorization: Bearer {accessToken}
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
 | template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
 | template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings were changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory to set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -1290,6 +1295,7 @@ This API does not require a request body.
 | templateId | URL | String | O | Template ID |
 | version | URL | String | O | Template version |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="delete-template-version-response"></a>
 #### Response
 
@@ -1342,7 +1348,7 @@ This API does not require a request body.
 | workloads.loadBalancing | Body | Object | O | Workload load balancer information |
 | workloads.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workloads.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
-| workloads.loadBalancing.ipAddress | Body | String | O | Workload load balancer IP information (vip, floating ip) |
+| workloads.loadBalancing.ipAddress | Body | String | O | Load balancer IP information for the workload (vip, floating ip) |
 | workloads.loadBalancing.vipAddress | Body | String | X | Specified IP of workload load balancer |
 | workloads.loadBalancing.healthMonitor | Body | Object | X | About checking the health of the load balancer |
 | workloads.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
@@ -1467,6 +1473,7 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="view-workload-response"></a>
 #### Response
 
@@ -1488,7 +1495,7 @@ This API does not require a request body.
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
 | workload.loadBalancing.ipAddress | Body | String | O | Workload load balancer IP information (vip, floating ip) |
-| workload.loadBalancing.vipAddress | Body | String | X | Specified IP of workload load balancer |
+| workload.loadBalancing.vipAddress | Body | String | X | Specify workload load balancer IP |
 | workload.loadBalancing.healthMonitor | Body | Object | X | About checking the health of the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -1582,9 +1589,9 @@ This API does not require a request body.
 | workload.tasks.containers.probe.timeoutSeconds | Body | String | O | Probe execution timeout |
 | workload.tasks.containers.probe.exec | Body | String List | O | Command to run a probe |
 | workload.tasks.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
-| workload.tasks.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| workload.tasks.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory settings<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
-| workload.tasks.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory (MiB) set for the container |
+| workload.tasks.containers.sharedMemory | Body | Object | X | Container shared memory settings information |
+| workload.tasks.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings have been changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| workload.tasks.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
 | workload.tasks.containers.state | Body | String | O | Container status |
 | workload.tasks.containers.startedAt | Body | String | O | Container start time |
 | workload.tasks.containers.finishedAt | Body | String | X | Initialization container completion time |
@@ -1915,6 +1922,7 @@ This API does not require a request body.
 | workloadId | URL | String | O | Workload ID |
 | historyId | URL | Integer | O | History ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="view-workload-run-history-response"></a>
 #### Response
 
@@ -1982,7 +1990,7 @@ This API does not require a request body.
 | template.containers.probe.exec | Body | String List | O | Probe execution command |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
 | template.containers.sharedMemory | Body | Object | X | Container shared memory settings |
-| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory setting has been changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory settings<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
 | template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
 
 <details>
@@ -2161,7 +2169,7 @@ x-nhn-authorization: Bearer {accessToken}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
-| workload.loadBalancing.vipAddress | Body | String | X | Specify workload load balancer IP |
+| workload.loadBalancing.vipAddress | Body | String | X | Specify internal load balancer IP |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -2251,7 +2259,7 @@ x-nhn-authorization: Bearer {accessToken}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
-| workload.loadBalancing.vipAddress | Body | String | X | Specified IP of workload load balancer |
+| workload.loadBalancing.vipAddress | Body | String | X | Specify workload load balancer IP |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -2365,7 +2373,7 @@ x-nhn-authorization: Bearer {accessToken}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
-| workload.loadBalancing.vipAddress | Body | String | X | Specified IP of workload load balancer |
+| workload.loadBalancing.vipAddress | Body | String | X | Specified IP address of the workload load balancer |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -2451,7 +2459,7 @@ x-nhn-authorization: Bearer {accessToken}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
-| workload.loadBalancing.vipAddress | Body | String | X | Specified IP of workload load balancer |
+| workload.loadBalancing.vipAddress | Body | String | X | Specify IP address of workload load balancer |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -2601,7 +2609,7 @@ x-nhn-authorization: Bearer {accessToken}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
-| workload.loadBalancing.vipAddress | Body | String | X | Specify workload load balancer IP |
+| workload.loadBalancing.vipAddress | Body | String | X | Specify IP address for workload load balancer |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | X | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | X | Maximum response wait time |
@@ -2712,6 +2720,7 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Template ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="stop-workload-response"></a>
 #### Response
 This API responds with common information.
@@ -2735,6 +2744,7 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="restart-workload-response"></a>
 #### Response
 This API responds with common information.
@@ -2759,6 +2769,7 @@ This API does not require a request body.
 | workloadId | URL | String | O | Workload ID |
 | taskId | URL | String | O | Task ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="delete-workload-response"></a>
 #### Response
 This API responds with common information.
@@ -2783,6 +2794,7 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
 | token | Header | String | O | NHN Cloud Token |
+
 <a id="workload-1-2"></a>
 #### Response
 
@@ -2806,6 +2818,8 @@ This API does not require a request body.
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | token | Header | String | O | NHN Cloud Token |
+
+
 <a id="view-malware-scan-settings-respose"></a>
 #### Response
 

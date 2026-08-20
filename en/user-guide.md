@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=02186abe0ed4 -->
 
 <a id="container-nhn-container-servicencs-user-guide"></a>
@@ -129,6 +131,7 @@ You can view the version list by clicking **View Version**in the template list. 
 
 <a id="version-basic-information"></a>
 #### Basic Information
+
 You can click a specific version to view details from the **Basic Information** tab.
 
 <a id="version-container"></a>
@@ -282,6 +285,7 @@ You can restart a specific task in a workload by clicking the specific workload 
 
 <a id="workload-access-container"></a>
 #### Access Container
+
 You can access a container by clicking a specific workload and then clicking **Access Container** on the **Running Container** tab.
 To access a container, you must have a shell, such as bash or sh, installed on the image.
 
@@ -360,6 +364,7 @@ You cannot check the workload execution history after deleting the workload.
 
 <a id="workload-scheduled-execution-history"></a>
 #### Scheduled Execution History
+
 You can check the list of executed tasks in the **Scheduled Execution History** tab by selecting the workload for which you want to view the scheduled execution history.
 
 | Items | Descriptions |
@@ -394,9 +399,10 @@ If you use a load balancer to make changes to the template while the workload is
 
 <a id="workload-stop-restart"></a>
 ### Stop/Restart Workload { #workload-stop-restart }
+
 If you stop a workload, all tasks in the workload will be terminated.
 
-If you restart a workload, load balancer IP is changed. To keep the IP unchanged, specify the load balancer IP via the API.
+If you restart a workload, load balancer IP is changed. To keep the IP from changing, specify the load balancer IP via API.
 
 > [Note]
 > Depending on your deployment controller, running a workload stop/restart might cause the container IP to change.
@@ -412,6 +418,7 @@ Select a workload you want to delete and click **Delete Workload** button to pro
 
 <a id="workload-malware-scan"></a>
 ### Malware Scan { #workload-malware-scan }
+
 Click **Malware Scan** to perform a malware scan on the container images used by workloads.
 Malware scans are performed when creating a workload, changing a workload template, or restarting a workload. If malware is detected, workload creation is halted or the previous template is restored.
 You can check the malware scan results by clicking the **Malware Scan Results** button in the **Run History** tab.
@@ -429,10 +436,12 @@ You can check the malware scan results by clicking the **Malware Scan Results** 
 
 <a id="role"></a>
 ## Roles for NCS { #role }
+
 You can set roles to control which roles can access NCS service and resources.
 
 <a id="role-assign"></a>
 ### Modify NCS Roles { #role-assign }
+
 Set the role to execute NCS in the NHN Cloud Console screen.
 1. Select **Manage Member** in the **Project** screen.
 2. Select the member whose role you want to change.
@@ -444,6 +453,7 @@ For more information about roles, see [Manage members](/nhncloud/en/console-guid
 
 <a id="role-details"></a>
 ### Details of Roles { #role-details }
+
 To use NCS, you need the following roles.
 
 | Role | Permission |
@@ -459,6 +469,7 @@ Infrastructure ADMIN includes all roles in the underlying infrastructure service
 
 <a id="role-minimum"></a>
 ### Assign Minimum Roles for NCS { #role-minimum }
+
 In a production environment, it is recommended to add only the roles you need. **The minimum roles** to use the NCS service are as follows.
 
 | Features | Infrastructure MEMBER | Infrastructure NCS ADMIN | Infrastructure Security Group ADMIN | Infrastructure Load Balancer ADMIN |
@@ -484,6 +495,7 @@ Infrastructure NCS ADMIN permissions alone are only for viewing.
 
 <a id="considerations-resource-provision-policy"></a>
 ### Resource Provision Policy { #considerations-resource-provision-policy }
+
 * Refer to [ NHN Container Service Resource Provision Policy](/nhncloud/en/resource-policy/#nhn-container-servicencs).
 
 <a id="considerations-template-container"></a>
@@ -526,14 +538,15 @@ Infrastructure NCS ADMIN permissions alone are only for viewing.
 | Graphics Optimized | ncs1 | ncs1.g2m10 | 10GB | 2 | MIG 2g.10gb |
 
 <a id="loadbalancer-static-ip"></a>
-### Assign a Workload Load Balancer IP { #loadbalancer-static-ip }
-* You can assign a load balancer IP for a workload via API.
+### Assign a Load Balancer IP to a Workload { #loadbalancer-static-ip }
+
+* You can assign a load balancer IP to a workload via API.
 * If you do not assign a load balancer IP, the IP may change when the load balancer is recreated.
-* If you assign a load balancer IP, that IP is retained even if the load balancer is recreated. The assigned IP is retained until you change it separately or delete the workload.
+* If you assign a load balancer IP, that IP is retained even when the load balancer is recreated. The assigned IP is retained until you change it separately or delete the workload.
 * The assigned load balancer IP is also retained in the following situations:
    * When the load balancer is recreated due to a workload stop or restart
    * When the load balancer is recreated due to a failure or maintenance during service operation
-   * When the load balancer is created by disabling and then re-enabling it
+   * When the load balancer is created by disabling and then re-enabling the load balancer
 
 ```json
 PATCH /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
