@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=7b3576dbe008 -->
 
 <a id='network-load-balancer-console-guide'></a>
@@ -7,7 +9,7 @@
 ## ロードバランサー管理 { #manage-loadbalancers }
 
 <a id='create-loadbalancers'></a>
-### ロードバランサー作成 { #create-loadbalancers }
+### ロードバランサーの作成 { #create-loadbalancers }
 NHN Cloudコンソールから、ロードバランサーの設定値を入力するだけで簡単にロードバランサーを作成できます。目的に応じて、L4ルーティングとL7ルーティングのいずれかのモードを選択して作成できます。<br>
 モードはテンプレートを意味するだけで、実際のロードバランサーのタイプとして指定されるわけではありません。L4ルーティングモードでロードバランサーを作成し、L7ルールを追加できます。
 
@@ -231,6 +233,7 @@ TERMINATED_HTTPS証明書の登録方法
     | ERROR_MIGRATE | ロードバランサー移動失敗 <br> 管理者にお問い合わせください。 |
 
 <a id='modify-loadbalancers'></a>
+
 ### ロードバランサー変更及び基本情報 { #modify-loadbalancers }
 ロードバランサー一覧画面で目的のロードバランサーを選択すると、画面下部に選択したロードバランサーの追加情報が表示されます。詳細画面は2つのタブに分かれています。各タブの説明は次のとおりです。
 
@@ -498,7 +501,7 @@ SSLポリシーを削除できます。ただし、1つ以上のリスナーに�
 
 <a id='apply-ssl-policies'></a>
 #### SSLポリシーの適用
-SSLポリシーは、リスナー作成画面または[リスナーの変更及び詳細情報](#change-listener)画面でリスナーに接続します。
+SSL ポリシーは、リスナー作成画面または[リスナーの変更と詳細情報](#change-listener)画面でリスナーに関連付けます。
 
 * リスナーのプロトコルがTERMINATED_HTTPSの場合にのみ、SSLポリシーを接続できます。
 * リスナーにSSLポリシーを接続する場合、リスナーのTLSバージョンは選択したポリシーの最小TLSバージョンと一致する必要があります。
