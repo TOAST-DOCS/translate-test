@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=3d4c5fafe732 -->
 
 <a id="sender-console-guide"></a>
