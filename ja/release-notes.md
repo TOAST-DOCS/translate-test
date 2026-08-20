@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=57bdfc129743 -->
+<!-- pre-align:aligned sig=de02fda0b7df -->
 
 <a id="storage-storage-gateway-release-notes"></a>
 ## Storage > Storage Gateway > リリースノート { #storage-storage-gateway-release-notes }
@@ -12,4 +12,4 @@
 ### 新規サービスリリース { #march-4-2025-new-service-launch }
 
 * Storage Gateway サービスリリース
-    * 韓国 (板橋) リージョンに Storage Gateway サービスがリリースされました。
+    * 韓国(板橋)リージョンに Storage Gateway サービスがリリースされました。
