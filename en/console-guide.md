@@ -1,13 +1,17 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=7b3576dbe008 -->
 
 <a id='network-load-balancer-console-guide'></a>
-## Network > Load Balancer > Console Guide { #network-load-balancer-console-guide }
+
+## Network > Load Balancer > Console User Guide { #network-load-balancer-console-guide }
 
 <a id='manage-loadbalancers'></a>
 ## Manage Load Balancers { #manage-loadbalancers }
 
 <a id='create-loadbalancers'></a>
-### Create Load Balancers { #create-loadbalancers }
+### Create Load Balancer { #create-loadbalancers }
+
 You can easily create a load balancer by entering the setting values in the NHN Cloud Load Balancer console. Depending on your purpose, you can select either L4 routing or L7 routing mode to create it. <br>
 The mode refers to the template, not the actual type of load balancer. You can create a load balancer with L4 routing mode and add L7 rules.
 
@@ -16,6 +20,7 @@ The mode refers to the template, not the actual type of load balancer. You can c
 
 <a id='create-loadbalancers-set-up-load-balancers'></a>
 #### Set up Load balancers
+
 Set up basic information about the load balancer. The following items are required
 
 * Name: Enter the name of the load balancer.
@@ -24,8 +29,6 @@ Set up basic information about the load balancer. The following items are requir
 * Network (Subnet): Specify the subnet of the VPC with which the load balancer is to be associated.
 * Subnet static routes: Select whether to apply the static route settings of the subnet where the load balancer will be located to the load balancer. If you select **Auto Assign**, the load balancer is assigned a private IP that is available within the subnet range. You can select **Specify** to give the load balancer a private IP of your choice. 
 
-
-> [Note] For more information about load balancer types, See [Load Balancer Types](https://www.toast.com/service/network/load-balancer).
 
 <a id='create-loadbalancers-set-up-listeners'></a>
 #### Set up Listeners
@@ -102,6 +105,7 @@ Defines the properties of the traffic that the load balancer will process. A loa
 
 
 ##### Using Certificate Manager
+
 When the listener uses TERMINATED_HTTPS, you can register a certificate in one of the following two methods: using a certificate registered in Certificate Manager or directly registering a certificate.
 
 * By registering a certificate in Certificate Manager and connecting it with the listener, you can receive an email alarm on certificate expiration date.
@@ -111,6 +115,7 @@ When the listener uses TERMINATED_HTTPS, you can register a certificate in one o
     To apply the certificate which is registered in the Certificate Manager to the listener, the password of the 'Private Key' must be removed, and the format must be PKCS#1 or PKCS#8 PEM.
 
 ##### Set up L7 Rules
+
 The load balancer can perform load balancing based on L7 data. When you select an L7 routing template to create a load balancer, you can create a load balancer that includes L7 policies. L7 policies work well only when the protocol of the listener is HTTP/TERMINATED_HTTPS. Even if you create a load balancer with an L4 template, you can add L7 rules later.
 
 * Name: Enter a name for the L7 rule.
@@ -156,6 +161,7 @@ The load balancer can perform load balancing based on L7 data. When you select a
 
 <a id='create-loadbalancers-set-up-member-groups'></a>
 #### Set up Member Groups
+
 Set the target member groups to forward load balancing traffic to. You can create additional member groups even after the load balancer creation is complete.
 
 * Name: Enter a name for the member group.
@@ -177,15 +183,14 @@ Set the target member groups to forward load balancing traffic to. You can creat
 
 The settings for health check are also determined when creating the listener. NHN Cloud's load balancer can define health check behavior per listener. The items required are as follows:
 
-* Health Check Protocol: Determine the protocol to use for health checks. Choose one of TCP, HTTP, or HTTPS.
-* Health Check Port: Determine the port of member instance to try health checks.
+* Health Check Protocol: Determine the protocol to use for health checks. Select one of TCP, HTTP, or HTTPS.
 * Health Check Port: Set the member's port to attempt health checks on. Select a member port to perform health checks on the port numbers specified for each member. If you select Custom, health checks are performed on a custom port number in bulk, independent of the port number for each member.
 * HTTP Method: Select the HTTP method to use for health checks. This setting is enabled only when HTTP or HTTPS is selected. Currently supports GET only.
 * HTTP Status Code: Enter the HTTP status code to consider as normal for a health check. This setting is enabled only when HTTP or HTTPS is selected. Currently supports GET only.
 * URL: Specify the path of the member instance to try health checks. This setting is enabled only when HTTP or HTTPS is selected.
 * Health Check Cycle: Enter the cycle of health checks. The unit is seconds and health checks are tried at every specified cycle.
 * Maximum Wait Time for Response: Specify the maximum time to wait for a normal response after health checks. The unit is seconds and exceeding the specified wait time is considered a failure.
-* Maximum Number of Retries: Specify the maximum number of retry attempts for health checks. If the maximum number of retries is 2 or higher, it is not immediately considered a failure when a normal response to the health check is not received. If it fails repeatedly for the maximum number of retries, the instance is excluded from load balancing.
+* Maximum Number of Retries: Specify the maximum number of retry attempts for health checks. If the maximum number of retries is 2 or later, the health check is not immediately considered a failure if a normal response is not received. If it fails repeatedly for the maximum number of retries, the instance is excluded from load balancing.
 * Host Header: Enter the field value to use in the host header for health checks. This setting is enabled only when HTTP or HTTPS is selected.
 
 !!! danger "Caution"
@@ -196,6 +201,7 @@ The settings for health check are also determined when creating the listener. NH
 
 
 ##### Set up Members
+
 Specify instances or IPs to register as members when the load balancer is created. You can register members even after the load balancer is created. Members can be registered in two ways
 
 * Instance: You can add instances that belong to the VPC to which the load balancer is attached and to VPCs that are peered with that VPC as members. However, if you want to add an instance with a different subnet than the load balancer as a member, you must register both subnets in the routing table.
@@ -203,14 +209,17 @@ Specify instances or IPs to register as members when the load balancer is create
 
 <a id='create-loadbalancers-delete-proteection'></a>
 #### Delete Proteection
+
 Enabling delete protection protects a load balancer from accidental deletion. You cannot delete that load balancer until you disable delete protection. A load balancer with delete protection enabled cannot delete listeners, member groups, and L7 rules, and also cannot delete and change health monitors.
 
 <a id='create-loadbalancers-ip-access-control-groups'></a>
 #### IP Access Control Groups
+
 Specify the IP access control group to apply when the load balancer is created. You can select multiple groups with the same access control type among the IP access control groups. You can change the IP access control group to be applied even after the load balancer is created.
 
 <a id='view-loadbalancers'></a>
 ### View Load Balancers { #view-loadbalancers }
+
 After a load balancer is created, you will be returned to the load balancer list page. In the load balancer list page, you can check the basic information of the created load balancers. The items displayed on the list page are as follows:
 
 * Name: Name of the load balancer specified when it is created.
@@ -234,35 +243,40 @@ After a load balancer is created, you will be returned to the load balancer list
 
 <a id='modify-loadbalancers'></a>
 ### Modify Load Balancers and Details { #modify-loadbalancers }
+
 Select a load balancer from the list, and a page of details shows up at the bottom, which is composed of the following tabs:
-
-* Details of Load Balancer: Shows detailed information of a load balancer. Name and description of the selected load balancer, and whether to apply subnet static routing can be changed.
-* Listener: Check detailed setting of listeners created under a selected load balancer. Add or delete listeners.
-* Instance: View the list of instances registered as members to a selected load balancer. Register new instances as members or exclude existing ones.
-* Statistics: Statistical information of a selected load balancer is available.
-
-!!! tip "Note"
-    The VPC and IP address connected to the load balancer cannot be changed.
-<a id='change-listener'></a>
-### Listener Changes and Details { #change-listener }
-On the main screen of the load balancer, select the desired load balancer detail view to see the listeners and member groups connected to the load balancer. From there, you can select the **Listeners** tab to create, change, or delete listeners.
-
-<a id='change-listener-add-listeners'></a>
-#### Add Listeners
-Listeners can be added by clicking the Add Listener button on the Listener tab in the detail screen of the load balancer. Items required to add listeners are the same as those required by the default listener during creation of the load balancer. When a listener is added, the load balancer port used by previous listeners can no longer be used.
-
-<a id='change-listener-modify-listeners'></a>
-#### Modify Listeners
-To modify the setting of a listener, click Modify.
 
 !!! danger "Caution"
     You cannot change the listener protocol, load balancer port, and instance port.
 
 <a id='change-listener-manage-certificate'></a>
 #### Manage Certificate
+
+<a id='change-listener'></a>
+### Change Listener and Details { #change-listener }
+
+On the main screen of the load balancer, select the detail view of the desired load balancer to check the listeners and member groups connected to the load balancer. From here, choose the **Listener** tab to create, modify, or delete listeners.
+
+<a id='change-listener-add-listeners'></a>
+#### Create Listener
+
+Click **Create Listener** to add a new listener. The items required to add a listener are the same as those required for the default listener when creating a load balancer. When adding a listener, load balancer ports that are already in use by existing listeners cannot be used.
+
+<a id='change-listener-modify-listeners'></a>
+#### Change Listener
+
+Click **Change Listener** on the listener that you want to modify to change the listener settings.
+
+!!! danger "Caution"
+    The port and protocol of a listener cannot be changed.
+
+<a id='change-listener-manage-certificate'></a>
+#### Managing Certificates
+
 For listeners using the TERMINATED_HTTPS protocol, you can manage multiple certificates in the **Certificates** tab of the listener details screen.
 
 ##### View Certificates
+
 1. Click the **Listeners** tab in the load balancer details screen.
 2. Select the TERMINATED_HTTPS listener for which you want to manage certificates.
 3. Click the **Certificates** tab in the listener details screen.
@@ -271,15 +285,18 @@ For listeners using the TERMINATED_HTTPS protocol, you can manage multiple certi
 - **Expiration Date**: certificate expiration date and number of days remaining until expiration
 
 ##### Add Certificates
-1. Click **+ Add Certificate** button in the **Certificates** tab of the listener details screen.
-2. Select whether to use the Certificate Manager.
-- **Enable**: select from the list of certificates registered in the Certificate Manager.
-- **Disable**: register by directly uploading the certificate and private key files. 3. After reviewing the warning message, select the checkbox and click **OK**.
+
+1. On the listener details screen, choose the **Certificate** tab and click **+ Add Certificate**.
+2. Select whether to use Certificate Manager.
+   - **Use**: Select a certificate from the list of certificates registered in Certificate Manager to add it.
+   - **Not use**: Upload a certificate file and a private key file directly to register them.
+3. Review the warning message, select the checkbox, and click **Confirm**.
 
 !!! danger "Caution"
     Adding a certificate will restart the load balancer. Existing sessions will be maintained during the restart process, but new sessions will not be processed (about less than 1 second). Therefore, we recommend changing during a time that will not impact the service.
 
 ##### Change the Default Certificate
+
 1. In the **Certificate** tab of the listener details screen, click the **Change Default Certificate** button.
 2. Select the certificate to use as the default certificate.
 3. After reviewing the warning message, select the checkbox and click **OK**.
@@ -288,8 +305,10 @@ For listeners using the TERMINATED_HTTPS protocol, you can manage multiple certi
     Changing the default certificate will restart the load balancer. During the restart process, existing sessions will be maintained, but new sessions will not be processed (about less than 1 second). Therefore, we recommend changing during a time that will not impact the service.
 
 ##### Delete a Certificate
-1. In the **Certificate** tab of the listener details screen, select the certificate to be deleted.
-2. Click **Delete Certificate** button. 3. After reviewing the warning message, select the checkbox and click **OK**.
+
+1. On the **Certificate** tab of the listener details screen, select the certificate to delete.
+2. Click **Delete Certificate**.
+3. Review the warning message, select the checkbox, and click **Confirm**.
 
 !!! danger "Caution"
     - The default certificate cannot be deleted. To delete the default certificate, you must first change another certificate to the default and then delete it.
@@ -346,6 +365,7 @@ You can view and change the X-Forwarded header settings on a load balancer liste
 
 <a id='x-forwarded-header-guide-delete-listeners'></a>
 #### Delete Listeners
+
 To delete a listener, click Delete: cannot delete, though, if the load balancer has only one listener.
 
 !!! danger "Caution"
@@ -353,21 +373,25 @@ To delete a listener, click Delete: cannot delete, though, if the load balancer 
 
 <a id='change-member-group'></a>
 ### Member Group Changes and Details { #change-member-group }
+
 On the Load Balancers screen, select the desired load balancer's **View Details** to see the listeners and member groups connected to the load balancer. From there, you can select the **Member Groups** tab to create, change, or delete member groups.
 
 <a id='change-member-group-create-member-groups'></a>
 #### Create Member Groups
+
+Click **Create Member Group** to create an additional member group. The items required to create a member group are the same as those required for a member group when creating a load balancer.
+
+<a id='change-member-group-change-member-groups'></a>
+#### Change Member Group
+
 Click **Create Member Group** to create additional member groups. The items required to create a member group are the same as those required for a member group when creating a load balancer.
 
 <a id='change-member-group-change-member-groups'></a>
 #### Change Member Groups
-Click **Change Member Group** to change settings related to the member group.
-
-!!! danger "Caution"
-    Member ports and protocols cannot be changed after a member group is created.
 
 <a id='change-member-group-delete-member-groups'></a>
-#### Delete Member Groups
+#### Delete Member Group
+
 Select the member group you want to delete and click **Delete Member Group** to delete that member group.
 
 !!! danger "Caution"
@@ -378,10 +402,12 @@ Select the member group you want to delete and click **Delete Member Group** to 
 
 <a id='change-member'></a>
 ### Member changes and details { #change-member }
+
 On the Load Balancer **View Details** screen, select the **Member Group** tab, and then select the desired member group to view the details of the member group and the status of the members in the member group.
 
 <a id='change-member-add-a-member'></a>
 #### Add a member
+
 After you select a member group, you'll see the **Basic Info**, **Members**, and **Check Status** tabs at the bottom of the screen. Select the **Members** tab to enroll the desired instances or IP addresses as members. You can only add instances that belong to the VPC to which the load balancer is attached and to VPCs that are peered to that VPC. You can specify your own destination port number for each member, and load balancing will be done with that destination port number.
 
 !!! danger "Caution"
@@ -389,6 +415,7 @@ After you select a member group, you'll see the **Basic Info**, **Members**, and
 
 <a id='change-member-deactivate-a-member'></a>
 #### Deactivate a member
+
 You can temporarily exclude specific members from the service. Select the members you want to exclude, click the **Deactivate members** button, and then click **OK**.
 The excluded members' permissions will change to **X** and their member status will change to **ONLINE**.
 
@@ -404,6 +431,7 @@ The excluded members' permissions will change to **X** and their member status w
 
 <a id='change-member-delete-members'></a>
 #### Delete Members
+
 Instances that are no longer used may be deleted. Click Detach Instance of the instance to exclude, and it is deleted from the member of load balancer. Deletion from load balancer member does not mean its instance is also deleted.
 
 !!! danger "Caution"
@@ -411,15 +439,18 @@ Instances that are no longer used may be deleted. Click Detach Instance of the i
 
 <a id='delete-loadbalancers'></a>
 ### Delete Load Balancers { #delete-loadbalancers }
+
 Select the load balancer you want to delete from the load balancer list screen and click **Delete** button to delete the load balancer.
 
 
 <a id='ip-acl-groups'></a>
 ## IP Access Control Groups { #ip-acl-groups }
+
 For more details on the features of IP access control, see [IP Access Control](/Network/Load%20Balancer/en/overview/#load-balancer-ip-access-control).
 
 <a id='create-ip-acl-groups'></a>
 #### Create IP Access Control Groups
+
 To create an IP access control group, click [Create Access Control Group] and enter the following values:
 
 * Name: Enter the name of the access control group.
@@ -438,38 +469,46 @@ Click **Confirm** and the groups and targets of access control are created.
 
 <a id='change-ip-acl-groups'></a>
 #### Change IP Access Control Groups
+
 You can change the properties of an IP access control group. The properties you can change are name and description. The "IP Access Control Type" property cannot be changed.
 
 <a id='delete-ip-acl-groups'></a>
 #### Delete IP Access Control Groups
+
 You can delete the selected IP access control groups. When you delete a group, all access control targets belonging to the group are also deleted.
 When you delete an IP access control group, load balancers using the group will no longer use that policy.
 
 <a id='add-ip-acl-targets'></a>
 #### Add IP Access Control Targets
+
 If you select an access control group, the access control target menu appears at the bottom.
 When a target is added to an access control group, the policy of the added IP or CIDR is reflected in all load balancers using this access control group.
 
 <a id='change-ip-acl-targets'></a>
 #### Change IP Access Control Targets
+
 You can change the properties of the access control target. You can only change the description.
 
 <a id='delete-ip-acl-targets'></a>
 #### Delete IP Access Control Targets
+
 If you select an access control group, the access control target menu appears at the bottom.
 If you delete a target belonging to an access control group, the policy of the corresponding IP or CIDR is deleted from all load balancers using this access control group.
 
 <a id='apply-ip-acl-groups'></a>
 #### Apply IP Access Control Groups
+
 Select the load balancer to apply the IP access control group to. Select the group you want to configure for that load balancer and click **Confirm**.
 Multiple groups with the same "access control type" can be applied to the load balancer.
 
 <a id='ssl-policies'></a>
 ## SSL Policy Management { #ssl-policies }
+
 An SSL policy is a custom security policy that defines the minimum TLS version and cipher suite combination to use for a listener. For the concept of SSL policies and the list of available cipher suites, see [Custom SSL policy](/Network/Load%20Balancer/en/overview/#ssl).
 
 <a id='create-ssl-policies'></a>
 #### Create SSL Policy
+
 To create an SSL policy, click the **Create SSL policy** button and enter the following values:
 
 * Name: Enter the name of the SSL policy.
@@ -486,6 +525,7 @@ To create an SSL policy, click the **Create SSL policy** button and enter the fo
 
 <a id='change-ssl-policies'></a>
 #### Modify SSL Policy
+
 You can modify the name, description, and cipher suites of an SSL policy. The minimum SSL/TLS version cannot be changed.
 
 When the cipher suites of an SSL policy are modified, the settings of all listeners to which that policy is applied are automatically updated.
@@ -495,11 +535,13 @@ When the cipher suites of an SSL policy are modified, the settings of all listen
 
 <a id='delete-ssl-policies'></a>
 #### Delete SSL Policy
+
 You can delete an SSL policy. However, an SSL policy connected to one or more listeners cannot be deleted. You must first change the SSL policy of all connected listeners to **Disabled** to disconnect them before deleting the policy.
 
 <a id='apply-ssl-policies'></a>
 #### Apply SSL Policy
-An SSL policy is connected to a listener on the listener creation screen or the [Change listener and details](#change-listener) screen.
+
+SSL policies are attached to a listener on the Create Listener screen or the [Change Listener and Details](#change-listener) screen.
 
 * An SSL policy can only be connected to a listener whose protocol is TERMINATED_HTTPS.
 * When connecting an SSL policy to a listener, the listener's TLS version must match the minimum TLS version of the selected policy.
@@ -525,6 +567,5 @@ Go to the project with the load balancer specified as the maintenance target and
     If the status indicator does not change or the **! Restart** button does not disappear, try 'Refresh'.
     ![image-004](http://static.toastoven.net/prod_load_balancer/lb_p_migration_en_4.png)
 
-The load balancer becomes inoperable while restarting is underway.
-
-If the load balancer restart is not completed normally, it is automatically reported to the administrator, and NHN Cloud will contact you separately.
+You cannot perform any operations on the load balancer while it is being restarted.
+If the load balancer restart does not complete successfully, the administrator will automatically be notified, and you'll also be contacted by NHN Cloud.
