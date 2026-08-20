@@ -3064,6 +3064,7 @@ Object Storage は、システムの安定性を確保するため、ストレ�
 <br>
 
 {% endif %}
+<a id="references"></a>
 ## References { #references }
 
 Swift API v1 - [https://docs.openstack.org/api-ref/object-store/](https://docs.openstack.org/api-ref/object-store/)
