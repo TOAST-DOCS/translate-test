@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=1d41682f4f26 -->
 
 <a id="data-analytics-dataflow-node-type-guide"></a>
@@ -172,9 +174,9 @@ Enter a string in JSON format.
 ### Schema Definition { #schema-definition }
 
 * You can define a schema in the **Codec** tab of the Source node.
-* The schema can be defined in the Source node when using the following codecs:
+* The following codecs support schema definition in the Source node:
     * json
-* The plain codec only allows defining the `message` field, as data is fixedly mapped to it.
+* The plain codec only allows defining the `message` field, as data is fixed-mapped to that field.
 * Configure the schema by adding field names and data types.
 * When a schema is defined, only the defined fields are selectively parsed when the flow runs.
 
@@ -244,9 +246,9 @@ Node type that defines an endpoint that imports data to the flow.
 ### Message imported by codec { #message-imported-by-codec }
 
 * Log & Crash Search is designed to process data in JSON format by default.
-* If you want to use each field in the Log & Crash Search log, we recommend using the json codec.
+* If you want to use each field in Log & Crash Search logs, we recommend that you use the json codec.
 
-Supported codec:
+Supported Codecs
 * [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
 
 <a id="source-nhn-cloud-cloudtrail"></a>
@@ -281,9 +283,9 @@ Supported codec:
 ### Message imported by codec { #source-nhn-cloud-cloudtrail-message-imported-by-codec }
 
 * CloudTrail is designed to process data in JSON format by default.
-* If you want to use each field in CloudTrail data, we recommend using json codec.
+* If you want to use each field of CloudTrail data, we recommend that you use the json codec.
 
-Supported codec:
+Supported Codecs
 * [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
 
 <a id="source-nhn-cloud-object-storage"></a>
@@ -316,7 +318,7 @@ Supported codec:
 <a id="source-nhn-cloud-object-storage-message-imported-by-codec"></a>
 ### Message imported by codec { #source-nhn-cloud-object-storage-message-imported-by-codec }
 
-Supported codec:
+Supported Codecs
 * [plain codec](./codec-config-guide.md#plain-codec) - Raw data string storage
 * [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
 
@@ -336,8 +338,13 @@ Supported codec:
 ### Property Description { #source-nhn-cloud-data-lake-storage-property-description }
 | Property name | Default value | Data type | Description | Others |
 | --- |---------| --- | --- | --- |
-| Bucket | -       | string | Enter a bucket name to read data. |  |
-| Region | -       | string | 	
+| Bucket | - | string | Enter a bucket name to read data. |  |
+| Region | - | string | Enter region information configured in the storage. |  |
+| Secret key | - | string | Enter the S3 API credentials secret key. |  |
+| Access key | - | string | Enter the S3 API credentials access key. |  |
+| List update cycle | 60 | number | Enter the object list update cycle included in the bucket. |  |
+| Prefix | - | string | Enter a prefix of an object to read. |  |
+| Excluded key pattern | - | string | Enter the pattern of objects not to read. |  |
 Enter region information configured in the storage. |  |
 | Secret key | -       | string | Enter your S3 credentials secret key. |  |
 | Access key | -       | string | Enter your S3 credentials access key. |  |
@@ -348,7 +355,7 @@ Enter a prefix of an object to read. |  |
 
 <a id="message-ingestion-by-codec-type"></a>
 ### Message Ingestion by Codec Type { #message-ingestion-by-codec-type }
-Supported codecs
+Supported Codecs
 * [plain codec](./codec-config-guide.md#plain-codec) - Raw data string storage
 * [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
 
@@ -388,7 +395,7 @@ Supported codecs
 <a id="source-amazon-s3-message-imported-by-codec"></a>
 ### Message imported by codec { #source-amazon-s3-message-imported-by-codec }
 
-Supported codec:
+Supported Codecs
 * [plain codec](./codec-config-guide.md#plain-codec) - Raw data string storage
 * [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
 
@@ -441,7 +448,7 @@ STREAMING: Processes data every time a new message arrives in a queue.
 
 <a id="source-nhn-cloud-easyqueue-message-ingestion-by-codec-type"></a>
 ### Message Ingestion by Codec Type { #source-nhn-cloud-easyqueue-message-ingestion-by-codec-type }
-Supported codecs
+Supported Codecs
 * [plain codec](./codec-config-guide.md#plain-codec) - Raw data string storage
 * [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
 
@@ -465,22 +472,21 @@ STREAMING: Processes data every time a new message arrives in a topic.
 
 | Property Name | Default Value | Data Type | Description | Notes |
 |------------------|-----------------------------------|------------------|---------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Broker Server List | - | string | Enter the Kafka broker servers. Separate multiple servers with a comma (`,`). | Refer to the `bootstrap.servers` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). <br/>e.g., 10.100.1.1:9092,10.100.1.2:9092 |
-| Consumer Group ID | dataflow | string | Enter the ID to identify the Kafka Consumer Group. | Refer to the `group.id` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
+| Broker Server List | - | string | Enter the Kafka broker server. Separate multiple servers with commas ( , ). | Refer to the `bootstrap.servers` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). <br/>e.g., 10.100.1.1:9092,10.100.1.2:9092 |
+| Consumer Group ID | dataflow | string | Enter an ID that identifies the Kafka Consumer Group. | Refer to the `group.id` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Topic List | - | array of strings | Enter the list of Kafka topics to receive messages from. |                                                                                                                                                                                                                                                                                                                                                      |
 | Topic Pattern | - | string | Enter the Kafka topic pattern to receive messages from. | e.g., `*-messages` |
 | Exclude Internal Topics | true | boolean | Excludes internal topics such as __consumer_offsets. | Refer to the `exclude.internal.topics` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). <br/>Excludes internal topics such as `__consumer_offsets` from the list of topics to receive messages from. |
 | Client ID | `dataflow` | string | Enter the ID to identify the Kafka Consumer. | Refer to the `client.id` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
-| Partition Assignment Strategy | ["RANGE", "COOPERATIVE_STICKY"] | array of strings | Determines how partitions are assigned to the consumer group when receiving messages from Kafka. | Refer to the `partition.assignment.strategy` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). <br/>org.apache.kafka.clients.consumer.RangeAssignor<br/>org.apache.kafka.clients.consumer.RoundRobinAssignor<br/>org.apache.kafka.clients.consumer.StickyAssignor<br/>org.apache.kafka.clients.consumer.CooperativeStickyAssignor |
-| Offset Configuration | latest | enum | Enter the criteria for configuring the consumer group offset. | Refer to the `auto.offset.reset` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). <br/>All settings below retain the existing offset if the consumer group already exists.<br/>none: Returns an error if the consumer group does not exist.<br/>earliest: Initializes to the oldest offset of the partition if the consumer group does not exist.<br/>latest: Initializes to the latest offset of the partition if the consumer group does not exist. |
-| Offset Commit Interval | 5000 | number | Enter the interval (ms) for updating the consumer group offset. | Refer to the `auto.commit.internal.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
+| Partition Assignment Strategy | ["RANGE", "COOPERATIVE_STICKY"] | array of strings | Determines how Kafka assigns partitions to consumer groups when receiving messages. | Refer to the `partition.assignment.strategy` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). <br/>org.apache.kafka.clients.consumer.RangeAssignor<br/>org.apache.kafka.clients.consumer.RoundRobinAssignor<br/>org.apache.kafka.clients.consumer.StickyAssignor<br/>org.apache.kafka.clients.consumer.CooperativeStickyAssignor |
+| Offset Configuration | latest | enum | Enter the criteria for configuring the consumer group offset. | Refer to the `auto.offset.reset` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). <br/>All of the settings below preserve the existing offset if the consumer group already exists.<br/>none: Returns an error if the consumer group does not exist.<br/>earliest: Initialize to the partition's oldest offset if there is no consumer group.<br/>latest: Initialize to the partition's most recent offset if there is no consumer group. |
 | Key Deserialization Type | `STRING` | enum | Enter the type of the key of the received message. | Refer to the `key.deserializer` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Generate Metadata | false | boolean | If the property value is true, generates metadata fields for the message. Metadata is generated in the `kafka_metadata` field. | The following fields are generated:<br/>topic: Topic from which the message was received<br/>groupId: Consumer group ID used to receive the message<br/>partition: Partition number of the topic from which the message was received<br/>offset: Offset of the partition from which the message was received<br/>key: Message key |
 | Minimum Fetch Size | 1 | number | Enter the minimum size (bytes) of data to retrieve in a single fetch request. | Refer to the `fetch.min.bytes` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Send Buffer Size | 131072 | number | Enter the size (bytes) of the TCP send buffer used for data transmission. | Refer to the `send.buffer.bytes` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Retry Request Interval | 100 | number | Enter the interval (ms) for retrying a failed transmission request. | Refer to the `retry.backoff.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Cyclic Redundancy Check | true | boolean | Checks the CRC of the message. | Refer to the `check.crcs` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
-| Server Reconnect Interval | 100 | number | Enter the interval (ms) for retrying a failed connection to the broker server. | Refer to the `reconnect.backoff.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
+| Server Reconnect Interval | 50 | number | Enter the interval (ms) for retrying a failed connection to the broker server. | Refer to the `reconnect.backoff.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Maximum Fetch Size per Partition | 1048576 | number | Enter the maximum size (bytes) to retrieve per partition in a single fetch request. | Refer to the `max.partition.fetch.bytes` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Server Request Timeout | 30000 | number | Enter the timeout (ms) for a transmission request. | Refer to the `request.timeout.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | TCP Receive Buffer Size | 65536 | number | Enter the size (bytes) of the TCP receive buffer used for reading data. | Refer to the `receive.buffer.bytes` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
@@ -488,19 +494,19 @@ STREAMING: Processes data every time a new message arrives in a topic.
 | Maximum Poll Message Count | 500 | number | Enter the maximum number of messages to retrieve in a single poll request. | Refer to the `max.poll.records` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Maximum Poll Interval | 300000 | number | Enter the maximum interval (ms) between poll requests. | Refer to the `max.poll.interval.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Maximum Fetch Size | 52428800 | number | Enter the maximum size (bytes) to retrieve in a single fetch request. | Refer to the `fetch.max.bytes` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
-| Maximum Fetch Wait Time | 500 | number | Enter the wait time (ms) before sending a fetch request when the amount of data specified in `Minimum Fetch Size` has not been accumulated. | Refer to the `fetch.max.wait.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
+| Fetch Max Wait Time | 500 | number | Enter the wait time (ms) before sending a fetch request when the amount of data specified in `Minimum Fetch Size` has not been accumulated. | Refer to the `fetch.max.wait.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Consumer Health Check Interval | 3000 | number | Enter the interval (ms) at which the consumer sends heartbeats. | Refer to the `heartbeat.interval.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
-| Metadata Refresh Interval | 300000 | number | Enter the interval (ms) for refreshing partition and broker server status. | Refer to the `metadata.max.age.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/producer-configs/). |
-| IDLE Timeout | 540000 | number | Enter the wait time (ms) before closing a connection with no data transmission. | Refer to the `connections.max.idle.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
-| Isolation level | read_committed | enum | Determines whether the consumer reads messages from uncommitted transactions or only committed messages. | [Kafka official documentation](https://kafka.apache.org/39/configuration/consumer-configs/)'s `isolation.level` property<br/>read_uncommitted: Reads all messages in offset order.<br/>read_committed: Reads only messages from committed transactions. |
+| Metadata Refresh Interval | 300000 | number | Enter the cycle (ms) to update the partition, broker server status, etc. | Refer to the `metadata.max.age.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/producer-configs/). |
+| IDLE Timeout | 540000 | number | Enter the wait time (ms) to close a connection without data transmission. | Refer to the `connections.max.idle.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
+| Isolation level | read_committed | enum | Determines whether the consumer reads messages from uncommitted transactions or only committed messages. | Refer to the `isolation.level` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/).<br/>read_uncommitted: Reads all messages in offset order.<br/>read_committed: Reads only messages from committed transactions. |
 | Additional Configuration | - | hash | Enter additional Consumer configuration to use for the Kafka connection. | Refer to the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 
 <a id="source-apache-kafka-message-imported-by-codec"></a>
 ### Message imported by codec { #source-apache-kafka-message-imported-by-codec }
 
-Supported codec:
+Supported Codecs
 * [plain codec](./codec-config-guide.md#plain-codec) - Raw data string storage
-* [json codec](./codec-config-guide.md#json-codec) - JSON format data parsing
+* [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
 
 <a id="filter-2"></a>
 ## Filter { #filter-2 }
@@ -1380,10 +1386,10 @@ Type of node that defines an endpoint to load data that has completed filter ope
 <a id="sink-nhn-cloud-object-storage-node-description"></a>
 ### Node Description { #sink-nhn-cloud-object-storage-node-description }
 
-* Node for uploading data to Object Storage in NHN Cloud.
+* This node uploads data to NHN Cloud Object Storage.
 * When created using default settings without additional configuration, objects are output according to the following path format.
     * `/{bucket_name}/year={yyyy}/month={MM}/day={dd}/hour={HH}/part-{uuid}-{file_counter}`   
-* json, line, and parquet codecs are provided.
+* Supported codecs are json, line, and parquet.
 
 <a id="sink-nhn-cloud-object-storage-property-description"></a>
 ### Property Description { #sink-nhn-cloud-object-storage-property-description }
@@ -1406,10 +1412,10 @@ Type of node that defines an endpoint to load data that has completed filter ope
 <a id="output-examples-by-codec-type"></a>
 ### Output Examples by Codec Type { #output-examples-by-codec-type }
 
-Supported codec:
+Supported Codecs
 * [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
 * [line codec](./codec-config-guide.md#line-codec) - Line-by-line message processing
-* [parquet codec](./codec-config-guide.md#parquet-codec) - Compressed into Parquet format
+* [parquet codec](./codec-config-guide.md#parquet-codec) - Compresses data in the Parquet format
 
 <a id="prefix-example---field"></a>
 ### Prefix Example - Field { #prefix-example---field }
@@ -1500,10 +1506,10 @@ Supported codec:
 
 <a id="sink-nhn-cloud-data-lake-storage-node-description"></a>
 ### Node Description { #sink-nhn-cloud-data-lake-storage-node-description }
-* Node that uploads data to Data Lake Storage of NHN Cloud.
+* This node uploads data to NHN Cloud's Data Lake Storage.
 * When created using default settings without additional configuration, objects are output according to the following path format.
     * `/{bucket_name}/year={yyyy}/month={MM}/day={dd}/hour={HH}/part-{uuid}-{file_counter}`   
-* json, line, and parquet codec are provided.
+* The available codecs are json, line, and parquet.
 
 <a id="sink-nhn-cloud-data-lake-storage-property-description"></a>
 ### Property Description { #sink-nhn-cloud-data-lake-storage-property-description }
@@ -1525,10 +1531,10 @@ Supported codec:
 <a id="sink-nhn-cloud-data-lake-storage-output-examples-by-codec-type"></a>
 ### Output Examples by Codec Type { #sink-nhn-cloud-data-lake-storage-output-examples-by-codec-type }
 
-Supported codec:
+Supported Codecs
 * [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
 * [line codec](./codec-config-guide.md#line-codec) - Line-by-line message processing
-* [parquet codec](./codec-config-guide.md#parquet-codec) - Compressed in Parquet format
+* [parquet codec](./codec-config-guide.md#parquet-codec) - Compresses data in Parquet format
 
 <a id="sink-nhn-cloud-data-lake-storage-prefix-example---field"></a>
 ### Prefix Example - Field { #sink-nhn-cloud-data-lake-storage-prefix-example---field }
@@ -1612,8 +1618,8 @@ Supported codec:
 <a id="sink-amazon-s3-node-description"></a>
 ### Node Description { #sink-amazon-s3-node-description }
 
-* Node for uploading data to Amazon S3.
-* json, line, and parquet codecs are provided.
+* The node that uploads data to Amazon S3.
+* The provided codecs are JSON, LINE, and parquet.
 
 <a id="sink-amazon-s3-property-description"></a>
 ### Property Description { #sink-amazon-s3-property-description }
@@ -1640,10 +1646,10 @@ Supported codec:
 <a id="sink-amazon-s3-output-examples-by-codec-type"></a>
 ### Output Examples by Codec Type { #sink-amazon-s3-output-examples-by-codec-type }
 
-Supported codec:
+Supported Codecs
 * [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
 * [line codec](./codec-config-guide.md#line-codec) - Line-by-line message processing
-* [parquet codec](./codec-config-guide.md#parquet-codec) - Compressed in Parquet format
+* [parquet codec](./codec-config-guide.md#parquet-codec) - Compresses data in the Parquet format
 
 <a id="sink-nhn-cloud-easyqueue"></a>
 ## Sink > (NHN Cloud) EasyQueue { #sink-nhn-cloud-easyqueue }
@@ -1681,9 +1687,9 @@ Node that transfers data of EasyQueue in NHN Cloud.
 
 <a id="sink-nhn-cloud-easyqueue-output-examples-by-codec-type"></a>
 ### Output Examples by Codec Type { #sink-nhn-cloud-easyqueue-output-examples-by-codec-type }
-Supported codec:
+Supported Codecs
 * [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
-* [line codec](./codec-config-guide.md#line-codec) - Line-by-line message processing  
+* [line codec](./codec-config-guide.md#line-codec) - Line-by-line message processing
 
 <a id="sink-apache-kafka"></a>
 ## Sink > (Apache) Kafka { #sink-apache-kafka }
@@ -1721,9 +1727,9 @@ Node for sending data to Kafka.
 <a id="sink-apache-kafka-output-examples-by-codec-type"></a>
 ### Output Examples by Codec Type { #sink-apache-kafka-output-examples-by-codec-type }
 
-Supported codec:
-* [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
-* [line codec](./codec-config-guide.md#line-codec) - Line-by-line message processing  
+Supported Codecs
+* [json codec](./codec-config-guide.md#json-codec) - JSON format data output
+* [line codec](./codec-config-guide.md#line-codec) - Line-by-line message output
 
 <a id="sink-stdout"></a>
 ## Sink > Stdout { #sink-stdout }
@@ -1737,9 +1743,9 @@ Supported codec:
 <a id="example-output-by-codec"></a>
 ### Example output by codec { #example-output-by-codec }
 
-Supported codec:
-* [json codec](./codec-config-guide.md#json-codec) - JSON data parsing
-* [line codec](./codec-config-guide.md#line-codec) - Line-by-line message processing  
+Supported Codecs
+* [json codec](./codec-config-guide.md#json-codec) - JSON format data output
+* [line codec](./codec-config-guide.md#line-codec) - Line-by-line message output
 
 <a id="branch"></a>
 ## Branch { #branch }
