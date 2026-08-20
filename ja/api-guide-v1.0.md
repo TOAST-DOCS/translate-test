@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 ## RDS for PostgreSQL API ガイド
 
 **Database > RDS for PostgreSQL > API v1.0 ガイド**
@@ -14,20 +16,20 @@
 
 ### 認証および権限
 
-RDS for PostgreSQLは、API呼び出し時の認証/認可のためにUser Access Keyトークンを使用します。User Access Keyトークンは、User Access Keyに基づいて発行されるBearerタイプの一時的なアクセストークンです。User Access Keyトークンの発行及び使用に関する詳細は、[User Access Keyトークン](/nhncloud/ja/public-api/user-access-key-token)を参照してください。
-発行されたトークンはAppkeyと共にリクエストHeaderに含める必要があります。
+RDS for PostgreSQL は、API 呼び出し時の認証/認可に User Access Key トークンを使用します。User Access Key トークンは、User Access Key を基に発行される Bearer 形式の一時的なアクセストークンです。User Access Key トークンの発行と使用の詳細については、[User Access Key トークン](/nhncloud/ja/public-api/user-access-key-token)を参照してください。
+発行されたトークンは、Appkey とともにリクエストの Header に含める必要があります。
 
 | 名前 | 区分 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|-----|
 | X-TC-APP-KEY | Header | String | Y | RDS for PostgreSQLサービスのAppkeyまたはプロジェクト統合Appkey |
 | X-NHN-AUTHORIZATION | Header | String | Y | Public APIで発行されたBearerタイプトークン |
 
-また、プロジェクト権限によって呼び出せるAPIが制限されます。`RDS for PostgreSQL ADMIN`、`RDS for PostgreSQL VIEWER`のロールには、次のような基本権限が付与されており、プロジェクト内のロールグループ管理メニューで必要な権限のみを付与できます。
+また、プロジェクト権限に応じて呼び出すことができる API が制限されます。`RDS for PostgreSQL ADMIN`、`RDS for PostgreSQL VIEWER` ロールには、次のとおりデフォルト権限が付与されており、プロジェクト内のロールグループ管理メニューから必要な権限のみ付与できます。
 
-* `RDS for PostgreSQL ADMIN`のロールには、API実行に必要なすべての権限が付与されます。
-* `RDS for PostgreSQL VIEWER`のロールには、情報を照会する権限のみ付与されます。
-* DBインスタンスを作成、修正、削除およびDBインスタンスを対象とするいかなる機能も使用できません。
-* ただし、通知グループとユーザーグループに関連する機能は使用できます。
+* `RDS for PostgreSQL ADMIN` 役割には、API 実行に必要なすべての権限が付与されます。
+* `RDS for PostgreSQL VIEWER` 役割には、情報を照会する権限のみが付与されます。
+    * DB インスタンスの作成、変更、削除、または DB インスタンスを対象とするいかなる機能も使用することはできません。
+    * ただし、通知グループとユーザーグループ関連の機能は使用できます。
 
 APIリクエスト時、認証に失敗または権限がない場合、次のようなエラーが発生します。
 
@@ -38,7 +40,7 @@ APIリクエスト時、認証に失敗または権限がない場合、次の�
 
 ### レスポンス共通情報
 
-すべてのAPIリクエストに`200 OK`でレスポンスします。詳しいレスポンス結果はレスポンス本文のヘッダを参照してください。
+すべてのAPIリクエストに対して「200 OK」で応答します。詳細な応答結果については、レスポンス本文のヘッダーを参照してください。
 
 <details>
   <summary><strong>成功レスポンス</strong></summary>
@@ -77,9 +79,9 @@ APIリクエスト時、認証に失敗または権限がない場合、次の�
 | isSuccessful | Boolean | 成否 |
 ## DBエンジンバージョン
 
-### サポートするDBエンジンバージョン
+### サポートされているDBエンジンバージョン
 
-| DBエンジンバージョン | 作成可否 | オブジェクトストレージからの復元可否 |
+| DB エンジンバージョン | 作成可能 | オブジェクトストレージからの復元可能 |
 |------------|----------|------------------|
 | POSTGRESQL_V14_6 | X | O |
 | POSTGRESQL_V14_15 | X | O |
@@ -90,17 +92,16 @@ APIリクエスト時、認証に失敗または権限がない場合、次の�
 | POSTGRESQL_V17_4 | O | O |
 | POSTGRESQL_V17_6 | O | O |
 | POSTGRESQL_V17_10 | O | O |
+* Enum型のdbVersionフィールドに上記の値を使用できます。
+* バージョンによっては、作成または復元ができない場合があります。
 
-* EnumタイプであるdbVersionフィールドに上記の値を使用できます。
-* バージョンによっては、作成または復元できない場合があります。
-
-### DBエンジンバージョンリストの照会
+### DB エンジンバージョン一覧の表示
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:DbVersion.List | DBエンジンバージョンリストの照会 |
+| RDSforPostgreSQL:DbVersion.List | DBエンジンバージョン一覧表示 |
 
 #### リクエスト
 
@@ -149,13 +150,13 @@ GET /v1.0/db-versions
 
 ## DBインスタンス仕様
 
-### DBインスタンスタイプリストの照会
+### DBインスタンス仕様リストを表示
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:DbFlavor.List | DBインスタンスタイプリストの照会 |
+| RDSforPostgreSQL:DbFlavor.List | DBインスタンス仕様リストを表示 |
 
 #### リクエスト
 
@@ -301,7 +302,7 @@ GET /v1.0/project/regions
 | 名前 | タイプ | 説明 |
 |-----|-----|-----|
 | regions | Array | リージョン情報 |
-| regions.regionCode | Enum | リージョンコード<br/>- `KR`1: `韓国(パンギョ)`<br/>- `KR2`: `韓国(ピョンチョン)` |
+| regions.regionCode | Enum | リージョンコード<br/>- KR1: `韓国(パンギョ)`<br/>- KR2: `韓国(ピョンチョン)` |
 | regions.isEnabled | Boolean | リージョンが有効かどうか |
 
 ---
@@ -344,7 +345,7 @@ GET /v1.0/network/subnets
 "subnetName": "subnetName-example",
 "subnetCidr": "192.168.0.0/24",
 "usingGateway": false,
-"availableIpCount": 240
+"availableIpCount": 1
 }
 ]
 }
@@ -487,8 +488,8 @@ GET /v1.0/jobs/{jobId}
 | resourceRelations | Array | 関連リソースリスト |
 | resourceRelations.resourceType | String | 関連リソースタイプ |
 | resourceRelations.resourceId | String | 関連リソースの識別子 |
-| createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| createdYmdt | DateTime | 作成日時 |
+| updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -542,10 +543,10 @@ GET /v1.0/db-instance-groups
 |-----|-----|-----|
 | dbInstanceGroups | Array | DBインスタンスグループ情報 |
 | dbInstanceGroups.dbInstanceGroupId | UUID | DBインスタンスグループの識別子 |
-| dbInstanceGroups.dbInstanceGroupStatus | Enum | DBインスタンスグループの現在の状態<br/>- `CREATED`: 作成済み<br/>- `DELETED`: 削除済み |
-| dbInstanceGroups.replicationType | Enum | DBインスタンスグループのレプリケーション形態<br/>- `STANDALONE`: 高可用性を使用しない<br/>- `HIGH_AVAILABILITY`: 高可用性を使用する |
-| dbInstanceGroups.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| dbInstanceGroups.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| dbInstanceGroups.dbInstanceGroupStatus | Enum | DBインスタンスグループの現在状態<br/>- CREATED: `作成済み`<br/>- DELETED: `削除済み` |
+| dbInstanceGroups.replicationType | Enum | DBインスタンスグループのレプリケーションタイプ<br/>- STANDALONE: `高可用性を使用しない`<br/>- HIGH_AVAILABILITY: `高可用性を使用する` |
+| dbInstanceGroups.createdYmdt | DateTime | 作成日時 |
+| dbInstanceGroups.updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -592,7 +593,7 @@ GET /v1.0/db-instance-groups/{dbInstanceGroupId}
 {
 "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
 "dbInstanceType": "MASTER",
-"dbInstanceStatus": "AVAILABLE"
+"dbInstanceStatus": "BEFORE_CREATE"
 }
 ],
 "createdYmdt": "2023-12-31T15:00:00+09:00",
@@ -605,15 +606,14 @@ GET /v1.0/db-instance-groups/{dbInstanceGroupId}
 | 名前 | タイプ | 説明 |
 |-----|-----|-----|
 | dbInstanceGroupId | UUID | DBインスタンスグループの識別子 |
-| dbInstanceGroupStatus | Enum | DBインスタンスグループの現在の状態<br/>- `CREATED`: 作成済み<br/>- `DELETED`: 削除済み |
-| replicationType | Enum | DBインスタンスグループのレプリケーション形態<br/>- `STANDALONE`: 高可用性を使用しない<br/>- `HIGH_AVAILABILITY`: 高可用性を使用する |
+| dbInstanceGroupStatus | Enum | DBインスタンスグループの現在状態<br/>- CREATED: `作成済み`<br/>- DELETED: `削除済み` |
 | replicationType | Enum | DBインスタンスグループのレプリケーションタイプ<br/>- STANDALONE: `高可用性を使用しない`<br/>- HIGH_AVAILABILITY: `高可用性を使用する` |
 | dbInstances | Array | DBインスタンスグループに属するDBインスタンスリスト |
 | dbInstances.dbInstanceId | UUID | DBインスタンスの識別子 |
-| dbInstances.dbInstanceType | Enum | DBインスタンスのロールタイプ<br/>- `MASTER`: マスター<br/>- `FAILED_MASTER`: フェイルオーバーされたマスター<br/>- `CANDIDATE_MASTER`: スタンバイマスター<br/>- `READ_ONLY_SLAVE`: リードレプリカ |
-| dbInstances.dbInstanceStatus | Enum | DBインスタンスの現在の状態 |
-| createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| dbInstances.dbInstanceType | Enum | DBインスタンスの役割タイプ<br/>- MASTER: `マスター`<br/>- FAILED_MASTER: `障害マスター`<br/>- CANDIDATE_MASTER: `予備マスター`<br/>- READ_ONLY_SLAVE: `リードレプリカ` |
+| dbInstances.dbInstanceStatus | Enum | DBインスタンスの現在の状態<br/>- BEFORE_CREATE: `作成前 (グレー)`<br/>- AVAILABLE: `使用可能 (グリーン)`<br/>- STORAGE_FULL: `容量不足 (レッド)`<br/>- FAIL_TO_CREATE: `作成失敗 (レッド)`<br/>- FAIL_TO_CONNECT: `接続失敗 (レッド)`<br/>- REPLICATION_STOP: `レプリケーション中断 (レッド)`<br/>- REPLICATION_DELAY: `レプリケーション遅延 (イエロー)`<br/>- FAILOVER: `フェイルオーバー完了 (レッド)`<br/>- SHUTDOWN: `停止済み (グレー)`<br/>- DELETED: `削除済み (グレー)` |
+| createdYmdt | DateTime | 作成日時 |
+| updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -635,7 +635,7 @@ GET /v1.0/db-instance-groups/{dbInstanceGroupId}/extensions
 
 | 名前 | 区分 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|-----|
-| dbInstanceGroupId | URL | UUID | Y | DBインスタンスグループの識別子 |
+| dbInstanceGroupId | URL | UUID | Y | DBインスタンスグループID |
 
 #### リクエスト本文
 
@@ -656,13 +656,13 @@ GET /v1.0/db-instance-groups/{dbInstanceGroupId}/extensions
 "extensions": [
 {
 "extensionId": "550e8400-e29b-41d4-a716-446655440000",
-"extensionName": "address_standardizer",
+"extensionName": "extensionName-example",
 "extensionStatus": "AVAILABLE",
 "databases": [
 {
 "dbInstanceGroupExtensionId": "550e8400-e29b-41d4-a716-446655440000",
 "databaseId": "550e8400-e29b-41d4-a716-446655440000",
-"databaseName": "database-1",
+"databaseName": "databaseName-example",
 "dbInstanceGroupExtensionStatus": "CREATED",
 "reservedAction": "NONE",
 "errorReason": "errorReason-example"
@@ -678,18 +678,18 @@ GET /v1.0/db-instance-groups/{dbInstanceGroupId}/extensions
 
 | 名前 | タイプ | 説明 |
 |-----|-----|-----|
-| extensions | Array | 拡張リスト |
-| extensions.extensionId | UUID | 拡張の識別子 |
+| extensions | Array | 拡張機能情報 |
+| extensions.extensionId | UUID | 拡張機能の識別子 |
 | extensions.extensionName | String | 拡張機能名 |
-| extensions.extensionStatus | Enum | 拡張状態<br/>- `AVAILABLE`: 使用可能<br/>- `NEED_TO_APPLY`: 適用が必要<br/>- `APPLYING`: 適用中 |
-| extensions.databases | Array | 拡張がインストールされたデータベース情報 |
-| extensions.databases.dbInstanceGroupExtensionId | UUID | DBインスタンスグループ内の拡張の識別子 |
-| extensions.databases.databaseId | UUID | データベースの識別子 |
+| extensions.extensionStatus | Enum | 拡張機能の状態<br/>- AVAILABLE: `使用可能`<br/>- NEED_TO_APPLY: `適用必要`<br/>- APPLYING: `適用中` |
+| extensions.databases | Array | データベース情報 |
+| extensions.databases.dbInstanceGroupExtensionId | UUID | DBインスタンスグループ内の拡張機能の識別子 |
+| extensions.databases.databaseId | UUID | データベースID |
 | extensions.databases.databaseName | String | データベース名 |
-| extensions.databases.dbInstanceGroupExtensionStatus | Enum | DBインスタンスグループ内の拡張状態<br/>- `CREATED`: 作成済み<br/>- `INSTALLED`: インストール済み<br/>- `INSTALLING`: インストール中<br/>- `INSTALL_ERROR`: インストールエラー<br/>- `DELETED`: 削除済み<br/>- `DELETING`: 削除中<br/>- `DELETE_ERROR`: 削除エラー |
-| extensions.databases.reservedAction | Enum | 予約ジョブ<br/>- `NONE`: なし<br/>- `INSTALL`: インストール予約(適用が必要)<br/>- `INSTALL_WITH_CASCADE`: 強制インストール予約(適用が必要)<br/>- `DELETE`: 削除予約(適用が必要)<br/>- `DELETE_WITH_CASCADE`: 強制削除予約(適用が必要) |
+| extensions.databases.dbInstanceGroupExtensionStatus | Enum | データベース拡張機能インストール状態<br/>- CREATED: `作成済み`<br/>- INSTALLED: `インストール済み`<br/>- INSTALLING: `インストール中`<br/>- INSTALL_ERROR: `インストールエラー`<br/>- DELETED: `削除済み`<br/>- DELETING: `削除中`<br/>- DELETE_ERROR: `削除エラー` |
+| extensions.databases.reservedAction | Enum | 予約済みアクション<br/>- NONE: `なし`<br/>- INSTALL: `インストール予約 (適用が必要)`<br/>- INSTALL_WITH_CASCADE: `強制インストール予約 (適用が必要)`<br/>- DELETE: `削除予約 (適用が必要)`<br/>- DELETE_WITH_CASCADE: `強制削除予約 (適用が必要)` |
 | extensions.databases.errorReason | String | エラー原因 |
-| isNeedToApply | Boolean | 変更事項の適用の要否 |
+| isNeedToApply | Boolean | 変更事項の適用が必要かどうか |
 
 ---
 
@@ -711,7 +711,7 @@ POST /v1.0/db-instance-groups/{dbInstanceGroupId}/extensions/apply
 
 | 名前 | 区分 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|-----|
-| dbInstanceGroupId | URL | UUID | Y | DBインスタンスグループの識別子 |
+| dbInstanceGroupId | URL | UUID | Y | DBインスタンスグループID |
 
 #### リクエスト本文
 
@@ -759,7 +759,7 @@ POST /v1.0/db-instance-groups/{dbInstanceGroupId}/extensions/sync
 
 | 名前 | 区分 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|-----|
-| dbInstanceGroupId | URL | UUID | Y | DBインスタンスグループの識別子 |
+| dbInstanceGroupId | URL | UUID | Y | DBインスタンスグループID |
 
 #### リクエスト本文
 
@@ -807,9 +807,9 @@ DELETE /v1.0/db-instance-groups/{dbInstanceGroupId}/extensions/{dbInstanceGroupE
 
 | 名前 | 区分 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|-----|
-| dbInstanceGroupId | URL | UUID | Y | DBインスタンスグループの識別子 |
-| dbInstanceGroupExtensionId | URL | UUID | Y | DBインスタンスグループ内の拡張の識別子 |
-| withCascade | Query | Boolean | Y | 依存情報の強制削除の有無 |
+| dbInstanceGroupId | URL | UUID | Y | DBインスタンスグループID |
+| dbInstanceGroupExtensionId | URL | UUID | Y | DBインスタンスグループ内の拡張機能の識別子 |
+| withCascade | Query | Boolean | Y | 強制削除するかどうか |
 
 #### リクエスト本文
 
@@ -839,8 +839,8 @@ POST /v1.0/db-instance-groups/{dbInstanceGroupId}/extensions/{extensionId}
 
 | 名前 | 区分 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|-----|
-| dbInstanceGroupId | URL | UUID | Y | DBインスタンスグループの識別子 |
-| extensionId | URL | UUID | Y | 拡張の識別子 |
+| dbInstanceGroupId | URL | UUID | Y | DBインスタンスグループID |
+| extensionId | URL | UUID | Y | 拡張機能の識別子 |
 
 #### リクエスト本文
 
@@ -850,7 +850,7 @@ POST /v1.0/db-instance-groups/{dbInstanceGroupId}/extensions/{extensionId}
 ```json
 {
 "databaseId": "550e8400-e29b-41d4-a716-446655440000",
-"schemaName": "rds",
+"schemaName": "schemaName-example",
 "withCascade": false
 }
 ```
@@ -859,9 +859,9 @@ POST /v1.0/db-instance-groups/{dbInstanceGroupId}/extensions/{extensionId}
 
 | 名前 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|
-| databaseId | UUID | Y | インストール対象データベースの識別子 |
-| schemaName | String | Y | インストール対象スキーマ名 |
-| withCascade | Boolean | N | 依存情報の強制インストールの有無<br/>- デフォルト値: `false` |
+| databaseId | UUID | Y | データベースID |
+| schemaName | String | Y | スキーマ名 |
+| withCascade | Boolean | N | 関連情報を自動的にインストールするかどうか<br/>- デフォルト値: `false` |
 
 #### レスポンス
 
@@ -941,27 +941,26 @@ GET /v1.0/db-instances
 
 ```json
 {
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+"dbInstances": [
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "dbInstances": [
-        {
-            "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
-            "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
-            "dbInstanceName": "dbInstanceName-example",
-            "description": "description-example",
-            "dbVersion": "POSTGRESQL_V17_10",
-            "dbPort": 15432,
-            "dbInstanceType": "MASTER",
-            "dbInstanceStatus": "AVAILABLE",
-            "progressStatus": "NONE",
-            "createdYmdt": "2023-12-31T15:00:00+09:00",
-            "updatedYmdt": "2023-12-31T15:00:00+09:00"
-        }
-    ]
+"dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
+"dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
+"dbInstanceName": "dbInstanceName-example",
+"description": "description-example",
+"dbVersion": "POSTGRESQL_V14_17",
+"dbPort": 1,
+"dbInstanceType": "MASTER",
+"dbInstanceStatus": "BEFORE_CREATE",
+"progressStatus": "progressStatus-example",
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+"updatedYmdt": "2023-12-31T15:00:00+09:00"
+}
+]
 }
 ```
 
@@ -974,14 +973,13 @@ GET /v1.0/db-instances
 | dbInstances.dbInstanceGroupId | UUID | DBインスタンスグループの識別子 |
 | dbInstances.dbInstanceName | String | DBインスタンスを識別できる名前 |
 | dbInstances.description | String | DBインスタンスの追加情報 |
-| dbInstances.dbVersion | String | DBエンジンタイプ |
 | dbInstances.dbVersion | Enum | DBエンジンバージョン |
 | dbInstances.dbPort | Number | DBポート |
-| dbInstances.dbInstanceType | Enum | DBインスタンスのロールタイプ<br/>- `MASTER`: マスター<br/>- `FAILED_MASTER`: フェイルオーバーされたマスター<br/>- `CANDIDATE_MASTER`: スタンバイマスター<br/>- `READ_ONLY_SLAVE`: リードレプリカ |
-| dbInstances.dbInstanceStatus | Enum | DBインスタンスの現在の状態 |
-| dbInstances.progressStatus | Enum | DBインスタンスの現在の進行状態 |
-| dbInstances.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| dbInstances.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| dbInstances.dbInstanceType | Enum | DB インスタンスの役割タイプ<br/>- MASTER: `マスター`<br/>- FAILED_MASTER: `障害マスター`<br/>- CANDIDATE_MASTER: `予備マスター`<br/>- READ_ONLY_SLAVE: `読み取りレプリカ` |
+| dbInstances.dbInstanceStatus | Enum | DBインスタンスの現在の状態<br/>- BEFORE_CREATE: `作成前 (グレー)`<br/>- AVAILABLE: `使用可能 (グリーン)`<br/>- STORAGE_FULL: `容量不足 (レッド)`<br/>- FAIL_TO_CREATE: `作成失敗 (レッド)`<br/>- FAIL_TO_CONNECT: `接続失敗 (レッド)`<br/>- REPLICATION_STOP: `レプリケーション中断 (レッド)`<br/>- REPLICATION_DELAY: `レプリケーション遅延 (イエロー)`<br/>- FAILOVER: `フェイルオーバー完了 (レッド)`<br/>- SHUTDOWN: `停止済み (グレー)`<br/>- DELETED: `削除済み (グレー)` |
+| dbInstances.progressStatus | String | DBインスタンスの現在の作業進行状態 |
+| dbInstances.createdYmdt | DateTime | 作成日時 |
+| dbInstances.updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -1006,21 +1004,26 @@ POST /v1.0/db-instances
 
 ```json
 {
-    "dbInstanceName": "db-instance",
-    "description": "description",
-    "dbFlavorId": "71f69bf9-3c01-4c1a-b135-bb75e93f6268",
-    "dbVersion": "POSTGRESQL_V17_6",
-    "dbPort": 15432,
-    "databaseName": "database",
-    "dbUserName": "db-user",
-    "dbPassword": "password",
-    "parameterGroupId": "488bf4f5-d8f7-459b-ace6-529b606c8570",
-    "dbSecurityGroupIds": [
-        "b0483a3d-e8e2-46f6-9e84-d5e31b0d44f4"
-    ],
+    "dbInstanceName": "dbInstanceName-example",
+    "dbInstanceCandidateName": "dbInstanceCandidateName-example",
+    "description": "description-example",
+    "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbVersion": "POSTGRESQL_V14_17",
+    "dbPort": 1,
+    "databaseName": "databaseName-example",
+    "dbUserName": "dbUserName-example",
+    "dbPassword": "dbPassword-example",
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbSecurityGroupIds": [],
     "userGroupIds": [],
+    "useHighAvailability": false,
+    "useDefaultNotification": false,
+    "useDeletionProtection": false,
+    "pingInterval": 1,
+    "failoverReplWaitingTime": 1,
     "network": {
-        "subnetId": "e721a9dd-dad0-4cf0-a53b-dd654ebfc683",
+        "subnetId": "550e8400-e29b-41d4-a716-446655440000",
+        "usePublicAccess": false,
         "availabilityZone": "kr-pub-a"
     },
     "storage": {
@@ -1028,12 +1031,13 @@ POST /v1.0/db-instances
         "storageSize": 20
     },
     "backup": {
-        "backupPeriod": 1,
+        "backupPeriod": 0,
+        "backupRetryCount": 0,
+        "periodicAutoBackupStrategyTypeCode": "DAILY_FULL",
         "backupSchedules": [
             {
                 "backupWndBgnTime": "00:00:00",
-                "backupWndDuration": "ONE_HOUR_AND_HALF",
-                "backupRetryExpireTime": "01:30:00"
+                "backupWndDuration": "HALF_AN_HOUR"
             }
         ]
     }
@@ -1051,7 +1055,7 @@ POST /v1.0/db-instances
 | dbVersion | Enum | Y | DBエンジンバージョン |
 | dbPort | Number | Y | DBポート<br/>- 最小値: 5432、最大値: 45432 |
 | databaseName | String | Y | データベース名 |
-| dbUserName | String | Y | DBユーザーアカウント名 |
+| dbUserName | String | Y | DB ユーザーアカウント名 |
 | dbPassword | String | Y | DBユーザーアカウントパスワード |
 | parameterGroupId | UUID | Y | パラメータグループの識別子 |
 | dbSecurityGroupIds | Array | N | DBセキュリティグループの識別子リスト |
@@ -1060,7 +1064,7 @@ POST /v1.0/db-instances
 | useDefaultNotification | Boolean | N | 基本通知の使用有無<br/>- デフォルト値: `false` |
 | useDeletionProtection | Boolean | N | 削除保護の有無<br/>- デフォルト値: `false` |
 | pingInterval | Number | N | Ping間隔(秒)<br/>- 最小値: `1`<br/>- 最大値: `600` |
-| failoverReplWaitingTime | Number | N | 高可用性使用時のフェイルオーバー待機時間<br/>- `-1`に設定時、レプリケーション遅延が解消されるまで待機し続けます。<br/>- 最小値: `-1` |
+| failoverReplWaitingTime | Number | N | フェイルオーバー複製遅延待機時間(秒)<br/>- 最小値: `-1` |
 | network | Object | Y | ネットワーク情報オブジェクト |
 | network.subnetId | UUID | Y | サブネットの識別子 |
 | network.usePublicAccess | Boolean | N | 外部接続可否<br/>- デフォルト値: `false` |
@@ -1071,10 +1075,10 @@ POST /v1.0/db-instances
 | backup | Object | Y | バックアップ情報オブジェクト |
 | backup.backupPeriod | Number | Y | バックアップの保管期間(日)<br/>- 最小値: `0`<br/>- 最大値: `730` |
 | backup.backupRetryCount | Number | N | バックアップの再試行回数<br/>- 最小値: `0`<br/>- 最大値: `10` |
-| backup.periodicAutoBackupStrategyTypeCode | Enum | N | 定期自動バックアップ戦略コード(DAILY_FULL/SNAPSHOT)<br/>- デフォルト値: `DAILY_FULL`<br/>- `SNAPSHOT`: 毎日スナップショットバックアップ<br/>- `DAILY_FULL`: 毎日フルバックアップ |
+| backup.periodicAutoBackupStrategyTypeCode | Enum | N | 定期自動バックアップ戦略コード (DAILY_FULL/SNAPSHOT)<br/>- デフォルト値: `DAILY_FULL`<br/>- SNAPSHOT: `毎日スナップショットバックアップ`<br/>- DAILY_FULL: `毎日フルバックアップ` |
 | backup.backupSchedules | Array | Y | バックアップスケジュール情報 |
 | backup.backupSchedules.backupWndBgnTime | Time | Y | バックアップ開始時間 |
-| backup.backupSchedules.backupWndDuration | Enum | Y | バックアップウィンドウ<br/>- `HALF_AN_HOUR`: 30分<br/>- `ONE_HOUR`: 1時間<br/>- `ONE_HOUR_AND_HALF`: 1時間30分<br/>- `TWO_HOURS`: 2時間<br/>- `TWO_HOURS_AND_HALF`: 2時間30分<br/>- `THREE_HOURS`: 3時間 |
+| backup.backupSchedules.backupWndDuration | Enum | Y | バックアップウィンドウ<br/>- HALF_AN_HOUR: `30分`<br/>- ONE_HOUR: `1時間`<br/>- ONE_HOUR_AND_HALF: `1時間30分`<br/>- TWO_HOURS: `2時間`<br/>- TWO_HOURS_AND_HALF: `2時間30分`<br/>- THREE_HOURS: `3時間` |
 
 #### レスポンス
 
@@ -1121,49 +1125,49 @@ POST /v1.0/db-instances/restore-from-obs
 
 ```json
 {
-"dbInstanceName": "dbInstanceName",
-"dbInstanceCandidateName": "dbInstanceCandidateName-example",
-"description": "description-example",
-"dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
-"dbPort": 15432,
-"dbVersion": "POSTGRESQL_V17_10",
-"useHighAvailability": false,
-"imageId": "550e8400-e29b-41d4-a716-446655440000",
-"pingInterval": 3,
-"failoverReplWaitingTime": 60,
-"storage": {
-"storageType": "General SSD",
-"storageSize": 20
-},
-"network": {
-"subnetId": "550e8400-e29b-41d4-a716-446655440000",
-"usePublicAccess": false,
-"availabilityZone": "kr-pub-a"
-},
-"backup": {
-"backupPeriod": 0,
-"periodicAutoBackupStrategyTypeCode": "DAILY_FULL",
-"backupRetryCount": 0,
-"replicationRegion": "KR1",
-"backupSchedules": [
-{
-"backupWndBgnTime": "00:00:00",
-"backupWndDuration": "HALF_AN_HOUR"
-}
-]
-},
-"restore": {
-"tenantId": "0123456789abcdef0123456789abcdef",
-"username": "username-example",
-"password": "password-example",
-"targetContainer": "targetContainer-example",
-"objectPath": "objectPath-example"
-},
-"useDefaultNotification": false,
-"parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
-"dbSecurityGroupIds": [],
-"userGroupIds": [],
-"useDeletionProtection": false
+    "dbInstanceName": "dbInstanceName",
+    "dbInstanceCandidateName": "dbInstanceCandidateName-example",
+    "description": "description-example",
+    "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbPort": 1,
+    "dbVersion": "POSTGRESQL_V14_17",
+    "useHighAvailability": false,
+    "imageId": "550e8400-e29b-41d4-a716-446655440000",
+    "pingInterval": 3,
+    "failoverReplWaitingTime": 60,
+    "storage": {
+        "storageType": "General SSD",
+        "storageSize": 20
+    },
+    "network": {
+        "subnetId": "550e8400-e29b-41d4-a716-446655440000",
+        "usePublicAccess": false,
+        "availabilityZone": "kr-pub-a"
+    },
+    "backup": {
+        "backupPeriod": 0,
+        "periodicAutoBackupStrategyTypeCode": "DAILY_FULL",
+        "backupRetryCount": 0,
+        "replicationRegion": "KR1",
+        "backupSchedules": [
+            {
+                "backupWndBgnTime": "00:00:00",
+                "backupWndDuration": "HALF_AN_HOUR"
+            }
+        ]
+    },
+    "restore": {
+        "tenantId": "0123456789abcdef0123456789abcdef",
+        "username": "username-example",
+        "password": "password-example",
+        "targetContainer": "targetContainer-example",
+        "objectPath": "objectPath-example"
+    },
+    "useDefaultNotification": false,
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbSecurityGroupIds": [],
+    "userGroupIds": [],
+    "useDeletionProtection": false
 }
 ```
 
@@ -1180,7 +1184,7 @@ POST /v1.0/db-instances/restore-from-obs
 | useHighAvailability | Boolean | N | 高可用性の使用有無<br/>- デフォルト値: `false` |
 | imageId | UUID | N | イメージの識別子 |
 | pingInterval | Number | N | 高可用性使用時のPing間隔(秒)<br/>- 最小値: `1`<br/>- 最大値: `600` |
-| failoverReplWaitingTime | Number | N | 高可用性使用時のフェイルオーバー待機時間<br/>- `-1`に設定時、レプリケーション遅延が解消されるまで待機し続けます。<br/>- 最小値: `-1` |
+| failoverReplWaitingTime | Number | N | フェイルオーバー複製遅延待機時間(秒)<br/>- 最小値: `-1` |
 | storage | Object | Y | ストレージ情報オブジェクト |
 | storage.storageType | Enum | Y | ストレージタイプ |
 | storage.storageSize | Number | Y | データストレージサイズ(GB)<br/>- 最小値: `20` |
@@ -1190,15 +1194,15 @@ POST /v1.0/db-instances/restore-from-obs
 | network.availabilityZone | Enum | N | DBインスタンスを作成するアベイラビリティゾーン |
 | backup | Object | Y | バックアップ情報オブジェクト |
 | backup.backupPeriod | Number | Y | バックアップの保管期間(日)<br/>- 最小値: `0`<br/>- 最大値: `730` |
-| backup.periodicAutoBackupStrategyTypeCode | Enum | N | 定期自動バックアップ戦略コード(DAILY_FULL/SNAPSHOT)<br/>- デフォルト値: `DAILY_FULL`<br/>- `SNAPSHOT`: 毎日スナップショットバックアップ<br/>- `DAILY_FULL`: 毎日フルバックアップ |
+| backup.periodicAutoBackupStrategyTypeCode | Enum | N | 定期自動バックアップ戦略コード (DAILY_FULL/SNAPSHOT)<br/>- デフォルト値: `DAILY_FULL`<br/>- SNAPSHOT: `毎日スナップショットバックアップ`<br/>- DAILY_FULL: `毎日フルバックアップ` |
 | backup.backupRetryCount | Number | N | バックアップの再試行回数<br/>- 最小値: `0`<br/>- 最大値: `10` |
-| backup.replicationRegion | Enum | N | バックアップのレプリケーションリージョン<br/>- `KR1`: 韓国(パンギョ)<br/>- `KR2`: 韓国(ピョンチョン) |
+| backup.replicationRegion | Enum | N | バックアップ複製リージョン<br/>- KR1: `韓国(パンギョ)`<br/>- KR2: `韓国(ピョンチョン)` |
 | backup.backupSchedules | Array | Y | バックアップスケジュールリスト |
 | backup.backupSchedules.backupWndBgnTime | Time | Y | バックアップ開始時間 |
-| backup.backupSchedules.backupWndDuration | Enum | Y | バックアップウィンドウ<br/>- `HALF_AN_HOUR`: 30分<br/>- `ONE_HOUR`: 1時間<br/>- `ONE_HOUR_AND_HALF`: 1時間30分<br/>- `TWO_HOURS`: 2時間<br/>- `TWO_HOURS_AND_HALF`: 2時間30分<br/>- `THREE_HOURS`: 3時間 |
+| backup.backupSchedules.backupWndDuration | Enum | Y | バックアップウィンドウ<br/>- HALF_AN_HOUR: `30分`<br/>- ONE_HOUR: `1時間`<br/>- ONE_HOUR_AND_HALF: `1時間30分`<br/>- TWO_HOURS: `2時間`<br/>- TWO_HOURS_AND_HALF: `2時間30分`<br/>- THREE_HOURS: `3時間` |
 | restore | Object | Y | 復元情報オブジェクト |
 | restore.tenantId | String | Y | バックアップが保存されているオブジェクトストレージのテナントID |
-| restore.username | String | Y | NHN CloudアカウントまたはIAMアカウントID |
+| restore.username | String | Y | NHN Cloud アカウントまたは IAM メンバー ID |
 | restore.password | String | Y | バックアップが保存されているオブジェクトストレージのAPIパスワード |
 | restore.targetContainer | String | Y | バックアップが保存されているオブジェクトストレージのコンテナ |
 | restore.objectPath | String | Y | コンテナに保存されているバックアップのパス |
@@ -1320,11 +1324,11 @@ GET /v1.0/db-instances/{dbInstanceId}
 "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
 "dbInstanceName": "dbInstanceName-example",
 "description": "description-example",
-"dbVersion": "POSTGRESQL_V17_10",
-"dbPort": 15432,
+"dbVersion": "POSTGRESQL_V14_17",
+"dbPort": 1,
 "dbInstanceType": "MASTER",
-"dbInstanceStatus": "AVAILABLE",
-"progressStatus": "NONE",
+"dbInstanceStatus": "BEFORE_CREATE",
+"progressStatus": "progressStatus-example",
 "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
 "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
 "dbSecurityGroupIds": [
@@ -1336,8 +1340,7 @@ GET /v1.0/db-instances/{dbInstanceId}
 "useDeletionProtection": false,
 "needToApplyParameterGroup": false,
 "needMigration": false,
-    "osVersion": "osVersion-example",
-    "osVersion": "Ubuntu Server 24.04 LTS",
+"osVersion": "osVersion-example",
 "createdYmdt": "2023-12-31T15:00:00+09:00",
 "updatedYmdt": "2023-12-31T15:00:00+09:00"
 }
@@ -1353,9 +1356,9 @@ GET /v1.0/db-instances/{dbInstanceId}
 | description | String | DBインスタンスの追加情報 |
 | dbVersion | Enum | DBエンジンバージョン |
 | dbPort | Number | DBポート |
-| dbInstanceType | Enum | DBインスタンスのロールタイプ<br/>- `MASTER`: マスター<br/>- `FAILED_MASTER`: フェイルオーバーされたマスター<br/>- `CANDIDATE_MASTER`: スタンバイマスター<br/>- `READ_ONLY_SLAVE`: リードレプリカ |
-| dbInstanceStatus | Enum | DBインスタンスの現在の状態 |
-| progressStatus | Enum | DBインスタンスの現在の進行状態 |
+| dbInstanceType | Enum | DBインスタンスのロールタイプ<br/>- MASTER: `マスター`<br/>- FAILED_MASTER: `障害マスター`<br/>- CANDIDATE_MASTER: `予備マスター`<br/>- READ_ONLY_SLAVE: `リードレプリカ` |
+| dbInstanceStatus | Enum | DBインスタンスの現在の状態<br/>- BEFORE_CREATE: `作成前 (グレー)`<br/>- AVAILABLE: `使用可能 (グリーン)`<br/>- STORAGE_FULL: `容量不足 (レッド)`<br/>- FAIL_TO_CREATE: `作成失敗 (レッド)`<br/>- FAIL_TO_CONNECT: `接続失敗 (レッド)`<br/>- REPLICATION_STOP: `レプリケーション中断 (レッド)`<br/>- REPLICATION_DELAY: `レプリケーション遅延 (イエロー)`<br/>- FAILOVER: `フェイルオーバー完了 (レッド)`<br/>- SHUTDOWN: `停止済み (グレー)`<br/>- DELETED: `削除済み (グレー)` |
+| progressStatus | String | DBインスタンスの現在の作業進行状態 |
 | dbFlavorId | UUID | DBインスタンス仕様の識別子 |
 | parameterGroupId | UUID | DBインスタンスに適用されたパラメータグループの識別子 |
 | dbSecurityGroupIds | Array | DBインスタンスに適用されたDBセキュリティグループの識別子リスト |
@@ -1364,8 +1367,8 @@ GET /v1.0/db-instances/{dbInstanceId}
 | needToApplyParameterGroup | Boolean | 最新パラメータグループの適用可否 |
 | needMigration | Boolean | マイグレーションの要否 |
 | osVersion | String | OSバージョン |
-| createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| createdYmdt | DateTime | 作成日時 |
+| updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -1399,10 +1402,10 @@ PUT /v1.0/db-instances/{dbInstanceId}
 "dbInstanceName": "dbInstanceName-example",
 "dbInstanceCandidateName": "dbInstanceCandidateName-example",
 "description": "description-example",
-"dbPort": 15432,
+"dbPort": 1,
 "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
 "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
-"dbVersion": "POSTGRESQL_V17_10",
+"dbVersion": "POSTGRESQL_V14_17",
 "dbSecurityGroupIds": [],
 "executeBackup": false,
 "useOnlineFailover": false,
@@ -1421,9 +1424,9 @@ PUT /v1.0/db-instances/{dbInstanceId}
 | dbPort | Number | N | DBポート<br/>- 最小値: 5432、最大値: 45432 |
 | dbFlavorId | UUID | N | DBインスタンス仕様の識別子 |
 | parameterGroupId | UUID | N | パラメータグループの識別子 |
-| dbVersion | Enum  | N | DBエンジンバージョン |
+| dbVersion | Enum | N | DBエンジンバージョンコード |
 | dbSecurityGroupIds | Array | N | DBセキュリティグループの識別子リスト |
-| executeBackup | Boolean | N | 現時点バックアップを実行するかどうか<br/>- デフォルト値: `false` |
+| executeBackup | Boolean | N | 現時点のバックアップを実行するかどうか<br/>- デフォルト値: `false` |
 | useOnlineFailover | Boolean | N | フェイルオーバーを利用した再起動の有無<br/>- デフォルト値: `false` |
 | waitReplicationDelay | Boolean | N | 複製遅延の解消を待機するかどうか<br/>- デフォルト値: `false` |
 | useReadOnly | Boolean | N | 書き込み負荷のブロック<br/>- デフォルト値: `false` |
@@ -1500,13 +1503,13 @@ POST /v1.0/db-instances/{dbInstanceId}/apply-recent-parameter-group
 
 ---
 
-### 現在のDBインスタンスで選択可能なDBエンジンバージョンの照会
+### 現在の DB インスタンスで選択可能な DB エンジンバージョンの照会
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:DbInstance.Get | 現在のDBインスタンスで選択可能なDBエンジンバージョンの照会 |
+| RDSforPostgreSQL:DbInstance.Get | 現在の DB インスタンスで選択可能な DB エンジンバージョンの照会 |
 
 #### リクエスト
 
@@ -1538,9 +1541,10 @@ GET /v1.0/db-instances/{dbInstanceId}/available-db-versions
 },
 "availableDbVersions": [
 {
-            "dbVersion": "POSTGRESQL_V17_10",
-            "dbVersionName": "PostgreSQL V17.10",
-            "restorableFromObs": true
+            "dbVersionCode": "dbVersionCode-example",
+            "dbMajorVersionCode": "dbMajorVersionCode-example",
+"name": "PostgreSQL V14.6",
+"canCreate": false
 }
 ]
 }
@@ -1551,9 +1555,10 @@ GET /v1.0/db-instances/{dbInstanceId}/available-db-versions
 | 名前 | タイプ | 説明 |
 |-----|-----|-----|
 | availableDbVersions | Array | DBバージョン情報 |
-| availableDbVersions.dbVersion | Enum | DBエンジンバージョン |
-| availableDbVersions.dbVersionName | String | DBエンジンバージョン名 |
-| availableDbVersions.restorableFromObs | Boolean | オブジェクトストレージからの復元可否 |
+| availableDbVersions.dbVersionCode | String | DBバージョンコード |
+| availableDbVersions.dbMajorVersionCode | String | DBメジャーバージョンコード |
+| availableDbVersions.name | String | DBバージョン名 |
+| availableDbVersions.canCreate | Boolean | 新規作成可能かどうか |
 
 ---
 
@@ -1594,7 +1599,7 @@ POST /v1.0/db-instances/{dbInstanceId}/backup
 | 名前 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|
 | backupName | String | Y | バックアップを識別できる名前 |
-| backupMethodType | Enum | N | バックアップ方式<br/>- `FULL`<br/>- `SNAPSHOT` |
+| backupMethodType | Enum | N | バックアップ方式<br/>- FULL<br/>- SNAPSHOT |
 
 #### レスポンス
 
@@ -1651,22 +1656,22 @@ GET /v1.0/db-instances/{dbInstanceId}/backup-info
 
 ```json
 {
-"header": {
-"resultCode": 0,
-"resultMessage": "SUCCESS",
-"isSuccessful": true
-},
-"allowAutoBackup": false,
-"usePeriodicAutoBackup": false,
-"periodicAutoBackupStrategyTypeCode": "SNAPSHOT",
-"backupPeriod": 1,
-"backupRetryCount": 1,
-"backupSchedules": [
-{
-"backupWndBgnTime": "00:00:00",
-"backupWndDuration": "HALF_AN_HOUR"
-}
-]
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "allowAutoBackup": false,
+    "usePeriodicAutoBackup": false,
+    "periodicAutoBackupStrategyTypeCode": "SNAPSHOT",
+    "backupPeriod": 1,
+    "backupRetryCount": 1,
+    "backupSchedules": [
+        {
+            "backupWndBgnTime": "00:00:00",
+            "backupWndDuration": "HALF_AN_HOUR"
+        }
+    ]
 }
 ```
 
@@ -1676,12 +1681,12 @@ GET /v1.0/db-instances/{dbInstanceId}/backup-info
 |-----|-----|-----|
 | allowAutoBackup | Boolean | 自動バックアップを許可するかどうか |
 | usePeriodicAutoBackup | Boolean | 予定された自動バックアップを使用するかどうか |
-| periodicAutoBackupStrategyTypeCode | Enum | 定期自動バックアップ戦略コード(DAILY_FULL/SNAPSHOT)<br/>- `SNAPSHOT`: 毎日スナップショットバックアップ<br/>- `DAILY_FULL`: 毎日フルバックアップ |
+| periodicAutoBackupStrategyTypeCode | Enum | 定期的な自動バックアップ戦略コード (DAILY_FULL/SNAPSHOT)<br/>- SNAPSHOT: `毎日スナップショットバックアップ`<br/>- DAILY_FULL: `毎日フルバックアップ` |
 | backupPeriod | Number | バックアップの保管期間(日) |
 | backupRetryCount | Number | バックアップの再試行回数 |
 | backupSchedules | Array | バックアップスケジュールリスト |
 | backupSchedules.backupWndBgnTime | Time | バックアップ開始時間 |
-| backupSchedules.backupWndDuration | Enum | バックアップウィンドウ<br/>- `HALF_AN_HOUR`: 30分<br/>- `ONE_HOUR`: 1時間<br/>- `ONE_HOUR_AND_HALF`: 1時間30分<br/>- `TWO_HOURS`: 2時間<br/>- `TWO_HOURS_AND_HALF`: 2時間30分<br/>- `THREE_HOURS`: 3時間 |
+| backupSchedules.backupWndDuration | Enum | バックアップウィンドウ<br/>- HALF_AN_HOUR: `30分`<br/>- ONE_HOUR: `1時間`<br/>- ONE_HOUR_AND_HALF: `1時間30分`<br/>- TWO_HOURS: `2時間`<br/>- TWO_HOURS_AND_HALF: `2時間30分`<br/>- THREE_HOURS: `3時間` |
 
 ---
 
@@ -1712,17 +1717,17 @@ PUT /v1.0/db-instances/{dbInstanceId}/backup-info
 
 ```json
 {
-"allowAutoBackup": false,
-"usePeriodicAutoBackup": false,
-"periodicAutoBackupStrategyTypeCode": "SNAPSHOT",
-"backupPeriod": 0,
-"backupRetryCount": 0,
-"backupSchedules": [
-{
-"backupWndBgnTime": "00:00:00",
-"backupWndDuration": "HALF_AN_HOUR"
-}
-]
+    "allowAutoBackup": false,
+    "usePeriodicAutoBackup": false,
+    "periodicAutoBackupStrategyTypeCode": "SNAPSHOT",
+    "backupPeriod": 0,
+    "backupRetryCount": 0,
+    "backupSchedules": [
+        {
+            "backupWndBgnTime": "00:00:00",
+            "backupWndDuration": "HALF_AN_HOUR"
+        }
+    ]
 }
 ```
 
@@ -1732,12 +1737,12 @@ PUT /v1.0/db-instances/{dbInstanceId}/backup-info
 |-----|-----|-----|-----|
 | allowAutoBackup | Boolean | N | 自動バックアップを許可するかどうか |
 | usePeriodicAutoBackup | Boolean | N | 予定された自動バックアップを使用するかどうか |
-| periodicAutoBackupStrategyTypeCode | Enum | N | 定期自動バックアップ戦略コード(DAILY_FULL/SNAPSHOT)<br/>- `SNAPSHOT`: 毎日スナップショットバックアップ<br/>- `DAILY_FULL`: 毎日フルバックアップ |
+| periodicAutoBackupStrategyTypeCode | Enum | N | 定期自動バックアップ戦略コード (DAILY_FULL/SNAPSHOT)<br/>- SNAPSHOT: `毎日スナップショットバックアップ`<br/>- DAILY_FULL: `毎日フルバックアップ` |
 | backupPeriod | Number | N | バックアップの保管期間(日)<br/>- 最小値: `0`<br/>- 最大値: `730` |
 | backupRetryCount | Number | N | バックアップの再試行回数<br/>- 最小値: `0`<br/>- 最大値: `10` |
 | backupSchedules | Array | N | バックアップスケジュールリスト |
 | backupSchedules.backupWndBgnTime | Time | Y | バックアップ開始時間 |
-| backupSchedules.backupWndDuration | Enum | Y | バックアップウィンドウ<br/>- `HALF_AN_HOUR`: 30分<br/>- `ONE_HOUR`: 1時間<br/>- `ONE_HOUR_AND_HALF`: 1時間30分<br/>- `TWO_HOURS`: 2時間<br/>- `TWO_HOURS_AND_HALF`: 2時間30分<br/>- `THREE_HOURS`: 3時間 |
+| backupSchedules.backupWndDuration | Enum | Y | バックアップWindows<br/>バックアップ開始時間から設定された期間内に自動バックアップが実行されます。<br/>- HALF_AN_HOUR: `30分`<br/>- ONE_HOUR: `1時間`<br/>- ONE_HOUR_AND_HALF: `1時間30分`<br/>- TWO_HOURS: `2時間`<br/>- TWO_HOURS_AND_HALF: `2時間30分`<br/>- THREE_HOURS: `3時間` |
 
 #### レスポンス
 
@@ -1791,7 +1796,7 @@ POST /v1.0/db-instances/{dbInstanceId}/backup-to-object-storage
 ```json
 {
 "tenantId": "0123456789abcdef0123456789abcdef",
-"username": "example@nhncloud.com or example",
+"username": "username-example",
 "password": "password-example",
 "targetContainer": "targetContainer-example",
 "objectPath": "objectPath-example"
@@ -1803,7 +1808,7 @@ POST /v1.0/db-instances/{dbInstanceId}/backup-to-object-storage
 | 名前 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|
 | tenantId | String | Y | バックアップが保存されるオブジェクトストレージのテナントID<br/>- 最小長: `32`<br/>- 最大長: `32` |
-| username | String | Y | NHN CloudアカウントまたはIAMアカウントID |
+| username | String | Y | NHN Cloud アカウントまたは IAM メンバー ID |
 | password | String | Y | バックアップが保存されるオブジェクトストレージのAPIパスワード |
 | targetContainer | String | Y | バックアップが保存されるオブジェクトストレージのコンテナ |
 | objectPath | String | Y | コンテナに保存されるバックアップのパス |
@@ -1871,14 +1876,13 @@ GET /v1.0/db-instances/{dbInstanceId}/databases
 "databases": [
 {
 "databaseId": "550e8400-e29b-41d4-a716-446655440000",
-"databaseName": "database-1",
+"databaseName": "databaseName-example",
 "databaseStatus": "STABLE",
-"errorReason": "errorReason-example",
 "createdYmdt": "2023-12-31T15:00:00+09:00",
 "updatedYmdt": "2023-12-31T15:00:00+09:00",
 "schemas": [
 {
-"schemaName": "rds"
+"schemaName": "schemaName-example"
 }
 ],
 "errorReason": "errorReason-example"
@@ -1894,12 +1898,12 @@ GET /v1.0/db-instances/{dbInstanceId}/databases
 | databases | Array | データベース情報 |
 | databases.databaseId | UUID | データベースの識別子 |
 | databases.databaseName | String | データベース名 |
-| databases.databaseStatus | Enum | データベースの現在の状態<br/>- `STABLE`: 使用可能<br/>- `CREATING`: 作成中<br/>- `MODIFYING`: 修正中<br/>- `DELETING`: 削除中<br/>- `DELETED`: 削除済み<br/>- `SYNCING`: 同期中<br/>- `DELETE_ERROR`: 削除失敗 |
-| databases.errorReason | String | 削除失敗の原因 |
-| databases.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| databases.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| databases.databaseStatus | Enum | データベースの現在状態<br/>- STABLE: `使用可能`<br/>- CREATING: `作成中`<br/>- MODIFYING: `修正中`<br/>- DELETING: `削除中`<br/>- DELETED: `削除済み`<br/>- SYNCING: `同期中`<br/>- DELETE_ERROR: `削除失敗` |
+| databases.createdYmdt | DateTime | 作成日時 |
+| databases.updatedYmdt | DateTime | 修正日時 |
 | databases.schemas | Array | スキーマ情報 |
 | databases.schemas.schemaName | String | スキーマ名 |
+| databases.errorReason | String | 削除失敗の原因 |
 
 ---
 
@@ -1930,7 +1934,7 @@ POST /v1.0/db-instances/{dbInstanceId}/databases
 
 ```json
 {
-"databaseName": "database-1"
+"databaseName": "databaseName-example"
 }
 ```
 
@@ -2042,7 +2046,7 @@ PUT /v1.0/db-instances/{dbInstanceId}/databases/{databaseId}
 ```json
 {
 "applyHbaRulesImmediately": false,
-"databaseName": "database-1"
+"databaseName": "databaseName-example"
 }
 ```
 
@@ -2133,10 +2137,10 @@ GET /v1.0/db-instances/{dbInstanceId}/db-users
 | dbUsers | Array | DBユーザーリスト |
 | dbUsers.dbUserId | UUID | DBユーザーの識別子 |
 | dbUsers.dbUserName | String | DBユーザーアカウント名 |
-| dbUsers.authorityType | Enum | DBユーザー権限のタイプ<br/>- `CUSTOM`: ユーザー定義権限<br/>- `READ`: READ権限(読み取り専用権限)<br/>- `CRUD`: CRUD権限(読み取り権限を含む)<br/>- `DDL`: DDL権限(CRUD権限を含む) |
-| dbUsers.dbUserStatus | Enum | DBユーザーの現在の状態<br/>- `STABLE`: 使用可能<br/>- `CREATING`: 作成中<br/>- `MODIFYING`: 修正中<br/>- `DELETING`: 削除中<br/>- `DELETED`: 削除済み<br/>- `SYNCING`: 同期中<br/>- `DELETE_ERROR`: 削除失敗 |
-| dbUsers.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| dbUsers.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| dbUsers.authorityType | Enum | DBユーザー権限タイプ<br/>- CUSTOM: `カスタム権限`<br/>- READ: `READ権限（読み取り専用権限）`<br/>- CRUD: `CRUD権限（読み取り権限を含む）`<br/>- DDL: `DDL権限（CRUD権限を含む）` |
+| dbUsers.dbUserStatus | Enum | DBユーザーの現在状態<br/>- STABLE: `使用可能`<br/>- CREATING: `作成中`<br/>- MODIFYING: `修正中`<br/>- DELETING: `削除中`<br/>- DELETED: `削除済み`<br/>- SYNCING: `同期中`<br/>- DELETE_ERROR: `削除失敗` |
+| dbUsers.createdYmdt | DateTime | 作成日時 |
+| dbUsers.updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -2171,7 +2175,7 @@ POST /v1.0/db-instances/{dbInstanceId}/db-users
 "dbPassword": "dbPassword-example",
 "authorityType": "CUSTOM",
 "createDefaultHbaRules": false,
-"address": "192.168.0.10/32"
+"address": "address-example"
 }
 ```
 
@@ -2181,7 +2185,7 @@ POST /v1.0/db-instances/{dbInstanceId}/db-users
 |-----|-----|-----|-----|
 | dbUserName | String | Y | DBユーザーアカウント名 |
 | dbPassword | String | Y | DBユーザーアカウントパスワード |
-| authorityType | Enum | Y | DBユーザー権限のタイプ<br/>- `CUSTOM`: ユーザー定義権限<br/>- `READ`: 読み取り権限<br/>- `CRUD`: CRUD権限<br/>- `DDL`: DDL権限 |
+| authorityType | Enum | Y | DBユーザー権限タイプ<br/>- CUSTOM: `ユーザー定義権限`<br/>- READ: `読み取り権限`<br/>- CRUD: `CRUD権限`<br/>- DDL: `DDL権限` |
 | createDefaultHbaRules | Boolean | N | 基本アクセス制御ルールの作成可否<br/>- デフォルト値: `false` |
 | address | String | N | 接続アドレス |
 
@@ -2299,7 +2303,7 @@ PUT /v1.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
 |-----|-----|-----|-----|
 | dbUserName | String | N | DBユーザーアカウント名 |
 | dbPassword | String | N | DBユーザーアカウントパスワード |
-| authorityType | Enum | N | DBユーザー権限<br/>- `CUSTOM`: ユーザー定義権限<br/>- `READ`: 読み取り権限<br/>- `CRUD`: CRUD権限<br/>- `DDL`: DDL権限 |
+| authorityType | Enum | N | DBユーザー権限<br/>- CUSTOM: `カスタム権限`<br/>- READ: `読み取り権限`<br/>- CRUD: `CRUD権限`<br/>- DDL: `DDL権限` |
 | applyHbaRulesImmediately | Boolean | N | アクセス制御変更事項の即時適用可否<br/>- デフォルト値: `false` |
 
 #### レスポンス
@@ -2453,7 +2457,7 @@ GET /v1.0/db-instances/{dbInstanceId}/hba-rules
 "dbUserName": "dbUserName-example"
 }
 ],
-"address": "192.168.0.10/32",
+"address": "address-example",
 "authMethod": "TRUST",
 "reservedAction": "NONE",
 "order": 1,
@@ -2470,31 +2474,31 @@ GET /v1.0/db-instances/{dbInstanceId}/hba-rules
 |-----|-----|-----|
 | hbaRules | Array | アクセス制御ルールリスト |
 | hbaRules.hbaRuleId | UUID | アクセス制御ルールの識別子 |
-| hbaRules.hbaRuleStatus | Enum | アクセス制御ルールの現在の状態<br/>- `CREATED`: 作成済み<br/>- `APPLIED`: 適用済み<br/>- `CREATING`: 作成中<br/>- `MODIFYING`: 修正中<br/>- `DELETING`: 削除中<br/>- `DELETED`: 削除済み |
-| hbaRules.databaseApplyType | Enum | データベースルールの適用方式<br/>- `ENTIRE`: 全て<br/>- `USER_CUSTOM`: ユーザー指定 |
-| hbaRules.dbUserApplyTypeCode | Enum | DBユーザールールの適用方式<br/>- `ENTIRE`: 全て<br/>- `USER_CUSTOM`: ユーザー指定 |
-| hbaRules.databases | Array | ユーザー指定データベースのリスト |
-| hbaRules.databases.databaseId | UUID | ユーザー指定データベースの識別子 |
-| hbaRules.databases.databaseName | String | ユーザー指定データベース名 |
-| hbaRules.dbUsers | Array | ユーザー指定DBユーザーのリスト |
-| hbaRules.dbUsers.dbUserId | UUID | ユーザー指定DBユーザーの識別子 |
-| hbaRules.dbUsers.dbUserName | String | ユーザー指定DBユーザーアカウント名 |
-| hbaRules.address | String | 接続アドレス<br/>- CIDR形式、ホスト名、またはドメイン形式で入力 |
-| hbaRules.authMethod | Enum | 認証方式<br/>- `TRUST`: トラスト(パスワード不要)<br/>- `REJECT`: 接続ブロック<br/>- `SCRAM_SHA_256`: パスワード(SCRAM-SHA-256) |
-| hbaRules.reservedAction | Enum | 予約ジョブ<br/>- `NONE`: なし<br/>- `CREATE`: 作成予約(適用が必要)<br/>- `MODIFY`: 修正予約(適用が必要)<br/>- `DELETE`: 削除予約(適用が必要) |
+| hbaRules.hbaRuleStatus | Enum | アクセス制御ルールの現在状態<br/>- CREATED: `作成済み`<br/>- APPLIED: `適用済み`<br/>- CREATING: `作成中`<br/>- MODIFYING: `修正中`<br/>- DELETING: `削除中`<br/>- DELETED: `削除済み` |
+| hbaRules.databaseApplyType | Enum | DB データベース適用タイプ<br/>- ENTIRE: `全体`<br/>- USER_CUSTOM: `ユーザー指定` |
+| hbaRules.dbUserApplyTypeCode | Enum | DB ユーザー適用タイプ<br/>- ENTIRE: `全体`<br/>- USER_CUSTOM: `ユーザー指定` |
+| hbaRules.databases | Array | ユーザー指定のデータベースリスト |
+| hbaRules.databases.databaseId | UUID | データベースID |
+| hbaRules.databases.databaseName | String | データベース名 |
+| hbaRules.dbUsers | Array | ユーザー指定のDBユーザーリスト |
+| hbaRules.dbUsers.dbUserId | UUID | DBユーザーID |
+| hbaRules.dbUsers.dbUserName | String | DBユーザー名 |
+| hbaRules.address | String | 接続アドレス |
+| hbaRules.authMethod | Enum | 認証方式<br/>- TRUST: `トラスト (パスワード不要)`<br/>- REJECT: `接続拒否`<br/>- SCRAM_SHA_256: `パスワード (SCRAM-SHA-256)` |
+| hbaRules.reservedAction | Enum | 予約された操作内容<br/>- NONE: `なし`<br/>- CREATE: `作成予約 (適用が必要)`<br/>- MODIFY: `変更予約 (適用が必要)`<br/>- DELETE: `削除予約 (適用が必要)` |
 | hbaRules.order | Number | 適用順序 |
-| hbaRules.applicable | Boolean | 適用可否<br/>- 適用不可状態のルールは無視されます |
-| needToApply | Boolean | 変更事項の適用の要否 |
+| hbaRules.applicable | Boolean | 適用可否 |
+| needToApply | Boolean | 変更の適用要否 |
 
 ---
 
-### アクセス制御ルールの追加
+### DBインスタンスのアクセス制御ルールの追加
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:DbInstanceHba.Create | アクセス制御ルールの追加 |
+| RDSforPostgreSQL:DbInstanceHba.Create | DB インスタンスアクセス制御ルール追加 |
 
 #### リクエスト
 
@@ -2520,7 +2524,7 @@ POST /v1.0/db-instances/{dbInstanceId}/hba-rules
 "dbUserApplyType": "ENTIRE",
 "databaseIds": [],
 "dbUserIds": [],
-"address": "192.168.0.10/32",
+"address": "address-example",
 "authMethod": "TRUST"
 }
 ```
@@ -2529,13 +2533,13 @@ POST /v1.0/db-instances/{dbInstanceId}/hba-rules
 
 | 名前 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|
-| connectionTypeCode | Enum | N | アクセス制御レコードのタイプ<br/>- `HOST`: TCP/IPでの接続時に有効<br/>- `HOST_NO_SSL`: SSL暗号化を使用しない接続時のみ有効 |
-| databaseApplyType | Enum | Y | データベースルールの適用方式<br/>- `ENTIRE`: 全て<br/>- `USER_CUSTOM`: ユーザー指定 |
-| dbUserApplyType | Enum | Y | DBユーザールールの適用方式<br/>- `ENTIRE`: 全て<br/>- `USER_CUSTOM`: ユーザー指定 |
-| databaseIds | Array | N | ユーザー指定データベースの識別子リスト |
-| dbUserIds | Array | N | ユーザー指定DBユーザーの識別子リスト |
-| address | String | Y | 接続アドレス<br/>- CIDR形式、ホスト名またはドメイン形式で入力 |
-| authMethod | Enum | Y | 認証方式<br/>- `TRUST`: トラスト(パスワード不要)<br/>- `REJECT`: 接続ブロック<br/>- `SCRAM_SHA_256`: パスワード(SCRAM-SHA-256) |
+| connectionTypeCode | Enum | N | アクセス制御レコードタイプ<br/>- HOST: `TCP/IP で接続する際に有効`<br/>- HOST_NO_SSL: `SSL 暗号化を使用しない接続時にのみ有効` |
+| databaseApplyType | Enum | Y | データベース適用タイプ<br/>- ENTIRE: `全体`<br/>- USER_CUSTOM: `ユーザー定義` |
+| dbUserApplyType | Enum | Y | DBユーザー適用タイプ<br/>- ENTIRE: `全体`<br/>- USER_CUSTOM: `ユーザー定義` |
+| databaseIds | Array | N | データベースの識別子リスト |
+| dbUserIds | Array | N | DBユーザーの識別子リスト |
+| address | String | Y | 接続アドレス |
+| authMethod | Enum | Y | 認証方式<br/>- TRUST: `トラスト（パスワード不要）`<br/>- REJECT: `接続拒否`<br/>- SCRAM_SHA_256: `パスワード（SCRAM-SHA-256）` |
 
 #### レスポンス
 
@@ -2561,13 +2565,13 @@ POST /v1.0/db-instances/{dbInstanceId}/hba-rules
 
 ---
 
-### アクセス制御ルールを適用
+### DBインスタンスのアクセス制御ルール適用
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:DbInstance.Modify | アクセス制御ルールの適用 |
+| RDSforPostgreSQL:DbInstance.Modify | DBインスタンスのアクセス制御ルール適用 |
 
 #### リクエスト
 
@@ -2609,13 +2613,13 @@ POST /v1.0/db-instances/{dbInstanceId}/hba-rules/apply
 
 ---
 
-### アクセス制御ルールの順序調整
+### DBインスタンスアクセス制御ルールの順序変更
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:DbInstanceHba.Modify | アクセス制御ルールの順序調整 |
+| RDSforPostgreSQL:DbInstanceHba.Modify | DB インスタンスアクセス制御ルールの順序変更 |
 
 #### リクエスト
 
@@ -2652,13 +2656,13 @@ PUT /v1.0/db-instances/{dbInstanceId}/hba-rules/orders
 
 ---
 
-### アクセス制御設定の削除
+### DBインスタンスアクセス制御設定の削除
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:DbInstanceHba.Delete | アクセス制御設定の削除 |
+| RDSforPostgreSQL:DbInstanceHba.Delete | DB インスタンスアクセス制御設定削除 |
 
 #### リクエスト
 
@@ -2683,13 +2687,13 @@ DELETE /v1.0/db-instances/{dbInstanceId}/hba-rules/{hbaRuleId}
 
 ---
 
-### アクセス制御ルールの修正
+### DBインスタンスのアクセス制御ルールの変更
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:DbInstanceHba.Modify | アクセス制御ルールの修正 |
+| RDSforPostgreSQL:DbInstanceHba.Modify | DB インスタンスのアクセス制御ルールの変更 |
 
 #### リクエスト
 
@@ -2716,7 +2720,7 @@ PUT /v1.0/db-instances/{dbInstanceId}/hba-rules/{hbaRuleId}
 "dbUserApplyType": "ENTIRE",
 "databaseIds": [],
 "dbUserIds": [],
-"address": "192.168.0.10/32",
+"address": "address-example",
 "authMethod": "TRUST"
 }
 ```
@@ -2725,13 +2729,13 @@ PUT /v1.0/db-instances/{dbInstanceId}/hba-rules/{hbaRuleId}
 
 | 名前 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|
-| connectionTypeCode | Enum | N | アクセス制御レコードのタイプ<br/>- `HOST`: TCP/IPでの接続時に有効<br/>- `HOST_NO_SSL`: SSL暗号化を使用しない接続時のみ有効 |
-| databaseApplyType | Enum | Y | データベースルールの適用方式<br/>- `ENTIRE`: 全て<br/>- `USER_CUSTOM`: ユーザー指定 |
-| dbUserApplyType | Enum | Y | DBユーザールールの適用方式<br/>- `ENTIRE`: 全て<br/>- `USER_CUSTOM`: ユーザー指定 |
-| databaseIds | Array | N | ユーザー指定データベースの識別子リスト |
-| dbUserIds | Array | N | ユーザー指定DBユーザーの識別子リスト |
-| address | String | Y | 接続アドレス<br/>- CIDR形式、ホスト名またはドメイン形式で入力 |
-| authMethod | Enum | Y | 認証方式<br/>- `TRUST`: トラスト(パスワード不要)<br/>- `REJECT`: 接続ブロック<br/>- `SCRAM_SHA_256`: パスワード(SCRAM-SHA-256) |
+| connectionTypeCode | Enum | N | アクセス制御レコードタイプ<br/>- HOST: `TCP/IP で接続する際に有効`<br/>- HOST_NO_SSL: `SSL 暗号化を使用しない接続時にのみ有効` |
+| databaseApplyType | Enum | Y | データベース適用タイプ<br/>- ENTIRE: `全体`<br/>- USER_CUSTOM: `ユーザー定義` |
+| dbUserApplyType | Enum | Y | DBユーザー適用タイプ<br/>- ENTIRE: `全体`<br/>- USER_CUSTOM: `ユーザー定義` |
+| databaseIds | Array | N | データベースの識別子リスト |
+| dbUserIds | Array | N | DBユーザーの識別子リスト |
+| address | String | Y | 接続アドレス |
+| authMethod | Enum | Y | 認証方式<br/>- TRUST: `トラスト（パスワード不要）`<br/>- REJECT: `接続拒否`<br/>- SCRAM_SHA_256: `パスワード（SCRAM-SHA-256）` |
 
 #### レスポンス
 
@@ -2785,9 +2789,9 @@ GET /v1.0/db-instances/{dbInstanceId}/high-availability
 
 | 名前 | タイプ | 説明 |
 |-----|-----|-----|
-| haStatus | Enum | 高可用性の状態<br/>- `CREATED`: 作成済み<br/>- `STABLE`: 正常<br/>- `PAUSING`: 一時停止中<br/>- `PAUSED`: 一時停止<br/>- `PAUSED_DUE_TO_TASK`: ジョブによる一時停止<br/>- `DISABLE_REPLICATION_DELAY`: レプリケーション遅延によるフェイルオーバーの停止<br/>- `FAILOVER_STARTED`: フェイルオーバー開始<br/>- `FAILOVER_FAILED`: フェイルオーバー失敗<br/>- `FAILOVER_COMPLETED`: フェイルオーバー完了<br/>- `DELETED`: 削除済み |
-| pingInterval | Number | Ping間隔(秒)<br/>- 最小値: `1`<br/>- 最大値: `600` |
-| failoverReplWaitingTime | Number | 高可用性使用時のフェイルオーバー待機時間<br/>- `-1`に設定時、レプリケーション遅延が解消されるまで待機し続けます。<br/>- 最小値: `-1` |
+| haStatus | Enum | 高可用性状態<br/>- CREATED: `作成済み`<br/>- STABLE: `正常`<br/>- PAUSING: `一時停止中`<br/>- DISABLE: `停止`<br/>- DISABLE_MASTER_IN_REPLICATION: `マスター異常複製検知による高可用性停止`<br/>- DISABLE_MHA_PROCESS: `高可用性プロセス停止`<br/>- DISABLE_REPLICATION_STOP: `複製停止による高可用性停止`<br/>- DISABLE_REPLICATION_DELAY: `複製遅延による高可用性停止`<br/>- FAILOVER_STARTED: `フェイルオーバー開始`<br/>- FAILOVER_FAILED: `フェイルオーバー失敗`<br/>- FAILOVER_COMPLETED: `フェイルオーバー完了`<br/>- DELETED: `削除済み`<br/>- PAUSED: `一時停止`<br/>- PAUSED_DUE_TO_TASK: `作業による一時停止`<br/>- MASTER_FAILURE_DETECTION: `マスター障害検知` |
+| pingInterval | Number | Ping間隔(秒) |
+| failoverReplWaitingTime | Number | フェイルオーバー複製遅延待機時間(秒) |
 
 ---
 
@@ -2828,7 +2832,9 @@ PUT /v1.0/db-instances/{dbInstanceId}/high-availability
 
 | 名前 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|
-| failoverReplWaitingTime | Number | N | 高可用性使用時のフェイルオーバー待機時間<br/>- `-1`に設定時、レプリケーション遅延が解消されるまで待機し続けます。<br/>- 最小値: `-1` |
+| useHighAvailability | Boolean | Y | 高可用性の使用有無 |
+| pingInterval | Number | N | Ping間隔(秒)<br/>- 最小値: `1`<br/>- 最大値: `600` |
+| failoverReplWaitingTime | Number | N | フェイルオーバー複製遅延待機時間(秒)<br/>- 最小値: `-1` |
 
 #### レスポンス
 
@@ -3052,7 +3058,7 @@ POST /v1.0/db-instances/{dbInstanceId}/high-availability/split
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:DbInstance.Get | DBインスタンスメンテナンス情報照会 |
+| RDSforPostgreSQL:DbInstance.Get | DB インスタンスのメンテナンス情報照会 |
 
 #### リクエスト
 
@@ -3097,18 +3103,18 @@ GET /v1.0/db-instances/{dbInstanceId}/maintenance-info
 | allowAutoMaintenance | Boolean | 自動メンテナンスを許可するかどうか |
 | useAutoStorageCleanup | Boolean | 自動ストレージクリーンアップを使用するかどうか |
 | maintWndBgnTime | Time | 自動メンテナンス開始時間 |
-| maintWndDuration | Enum | メンテナンスウィンドウ<br/>- `HALF_AN_HOUR`: 30分<br/>- `ONE_HOUR`: 1時間<br/>- `ONE_HOUR_AND_HALF`: 1時間30分<br/>- `TWO_HOURS`: 2時間<br/>- `TWO_HOURS_AND_HALF`: 2時間30分<br/>- `THREE_HOURS`: 3時間 |
+| maintWndDuration | Enum | メンテナンスウィンドウ<br/>- HALF_AN_HOUR: `30分`<br/>- ONE_HOUR: `1時間`<br/>- ONE_HOUR_AND_HALF: `1時間30分`<br/>- TWO_HOURS: `2時間`<br/>- TWO_HOURS_AND_HALF: `2時間30分`<br/>- THREE_HOURS: `3時間` |
 | logRetentionPeriod | Number | ログ保管期間(日) |
 
 ---
 
-### DBインスタンスメンテナンス情報修正
+### DBインスタンスのメンテナンス情報を変更する
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:DbInstance.Modify | DBインスタンスメンテナンス情報修正 |
+| RDSforPostgreSQL:DbInstance.Modify | DB インスタンスのメンテナンス情報を修正する |
 
 #### リクエスト
 
@@ -3143,8 +3149,8 @@ PUT /v1.0/db-instances/{dbInstanceId}/maintenance-info
 |-----|-----|-----|-----|
 | allowAutoMaintenance | Boolean | N | 自動メンテナンスを許可するかどうか |
 | useAutoStorageCleanup | Boolean | N | 自動ストレージクリーンアップを使用するかどうか |
-| maintWndBgnTime | Time | N | 自動メンテナンス開始時間 |
-| maintWndDuration | Enum | N | メンテナンスウィンドウ<br/>- `HALF_AN_HOUR`: 30分<br/>- `ONE_HOUR`: 1時間<br/>- `ONE_HOUR_AND_HALF`: 1時間30分<br/>- `TWO_HOURS`: 2時間<br/>- `TWO_HOURS_AND_HALF`: 2時間30分<br/>- `THREE_HOURS`: 3時間 |
+| maintWndBgnTime | Time | N | 自動メンテナンス開始時刻 |
+| maintWndDuration | Enum | N | メンテナンスウィンドウ<br/>- HALF_AN_HOUR: `30分`<br/>- ONE_HOUR: `1時間`<br/>- ONE_HOUR_AND_HALF: `1時間30分`<br/>- TWO_HOURS: `2時間`<br/>- TWO_HOURS_AND_HALF: `2時間30分`<br/>- THREE_HOURS: `3時間` |
 | logRetentionPeriod | Number | N | ログ保管期間(日)<br/>- 最小値: `1`<br/>- 最大値: `30` |
 
 #### レスポンス
@@ -3210,15 +3216,15 @@ GET /v1.0/db-instances/{dbInstanceId}/network-info
 "availabilityZone": "kr-pub-a",
 "subnet": {
 "subnetId": "550e8400-e29b-41d4-a716-446655440000",
-"subnetName": "Default Network",
+"subnetName": "subnetName-example",
 "subnetCidr": "192.168.0.0/24",
 "publicAccessible": false
 },
 "endPoints": [
 {
-"domain": "ea548a78-d85f-43b4-8ddf-c88d999b9905.internal.kr1.postgres.rds.nhncloudservice.com",
+"domain": "domain-example",
 "ipAddress": "192.168.0.1",
-"endPointType": "INTERNAL"
+"endPointType": "https://example.com"
 }
 ]
 }
@@ -3237,7 +3243,7 @@ GET /v1.0/db-instances/{dbInstanceId}/network-info
 | endPoints | Array | 接続情報リスト |
 | endPoints.domain | String | ドメイン |
 | endPoints.ipAddress | String | IPアドレス |
-| endPoints.endPointType | Enum | 接続情報のタイプ<br/>- `EXTERNAL`: 外部接続ドメイン<br/>- `INTERNAL`: 内部接続ドメイン<br/>- `PUBLIC`: (Deprecated) 外部接続ドメイン<br/>- `PRIVATE`: (Deprecated) 内部接続ドメイン |
+| endPoints.endPointType | String | 接続情報のタイプ |
 
 ---
 
@@ -3380,7 +3386,7 @@ POST /v1.0/db-instances/{dbInstanceId}/replicate
 "dbInstanceName": "dbInstanceName-example",
 "description": "description-example",
 "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
-"dbPort": 15432,
+"dbPort": 1,
 "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
 "dbSecurityGroupIds": [],
 "userGroupIds": [],
@@ -3534,11 +3540,11 @@ GET /v1.0/db-instances/{dbInstanceId}/restoration-info
 "backupStatus": "BACKING_UP",
 "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
 "dbInstanceName": "dbInstanceName-example",
-"dbVersion": "POSTGRESQL_V17_10",
+"dbVersion": "POSTGRESQL_V14_17",
 "backupType": "AUTO",
 "backupSize": 1,
 "failoverCount": 1,
-"walFileName": "000000010000000000000005",
+"walFileName": "walFileName-example",
 "createdYmdt": "2023-12-31T15:00:00+09:00",
 "updatedYmdt": "2023-12-31T15:00:00+09:00",
 "startYmdt": "2023-12-31T15:00:00+09:00",
@@ -3552,24 +3558,23 @@ GET /v1.0/db-instances/{dbInstanceId}/restoration-info
 
 | 名前 | タイプ | 説明 |
 |-----|-----|-----|
-| oldestRestorableYmdt | DateTime | 復元可能な最も早い時間 |
-| latestRestorableYmdt | DateTime | 復元可能な最も最近の時間 |
+| oldestRestorableYmdt | DateTime | 復元可能な最も早い時刻 |
+| latestRestorableYmdt | DateTime | 復元可能な最新時刻 |
 | restorableBackups | Array | 復元可能なバックアップリスト |
 | restorableBackups.backupId | UUID | バックアップの識別子 |
 | restorableBackups.backupName | String | バックアップ名 |
-| restorableBackups.backupStatus | Enum | バックアップ状態<br/>- `BACKING_UP`: バックアップ中の場合<br/>- `COMPLETED`: バックアップが完了した場合<br/>- `DELETING`: バックアップが削除中の場合<br/>- `DELETED`: バックアップが削除された場合<br/>- `ERROR`: エラーが発生した場合 |
+| restorableBackups.backupStatus | Enum | バックアップステータス<br/>- BACKING_UP: `バックアップ中 (スピナー)`<br/>- VERIFYING: `検証中 (スピナー)`<br/>- COMPLETED: `使用可能 (緑アイコン)`<br/>- DELETING: `削除中 (スピナー)`<br/>- DELETED: `削除済み (グレーアイコン)`<br/>- ERROR: `エラー (赤アイコン)` |
 | restorableBackups.dbInstanceId | UUID | 原本DBインスタンスの識別子 |
 | restorableBackups.dbInstanceName | String | 原本DBインスタンス名 |
 | restorableBackups.dbVersion | Enum | DBエンジンバージョン |
-| restorableBackups.backupType | Enum | バックアップのタイプ<br/>- `AUTO`: 自動バックアップ<br/>- `MANUAL`: 手動バックアップ |
-| restorableBackups.backupSize | Number | バックアップサイズ<br/>- 単位： `バイト` |
+| restorableBackups.backupType | Enum | バックアップタイプ<br/>- AUTO: `自動バックアップ`<br/>- MANUAL: `手動バックアップ` |
 | restorableBackups.backupSize | Number | バックアップサイズ |
 | restorableBackups.failoverCount | Number | フェイルオーバー回数 |
 | restorableBackups.walFileName | String | WALファイル名 |
-| restorableBackups.createdYmdt | DateTime | バックアップ作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| restorableBackups.updatedYmdt | DateTime | バックアップ更新日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| restorableBackups.startYmdt | DateTime | バックアップ開始日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| restorableBackups.completedYmdt | DateTime | バックアップ完了日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| restorableBackups.createdYmdt | DateTime | バックアップ作成日時 |
+| restorableBackups.updatedYmdt | DateTime | バックアップ更新日時 |
+| restorableBackups.startYmdt | DateTime | バックアップ開始日時 |
+| restorableBackups.completedYmdt | DateTime | バックアップ完了日時 |
 
 ---
 
@@ -3600,46 +3605,46 @@ POST /v1.0/db-instances/{dbInstanceId}/restore
 
 ```json
 {
-"dbInstanceName": "dbInstanceName-example",
-"dbInstanceCandidateName": "dbInstanceCandidateName-example",
-"description": "description-example",
-"dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
-"dbPort": 15432,
-"useHighAvailability": false,
-"imageId": "550e8400-e29b-41d4-a716-446655440000",
-"pingInterval": 3,
-"failoverReplWaitingTime": 60,
-"storage": {
-"storageType": "General SSD",
-"storageSize": 20
-},
-"network": {
-"subnetId": "550e8400-e29b-41d4-a716-446655440000",
-"usePublicAccess": false,
-"availabilityZone": "kr-pub-a"
-},
-"backup": {
-"backupPeriod": 0,
-"periodicAutoBackupStrategyTypeCode": "DAILY_FULL",
-"backupRetryCount": 0,
-"replicationRegion": "KR1",
-"backupSchedules": [
-{
-"backupWndBgnTime": "00:00:00",
-"backupWndDuration": "HALF_AN_HOUR"
-}
-]
-},
-"restore": {
-"restoreType": "BACKUP",
-"restoreYmdt": "2023-12-31T15:00:00+09:00",
-"backupId": "550e8400-e29b-41d4-a716-446655440000"
-},
-"useDefaultNotification": false,
-"parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
-"dbSecurityGroupIds": [],
-"userGroupIds": [],
-"useDeletionProtection": false
+    "dbInstanceName": "dbInstanceName-example",
+    "dbInstanceCandidateName": "dbInstanceCandidateName-example",
+    "description": "description-example",
+    "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbPort": 1,
+    "useHighAvailability": false,
+    "imageId": "550e8400-e29b-41d4-a716-446655440000",
+    "pingInterval": 3,
+    "failoverReplWaitingTime": 60,
+    "storage": {
+        "storageType": "General SSD",
+        "storageSize": 20
+    },
+    "network": {
+        "subnetId": "550e8400-e29b-41d4-a716-446655440000",
+        "usePublicAccess": false,
+        "availabilityZone": "kr-pub-a"
+    },
+    "backup": {
+        "backupPeriod": 0,
+        "periodicAutoBackupStrategyTypeCode": "DAILY_FULL",
+        "backupRetryCount": 0,
+        "replicationRegion": "KR1",
+        "backupSchedules": [
+            {
+                "backupWndBgnTime": "00:00:00",
+                "backupWndDuration": "HALF_AN_HOUR"
+            }
+        ]
+    },
+    "restore": {
+        "restoreType": "BACKUP",
+        "restoreYmdt": "2023-12-31T15:00:00+09:00",
+        "backupId": "550e8400-e29b-41d4-a716-446655440000"
+    },
+    "useDefaultNotification": false,
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbSecurityGroupIds": [],
+    "userGroupIds": [],
+    "useDeletionProtection": false
 }
 ```
 
@@ -3655,7 +3660,7 @@ POST /v1.0/db-instances/{dbInstanceId}/restore
 | useHighAvailability | Boolean | N | 高可用性の使用有無<br/>- デフォルト値: `false` |
 | imageId | UUID | N | イメージの識別子 |
 | pingInterval | Number | N | 高可用性使用時のPing間隔(秒)<br/>- 最小値: `1`<br/>- 最大値: `600` |
-| failoverReplWaitingTime | Number | N | 高可用性使用時のフェイルオーバー待機時間<br/>- `-1`に設定時、レプリケーション遅延が解消されるまで待機し続けます。<br/>- 最小値: `-1` |
+| failoverReplWaitingTime | Number | N | フェイルオーバー複製遅延待機時間(秒)<br/>- 最小値: `-1` |
 | storage | Object | Y | ストレージ情報オブジェクト |
 | storage.storageType | Enum | Y | ストレージタイプ |
 | storage.storageSize | Number | Y | データストレージサイズ(GB)<br/>- 最小値: `20` |
@@ -3665,14 +3670,14 @@ POST /v1.0/db-instances/{dbInstanceId}/restore
 | network.availabilityZone | Enum | N | DBインスタンスを作成するアベイラビリティゾーン |
 | backup | Object | Y | バックアップ情報オブジェクト |
 | backup.backupPeriod | Number | Y | バックアップの保管期間(日)<br/>- 最小値: `0`<br/>- 最大値: `730` |
-| backup.periodicAutoBackupStrategyTypeCode | Enum | N | 定期自動バックアップ戦略コード(DAILY_FULL/SNAPSHOT)<br/>- デフォルト値: `DAILY_FULL`<br/>- `SNAPSHOT`: 毎日スナップショットバックアップ<br/>- `DAILY_FULL`: 毎日フルバックアップ |
+| backup.periodicAutoBackupStrategyTypeCode | Enum | N | 定期自動バックアップ戦略コード (DAILY_FULL/SNAPSHOT)<br/>- デフォルト値: `DAILY_FULL`<br/>- SNAPSHOT: `毎日スナップショットバックアップ`<br/>- DAILY_FULL: `毎日フルバックアップ` |
 | backup.backupRetryCount | Number | N | バックアップの再試行回数<br/>- 最小値: `0`<br/>- 最大値: `10` |
-| backup.replicationRegion | Enum | N | バックアップのレプリケーションリージョン<br/>- `KR1`: 韓国(パンギョ)<br/>- `KR2`: 韓国(ピョンチョン) |
+| backup.replicationRegion | Enum | N | バックアップ複製リージョン<br/>- KR1: `韓国(パンギョ)`<br/>- KR2: `韓国(ピョンチョン)` |
 | backup.backupSchedules | Array | Y | バックアップスケジュールリスト |
 | backup.backupSchedules.backupWndBgnTime | Time | Y | バックアップ開始時間 |
-| backup.backupSchedules.backupWndDuration | Enum | Y | バックアップウィンドウ<br/>- `HALF_AN_HOUR`: 30分<br/>- `ONE_HOUR`: 1時間<br/>- `ONE_HOUR_AND_HALF`: 1時間30分<br/>- `TWO_HOURS`: 2時間<br/>- `TWO_HOURS_AND_HALF`: 2時間30分<br/>- `THREE_HOURS`: 3時間 |
+| backup.backupSchedules.backupWndDuration | Enum | Y | バックアップウィンドウ<br/>- HALF_AN_HOUR: `30分`<br/>- ONE_HOUR: `1時間`<br/>- ONE_HOUR_AND_HALF: `1時間30分`<br/>- TWO_HOURS: `2時間`<br/>- TWO_HOURS_AND_HALF: `2時間30分`<br/>- THREE_HOURS: `3時間` |
 | restore | Object | Y | 復元情報オブジェクト |
-| restore.restoreType | Enum | Y | 復元タイプ<br/>- BACKUP: `既存のバックアップを利用した復元`<br/>- TIMESTAMP: `復元可能時間内の時間を利用した時点復元` |
+| restore.restoreType | Enum | Y | 復元タイプ<br/>- BACKUP: `既存のバックアップを使用した復元`<br/>- TIMESTAMP: `復元可能な時間内のタイムスタンプを使用した時点復元` |
 | restore.restoreYmdt | DateTime | N | DBインスタンス復元日時 |
 | restore.backupId | UUID | N | 復元に使用するバックアップの識別子 |
 | useDefaultNotification | Boolean | N | 基本通知の使用有無<br/>- デフォルト値: `false` |
@@ -3680,18 +3685,6 @@ POST /v1.0/db-instances/{dbInstanceId}/restore
 | dbSecurityGroupIds | Array | N | DBセキュリティグループの識別子リスト |
 | userGroupIds | Array | N | ユーザーグループの識別子リスト |
 | useDeletionProtection | Boolean | N | 削除保護の有無<br/>- デフォルト値: `false` |
-
-#### Timestampを使用した時点復元時のリクエスト(restoreTypeが `TIMESTAMP`の場合)
-
-| 名前 | タイプ | 必須 | 説明 |
-|-----|-----|-----|-----|
-| restore.restoreYmdt | DateTime | Y | DBインスタンスの復元時間(YYYY-MM-DDThh:mm:ss.SSSTZD)<br/>- 復元情報の照会で照会した最も最新の復元可能な時間以前に対してのみ復元が可能です。 |
-
-#### バックアップを使用した復元時のリクエスト(restoreTypeが `BACKUP`の場合)
-
-| 名前 | タイプ | 必須 | 説明 |
-|-----|-----|-----|-----|
-| restore.backupId | UUID | Y | 復元に使用するバックアップの識別子 |
 
 #### レスポンス
 
@@ -3861,7 +3854,7 @@ GET /v1.0/db-instances/{dbInstanceId}/storage-info
 |-----|-----|-----|
 | storageType | Enum | データストレージタイプ |
 | storageSize | Number | データストレージサイズ(GB) |
-| storageStatus | Enum | データストレージの現在状態<br/>- `DELETED`: 削除済み<br/>- `PENDING_DELETION`: 削除猶予中<br/>- `DELETION_RESERVED`: 削除予約済み（スナップショット整理待ち）<br/>- `DETACHED`: デタッチ<br/>- `ATTACHED`: アタッチ |
+| storageStatus | Enum | データストレージの現在の状態<br/>- DELETED: `削除済み`<br/>- PENDING_DELETION: `削除猶予済み`<br/>- DELETION_RESERVED: `削除予約済み（スナップショットのクリーンアップ待ち）`<br/>- DETACHED: `解除済み`<br/>- ATTACHED: `割り当て済み` |
 
 ---
 
@@ -3938,13 +3931,13 @@ PUT /v1.0/db-instances/{dbInstanceId}/storage-info
 | `DELETED` | バックアップが削除された場合 |
 | `ERROR` | エラーが発生した場合 |
 
-### バックアップリストを表示
+### バックアップリスト照会
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:Backup.List | バックアップリストを表示 |
+| RDSforPostgreSQL:Backup.List | バックアップリスト照会 |
 
 #### リクエスト
 
@@ -3958,10 +3951,9 @@ GET /v1.0/backups
 |-----|-----|-----|-----|-----|
 | page | Query | Number | Y | 照会するリストのページ<br/>- 最小値: `1` |
 | size | Query | Number | Y | 照会するリストのページサイズ<br/>- 最小値: `1`<br/>- 最大値: `100` |
-| backupType | Query | Enum | N | バックアップのタイプ<br/>- `AUTO`: 自動バックアップ<br/>- `MANUAL`: 手動バックアップ |
-| dbInstanceId | Query | String | N | ソースDBインスタンスの識別子 |
+| backupType | Query | Enum | N | バックアップタイプ<br/>- AUTO: `自動バックアップ`<br/>- MANUAL: `手動バックアップ` |
+| dbInstanceId | Query | String | N | 元のDBインスタンスの識別子 |
 | dbVersion | Query | Enum | N | DBエンジンバージョン |
-
 #### リクエスト本文
 
 このAPIはリクエスト本文を要求しません。
@@ -3985,7 +3977,7 @@ GET /v1.0/backups
 "backupName": "backupName-example",
 "backupStatus": "BACKING_UP",
 "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
-"dbVersion": "POSTGRESQL_V17_10",
+"dbVersion": "POSTGRESQL_V14_17",
 "backupType": "AUTO",
 "backupSize": 1,
 "startYmdt": "2023-12-31T15:00:00+09:00",
@@ -4005,15 +3997,15 @@ GET /v1.0/backups
 | backups | Array | バックアップリスト |
 | backups.backupId | UUID | バックアップの識別子 |
 | backups.backupName | String | バックアップを識別できる名前 |
-| backups.backupStatus | Enum | バックアップの現在の状態<br/>- `BACKING_UP`: バックアップ中の場合<br/>- `COMPLETED`: バックアップが完了した場合<br/>- `DELETING`: バックアップが削除中の場合<br/>- `DELETED`: バックアップが削除された場合(※コンソールでは削除済みアイコンが表示されます)<br/>- `ERROR`: エラーが発生した場合(※コンソールではエラーアイコンが表示されます) |
+| backups.backupStatus | Enum | バックアップの現在のステータス<br/>- BACKING_UP: `バックアップ中 (スピナー)`<br/>- VERIFYING: `検証中 (スピナー)`<br/>- COMPLETED: `使用可能 (緑色アイコン)`<br/>- DELETING: `削除中 (スピナー)`<br/>- DELETED: `削除済み (グレーアイコン)`<br/>- ERROR: `エラー (赤色アイコン)` |
 | backups.dbInstanceId | UUID | 原本DBインスタンスの識別子 |
 | backups.dbVersion | Enum | DBエンジンバージョン |
-| backups.backupType | Enum | バックアップのタイプ<br/>- `AUTO`: 自動バックアップ<br/>- `MANUAL`: 手動バックアップ |
-| backups.backupSize | Number | バックアップサイズ<br/>- 単位： `バイト` |
-| backups.startYmdt | DateTime | 開始日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| backups.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| backups.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| backups.completedYmdt | DateTime | 完了日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| backups.backupType | Enum | バックアップタイプ<br/>- AUTO: `自動バックアップ`<br/>- MANUAL: `手動バックアップ` |
+| backups.backupSize | Number | バックアップサイズ (Byte) |
+| backups.startYmdt | DateTime | 開始日時 |
+| backups.createdYmdt | DateTime | 作成日時 |
+| backups.updatedYmdt | DateTime | 修正日時 |
+| backups.completedYmdt | DateTime | 完了日時 |
 
 ---
 
@@ -4093,7 +4085,7 @@ POST /v1.0/backups/{backupId}/export
 ```json
 {
 "tenantId": "0123456789abcdef0123456789abcdef",
-"username": "example@nhncloud.com or example",
+"username": "username-example",
 "password": "password-example",
 "targetContainer": "targetContainer-example",
 "objectPath": "objectPath-example"
@@ -4105,7 +4097,7 @@ POST /v1.0/backups/{backupId}/export
 | 名前 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|
 | tenantId | String | Y | バックアップが保存されるオブジェクトストレージのテナントID<br/>- 最小長: `32`<br/>- 最大長: `32` |
-| username | String | Y | NHN CloudアカウントまたはIAMアカウントID |
+| username | String | Y | NHN Cloud アカウントまたは IAM メンバー ID |
 | password | String | Y | バックアップが保存されるオブジェクトストレージのAPIパスワード |
 | targetContainer | String | Y | バックアップが保存されるオブジェクトストレージのコンテナ |
 | objectPath | String | Y | コンテナに保存されるバックアップのパス |
@@ -4161,39 +4153,39 @@ POST /v1.0/backups/{backupId}/restore
 
 ```json
 {
-"dbInstanceName": "dbInstanceName-example",
-"dbInstanceCandidateName": "dbInstanceCandidateName-example",
-"description": "description-example",
-"dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
-"dbPort": 15432,
-"parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
-"dbSecurityGroupIds": [],
-"userGroupIds": [],
-"useHighAvailability": false,
-"useDefaultNotification": false,
-"useDeletionProtection": false,
-"pingInterval": 1,
-"failoverReplWaitingTime": 1,
-"network": {
-"subnetId": "550e8400-e29b-41d4-a716-446655440000",
-"usePublicAccess": false,
-"availabilityZone": "kr-pub-a"
-},
-"storage": {
-"storageType": "General SSD",
-"storageSize": 20
-},
-"backup": {
-"backupPeriod": 0,
-"periodicAutoBackupStrategyTypeCode": "DAILY_FULL",
-"backupRetryCount": 0,
-"backupSchedules": [
-{
-"backupWndBgnTime": "00:00:00",
-"backupWndDuration": "HALF_AN_HOUR"
-}
-]
-}
+    "dbInstanceName": "dbInstanceName-example",
+    "dbInstanceCandidateName": "dbInstanceCandidateName-example",
+    "description": "description-example",
+    "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbPort": 1,
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbSecurityGroupIds": [],
+    "userGroupIds": [],
+    "useHighAvailability": false,
+    "useDefaultNotification": false,
+    "useDeletionProtection": false,
+    "pingInterval": 1,
+    "failoverReplWaitingTime": 1,
+    "network": {
+        "subnetId": "550e8400-e29b-41d4-a716-446655440000",
+        "usePublicAccess": false,
+        "availabilityZone": "kr-pub-a"
+    },
+    "storage": {
+        "storageType": "General SSD",
+        "storageSize": 20
+    },
+    "backup": {
+        "backupPeriod": 0,
+        "periodicAutoBackupStrategyTypeCode": "DAILY_FULL",
+        "backupRetryCount": 0,
+        "backupSchedules": [
+            {
+                "backupWndBgnTime": "00:00:00",
+                "backupWndDuration": "HALF_AN_HOUR"
+            }
+        ]
+    }
 }
 ```
 
@@ -4213,7 +4205,7 @@ POST /v1.0/backups/{backupId}/restore
 | useDefaultNotification | Boolean | N | 基本通知の使用有無<br/>- デフォルト値: `false` |
 | useDeletionProtection | Boolean | N | 削除保護の有無<br/>- デフォルト値: `false` |
 | pingInterval | Number | N | Ping間隔(秒)<br/>- 最小値: `1`<br/>- 最大値: `600` |
-| failoverReplWaitingTime | Number | N | 高可用性使用時のフェイルオーバー待機時間<br/>- `-1`に設定時、レプリケーション遅延が解消されるまで待機し続けます。<br/>- 最小値: `-1` |
+| failoverReplWaitingTime | Number | N | フェイルオーバー複製遅延待機時間(秒)<br/>- 最小値: `-1` |
 | network | Object | Y | ネットワーク情報オブジェクト |
 | network.subnetId | UUID | Y | サブネットの識別子 |
 | network.usePublicAccess | Boolean | N | 外部接続可否<br/>- デフォルト値: `false` |
@@ -4223,11 +4215,11 @@ POST /v1.0/backups/{backupId}/restore
 | storage.storageSize | Number | Y | データストレージサイズ(GB)<br/>- 最小値: `20` |
 | backup | Object | Y | バックアップ情報オブジェクト |
 | backup.backupPeriod | Number | Y | バックアップの保管期間(日)<br/>- 最小値: `0`<br/>- 最大値: `730` |
-| backup.periodicAutoBackupStrategyTypeCode | Enum | N | 定期自動バックアップ戦略コード(DAILY_FULL/SNAPSHOT)<br/>- デフォルト値: `DAILY_FULL`<br/>- `SNAPSHOT`: 毎日スナップショットバックアップ<br/>- `DAILY_FULL`: 毎日フルバックアップ |
+| backup.periodicAutoBackupStrategyTypeCode | Enum | N | 定期自動バックアップ戦略コード (DAILY_FULL/SNAPSHOT)<br/>- デフォルト値: `DAILY_FULL`<br/>- SNAPSHOT: `毎日スナップショットバックアップ`<br/>- DAILY_FULL: `毎日フルバックアップ` |
 | backup.backupRetryCount | Number | N | バックアップの再試行回数<br/>- 最小値: `0`<br/>- 最大値: `10` |
 | backup.backupSchedules | Array | Y | バックアップスケジュールリスト |
 | backup.backupSchedules.backupWndBgnTime | Time | Y | バックアップ開始時間 |
-| backup.backupSchedules.backupWndDuration | Enum | Y | バックアップウィンドウ<br/>- `HALF_AN_HOUR`: 30分<br/>- `ONE_HOUR`: 1時間<br/>- `ONE_HOUR_AND_HALF`: 1時間30分<br/>- `TWO_HOURS`: 2時間<br/>- `TWO_HOURS_AND_HALF`: 2時間30分<br/>- `THREE_HOURS`: 3時間 |
+| backup.backupSchedules.backupWndDuration | Enum | Y | バックアップウィンドウ<br/>- HALF_AN_HOUR: `30分`<br/>- ONE_HOUR: `1時間`<br/>- ONE_HOUR_AND_HALF: `1時間30分`<br/>- TWO_HOURS: `2時間`<br/>- TWO_HOURS_AND_HALF: `2時間30分`<br/>- THREE_HOURS: `3時間` |
 
 #### レスポンス
 
@@ -4315,11 +4307,11 @@ GET /v1.0/db-security-groups
 | dbSecurityGroups | Array | DBセキュリティグループリスト |
 | dbSecurityGroups.dbSecurityGroupId | UUID | DBセキュリティグループの識別子 |
 | dbSecurityGroups.dbSecurityGroupName | String | DBセキュリティグループを識別できる名前 |
-| dbSecurityGroups.dbSecurityGroupStatus | Enum | DBセキュリティグループの現在状態<br/>- `CREATED`: 作成済み<br/>- `DELETED`: 削除済み |
+| dbSecurityGroups.dbSecurityGroupStatus | Enum | DBセキュリティグループの現在状態<br/>- CREATED: `作成済み`<br/>- DELETED: `削除済み` |
 | dbSecurityGroups.description | String | DBセキュリティグループの追加情報 |
-| dbSecurityGroups.progressStatus | Enum | DBセキュリティグループの現在の進行状態<br/>- `NONE`: なし<br/>- `CREATING_RULE`: ルール作成中<br/>- `UPDATING_RULE`: ルール修正中<br/>- `DELETING_RULE`: ルール削除中<br/>- `APPLYING_DEFAULT_RULE`: デフォルトルール適用中 |
-| dbSecurityGroups.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| dbSecurityGroups.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| dbSecurityGroups.progressStatus | Enum | DBセキュリティグループの現在の進行状態<br/>- NONE: `なし`<br/>- CREATING_RULE: `ルール作成中`<br/>- UPDATING_RULE: `ルール修正中`<br/>- DELETING_RULE: `ルール削除中`<br/>- APPLYING_DEFAULT_RULE: `デフォルトルール適用中` |
+| dbSecurityGroups.createdYmdt | DateTime | 作成日時 |
+| dbSecurityGroups.updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -4369,12 +4361,14 @@ POST /v1.0/db-security-groups
 | dbSecurityGroupName | String | Y | DBセキュリティグループを識別できる名前 |
 | description | String | N | DBセキュリティグループの追加情報 |
 | rules | Array | Y | DBセキュリティグループルール情報 |
-| rules.direction | Enum | Y | 通信の方向<br/>- `INGRESS`: 受信<br/>- `EGRESS`: 送信 |
-| rules.etherType | Enum | Y | Etherタイプ<br/>- `IPV4`: IPv4形式<br/>- `IPV6`: IPv6形式 |
+| rules.direction | Enum | Y | 通信方向<br/>- INGRESS: `受信`<br/>- EGRESS: `送信` |
+| rules.etherType | Enum | Y | Etherタイプ<br/>- IPV4: `IPv4 形式`<br/>- IPV6: `IPv6 形式` |
 | rules.port | Object | Y | ポートオブジェクト |
-| rules.port.portType | Enum | Y | ポートタイプ<br/>- `ALL`: ポート範囲全体(ユーザーコンソールでは使用しない)<br/>- `PORT`: 特定のポート<br/>- `DB_PORT`: DB受信ポート<br/>- `PORT_RANGE`: ポート範囲 |
+| rules.port.portType | Enum | Y | ポート種類<br/>- ALL: `ポート範囲全体 (ユーザーコンソールでは使用しません)`<br/>- PORT: `特定のポート`<br/>- DB_PORT: `DB受信ポート`<br/>- PORT_RANGE: `ポート範囲` |
 | rules.port.minPort | Number | N | ポート範囲の最小値<br/>- 最小値: `1` |
 | rules.port.maxPort | Number | N | ポート範囲の最大値<br/>- 最大値: `65535` |
+| rules.cidr | String | Y | CIDR |
+| rules.description | String | N | DBセキュリティグループルールの追加情報 |
 
 #### レスポンス
 
@@ -4501,23 +4495,23 @@ GET /v1.0/db-security-groups/{dbSecurityGroupId}
 | dbSecurityGroup | Object | DBセキュリティグループ |
 | dbSecurityGroup.dbSecurityGroupId | UUID | DBセキュリティグループの識別子 |
 | dbSecurityGroup.dbSecurityGroupName | String | DBセキュリティグループを識別できる名前 |
-| dbSecurityGroup.dbSecurityGroupStatus | Enum | DBセキュリティグループの現在の状態<br/>- `CREATED`: 作成済み<br/>- `DELETED`: 削除済み |
+| dbSecurityGroup.dbSecurityGroupStatus | Enum | DBセキュリティグループの現在状態<br/>- CREATED: `作成済み`<br/>- DELETED: `削除済み` |
 | dbSecurityGroup.description | String | DBセキュリティグループの追加情報 |
-| dbSecurityGroup.progressStatus | Enum | DBセキュリティグループの現在の進行状態<br/>- `NONE`: なし<br/>- `CREATING_RULE`: ルール作成中<br/>- `UPDATING_RULE`: ルール修正中<br/>- `DELETING_RULE`: ルール削除中<br/>- `APPLYING_DEFAULT_RULE`: デフォルトルール適用中 |
+| dbSecurityGroup.progressStatus | Enum | DB セキュリティグループの現在の進行状態<br/>- NONE: `なし`<br/>- CREATING_RULE: `規則作成中`<br/>- UPDATING_RULE: `規則変更中`<br/>- DELETING_RULE: `規則削除中`<br/>- APPLYING_DEFAULT_RULE: `デフォルト規則適用中` |
 | dbSecurityGroup.rules | Array | DBセキュリティグループルールリスト |
 | dbSecurityGroup.rules.ruleId | UUID | DBセキュリティグループルールの識別子 |
 | dbSecurityGroup.rules.description | String | DBセキュリティグループルールの追加情報 |
-| dbSecurityGroup.rules.direction | Enum | 通信の方向<br/>- `INGRESS`: 受信<br/>- `EGRESS`: 送信 |
-| dbSecurityGroup.rules.etherType | Enum | Etherタイプ<br/>- `IPV4`: IPv4形式<br/>- `IPV6`: IPv6形式 |
+| dbSecurityGroup.rules.direction | Enum | 通信方向<br/>- INGRESS: `受信`<br/>- EGRESS: `送信` |
+| dbSecurityGroup.rules.etherType | Enum | Etherタイプ<br/>- IPV4: `IPv4 形式`<br/>- IPV6: `IPv6 形式` |
 | dbSecurityGroup.rules.port | Object | ポートオブジェクト |
-| dbSecurityGroup.rules.port.portType | Enum | ポートタイプ<br/>- `ALL`: ポート範囲全体(ユーザーコンソールでは使用しない)<br/>- `PORT`: 特定のポート<br/>- `DB_PORT`: DB受信ポート<br/>- `PORT_RANGE`: ポート範囲 |
+| dbSecurityGroup.rules.port.portType | Enum | ポートタイプ<br/>- ALL: `ポート範囲全体 (ユーザーコンソールでは使用しません)`<br/>- PORT: `特定のポート`<br/>- DB_PORT: `DB受信ポート`<br/>- PORT_RANGE: `ポート範囲` |
 | dbSecurityGroup.rules.port.minPort | Number | ポート範囲の最小値 |
 | dbSecurityGroup.rules.port.maxPort | Number | ポート範囲の最大値 |
 | dbSecurityGroup.rules.cidr | String | CIDR |
-| dbSecurityGroup.rules.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| dbSecurityGroup.rules.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| dbSecurityGroup.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| dbSecurityGroup.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| dbSecurityGroup.rules.createdYmdt | DateTime | 作成日時 |
+| dbSecurityGroup.rules.updatedYmdt | DateTime | 修正日時 |
+| dbSecurityGroup.createdYmdt | DateTime | 作成日時 |
+| dbSecurityGroup.updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -4658,12 +4652,14 @@ POST /v1.0/db-security-groups/{dbSecurityGroupId}/rules
 
 | 名前 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|
-| direction | Enum | Y | 通信の方向<br/>- `INGRESS`: 受信<br/>- `EGRESS`: 送信 |
-| etherType | Enum | Y | Etherタイプ<br/>- `IPV4`: IPv4形式<br/>- `IPV6`: IPv6形式 |
+| direction | Enum | Y | 通信方向<br/>- INGRESS: `受信`<br/>- EGRESS: `送信` |
+| etherType | Enum | Y | Etherタイプ<br/>- IPV4: `IPv4 形式`<br/>- IPV6: `IPv6 形式` |
 | port | Object | Y | ポート情報 |
-| port.portType | Enum | Y | ポートタイプ<br/>- `ALL`: ポート範囲全体(ユーザーコンソールでは使用しない)<br/>- `PORT`: 特定のポート<br/>- `DB_PORT`: DB受信ポート<br/>- `PORT_RANGE`: ポート範囲 |
+| port.portType | Enum | Y | ポート種類<br/>- ALL: `ポート範囲全体 (ユーザーコンソールでは使用しません)`<br/>- PORT: `特定ポート`<br/>- DB_PORT: `DB 受信ポート`<br/>- PORT_RANGE: `ポート範囲` |
 | port.minPort | Number | N | ポート範囲の最小値<br/>- 最小値: `1` |
-| port.maxPort | Number | N | ポート範囲の最大値<br/>- 最大値: `65535` |
+| port.maxPort | Number | N | ポート範囲最大値<br/>- 最大値: `65535` |
+| cidr | String | Y | CIDR |
+| description | String | N | DBセキュリティグループルールの追加情報 |
 
 #### レスポンス
 
@@ -4733,12 +4729,14 @@ PUT /v1.0/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
 
 | 名前 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|
-| direction | Enum | Y | 通信の方向<br/>- `INGRESS`: 受信<br/>- `EGRESS`: 送信 |
-| etherType | Enum | Y | Etherタイプ<br/>- `IPV4`: IPv4形式<br/>- `IPV6`: IPv6形式 |
+| direction | Enum | Y | 通信方向<br/>- INGRESS: `受信`<br/>- EGRESS: `送信` |
+| etherType | Enum | Y | Etherタイプ<br/>- IPV4: `IPv4 形式`<br/>- IPV6: `IPv6 形式` |
 | port | Object | Y | ポート情報 |
-| port.portType | Enum | Y | ポートタイプ<br/>- `ALL`: ポート範囲全体(ユーザーコンソールでは使用しない)<br/>- `PORT`: 特定のポート<br/>- `DB_PORT`: DB受信ポート<br/>- `PORT_RANGE`: ポート範囲 |
+| port.portType | Enum | Y | ポート種類<br/>- ALL: `ポート範囲全体 (ユーザーコンソールでは使用しません)`<br/>- PORT: `特定ポート`<br/>- DB_PORT: `DB 受信ポート`<br/>- PORT_RANGE: `ポート範囲` |
 | port.minPort | Number | N | ポート範囲の最小値<br/>- 最小値: `1` |
-| port.maxPort | Number | N | ポート範囲の最大値<br/>- 最大値: `65535` |
+| port.maxPort | Number | N | ポート範囲最大値<br/>- 最大値: `65535` |
+| cidr | String | Y | CIDR |
+| description | String | N | DBセキュリティグループルールの追加情報 |
 
 #### レスポンス
 
@@ -4785,7 +4783,6 @@ GET /v1.0/parameter-groups
 | 名前 | 区分 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|-----|
 | dbVersion | Query | Enum | N | DBエンジンバージョン |
-
 #### リクエスト本文
 
 このAPIはリクエスト本文を要求しません。
@@ -4807,7 +4804,7 @@ GET /v1.0/parameter-groups
 "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
 "parameterGroupName": "parameterGroupName-example",
 "description": "description-example",
-"dbVersion": "POSTGRESQL_V17_10",
+"dbVersion": "POSTGRESQL_V14_17",
 "parameterGroupStatus": "STABLE",
 "createdYmdt": "2023-12-31T15:00:00+09:00",
 "updatedYmdt": "2023-12-31T15:00:00+09:00"
@@ -4825,9 +4822,9 @@ GET /v1.0/parameter-groups
 | parameterGroups.parameterGroupName | String | パラメータグループを識別できる名前 |
 | parameterGroups.description | String | パラメータグループの追加情報 |
 | parameterGroups.dbVersion | Enum | DBエンジンバージョン |
-| parameterGroups.parameterGroupStatus | Enum | パラメータグループの現在の状態<br/>- `STABLE`: 適用完了<br/>- `NEED_TO_APPLY`: 適用が必要<br/>- `DELETED`: 削除済み |
-| parameterGroups.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| parameterGroups.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| parameterGroups.parameterGroupStatus | Enum | パラメータグループの現在状態<br/>- STABLE: `適用完了`<br/>- NEED_TO_APPLY: `適用必要`<br/>- DELETED: `削除済み` |
+| parameterGroups.createdYmdt | DateTime | 作成日時 |
+| parameterGroups.updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -4854,7 +4851,7 @@ POST /v1.0/parameter-groups
 {
 "parameterGroupName": "parameterGroupName-example",
 "description": "description-example",
-"dbVersion": "POSTGRESQL_V17_10"
+"dbVersion": "POSTGRESQL_V14_17"
 }
 ```
 
@@ -4920,13 +4917,13 @@ DELETE /v1.0/parameter-groups/{parameterGroupId}
 
 ---
 
-### パラメータグループ詳細照会
+### パラメータグループ詳細を表示
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:ParameterGroup.Get | パラメータグループ詳細照会 |
+| RDSforPostgreSQL:ParameterGroup.Get | パラメータグループ詳細を表示 |
 
 #### リクエスト
 
@@ -4951,32 +4948,32 @@ GET /v1.0/parameter-groups/{parameterGroupId}
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
-    "parameterGroupName": "parameterGroupName-example",
-    "description": "description-example",
-    "dbVersion": "POSTGRESQL_V14_17",
-    "parameterGroupStatus": "STABLE",
-    "parameters": [
-        {
-            "parameterCategory": "parameterCategory-example",
-            "parameterName": "parameterName-example",
-            "value": "value-example",
-            "valueUnit": "valueUnit-example",
-            "defaultValue": "defaultValue-example",
-            "allowedValue": "allowedValue-example",
-            "valueType": "BOOLEAN",
-            "updateType": "VARIABLE",
-            "applyType": "BOTH",
-            "expressionAvailable": false
-        }
-    ],
-    "createdYmdt": "2023-12-31T15:00:00+09:00",
-    "updatedYmdt": "2023-12-31T15:00:00+09:00"
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+"parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+"parameterGroupName": "parameterGroupName-example",
+"description": "description-example",
+"dbVersion": "POSTGRESQL_V14_17",
+"parameterGroupStatus": "STABLE",
+"valueUnit": "valueUnit-example",
+{
+"allowedValue": "allowedValue-example",
+"valueType": "BOOLEAN",
+"updateType": "VARIABLE",
+"applyType": "BOTH",
+"expressionAvailable": false
+}
+],
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+"updatedYmdt": "2023-12-31T15:00:00+09:00"
+}
+}
+],
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+"updatedYmdt": "2023-12-31T15:00:00+09:00"
 }
 ```
 
@@ -4988,20 +4985,26 @@ GET /v1.0/parameter-groups/{parameterGroupId}
 | parameterGroupName | String | パラメータグループを識別できる名前 |
 | description | String | パラメータグループの追加情報 |
 | dbVersion | Enum | DBエンジンバージョン |
-| parameterGroupStatus | Enum | パラメータグループの現在の状態<br/>- `STABLE`: 適用完了<br/>- `NEED_TO_APPLY`: 適用が必要<br/>- `DELETED`: 削除済み |
-| parameters | Array | パラメータ情報 |
+| parameterGroupStatus | Enum | パラメータグループの現在状態<br/>- STABLE: `適用完了`<br/>- NEED_TO_APPLY: `適用必要`<br/>- DELETED: `削除済み` |
+| parameters | Array | パラメータリスト |
 | parameters.parameterCategory | String | パラメータカテゴリー |
 | parameters.parameterName | String | パラメータ名 |
 | parameters.value | String | 現在設定されている値 |
-| parameters.valueUnit | Enum | 現在設定されている値の単位<br/>- `B`: バイト<br/>- `kB`: キロバイト<br/>- `MB`: メガバイト<br/>- `GB`: ギガバイト<br/>- `TB`: テラバイト<br/>- `us`: マイクロ秒<br/>- `ms`: ミリ秒<br/>- `s`: 秒<br/>- `min`: 分<br/>- `h`: 時<br/>- `d`: 日 |
+| parameters.valueUnit | String | 値の単位(バイト: B,kB,MB,GB,TB、時間: us,ms,s,min,h,d) |
 | parameters.defaultValue | String | デフォルト値 |
 | parameters.allowedValue | String | 許可された値 |
-| parameters.valueType | Enum | 値のタイプ<br/>- `BOOLEAN`: Booleanタイプ(例: on、off、true、false、yes、no、1、0)<br/>- `STRING`: 文字列タイプ<br/>- `NUMERIC`: 整数及び浮動小数点タイプ<br/>- `NUMERIC_WITH_BYTE_UNIT`: バイト単位の数値タイプ(例: 120kB、100MB)<br/>- `NUMERIC_WITH_TIME_UNIT`: 時間単位の数値タイプ(例: 120ms、100s、1d)<br/>- `ENUMERATED`: 許可された値に宣言された値のいずれか1つを入力<br/>- `MULTI_ENUMERATED`: 許可された値に宣言された値の中から複数入力(カンマ(,)で区切る) |
-| parameters.updateType | Enum | 修正タイプ<br/>- `VARIABLE`: 動的、いつでも修正可能<br/>- `CONSTANT`: 修正不可 |
-| parameters.applyType | Enum | 適用タイプ<br/>- `BOTH`: セッション、ファイル両方に適用<br/>- `SESSION`: セッションにのみ適用<br/>- `FILE`: ファイルにのみ適用 |
-| parameters.expressionAvailable | Boolean | 数式の使用可否 |
-| createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| parameters.valueType | Enum | 値の型<br/>- BOOLEAN: `ブール型
+
+* ex) on, off, true, false, yes, no, 1, 0`<br/>- STRING: `文字列`<br/>- NUMERIC: `整数および浮動小数点`<br/>- NUMERIC_WITH_BYTE_UNIT: `単位付きの数値
+ * ex) 120kB, 100MB
+ * 許可されたバイト単位: B (bytes), kB (kilobytes), MB (megabytes), GB (gigabytes), and TB (terabytes)`<br/>- NUMERIC_WITH_TIME_UNIT: `単位付きの数値
+ * ex) 120ms, 100s, 1d
+ * 許可された時間単位: us (microseconds), ms (milliseconds), s (seconds), min (minutes), h (hours), and d (days)`<br/>- ENUMERATED: `allowed_value に宣言された値から1つ選択 (カンマ(,)区切り)`<br/>- MULTI_ENUMERATED: `allowed_value に宣言された値から複数選択 (カンマ(,)区切り)` |
+| parameters.updateType | Enum | 修正タイプ<br/>- VARIABLE: `動的、いつでも修正可能`<br/>- CONSTANT: `修正不可` |
+| parameters.applyType | Enum | 適用タイプ<br/>- BOTH: `セッション、ファイルの両方に適用`<br/>- SESSION: `セッションにのみ適用`<br/>- FILE: `ファイルにのみ適用` |
+| parameters.expressionAvailable | Boolean | 数式使用可否 |
+| createdYmdt | DateTime | 作成日時 |
+| updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -5016,7 +5019,7 @@ GET /v1.0/parameter-groups/{parameterGroupId}
 #### リクエスト
 
 ```http
-PUT /v1.0/parameter-groups/{parameterGroupId}
+}
 ```
 
 #### リクエストパラメータ
@@ -5032,8 +5035,8 @@ PUT /v1.0/parameter-groups/{parameterGroupId}
 
 ```json
 {
-    "parameterGroupName": "parameterGroupName-example",
-    "description": "description-example"
+"parameterGroupName": "parameterGroupName-example",
+"description": "description-example"
 }
 ```
 
@@ -5061,7 +5064,7 @@ PUT /v1.0/parameter-groups/{parameterGroupId}
 #### リクエスト
 
 ```http
-POST /v1.0/parameter-groups/{parameterGroupId}/copy
+}
 ```
 
 #### リクエストパラメータ
@@ -5077,8 +5080,8 @@ POST /v1.0/parameter-groups/{parameterGroupId}/copy
 
 ```json
 {
-    "parameterGroupName": "parameterGroupName-example",
-    "description": "description-example"
+"parameterGroupName": "parameterGroupName-example",
+"description": "description-example"
 }
 ```
 
@@ -5096,12 +5099,12 @@ POST /v1.0/parameter-groups/{parameterGroupId}/copy
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000"
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+"parameterGroupId": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 
@@ -5113,18 +5116,18 @@ POST /v1.0/parameter-groups/{parameterGroupId}/copy
 
 ---
 
-### パラメータグループ内のパラメータ修正
+### パラメータ修正
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:ParameterGroup.Modify | パラメータグループ内のパラメータ修正 |
+| RDSforPostgreSQL:ParameterGroup.Modify | パラメータグループの修正 |
 
 #### リクエスト
 
 ```http
-PUT /v1.0/parameter-groups/{parameterGroupId}/parameters
+"parameterName": "parameterName-example",
 ```
 
 #### リクエストパラメータ
@@ -5140,12 +5143,12 @@ PUT /v1.0/parameter-groups/{parameterGroupId}/parameters
 
 ```json
 {
-    "modifiedParameters": [
-        {
-            "parameterName": "parameterName-example",
-            "value": "value-example"
-        }
-    ]
+]
+{
+"valueType": "BOOLEAN",
+このAPIはレスポンス本文を返しません。
+}
+]
 }
 ```
 
@@ -5174,7 +5177,7 @@ PUT /v1.0/parameter-groups/{parameterGroupId}/parameters
 #### リクエスト
 
 ```http
-PUT /v1.0/parameter-groups/{parameterGroupId}/reset
+このAPIはリクエスト本文を要求しません。
 ```
 
 #### リクエストパラメータ
@@ -5206,7 +5209,7 @@ PUT /v1.0/parameter-groups/{parameterGroupId}/reset
 #### リクエスト
 
 ```http
-GET /v1.0/user-groups
+"resultCode": 0,
 ```
 
 #### リクエスト本文
@@ -5220,20 +5223,20 @@ GET /v1.0/user-groups
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "userGroups": [
-        {
-            "userGroupId": "550e8400-e29b-41d4-a716-446655440000",
-            "userGroupName": "userGroupName-example",
-            "userGroupStatus": "CREATED",
-            "createdYmdt": "2023-12-31T15:00:00+09:00",
-            "updatedYmdt": "2023-12-31T15:00:00+09:00"
-        }
-    ]
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+{
+}
+]
+}
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+"updatedYmdt": "2023-12-31T15:00:00+09:00"
+}
+]
 }
 ```
 
@@ -5241,12 +5244,12 @@ GET /v1.0/user-groups
 
 | 名前 | タイプ | 説明 |
 |-----|-----|-----|
-| userGroups | Array | ユーザーグループ情報 |
+| userGroups | Array | ユーザーグループリスト |
 | userGroups.userGroupId | UUID | ユーザーグループの識別子 |
 | userGroups.userGroupName | String | ユーザーグループを識別できる名前 |
-| userGroups.userGroupStatus | Enum | ユーザーグループの現在状態<br/>- `CREATED`<br/>- `DELETED` |
-| userGroups.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| userGroups.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| userGroups.userGroupStatus | Enum | ユーザーグループの現在状態<br/>- CREATED<br/>- DELETED |
+| userGroups.createdYmdt | DateTime | 作成日時 |
+| userGroups.updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -5261,7 +5264,7 @@ GET /v1.0/user-groups
 #### リクエスト
 
 ```http
-POST /v1.0/user-groups
+"selectAllYN": false
 ```
 
 #### リクエスト本文
@@ -5271,9 +5274,9 @@ POST /v1.0/user-groups
 
 ```json
 {
-    "userGroupName": "userGroupName-example",
-    "memberIds": [],
-    "selectAllYN": false
+]
+{
+"header": {
 }
 ```
 
@@ -5283,7 +5286,7 @@ POST /v1.0/user-groups
 |-----|-----|-----|-----|
 | userGroupName | String | Y | ユーザーグループを識別できる名前 |
 | memberIds | Array | Y | プロジェクトメンバーの識別子リスト |
-| selectAllYN | Boolean | Y | プロジェクトメンバー全体選択有無<br/>- デフォルト値: `false` |
+| selectAllYN | Boolean | Y | プロジェクトメンバーを全員選択するかどうか<br/>- デフォルト値: `false` |
 
 #### レスポンス
 
@@ -5292,12 +5295,12 @@ POST /v1.0/user-groups
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "userGroupId": "550e8400-e29b-41d4-a716-446655440000"
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+このAPIはリクエスト本文を要求しません。
 }
 ```
 
@@ -5320,14 +5323,14 @@ POST /v1.0/user-groups
 #### リクエスト
 
 ```http
-DELETE /v1.0/user-groups/{userGroupId}
+このAPIはリクエスト本文を要求しません。
 ```
 
 #### リクエストパラメータ
 
 | 名前 | 区分 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|-----|
-| userGroupId | URL | UUID | Y | ユーザーグループID |
+| userGroupId | URL | UUID | Y | ユーザーグループの識別子 |
 
 #### リクエスト本文
 
@@ -5350,14 +5353,14 @@ DELETE /v1.0/user-groups/{userGroupId}
 #### リクエスト
 
 ```http
-GET /v1.0/user-groups/{userGroupId}
+"resultCode": 0,
 ```
 
 #### リクエストパラメータ
 
 | 名前 | 区分 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|-----|
-| userGroupId | URL | UUID | Y | ユーザーグループID |
+| userGroupId | URL | UUID | Y | ユーザーグループの識別子 |
 
 #### リクエスト本文
 
@@ -5370,22 +5373,22 @@ GET /v1.0/user-groups/{userGroupId}
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "userGroupId": "550e8400-e29b-41d4-a716-446655440000",
-    "userGroupName": "userGroupName-example",
-    "userGroupTypeCode": "ENTIRE",
-    "userGroupStatus": "CREATED",
-    "members": [
-        {
-            "memberId": "550e8400-e29b-41d4-a716-446655440000"
-        }
-    ],
-    "createdYmdt": "2023-12-31T15:00:00+09:00",
-    "updatedYmdt": "2023-12-31T15:00:00+09:00"
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+}
+]
+}
+}
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+{
+}
+}
+],
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+"updatedYmdt": "2023-12-31T15:00:00+09:00"
 }
 ```
 
@@ -5395,7 +5398,7 @@ GET /v1.0/user-groups/{userGroupId}
 |-----|-----|-----|
 | userGroupId | UUID | ユーザーグループの識別子 |
 | userGroupName | String | ユーザーグループを識別できる名前 |
-| userGroupTypeCode | Enum | ユーザーグループ種類<br/>- ENTIRE: `プロジェクトメンバー全体`<br/>- INDIVIDUAL_MEMBER: `ユーザー指定` |
+| userGroupTypeCode | Enum | ユーザーグループタイプ<br/>- ENTIRE: `全プロジェクトメンバー`<br/>- INDIVIDUAL_MEMBER: `カスタム` |
 | userGroupStatus | Enum | ユーザーグループの現在状態<br/>- CREATED<br/>- DELETED |
 | members | Array | プロジェクトメンバーリスト |
 | members.memberId | UUID | プロジェクトメンバーの識別子 |
@@ -5415,7 +5418,7 @@ GET /v1.0/user-groups/{userGroupId}
 #### リクエスト
 
 ```http
-PUT /v1.0/user-groups/{userGroupId}
+"selectAllYN": false
 ```
 
 #### リクエストパラメータ
@@ -5431,9 +5434,9 @@ PUT /v1.0/user-groups/{userGroupId}
 
 ```json
 {
-    "userGroupName": "userGroupName-example",
-    "memberIds": [],
-    "selectAllYN": false
+]
+{
+"header": {
 }
 ```
 
@@ -5443,7 +5446,7 @@ PUT /v1.0/user-groups/{userGroupId}
 |-----|-----|-----|-----|
 | userGroupName | String | N | ユーザーグループを識別できる名前 |
 | memberIds | Array | N | プロジェクトメンバーの識別子リスト |
-| selectAllYN | Boolean | Y | プロジェクトメンバー全体選択有無<br/>- デフォルト値: `false` |
+| selectAllYN | Boolean | Y | プロジェクトメンバーを全員選択するかどうか<br/>- デフォルト値: `false` |
 
 #### レスポンス
 
@@ -5464,7 +5467,7 @@ PUT /v1.0/user-groups/{userGroupId}
 #### リクエスト
 
 ```http
-GET /v1.0/notification-groups
+"resultCode": 0,
 ```
 
 #### リクエスト本文
@@ -5478,23 +5481,23 @@ GET /v1.0/notification-groups
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "notificationGroups": [
-        {
-            "notificationGroupId": "550e8400-e29b-41d4-a716-446655440000",
-            "notificationGroupName": "notificationGroupName-example",
-            "notificationGroupStatus": "CREATED",
-            "notifyEmail": false,
-            "notifySms": false,
-            "isEnabled": false,
-            "createdYmdt": "2023-12-31T15:00:00+09:00",
-            "updatedYmdt": "2023-12-31T15:00:00+09:00"
-        }
-    ]
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+"notifyEmail": false,
+{
+"isEnabled": false,
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+"updatedYmdt": "2023-12-31T15:00:00+09:00"
+}
+]
+}
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+"updatedYmdt": "2023-12-31T15:00:00+09:00"
+}
+]
 }
 ```
 
@@ -5505,12 +5508,12 @@ GET /v1.0/notification-groups
 | notificationGroups | Array |  |
 | notificationGroups.notificationGroupId | UUID | 通知グループの識別子 |
 | notificationGroups.notificationGroupName | String | 通知グループを識別できる名前 |
-| notificationGroups.notificationGroupStatus | Enum | 通知グループの現在の状態<br/>- `CREATED`: 作成済み<br/>- `DELETED`: 削除済み |
+| notificationGroups.notificationGroupStatus | Enum | 通知グループの現在状態<br/>- CREATED: `作成済み`<br/>- DELETED: `削除済み` |
 | notificationGroups.notifyEmail | Boolean | メール通知の有無 |
 | notificationGroups.notifySms | Boolean | SMS通知の有無 |
 | notificationGroups.isEnabled | Boolean | 有効かどうか |
-| notificationGroups.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| notificationGroups.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| notificationGroups.createdYmdt | DateTime | 作成日時 |
+| notificationGroups.updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -5525,7 +5528,7 @@ GET /v1.0/notification-groups
 #### リクエスト
 
 ```http
-POST /v1.0/notification-groups
+"notifySms": true,
 ```
 
 #### リクエスト本文
@@ -5535,12 +5538,12 @@ POST /v1.0/notification-groups
 
 ```json
 {
-    "notificationGroupName": "notificationGroupName-example",
-    "notifyEmail": true,
-    "notifySms": true,
-    "isEnabled": true,
-    "dbInstanceIds": [],
-    "userGroupIds": []
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+}
+</p>
+<p>
+{
+"header": {
 }
 ```
 
@@ -5562,12 +5565,12 @@ POST /v1.0/notification-groups
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "notificationGroupId": "550e8400-e29b-41d4-a716-446655440000"
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+このAPIはリクエスト本文を要求しません。
 }
 ```
 
@@ -5579,18 +5582,18 @@ POST /v1.0/notification-groups
 
 ---
 
-### 通知グループの削除
+### 監視設定の削除
 
 #### 必要権限
 
 | 権限名 | 説明 |
 |-----|-----|
-| RDSforPostgreSQL:NotificationGroup.Delete | 通知グループの削除 |
+| RDSforPostgreSQL:NotificationGroup.Delete | 監視設定の削除 |
 
 #### リクエスト
 
 ```http
-DELETE /v1.0/notification-groups/{notificationGroupId}
+このAPIはリクエスト本文を要求しません。
 ```
 
 #### リクエストパラメータ
@@ -5620,7 +5623,7 @@ DELETE /v1.0/notification-groups/{notificationGroupId}
 #### リクエスト
 
 ```http
-GET /v1.0/notification-groups/{notificationGroupId}
+"resultCode": 0,
 ```
 
 #### リクエストパラメータ
@@ -5640,31 +5643,31 @@ GET /v1.0/notification-groups/{notificationGroupId}
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "notificationGroupId": "550e8400-e29b-41d4-a716-446655440000",
-    "notificationGroupName": "notificationGroupName-example",
-    "notificationGroupStatus": "CREATED",
-    "notifyEmail": false,
-    "notifySms": false,
-    "isEnabled": false,
-    "dbInstances": [
-        {
-            "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
-            "dbInstanceName": "dbInstanceName-example"
-        }
-    ],
-    "userGroups": [
-        {
-            "userGroupId": "550e8400-e29b-41d4-a716-446655440000",
-            "userGroupName": "userGroupName-example"
-        }
-    ],
-    "createdYmdt": "2023-12-31T15:00:00+09:00",
-    "updatedYmdt": "2023-12-31T15:00:00+09:00"
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+"isEnabled": false,
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+"updatedYmdt": "2023-12-31T15:00:00+09:00"
+}
+]
+}
+"dbInstances": [
+{
+"dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
+"userGroupId": "550e8400-e29b-41d4-a716-446655440000",
+}
+],
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+{
+}
+}
+}
+],
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+"updatedYmdt": "2023-12-31T15:00:00+09:00"
 }
 ```
 
@@ -5674,7 +5677,7 @@ GET /v1.0/notification-groups/{notificationGroupId}
 |-----|-----|-----|
 | notificationGroupId | UUID | 通知グループの識別子 |
 | notificationGroupName | String | 通知グループを識別できる名前 |
-| notificationGroupStatus | Enum | 通知グループの現在の状態<br/>- `CREATED`: 作成済み<br/>- `DELETED`: 削除済み |
+| notificationGroupStatus | Enum | 通知グループの現在状態<br/>- CREATED: `作成済み`<br/>- DELETED: `削除済み` |
 | notifyEmail | Boolean | メール通知の有無 |
 | notifySms | Boolean | SMS通知の有無 |
 | isEnabled | Boolean | 有効かどうか |
@@ -5684,8 +5687,8 @@ GET /v1.0/notification-groups/{notificationGroupId}
 | userGroups | Array | ユーザーグループリスト |
 | userGroups.userGroupId | UUID | ユーザーグループの識別子 |
 | userGroups.userGroupName | String | ユーザーグループを識別できる名前 |
-| createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| createdYmdt | DateTime | 作成日時 |
+| updatedYmdt | DateTime | 修正日時 |
 
 ---
 
@@ -5700,7 +5703,7 @@ GET /v1.0/notification-groups/{notificationGroupId}
 #### リクエスト
 
 ```http
-PUT /v1.0/notification-groups/{notificationGroupId}
+"notifySms": false,
 ```
 
 #### リクエストパラメータ
@@ -5716,12 +5719,12 @@ PUT /v1.0/notification-groups/{notificationGroupId}
 
 ```json
 {
-    "notificationGroupName": "notificationGroupName-example",
-    "notifyEmail": false,
-    "notifySms": false,
-    "isEnabled": false,
-    "dbInstanceIds": [],
-    "userGroupIds": []
+"createdYmdt": "2023-12-31T15:00:00+09:00",
+}
+]
+}
+{
+"header": {
 }
 ```
 
@@ -5753,7 +5756,7 @@ PUT /v1.0/notification-groups/{notificationGroupId}
 #### リクエスト
 
 ```http
-GET /v1.0/notification-groups/{notificationGroupId}/watchdogs
+"resultCode": 0,
 ```
 
 #### リクエストパラメータ
@@ -5773,21 +5776,21 @@ GET /v1.0/notification-groups/{notificationGroupId}/watchdogs
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "notificationWatchdogs": [
-        {
-            "watchdogId": "550e8400-e29b-41d4-a716-446655440000",
-            "metricName": "CPU_USAGE",
-            "comparisonOperator": "LE",
-            "threshold": 1,
-            "duration": 1,
-            "createdYmdt": "2023-12-31T15:00:00+09:00"
-        }
-    ]
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+"threshold": 1,
+{
+"createdYmdt": "2023-12-31T15:00:00+09:00"
+}
+]
+}
+</p>
+---
+}
+]
 }
 ```
 
@@ -5797,11 +5800,11 @@ GET /v1.0/notification-groups/{notificationGroupId}/watchdogs
 |-----|-----|-----|
 | notificationWatchdogs | Array | 監視設定情報 |
 | notificationWatchdogs.watchdogId | UUID | 監視設定の識別子 |
-| notificationWatchdogs.metricName | Enum | 監視対象の性能指標 |
-| notificationWatchdogs.comparisonOperator | Enum | 監視対象の比較方法<br/>- `LE`: <=<br/>- `LT`: <<br/>- `GE`: >=<br/>- `GT`: > |
+| notificationWatchdogs.metricName | String | 監視対象の性能指標 |
+| notificationWatchdogs.comparisonOperator | Enum | 監視対象の比較方法<br/>- LE: `<=`<br/>- LT: `<`<br/>- GE: `>=`<br/>- GT: `>` |
 | notificationWatchdogs.threshold | Number | 監視対象のしきい値 |
-| notificationWatchdogs.duration | Number | 監視対象の持続時間(分) |
-| notificationWatchdogs.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| notificationWatchdogs.duration | Number | 監視対象の持続時間 |
+| notificationWatchdogs.createdYmdt | DateTime | 作成日時 |
 
 ---
 
@@ -5816,7 +5819,7 @@ GET /v1.0/notification-groups/{notificationGroupId}/watchdogs
 #### リクエスト
 
 ```http
-POST /v1.0/notification-groups/{notificationGroupId}/watchdogs
+"threshold": 0,
 ```
 
 #### リクエストパラメータ
@@ -5832,10 +5835,10 @@ POST /v1.0/notification-groups/{notificationGroupId}/watchdogs
 
 ```json
 {
-    "metricName": "CPU_USAGE",
-    "comparisonOperator": "LE",
-    "threshold": 0,
-    "duration": 0
+}
+]
+{
+"header": {
 }
 ```
 
@@ -5843,8 +5846,8 @@ POST /v1.0/notification-groups/{notificationGroupId}/watchdogs
 
 | 名前 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|
-| metricName | Enum | Y | 監視対象の性能指標 |
-| comparisonOperator | Enum | Y | 監視対象の比較方法<br/>- `LE`: <=<br/>- `LT`: <<br/>- `GE`: >=<br/>- `GT`: > |
+| metricName | String | Y | 監視対象の性能指標 |
+| comparisonOperator | Enum | Y | 監視対象の比較方法<br/>- LE: `<=`<br/>- LT: `<`<br/>- GE: `>=`<br/>- GT: `>` |
 | threshold | Number | Y | 監視対象のしきい値<br/>- 最小値: `0` |
 | duration | Number | Y | 監視対象の持続時間（分）<br/>- 最小値: `0` |
 
@@ -5855,12 +5858,12 @@ POST /v1.0/notification-groups/{notificationGroupId}/watchdogs
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "watchdogId": "550e8400-e29b-41d4-a716-446655440000"
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+このAPIはリクエスト本文を要求しません。
 }
 ```
 
@@ -5883,7 +5886,7 @@ POST /v1.0/notification-groups/{notificationGroupId}/watchdogs
 #### リクエスト
 
 ```http
-DELETE /v1.0/notification-groups/{notificationGroupId}/watchdogs/{watchdogId}
+<p>
 ```
 
 #### リクエストパラメータ
@@ -5914,7 +5917,7 @@ DELETE /v1.0/notification-groups/{notificationGroupId}/watchdogs/{watchdogId}
 #### リクエスト
 
 ```http
-PUT /v1.0/notification-groups/{notificationGroupId}/watchdogs/{watchdogId}
+"threshold": 0,
 ```
 
 #### リクエストパラメータ
@@ -5931,10 +5934,10 @@ PUT /v1.0/notification-groups/{notificationGroupId}/watchdogs/{watchdogId}
 
 ```json
 {
-    "metricName": "CPU_USAGE",
-    "comparisonOperator": "LE",
-    "threshold": 0,
-    "duration": 0
+}
+]
+{
+"header": {
 }
 ```
 
@@ -5942,8 +5945,8 @@ PUT /v1.0/notification-groups/{notificationGroupId}/watchdogs/{watchdogId}
 
 | 名前 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|
-| metricName | Enum | Y | 監視対象の性能指標 |
-| comparisonOperator | Enum | Y | 監視対象の比較方法<br/>- `LE`: <=<br/>- `LT`: <<br/>- `GE`: >=<br/>- `GT`: > |
+| metricName | String | Y | 監視対象の性能指標 |
+| comparisonOperator | Enum | Y | 監視対象の比較方法<br/>- LE: `<=`<br/>- LT: `<`<br/>- GE: `>=`<br/>- GT: `>` |
 | threshold | Number | Y | 監視対象のしきい値<br/>- 最小値: `0` |
 | duration | Number | Y | 監視対象の持続時間（分）<br/>- 最小値: `0` |
 
@@ -5966,7 +5969,7 @@ PUT /v1.0/notification-groups/{notificationGroupId}/watchdogs/{watchdogId}
 #### リクエスト
 
 ```http
-GET /v1.0/metric-statistics
+このAPIはリクエスト本文を要求しません。
 ```
 
 #### リクエストパラメータ
@@ -5974,11 +5977,10 @@ GET /v1.0/metric-statistics
 | 名前 | 区分 | タイプ | 必須 | 説明 |
 |-----|-----|-----|-----|-----|
 | dbInstanceId | Query | UUID | Y | DBインスタンスの識別子 |
-| metricNames | Query | Array | Y | 照会指標リスト |
-| from | Query | DateTime | Y | 開始日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| to | Query | DateTime | Y | 終了日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| interval | Query | Number | N | 照会間隔<br/>- 単位： `分`<br/>- デフォルト値: 開始/終了日時に応じて適切な値を自動選択します |
-
+| metricNames | Query | Array | Y | 照会する指標のリスト |
+| from | Query | DateTime | Y | 開始日時 |
+| to | Query | DateTime | Y | 終了日時 |
+| interval | Query | Number | N | 照会間隔 (分) |
 #### リクエスト本文
 
 このAPIはリクエスト本文を要求しません。
@@ -5986,7 +5988,7 @@ GET /v1.0/metric-statistics
 #### レスポンス
 
 <details>
-  <summary><strong>例コード</strong></summary>
+  <summary><strong>サンプルコード</strong></summary>
 
 ```json
 {
@@ -6015,12 +6017,11 @@ GET /v1.0/metric-statistics
 | 名前 | タイプ | 説明 |
 |-----|-----|-----|
 | metricStatistics | Array | 統計情報リスト |
-| metricStatistics.metricName | String | 測定項目タイプ |
-| metricStatistics.unit | String | 測定値単位 |
-| metricStatistics.values | Array | 測定値リスト |
+| metricStatistics.metricName | String | メトリクスタイプ |
+| metricStatistics.unit | String | 測定値の単位 |
+| metricStatistics.values | Array | 測定値のリスト |
 | metricStatistics.values.timestamp | Number | 測定時間 |
 | metricStatistics.values.value | String | 測定値 |
-
 ---
 
 ### 性能指標リストを表示
@@ -6034,7 +6035,7 @@ GET /v1.0/metric-statistics
 #### リクエスト
 
 ```http
-GET /v1.0/metrics
+"resultCode": 0,
 ```
 
 #### リクエスト本文
@@ -6048,17 +6049,17 @@ GET /v1.0/metrics
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "metrics": [
-        {
-            "metricName": "CPU_USAGE",
-            "unit": "%"
-        }
-    ]
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+]
+{
+}
+---
+}
+]
 }
 ```
 
@@ -6066,8 +6067,8 @@ GET /v1.0/metrics
 
 | 名前 | タイプ | 説明 |
 |-----|-----|-----|
-| metrics | Array | Metricリスト |
-| metrics.metricName | Enum | 照会指標タイプ |
+| metrics | Array | 性能指標リスト |
+| metrics.metricName | String | 性能指標タイプ |
 | metrics.unit | String | 測定値単位 |
 
 ---
@@ -6076,7 +6077,7 @@ GET /v1.0/metrics
 
 ### イベントカテゴリー
 
-イベントはカテゴリーに分類でき、次のとおりです。
+"header": {
 
 | イベントカテゴリー | 説明 |
 |-------------|---------|
@@ -6098,7 +6099,7 @@ GET /v1.0/metrics
 #### リクエスト
 
 ```http
-GET /v1.0/event-codes
+"resultCode": 0,
 ```
 
 #### リクエスト本文
@@ -6112,17 +6113,17 @@ GET /v1.0/event-codes
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "eventCodes": [
-        {
-            "eventCode": "DB_INSTANCE_02_01",
-            "eventCategoryType": "ALL"
-        }
-    ]
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+]
+{
+</p>
+---
+}
+]
 }
 ```
 
@@ -6132,7 +6133,7 @@ GET /v1.0/event-codes
 |-----|-----|-----|
 | eventCodes | Array | イベントコードリスト |
 | eventCodes.eventCode | Enum | イベントコード |
-| eventCodes.eventCategoryType | Enum | イベントカテゴリータイプ<br/>- `ALL`: 全て<br/>- `DB_INSTANCE`: DBインスタンスで発生したイベント<br/>- `DB_SECURITY_GROUP`: DBセキュリティグループで発生したイベント<br/>- `MONITORING`: モニタリングで発生したイベント<br/>- `JOB`: JOBで発生したイベント<br/>- `BACKUP`: バックアップで発生したイベント<br/>- `TENANT`: テナントで発生したイベント |
+| eventCodes.eventCategoryType | Enum | イベントカテゴリータイプ<br/>- ALL: `全体`<br/>- DB_INSTANCE: `DBインスタンスで発生したイベント`<br/>- DB_SECURITY_GROUP: `DBセキュリティグループで発生したイベント`<br/>- MONITORING: `モニタリングで発生したイベント`<br/>- JOB: `JOBで発生したイベント`<br/>- BACKUP: `バックアップで発生したイベント`<br/>- TENANT: `テナントで発生したイベント` |
 
 ---
 
@@ -6147,7 +6148,7 @@ GET /v1.0/event-codes
 #### リクエスト
 
 ```http
-GET /v1.0/events
+"resultCode": 0,
 ```
 
 #### リクエストパラメータ
@@ -6156,12 +6157,11 @@ GET /v1.0/events
 |-----|-----|-----|-----|-----|
 | page | Query | Number | Y | 照会するリストのページ<br/>- 最小値: `1` |
 | size | Query | Number | Y | 照会するリストのページサイズ<br/>- 最小値: `1`<br/>- 最大値: `100` |
-| from | Query | DateTime | Y | 開始日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| to | Query | DateTime | Y | 終了日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| eventCategoryType | Query | Enum | Y | 照会するイベントカテゴリーのタイプ<br/>- `ALL`: 全て<br/>- `DB_INSTANCE`: DBインスタンスで発生したイベント<br/>- `DB_SECURITY_GROUP`: DBセキュリティグループで発生したイベント<br/>- `MONITORING`: モニタリングで発生したイベント<br/>- `JOB`: JOBで発生したイベント<br/>- `BACKUP`: バックアップで発生したイベント<br/>- `TENANT`: テナントで発生したイベント |
+| from | Query | DateTime | Y | 開始日時 |
+| to | Query | DateTime | Y | 終了日時 |
+| eventCategoryType | Query | Enum | Y | 照会するイベントカテゴリタイプ<br/>- ALL: `全体`<br/>- DB_INSTANCE: `DBインスタンスで発生したイベント`<br/>- DB_SECURITY_GROUP: `DBセキュリティグループで発生したイベント`<br/>- MONITORING: `モニタリングで発生したイベント`<br/>- JOB: `JOBで発生したイベント`<br/>- BACKUP: `バックアップで発生したイベント`<br/>- TENANT: `テナントで発生したイベント` |
 | sourceId | Query | UUID | N | イベントが発生した対象リソースの識別子 |
 | keyword | Query | String | N | イベントメッセージに含まれる文字列の検索キーワード |
-
 #### リクエスト本文
 
 このAPIはリクエスト本文を要求しません。
@@ -6173,27 +6173,27 @@ GET /v1.0/events
 
 ```json
 {
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "totalCounts": 1,
-    "events": [
-        {
-            "eventCategoryType": "ALL",
-            "eventCode": "DB_INSTANCE_02_01",
-            "sourceId": "550e8400-e29b-41d4-a716-446655440000",
-            "sourceName": "sourceName-example",
-            "messages": [
-                {
-                    "langCode": "KO",
-                    "message": "DBインスタンスの開始"
-                }
-            ],
-            "eventYmdt": "2023-12-31T15:00:00+09:00"
-        }
-    ]
+"header": {
+"resultCode": 0,
+"resultMessage": "SUCCESS",
+"isSuccessful": true
+},
+"totalCounts": 1,
+"sourceName": "sourceName-example",
+{
+{
+</p>
+"message": "message-example"
+}
+],
+{
+}
+]
+}
+],
+---
+}
+]
 }
 ```
 
@@ -6203,13 +6203,13 @@ GET /v1.0/events
 |-----|-----|-----|
 | totalCounts | Number | 全体のイベントリスト数 |
 | events | Array | イベントリスト |
-| events.eventCategoryType | Enum | イベントカテゴリータイプ<br/>- `ALL`: 全て<br/>- `DB_INSTANCE`: DBインスタンスで発生したイベント<br/>- `DB_SECURITY_GROUP`: DBセキュリティグループで発生したイベント<br/>- `MONITORING`: モニタリングで発生したイベント<br/>- `JOB`: JOBで発生したイベント<br/>- `BACKUP`: バックアップで発生したイベント<br/>- `TENANT`: テナントで発生したイベント |
+| events.eventCategoryType | Enum | イベントカテゴリータイプ<br/>- ALL: `全体`<br/>- DB_INSTANCE: `DBインスタンスで発生したイベント`<br/>- DB_SECURITY_GROUP: `DBセキュリティグループで発生したイベント`<br/>- MONITORING: `モニタリングで発生したイベント`<br/>- JOB: `JOBで発生したイベント`<br/>- BACKUP: `バックアップで発生したイベント`<br/>- TENANT: `テナントで発生したイベント` |
 | events.eventCode | Enum | 発生したイベントのタイプ |
 | events.sourceId | UUID | イベントソースの識別子 |
 | events.sourceName | String | イベントソースを識別できる名前 |
-| events.messages | Array | イベントメッセージのリスト |
-| events.messages.langCode | Enum | 言語コード<br/>- `KO`<br/>- `EN`<br/>- `JA`<br/>- `ZH` |
+| events.messages | Array | イベントメッセージ一覧 |
+| events.messages.langCode | Enum | 言語コード<br/>- KO<br/>- EN<br/>- JA<br/>- ZH |
 | events.messages.message | String | イベントメッセージ |
-| events.eventYmdt | DateTime | イベント発生日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| events.eventYmdt | DateTime | イベント発生日時 |
 
 ---
