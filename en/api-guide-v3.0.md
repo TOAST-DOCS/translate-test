@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=6a9497a9cc76 -->
 
 <a id="content-delivery-cdn-api-v30-guide"></a>
@@ -726,9 +728,8 @@ curl -X GET "https://cdn.api.nhncloudservice.com/v3.0/appKeys/{appKey}/distribut
 | multipleWildcardPath | String | Optional |   |             | Multiple wildcard paths to access using the generated token |
 | sessionId |           String | Optional |    |  max string length: 36 bytes           | Generate a token that includes sessionId for a single access request |
 
-* At least one of `singlePath`, `singleWildcardPath`, or `multipleWildcardPath` must be provided.
-* For more information on generating and using tokens, see [Console User Guide > Auth Token Authentication Access Control > 2. Generate Token](./console-guide/#access-control-for-auth-token-authentication-create-a-token).
-
+* At least one of `singlePath`, `singleWildcardPath`, or `multipleWildcardPath` is required.
+* For details on creating and using tokens, refer to [Console User Guide > Access Control for Auth Token Authentication > 2. Create a Token](./console-guide/#access-control-for-auth-token-authentication-create-a-token).
 
 <a id="create-auth-token-response"></a>
 #### Response
