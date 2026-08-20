@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=263cd1eadb32 -->
 
 <a id="security-secure-key-manager-release-notes"></a>
@@ -52,8 +54,8 @@
 ### June 24, 2025 { #june-24-2025 }
 <a id="june-24-2025-feature-updates"></a>
 #### Feature Updates
-  * Added new error message
-    * Added an error message for API requests with invalid URIs. For more information, see the [Troubleshooting Guide](/Security/Secure%20Key%20Manager/en/troubleshooting-guide/#api-call-failure-returns-url-not-found-error-message).
+  * Added new error messages
+    * Added an error message when an API request is made with an invalid URI. For more information, see [Troubleshooting Guide](/Security/Secure%20Key%20Manager/en/troubleshooting-guide/#api-call-failure-returns-url-not-found-error-message).
 
 <a id="april-28-2025"></a>
 ### April 28, 2025 { #april-28-2025 }
@@ -98,10 +100,10 @@
 <a id="march-26-2024"></a>
 ### March 26, 2024 { #march-26-2024 }
 <a id="march-26-2024-added-new-features"></a>
-#### Added New Features
-  * Added Add/Delete Credentials API
-     * Added the feature to add or delete credentials to use a key using APIs.
-     * To add or delete credentials using APIs, you must need **User Access Key ID** and **Secret Access Key**. For more information, see [User Access Key](/nhncloud/en/public-api/user-access-key).
+#### Added Features
+  * Added add/delete credentials API
+    * Added the feature to add or delete credentials to use a key using APIs.
+    * To add or delete credentials using APIs, you must need a **User Access Key ID** and a **Secret Access Key**. For more information, see [User Access Key](/nhncloud/en/public-api/user-access-key).
 
 <a id="february-27-2024"></a>
 ### February 27, 2024 { #february-27-2024 }
@@ -118,10 +120,10 @@
 <a id="november-28-2023"></a>
 ### November 28, 2023 { #november-28-2023 }
 <a id="november-28-2023-added-new-features"></a>
-#### Added New Features
-  * Added Add/Delete Key APIs
+#### Added Features
+  * Added key add/delete APIs
     * Added the feature to add or delete keys using APIs
-    * To add or delete keys using APIs, you must need a User Access Key ID and a Secret Access Key. For more information, see [User Access Key](/nhncloud/en/public-api/user-access-key)
+    * To add or delete keys using APIs, you must need a **User Access Key ID** and a **Secret Access Key**. For more information, see [User Access Key](/nhncloud/en/public-api/user-access-key).
 
 <a id="september-26-2023"></a>
 ### September 26, 2023 { #september-26-2023 }
@@ -273,5 +275,5 @@
 <a id="may-28-2019"></a>
 ### May 28, 2019 { #may-28-2019 }
 <a id="may-28-2019-release-of-new-service"></a>
-#### Release of New Service
-* Secure Key Manager is a service to let you centrally and securely manage data that can be exposed to security risks when stored in the application server, such as confidential data, symmetric key, and asymmetric key. In addition, it controls access so that only the clients that pass authentication can access the data.
+#### New Service Launch
+  * Secure Key Manager is a service that centrally and securely manages data that may be exposed to security risks when stored on application servers — such as Confidential Data, Symmetric Keys, and Asymmetric Keys — and controls access so that only authenticated clients can use the data.
