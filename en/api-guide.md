@@ -1,5 +1,10 @@
+<!-- machine_translated: true -->
+
 ## Data & Analytics > Log & Crash Search > API Guide
+
 ### Appkey and SecretKey
+
+AppKey and SecretKey are required to use the Log & Crash Search API.
 
 AppKey and SecretKey are required to use the Log & Crash Search API.
 
@@ -7,18 +12,18 @@ An Appkey is a unique authentication key issued for each NHN Cloud service, used
 
 ## Collect Log API
 
-Logs can be sent to Log & Crash collector server via HTTP protocol. 
+HTTP 프로토콜을 사용해 Log & Crash 수집 서버에 로그를 전송할 수 있습니다.
 
-> - Use the following address to send logs to the Log & Crash collector server with JSON/HTTP.
+> - When sending logs to the Log & Crash collector server via JSON/HTTP, you must use the following address:
 >     - Log & Crash: api-logncrash.nhncloudservice.com
 >     - Method of Delivery: POST
 >     - URI: /v2/log
 >     - Content-Type: "application/json"
-> - Check, before log delivery, if a project has been registered at Log & Crash.
-> - "logTime" is applied in the Log & Crash system; the key is ignored at Log & Crash.
-> - Take caution for not including a space character in the key name. For instance, "UserID" is considered a different key from "UserID ".
-> - One HTTP request can be no larger than 52MB. 
-> - One log (JSON) can be no larger than 8MB (8,388,608 bytes).
+> - Before sending logs, make sure that you have registered a project in Log & Crash.
+> - "logTime" is used by the Log & Crash system. If you use this key, it will be ignored by Log & Crash.
+> - Make sure that key names do not contain spaces. For example, "UserID" and "UserID " are recognized as different keys.
+> - The maximum size of a single HTTP request is 52 MB.
+> - The maximum size of a single log (JSON) is 8 MB (8,388,608 bytes).
 
 Use the JSON format as below: 
 
@@ -37,69 +42,69 @@ Use the JSON format as below:
 [Default Parameters]
 
 ```
-Parameter for Log Search 
+Parameters for Log Search
 
 projectName: string, required
-	[in] Appkey
+	[in] App key.
 
 projectVersion: string, required
-	[in] Version. Allows user-specifics. Includes "A~Z, a~z, 0~9, -._" only.
+	[in] Version. User-configurable. Contains only "A~Z, a~z, 0~9, -._".
 
 body: string, optional
-	[in] Log messages.
+	[in] Log message.
 
 logVersion: string, required
 	[in] Log format version. "v2".
 
 logSource: string, optional
-	[in] Log source. Used for filtering at Log Search. "http", if not defined.
+	[in] Log source. Used for filtering in Log Search. Defaults to "http" if not defined.
 
 logType: string, optional
-	[in] Log type. Used for filtering at Log Search. "log", if not defined. 
+	[in] Log type. Used for filtering in Log Search. Defaults to "log" if not defined.
 
 host: string, optional
-	[in] Address of a log-sending device. Automatically filled by using peer-address at the collector server, if not defined.
+	[in] Address of the device sending the log. If not defined, the collector server automatically fills this in using the peer address.
 ```
 
 [Other Parameters]
 
 ```
-sendTime: string, optional
-	[in] Time sent by device. Enter Unix timestamp for input.
+sendTime: string, option
+	[in] The time sent by the device. Enter as a Unix timestamp.
 
-logLevel: string, optional
-	[in] For Syslog event.
+logLevel: string, option
+	[in] For Syslog events.
 
-UserBinaryData: string, optional
-	[in] Display [Download|Show] link on the log search screen, and send with values encoded with base64.
+UserBinaryData: string, option
+	[in] Displays a [Download|View] link on the log search page. Send with a base64-encoded value.
 
-UserTxtData: string, optional
-	[in] Show [Download|View] link on the log search page, to be sent with base64 encoded value. 
+UserTxtData: string, option
+	[in] Displays a [Download|View] link on the log search page. Send with a base64-encoded value.
 
-txt*: string, optional
-	[in] Save fields starting with txt (e.g. txtMessage or txt_description) as text fields. Allows search by partial character strings of a field value (full text search) on the log search page. Field size can be no larger than 1MB.  
+txt*: string, option
+	[in] Field names starting with txt (txtMessage, txt_description, etc.) are saved as text fields. Full text search by some character strings of a field value is available on the log search page. The field size is limited to 1 MB.
 
-long*: long, optional
-    [in] Save fields starting with long (e.g. longElapsedTime, long_elapsed_time) as long-type fields. Allows search of long-type range on the log search page. 
+long*: long, option
+	[in] Field names starting with long (longElapsedTime, long_elapsed_time, etc.) are saved as long type fields. Range search is available for long type on the log search page.
 
-double*: double, optional
-    [in] Save fields starting with double (e.g. doubleAvgScore, double_avg_score) as double-type fields. Allows search of double-type range on the log search page.   
+double*: double, option
+	[in] Field names starting with double (doubleAvgScore, double_avg_score, etc.) are saved as double type fields. Range search is available for double type on the log search page.
 ```
 
 [Custom Fields]
 
 ```
-A custom field name must start with "A-Z, a-z", allowing "A-Z, a-z, 0-9, -, _". 
+Custom field names must start with "A–Z, a–z" and can use the characters "A–Z, a–z, 0–9, -, _".
 
-Redundancy is not allowed for a name with basic or crash parameters. 
+Custom field names must not duplicate the names of the basic parameters or Crash parameters listed above.
 
-Search for a custom field is available only for an exact match.
+Custom fields support only exact match searches (the entire field string must match).
 
-A custom field can be no longer than 1 KB. If you need to send data exceeding 1 KB, or search for a partial string within a field value, you must create the field with a txt* prefix.
+The length of a custom field is limited to 1 KB. If you need to send data exceeding 1 KB, or search by a partial string of the field value, you must create the field with the `txt*` prefix.
 ```
 
 [Return Value]
-Returned like follows, at the collector server: 
+The collector server returns the following.
 
 ```
 Content-Type: application/json
@@ -148,13 +153,13 @@ Sent in the JSON array format, for bulk delivery.
 ```
 
 * Note
-    * On the web, logs are aligned for display in the receiving time order; but bulk delivery is considered to have been received on same time, and user delivery order is not maintained. 
-        * To maintain the order of bulk-delivery logs, add the `lncBulkIndex` field to each log and specify Integer before delivery; and, the server shows the descending order of the value. 
+    * On the web, logs are sorted and displayed based on receive time. For bulk transfers, all logs are considered to have been received at the same time, so the order in which the user sent them is not preserved.
+        * To preserve the order of logs sent in bulk, add the `lncBulkIndex` field to each log with an Integer value. The server then displays the logs in descending order based on this value.
 
 ```
 [
     {
-        "projectName": "__Appkey__",
+        "projectName": "__AppKey__",
         "projectVersion": "1.0.0",
         "logVersion": "v2",
         "body": "first message",
@@ -164,7 +169,7 @@ Sent in the JSON array format, for bulk delivery.
         "lncBulkIndex":1
     },
     {
-        "projectName": "__Appkey__",
+        "projectName": "__AppKey__",
         "projectVersion": "1.0.0",
         "logVersion": "v2",
         "body": "second message",
@@ -175,9 +180,9 @@ Sent in the JSON array format, for bulk delivery.
     }
 ]
 ```
-        * If it has been delivered like the above, the server shows in the order of second message -> first message. 
+        * If sent as in the above example, the server displays the messages in the following order: second message → first message.
 
-At the collector server, each result value is returned in the JSON array type, in the order of delivery time. 
+The collector server returns each result value in JSON array format according to the order in which they were sent.
 
 ```
 Content-Type: application/json
@@ -204,13 +209,13 @@ Content-Type: application/json
 }
 
 total: int
-    [out] Total number of delivered logs
+    [out] Total number of logs sent
 
 errors: int
-    [out] Number of errors in delivered logs
+    [out] Number of errors among the logs sent
 
 resultList: array
-    [out] Result value of each delivered log
+    [out] Result values for each log sent
 ```
 
 ### Samples
@@ -218,9 +223,9 @@ resultList: array
 [When log is normally sent with curl]
 
 ```
-//Send logs with POST method 
+//Send logs using the POST method
 $ curl -H "content-type:application/json" -XPOST 'https://api-logncrash.nhncloudservice.com/v2/log' -d '{
-	"projectName": "__Appkey__",
+	"projectName": "__appkey__",
 	"projectVersion": "1.0.0",
 	"logVersion": "v2",
 	"body": "this log message come from http client, and it is a simple sample.",
@@ -232,9 +237,9 @@ $ curl -H "content-type:application/json" -XPOST 'https://api-logncrash.nhncloud
 [When it fails in log delivery]
 
 ```
-//When URL is incorrect (log -> loggg)
+//When the URL is incorrect (log -> loggg)
 $ curl -v -H 'content-type:application/json' -XPOST "api-logncrash.nhncloudservice.com/v2/loggg" -d '{
-	"projectName": "__Appkey__",
+	"projectName": "__appkey__",
 	"projectVersion": "1.0.0",
 	"logVersion": "v2",
 	"body": "this log message come from http client, and it is a simple sample.",
@@ -243,9 +248,9 @@ $ curl -v -H 'content-type:application/json' -XPOST "api-logncrash.nhncloudservi
 }'
 
 
-//When a wrong field key (_xxx) is used
+//When an invalid field key is used (_xxx)
 $ curl -v -H 'content-type:application/json' -XPOST "api-logncrash.nhncloudservice.com/v2/log" -d '{
-	"projectName": "__Appkey__",
+	"projectName": "__appkey__",
 	"projectVersion": "1.0.0",
 	"logVersion": "v2",
 	"body": "this log message come from http client, and it is a simple sample.",
@@ -253,17 +258,16 @@ $ curl -v -H 'content-type:application/json' -XPOST "api-logncrash.nhncloudservi
 	"logType": "nelo2-http",
 	"_xxx": "this is a invalid key"
 	}'
-A custom key, starting with an alphabet, must include "A~Z, a~z, 0~9, -_".
-A custom key, starting with an alphabet, must include "A~Z, a~z, 0~9, -_".
+Custom keys must contain "A–Z, a–z, 0–9, -_" and must start with a letter.
 ```
 
-[Bulk log delivery using curl]
+[When bulk-sending logs using curl]
 
 ```
-//Send logs with POST method 
+//Send logs using the POST method
 $ curl -H "content-type:application/json" -XPOST 'https://api-logncrash.nhncloudservice.com/v2/log' -d '[
     {
-        "projectName": "__Appkey__",
+        "projectName": "__appkey__",
         "projectVersion": "1.0.0",
         "logVersion": "v2",
         "body": "This log message come from HTTP client, and it is a simple bulk sample. (1/2)",
@@ -271,7 +275,7 @@ $ curl -H "content-type:application/json" -XPOST 'https://api-logncrash.nhncloud
         "logType": "nelo2-log"
     },
     {
-        "projectName": "__Appkey__",
+        "projectName": "__appkey__",
         "projectVersion": "1.0.0",
         "logVersion": "v2",
         "body": "This log message come from HTTP client, and it is a simple bulk sample. (2/2)",
@@ -281,18 +285,18 @@ $ curl -H "content-type:application/json" -XPOST 'https://api-logncrash.nhncloud
 ]'
 ```
 
-
 ## Log Search API
 
-> [Caution] This API is scheduled for deprecation. For new development, we recommend using the [v3 Log Search API](#v3-log-search-api) below.
+> [Caution] This API is scheduled to be discontinued. We recommend that you use the [v3 Log Search API](#v3-로그-검색-api) below for new development.
 
-Saved logs can be searched using Lucene queries.</br>
-The log search API limits the amount of requests per hour according to user pattern. The resources available while searching are represented as tokens, and some of them are deducted whenever the search API is called. The API is available for use as long as the number of remaining tokens is a positive number.</br>
-The number of tokens deducted when searching an item varies depending on the search duration, size, and the complexity of a query. Tokens are automatically replenished over time.</br>
+Saved logs can be searched using Lucene queries.<br>
+The log search API limits the amount of requests per hour according to user pattern. The resources available while searching are represented as tokens, and some of them are deducted whenever the search API is called. The API is available for use as long as the number of remaining tokens is a positive number.<br>
+The number of tokens deducted when searching an item varies depending on the search duration, size, and the complexity of a query. Tokens are automatically replenished over time.<br>
 
 ![lncs-api-01-20230925](https://static.toastoven.net/prod_logncrash/lncs-api-01-20230925.png)
 
 ### Basic Information
+
 ```
 API Endpoint: https://api-lncs-search.nhncloudservice.com
 ```
@@ -301,7 +305,8 @@ Only logs created in the past 90 days can be searched. The range of start time a
 ```
 
 ### Search API
-Retrieves logs within the specified time range using a Lucene query. There is no limit on the search results (`totalItems`), but the range that can be retrieved through paging is limited to a maximum of 100,000 (`pageNumber × pageSize ≤ 100,000`). To retrieve more logs than this, use the Search API (cursor pagination) or the Scroll API.
+
+You can view logs within the specified time frame using the Lucene query. There is no limit on the search results (`totalItems`), but the range that can be viewed with paging is up to 100,000 logs (`pageNumber × pageSize ≤ 100,000`). To retrieve more logs, use the Search API (Cursor pagination) or the Scroll API.
 ```
 POST /api/v2/search/{appkey}
 
@@ -309,16 +314,19 @@ Content-Type: application/json
 ```
 
 #### Request Parameter
+
 | Name | Format | Description | Required |
 | --- | --- | --- | --- |
-| appkey | String | Project appkey | O |
+| appkey | String | Project appkey | O | 
 
 #### Request Header
+
 | Name | Format | Description             | Required |
 | --- | --- |----------------| --- |
 | X-LNCS-SECRET | String | Project SecretKey | O |
 
 #### Request Body
+
 | Name | Format | Description | Required | Note |
 | --- | --- | --- | --- | --- |
 | query | String | Lucene query | O |  |
@@ -346,6 +354,7 @@ Content-Type: application/json
 </details>
 
 #### Response
+
 | Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | totalItems | Body | Number | Number of logs |
@@ -383,7 +392,8 @@ Content-Type: application/json
 
 
 ### Search API (Cursor Pagination)
-By specifying the URL query parameter `?cursor` at the same endpoint as the Search API to opt in, you can use cursor (search_after)-based pagination. Even when moving to deep pages, you can retrieve subsequent pages sequentially without being affected by the result window limit of `pageNumber × pageSize` (100,000 for the basic Search API).
+
+By specifying the URL query parameter `?cursor` at the same endpoint as the Search API and opting in, you can use cursor (search_after)-based pagination. Even when navigating to deep pages, you can sequentially retrieve the next page without being affected by the result window limit of `pageNumber × pageSize` (100,000 records for the default Search API).
 
 ```
 POST /api/v2/search/{appkey}?cursor
@@ -391,33 +401,33 @@ POST /api/v2/search/{appkey}?cursor
 Content-Type: application/json
 ```
 
-> - Cursor pagination is activated when the URL query parameter `?cursor` or `?cursor=true` is specified. If you do not opt in, the existing Search API behavior remains unchanged.
-> - When opting in to cursor pagination, you cannot send `pageNumber` together with it (specifying both results in a 400 response). Leave `cursor` empty for the first page request, and for subsequent pages, pass the `nextCursor` value from the previous response as-is in the `cursor` field of the next request.
+> - Cursor pagination is activated when the URL query parameter `?cursor` or `?cursor=true` is specified. If not opted in, the existing Search API behavior is preserved.
+> - When cursor is opted in, `pageNumber` cannot be sent at the same time (a 400 response is returned if both are specified). Leave `cursor` empty for the first page request, and for subsequent pages, pass the `nextCursor` value from the previous response directly to the `cursor` field of the next request.
 > - The `cursor` value is an opaque string that encodes the server's internal sort state. Do not parse or modify it on the client side.
-> - The page size limit per call (`pageSize` maximum value of 100) applies the same as in the standard Search API.
-> - When you reach the last page, the response body does not include the `nextCursor` field.
+> - The page size limit per call (`pageSize` maximum value of 100) applies in the same way as the regular Search API.
+> - When the last page is reached, the `nextCursor` field is not included in the response body.
 
-#### Request Parameters
-| Name | Category | Type | Description | Required |
+#### Request Parameter
+
+| Name | Location | Format | Description | Required |
 | --- | --- | --- | --- | --- |
-| appkey | Path | String | Project app key | O |
-| cursor | Query | - | Cursor-based pagination opt-in flag. Activated when `?cursor` or `?cursor=true` is specified | O |
-
+| appkey | Path | String | Project appkey | O |
+| cursor | Query | - | Opt-in flag for cursor-based pagination. Activated when `?cursor` or `?cursor=true` is specified. | O |
 #### Request Header
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| X-LNCS-SECRET | String | Project Secret Key | O |
 
+| Name | Format | Description | Required |
+| --- | --- |----------------| --- |
+| X-LNCS-SECRET | String | Project SecretKey | O |
 #### Request Body
-| Name | Type | Description | Required | Note |
+
+| Name | Format | Description | Required | Notes |
 | --- | --- | --- | --- | --- |
 | query | String | Lucene query | O |  |
-| from | String | Start time | O | Date in ISO8601 format (YYYY-MM-DDThh:mm:ss.sTZD) |
-| to | String | End time | O | Date in ISO8601 format (YYYY-MM-DDThh:mm:ss.sTZD) |
-| pageSize | Number | Page size |  | Default 10, maximum 100 |
-| sort | Object | Sort criteria |  | Sets ascending (ASC) or descending (DESC) order per field |
-| cursor | String | Cursor for retrieving the next page |  | Omitted for the first page. For subsequent pages, pass the `nextCursor` value from the previous response as-is. Cannot be used together with `pageNumber` (400) |
-
+| from | String | Start time | O | ISO 8601 date format (YYYY-MM-DDThh:mm:ss.sTZD) |
+| to | String | End time | O | Date in ISO 8601 format (YYYY-MM-DDThh:mm:ss.sTZD) |
+| pageSize | Number | Page size |  | Default: 10, maximum: 100 |
+| sort | Object | Sort by |  | Set ascending (ASC) and descending (DESC) by field |
+| cursor | String | Cursor for retrieving the next page |  | Omitted on the first page. For subsequent pages, pass the `nextCursor` value from the previous response as-is. Cannot be used together with `pageNumber` (400) |
 <details>
 <summary>Example</summary>
 
@@ -435,7 +445,7 @@ First page request (`cursor` not specified):
 }
 ```
 
-Next page request (passing the previous response's `nextCursor` as-is):
+Next page request (pass the `nextCursor` from the previous response as-is):
 
 ```json
 {
@@ -452,17 +462,17 @@ Next page request (passing the previous response's `nextCursor` as-is):
 </details>
 
 #### Response
-| Name | Category | Type | Description |
+
+| Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | totalItems | Body | Number | Number of logs |
 | pageSize | Body | Number | Page size |
-| data | Body | List | List of logs |
-| nextCursor | Body | String | Cursor for retrieving the next page. Included only when a next result exists; not included on the last page |
-
+| data | Body | List | Log list |
+| nextCursor | Body | String | Cursor for retrieving the next page. Included only when there are more results; not included on the last page |
 <details>
 <summary>Example</summary>
 
-When a next page exists (response includes `nextCursor`):
+When the next page exists (the response includes `nextCursor`):
 
 ```json
 {
@@ -488,7 +498,7 @@ When a next page exists (response includes `nextCursor`):
 }
 ```
 
-When it is the last page (response does not include `nextCursor`):
+When this is the last page (the response does not include `nextCursor`):
 
 ```json
 {
@@ -514,8 +524,8 @@ When it is the last page (response does not include `nextCursor`):
 ```
 </details>
 
-
 ### Scroll Start API
+
 Searches all the logs within the specified time frame using the Lucene query without pages specified. It can be used with Scroll Continue API to search logs multiple times.
 ```
 POST /api/v2/search/scroll/{appkey}
@@ -524,16 +534,19 @@ Content-Type: application/json
 ```
 
 #### Request Parameter
+
 | Name | Format | Description | Required |
 | --- | --- | --- | --- |
-| appkey | String | Project appkey | O |
+| appkey | String | Project appkey | O | 
 
 #### Request Header
+
 | Name | Format | Description             | Required |
 | --- | --- |----------------| --- |
 | X-LNCS-SECRET | String | Project SecretKey | O |
 
 #### Request Body
+
 | Name | Format | Description | Required | Note |
 | --- | --- | --- | --- | --- |
 | query | String | Lucene query | O |  |
@@ -559,6 +572,7 @@ Content-Type: application/json
 </details>
 
 #### Response
+
 | Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | scrollKey | Body | String | Scroll Key |
@@ -596,6 +610,7 @@ Content-Type: application/json
 
 
 ### Scroll Continue API
+
 Continues searching logs by specifying the Scroll Key obtained from Scroll Start API or the previously called Scroll Continue API.<br>
 Scroll Key is valid for 1 minute.
 ```
@@ -605,20 +620,24 @@ Content-Type: application/json
 ```
 
 #### Request Parameter
+
 | Name | Format | Description | Required |
 | --- | --- | --- | --- |
 | appkey | String | Project appkey | O |
 | scrollKey | String | Scroll Key | O |
 
 #### Request Header
+
 | Name | Format | Description             | Required |
 | --- | --- |----------------| --- |
 | X-LNCS-SECRET | String | Project SecretKey | O |
 
 #### Request Body
+
 Scroll Continue API does not require the request body.
 
 #### Response
+
 | Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | scrollKey | Body | String | Scroll Key |
@@ -653,22 +672,26 @@ Scroll Continue API does not require the request body.
 </details>
 
 ### Available Token API
+
 Retrieves the number of available tokens.
 ```
 GET /api/v2/search/available-tokens/{appkey}
 ```
 
 #### Request Parameter
+
 | Name | Format | Description | Required |
 | --- | --- | --- | --- |
 | appkey | String | Project appkey | O |
 
 #### Request Header
+
 | Name | Format | Description             | Required |
 | --- | --- |----------------| --- |
 | X-LNCS-SECRET | String | Project SecretKey | O |
 
 #### Response
+
 | Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | availableToken | Body | Number | Available tokens |
@@ -689,54 +712,54 @@ GET /api/v2/search/available-tokens/{appkey}
 }
 ```
 </details>
+## Log Search API v3
 
-
-## v3 Log Search API
-
-You can search stored logs using a Lucene query, and it provides features to upload, retrieve, and delete Symbol files for crash analysis.<br>
-The log search API limits the amount you can request per hour, depending on your usage pattern. The resources available for search are represented as tokens, and a certain amount is deducted according to internal criteria each time you call the search API. You can use the search API as long as your remaining token balance is positive.<br>
-The number of tokens deducted per search varies depending on the search period, data volume, and query complexity, and tokens are automatically replenished over time.<br>
+Saved logs can be searched using Lucene queries, and this service provides Symbol file upload, retrieval, and deletion features for crash analysis.<br>
+The log search API limits the amount of requests per hour according to user pattern. The resources available while searching are represented as tokens, and some of them are deducted whenever the search API is called. The API is available for use as long as the number of remaining tokens is a positive number.<br>
+The number of tokens deducted when searching an item varies depending on the search duration, size, and the complexity of a query. Tokens are automatically replenished over time.<br>
 
 ### Authentication
 
-The User Access Key token is supported as a method for API calls and authentication.<br>
+API calls and authentication are supported using User Access Key tokens.<br>
 For information on how to issue a token, see the link below.
 
-[User Access Key Token](https://docs.nhncloud.com/en/nhncloud/en/public-api/user-access-key-token/)
+[User Access Key Token](https://docs.nhncloud.com/en/nhncloud/ko/public-api/user-access-key-token/)
 
-#### Example HTTP Header for an API Request
+#### HTTP Header of API Request Examples
+
 ```
 X-NHN-Authorization: Bearer {Access Token}
 ```
 
 ### Search API
-Retrieves logs within the specified time range using a Lucene query. There is no limit on the search results (`totalItems`), but the range that can be retrieved through paging is limited to a maximum of 100,000 (`pageNumber × pageSize ≤ 100,000`). To retrieve more logs than this, use the Cursor Search API or the Scroll API.
+
+You can view logs within the specified time frame using the Lucene query. There is no limit on the search results (`totalItems`), but the range that can be viewed with paging is up to 100,000 logs (`pageNumber × pageSize ≤ 100,000`). To view more logs than that, use the Cursor Search API or Scroll API.
 ```
 POST /v3/{appkey}/logs/search
 
 Content-Type: application/json
 ```
 
-#### Request Parameters
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| appkey | String | Project app key | O |
+#### Request Parameter
 
+| Name | Format | Description | Required |
+| --- | --- | --- | --- |
+| appkey | String | Project appkey | O |
 #### Request Header
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| X-NHN-Authorization | String | User Access Key token in the format `Bearer {Access Token}` | O |
 
+| Name | Format | Description | Required |
+| --- | --- | --- | --- |
+| X-NHN-Authorization | String | User Access Key token in `Bearer {Access Token}` format | O |
 #### Request Body
-| Name | Type | Description | Required | Note |
+
+| Name | Format | Description | Required | Notes |
 | --- | --- | --- | --- | --- |
 | query | String | Lucene query | O |  |
-| from | String | Start time | O | Date in ISO8601 format (YYYY-MM-DDThh:mm:ss.sTZD) |
-| to | String | End time | O | Date in ISO8601 format (YYYY-MM-DDThh:mm:ss.sTZD) |
-| pageNumber | Number | Page number |  | Default 0 |
-| pageSize | Number | Page size |  | Default 10, maximum 100 |
-| sort | Object | Sort criteria |  | Sets ascending (ASC) or descending (DESC) order per field |
-
+| from | String | Start time | O | ISO 8601 date format (YYYY-MM-DDThh:mm:ss.sTZD) |
+| to | String | End time | O | Date in ISO 8601 format (YYYY-MM-DDThh:mm:ss.sTZD) |
+| pageNumber | Number | Page No. |  | Default: 0 |
+| pageSize | Number | Page size |  | Default: 10, maximum: 100 |
+| sort | Object | Sort by |  | Set ascending (ASC) and descending (DESC) by field |
 <details>
 <summary>Example</summary>
 
@@ -755,13 +778,13 @@ Content-Type: application/json
 </details>
 
 #### Response
-| Name | Category | Type | Description |
+
+| Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | totalItems | Body | Number | Number of logs |
-| pageNumber | Body | Number | Page number |
+| pageNumber | Body | Number | Page No. |
 | pageSize | Body | Number | Page size |
-| data | Body | List | List of logs |
-
+| data | Body | List | Log list |
 <details>
 <summary>Example</summary>
 
@@ -790,16 +813,16 @@ Content-Type: application/json
 ```
 </details>
 
-
 ### Cursor Search API
-Searches logs using cursor (opaque)-based pagination.<br>
-Even when moving to deep pages, you can retrieve results sequentially without being affected by the result window limit of `pageNumber × pageSize`.
 
-- Omit `cursor` in the body for the first page request.
-- For subsequent page requests, pass the `nextCursor` value from the previous response as-is in the `cursor` field of the body.
-- When you reach the last page, the response body does not include `nextCursor`.
-- The `cursor` value is an opaque string that encodes the backend's internal sort state. Do not parse or modify it on the client side.
-- `pageNumber` is not used; including it in the body returns a 400 response.
+Searches logs using cursor (opaque)-based pagination.<br>
+Even when navigating to deep pages, you can retrieve results sequentially without being affected by the result window limit of `pageNumber × pageSize`.
+
+- When requesting the first page, omit `cursor` from the request body.
+- When requesting the next page, pass the `nextCursor` value from the previous response as-is to the `cursor` field in the request body.
+- When the last page is reached, `nextCursor` is not included in the response body.
+- The `cursor` value is an opaque string that encodes the internal sort state of the backend. Do not parse or modify it on the client side.
+- `pageNumber` is not used, and including it in the request body returns a 400 response.
 
 ```
 POST /v3/{appkey}/logs/cursor
@@ -807,26 +830,26 @@ POST /v3/{appkey}/logs/cursor
 Content-Type: application/json
 ```
 
-#### Request Parameters
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| appkey | String | Project app key | O |
+#### Request Parameter
 
+| Name | Format | Description | Required |
+| --- | --- | --- | --- |
+| appkey | String | Project appkey | O |
 #### Request Header
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| X-NHN-Authorization | String | User Access Key token in the format `Bearer {Access Token}` | O |
 
+| Name | Format | Description | Required |
+| --- | --- | --- | --- |
+| X-NHN-Authorization | String | User Access Key token in `Bearer {Access Token}` format | O |
 #### Request Body
-| Name | Type | Description | Required | Note |
+
+| Name | Format | Description | Required | Notes |
 | --- | --- | --- | --- | --- |
 | query | String | Lucene query | O |  |
-| from | String | Start time | O | Date in ISO8601 format (YYYY-MM-DDThh:mm:ss.sTZD) |
-| to | String | End time | O | Date in ISO8601 format (YYYY-MM-DDThh:mm:ss.sTZD) |
-| pageSize | Number | Page size |  | Default 10, maximum 100 |
-| sort | Object | Sort criteria |  | Sets ascending (ASC) or descending (DESC) order per field |
-| cursor | String | The `nextCursor` value from the previous response |  | Omitted for the first page request |
-
+| from | String | Start time | O | ISO 8601 date format (YYYY-MM-DDThh:mm:ss.sTZD) |
+| to | String | End time | O | Date in ISO 8601 format (YYYY-MM-DDThh:mm:ss.sTZD) |
+| pageSize | Number | Page size |  | Default: 10, maximum: 100 |
+| sort | Object | Sort by |  | Set ascending (ASC) and descending (DESC) by field |
+| cursor | String | `nextCursor` value from the previous response |  | Omit when requesting the first page |
 <details>
 <summary>Example</summary>
 
@@ -845,14 +868,14 @@ Content-Type: application/json
 </details>
 
 #### Response
-| Name | Category | Type | Description |
+
+| Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | totalItems | Body | Number | Number of logs |
-| pageNumber | Body | Number | Page number (always fixed at `0` in cursor mode; not meaningful) |
+| pageNumber | Body | Number | Page number (always fixed at `0` in cursor mode, meaningless) |
 | pageSize | Body | Number | Page size |
-| data | Body | List | List of logs |
+| data | Body | List | Log list |
 | nextCursor | Body | String | Opaque cursor for retrieving the next page (not included on the last page) |
-
 <details>
 <summary>Example</summary>
 
@@ -882,34 +905,34 @@ Content-Type: application/json
 ```
 </details>
 
-
 ### Scroll Start API
-Retrieves all logs within the specified time range using a Lucene query, without specifying a page. Use this together with the Scroll Continue API to retrieve results across multiple calls.
+
+Searches all the logs within the specified time frame using the Lucene query without pages specified. It can be used with Scroll Continue API to search logs multiple times.
 ```
 POST /v3/{appkey}/logs/scroll
 
 Content-Type: application/json
 ```
 
-#### Request Parameters
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| appkey | String | Project app key | O |
+#### Request Parameter
 
+| Name | Format | Description | Required |
+| --- | --- | --- | --- |
+| appkey | String | Project appkey | O |
 #### Request Header
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| X-NHN-Authorization | String | User Access Key token in the format `Bearer {Access Token}` | O |
 
+| Name | Format | Description | Required |
+| --- | --- | --- | --- |
+| X-NHN-Authorization | String | User Access Key token in `Bearer {Access Token}` format | O |
 #### Request Body
-| Name | Type | Description | Required | Note |
+
+| Name | Format | Description | Required | Notes |
 | --- | --- | --- | --- | --- |
 | query | String | Lucene query | O |  |
-| from | String | Start time | O | Date in ISO8601 format (YYYY-MM-DDThh:mm:ss.sTZD) |
-| to | String | End time | O | Date in ISO8601 format (YYYY-MM-DDThh:mm:ss.sTZD) |
-| pageSize | Number | Page size |  | Default 10, maximum 100 |
-| sort | Object | Sort criteria |  | Sets ascending (ASC) or descending (DESC) order per field |
-
+| from | String | Start time | O | ISO 8601 date format (YYYY-MM-DDThh:mm:ss.sTZD) |
+| to | String | End time | O | Date in ISO 8601 format (YYYY-MM-DDThh:mm:ss.sTZD) |
+| pageSize | Number | Page size |  | Default: 10, maximum: 100 |
+| sort | Object | Sort by |  | Set ascending (ASC) and descending (DESC) by field |
 <details>
 <summary>Example</summary>
 
@@ -927,13 +950,13 @@ Content-Type: application/json
 </details>
 
 #### Response
-| Name | Category | Type | Description |
+
+| Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | scrollKey | Body | String | Scroll Key |
 | totalItems | Body | Number | Number of logs |
 | pageSize | Body | Number | Page size |
-| data | Body | List | List of logs |
-
+| data | Body | List | Log list |
 <details>
 <summary>Example</summary>
 
@@ -962,37 +985,38 @@ Content-Type: application/json
 ```
 </details>
 
-
 ### Scroll Continue API
-Continues retrieving logs by specifying the Scroll Key obtained from the Scroll Start API or the most recently called Scroll Continue API.<br>
-The Scroll Key is valid for 1 minute.
+
+Continues searching logs by specifying the Scroll Key obtained from Scroll Start API or the previously called Scroll Continue API.<br>
+Scroll Key is valid for 1 minute.
 ```
 POST /v3/{appkey}/logs/scroll/{scrollKey}
 
 Content-Type: application/json
 ```
 
-#### Request Parameters
-| Name | Type | Description | Required |
+#### Request Parameter
+
+| Name | Format | Description | Required |
 | --- | --- | --- | --- |
-| appkey | String | Project app key | O |
+| appkey | String | Project appkey | O |
 | scrollKey | String | Scroll Key | O |
-
 #### Request Header
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| X-NHN-Authorization | String | User Access Key token in the format `Bearer {Access Token}` | O |
 
+| Name | Format | Description | Required |
+| --- | --- | --- | --- |
+| X-NHN-Authorization | String | User Access Key token in `Bearer {Access Token}` format | O |
 #### Request Body
-The Scroll Continue API does not require a request body.
+
+Scroll Continue API does not require the request body.
 
 #### Response
-| Name | Category | Type | Description |
+
+| Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | scrollKey | Body | String | Scroll Key |
 | totalItems | Body | Number | Number of logs |
-| data | Body | List | List of logs |
-
+| data | Body | List | Log list |
 <details>
 <summary>Example</summary>
 
@@ -1020,28 +1044,28 @@ The Scroll Continue API does not require a request body.
 ```
 </details>
 
-
 ### Available Token API
+
 Retrieves the number of available tokens.
 ```
 GET /v3/{appkey}/logs/available-token
 ```
 
-#### Request Parameters
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| appkey | String | Project app key | O |
+#### Request Parameter
 
+| Name | Format | Description | Required |
+| --- | --- | --- | --- |
+| appkey | String | Project appkey | O |
 #### Request Header
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| X-NHN-Authorization | String | User Access Key token in the format `Bearer {Access Token}` | O |
 
+| Name | Format | Description | Required |
+| --- | --- | --- | --- |
+| X-NHN-Authorization | String | User Access Key token in `Bearer {Access Token}` format | O |
 #### Response
-| Name | Category | Type | Description |
+
+| Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | availableToken | Body | Number | Available tokens |
-
 <details>
 <summary>Example</summary>
 
@@ -1059,38 +1083,38 @@ GET /v3/{appkey}/logs/available-token
 ```
 </details>
 
-
 ### Symbol Upload API
-Uploads a Symbol file for crash analysis.
+
+Uploads the Symbol file for crash analysis.
 ```
 POST /v3/{appkey}/symbols?platform={platform}&version={version}&description={description}
 
 Content-Type: multipart/form-data
 ```
 
-#### Request Parameters
-| Name | Category | Type | Description | Required |
+#### Request Parameter
+
+| Name | Location | Format | Description | Required |
 | --- | --- | --- | --- | -- |
-| appkey | Path | String | Project app key | O |
-| platform | Query | String | Symbol target platform (one of `iOS`, `Android`, `Android-NDK`, `Windows`) | O |
+| appkey | Path | String | Project appkey | O |
+| platform | Query | String | Target platform for the Symbol (one of `iOS`, `Android`, `Android-NDK`, or `Windows`) | O |
 | version | Query | String | Symbol version | O |
-| description | Query | String | Symbol description (special characters such as spaces require URL encoding) |  |
-
+| description | Query | String | Symbol description (URL encoding required for special characters such as spaces) |  |
 #### Request Header
-| Name | Type | Description | Required |
+
+| Name | Format | Description | Required |
 | --- | --- | --- | --- |
-| X-NHN-Authorization | String | User Access Key token in the format `Bearer {Access Token}` | O |
-
+| X-NHN-Authorization | String | User Access Key token in `Bearer {Access Token}` format | O |
 #### Request Body
-| Name | Type | Description | Required | Note |
-| --- | --- | --- | --- | --- |
-| symbolfile | Binary | Symbol file | O | Sent in multipart/form-data format |
 
+| Name | Format | Description | Required | Notes |
+| --- | --- | --- | --- | --- |
+| symbolfile | Binary | Symbol file | O | Delivers the files in the multipart/form-data format. |
 #### Response
-| Name | Category | Type | Description |
+
+| Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | result.data.id | Body | List | List of identifiers for the uploaded Symbol files |
-
 <details>
 <summary>Example</summary>
 
@@ -1112,30 +1136,30 @@ Content-Type: multipart/form-data
 ```
 </details>
 
-
 ### Symbol List API
-Retrieves the list of uploaded Symbol files. Filters by the `platform`/`version` values; to retrieve all, call with both values set to `all`.
+
+Retrieves the list of uploaded Symbol files. You can filter by `platform`/`version` values; to retrieve all records, call with both values set to `all`.
 ```
 GET /v3/{appkey}/symbols/{platform}/{version}
 ```
 
-#### Request Parameters
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| appkey | String | Project app key | O |
-| platform | String | Symbol platform filter (`all` to retrieve all) | O |
-| version | String | Symbol version filter (`all` to retrieve all) | O |
+#### Request Parameter
 
+| Name | Format | Description | Required |
+| --- | --- | --- | --- |
+| appkey | String | Project appkey | O |
+| platform | String | Symbol platform filter (`all` when retrieving all) | O |
+| version | String | Symbol version filter (`all` for retrieving all) | O |
 #### Request Header
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| X-NHN-Authorization | String | User Access Key token in the format `Bearer {Access Token}` | O |
 
+| Name | Format | Description | Required |
+| --- | --- | --- | --- |
+| X-NHN-Authorization | String | User Access Key token in `Bearer {Access Token}` format | O |
 #### Response
-| Name | Category | Type | Description |
+
+| Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | result.data | Body | List | List of Symbol files |
-
 <details>
 <summary>Example</summary>
 
@@ -1157,31 +1181,31 @@ GET /v3/{appkey}/symbols/{platform}/{version}
 ```
 </details>
 
-
 ### Symbol Delete API
+
 Deletes a single Symbol file.
 ```
 DELETE /v3/{appkey}/symbols/{sid}
 ```
 
-#### Request Parameters
-| Name | Type | Description | Required |
+#### Request Parameter
+
+| Name | Format | Description | Required |
 | --- | --- | --- | --- |
-| appkey | String | Project app key | O |
+| appkey | String | Project appkey | O |
 | sid | String | Symbol file ID | O |
-
 #### Request Header
-| Name | Type | Description | Required |
-| --- | --- | --- | --- |
-| X-NHN-Authorization | String | User Access Key token in the format `Bearer {Access Token}` | O |
 
+| Name | Format | Description | Required |
+| --- | --- | --- | --- |
+| X-NHN-Authorization | String | User Access Key token in `Bearer {Access Token}` format | O |
 #### Response
-| Name | Category | Type | Description |
+
+| Name | Type | Format | Description |
 | --- | --- | --- | --- |
 | header.isSuccessful | Body | Boolean | Whether the request was successful |
 | header.resultCode | Body | Number | Result code |
 | header.resultMessage | Body | String | Result message |
-
 <details>
 <summary>Example</summary>
 
