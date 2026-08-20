@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=c10e7e66fdb0 -->
 
 # キーローテーションを利用したセキュリティ強化ガイド
@@ -449,6 +451,6 @@ Secure Key Managerのキーローテーション機能を適切に活用する�
 <a id="references"></a>
 ## 参考資料 { #references }
 
-* [Secure Key Managerコンソールガイド](./console-guide)
-* [Secure Key Manager API v1.2ガイド](./api-guide-v1.2)
+* [Secure Key Manager コンソールガイド](./console-guide)
+* [Secure Key Manager API v1.2 ガイド](./api-guide-v1.2)
 * [対称鍵管理機能を活用したエンベロープ暗号化](./overview/#envelope-encryption-with-symmetric-key-management-of-secure-key-manager)
