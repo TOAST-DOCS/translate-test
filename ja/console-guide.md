@@ -25,7 +25,7 @@
 | VPC | ボリュームにアクセスするVPC(Virtual Private Cloud：仮想プライベートクラウド)です。 |
 | サブネット | ボリュームにアクセスするサブネットです。選択したVPCのサブネットのみ選択できます。 |
 | サイズ | 作成するボリュームのサイズです。最小 $[ min_size ]$ から最大 $[ max_size ]$ まで入力できます。 |
-| アクセス制御リスト (ACL) | Network ACL サービスでアクセス制御リスト (ACL) を設定できます。詳細については、「[Network ACL サービスユーザーガイド]($[ network_acl_guide_url ]$)」を参照してください。 |
+| アクセス制御リスト（ACL） | Network ACL サービスでアクセス制御リスト（ACL）を設定できます。詳細については、[Network ACL サービス ユーザーガイド]($[ network_acl_guide_url ]$)を参照してください。 |
 | スナップショット自動作成 | 設定した周期に従ってスナップショットを自動的に作成します。設定した数を超過すると、最も古いスナップショットから順次削除されます。 |
 
 <a id="delete_volume"></a>
@@ -46,7 +46,7 @@
 <a id="change_acl"></a>
 ### アクセス制御設定の変更 { #change_acl }
 
-Network ACL サービスでアクセス制御リスト（ACL）を設定できます。詳細については、「[Network ACL サービスユーザーガイド]($[ network_acl_guide_url ]$)」を参照してください。
+Network ACL サービスでアクセス制御リスト（ACL）を設定できます。詳細については、[Network ACL サービスユーザーガイド]($[ network_acl_guide_url ]$)を参照してください。
 
 <a id="snapshots"></a>
 ## スナップショット { #snapshots }
