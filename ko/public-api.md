@@ -1,1970 +1,3045 @@
-<a id="compute-instance-api-v2-guide"></a>
-## Compute > Instance > API v2 가이드
+<!-- pre-align:aligned sig=08050b417a83 -->
 
-API를 사용하려면 API 엔드포인트와 토큰 등이 필요합니다. [API 사용 준비](/Compute/Compute/ko/identity-api/)를 참고하여 API 사용에 필요한 정보를 준비합니다.
+# NCS API 가이드
 
-인스턴스 API는 `compute` 타입 엔드포인트를 이용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
+**Container > NHN Container Service(NCS) > API 가이드**
 
-| 타입 | 리전 | 엔드포인트 |
-|---|---|---|
-| compute | 한국(판교) 리전<br>한국(평촌) 리전<br>한국(광주) 리전<br>일본 리전 | https://kr1-api-instance-infrastructure.nhncloudservice.com<br>https://kr2-api-instance-infrastructure.nhncloudservice.com<br>https://kr3-api-instance-infrastructure.nhncloudservice.com<br>https://jp1-api-instance-infrastructure.nhncloudservice.com |
+<a id="ncs-api-common-information"></a>
+## NCS API 공통 정보 { #ncs-api-common-information }
 
-API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
+<a id="api-endpoint"></a>
+### API 엔드포인트 { #api-endpoint }
 
-<a id="instance-flavors"></a>
-## 인스턴스 타입
+| 리전 | 도메인 |
+| --- | --- |
+| 한국(판교) 리전 | https://kr1-ncs.api.nhncloudservice.com |
+| 한국(광주) 리전 | https://kr3-ncs.api.nhncloudservice.com |
 
-<a id="list-flavors"></a>
-### 타입 목록 보기
+<a id="authentication-and-permission"></a>
+### 인증 및 권한 { #authentication-and-permission }
+
+NCS는 API 호출 시 인증/인가를 위해 User Access Key 토큰을 사용합니다. User Access Key 토큰은 User Access Key를 기반으로 발급되는 Bearer 타입의 일시적 액세스 토큰입니다. User Access Key 토큰 발급 및 사용에 대한 자세한 내용은 [User Access Key 토큰](/nhncloud/ko/public-api/user-access-key-token)을 참고하세요.
+
+<a id="common-response-information"></a>
+### 응답 공통 정보 { #common-response-information }
+
+모든 API 요청에 <strong>200 OK</strong>로 응답합니다. 자세한 응답 결과는 응답 본문 헤더를 참고합니다.
+
+<details>
+  <summary><strong>성공 응답</strong></summary>
 
 ```
-GET /v2/{tenantId}/flavors
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| minDisk | Query | Integer | - | 최소 블록 스토리지 크기(GB)<br>지정한 크기보다 블록 스토리지 크기가 큰 타입만 반환 |
-| minRam | Query | Integer | - | 최소 RAM 크기(MB)<br>지정한 크기보다 RAM 크기가 큰 타입만 반환 |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| flavors | Body | Object | 인스턴스 타입 목록 객체 |
-| flavors.id | Body | UUID | 인스턴스 타입 ID |
-| flavors.links | Body | Object | 인스턴스 타입 경로 객체 |
-| flavors.name | Body | String | 인스턴스 타입 이름 |
-
-
-<details><summary>예시</summary>
-<p>
-
-```json
 {
-  "flavors": [
-    {
-      "id": "013bea75-8541-4c6f-9abe-a03fee3d74fe",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/013bea75-8541-4c6f-9abe-a03fee3d74fe",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/013bea75-8541-4c6f-9abe-a03fee3d74fe",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "x1.c32m256"
-    },
-    {
-      "id": "0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "x1.c32m128"
-    }
-  ]
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 200,
+    "resultMessage": "SUCCESS"
+  }
 }
+
 ```
 
-</p>
 </details>
 
----
-
-<a id="list-flavors-with-details"></a>
-### 타입 목록 상세 보기
+<details>
+  <summary><strong>실패 응답</strong></summary>
 
 ```
-GET /v2/{tenantId}/flavors/detail
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| minDisk | Query | Integer | - | 최소 블록 스토리지 크기(GB)<br>지정한 크기보다 블록 스토리지 크기가 큰 타입만 반환 |
-| minRam | Query | Integer | - | 최소 RAM 크기(MB)<br>지정한 크기보다 RAM 크기가 큰 타입만 반환 |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명             |
-|---|---|---|----------------|
-| flavors | Body | Object | 인스턴스 타입 목록 객체  |
-| flavors.id | Body | UUID | 인스턴스 타입 ID     |
-| flavors.links | Body | Object | 인스턴스 타입 경로 객체  |
-| flavors.name | Body | String | 인스턴스 타입 이름     |
-| flavors.ram | Body | Integer | 메모리 크기(MB)     |
-| flavors.OS-FLV-DISABLED:disabled | Body | Boolean | 활성화 여부         |
-| flavors.vcpus | Body | Integer | vCPU 개수        |
-| flavors.extra_specs | Body | Object | 추가 사양 객체       |
-| flavors.swap | Body | Integer | 스와프 영역 크기(GB)  |
-| flavors.os-flavor-access:is_public | Body | Boolean | 공유 여부          |
-| flavors.rxtx_factor | Body | Float | 네트워크 송신/수신 패킷 비율 |
-| flavors.OS-FLV-EXT-DATA:ephemeral | Body | Integer | 임시 블록 스토리지 크기(GB)     |
-| flavors.disk | Body | Integer | 루트 블록 스토리지 크기(GB) |
-
-<details><summary>예시</summary>
-<p>
-
-```json
 {
-  "flavors": [
-    {
-      "name": "x1.c32m256",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/97604802-a090-43fa-a5ce-c7cfd737fbba",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/97604802-a090-43fa-a5ce-c7cfd737fbba",
-          "rel": "bookmark"
-        }
-      ],
-      "ram": 262144,
-      "OS-FLV-DISABLED:disabled": false,
-      "vcpus": 32,
-      "extra_specs": {
-        "flavor_type": "performance"
-      },
-      "swap": "",
-      "os-flavor-access:is_public": true,
-      "rxtx_factor": 1.0,
-      "OS-FLV-EXT-DATA:ephemeral": 0,
-      "disk": 0,
-      "id": "97604802-a090-43fa-a5ce-c7cfd737fbba"
-    },
-    {
-      "name": "x1.c32m128",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/31fa632d-aeec-4f12-8a57-ce9d146228e5",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/31fa632d-aeec-4f12-8a57-ce9d146228e5",
-          "rel": "bookmark"
-        }
-      ],
-      "ram": 131072,
-      "OS-FLV-DISABLED:disabled": false,
-      "vcpus": 32,
-      "extra_specs": {
-        "flavor_type": "performance"
-      },
-      "swap": "",
-      "os-flavor-access:is_public": true,
-      "rxtx_factor": 1.0,
-      "OS-FLV-EXT-DATA:ephemeral": 0,
-      "disk": 0,
-      "id": "31fa632d-aeec-4f12-8a57-ce9d146228e5"
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="availability-zones"></a>
-## 가용성 영역
-
-<a id="list-availability-zones"></a>
-### 가용성 목록 보기
-
-```
-GET /v2/{tenantId}/os-availability-zone
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| availabilityZoneInfo | Body | Object | 가용성 영역 정보 객체 |
-| availabilityZoneInfo.zoneName | Body | String | 가용성 영역 이름 |
-| availabilityZoneInfo.zoneState | Body | Object | 가용성 영역 상태 정보 객체 |
-| availabilityZoneInfo.available | Body | Object | 가용성 영역 상태 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "availabilityZoneInfo": [
-      {
-        "zoneState": {
-          "available": true
-        },
-        "zoneName": "kr-pub-a"
-      },
-      {
-        "zoneState": {
-          "available": true
-        },
-        "zoneName": "kr-pub-b"
-      }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="key-pairs"></a>
-## 키페어
-
-<a id="list-key-pairs"></a>
-### 키페어 목록 보기
-```
-GET /v2/{tenantId}/os-keypairs
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| keypairs | Body | Array | 키페어 객체 목록 |
-| keypairs.keypair | Body | Object | 키페어 객체 |
-| keypairs.keypair.name | Body | String | 키페어 이름 |
-| keypairs.keypair.public_key | Body | String | 공개키 |
-| keypairs.keypair.fingerprint | Body | String | 키페어 지문 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "keypairs": [
-    {
-      "keypair": {
-        "public_key": "ssh-rsa ... Generated-by-Nova",
-        "name": "keypair",
-        "fingerprint": "SHA256:..."
-      }
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="show-key-pair"></a>
-### 키페어 보기
-```
-GET /v2/{tenantId}/os-keypairs/{keypairName}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| keypairName | URL | String | O | 키페어 이름 |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| keypair | Body | Object | 키페어 객체 목록 |
-| keypair.public_key | Body | String | 공개키 |
-| keypair.user_id | Body | String | 키페어 소유주 ID |
-| keypair.name | Body | String | 키페어 이름 |
-| keypair.deleted | Body | Boolean | 키페어 삭제 여부 |
-| keypair.created_at | Body | Datetime | 키페어 생성 시각<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.updated_at | Body | Datetime | 키페어 수정 시각<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.deleted_at | Body | Datetime | 키페어 삭제 시각<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.fingerprint | Body | String | 키페어 지문 |
-| keypair.id | Body | Integer | 키페어 ID |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "keypair": {
-    "public_key": "ssh-rsa ... Generated-by-Nova",
-    "user_id": "826a1213b3f746829515486965690dfe",
-    "name": "keypair",
-    "deleted": false,
-    "created_at": "2020-02-07T03:46:48.000000",
-    "updated_at": null,
-    "fingerprint": "SHA256:...",
-    "deleted_at": null,
-    "id": 51
+  "header": {
+    "isSuccessful": false,
+    "resultCode": 10002,
+    "resultMessage": "Bad Request."
   }
 }
 ```
 
-</p>
 </details>
+
+| 이름 | 타입 | 설명 |
+| --- | --- | --- |
+| header | Object | API 응답 정보 |
+| header.isSuccessful | Boolean | <li>true: 정상</li><li>false: 오류</li> |
+| header.resultCode | Integer | <li>200: 정상</li><li>10000 이상: 오류</li> |
+| header.resultMessage | String | <li>SUCCESS: 정상</li><li>그 외: 오류 원인 메시지</li> |
 
 ---
-
-<a id="createregister-key-pair"></a>
-### 키페어 생성/등록하기
-
-```
-POST /v2/{tenantId}/os-keypairs
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| keypair | Body | Object | O | 키페어 객체 |
-| keypair.name | Body | String | O | 생성 또는 등록할 키페어 이름 |
-| keypair.public_key | Body | String | - | 등록할 공개키. 이 필드가 생략되면 새로운 키페어를 생성합니다. |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "keypair": {
-        "name": "keypair-d20a3d59-9433-4b79-8726-20b431d89c78",
-        "public_key": "ssh-rsa ... Generated-by-Nova"
-    }
-}
-```
-
-</p>
-</details>
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| keypair | Body | Object | 키페어 객체 |
-| keypair.public_key | Body | String | 공개키 |
-| keypair.private_key | Body | String | 비밀키, 새로운 키페어를 생성한 경우에 비밀키를 반환합니다. |
-| keypair.user_id | Body | String | 키페어 소유주 ID |
-| keypair.name | Body | String | 키페어 이름 |
-| keypair.fingerprint | Body | String | 키페어 지문 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "keypair": {
-        "fingerprint": "SHA256:+EZoD ... /DKiGnY4zf5tYrcix0",
-        "name": "keypair",
-        "public_key": "ssh-rsa ... Generated-by-Nova",
-        "user_id": "436f727b7c9142f896ddd56be591dd7f"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="delete-key-pair"></a>
-### 키페어 삭제하기
-```
-DELETE /v2/{tenantId}/os-keypairs/{keypairName}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| keypairName | URL | String | O | 키페어 이름 |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
-
-<a id="instance"></a>
-## 인스턴스
-
-<a id="instance-status"></a>
-### 인스턴스 상태
-
-인스턴스는 다양한 상태를 가지며 상태에 따라 취할 수 있는 동작이 정해져 있습니다. 인스턴스 상태 목록은 다음과 같습니다.
-
-| 상태명              | 설명                                                                                                |
-|-------------------|---------------------------------------------------------------------------------------------------|
-| `ACTIVE` | 인스턴스가 활성 상태인 경우 |
-| `BUILD` | 인스턴스가 생성 중인 경우 |
-| `DELETED` | 인스턴스가 삭제된 경우 |
-| `ERROR` | 직전 인스턴스에 취한 동작이 실패한 경우 |
-| `HARD_REBOOT` | 인스턴스를 강제 재시작한 경우<br> 물리 서버의 전원을 내리고 다시 켜는 것과 동일한 동작 |
-| `MIGRATING` | 인스턴스가 마이그레이션 중인 경우<br> 이는 실시간 마이그레이션(활성 인스턴스 이동) 작업으로 인해 발생함 |
-| `PASSWORD` | 인스턴스에서 비밀번호를 재설정하는 중인 경우 |
-| `PAUSED` | 인스턴스가 일시 정지된 경우<br>일시 정지된 인스턴스는 하이퍼바이저의 메모리에 저장됨 |
-| `REBOOT` | 인스턴스가 소프트 재부팅 상태인 경우<br> 재부팅 명령이 가상머신 운영 체제에 전달됨 |
-| `REBUILD` | 인스턴스를 생성 당시 이미지로부터 새롭게 만들어 내는 상태 |
-| `RESCUE` | 인스턴스를 복구 모드에서 실행 중인 경우 |
-| `RESIZE` | 인스턴스 타입을 변경하거나 인스턴스를 다른 호스트로 옮기는 경우<br>인스턴스가 중지되었다가 다시 시작된 상태 |
-| `REVERT_RESIZE` | 인스턴스 타입을 변경하거나 인스턴스를 다른 호스트로 옮기는 과정에서 실패했을 때 원상태로 돌아가기 위해 복구하는 경우 |
-| `VERIFY_RESIZE` | 인스턴스가 타입 변경 또는 인스턴스를 다른 호스트로 옮기는 과정을 마치고 사용자의 승인을 기다리는 경우<br>NHN Cloud에서는 이 경우 자동으로 `ACTIVE` 상태가 됨 |
-| `SHELVED_OFFLOADED` | 인스턴스가 종료된 경우 |
-| `SHUTOFF` | 인스턴스가 중지된 경우 |
-| `SUSPENDED` | 인스턴스가 관리자에 의해 최대 절전 모드로 진입한 경우 |
-| `UNKNOWN` | 인스턴스의 상태를 알 수 없는 경우<br>`인스턴스가 이 상태로 진입한 경우 관리자에게 문의합니다.` | 
-
-<a id="list-instances"></a>
-### 인스턴스 목록 보기
-
-```
-GET /v2/{tenantId}/servers
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| reservation_id | Query | String | - | 인스턴스 생성 예약 ID. <br>예약 ID를 지정하면 동시에 생성된 인스턴스 목록만 반환함 |
-| changes-since | Query | Datetime | - | 지정된 시각 이후로 변경된 인스턴스 목록을 반환. `YYYY-MM-DDThh:mm:ss`의 형태. |
-| image | Query | UUID | - | 이미지 ID<br>지정된 이미지를 사용한 인스턴스 목록을 반환 |
-| flavor | Query | UUID | - | 인스턴스 타입 ID<br>지정된 타입을 사용한 인스턴스 목록을 반환 |
-| name | Query | String | - | 인스턴스 이름<br>지정된 이름을 가진 인스턴스 목록을 반환, 정규 표현식으로 질의 가능 |
-| status | Query | Enum | - | 인스턴스 상태<br>지정된 상태를 가진 인스턴스 목록을 반환 |
-| limit | Query | Integer | - | 인스턴스 목록 개수<br>지정된 개수 만큼의 인스턴스 목록을 반환 |
-| marker | Query | UUID | - | 목록의 첫번째 인스턴스 UUID<br>정렬 기준에 따라 `marker`로 지정된 인스턴스부터 `limit` 개수 만큼의 인스턴스 목록을 반환 |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| servers | Body | Object | 인스턴스 목록 객체 |
-| id | Body | UUID | 인스턴스 UUID |
-| links | body | Object | 인스턴스 경로 객체 |
-| name | body | String | 인스턴스 이름 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "servers": [
-    {
-      "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "Web-Server"
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="list-instances-with-details"></a>
-### 인스턴스 목록 상세 보기
-
-인스턴스 목록 보기와 동일하게 현재 테넌트에 생성된 인스턴스 목록을 반환합니다. 단, 인스턴스별 상세한 정보가 같이 조회됩니다.
-
-```
-GET /v2/{tenantId}/servers/detail
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-인스턴스 목록 보기와 동일한 요청 형태입니다.
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명                                                                                                                                                                                                        |
-|---|---|---|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| servers | body | Object | 인스턴스 목록 객체                                                                                                                                                                                                |
-| status | body | Enum | 인스턴스 상태                                                                                                                                                                                                   |
-| servers.id | Body | UUID | 인스턴스 ID                                                                                                                                                                                                   |
-| servers.name | Body | String | 인스턴스 이름, 최대 255자                                                                                                                                                                                          |
-| servers.updated | Body | Datetime | 인스턴스 최종 수정 시각, `YYYY-MM-DDThh:mm:ssZ` 형식                                                                                                                                                                  |
-| servers.hostId | Body | String | 인스턴스가 구동 중인 호스트 ID                                                                                                                                                                                        |
-| servers.addresses | Body | Object | 인스턴스 IP 목록 객체. <br>인스턴스에 연결된 포트 수 만큼 목록이 생성됨.                                                                                                                                                             |
-| servers.addresses."Network 이름" | Body | Object | 인스턴스에 연결된 Network별 포트 정보                                                                                                                                                                                  |
-| servers.addresses."Network 이름".OS-EXT-IPS-MAC:mac_addr | Body | String | 인스턴스에 연결된 포트의 MAC 주소                                                                                                                                                                                      |
-| servers.addresses."Network 이름".version | Body | Integer | 인스턴스에 연결된 포트의 IP 버전<br>NHN Cloud는 IPv4만 지원                                                                                                                                                                |
-| servers.addresses."Network 이름".addr | Body | String | 인스턴스에 연결된 포트의 IP 주소                                                                                                                                                                                       |
-| servers.addresses."Network 이름".OS-EXT-IPS:type | Body | Enum | 포트의 IP 주소 타입<br>`fixed` 또는 `floating` 중 하나                                                                                                                                                                |
-| servers.links | Body | Object | 인스턴스 경로 객체                                                                                                                                                                                                |
-| servers.key_name | Body | String | 인스턴스 키페어 이름                                                                                                                                                                                               |
-| servers.image | Body | Object | 인스턴스 이미지 객체                                                                                                                                                                                               |
-| servers.image.id | Body | UUID | 인스턴스 이미지 ID                                                                                                                                                                                               |
-| servers.image.links | Body | Object | 인스턴스 이미지 경로 객체                                                                                                                                                                                            |
-| servers.OS-EXT-STS:task_state | Body | String | 인스턴스 작업 상태<br>인스턴스에 동작을 가했을 때 동작 진행 상태를 알려줌                                                                                                                                                               |
-| servers.OS-EXT-STS:vm_state | Body | String | 인스턴스 현재 상태                                                                                                                                                                                                |
-| servers.OS-SRV-USG:launched_at | Body | Datetime | 인스턴스 마지막 부팅 시각<br>`YYYY-MM-DDThh:mm:ss.ssssss` 형식                                                                                                                                                         |
-| servers.OS-SRV-USG:terminated_at | Body | Datetime | 인스턴스 삭제 시각<br>`YYYY-MM-DDThh:mm:ssZ` 형식                                                                                                                                                                   |
-| servers.flavor | Body | Object | 인스턴스 타입 정보 객체                                                                                                                                                                                             |
-| servers.flavor.id | Body | UUID | 인스턴스 타입 ID                                                                                                                                                                                                |
-| servers.flavor.links | Body | Object | 인스턴스 타입 경로 객체                                                                                                                                                                                             |
-| servers.security_groups | Body | Object | 인스턴스에 할당된 보안 그룹 목록 객체                                                                                                                                                                                     |
-| servers.security_groups.name | Body | String | 인스턴스에 할당된 보안 그룹 이름                                                                                                                                                                                        |
-| servers.user_id | Body | String | 인스턴스를 생성한 사용자 ID                                                                                                                                                                                          |
-| servers.created | Body | Datetime | 인스턴스 생성 시각. `YYYY-MM-DDThh:mm:ssZ` 형식                                                                                                                                                                     |
-| servers.tenant_id | Body | String | 인스턴스가 속한 테넌트 ID                                                                                                                                                                                           |
-| servers.os-extended-volumes:volumes_attached | Body | Object | 인스턴스에 연결된 추가 블록 스토리지 목록 객체                                                                                                                                                                                |
-| servers.os-extended-volumes:volumes_attached.id | Body | UUID | 인스턴스에 연결된 추가 블록 스토리지 ID                                                                                                                                                                                   |
-| servers.OS-EXT-STS:power_state | Body | Integer | 인스턴스의 전원 상태<br>- `1`: On<br>- `4`: Off                                                                                                                                                                    |
-| servers.metadata | Body | Object | 인스턴스 메타데이터 객체<br>인스턴스 메타데이터를 키-값 쌍으로 보관                                                                                                                                                                   |
-| server.NHN-EXT-ATTR:ephemeral_disk_size | Body | Integer | 인스턴스에 연결된 추가 로컬 블록 스토리지 크기                                                                                                                                                                   |
-| server.NHN-EXT-ATTR:protect | Body | Boolean | 인스턴스 삭제 보호 여부                                                                                                                                                                   |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "servers": [
-    {
-      "status": "ACTIVE",
-      "updated": "2020-02-25T01:22:24Z",
-      "hostId": "078d06f898889699f8731d030812e43d2c417edb2cf641dda598c7bd",
-      "addresses": {
-        "vpc2": [
-          {
-            "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:54:a7:64",
-            "version": 4,
-            "addr": "172.16.0.40",
-            "OS-EXT-IPS:type": "fixed"
-          }
-        ]
-      },
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "bookmark"
-        }
-      ],
-      "key_name": "access-key",
-      "image": {
-        "id": "8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-        "links": [
-          {
-            "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/images/8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-            "rel": "bookmark"
-          }
-        ]
-      },
-      "OS-EXT-STS:task_state": null,
-      "OS-EXT-STS:vm_state": "active",
-      "OS-SRV-USG:launched_at": "2020-02-25T01:22:23.000000",
-      "flavor": {
-        "id": "35a73b57-58a7-434d-aa08-5249aaa95b3e",
-        "links": [
-          {
-            "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/35a73b57-58a7-434d-aa08-5249aaa95b3e",
-            "rel": "bookmark"
-          }
-        ]
-      },
-      "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-      "security_groups": [
-        {
-          "name": "default"
-        }
-      ],
-      "OS-SRV-USG:terminated_at": null,
-      "OS-EXT-AZ:availability_zone": "kr-pub-b",
-      "user_id": "b6ab578c20c94306ac1f41ffc4415b29",
-      "name": "Web-Server",
-      "created": "2020-02-25T01:15:46Z",
-      "tenant_id": "6cdebe3eb0094910bc41f1d42ebe4cb7",
-      "os-extended-volumes:volumes_attached": [
-        {
-          "id": "90712f4f-2faa-4e4f-8eb1-9313a8595570"
-        }
-      ],
-      "accessIPv4": "",
-      "accessIPv6": "",
-      "progress": 0,
-      "OS-EXT-STS:power_state": 1,
-      "config_drive": "",
-      "metadata": {
-        "os_distro": "Windows",
-        "description": "Windows 2012 R2 STD (2020.02.18)",
-        "os_version": "2012 R2 STD",
-        "project_domain": "NORMAL",
-        "hypervisor_type": "qemu",
-        "monitoring_agent": "sysmon",
-        "image_name": "Windows 2012 R2 STD (2020.02.18) EN",
-        "volume_size": "50",
-        "os_architecture": "amd64",
-        "login_username": "Administrator",
-        "os_type": "Windows",
-        "tc_env": "sysmon"
-      },
-      "NHN-EXT-ATTR:ephemeral_disk_size": 0,
-      "NHN-EXT-ATTR:protect": false
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="get-instance"></a>
-### 인스턴스 보기
-
-```
-GET /v2/{tenantId}/servers/{serverId}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명                                                                                                                                                                                                       |
-|---|---|---|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| server | body | Object | 인스턴스 객체                                                                                                                                                                                                  |
-| status | body | Enum | 인스턴스 상태                                                                                                                                                                                                  |
-| server.id | Body | UUID | 인스턴스 ID                                                                                                                                                                                                  |
-| server.name | Body | String | 인스턴스 이름, 최대 255자                                                                                                                                                                                         |
-| server.updated | Body | Datetime | 인스턴스 최종 수정 시각, `YYYY-MM-DDThh:mm:ssZ` 형식                                                                                                                                                                 |
-| server.hostId | Body | String | 인스턴스가 구동 중인 호스트 ID                                                                                                                                                                                       |
-| server.addresses | Body | Object | 인스턴스 IP 목록 객체 <br>인스턴스에 연결된 포트 수 만큼 목록이 생성됨                                                                                                                                                              |
-| server.addresses."Network 이름" | Body | Object | 인스턴스에 연결된 Network별 포트 정보                                                                                                                                                                                 |
-| server.addresses."Network 이름".OS-EXT-IPS-MAC:mac_addr | Body | String | 인스턴스에 연결된 포트의 MAC 주소                                                                                                                                                                                     |
-| server.addresses."Network 이름".version | Body | Integer | 인스턴스에 연결된 포트의 IP 버전<br>NHN Cloud는 IPv4만 지원                                                                                                                                                               |
-| server.addresses."Network 이름".addr | Body | String | 인스턴스에 연결된 포트의 IP 주소                                                                                                                                                                                      |
-| server.addresses."Network 이름".OS-EXT-IPS:type | Body | Enum | 포트의 IP 주소 타입<br>`fixed` 또는 `floating` 중 하나                                                                                                                                                               |
-| server.links | Body | Object | 인스턴스 경로 객체                                                                                                                                                                                               |
-| server.key_name | Body | String | 인스턴스 키페어 이름                                                                                                                                                                                              |
-| server.image | Body | Object | 인스턴스 이미지 객체                                                                                                                                                                                              |
-| server.image.id | Body | UUID | 인스턴스 이미지 ID                                                                                                                                                                                              |
-| server.image.links | Body | Object | 인스턴스 이미지 경로 객체                                                                                                                                                                                           |
-| server.OS-EXT-STS:task_state | Body | String | 인스턴스 작업 상태<br>인스턴스에 동작을 가했을 때 동작 진행 상태를 알림                                                                                                                                                               |
-| server.OS-EXT-STS:vm_state | Body | String | 인스턴스 현재 상태                                                                                                                                                                                               |
-| server.OS-SRV-USG:launched_at | Body | Datetime | 인스턴스 마지막 부팅 시각<br>`YYYY-MM-DDThh:mm:ss.ssssss` 형식                                                                                                                                                        |
-| server.OS-SRV-USG:terminated_at | Body | Datetime | 인스턴스 삭제 시각<br>`YYYY-MM-DDThh:mm:ssZ` 형식                                                                                                                                                                  |
-| server.flavor | Body | Object | 인스턴스 타입 정보 객체                                                                                                                                                                                            |
-| server.flavor.id | Body | UUID | 인스턴스 타입 ID                                                                                                                                                                                               |
-| server.flavor.links | Body | Object | 인스턴스 타입 경로 객체                                                                                                                                                                                            |
-| server.security_groups | Body | Object | 인스턴스에 할당된 보안 그룹 목록 객체                                                                                                                                                                                    |
-| server.security_groups.name | Body | String | 인스턴스에 할당된 보안 그룹 이름                                                                                                                                                                                       |
-| server.user_id | Body | String | 인스턴스를 생성한 사용자 ID                                                                                                                                                                                         |
-| server.created | Body | Datetime | 인스턴스 생성 시각, `YYYY-MM-DDThh:mm:ssZ` 형식                                                                                                                                                                    |
-| server.tenant_id | Body | String | 인스턴스가 속한 테넌트 ID                                                                                                                                                                                          |
-| server.os-extended-volumes:volumes_attached | Body | Object | 인스턴스에 연결된 추가 블록 스토리지 목록 객체                                                                                                                                                                               |
-| server.os-extended-volumes:volumes_attached.id | Body | UUID | 인스턴스에 연결된 추가 블록 스토리지 ID                                                                                                                                                                                  |
-| server.OS-EXT-STS:power_state | Body | Integer | 인스턴스의 전원 상태<br>- `1`: On<br>- `4`: Off                                                                                                                                                                   |
-| server.metadata | Body | Object | 인스턴스 메타데이터 객체<br>인스턴스 메타데이터를 키-값 쌍으로 보관                                                                                                                                                                  |
-| server.NHN-EXT-ATTR:ephemeral_disk_size | Body | Integer | 인스턴스에 연결된 추가 로컬 블록 스토리지 크기                                                                                                                                                                  |
-| server.NHN-EXT-ATTR:protect | Body | Boolean | 인스턴스 삭제 보호 여부                                                                                                                                                                  |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "server": {
-    "status": "ACTIVE",
-    "updated": "2020-02-25T01:22:24Z",
-    "hostId": "078d06f898889699f8731d030812e43d2c417edb2cf641dda598c7bd",
-    "addresses": {
-      "vpc2": [
-        {
-          "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:54:a7:64",
-          "version": 4,
-          "addr": "172.16.0.40",
-          "OS-EXT-IPS:type": "fixed"
-        }
-      ]
-    },
-    "links": [
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-        "rel": "self"
-      },
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-        "rel": "bookmark"
-      }
-    ],
-    "key_name": "access-key",
-    "image": {
-      "id": "8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/images/8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-          "rel": "bookmark"
-        }
-      ]
-    },
-    "OS-EXT-STS:task_state": null,
-    "OS-EXT-STS:vm_state": "active",
-    "OS-SRV-USG:launched_at": "2020-02-25T01:22:23.000000",
-    "flavor": {
-      "id": "35a73b57-58a7-434d-aa08-5249aaa95b3e",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/35a73b57-58a7-434d-aa08-5249aaa95b3e",
-          "rel": "bookmark"
-        }
-      ]
-    },
-    "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-    "security_groups": [
-      {
-        "name": "default"
-      }
-    ],
-    "OS-SRV-USG:terminated_at": null,
-    "OS-EXT-AZ:availability_zone": "kr-pub-b",
-    "user_id": "b6ab578c20c94306ac1f41ffc4415b29",
-    "name": "Web-Server",
-    "created": "2020-02-25T01:15:46Z",
-    "tenant_id": "6cdebe3eb0094910bc41f1d42ebe4cb7",
-    "os-extended-volumes:volumes_attached": [
-      {
-        "id": "90712f4f-2faa-4e4f-8eb1-9313a8595570"
-      }
-    ],
-    "accessIPv4": "",
-    "accessIPv6": "",
-    "progress": 0,
-    "OS-EXT-STS:power_state": 1,
-    "config_drive": "",
-    "metadata": {
-      "os_distro": "Windows",
-      "description": "Windows 2012 R2 STD (2020.02.18)",
-      "os_version": "2012 R2 STD",
-      "project_domain": "NORMAL",
-      "hypervisor_type": "qemu",
-      "monitoring_agent": "sysmon",
-      "image_name": "Windows 2012 R2 STD (2020.02.18) EN",
-      "volume_size": "50",
-      "os_architecture": "amd64",
-      "login_username": "Administrator",
-      "os_type": "Windows",
-      "tc_env": "sysmon"
-    },
-    "NHN-EXT-ATTR:ephemeral_disk_size": 0,
-    "NHN-EXT-ATTR:protect": false
-  }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="create-instance"></a>
-### 인스턴스 생성하기
-
-인스턴스를 생성합니다.
-
-인스턴스 생성 API를 호출한 후에 인스턴스 조회를 통해 인스턴스 상태를 확인합니다.
-
-* 인스턴스의 상태가 **ACTIVE**가 되면 인스턴스가 정상적으로 생성 완료됩니다.
-* 인스턴스 상태가 **BUILDING**에서 오래 지속되거나 **ERROR**인 경우, 인스턴스 생성 매개 변수를 확인하고 다시 생성을 시도합니다.
-
-Windows 인스턴스는 안정적인 동작을 위해 다음과 같은 생성 제약 조건이 있습니다.
-
-* RAM이 2GB 이상인 인스턴스 타입을 사용합니다.
-* 50GB 이상의 루트 블록 스토리지가 필요합니다.
-* U2 타입은 Windows 이미지를 사용할 수 없습니다.
-
-루트 블록 스토리지 크기는 Linux는 10GB, Windows는 50GB부터 지정할 수 있습니다.
-
-인스턴스 생성 요청 시 스케줄러 힌트를 통해 배치 정책을 할당할 수 있습니다.
-
-
-
-```
-POST /v2/{tenantId}/servers
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| server | body | Object | O | 서버 객체 |
-| server.security_groups | body | Object | - | 보안 그룹 목록 객체<br>생략할 경우 `default` 그룹이 추가됨 |
-| server.security_groups.name | body | String | - | **(조건부 필수)** 인스턴스에 추가할 보안 그룹 이름 |
-| server.user_data | body | String | - | 인스턴스 부팅 후 실행할 스크립트 및 설정<br>base64 인코딩된 문자열로 65535 바이트까지 허용 |
-| server.availability_zone | body | String | - | 인스턴스를 생성할 가용성 영역<br>지정하지 않을 경우 임의로 선택됨<br>루트 블록 스토리지의 소스 타입이 `volume`, `snapshot`인 경우 원본 블록 스토리지의 가용성 영역과 동일하게 설정 필요 |
-| server.imageRef | Body | String | - | 인스턴스를 생성할 때 사용할 이미지 ID<br>루트 블록 스토리지의 소스 타입이 `volume`, `snapshot`인 경우 설정 불필요 |
-| server.flavorRef | Body | String | O | 인스턴스를 생성할 때 사용할 인스턴스 타입 ID |
-| server.networks | Body | Object | O | 인스턴스를 생성할 때 사용할 네트워크 정보 객체<br>지정한 개수만큼 NIC가 추가되며, 네트워크 ID, 서브넷 ID, 포트 ID, 고정 IP 중 하나로 지정 |
-| server.networks.uuid | Body | UUID | - | **(조건부 필수)** 인스턴스를 생성할 때 사용할 네트워크 ID |
-| server.networks.subnet | Body | UUID | - | **(조건부 필수)** 인스턴스를 생성할 때 사용할 네트워크의 서브넷 ID |
-| server.networks.port | Body | UUID | - | **(조건부 필수)** 인스턴스를 생성할 때 사용할 포트 ID<br>포트 ID 지정 시 요청한 보안 그룹은 지정한 기존 포트에 적용되지 않음 |
-| server.networks.fixed_ip | Body | String | - | **(조건부 필수)** 인스턴스를 생성할 때 사용할 고정 IP |
-| server.name | Body | String | O | 인스턴스의 이름<br>영문자 기준 255자까지 허용되지만, Windows 이미지의 경우 15자 이하여야 함 |
-| server.metadata | Body | Object | - | 인스턴스에 추가할 메타데이터 객체<br>최대 길이 255자 이하의 키-값 쌍 |
-| server.block_device_mapping_v2 | Body | Object | O | 인스턴스의 블록 스토리지 정보 객체 |
-| server.block_device_mapping_v2.source_type | Body | Enum | O | 생성할 블록 스토리지 원본의 타입<br>- `image`: 이미지를 이용해 블록 스토리지 생성<br>- `blank`: 빈 블록 스토리지 생성(루트 블록 스토리지로 사용할 수 없음)<br>- `volume`: 기존에 생성된 블록 스토리지를 사용<br>- `snapshot`: 스냅숏을 이용해 블록 스토리지 생성 |
-| server.block_device_mapping_v2.uuid | Body | String | - | **(조건부 필수)** 블록 스토리지의 소스 타입에 따라 다르게 설정 필요<br>- 소스 타입이 `image`인 경우 이미지 ID를 설정<br>- 소스 타입이 `volume`인 경우 기존에 생성된 블록 스토리지 ID를 설정<br>- 소스 타입이 `snapshot`인 경우 스냅숏 ID를 설정<br>- 소스 타입이 `blank`인 경우 설정 불필요<br>루트 블록 스토리지인 경우 반드시 부팅 가능한 원본이어야 함 |
-| server.block_device_mapping_v2.boot_index | Body | Integer | O | 지정한 블록 스토리지의 부팅 순서<br>-`0`이면 루트 블록 스토리지<br>- 그 외는 추가 블록 스토리지<br>크기가 클수록 부팅 순서는 낮아짐 |
-| server.block_device_mapping_v2.destination_type | Body | Enum | O | 인스턴스 블록 스토리지의 위치, 인스턴스 타입에 따라 다르게 설정 필요.<br>- `local`: GPU 인스턴스, U2 인스턴스 타입을 이용하는 경우<br>- `volume`: 그 외의 인스턴스 타입을 이용하는 경우 |
-| server.block_device_mapping_v2.volume_type | Body | Enum    | - | **(조건부 필수)** 생성할 블록 스토리지의 타입<br>블록 스토리지의 소스 타입이 `volume`, `snapshot`인 경우 설정 불필요<br>`사용자 가이드 > Storage > Block Storage > API v2 가이드`에서 **블록 스토리지 타입 목록 보기** 응답의 `name` 참고 |
-| server.block_device_mapping_v2.delete_on_termination | Body | Boolean | - | 인스턴스 삭제 시 블록 스토리지 처리 여부, 기본값은 `false`.<br>`true`면 삭제, `false`면 유지 |
-| server.block_device_mapping_v2.volume_size | Body | Integer | - | **(조건부 필수)** 생성할 블록 스토리지 크기<br>블록 스토리지의 소스 타입에 따라 다르게 설정 필요<br>- 소스 타입이 `volume`인 경우 설정 불필요<br>- 소스 타입이 `snapshot`인 경우 원본 블록 스토리지 크기보다 같거나 크게 설정<br>`GB` 단위<br>U2 인스턴스 타입을 사용하고 루트 블록 스토리지를 생성하는 경우에는 U2 인스턴스 타입에 명시된 크기로 생성되며 이 값은 무시됨<br>인스턴스 타입에 따라 생성할 수 있는 루트 블록 스토리지의 크기가 다르므로 자세한 내용은 `사용자 가이드 > Compute > Instance > 콘솔 사용 가이드 > 인스턴스 생성 > 블록 스토리지 크기`를 참고 |
-| server.block_device_mapping_v2.nhn_encryption                   | Body | Object | - | **(조건부 필수)** 블록 스토리지의 암호화 정보                                                                                                                                                                                        |
-| server.block_device_mapping_v2.nhn_encryption.skm_appkey        | Body | String | - | **(조건부 필수)** Secure Key Manager 서비스의 앱키                                                                                                                                                                              |
-| server.block_device_mapping_v2.nhn_encryption.skm_key_id        | Body | String | - | **(조건부 필수)** 암호화 블록 스토리지 생성에 사용할 Secure Key Manager의 대칭 키 ID                                                                                                                                  |
-| server.key_name | Body | String | O | 인스턴스 접속에 사용할 키페어 |
-| server.min_count | Body | Integer | - | 현재 요청으로 생성할 인스턴스 개수의 최솟값.<br>기본값은 1.<br>블록 스토리지의 소스 타입이 `volume`인 경우 `1`로만 설정 가능 |
-| server.max_count | Body | Integer | - | 현재 요청으로 생성할 인스턴스 개수의 최댓값.<br>기본값은 min_count, 최댓값은 10.<br>블록 스토리지의 소스 타입이 `volume`인 경우 `1`로만 설정 가능 |
-| server.return_reservation_id | Body | Boolean | - | 인스턴스 생성 요청 예약 ID.<br>True로 지정하면 인스턴스 생성 정보 대신 예약 ID를 반환.<br>기본값은 False |
-| os:scheduler_hints | Body | Object | - | 스케줄러 힌트 객체 |
-| os:scheduler_hints.group | Body | String | - | 배치 정책 ID |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "server": {
-    "name": "DB-Master",
-    "imageRef": "9956f822-29c9-4f81-9410-0c392d9c8c24",
-    "flavorRef": "a4b6a0f7-aeff-4d78-a8d5-7de9f007012d",
-    "networks": [{
-      "subnet": "b83863ff-0355-4c73-8c10-0bdf66a69aab"
-    }],
-    "availability_zone": "kr-pub-a",
-    "key_name": "access-key",
-    "max_count": 1,
-    "min_count": 1,
-    "block_device_mapping_v2": [{
-      "source_type": "image",
-      "uuid": "9956f822-29c9-4f81-9410-0c392d9c8c24",
-      "boot_index": 0,
-      "volume_size": 1000,
-      "destination_type": "volume",
-      "delete_on_termination": 1
-    }],
-    "security_groups": [{
-      "name": "default"
-    }]
-  },
-  "os:scheduler_hints": {
-    "group": "f878bd5b-49a7-499f-966e-1eceb21cb06b"
-  }
-}
-```
-
-</p>
-</details>
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명                                                                                                                                                                                                           |
-|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| server.security_groups.name | Body | String | 생성한 인스턴스의 보안 그룹 이름                                                                                                                                                                                           |
-| server.id | Body | UUID | 생성한 인스턴스의 ID                                                                                                                                                                                                 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "server": {
-    "security_groups": [
-      {
-        "name": "default"
-      }
-    ],
-    "id": "3a005d5b-63cf-4493-bfc6-49db990b5b50",
-    "links": [
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/3a005d5b-63cf-4493-bfc6-49db990b5b50",
-        "rel": "self"
-      },
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/3a005d5b-63cf-4493-bfc6-49db990b5b50",
-        "rel": "bookmark"
-      }
-    ]
-  }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="modify-instance"></a>
-### 인스턴스 수정하기
-생성된 인스턴스를 수정합니다. 변경할 수 있는 속성은 일부 항목으로 제한됩니다.
-
-```
-PUT /v2/{tenantId}/servers/{serverId}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| server | Body | Object | O | 인스턴스 변경 요청 객체 |
-| server.name | Body | String | - | 인스턴스의 새로운 이름 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "server": {
-        "name": "new-server-test"
-    }
-}
-```
-
-</p>
-</details>
-
-#### 응답
-인스턴스 보기와 동일합니다.
-
----
-
-<a id="delete-instance"></a>
-### 인스턴스 삭제하기
-생성된 인스턴스를 삭제합니다.
-
-```
-DELETE /v2/{tenantId}/servers/{serverId}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 삭제할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-<a id="manage-block-storage-attachment"></a>
-## 블록 스토리지 연결 관리
-
-<a id="list-additional-block-storage-attached-to-the-instance"></a>
-### 인스턴스에 연결된 블록 스토리지 목록 보기
-```
-GET /v2/{tenantId}/servers/{serverId}/os-volume_attachments
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| limit | Query | Integer | - | 조회할 목록 개수 |
-| offset | Query | Integer | - | 반환할 목록의 시작점<br>전체 목록 중 offset번째 블록 스토리지부터 반환 |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| volumeAttachments | Body | Array | 연결 정보 객체 목록 |
-| volumeAttachments.device | Body | String | 인스턴스의 블록 스토리지 이름<br>예) `/dev/vdb` |
-| volumeAttachments.id | Body | UUID | 연결 정보 ID |
-| volumeAttachments.serverId | Body | UUID | 인스턴스 ID |
-| volumeAttachments.volumeId | Body | UUID | 블록 스토리지 ID |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "volumeAttachments": [
-        {
-            "device": "/dev/vda",
-            "id": "227cc671-f30b-4488-96fd-7d0bf13648d8",
-            "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-            "volumeId": "227cc671-f30b-4488-96fd-7d0bf13648d8"
-        },
-        {
-            "device": "/dev/vdb",
-            "id": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113",
-            "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-            "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="list-additional-block-storage-attached-to-the-instance"></a>
-### 인스턴스에 연결된 블록 스토리지 보기
-```
-GET /v2/{tenantId}/servers/{serverId}/os-volume_attachments/{volumeId}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 인스턴스 ID |
-| volumeId | URL | UUID | O | 조회할 블록 스토리지 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| volumeAttachment | Body | Object | 연결 정보 객체 |
-| volumeAttachment.device | Body | String | 인스턴스의 블록 스토리지 이름<br>예) `/dev/vdb` |
-| volumeAttachment.id | Body | UUID | 연결 정보 ID |
-| volumeAttachment.serverId | Body | UUID | 인스턴스 ID |
-| volumeAttachment.volumeId | Body | UUID | 블록 스토리지 ID |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "volumeAttachment": {
-        "device": "/dev/sdb",
-        "id": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113",
-        "serverId": "1ad6852e-6605-4510-b639-d0bff864b49a",
-        "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="attach-additional-block-storage-to-the-instance"></a>
-### 인스턴스에 추가 블록 스토리지 연결하기
-```
-POST /v2/{tenantId}/servers/{serverId}/os-volume_attachments
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| volumeAttachment | Body | Object | O | 블록 스토리지 연결 요청 객체 |
-| volumeAttachment.volumeId | Body | UUID | O | 연결할 블록 스토리지 ID |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "volumeAttachment": {
-      "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-  }
-}
-```
-
-</p>
-</details>
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| volumeAttachment | Body | Object | 연결 정보 객체 |
-| volumeAttachment.device | Body | String | 인스턴스의 블록 스토리지 이름<br>예) `/dev/vdb` |
-| volumeAttachment.id | Body | UUID | 연결 정보 ID |
-| volumeAttachment.serverId | Body | UUID | 인스턴스 ID |
-| volumeAttachment.volumeId | Body | UUID | 블록 스토리지 ID |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "volumeAttachment": {
-        "device": "/dev/vdc",
-        "id": "227cc671-f30b-4488-96fd-7d0bf13648d8",
-        "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-        "volumeId": "227cc671-f30b-4488-96fd-7d0bf13648d8"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="detach-block-storage-from-the-instance"></a>
-### 인스턴스 블록 스토리지 연결 끊기
-```
-DELETE /v2/{tenantId}/servers/{serverId}/os-volume_attachments/{volumeId}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 인스턴스 ID |
-| volumeId | URL | UUID | O | 연결을 끊을 블록 스토리지 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-<a id="additional-instance-features"></a>
-## 인스턴스 추가 기능
-NHN Cloud는 다음과 같은 인스턴스 제어 및 부가 기능을 제공합니다.
-
-* 인스턴스 시작, 중지, 종료, 재시작
-* 인스턴스 타입 변경
-* 인스턴스 이미지 생성
-* 보안 그룹 추가 및 삭제
-
-<a id="start-stopped-instance"></a>
-### 중지된 인스턴스 시작
-
-중지된 인스턴스를 다시 시작하고 상태를 **ACTIVE**로 변경합니다. 이 API를 호출하려면 인스턴스의 상태가 **SHUTOFF**여야 합니다.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| os-start | Body | none | O | 인스턴스 시작 요청 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "os-start" : null
-}
-```
-
-</p>
-</details>
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-<a id="start-terminated-instance"></a>
-### 종료된 인스턴스 시작
-
-종료된 인스턴스를 다시 시작하고 상태를 **ACTIVE**로 변경합니다. 이 API를 호출하려면 인스턴스의 상태가 **SHELVED_OFFLOADED**여야 합니다.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|--|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| unshelve | Body | none | O | 인스턴스 시작 요청 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "unshelve" : null
-}
-```
-
-</p>
-</details>
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-<a id="stop-instance"></a>
-### 인스턴스 중지
-
-인스턴스를 중지하고 상태를 **SHUTOFF**로 변경합니다. 이 API를 호출하려면 인스턴스의 상태가 **ACTIVE** 또는 **ERROR**여야 합니다.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| os-stop | Body | none | O | 인스턴스 중지 요청 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "os-stop" : null
-}
-```
-
-</p>
-</details>
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-### 인스턴스 종료
-
-인스턴스를 종료하고 상태를 **SHELVED_OFFLOADED**로 변경합니다. 이 API를 호출하려면 인스턴스의 상태가 **ACTIVE**여야 합니다.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명          |
-|---|---|---|---|-------------|
-| tenantId | URL | String | O | 테넌트 ID      |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID       |
-| shelve | Body | none | O | 인스턴스 종료 요청  |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "shelve" : null
-}
-```
-
-</p>
-</details>
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-### 인스턴스 재시작
-
-인스턴스를 재시작합니다. 재시작 방식은 **SOFT**와 **HARD**로 나눌 수 있습니다.
-
-* **SOFT** 방식: **"우아한 연결 중지(Graceful shutdown)"**를 통해 인스턴스를 중지하고 재시작합니다. 인스턴스가 **ACTIVE** 상태여야 합니다.
-* **HARD** 방식: 강제 중지 후 인스턴스를 재시작합니다. 물리 서버의 전원을 끄고 다시 켜는 것과 동일한 동작입니다. 인스턴스가 다음 상태일 때만 강제로 중지할 수 있습니다.
-    * **ACTIVE**
-    * **ERROR**
-    * **HARD_REBOOT**
-    * **PAUSED**
-    * **REBOOT**
-    * **SHUTOFF**
-    * **SUSPENDED**
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| reboot | Body | Object | O | 인스턴스 재부팅 요청 객체 |
-| reboot.type | Body | Enum | O | 재부팅 방식, **SOFT** 또는 **HARD** |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "reboot" : {
-    "type": "SOFT"
-  }
-}
-```
-
-</p>
-</details>
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-### 인스턴스 타입 변경
-
-인스턴스 타입을 변경합니다. 인스턴스가 **ACTIVE**이거나 **SHUTOFF** 상태일 때만 인스턴스 타입 변경할 수 있습니다. 인스턴스의 상태가 **ACTIVE**인 경우에는 인스턴스 타입 변경 과정에서 인스턴스는 중지되고 다시 시작됩니다.
-
-사용하는 이미지나 인스턴스 타입에 따라 변경할 수 있는 타입이 제한될 수 있습니다. 자세한 변경 제약 사항은 콘솔 사용자 가이드를 참고합니다.
-
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명                                                                                                                                                                                                                 |
-|---|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| tenantId | URL | String | O | 테넌트 ID                                                                                                                                                                                                             |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID                                                                                                                                                                                                        |
-| tokenId | Header | String | O | 토큰 ID                                                                                                                                                                                                              |
-| resize | Body | Object | O | 인스턴스 타입 변경 요청                                                                                                                                                                                                      |
-| resize.flavorRef | Body | UUID | O | 변경할 인스턴스 타입 ID                                                                                                                                                                                                     |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "resize" : {
-    "flavorRef": "b5f1c148-732c-417d-9d1b-1dffca105dbe"
-  }
-}
-```
-
-</p>
-</details>
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-### 인스턴스 이미지 생성
-
-인스턴스로부터 이미지를 생성합니다. `U2` 타입의 인스턴스만 이 API를 통해 이미지를 생성할 수 있습니다. `U2` 타입 이외의 인스턴스 이미지 생성은 [블록 스토리지 API](/Storage/Block Storage/ko/public-api/#create-image-with-block-storage)를 참고합니다.
-
-인스턴스의 상태가 **ACTIVE**, **SHUTOFF**, **SUSPENDED**, **PAUSED**일 때만 이미지를 생성할 수 있습니다. 이미지 생성은 데이터 정합성을 보장하기 위해 인스턴스를 중지한 상태에서 진행하는 것을 권장합니다.
-
-이미지 생성이 성공하면 이미지 상태가 `active`로 바뀝니다. 이미지 생성이 완료되는 것을 확인하려면 이미지 조회 API를 통해 지속적으로 상태를 확인합니다.
 
 > [주의]
-> 생성된 이미지의 크기는 루트 블록 스토리지의 실제 사용량보다 더 클 수 있습니다.
+> API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
 
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
+<a id="template"></a>
+## 템플릿 { #template }
+
+<a id="view-template-list"></a>
+### 템플릿 목록 보기 { #view-template-list }
+
+템플릿 목록을 조회합니다.
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/templates
+x-nhn-authorization: Bearer {accessToken}
 ```
 
+<a id="view-template-list-request"></a>
 #### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| createImage | Body | Object | O | 이미지 생성 요청 |
-| createImage.name | Body | String | O | 생성할 이미지 이름 |
-| createImage.metadata | Body | Object | - | 생성할 이미지의 메타데이터<br>Key-Value 형태로 기술 |
 
-<details><summary>예시</summary>
-<p>
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| token | Header | String | O | NHN Cloud Token |
+| page | Query | Integer | X | 조회할 페이지 번호 |
+| size | Query | Integer | X | 조회할 페이지 크기(default: 10) |
+| disable\_containers | Query | Boolean | X | <li>true: 컨테이너는 제외하여 조회</li><li>false: 컨테이너도 포함하여 조회(default)</li> |
+
+<a id="view-template-list-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| X-Total-Count | Header | Integer | O | Appkey에 생성되어 있는 템플릿 전체 수 |
+| templates | Body | Array | O | 템플릿 목록 |
+| templates.id | Body | UUID | O | 템플릿 ID |
+| templates.version | Body | String | O | 템플릿 버전 |
+| templates.name | Body | String | O | 템플릿 이름 |
+| templates.createdAt | Body | String | O | 생성 시간(UTC) |
+| templates.description | Body | String | X | 템플릿 설명 |
+| templates.versionDescription | Body | String | O | 템플릿 버전 설명 |
+| templates.networks | Body | Array | O | 템플릿의 네트워크 정보 |
+| templates.networks.vpcId | Body | String | O | 템플릿의 VPC ID |
+| templates.networks.subnetId | Body | String | O | 템플릿의 Subnet ID |
+| templates.dnsConfig | Body | String List | X | 컨테이너에 설정된 DNS Server 정보 |
+| templates.hostAliases | Body | List | X | 컨테이너 `/etc/hosts`에 설정된 정보 |
+| templates.hostAliases.ip | Body | String | O | 컨테이너에 설정된 hostnames의 IP |
+| templates.hostAliases.hostnames | Body | String List | O | 컨테이너에 설정된 IP의 hostnames |
+| templates.versionCount | Body | Integer | O | 템플릿의 버전 개수 |
+| templates.workloadCount | Body | Integer | O | 템플릿을 사용 중인 워크로드 개수 |
+| templates.containers | Body | Array | O | 템플릿의 컨테이너 목록 |
+| templates.containers.name | Body | String | O | 컨테이너 이름 |
+| templates.containers.type | Body | String | O | 컨테이너 유형<ul><li>normal: 일반</li><li>init: 초기화</li></ul>|
+| templates.containers.image | Body | String | O | 컨테이너 이미지 |
+| templates.containers.cpus | Body | Float | O | 컨테이너에 할당하는 CPU 개수 |
+| templates.containers.memoryLimit | Body | Object | O | 컨테이너에 할당하는 메모리 정보 |
+| templates.containers.memoryLimit.hard | Body | Integer | O | 컨테이너에 할당하는 메모리(MiB) |
+| templates.containers.gpuFlavor | Body | String | X | GPU Flavor 정보<ul><li>ncs1.g1m5</li><li>ncs1.g2m10</li></ul> |
+| templates.containers.ports | Body | Array | X | 컨테이너에서 사용하는 포트 정보 |
+| templates.containers.ports.containerPort | Body | Integer | O | 컨테이너 포트 |
+| templates.containers.ports.protocol | Body | String | O | 컨테이너 프로토콜<ul><li>TCP</li><li>UDP</li><li>HTTP</li><li>HTTPS</li><li>TERMINATED\_HTTPS</li></ul> |
+| templates.containers.command | Body | String List | X | 컨테이너가 시작될 때 실행될 명령어 |
+| templates.containers.args | Body | String List | X | 컨테이너가 시작될 때 사용되는 인자 |
+| templates.containers.workDirectory | Body | String | X | 컨테이너의 작업 디렉터리 |
+| templates.containers.env | Body | Array | X | 컨테이너 환경 변수 |
+| templates.containers.env.name | Body | String | O | 컨테이너 환경 변수 이름 |
+| templates.containers.env.value | Body | String | O | 컨테이너 환경 변수 값 |
+| templates.containers.postStart | Body | String List | X | 컨테이너 생성 직후 실행되는 명령어 |
+| templates.containers.preStop | Body | String List | X | 컨테이너 종료되기 직전 실행되는 명령어 |
+| templates.containers.configs | Body | List | X | 컨테이너에서 사용하는 ConfigMap 정보 |
+| templates.containers.configs.id | Body | Integer | O | ConfigMap ID |
+| templates.containers.configs.type | Body | String | O | ConfigMap 정보를 가져오는 service type<ul><li>obs: Object Storage</li></ul> |
+| templates.containers.configs.value | Body | String | O | 오브젝트 URL |
+| templates.containers.configs.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| templates.containers.secrets | Body | List | X | 컨테이너에서 사용하는 Secret 정보 |
+| templates.containers.secrets.type | Body | String | O | Secret 정보를 가져오는 service type<ul><li>skm: Secure Key Manager</li></ul> |
+| templates.containers.secrets.value | Body | String | O | 키 아이디 |
+| templates.containers.secrets.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| templates.containers.volumes | Body | Array | X | 컨테이너에서 사용하는 NAS 스토리지 정보 |
+| templates.containers.volumes.name | Body | String | O | 스토리지 이름 |
+| templates.containers.volumes.path | Body | String | O | NAS 스토리지 연결 경로 |
+| templates.containers.volumes.mountPath | body | String | X | 컨테이너의 연결 경로 |
+| templates.containers.probe | Body | List | X | 컨테이너 Probe 설정 |
+| templates.containers.probe.type | Body | String | O | 컨테이너 Probe 타입<ul><li>startup</li><li>liveness</li></ul> |
+| templates.containers.probe.failureThreshold | Body | Integer | O | Probe 실패 기준 |
+| templates.containers.probe.initialDelaySeconds | Body | Integer | O | Probe 시작 대기 시간 |
+| templates.containers.probe.periodSeconds | Body | Integer | O | Probe 실행 간격 |
+| templates.containers.probe.timeoutSeconds | Body | Integer | O | Probe 실행 제한 시간 |
+| templates.containers.probe.exec | Body | String List | O | Probe 실행 명령어 |
+| templates.containers.stopTimeout | Body | Integer | X | 초기화 컨테이너 실행 제한 시간(초) |
+| templates.containers.sharedMemory | Body | Object | X | 컨테이너 공유 메모리 설정 정보 |
+| templates.containers.sharedMemory.changed | Body | Boolean | O | 컨테이너 공유 메모리 설정 변경 여부<ul><li>true: 변경</li><li>false: 변경 안 함</li></ul> |
+| templates.containers.sharedMemory.sizeLimit | Body | Boolean | O | 컨테이너에 설정하는 공유 메모리(MiB) |
+
+<details>
+  <summary>예시</summary>
 
 ```json
 {
-  "createImage" : {
-      "name" : "foo-image",
-      "metadata": {
-          "meta_var": "meta_val"
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "templates": [
+    {
+      "createdAt": "2024-10-24T05:43:26.029Z",
+      "updatedAt": "2024-10-24T05:43:26.029Z",
+      "id": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+      "name": "nginx-template",
+      "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+      "containers": [
+        {
+          "id": "51be9a5d-4737-4323-ae57-0ade225f4f4d",
+          "name": "nginx",
+          "image": "nginx:latest",
+          "imageRegistry": "other",
+          "imageRegistryType": "public",
+          "cpus": 0.25,
+          "memoryLimit": {
+            "hard": 256
+          },
+          "ports": [
+            {
+              "hostPort": 80,
+              "containerPort": 80,
+              "protocol": "TCP"
+            }
+          ],
+          "restartCount": 0,
+          "type": "normal"
+        }
+      ],
+      "networks": [
+        {
+          "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+          "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+        }
+      ],
+      "dnsConfig": [
+        "223.255.201.241",
+        "211.50.32.6"
+      ],
+      "versionCount": 2,
+      "version": "second",
+    },
+    {
+      "createdAt": "2024-10-24T05:44:25.292Z",
+      "updatedAt": "2024-10-24T05:44:25.292Z",
+      "id": "edfabd08-187b-4195-bed9-dad5d0b4d854",
+      "name": "ubuntu",
+      "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+      "containers": [
+        {
+          "id": "aeb71431-01b9-4b4b-8f2d-326b7863d0a9",
+          "name": "ubuntu",
+          "image": "ubuntu:latest",
+          "imageRegistry": "other",
+          "imageRegistryType": "public",
+          "cpus": 1,
+          "memoryLimit": {
+            "hard": 256
+          },
+          "command": [
+            "bash",
+            "-c",
+            "sleep infinity"
+          ],
+          "restartCount": 0,
+          "type": "normal"
+        }
+      ],
+      "networks": [
+        {
+          "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+          "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+        }
+      ],
+      "dnsConfig": [
+        "223.255.201.241",
+        "211.50.32.6"
+      ],
+      "versionCount": 1,
+      "version": "1",
+      "versionDescription": "ubuntu test"
+    }
+  ]
+}
+```
+
+</details>
+
+<a id="view-template"></a>
+### 템플릿 보기 { #view-template }
+
+개별 템플릿 정보를 조회합니다.
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/templates/{templateId}
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="view-template-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| templateId | URL | String | O | 템플릿 ID |
+| token | Header | String | O | NHN Cloud Token |
+
+<a id="view-template-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| template | Body | Object | O | 템플릿 정보 |
+| template.id | Body | UUID | O | 템플릿 ID |
+| template.version | Body | String | O | 템플릿 버전 |
+| template.name | Body | String | O | 템플릿 이름 |
+| template.createdAt | Body | String | O | 생성 시간(UTC) |
+| template.description | Body | String | X | 템플릿 설명 |
+| template.versionDescription | Body | String | X | 템플릿 버전 설명 |
+| template.networks | Body | Array | O | 템플릿의 네트워크 정보 |
+| template.networks.vpcId | Body | String | O | 템플릿의 VPC ID |
+| template.networks.subnetId | Body | String | O | 템플릿의 Subnet ID |
+| template.dnsConfig | Body | String List | X | 컨테이너에 설정된 DNS Server 정보 |
+| template.hostAliases | Body | List | X | 컨테이너 `/etc/hosts`에 설정된 정보 |
+| template.hostAliases.ip | Body | String | O | 컨테이너에 설정된 hostnames의 IP |
+| template.hostAliases.hostnames | Body | String List | O | 컨테이너에 설정된 IP의 hostnames |
+| template.versionCount | Body | Integer | O | 템플릿의 버전 개수 |
+| template.workloadCount | Body | Integer | O | 템플릿을 사용 중인 워크로드 개수 |
+| template.containers | Body | Array | O | 템플릿의 컨테이너 목록 |
+| template.containers.name | Body | String | O | 컨테이너 이름 |
+| template.containers.type | Body | String | O | 컨테이너 유형<ul><li>normal: 일반</li><li>init: 초기화</li></ul> |
+| template.containers.image | Body | String | O | 컨테이너 이미지 |
+| template.containers.cpus | Body | Float | O | 컨테이너에 할당하는 CPU 개수 |
+| template.containers.memoryLimit | Body | Object | O | 컨테이너에 할당하는 메모리 정보 |
+| template.containers.memoryLimit.hard | Body | Integer | O | 컨테이너에 할당하는 메모리(MiB) |
+| template.containers.gpuFlavor | Body | String | X | GPU Flavor 정보<ul><li>ncs1.g1m5</li><li>ncs1.g2m10</li></ul> |
+| template.containers.ports | Body | Array | X | 컨테이너에서 사용하는 포트 정보 |
+| template.containers.ports.containerPort | Body | Integer | O | 컨테이너 포트 |
+| template.containers.ports.protocol | Body | String | O | 컨테이너 프로토콜<ul><li>TCP</li><li>UDP</li><li>HTTP</li><li>HTTPS</li><li>TERMINATED\_HTTPS</li></ul> |
+| template.containers.command | Body | String List | X | 컨테이너가 시작될 때 실행될 명령어 |
+| template.containers.args | Body | String List | X | 컨테이너가 시작될 때 사용되는 인자 |
+| template.containers.workDirectory | Body | String | X | 컨테이너의 작업 디렉터리 |
+| template.containers.env | Body | Array | X | 컨테이너 환경 변수 |
+| template.containers.env.name | Body | String | O | 컨테이너 환경 변수 이름 |
+| template.containers.env.value | Body | String | O | 컨테이너 환경 변수 값 |
+| template.containers.postStart | Body | String List | X | 컨테이너 생성 직후 실행되는 명령어 |
+| template.containers.preStop | Body | String List | X | 컨테이너 종료 직전 실행되는 명령어 |
+| template.containers.configs | Body | List | X | 컨테이너에서 사용하는 ConfigMap 정보 |
+| template.containers.configs.id | Body | Integer | O | ConfigMap ID |
+| template.containers.configs.type | Body | String | O | ConfigMap 정보를 가져오는 service type<ul><li>obs: Object Storage</li></ul> |
+| template.containers.configs.value | Body | String | O | 오브젝트 URL |
+| template.containers.configs.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.secrets | Body | List | X | 컨테이너에서 사용하는 Secret 정보 |
+| template.containers.secrets.type | Body | String | O | Secret 정보를 가져오는 service type<ul><li>skm: Secure Key Manager</li></ul> |
+| template.containers.secrets.value | Body | String | O | 키 아이디 |
+| template.containers.secrets.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.volumes | Body | Array | X | 컨테이너에서 사용하는 NAS 스토리지 정보 |
+| template.containers.volumes.name | Body | String | O | 스토리지 이름 |
+| template.containers.volumes.path | Body | String | O | NAS 스토리지 연결 경로 |
+| template.containers.volumes.mountPath | body | String | X | 컨테이너의 연결 경로 |
+| template.containers.probe | Body | List | X | 컨테이너 Probe 설정 |
+| template.containers.probe.type | Body | String | O | 컨테이너 Probe 타입<ul><li>startup</li><li>liveness</li></ul> |
+| template.containers.probe.failureThreshold | Body | Integer | O | Probe 실패 기준 |
+| template.containers.probe.initialDelaySeconds | Body | Integer | O | Probe 시작 대기 시간 |
+| template.containers.probe.periodSeconds | Body | Integer | O | Probe 실행 간격 |
+| template.containers.probe.timeoutSeconds | Body | Integer | O | Probe 실행 제한 시간 |
+| template.containers.probe.exec | Body | String List | O | Probe 실행 명령어 |
+| template.containers.stopTimeout | Body | Integer | X | 초기화 컨테이너 실행 제한 시간(초) |
+| template.containers.sharedMemory | Body | Object | X | 컨테이너 공유 메모리 설정 정보 |
+| template.containers.sharedMemory.changed | Body | Boolean | O | 컨테이너 공유 메모리 설정 변경 여부<ul><li>true: 변경</li><li>false: 변경 안 함</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | 컨테이너에 설정하는 공유 메모리(MiB) |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "template": {
+    "createdAt": "2024-10-24T05:43:26.029Z",
+    "updatedAt": "2024-10-24T05:43:26.029Z",
+    "id": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+    "name": "nginx-template",
+    "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+    "containers": [
+      {
+        "id": "51be9a5d-4737-4323-ae57-0ade225f4f4d",
+        "name": "nginx",
+        "image": "nginx:latest",
+        "imageRegistry": "other",
+        "imageRegistryType": "public",
+        "cpus": 0.25,
+        "memoryLimit": {
+          "hard": 256
+        },
+        "ports": [
+          {
+            "hostPort": 80,
+            "containerPort": 80,
+            "protocol": "TCP"
+          }
+        ],
+        "restartCount": 0,
+        "type": "normal"
       }
+    ],
+    "networks": [
+      {
+        "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+        "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+      }
+    ],
+    "dnsConfig": [
+      "223.255.201.241",
+      "211.50.32.6"
+    ],
+    "versionCount": 2,
+    "version": "second",
   }
 }
 ```
 
-</p>
 </details>
 
+<a id="create-template"></a>
+### 템플릿 생성하기 { #create-template }
 
-#### 응답
+템플릿을 생성합니다.
 
-이 API는 응답 본문을 반환하지 않습니다. 생성된 이미지는 응답 헤더의 `Location`으로 확인합니다.
-
-| 이름 | 종류 | 형식 | 설명 |
-|--|--|--|--|
-| Location | Header | String | 생성한 이미지 URL |
-
----
-
-### 보안 그룹 추가
-
-인스턴스에 보안 그룹을 추가합니다. 추가한 보안 그룹은 인스턴스의 모든 포트에 적용됩니다.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
+```bash
+POST /ncs/v1.0/appkeys/{appKey}/templates
+Content-Type: application/json
+x-nhn-authorization: Bearer {accessToken}
 ```
 
-#### 요청
 | 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| addSecurityGroup | Body | Object | O | 보안 그룹 추가 요청 객체 |
-| addSecurityGroup.name | Body | String | O | 추가할 보안 그룹 이름 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "addSecurityGroup": {
-        "name": "test"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-### 보안 그룹 삭제
-
-인스턴스에서 보안 그룹을 삭제합니다. 인스턴스의 모든 포트로부터 지정한 보안 그룹이 삭제됩니다.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| removeSecurityGroup | Body | Object | O | 보안 그룹 삭제 요청 객체 |
-| removeSecurityGroup.name | Body | String | O | 삭제할 보안 그룹 이름 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "removeSecurityGroup": {
-        "name": "test"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
-
-<a id="terminate-instance"></a>
-## 인스턴스 메타데이터
-
-인스턴스 메타데이터 값에 따라 콘솔의 **Compute > Instance** 서비스 페이지에서 인스턴스 상세 정보 화면의 내용을 결정합니다. 인스턴스 메타데이터별 내용은 다음과 같습니다.
-
-| 인스턴스 메타데이터     | 내용                                           |
-|----------------|----------------------------------------------|
-| os_distro      | **기본 정보**의 **OS**의 이름<br>os_version과 조합하여 사용 |
-| os_version     | **기본 정보**의 **OS**의 버전<br>os_distro와 조합하여 사용  |
-| image_name     | **기본 정보**의 **이미지 이름**                        |
-| os_type      | **접속 정보** 형식                                 |
-| login_username | **접속 정보**의 사용자 이름                            |
-
-> [주의] 인스턴스 메타데이터 변경 및 삭제 시 연관 서비스 및 기능에 영향이 발생할 수 있으며, 이에 따른 결과에 대한 책임은 사용자에게 있습니다.
-
-### 인스턴스 메타데이터 목록 보기
-
-```
-GET /v2/{tenantId}/servers/{serverId}/metadata
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름       | 종류 | 형식 | 필수 | 설명                                               |
-|----------|---|---|---|--------------------------------------------------|
-| tenantId | URL | String | O | 테넌트 ID                                           |
-| serverId | URL | UUID | O | 인스턴스 ID                                          |
-| tokenId  | Header | String | O | 토큰 ID                                            |
-
-#### 응답
-
-| 이름       | 종류 | 형식 | 설명                                               |
-|----------|---|---|--------------------------------------------------|
-| metadata | Body | Object | 인스턴스에 생성 혹은 수정할 메타데이터 객체<br>최대 길이 255자 이하의 키-값 쌍 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "metadata": {
-        "os_distro": "ubuntu",
-        "description": "Ubuntu Server 20.04.6 LTS (2023.11.21)",
-        "volume_size": "20",
-        "project_domain": "NORMAL",
-        "monitoring_agent": "sysmon",
-        "image_name": "Ubuntu Server 20.04.6 LTS (2023.11.21)",
-        "os_version": "Server 20.04 LTS",
-        "os_architecture": "amd64",
-        "login_username": "ubuntu",
-        "os_type": "linux",
-        "tc_env": "sysmon,dfeac7db42a192a73959d5646117af58"
-    }
-}
-```
-
-</p>
-</details>
-
-
-<a id="restart-instance"></a>
-### 인스턴스 메타데이터 보기
-
-```
-GET /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름       | 종류 | 형식 | 필수 | 설명                       |
-|----------|---|---|---|--------------------------|
-| tenantId | URL | String | O | 테넌트 ID                   |
-| serverId | URL | UUID | O | 인스턴스 ID                  |
-| key      | URL | String | O | 인스턴스에 생성 혹은 수정할 메타데이터의 키 |
-| tokenId  | Header | String | O | 토큰 ID                    |
-
-#### 응답
-
-| 이름   | 종류 | 형식 | 설명                                               |
-|------|---|---|--------------------------------------------------|
-| meta | Body | Object | 인스턴스에 생성 혹은 수정할 메타데이터 객체<br>최대 길이 255자 이하의 키-값 쌍 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-<a id="change-instance-flavor"></a>
-### 인스턴스 메타데이터 생성/수정하기
-
-인스턴스의 메타데이터를 생성하거나 수정합니다.
-요청하는 키가 기존 키와 일치하는 경우 키-값을 요청 값으로 변경합니다.
-
-```
-PUT /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름       | 종류 | 형식 | 필수 | 설명                                               |
-|----------|---|---|---|--------------------------------------------------|
-| tenantId | URL | String | O | 테넌트 ID                                           |
-| serverId | URL | UUID | O | 인스턴스 ID                                          |
-| key      | URL | String | O | 인스턴스에 생성 혹은 수정할 메타데이터의 키                         |
-| tokenId  | Header | String | O | 토큰 ID                                            |
-| meta     | Body | Object | O | 인스턴스에 생성 혹은 수정할 메타데이터 객체<br>최대 길이 255자 이하의 키-값 쌍 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| token | Header | String | O | NHN Cloud Token |
+| template | Body | Array | O | 템플릿 정보 |
+| template.name | Body | String | O | 템플릿 이름 |
+| template.version | Body | String | X | 템플릿 버전 |
+| template.description | Body | String | X | 템플릿 설명 |
+| template.versionDescription | Body | String | X | 템플릿 버전 설명 |
+| template.networks | Body | Array | O | 템플릿의 네트워크 정보 |
+| template.networks.vpcId | Body | String | O | 템플릿의 VPC ID |
+| template.networks.subnetId | Body | String | O | 템플릿의 Subnet ID |
+| template.dnsConfig | Body | String List | X | 컨테이너에서 사용하는 DNS Server 정보(최대 3개 설정 가능) |
+| template.hostAliases | Body | List | X | 컨테이너 `/etc/hosts`에 설정하는 정보 |
+| template.hostAliases.ip | Body | String | O | hostnames에서 사용하는 IP 정보 |
+| template.hostAliases.hostnames | Body | String List | O | hostnames에서 사용하는 host 정보 |
+| template.containers | Body | Array | O | 템플릿의 컨테이너 목록 |
+| template.containers.name | Body | String | O | 컨테이너 이름 |
+| template.containers.type | Body | String | X | 컨테이너 유형<ul><li>normal: 일반</li><li>init: 초기화</li></ul>|
+| template.containers.image | Body | String | O | 컨테이너 이미지 |
+| template.containers.imageRegistryCredentials | Body | Object | X | Private 레지스트리에 접근 가능한 정보 |
+| template.containers.imageRegistryCredentials.username | Body | String | O | Private 레지스트리 아이디 |
+| template.containers.imageRegistryCredentials.password | Body | String | O | Private 레지스트리 비밀번호 |
+| template.containers.cpus | Body | Float | O | 컨테이너에 할당하는 CPU 개수 |
+| template.containers.memoryLimit | Body | Object | O | 컨테이너에 할당하는 메모리 정보 |
+| template.containers.memoryLimit.hard | Body | Integer | O | 컨테이너에 할당하는 메모리(MiB) |
+| template.containers.gpuFlavor | Body | String | X | GPU Flavor 정보<ul><li>ncs1.g1m5</li><li>ncs1.g2m10</li></ul> |
+| template.containers.ports | Body | Array | X | 컨테이너에서 사용하는 포트 정보 |
+| template.containers.ports.containerPort | Body | Integer | O | 컨테이너 포트 |
+| template.containers.ports.protocol | Body | String | O | 컨테이너 프로토콜<ul><li>TCP</li><li>UDP</li><li>HTTP</li><li>HTTPS</li><li>TERMINATED\_HTTPS</li></ul> |
+| template.containers.command | Body | String List | X | 컨테이너가 시작될 때 실행될 명령어 |
+| template.containers.args | Body | String List | X | 컨테이너가 시작될 때 사용되는 인자 |
+| template.containers.workDirectory | Body | String | X | 컨테이너의 작업 디렉터리 |
+| template.containers.env | Body | Array | X | 컨테이너 환경 변수 |
+| template.containers.env.name | Body | String | O | 컨테이너 환경 변수 이름 |
+| template.containers.env.value | Body | String | O | 컨테이너 환경 변수 값 |
+| template.containers.postStart | Body | String List | X | 컨테이너 생성 직후 실행되는 명령어 |
+| template.containers.preStop | Body | String List | X | 컨테이너 종료되기 직전 실행되는 명령어 |
+| template.containers.configs | Body | List | X | 컨테이너에서 사용하는 ConfigMap 정보(최대 10개) |
+| template.containers.configs.id | Body | Integer | O | ConfigMap ID |
+| template.containers.configs.type | Body | String | O | ConfigMap 정보를 가져오는 service type<ul><li>obs: Object Storage</li></ul> |
+| template.containers.configs.appKey | Body | String | O | Object Storage AppKey |
+| template.containers.configs.userAccessKeyId | Body | String | O | Object Storage 서비스에 접근하는 사용자의 User Access Key |
+| template.containers.configs.secretAccessKey | Body | String | O | Object Storage 서비스에 접근하는 사용자의 Secret Access Key |
+| template.containers.configs.value | Body | String | O | 오브젝트 URL |
+| template.containers.configs.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.secrets | Body | List | X | 컨테이너에서 사용하는 Secret 정보(최대 10개) |
+| template.containers.secrets.type | Body | String | O | Secret 정보를 가져오는 service type<ul><li>skm: Secure Key Manager</li></ul> |
+| template.containers.secrets.value | Body | String | O | 키 아이디 |
+| template.containers.secrets.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.volumes | Body | Array | X | 컨테이너에서 사용하는 NAS 스토리지 정보 |
+| template.containers.volumes.name | Body | String | O | 스토리지 이름 |
+| template.containers.volumes.path | Body | String | O | NAS 스토리지 연결 경로 |
+| template.containers.volumes.mountPath | body | String | X | 컨테이너의 연결 경로(default: /mnt) |
+| template.containers.probe | Body | List | X | 컨테이너 Probe 설정 |
+| template.containers.probe.type | Body | String | O | 컨테이너 Probe 타입<ul><li>startup</li><li>liveness</li></ul> |
+| template.containers.probe.failureThreshold | Body | Integer | O | Probe 실패 기준 |
+| template.containers.probe.initialDelaySeconds | Body | Integer | O | Probe 시작 대기 시간 |
+| template.containers.probe.periodSeconds | Body | Integer | O | Probe 실행 간격<li>timeoutSeconds보다 작은 값이 설정되어야 합니다.</li> |
+| template.containers.probe.timeoutSeconds | Body | Integer | O | Probe 실행 제한 시간<li>periodSeconds보다 큰 값이 설정되어야 합니다.</li> |
+| template.containers.probe.exec | Body | String List | O | Probe 실행 명령어 |
+| template.containers.stopTimeout | Body | Integer | X | 초기화 컨테이너 실행 제한 시간(초)<ul><li>30 ~ 120 (default: 30)</li></ul>|
+| template.containers.sharedMemory | Body | Object | X | 컨테이너 공유 메모리 설정 정보 |
+| template.containers.sharedMemory.changed | Body | Boolean | O | 컨테이너 공유 메모리 설정 변경 여부<ul><li>true: 변경</li><li>false: 변경 안 함</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | 컨테이너에 설정하는 공유 메모리(MiB) |
 
 <details>
-<summary>예시</summary>
-<p>
+  <summary>예시</summary>
 
 ```json
 {
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### 응답
-
-| 이름   | 종류 | 형식 | 설명                                               |
-|------|---|---|--------------------------------------------------|
-| meta | Body | Object | 인스턴스에 생성 혹은 수정할 메타데이터 객체<br>최대 길이 255자 이하의 키-값 쌍 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-
-<a id="create-instance-image"></a>
-### 인스턴스 메타데이터 삭제하기
-
-요청하는 키와 일치하는 인스턴스의 메타데이터를 삭제합니다.
-
-```
-DELETE /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름       | 종류 | 형식 | 필수 | 설명                  |
-|----------|---|---|---|---------------------|
-| tenantId | URL | String | O | 테넌트 ID              |
-| serverId | URL | UUID | O | 인스턴스 ID             |
-| key      | URL | String | O | 인스턴스에서 삭제할 메타데이터의 키 |
-| tokenId  | Header | String | O | 토큰 ID               |
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
-
-## 배치 정책
-
-<a id="add-security-group"></a>
-### 배치 정책 생성하기
-
-배치 정책을 생성합니다.
-분산 배치를 위한 `anti-affinity` 배치 정책 유형만 제공합니다.
-
-```
-POST /v2/{tenantId}/os-server-groups
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| server_group | Body | Object | O | 배치 정책 객체 |
-| server_group.name | Body | String | O | 배치 정책 이름 |
-| server_group.policies | Body | Array | O | 배치 정책 유형<br>`anti-affinity`만 설정 가능 |
-
-<details>
-<summary>예시</summary>
-<p>
-
-```json
-{
-    "server_group": {
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"            
-        ]
-    }
-}
-```
-
-</p>
-</details>
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|-----|-----|-----|-----|
-| server_group | Body | Object | 배치 정책 객체 |
-| server_group.id | Body | String | 배치 정책 ID |
-| server_group.name | Body | String | 배치 정책 이름 |
-| server_group.policies | Body | Array | 배치 정책 유형 |
-| server_group.members | Body | Array | 배치 정책에 할당된 인스턴스 ID 목록 |
-| server_group.metadata | Body | Object | 배치 정책 메타데이터 객체<br>항상 빈 값으로 표시됨 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "server_group": {
-        "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"
-        ],
-        "members": [],
-        "metadata": {}
-    }
-}
-```
-
-</p>
-</details>
-
-<a id="delete-security-group"></a>
-### 배치 정책 목록 보기
-
-```
-GET /v2/{tenantId}/os-server-groups
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|-----|-----|-----|-----|
-| server_groups | Body | Array | 배치 정책 객체 목록 |
-| server_groups.id | Body | String | 배치 정책 ID |
-| server_groups.name | Body | String | 배치 정책 이름 |
-| server_groups.policies | Body | Array | 배치 정책 유형 |
-| server_groups.members | Body | Array | 배치 정책에 할당된 인스턴스 ID 목록 |
-| server_groups.metadata | Body | Object | 배치 정책 메타데이터 객체<br>항상 빈 값으로 표시됨 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "server_groups": [
-        {
-            "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-            "name": "policy-test1",
-            "policies": [
-                "anti-affinity"
-            ],
-            "members": [
-                "c040455d-6495-4628-ad81-ade79cf7b8d6",
-                "524e7d81-f373-43a0-b2ff-0a15f8255bb5"            
-            ],
-            "metadata": {}
+  "template": {
+    "containers": [
+      {
+        "cpus": 0.25,
+        "image": "nginx:latest",
+        "memoryLimit": {
+          "hard": 256
         },
-        {
-            "id": "f947c657-cbe0-4bf2-a2aa-59d198f8e096",
-            "name": "policy-test2",
-            "policies": [
-                "anti-affinity"
-            ],
-            "members": [],
-            "metadata": {}
-        }
-    ]
+        "name": "nginx",
+        "ports": [
+          {
+            "containerPort": 80,
+            "protocol": "tcp"
+          }
+        ]
+      }
+    ],
+    "description": "api template",
+    "name": "api-template",
+    "networks": [
+      {
+        "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+        "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457"
+      }
+    ],
+    "version": "api-1"
+  }
 }
 ```
 
-</p>
 </details>
 
-### 배치 정책 보기
-
-```
-GET /v2/{tenantId}/os-server-groups/{servergroupId}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | 테넌트 ID |
-| servergroupId | URL | String | O | 배치 정책 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
+<a id="create-template-response"></a>
 #### 응답
 
-| 이름 | 종류 | 형식 | 설명 |
-|-----|-----|-----|-----|
-| server_group | Body | Object | 배치 정책 객체 |
-| server_group.id | Body | String | 배치 정책 ID |
-| server_group.name | Body | String | 배치 정책 이름 |
-| server_group.policies | Body | Array | 배치 정책 유형 |
-| server_group.members | Body | Array | 배치 정책에 할당된 인스턴스 ID 목록 |
-| server_group.metadata | Body | Object | 배치 정책 메타데이터 객체<br>항상 빈 값으로 표시됨 |
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| template | Body | Object | O | 템플릿 정보 |
+| template.id | Body | UUID | O | 템플릿 ID |
+| template.name | Body | String | O | 템플릿 이름 |
+| template.version | Body | String | O | 템플릿 버전 |
+| template.createdAt | Body | String | O | 생성 시간(UTC) |
+| template.description | Body | String | X | 템플릿 설명 |
+| template.versionDescription | Body | String | X | 템플릿 버전 설명 |
+| template.networks | Body | Array | O | 템플릿의 네트워크 정보 |
+| template.networks.vpcId | Body | String | O | 템플릿의 VPC ID |
+| template.networks.subnetId | Body | String | O | 템플릿의 Subnet ID |
+| template.dnsConfig | Body | String List | X | 컨테이너에 설정된 DNS Server 정보 |
+| template.hostAliases | Body | List | X | 컨테이너 `/etc/hosts`에 설정된 정보 |
+| template.hostAliases.ip | Body | String | O | 컨테이너에 설정된 hostnames의 IP |
+| template.hostAliases.hostnames | Body | String List | O | 컨테이너에 설정된 IP의 hostnames |
+| template.containers | Body | Array | O | 템플릿의 컨테이너 목록 |
+| template.containers.name | Body | String | O | 컨테이너 이름 |
+| template.containers.type | Body | String | O | 컨테이너 유형<ul><li>normal: 일반</li><li>init: 초기화</li></ul>|
+| template.containers.image | Body | String | O | 컨테이너 이미지 |
+| template.containers.cpus | Body | Float | O | 컨테이너에 할당하는 CPU 개수 |
+| template.containers.memoryLimit | Body | Object | O | 컨테이너에 할당하는 메모리 정보 |
+| template.containers.memoryLimit.hard | Body | Integer | O | 컨테이너에 할당하는 메모리(MiB) |
+| template.containers.gpuFlavor | Body | String | X | GPU Flavor 정보<ul><li>ncs1.g1m5</li><li>ncs1.g2m10</li></ul> |
+| template.containers.ports | Body | Array | X | 컨테이너에서 사용하는 포트 정보 |
+| template.containers.ports.containerPort | Body | Integer | O | 컨테이너 포트 |
+| template.containers.ports.protocol | Body | String | O | 컨테이너 프로토콜<ul><li>TCP</li><li>UDP</li><li>HTTP</li><li>HTTPS</li><li>TERMINATED\_HTTPS</li></ul> |
+| template.containers.command | Body | String List | X | 컨테이너가 시작될 때 실행될 명령어 |
+| template.containers.args | Body | String List | X | 컨테이너가 시작될 때 사용되는 인자 |
+| template.containers.workDirectory | Body | String | X | 컨테이너의 작업 디렉터리 |
+| template.containers.env | Body | Array | X | 컨테이너 환경 변수 |
+| template.containers.env.name | Body | String | O | 컨테이너 환경 변수 이름 |
+| template.containers.env.value | Body | String | O | 컨테이너 환경 변수 값 |
+| template.containers.postStart | Body | String List | X | 컨테이너 생성 직후 실행되는 명령어 |
+| template.containers.preStop | Body | String List | X | 컨테이너 종료되기 직전 실행되는 명령어 |
+| template.containers.configs | Body | List | X | 컨테이너에서 사용하는 ConfigMap 정보 |
+| template.containers.configs.id | Body | Integer | O | ConfigMap ID |
+| template.containers.configs.type | Body | String | O | ConfigMap 정보를 가져오는 service type<ul><li>obs: Object Storage</li></ul> |
+| template.containers.configs.value | Body | String | O | 오브젝트 URL |
+| template.containers.configs.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.secrets | Body | List | X | 컨테이너에서 사용하는 Secret 정보 |
+| template.containers.secrets.type | Body | String | O | Secret 정보를 가져오는 service type<ul><li>skm: Secure Key Manager</li></ul> |
+| template.containers.secrets.value | Body | String | O | 키 아이디 |
+| template.containers.secrets.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.volumes | Body | Array | X | 컨테이너에서 사용하는 NAS 스토리지 정보 |
+| template.containers.volumes.name | Body | String | O | 스토리지 이름 |
+| template.containers.volumes.path | Body | String | O | NAS 스토리지 연결 경로 |
+| template.containers.volumes.mountPath | body | String | X | 컨테이너의 연결 경로 |
+| template.containers.probe | Body | List | X | 컨테이너 Probe 설정 |
+| template.containers.probe.type | Body | String | O | 컨테이너 Probe 타입<ul><li>startup</li><li>liveness</li></ul> |
+| template.containers.probe.failureThreshold | Body | Integer | O | Probe 실패 기준 |
+| template.containers.probe.initialDelaySeconds | Body | Integer | O | Probe 시작 대기 시간 |
+| template.containers.probe.periodSeconds | Body | Integer | O | Probe 실행 간격 |
+| template.containers.probe.timeoutSeconds | Body | Integer | O | Probe 실행 제한 시간 |
+| template.containers.probe.exec | Body | String List | O | Probe 실행 명령어 |
+| template.containers.stopTimeout | Body | Integer | X | 초기화 컨테이너 실행 제한 시간(초) |
+| template.containers.sharedMemory | Body | Object | X | 컨테이너 공유 메모리 설정 정보 |
+| template.containers.sharedMemory.changed | Body | Boolean | O | 컨테이너 공유 메모리 설정 변경 여부<ul><li>true: 변경</li><li>false: 변경 안 함</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | 컨테이너에 설정하는 공유 메모리(MiB) |
 
-<details><summary>예시</summary>
-<p>
+<details>
+  <summary>예시</summary>
 
 ```json
 {
-    "server_group": {
-        "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "template": {
+    "createdAt": "2024-10-24T05:47:00.693Z",
+    "updatedAt": "2024-10-24T05:47:00.693Z",
+    "id": "89ab3d2f-385a-4322-8694-32cb7955f8de",
+    "name": "api-template",
+    "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+    "description": "api template",
+    "containers": [
+      {
+        "id": "25f2753c-b7e3-42a3-ad8c-a0cfe4e6155f",
+        "name": "nginx",
+        "image": "nginx:latest",
+        "imageRegistry": "other",
+        "imageRegistryType": "public",
+        "cpus": 0.25,
+        "memoryLimit": {
+          "hard": 256
+        },
+        "ports": [
+          {
+            "containerPort": 80,
+            "protocol": "TCP"
+          }
         ],
-        "members": [
-            "c040455d-6495-4628-ad81-ade79cf7b8d6",
-            "524e7d81-f373-43a0-b2ff-0a15f8255bb5"            
-        ],
-        "metadata": {}
-    }
+        "restartCount": 0,
+        "type": "normal"
+      }
+    ],
+    "networks": [
+      {
+        "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+        "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+      }
+    ],
+    "dnsConfig": [
+      "223.255.201.241",
+      "211.50.32.6"
+    ],
+    "version": "api-1"
+  }
 }
 ```
 
-</p>
 </details>
 
-### 배치 정책 삭제하기
+<a id="delete-template"></a>
+### 템플릿 삭제하기 { #delete-template }
 
-```
-DELETE /v2/{tenantId}/os-server-groups/{servergroupId}
-X-Auth-Token: {tokenId}
+템플릿을 삭제합니다.
+
+```bash
+DELETE /ncs/v1.0/appkeys/{appKey}/templates/{templateId}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
+<a id="delete-template-request"></a>
 #### 요청
 
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | 테넌트 ID |
-| servergroupId | URL | String | O | 배치 정책 ID |
-| tokenId | Header | String | O | 토큰 ID |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| templateId | URL | String | O | 템플릿 ID |
+| token | Header | String | O | NHN Cloud Token |
 
+<a id="delete-template-response"></a>
 #### 응답
 
-이 API는 응답 본문을 반환하지 않습니다.
+이 API는 공통 정보만 응답합니다.
+
+<a id="view-a-list-of-template-versions"></a>
+### 템플릿 버전 목록 보기 { #view-a-list-of-template-versions }
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/templates/{templateId}/versions
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="view-a-list-of-template-versions-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| templateId | Path | String | O | 템플릿 ID |
+| token | Header | String | O | NHN Cloud Token |
+| q | Query | String | X | 검색 매개변수 |
+| page | Query | Integer | X | 조회할 페이지 번호 |
+| size | Query | Integer | X | 조회할 페이지 크기(default: 10) |
+| sort | Query | String | X | 정렬 기준이 될 필드명<br>역순 정렬일 경우 필드명 앞에 `-`를 붙임<br>예: `sort=-name` |
+
+<a id="view-a-list-of-template-versions-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| X-Total-Count | Header | Integer | O | 템플릿의 버전 개수 |
+| templates | Body | Array | O | 템플릿 버전 목록 |
+| templates.id | Body | UUID | O | 템플릿 ID |
+| templates.version | Body | String | O | 템플릿 버전 |
+| templates.name | Body | String | O | 템플릿 이름 |
+| templates.createdAt | Body | String | O | 생성 시간(UTC) |
+| templates.description | Body | String | X | 템플릿 설명 |
+| templates.versionDescription | Body | String | X | 템플릿 버전 설명 |
+| templates.networks | Body | Array | O | 템플릿의 네트워크 정보 |
+| templates.networks.vpcId | Body | String | O | 템플릿의 VPC ID |
+| templates.networks.subnetId | Body | String | O | 템플릿의 Subnet ID |
+| templates.dnsConfig | Body | String List | X | 컨테이너에 설정된 DNS Server 정보 |
+| templates.hostAliases | Body | List | X | 컨테이너 `/etc/hosts`에 설정된 정보 |
+| templates.hostAliases.ip | Body | String | O | 컨테이너에 설정된 hostnames의 IP |
+| templates.hostAliases.hostnames | Body | String List | O | 컨테이너에 설정된 IP의 hostnames |
+| templates.versionCount | Body | Integer | O | 템플릿의 버전 개수 |
+| templates.workloadCount | Body | Integer | O | 템플릿을 사용 중인 워크로드 개수 |
+| templates.containers | Body | Array | O | 템플릿의 컨테이너 목록 |
+| templates.containers.name | Body | String | O | 컨테이너 이름 |
+| templates.containers.type | Body | String | O | 컨테이너 유형<ul><li>normal: 일반</li><li>init: 초기화</li></ul>|
+| templates.containers.image | Body | String | O | 컨테이너 이미지 |
+| templates.containers.cpus | Body | Float | O | 컨테이너에 할당하는 CPU 개수 |
+| templates.containers.memoryLimit | Body | Object | O | 컨테이너에 할당하는 메모리 정보 |
+| templates.containers.memoryLimit.hard | Body | Integer | O | 컨테이너에 할당하는 메모리(MiB) |
+| templates.containers.gpuFlavor | Body | String | X | GPU Flavor 정보<ul><li>ncs1.g1m5</li><li>ncs1.g2m10</li></ul> |
+| templates.containers.ports | Body | Array | X | 컨테이너에서 사용하는 포트 정보 |
+| templates.containers.ports.containerPort | Body | Integer | O | 컨테이너 포트 |
+| template.containers.ports.protocol | Body | String | O | 컨테이너 프로토콜<ul><li>TCP</li><li>UDP</li><li>HTTP</li><li>HTTPS</li><li>TERMINATED\_HTTPS</li></ul> |
+| templates.containers.command | Body | String List | X | 컨테이너가 시작될 때 실행될 명령어 |
+| templates.containers.args | Body | String List | X | 컨테이너가 시작될 때 사용되는 인자 |
+| templates.containers.workDirectory | Body | String | X | 컨테이너의 작업 디렉터리 |
+| templates.containers.env | Body | Array | X | 컨테이너 환경 변수 |
+| templates.containers.env.name | Body | String | O | 컨테이너 환경 변수 이름 |
+| templates.containers.env.value | Body | String | O | 컨테이너 환경 변수 값 |
+| templates.containers.postStart | Body | String List | X | 컨테이너 생성 직후 실행되는 명령어 |
+| templates.containers.preStop | Body | String List | X | 컨테이너 종료되기 직전 실행되는 명령어 |
+| templates.containers.configs | Body | List | X | 컨테이너에서 사용하는 ConfigMap 정보 |
+| templates.containers.configs.id | Body | Integer | O | ConfigMap ID |
+| templates.containers.configs.type | Body | String | O | ConfigMap 정보를 가져오는 service type<ul><li>obs: Object Storage</li></ul> |
+| templates.containers.configs.value | Body | String | O | 오브젝트 URL |
+| templates.containers.configs.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| templates.containers.secrets | Body | List | X | 컨테이너에서 사용하는 Secret 정보 |
+| templates.containers.secrets.type | Body | String | O | Secret 정보를 가져오는 service type<ul><li>skm: Secure Key Manager</li></ul> |
+| templates.containers.secrets.value | Body | String | O | 키 아이디 |
+| templates.containers.secrets.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| templates.containers.volumes | Body | Array | X | 컨테이너에서 사용하는 NAS 스토리지 정보 |
+| templates.containers.volumes.name | Body | String | O | 스토리지 이름 |
+| templates.containers.volumes.path | Body | String | O | NAS 스토리지 연결 경로 |
+| templates.containers.volumes.mountPath | body | String | X | 컨테이너의 연결 경로 |
+| templates.containers.probe | Body | List | X | 컨테이너 Probe 설정 |
+| templates.containers.probe.type | Body | String | O | 컨테이너 Probe 타입<ul><li>startup</li><li>liveness</li></ul> |
+| templates.containers.probe.failureThreshold | Body | Integer | O | Probe 실패 기준 |
+| templates.containers.probe.initialDelaySeconds | Body | Integer | O | Probe 시작 대기 시간 |
+| templates.containers.probe.periodSeconds | Body | Integer | O | Probe 실행 간격 |
+| templates.containers.probe.timeoutSeconds | Body | Integer | O | Probe 실행 제한 시간 |
+| templates.containers.probe.exec | Body | String List | O | Probe 실행 명령어 |
+| templates.containers.stopTimeout | Body | Integer | X | 초기화 컨테이너 실행 제한 시간(초) |
+| templates.containers.sharedMemory | Body | Object | X | 컨테이너 공유 메모리 설정 정보 |
+| templates.containers.sharedMemory.changed | Body | Boolean | O | 컨테이너 공유 메모리 설정 변경 여부<ul><li>true: 변경</li><li>false: 변경 안 함</li></ul> |
+| templates.containers.sharedMemory.sizeLimit | Body | Boolean | O | 컨테이너에 설정하는 공유 메모리(MiB) |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "templates": [
+    {
+      "createdAt": "2024-10-24T05:24:14.053Z",
+      "updatedAt": "2024-10-24T05:24:14.053Z",
+      "id": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+      "name": "nginx-template",
+      "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+      "containers": [
+        {
+          "id": "51be9a5d-4737-4323-ae57-0ade225f4f4d",
+          "name": "nginx",
+          "image": "nginx:latest",
+          "imageRegistry": "other",
+          "imageRegistryType": "public",
+          "cpus": 0.25,
+          "memoryLimit": {
+            "hard": 256
+          },
+          "ports": [
+            {
+              "hostPort": 80,
+              "containerPort": 80,
+              "protocol": "TCP"
+            }
+          ],
+          "restartCount": 0,
+          "probe": [
+            {
+              "type": "liveness",
+              "exec": [
+                "bash",
+                "-c",
+                "curl -f http://localhost || exit 1"
+              ],
+              "initialDelaySeconds": 5,
+              "failureThreshold": 3,
+              "timeoutSeconds": 1,
+              "periodSeconds": 10
+            },
+            {
+              "type": "startup",
+              "exec": [
+                "bash",
+                "-c",
+                "curl -f http://localhost || exit 1"
+              ],
+              "initialDelaySeconds": 5,
+              "failureThreshold": 3,
+              "timeoutSeconds": 1,
+              "periodSeconds": 10
+            }
+          ],
+          "type": "normal"
+        }
+      ],
+      "networks": [
+        {
+          "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+          "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+        }
+      ],
+      "dnsConfig": [
+        "223.255.201.241",
+        "211.50.32.6"
+      ],
+      "versionCount": 2,
+      "version": "first"
+    },
+    {
+      "createdAt": "2024-10-24T05:43:26.029Z",
+      "updatedAt": "2024-10-24T05:43:26.029Z",
+      "id": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+      "name": "nginx-template",
+      "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+      "containers": [
+        {
+          "id": "51be9a5d-4737-4323-ae57-0ade225f4f4d",
+          "name": "nginx",
+          "image": "nginx:latest",
+          "imageRegistry": "other",
+          "imageRegistryType": "public",
+          "cpus": 0.25,
+          "memoryLimit": {
+            "hard": 256
+          },
+          "ports": [
+            {
+              "hostPort": 80,
+              "containerPort": 80,
+              "protocol": "TCP"
+            }
+          ],
+          "restartCount": 0,
+          "type": "normal"
+        }
+      ],
+      "networks": [
+        {
+          "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+          "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+        }
+      ],
+      "dnsConfig": [
+        "223.255.201.241",
+        "211.50.32.6"
+      ],
+      "versionCount": 2,
+      "version": "second",
+    }
+  ]
+}
+```
+
+</details>
+
+<a id="view-template-versions"></a>
+### 템플릿 버전 보기 { #view-template-versions }
+
+개별 템플릿 버전 정보를 조회합니다.
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/templates/{templateId}/versions/{version}
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="view-template-versions-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| templateId | URL | String | O | 템플릿 ID |
+| version | URL | String | O | 템플릿 버전 |
+| token | Header | String | O | NHN Cloud Token |
+
+<a id="view-template-versions-response"></a>
+#### 응답
+
+* 템플릿 상세 조회와 동일
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| template | Body | Object | O | 템플릿 버전 정보 |
+| template.id | Body | UUID | O | 템플릿 ID |
+| template.version | Body | String | O | 템플릿 버전 |
+| template.name | Body | String | O | 템플릿 이름 |
+| template.createdAt | Body | String | O | 생성 시간(UTC) |
+| template.description | Body | String | X | 템플릿 설명 |
+| template.versionDescription | Body | String | X | 템플릿 버전 설명 |
+| template.networks | Body | Array | O | 템플릿의 네트워크 정보 |
+| template.networks.vpcId | Body | String | O | 템플릿의 VPC ID |
+| template.networks.subnetId | Body | String | O | 템플릿의 Subnet ID |
+| template.dnsConfig | Body | String List | X | 컨테이너에 설정된 DNS Server 정보 |
+| template.hostAliases | Body | List | X | 컨테이너 `/etc/hosts`에 설정된 정보 |
+| template.hostAliases.ip | Body | String | O | 컨테이너에 설정된 hostnames의 IP |
+| template.hostAliases.hostnames | Body | String List | O | 컨테이너에 설정된 IP의 hostnames |
+| template.versionCount | Body | Integer | O | 템플릿의 버전 개수 |
+| template.workloadCount | Body | Integer | O | 템플릿을 사용 중인 워크로드 개수 |
+| template.containers | Body | Array | O | 템플릿의 컨테이너 목록 |
+| template.containers.name | Body | String | O | 컨테이너 이름 |
+| template.containers.type | Body | String | O | 컨테이너 유형<ul><li>normal: 일반</li><li>init: 초기화</li></ul>|
+| template.containers.image | Body | String | O | 컨테이너 이미지 |
+| template.containers.cpus | Body | Float | O | 컨테이너에 할당하는 CPU 개수 |
+| template.containers.memoryLimit | Body | Object | O | 컨테이너에 할당하는 메모리 정보 |
+| template.containers.memoryLimit.hard | Body | Integer | O | 컨테이너에 할당하는 메모리(MiB) |
+| template.containers.gpuFlavor | Body | String | X | GPU Flavor 정보<ul><li>ncs1.g1m5</li><li>ncs1.g2m10</li></ul> |
+| template.containers.ports | Body | Array | X | 컨테이너에서 사용하는 포트 정보 |
+| template.containers.ports.containerPort | Body | Integer | O | 컨테이너 포트 |
+| template.containers.ports.protocol | Body | String | O | 컨테이너 프로토콜<ul><li>TCP</li><li>UDP</li><li>HTTP</li><li>HTTPS</li><li>TERMINATED\_HTTPS</li></ul> |
+| template.containers.command | Body | String List | X | 컨테이너가 시작될 때 실행될 명령어 |
+| template.containers.args | Body | String List | X | 컨테이너가 시작될 때 사용되는 인자 |
+| template.containers.workDirectory | Body | String | X | 컨테이너의 작업 디렉터리 |
+| template.containers.env | Body | Array | X | 컨테이너 환경 변수 |
+| template.containers.env.name | Body | String | O | 컨테이너 환경 변수 이름 |
+| template.containers.env.value | Body | String | O | 컨테이너 환경 변수 값 |
+| template.containers.postStart | Body | String List | X | 컨테이너 생성 직후 실행되는 명령어 |
+| template.containers.preStop | Body | String List | X | 컨테이너 종료되기 직전 실행되는 명령어 |
+| template.containers.configs | Body | List | X | 컨테이너에서 사용하는 ConfigMap 정보 |
+| template.containers.configs.id | Body | Integer | O | ConfigMap ID |
+| template.containers.configs.type | Body | String | O | ConfigMap 정보를 가져오는 service type<ul><li>obs: Object Storage</li></ul> |
+| template.containers.configs.value | Body | String | O | 오브젝트 URL |
+| template.containers.configs.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.secrets | Body | List | X | 컨테이너에서 사용하는 Secret 정보 |
+| template.containers.secrets.type | Body | String | O | Secret 정보를 가져오는 service type<ul><li>skm: Secure Key Manager</li></ul> |
+| template.containers.secrets.value | Body | String | O | 키 아이디 |
+| template.containers.secrets.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.volumes | Body | Array | X | 컨테이너에서 사용하는 NAS 스토리지 정보 |
+| template.containers.volumes.name | Body | String | O | 스토리지 이름 |
+| template.containers.volumes.path | Body | String | O | NAS 스토리지 연결 경로 |
+| template.containers.volumes.mountPath | body | String | X | 컨테이너의 연결 경로 |
+| template.containers.probe | Body | List | X | 컨테이너 Probe 설정 |
+| template.containers.probe.type | Body | String | O | 컨테이너 Probe 타입<ul><li>startup</li><li>liveness</li></ul> |
+| template.containers.probe.failureThreshold | Body | Integer | O | Probe 실패 기준 |
+| template.containers.probe.initialDelaySeconds | Body | Integer | O | Probe 시작 대기 시간 |
+| template.containers.probe.periodSeconds | Body | Integer | O | Probe 실행 간격 |
+| template.containers.probe.timeoutSeconds | Body | Integer | O | Probe 실행 제한 시간 |
+| template.containers.probe.exec | Body | String List | O | Probe 실행 명령어 |
+| template.containers.stopTimeout | Body | Integer | X | 초기화 컨테이너 실행 제한 시간(초) |
+| template.containers.sharedMemory | Body | Object | X | 컨테이너 공유 메모리 설정 정보 |
+| template.containers.sharedMemory.changed | Body | Boolean | O | 컨테이너 공유 메모리 설정 변경 여부<ul><li>true: 변경</li><li>false: 변경 안 함</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | 컨테이너에 설정하는 공유 메모리(MiB) |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "template": {
+    "createdAt": "2024-10-24T05:24:14.053Z",
+    "updatedAt": "2024-10-24T05:24:14.053Z",
+    "id": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+    "name": "nginx-template",
+    "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+    "containers": [
+      {
+        "id": "51be9a5d-4737-4323-ae57-0ade225f4f4d",
+        "name": "nginx",
+        "image": "nginx:latest",
+        "imageRegistry": "other",
+        "imageRegistryType": "public",
+        "cpus": 0.25,
+        "memoryLimit": {
+          "hard": 256
+        },
+        "ports": [
+          {
+            "hostPort": 80,
+            "containerPort": 80,
+            "protocol": "TCP"
+          }
+        ],
+        "restartCount": 0,
+        "probe": [
+          {
+            "type": "liveness",
+            "exec": [
+              "bash",
+              "-c",
+              "curl -f http://localhost || exit 1"
+            ],
+            "initialDelaySeconds": 5,
+            "failureThreshold": 3,
+            "timeoutSeconds": 1,
+            "periodSeconds": 10
+          },
+          {
+            "type": "startup",
+            "exec": [
+              "bash",
+              "-c",
+              "curl -f http://localhost || exit 1"
+            ],
+            "initialDelaySeconds": 5,
+            "failureThreshold": 3,
+            "timeoutSeconds": 1,
+            "periodSeconds": 10
+          }
+        ],
+        "type": "normal"
+      }
+    ],
+    "networks": [
+      {
+        "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+        "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+      }
+    ],
+    "dnsConfig": [
+      "223.255.201.241",
+      "211.50.32.6"
+    ],
+    "version": "first"
+  }
+}
+```
+
+</details>
+
+<a id="create-template-version"></a>
+### 템플릿 버전 생성 { #create-template-version }
+
+템플릿 버전을 생성합니다.
+
+```bash
+POST /ncs/v1.0/appkeys/{appKey}/templates/{templateId}/versions
+x-nhn-authorization: Bearer {accessToken}
+```
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| templateId | URL | String | O | 템플릿 ID |
+| token | Header | String | O | NHN Cloud Token |
+| template | Body | Object | O | 템플릿 버전 정보 |
+| template.version | Body | String | O | 템플릿 버전 |
+| template.sourceVersion | Body | String | O | 템플릿 기준 버전 |
+| template.name | Body | String | O | 템플릿 이름 |
+| template.versionDescription | Body | String | X | 템플릿 버전 설명 |
+| template.dnsConfig | Body | String List | X | 컨테이너에 설정된 DNS Server 정보 |
+| template.hostAliases | Body | List | X | 컨테이너 `/etc/hosts`에 설정된 정보 |
+| template.hostAliases.ip | Body | String | O | 컨테이너에 설정된 hostnames의 IP |
+| template.hostAliases.hostnames | Body | String List | O | 컨테이너에 설정된 IP의 hostnames |
+| template.applyImmediately | Body | Boolean | X | true: 즉시 배포 사용, false: 즉시 배포 사용 안 함(default: false) |
+| template.containers | Body | Array | O | 템플릿의 컨테이너 목록 |
+| template.containers.name | Body | String | O | 컨테이너 이름 |
+| template.containers.type | Body | String | O | 컨테이너 유형<ul><li>normal: 일반</li><li>init: 초기화</li></ul>|
+| template.containers.image | Body | String | O | 컨테이너 이미지 |
+| template.containers.imageRegistryCredentials | Body | Object | X | Private 레지스트리에 접근 가능한 정보 |
+| template.containers.imageRegistryCredentials.changed | Body | Boolean | X | 기존 계정 사용 여부(default: false)<ul><li>false: 기존 계정 사용</li><li>true: 신규 계정 사용(username, password가 필수로 전달되어야 함)</li></ul> |
+| template.containers.imageRegistryCredentials.username | Body | String | O | Private 레지스트리 아이디 |
+| template.containers.imageRegistryCredentials.password | Body | String | O | Private 레지스트리 비밀번호 |
+| template.containers.cpus | Body | Float | O | 컨테이너에 할당하는 CPU 개수 |
+| template.containers.memoryLimit | Body | Object | O | 컨테이너에 할당하는 메모리 정보 |
+| template.containers.memoryLimit.hard | Body | Integer | O | 컨테이너에 할당하는 메모리(MiB) |
+| template.containers.gpuFlavor | Body | String | X | GPU Flavor 정보<ul><li>ncs1.g1m5</li><li>ncs1.g2m10</li></ul> |
+| template.containers.ports | Body | Array | X | 컨테이너에서 사용하는 포트 정보 |
+| template.containers.ports.containerPort | Body | Integer | O | 컨테이너 포트 |
+| template.containers.ports.protocol | Body | String | O | 컨테이너 프로토콜<ul><li>TCP</li><li>UDP</li><li>HTTP</li><li>HTTPS</li><li>TERMINATED\_HTTPS</li></ul> |
+| template.containers.command | Body | String List | X | 컨테이너가 시작될 때 실행될 명령어 |
+| template.containers.args | Body | String List | X | 컨테이너가 시작될 때 사용되는 인자 |
+| template.containers.workDirectory | Body | String | X | 컨테이너의 작업 디렉터리 |
+| template.containers.env | Body | Array | X | 컨테이너 환경 변수 |
+| template.containers.env.name | Body | String | O | 컨테이너 환경 변수 이름 |
+| template.containers.env.value | Body | String | O | 컨테이너 환경 변수 값 |
+| template.containers.postStart | Body | String List | X | 컨테이너 생성 직후 실행되는 명령어 |
+| template.containers.preStop | Body | String List | X | 컨테이너 종료 직전 실행되는 명령어 |
+| template.containers.configs | Body | List | X | 컨테이너에서 사용하는 ConfigMap 정보 |
+| template.containers.configs.id | Body | Integer | O | ConfigMap ID |
+| template.containers.configs.type | Body | String | O | ConfigMap 정보를 가져오는 service type<ul><li>obs: Object Storage</li></ul> |
+| template.containers.configs.value | Body | String | O | 오브젝트 URL |
+| template.containers.configs.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.configs.changedAppKey | Body | Boolean | X | 기존 AppKey 사용 여부(default: false)<ul><li>false: 기존 key 사용</li><li>true: 신규 key 사용(AppKey가 필수로 전달되어야 함)</li></ul> |
+| template.containers.configs.appKey | Body | String | X | Object Storage AppKey |
+| template.containers.configs.changedUserAccessKeyId | Body | Boolean | X | 기존 UserAccessKeyId 사용 여부(default: false)<ul><li>false: 기존 key 사용</li><li>true: 신규 key 사용(UserAccessKeyId가 필수로 전달되어야 함)</li></ul> |
+| template.containers.configs.userAccessKeyId | Body | String | X | Object Storage 서비스에 접근하는 사용자의 User Access Key |
+| template.containers.configs.changedSecretAccessKey | Body | Boolean | X | 기존 SecretAccessKey 사용 여부(default: false)<ul><li>false: 기존 key 사용</li><li>true: 신규 key 사용(SecretAccessKey가 필수로 전달되어야 함)</li></ul> |
+| template.containers.configs.secretAccessKey | Body | String | X | Object Storage 서비스에 접근하는 사용자의 Secret Access Key |
+| template.containers.secrets | Body | List | X | 컨테이너에서 사용하는 Secret 정보 |
+| template.containers.secrets.type | Body | String | O | Secret 정보를 가져오는 service type<ul><li>skm: Secure Key Manager</li></ul> |
+| template.containers.secrets.value | Body | String | O | 키 아이디 |
+| template.containers.secrets.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.volumes | Body | Array | X | 컨테이너에서 사용하는 NAS 스토리지 정보 |
+| template.containers.volumes.name | Body | String | O | 스토리지 이름 |
+| template.containers.volumes.path | Body | String | O | NAS 스토리지 연결 경로 |
+| template.containers.volumes.mountPath | body | String | X | 컨테이너의 연결 경로 |
+| template.containers.probe | Body | List | X | 컨테이너 Probe 설정 |
+| template.containers.probe.type | Body | String | O | 컨테이너 Probe 타입<ul><li>startup</li><li>liveness</li></ul> |
+| template.containers.probe.failureThreshold | Body | Integer | O | Probe 실패 기준 |
+| template.containers.probe.initialDelaySeconds | Body | Integer | O | Probe 시작 대기 시간 |
+| template.containers.probe.periodSeconds | Body | Integer | O | Probe 실행 간격 |
+| template.containers.probe.timeoutSeconds | Body | Integer | O | Probe 실행 제한 시간 |
+| template.containers.probe.exec | Body | String List | O | Probe 실행 명령어 |
+| template.containers.stopTimeout | Body | Integer | X | 초기화 컨테이너 실행 제한 시간(초) |
+| template.containers.sharedMemory | Body | Object | X | 컨테이너 공유 메모리 설정 정보 |
+| template.containers.sharedMemory.changed | Body | Boolean | O | 컨테이너 공유 메모리 설정 변경 여부<ul><li>true: 변경</li><li>false: 변경 안 함</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | 컨테이너에 설정하는 공유 메모리(MiB) |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "template": {
+    "applyImmediately": false,
+    "containers": [
+      {
+        "cpus": 1,
+        "image": "nginx:latest",
+        "imageRegistryType": "public",
+        "memoryLimit": {
+          "hard": 1024
+        },
+        "name": "nginx",
+        "ports": [
+          {
+            "containerPort": 80,
+            "protocol": "terminated-https"
+          }
+        ],
+        "type": "normal"
+      }
+    ],
+    "description": "new version",
+    "name": "nginx-template",
+    "version": "v3",
+    "sourceVersion": "first"
+  }
+}
+```
+
+</details>
+
+<a id="create-template-version-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| template | Body | Object | O | 템플릿 정보 |
+| template.id | Body | UUID | O | 템플릿 ID |
+| template.version | Body | String | O | 템플릿 버전 |
+| template.name | Body | String | O | 템플릿 이름 |
+| template.createdAt | Body | String | O | 생성 시간(UTC) |
+| template.description | Body | String | X | 템플릿 설명 |
+| template.versionDescription | Body | String | X | 템플릿 버전 설명 |
+| template.networks | Body | Array | O | 템플릿의 네트워크 정보 |
+| template.networks.vpcId | Body | String | O | 템플릿의 VPC ID |
+| template.networks.subnetId | Body | String | O | 템플릿의 Subnet ID |
+| template.dnsConfig | Body | String List | X | 컨테이너에 설정된 DNS Server 정보 |
+| template.hostAliases | Body | List | X | 컨테이너 `/etc/hosts`에 설정된 정보 |
+| template.hostAliases.ip | Body | String | O | 컨테이너에 설정된 hostnames의 IP |
+| template.hostAliases.hostnames | Body | String List | O | 컨테이너에 설정된 IP의 hostnames |
+| template.containers | Body | Array | O | 템플릿의 컨테이너 목록 |
+| template.containers.name | Body | String | O | 컨테이너 이름 |
+| template.containers.type | Body | String | O | 컨테이너 유형<ul><li>normal: 일반</li><li>init: 초기화</li></ul>|
+| template.containers.image | Body | String | O | 컨테이너 이미지 |
+| template.containers.cpus | Body | Float | O | 컨테이너에 할당하는 CPU 개수 |
+| template.containers.memoryLimit | Body | Object | O | 컨테이너에 할당하는 메모리 정보 |
+| template.containers.memoryLimit.hard | Body | Integer | O | 컨테이너에 할당하는 메모리(MiB) |
+| template.containers.gpuFlavor | Body | String | X | GPU Flavor 정보<ul><li>ncs1.g1m5</li><li>ncs1.g2m10</li></ul> |
+| template.containers.ports | Body | Array | X | 컨테이너에서 사용하는 포트 정보 |
+| template.containers.ports.containerPort | Body | Integer | O | 컨테이너 포트 |
+| template.containers.ports.protocol | Body | String | O | 컨테이너 프로토콜<ul><li>TCP</li><li>UDP</li><li>HTTP</li><li>HTTPS</li><li>TERMINATED\_HTTPS</li></ul> |
+| template.containers.command | Body | String List | X | 컨테이너가 시작될 때 실행될 명령어 |
+| template.containers.args | Body | String List | X | 컨테이너가 시작될 때 사용되는 인자 |
+| template.containers.workDirectory | Body | String | X | 컨테이너의 작업 디렉터리 |
+| template.containers.env | Body | Array | X | 컨테이너 환경 변수 |
+| template.containers.env.name | Body | String | O | 컨테이너 환경 변수 이름 |
+| template.containers.env.value | Body | String | O | 컨테이너 환경 변수 값 |
+| template.containers.postStart | Body | String List | X | 컨테이너 생성 직후 실행되는 명령어 |
+| template.containers.preStop | Body | String List | X | 컨테이너 종료 직전 실행되는 명령어 |
+| template.containers.configs | Body | List | X | 컨테이너에서 사용하는 ConfigMap 정보 |
+| template.containers.configs.id | Body | Integer | O | ConfigMap ID |
+| template.containers.configs.type | Body | String | O | ConfigMap 정보를 가져오는 service type<ul><li>obs: Object Storage</li></ul> |
+| template.containers.configs.value | Body | String | O | 오브젝트 URL |
+| template.containers.configs.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.secrets | Body | List | X | 컨테이너에서 사용하는 Secret 정보 |
+| template.containers.secrets.type | Body | String | O | Secret 정보를 가져오는 service type<ul><li>skm: Secure Key Manager</li></ul> |
+| template.containers.secrets.value | Body | String | O | 키 아이디 |
+| template.containers.secrets.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.volumes | Body | Array | X | 컨테이너에서 사용하는 NAS 스토리지 정보 |
+| template.containers.volumes.name | Body | String | O | 스토리지 이름 |
+| template.containers.volumes.path | Body | String | O | NAS 스토리지 연결 경로 |
+| template.containers.volumes.mountPath | body | String | X | 컨테이너의 연결 경로 |
+| template.containers.probe | Body | List | X | 컨테이너 Probe 설정 |
+| template.containers.probe.type | Body | String | O | 컨테이너 Probe 타입<ul><li>startup</li><li>liveness</li></ul> |
+| template.containers.probe.failureThreshold | Body | Integer | O | Probe 실패 기준 |
+| template.containers.probe.initialDelaySeconds | Body | Integer | O | Probe 시작 대기 시간 |
+| template.containers.probe.periodSeconds | Body | Integer | O | Probe 실행 간격 |
+| template.containers.probe.timeoutSeconds | Body | Integer | O | Probe 실행 제한 시간 |
+| template.containers.probe.exec | Body | String List | O | Probe 실행 명령어 |
+| template.containers.stopTimeout | Body | Integer | X | 초기화 컨테이너 실행 제한 시간(초) |
+| template.containers.sharedMemory | Body | Object | X | 컨테이너 공유 메모리 설정 정보 |
+| template.containers.sharedMemory.changed | Body | Boolean | O | 컨테이너 공유 메모리 설정 변경 여부<ul><li>true: 변경</li><li>false: 변경 안 함</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | 컨테이너에 설정하는 공유 메모리(MiB) |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "template": {
+    "createdAt": "2024-10-27T22:26:49.196Z",
+    "updatedAt": "2024-10-27T22:26:49.196Z",
+    "id": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+    "name": "nginx-template",
+    "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+    "description": "new version",
+    "containers": [
+      {
+        "id": "bf6bcdd7-6ef1-4f82-981a-c4fc4ebae16e",
+        "name": "nginx",
+        "image": "nginx:latest",
+        "imageRegistry": "other",
+        "imageRegistryType": "public",
+        "cpus": 1,
+        "memoryLimit": {
+          "hard": 1024
+        },
+        "ports": [
+          {
+            "containerPort": 80,
+            "protocol": "TERMINATED-HTTPS"
+          }
+        ],
+        "restartCount": 0,
+        "type": "normal"
+      }
+    ],
+    "networks": [
+      {
+        "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+        "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+      }
+    ],
+    "dnsConfig": [
+      "223.255.201.241",
+      "211.50.32.6"
+    ],
+    "version": "v3",
+  }
+}
+```
+
+</details>
+
+<a id="delete-template-version"></a>
+### 템플릿 버전 삭제 { #delete-template-version }
+
+```bash
+DELETE /ncs/v1.0/appkeys/{appkey}/templates/{templateId}/versions/{version}
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="delete-template-version-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| templateId | URL | String | O | 템플릿 ID |
+| version | URL | String | O | 템플릿 버전 |
+| token | Header | String | O | NHN Cloud Token |
+
+<a id="delete-template-version-response"></a>
+#### 응답
+
+이 API는 공통 정보만 응답합니다.
+
+<a id="workload"></a>
+## 워크로드 { #workload }
+
+<a id="list-workloads"></a>
+### 워크로드 목록 보기 { #list-workloads }
+
+워크로드 목록을 조회합니다.
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/workloads
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="list-workloads-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| token | Header | String | O | NHN Cloud Token |
+| q | Query | String | X | 워크로드 이름과 템플릿 ID, 템플릿 버전으로 필터링<ul>예:<li>q=templateId=${템플릿 ID}</li><li>q=${워크로드 이름)</li><li>q=templateId=${템플릿 ID}\&version=${템플릿 버전}</li></ul> |
+| page | Query | Integer | X | 조회할 페이지 번호 |
+| size | Query | Integer | X | 조회할 페이지 크기(default: 10) |
+
+<a id="list-workloads-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| X-Total-Count | Header | Integer | O | Appkey에 생성되어 있는 워크로드 전체 수 |
+| workloads | Body | Array | O | 워크로드 목록 |
+| workloads.id | Body | UUID | O | 워크로드 ID |
+| workloads.name | Body | String | O | 워크로드 이름 |
+| workloads.type | Body | String | O | 배포 컨트롤러<ul><li>deployment</li><li>statefulset</li></ul> |
+| workloads.templateId | Body | String | O | 워크로드의 템플릿 ID |
+| workloads.templateVersion | Body | String | O | 워크로드의 템플릿 버전 |
+| workloads.createdAt | Body | String | O | 생성 시간(UTC) |
+| workloads.desired | Body | Integer | O | 워크로드 작업 요청 수 |
+| workloads.available | Body | Integer | O | 워크로드 작업 실행 수 |
+| workloads.internalLBTimeout | Body | Integer | X | 내부 요청 응답 대기 시간 |
+| workloads.status | Body | String | O | 워크로드 상태<ul><li>Pending: 워크로드 생성/변경 진행 중</li><li>Running: 워크로드 생성/변경 완료</li><li>Failed: 워크로드 생성/변경 실패</li><li>Terminated: 워크로드 종료</li><li>Paused: 워크로드 중지</li><li>Active: 예약 워크로드 실행 중</li><li>Suspend: 예약 워크로드 중지</li></ul> |
+| workloads.url | Body | String | X | 워크로드 로드 밸런서 URL |
+| workloads.loadBalancing | Body | Object | O | 워크로드 로드 밸런서 정보 |
+| workloads.loadBalancing.enabled | Body | Boolean | O | 워크로드 로드 밸런서 사용 여부 |
+| workloads.loadBalancing.floatingIp | Body | Boolean | O | 워크로드 로드 밸런서 플로팅 IP 사용 여부 |
+| workloads.loadBalancing.ipAddress | Body | String | O | 워크로드 로드 밸런서 IP 정보(vip, floating ip) |
+| workloads.loadBalancing.vipAddress | Body | String | X | 워크로드 로드 밸런서 지정 IP |
+| workloads.loadBalancing.healthMonitor | Body | Object | X | 로드 밸런서의 상태 확인 정보 |
+| workloads.loadBalancing.healthMonitor.delay | Body | Integer | O | 상태 확인 주기 |
+| workloads.loadBalancing.healthMonitor.timeout | Body | Integer | O | 최대 응답 대기 시간 |
+| workloads.loadBalancing.healthMonitor.maxRetries | Body | Integer | O | 최대 재시도 횟수 |
+| workloads.loadBalancing.healthMonitor.httpMethod | Body | String | X | HTTP 메서드<ul><li>GET</li></ul> |
+| workloads.loadBalancing.healthMonitor.expectedCodes | Body | String | X | HTTP 상태 코드<ul><li>200</li><li>200,202</li><li>200-204</li></ul> |
+| workloads.loadBalancing.healthMonitor.urlPath | Body | String | X | HTTP URL |
+| workloads.loadBalancing.certificate | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 인증서 |
+| workloads.loadBalancing.privateKey | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 개인 키 |
+| workloads.loadBalancing.tlsVersion | Body | String | X | TERMINATED\_HTTPS 사용 시 TLS 버전<ul><li>SSLv3</li><li>TLSv1.0</li><li>TLSv1.0\_2016</li><li>TLSv1.1</li><li>TLSv1.2</li><li>TLSv1.3</li></ul> |
+| workloads.loadBalancing.containerHref | Body | String | X | 시크릿 컨테이너 ID<li>Load Balancer API를 이용하여 TERMINATED\_HTTPS에서 사용할 인증서,개인 키를 별도로 등록한 경우 사용</li> |
+| workloads.loadBalancing.ipAclGroupsBinding | Body | List | X | 로드 밸런서에 적용할 IP 접근 제어 그룹 목록 |
+| workloads.loadBalancing.ipAclGroupsBinding.ipAclGroupId | Body | String | O | IP 접근 제어 그룹 ID |
+| workloads.schedule | Body | Object | X | 예약 실행 설정 정보 |
+| workloads.schedule.timeZone | Body | String | O | 예약 실행 기준 시간<ul><li>예: Asia/Seoul, UTC</li><li>[List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)</li></ul> |
+| workloads.schedule.cron | Body | String | O | 예약 실행 Cron 표현식 |
+| workloads.schedule.jobsHistoryLimit | Body | Integer | O | 예약 실행 히스토리 보관 수 |
+| workloads.schedule.concurrencyPolicy | Body | String | O | 동시 실행 정책<ul><li>Forbid</li><li>Replace</li></ul> |
+| workloads.schedule.timeOffset | Body | String | O | 예약 실행 기준 시간 Offset |
+| workloads.internalLoadBalancing | Body | Object | X | 내부 로드 밸런서 정보 |
+| workloads.internalLoadBalancing.enalbed | Body | Boolean | O | 내부 로드 밸런서 사용 여부 |
+| workloads.internalLoadBalancing.type | Body | String | X | 내부 로드 밸런서 IP 할당 방법<ul><li>dynamic: 자동 할당</li><li>static: IP 지정</li></ul> |
+| workloads.internalLoadBalancing.ip | Body | String | X | 내부 로드 밸런서 지정 IP |
+| workloads.privateDns | Body | Object | X | Private DNS에 워크로드 작업 IP 등록 여부 결정 |
+| workloads.privateDns.ttl | Body | Integer | O | 레코드 세트의 TTL 값 |
+| workloads.privateDns.zoneId | Body | String | O | 워크로드에서 사용하는 Private DNS Zone ID |
+| workloads.privateDns.domain | Body | String | O | Private DNS에 등록된 도메인 정보 |
+| workloads.activeDeadline | Body | Object | X | 워크로드 예약 종료 정보 |
+| workloads.activeDeadline.timeZone | Body | String | O | 예약 종료 기준 시간<li>예: Asia/Seoul, UTC</li> |
+| workloads.activeDeadline.timeOffset | Body | String | O | 예약 종료 기준 시간 Offset |
+| workloads.activeDeadline.time | Body | String | O | 예약 종료 시간 |
+| workloads.autoScaler | Body | Object | X | AutoScaler 설정 정보 |
+| workloads.autoScaler.scaleOut | Body | Object | O | ScaleOut 정보 |
+| workloads.autoScaler.scaleOut.enabled | Body | Boolean | O | ScaleOut 사용 여부 |
+| workloads.autoScaler.scaleOut.maxReplicas | Body | Integer | X | 오토 스케일링 최대 작업 수 |
+| workloads.autoScaler.scaleOut.coolDownMinute | Body | Integer | X | 증설 후 대기 시간 |
+| workloads.autoScaler.scaleOut.condition | Body | List | X | 증설 조건 |
+| workloads.autoScaler.scaleOut.condition.resource | Body | String | X | 증설 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workloads.autoScaler.scaleOut.condition.threshold | Body | Integer | X | 증설 조건 리소스 사용량(1~100) |
+| workloads.autoScaler.scaleOut.condition.duration | Body | Integer | X | 증설 조건 리소스 사용량 유지 시간(분) |
+| workloads.autoScaler.scaleIn | Body | Object | X | ScaleIn 정보 |
+| workloads.autoScaler.scaleIn.enabled | Body | Boolean | O | ScaleIn 사용 여부 |
+| workloads.autoScaler.scaleIn.minReplicas | Body | Integer | X | 오토 스케일링 최소 작업 수 |
+| workloads.autoScaler.scaleIn.coolDownMinute | Body | Integer | X | 감축 후 대기 시간 |
+| workloads.autoScaler.scaleIn.condition | Body | List | X | 감축 조건 |
+| workloads.autoScaler.scaleIn.condition.resource | Body | String | X | 감축 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workloads.autoScaler.scaleIn.condition.threshold | Body | Integer | X | 감축 조건 리소스 사용량(1~100) |
+| workloads.autoScaler.scaleIn.condition.duration | Body | Integer | X | 감축 조건 리소스 사용량 유지 시간(분) |
+| workloads.securityGroups | Body | List | X | SecurityGroups 정보 |
+| workloads.securityGroups.id | Body | String | O | SecurityGroups ID |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "workloads": [
+    {
+      "createdAt": "2024-10-27T22:29:05.859Z",
+      "updatedAt": "2024-10-27T22:29:05.859Z",
+      "id": "08ef9e6e-5a57-49f3-8f52-7ce36b337a8a",
+      "name": "nginx",
+      "templateId": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+      "templateName": "nginx-template",
+      "templateVersion": "first",
+      "desired": 1,
+      "available": 1,
+      "status": "Running",
+      "networks": [
+        {
+          "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+          "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+        }
+      ],
+      "loadBalancing": {
+        "enabled": true,
+        "floatingIp": false,
+        "ipAddress": "192.168.0.102",
+        "healthMonitor": {
+          "delay": 30,
+          "timeout": 5,
+          "maxRetries": 2,
+          "httpMethod": "GET",
+          "expectedCodes": "200",
+          "urlPath": "/"
+        }
+      },
+      "type": "deployment",
+      "internalLoadBalancing": {
+        "enabled": false
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+<a id="view-workload"></a>
+### 워크로드 보기 { #view-workload }
+
+개별 워크로드를 조회합니다.
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="view-workload-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| workloadId | URL | String | O | 워크로드 ID |
+| token | Header | String | O | NHN Cloud Token |
+
+<a id="view-workload-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| workload | Body | Array | O | 워크로드 정보 |
+| workload.id | Body | UUID | O | 워크로드 ID |
+| workload.name | Body | String | O | 워크로드 이름 |
+| workload.type | Body | String | O | 배포 컨트롤러<ul><li>deployment</li><li>statefulset</li></ul> |
+| workload.templateId | Body | String | O | 워크로드의 템플릿 ID |
+| workload.templateVersion | Body | String | O | 워크로드의 템플릿 버전 |
+| workload.createdAt | Body | String | O | 생성 시간(UTC) |
+| workload.desired | Body | Integer | O | 워크로드 작업 요청 수 |
+| workload.available | Body | Integer | O | 워크로드 작업 실행 수 |
+| workload.internalLBTimeout | Body | Integer | X | 내부 요청 응답 대기 시간 |
+| workload.status | Body | String | O | 워크로드 상태<ul><li>Pending: 워크로드 생성/변경 진행 중</li><li>Running: 워크로드 생성/변경 완료</li><li>Failed: 워크로드 생성/변경 실패</li><li>Terminated: 워크로드 종료</li><li>Paused: 워크로드 중지</li><li>Active: 예약 워크로드 실행 중</li><li>Suspend: 예약 워크로드 중지</li></ul> |
+| workload.url | Body | String | X | 워크로드 로드 밸런서 URL |
+| workload.loadBalancing | Body | Object | O | 워크로드 로드 밸런서 정보 |
+| workload.loadBalancing.enabled | Body | Boolean | O | 워크로드 로드 밸런서 사용 여부 |
+| workload.loadBalancing.floatingIp | Body | Boolean | O | 워크로드 로드 밸런서 플로팅 IP 사용 여부 |
+| workload.loadBalancing.ipAddress | Body | String | O | 워크로드 로드 밸런서 IP 정보(vip, floating ip) |
+| workload.loadBalancing.vipAddress | Body | String | X | 워크로드 로드 밸런서 지정 IP |
+| workload.loadBalancing.healthMonitor | Body | Object | X | 로드 밸런서의 상태 확인 정보 |
+| workload.loadBalancing.healthMonitor.delay | Body | Integer | O | 상태 확인 주기 |
+| workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | 최대 응답 대기 시간 |
+| workload.loadBalancing.healthMonitor.maxRetries | Body | Integer | O | 최대 재시도 횟수 |
+| workload.loadBalancing.healthMonitor.httpMethod | Body | String | X | HTTP 메서드<ul><li>GET</li></ul> |
+| workload.loadBalancing.healthMonitor.expectedCodes | Body | String | X | HTTP 상태 코드<ul><li>200</li><li>200,202</li><li>200-204</li></ul> |
+| workload.loadBalancing.healthMonitor.urlPath | Body | String | X | HTTP URL |
+| workload.loadBalancing.certificate | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 인증서 |
+| workload.loadBalancing.privateKey | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 개인 키 |
+| workload.loadBalancing.tlsVersion | Body | String | X | TERMINATED\_HTTPS 사용 시 TLS 버전<ul><li>SSLv3</li><li>TLSv1.0</li><li>TLSv1.0\_2016</li><li>TLSv1.1</li><li>TLSv1.2</li><li>TLSv1.3</li></ul> |
+| workload.loadBalancing.containerHref | Body | String | X | 시크릿 컨테이너 ID<li>Load Balancer API를 이용하여 TERMINATED\_HTTPS에서 사용할 인증서,개인 키를 별도로 등록한 경우 사용</li> |
+| workload.loadBalancing.ipAclGroupsBinding | Body | List | X | 로드 밸런서에 적용할 IP 접근 제어 그룹 목록 |
+| workload.loadBalancing.ipAclGroupsBinding.ipAclGroupId | Body | String | O | IP 접근 제어 그룹 ID |
+| workload.schedule | Body | Object | X | 예약 실행 설정 정보 |
+| workload.schedule.timeZone | Body | String | O | 예약 실행 기준 시간<ul><li>예: Asia/Seoul, UTC</li><li>[List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)</li></ul> |
+| workload.schedule.cron | Body | String | O | 예약 실행 Cron 표현식 |
+| workload.schedule.jobsHistoryLimit | Body | Integer | O | 예약 실행 히스토리 보관 수 |
+| workload.schedule.concurrencyPolicy | Body | String | O | 동시 실행 정책<ul><li>Forbid</li><li>Replace</li></ul> |
+| workload.schedule.timeOffset | Body | String | O | 예약 실행 기준 시간 Offset |
+| workload.internalLoadBalancing | Body | Object | X | 내부 로드 밸런서 정보 |
+| workload.internalLoadBalancing.enalbed | Body | Boolean | O | 내부 로드 밸런서 사용 여부 |
+| workload.internalLoadBalancing.type | Body | String | X | 내부 로드 밸런서 IP 할당 방법<ul><li>dynamic: 자동 할당</li><li>static: IP 지정</li></ul> |
+| workload.internalLoadBalancing.ip | Body | String | X | 내부 로드 밸런서 지정 IP |
+| workload.privateDns | Body | Object | X | Private DNS에 워크로드 작업 IP 등록 여부 결정 |
+| workload.privateDns.ttl | Body | Integer | O | 레코드 세트의 TTL 값 |
+| workload.privateDns.zoneId | Body | String | O | 워크로드에서 사용하는 Private DNS Zone ID |
+| workload.privateDns.domain | Body | String | O | Private DNS에 등록된 도메인 정보 |
+| workload.activeDeadline | Body | Object | X | 워크로드 예약 종료 정보 |
+| workload.activeDeadline.timeZone | Body | String | O | 예약 종료 기준 시간<li>예: Asia/Seoul, UTC</li> |
+| workload.activeDeadline.timeOffset | Body | String | O | 예약 종료 기준 시간 Offset |
+| workload.activeDeadline.time | Body | String | O | 예약 종료 시간 |
+| workload.autoScaler | Body | Object | X | AutoScaler 설정 정보 |
+| workload.autoScaler.scaleOut | Body | Object | O | ScaleOut 정보 |
+| workload.autoScaler.scaleOut.enabled | Body | Boolean | O | ScaleOut 사용 여부 |
+| workload.autoScaler.scaleOut.maxReplicas | Body | Integer | X | 오토 스케일링 최대 작업 수 |
+| workload.autoScaler.scaleOut.coolDownMinute | Body | Integer | X | 증설 후 대기 시간 |
+| workload.autoScaler.scaleOut.condition | Body | List | X | 증설 조건 |
+| workload.autoScaler.scaleOut.condition.resource | Body | String | X | 증설 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workload.autoScaler.scaleOut.condition.threshold | Body | Integer | X | 증설 조건 리소스 사용량(1~100) |
+| workload.autoScaler.scaleOut.condition.duration | Body | Integer | X | 증설 조건 리소스 사용량 유지 시간(분) |
+| workload.autoScaler.scaleIn | Body | Object | X | ScaleIn 정보 |
+| workload.autoScaler.scaleIn.enabled | Body | Boolean | O | ScaleIn 사용 여부 |
+| workload.autoScaler.scaleIn.minReplicas | Body | Integer | X | 오토 스케일링 최소 작업 수 |
+| workload.autoScaler.scaleIn.coolDownMinute | Body | Integer | X | 감축 후 대기 시간 |
+| workload.autoScaler.scaleIn.condition | Body | List | X | 감축 조건 |
+| workload.autoScaler.scaleIn.condition.resource | Body | String | X | 감축 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workload.autoScaler.scaleIn.condition.threshold | Body | Integer | X | 감축 조건 리소스 사용량(1~100) |
+| workload.autoScaler.scaleIn.condition.duration | Body | Integer | X | 감축 조건 리소스 사용량 유지 시간(분) |
+| workload.securityGroups | Body | List | X | SecurityGroups 정보 |
+| workload.securityGroups.id | Body | String | O | SecurityGroups ID |
+| workload.tasks | Body | Array | O | 워크로드의 작업 목록 |
+| workload.tasks.id | Body | UUID | O | 작업 ID |
+| workload.tasks.containers | Body | Array | O | 작업의 컨테이너 목록 |
+| workload.tasks.containers.name | Body | String | O | 컨테이너 이름 |
+| workload.tasks.containers.type | Body | String | O | 컨테이너 유형<ul><li>normal: 일반</li><li>init: 초기화</li></ul>|
+| workload.tasks.containers.image | Body | String | O | 컨테이너 이미지 |
+| workload.tasks.containers.ip | Body | String | X | 컨테이너 IP |
+| workload.tasks.containers.cpus | Body | Float | O | 컨테이너에 할당된 CPU 수 |
+| workload.tasks.containers.memoryLimit | Body | Object | O | 컨테이너에 할당된 메모리 정보 |
+| workload.tasks.containers.memoryLimit.hard | Body | Integer | O | 컨테이너에 할당된 메모리(MiB) |
+| workload.tasks.containers.gpuFlavor | Body | String | X | 컨테이너에 할당된 GPU Flavor 정보 |
+| workload.tasks.containers.ports | Body | Array | X | 컨테이너의 포트 정보 |
+| workload.tasks.containers.ports.containerPort | Body | Integer | O | 컨테이너 포트 |
+| workload.tasks.containers.ports.protocol | Body | String | O | 컨테이너 프로토콜<ul><li>TCP</li><li>UDP</li><li>HTTP</li><li>HTTPS</li><li>TERMINATED\_HTTPS</li></ul> |
+| workload.tasks.containers.command | Body | String List | X | 컨테이너가 시작될 때 실행될 명령어 |
+| workload.tasks.containers.args | Body | String List | X | 컨테이너가 시작될 때 사용되는 인자 |
+| workload.tasks.containers.workDirectory | Body | String | X | 컨테이너의 작업 디렉터리 |
+| workload.tasks.containers.env | Body | Array | X | 컨테이너 환경 변수 |
+| workload.tasks.containers.env.name | Body | String | O | 컨테이너 환경 변수 이름 |
+| workload.tasks.containers.env.value | Body | String | O | 컨테이너 환경 변수 값 |
+| workload.tasks.containers.postStart | Body | String List | X | 컨테이너 생성 직후 실행되는 명령어 |
+| workload.tasks.containers.preStop | Body | String List | X | 컨테이너 종료 직전 실행되는 명령어 |
+| workload.tasks.containers.configs | Body | List | X | 컨테이너에서 사용하는 ConfigMap 정보 |
+| workload.tasks.containers.configs.id | Body | Integer | O | ConfigMap ID |
+| workload.tasks.containers.configs.type | Body | String | O | ConfigMap 정보를 가져오는 service type<ul><li>obs: Object Storage</li></ul> |
+| workload.tasks.containers.configs.value | Body | String | O | 오브젝트 URL |
+| workload.tasks.containers.configs.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| workload.tasks.containers.secrets | Body | List | X | 컨테이너에서 사용하는 Secret 정보 |
+| workload.tasks.containers.secrets.type | Body | String | O | Secret 정보를 가져오는 service type<ul><li>skm: Secure Key Manager</li></ul> |
+| workload.tasks.containers.secrets.value | Body | String | O | 키 아이디 |
+| workload.tasks.containers.secrets.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| workload.tasks.containers.volumes | Body | Array | X | 컨테이너에서 사용하는 스토리지 정보 |
+| workload.tasks.containers.volumes.name | Body | String | O | 스토리지 이름 |
+| workload.tasks.containers.volumes.path | Body | String | O | NAS 스토리지 연결 경로 |
+| workload.tasks.containers.volumes.mountPath | body | String | X | 컨테이너의 연결 경로(default: /mnt) |
+| workload.tasks.containers.probe | Body | List | X | 컨테이너 Probe 설정 |
+| workload.tasks.containers.probe.type | Body | String | O | 컨테이너 Probe 타입<ul><li>startup</li><li>liveness</li></ul> |
+| workload.tasks.containers.probe.failureThreshold | Body | Integer | O | Probe 실패 기준 |
+| workload.tasks.containers.probe.initialDelaySeconds | Body | Integer | O | Probe 시작 대기 시간 |
+| workload.tasks.containers.probe.periodSeconds | Body | String | O | Probe 실행 간격 |
+| workload.tasks.containers.probe.timeoutSeconds | Body | String | O | Probe 실행 제한 시간 |
+| workload.tasks.containers.probe.exec | Body | String List | O | Probe 실행 명령어 |
+| workload.tasks.containers.stopTimeout | Body | Integer | X | 초기화 컨테이너 실행 제한 시간(초) |
+| workload.tasks.containers.sharedMemory | Body | Object | X | 컨테이너 공유 메모리 설정 정보 |
+| workload.tasks.containers.sharedMemory.changed | Body | Boolean | O | 컨테이너 공유 메모리 설정 변경 여부<ul><li>true: 변경</li><li>false: 변경 안 함</li></ul> |
+| workload.tasks.containers.sharedMemory.sizeLimit | Body | Boolean | O | 컨테이너에 설정하는 공유 메모리(MiB) |
+| workload.tasks.containers.state | Body | String | O | 컨테이너 상태 |
+| workload.tasks.containers.startedAt | Body | String | O | 컨테이너 시작 시간 |
+| workload.tasks.containers.finishedAt | Body | String | X | 초기화 컨테이너 완료 시간 |
+| workload.tasks.containers.restartCount | Body | String | O | 컨테이너 재시작 횟수 |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "workload": {
+    "createdAt": "2024-10-27T22:29:05.859Z",
+    "updatedAt": "2024-10-27T22:29:05.859Z",
+    "id": "08ef9e6e-5a57-49f3-8f52-7ce36b337a8a",
+    "name": "nginx",
+    "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+    "templateId": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+    "templateName": "nginx-template",
+    "templateVersion": "first",
+    "desired": 1,
+    "available": 1,
+    "status": "Running",
+    "tasks": [
+      {
+        "id": "e75d7945-62f4-4cd2-9a93-14e14edccb2b",
+        "containers": [
+          {
+            "id": "51be9a5d-4737-4323-ae57-0ade225f4f4d",
+            "name": "nginx",
+            "ip": "192.168.0.76",
+            "image": "nginx:latest",
+            "imageRegistry": "other",
+            "imageRegistryType": "public",
+            "cpus": 0.25,
+            "memoryLimit": {
+              "hard": 256
+            },
+            "ports": [
+              {
+                "hostPort": 80,
+                "containerPort": 80,
+                "protocol": "TCP"
+              }
+            ],
+            "state": "Running",
+            "startedAt": "2024-10-27T22:29:23Z",
+            "restartCount": 0,
+            "probe": [
+              {
+                "type": "liveness",
+                "exec": [
+                  "bash",
+                  "-c",
+                  "curl -f http://localhost || exit 1"
+                ],
+                "initialDelaySeconds": 5,
+                "failureThreshold": 3,
+                "timeoutSeconds": 1,
+                "periodSeconds": 10
+              },
+              {
+                "type": "startup",
+                "exec": [
+                  "bash",
+                  "-c",
+                  "curl -f http://localhost || exit 1"
+                ],
+                "initialDelaySeconds": 5,
+                "failureThreshold": 3,
+                "timeoutSeconds": 1,
+                "periodSeconds": 10
+              }
+            ],
+            "type": "normal"
+          }
+        ]
+      }
+    ],
+    "networks": [
+      {
+        "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+        "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+      }
+    ],
+    "securityGroups": [
+      {
+        "id": "b1b4a7b3-d35f-4676-857b-4f8997f9f3b8"
+      }
+    ],
+    "loadBalancing": {
+      "enabled": true,
+      "floatingIp": false,
+      "ipAddress": "192.168.0.102",
+      "healthMonitor": {
+        "delay": 30,
+        "timeout": 5,
+        "maxRetries": 2,
+        "httpMethod": "GET",
+        "expectedCodes": "200",
+        "urlPath": "/"
+      }
+    },
+    "type": "deployment",
+    "internalLoadBalancing": {
+      "enabled": false
+    }
+  }
+}
+```
+
+</details>
+
+<a id="view-workload-log"></a>
+### 워크로드 로그 보기 { #view-workload-log }
+
+워크로드의 컨테이너 로그를 조회합니다.
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/tasks/{taskId}/logs?container={ContainerName}&from={YYYY-MM-DDThh:mm:ssZ}&to={YYYY-MM-DDThh:mm:ssZ}
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="view-workload-log-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| workloadId | URL | String | O | 워크로드 ID |
+| taskId | URL | String | O | 작업 ID |
+| token | Header | String | O | NHN Cloud Token |
+| containerName | Query | String | O | 컨테이너 이름 |
+| from | Query | String | X | 로그 시작 시간(default: 현재로부터 5분 전) |
+| to | Query | String | X | 로그 종료 시간(default: 현재 시간) |
+| page | Query | String | X | 조회할 페이지 |
+| size | Query | String | X | 조회할 페이지 크기(default: 100) |
+
+<a id="view-workload-log-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| logs | Body | Array | O | 컨테이너 로그 목록 |
+| log | Body | String | O | 로그 내용 |
+| time | Body | String | O | 로그 발생 시간(UTC) |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "logs": [
+    {
+      "log": "/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration",
+      "time": "2024-10-27T22:29:23.546854524Z"
+    },
+    {
+      "log": "/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/",
+      "time": "2024-10-27T22:29:23.548332152Z"
+    }
+  ]
+}
+```
+
+</details>
+
+<a id="view-workload-event"></a>
+### 워크로드 이벤트 보기 { #view-workload-event }
+
+워크로드의 이벤트를 조회합니다.
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/tasks/{taskId}/events
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="view-workload-event-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| workloadId | URL | String | O | 워크로드 ID |
+| taskId | URL | String | O | 작업 ID |
+| token | Header | String | O | NHN Cloud Token |
+| type | Query | Integer | X | 이벤트 타입<ul><li>Normal</li><li>Warning</li></ul> |
+| q | Query | String | X | 이벤트 내용 필터링 |
+| page | Query | String | X | 조회할 페이지 |
+| size | Query | String | X | 조회할 페이지 크기(default: 10) |
+| from | Query | String | X | 이벤트 마지막 발생 일시 시작 시간(default: 현재로부터 1시간 전) |
+| to | Query | String | X | 이벤트 마지막 발생 일시 종료 시간(default: 현재 시간) |
+
+<a id="view-workload-event-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| events | Body | Array | O | 이벤트 목록 |
+| type | Body | String | O | 이벤트 타입<ul><li>Normal</li><li>Warning</li></ul> |
+| reason | Body | String | O | 이벤트 발생 원인 |
+| message | Body | String | O | 이벤트 내용 |
+| createTimestamp | Body | String | O | 이벤트 최초 발생 일시(UTC) |
+| lastTimestamp | Body | String | O | 이벤트 마지막 발생 일시(UTC) |
+| count | Body | Integer | O | 이벤트 발생 횟수 |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "events": [
+    {
+      "type": "Normal",
+      "reason": "Scheduled",
+      "message": "Successfully assigned abd7f92e-3353-4b45-944c-510a97ef89c9/nginx-5b64d9d5d4-rkcr2 to ncsac1-kxzed5wj-0424fc5a",
+      "createTimestamp": "2024-10-27T22:29:06Z",
+      "lastTimestamp": "2024-10-27T22:29:06Z",
+      "count": 1
+    }
+  ]
+}
+```
+
+</details>
+
+<a id="view-a-list-of-workload-run-history"></a>
+### 워크로드 실행 히스토리 목록 보기 { #view-a-list-of-workload-run-history }
+
+워크로드 실행 히스토리 목록을 조회합니다.
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/history
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="view-a-list-of-workload-run-history-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| workloadId | URL | String | O | 워크로드 ID |
+| token | Header | String | O | NHN Cloud Token |
+| page | Query | Integer | X | 조회할 페이지 번호 |
+| size | Query | Integer | X | 조회할 페이지 크기(default: 10) |
+| sort | Query | String | X | 정렬 기준이 될 필드명<br>역순 정렬일 경우 필드명 앞에 `-`를 붙임<br>예: `sort=-id` |
+
+<a id="view-a-list-of-workload-run-history-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| history | Body | Array | O | 히스토리 목록 |
+| history.id | Body | Integer | O | 히스토리 ID |
+| history.createdAt | Body | String | O | 배포 시간 |
+| history.deletedAt | Body | String | O | 종료 시간 |
+| history.templateId | Body | UUID | O | 워크로드가 사용한 템플릿 ID |
+| history.templateVersion | Body | UUID | O | 워크로드가 사용한 템플릿 버전 |
+| history.name | Body | String | O | 템플릿 이름 |
+| history.status | Body | String | O | 상태<ul><li>Succeeded</li><li>Terminated</li><liPending</li></ul> |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "id": "08ef9e6e-5a57-49f3-8f52-7ce36b337a8a",
+  "history": [
+    {
+      "id": 1,
+      "createdAt": "2024-10-27T22:29:05.996Z",
+      "deletedAt": null,
+      "templateId": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+      "templateVersion": "first",
+      "name": "nginx-template",
+      "status": "Succeeded"
+    }
+  ]
+}
+```
+
+</details>
+
+<a id="view-workload-run-history"></a>
+### 워크로드 실행 히스토리 보기 { #view-workload-run-history }
+
+개별 워크로드 실행 히스토리를 조회합니다.
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/history/{historyId}
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="view-workload-run-history-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| workloadId | URL | String | O | 워크로드 ID |
+| historyId | URL | Integer | O | 히스토리 ID |
+| token | Header | String | O | NHN Cloud Token |
+
+<a id="view-workload-run-history-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| history | Body | Object | O | 히스토리 정보 |
+| history.id | Body | Integer | O | 히스토리 ID |
+| history.createdAt | Body | String | O | 실행 시간 |
+| history.deletedAt | Body | String | O | 종료 시간 |
+| history.templateId | Body | UUID | O | 워크로드가 사용한 템플릿 ID |
+| history.name | Body | String | O | 워크로드가 사용한 템플릿 이름 |
+| history.status | Body | String | O | 상태<ul><li>Succeeded</li><li>Terminated</li><li>Pending</li></ul> |
+| template | Body | Object | O | 템플릿 정보 |
+| template.id | Body | UUID | O | 템플릿 ID |
+| template.version | Body | String | O | 템플릿 버전 |
+| template.name | Body | String | O | 템플릿 이름 |
+| template.createdAt | Body | String | O | 생성 시간(UTC) |
+| template.description | Body | String | X | 템플릿 설명 |
+| template.versionDescription | Body | String | X | 템플릿 버전 설명 |
+| template.networks | Body | Array | O | 템플릿의 네트워크 정보 |
+| template.networks.vpcId | Body | String | O | 템플릿의 VPC ID |
+| template.networks.subnetId | Body | String | O | 템플릿의 Subnet ID |
+| template.dnsConfig | Body | String List | X | 컨테이너에 설정된 DNS Server 정보 |
+| template.hostAliases | Body | List | X | 컨테이너 `/etc/hosts`에 설정된 정보 |
+| template.hostAliases.ip | Body | String | O | 컨테이너에 설정된 hostnames의 IP |
+| template.hostAliases.hostnames | Body | String List | O | 컨테이너에 설정된 IP의 hostnames |
+| template.containers | Body | Array | O | 템플릿의 컨테이너 목록 |
+| template.containers.name | Body | String | O | 컨테이너 이름 |
+| template.containers.type | Body | String | O | 컨테이너 유형<ul><li>normal: 일반</li><li>init: 초기화</li></ul>|
+| template.containers.image | Body | String | O | 컨테이너 이미지 |
+| template.containers.cpus | Body | Float | O | 컨테이너에 할당하는 CPU 개수 |
+| template.containers.memoryLimit | Body | Object | O | 컨테이너에 할당하는 메모리 정보 |
+| template.containers.memoryLimit.hard | Body | Integer | O | 컨테이너에 할당하는 메모리(MiB) |
+| template.containers.gpuFlavor | Body | String | X | GPU Flavor 정보<ul><li>ncs1.g1m5</li><li>ncs1.g2m10</li></ul> |
+| template.containers.ports | Body | Array | X | 컨테이너에서 사용하는 포트 정보 |
+| template.containers.ports.containerPort | Body | Integer | O | 컨테이너 포트 |
+| template.containers.ports.protocol | Body | String | O | 컨테이너 프로토콜<ul><li>TCP</li><li>UDP</li><li>HTTP</li><li>HTTPS</li><li>TERMINATED\_HTTPS</li></ul> |
+| template.containers.command | Body | String List | X | 컨테이너가 시작될 때 실행될 명령어 |
+| template.containers.args | Body | String List | X | 컨테이너가 시작될 때 사용되는 인자 |
+| template.containers.workDirectory | Body | String | X | 컨테이너의 작업 디렉터리 |
+| template.containers.env | Body | Array | X | 컨테이너 환경 변수 |
+| template.containers.env.name | Body | String | O | 컨테이너 환경 변수 이름 |
+| template.containers.env.value | Body | String | O | 컨테이너 환경 변수 값 |
+| template.containers.postStart | Body | String List | X | 컨테이너 생성 직후 실행되는 명령어 |
+| template.containers.preStop | Body | String List | X | 컨테이너 종료 직전 실행되는 명령어 |
+| template.containers.configs | Body | List | X | 컨테이너에서 사용하는 ConfigMap 정보 |
+| template.containers.configs.id | Body | Integer | O | ConfigMap ID |
+| template.containers.configs.type | Body | String | O | ConfigMap 정보를 가져오는 service type<ul><li>obs: Object Storage</li></ul> |
+| template.containers.configs.value | Body | String | O | 오브젝트 URL |
+| template.containers.configs.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.secrets | Body | List | X | 컨테이너에서 사용하는 Secret 정보 |
+| template.containers.secrets.type | Body | String | O | Secret 정보를 가져오는 service type<ul><li>skm: Secure Key Manager</li></ul> |
+| template.containers.secrets.value | Body | String | O | 키 아이디 |
+| template.containers.secrets.mountPath | Body | String | O | 컨테이너 마운트 경로 |
+| template.containers.volumes | Body | Array | X | 컨테이너에서 사용하는 NAS 스토리지 정보 |
+| template.containers.volumes.name | Body | String | O | 스토리지 이름 |
+| template.containers.volumes.path | Body | String | O | NAS 스토리지 연결 경로 |
+| template.containers.volumes.mountPath | body | String | X | 컨테이너의 연결 경로 |
+| template.containers.probe | Body | List | X | 컨테이너 Probe 설정 |
+| template.containers.probe.type | Body | String | O | 컨테이너 Probe 타입<ul><li>startup</li><li>liveness</li></ul> |
+| template.containers.probe.failureThreshold | Body | Integer | O | Probe 실패 기준 |
+| template.containers.probe.initialDelaySeconds | Body | Integer | O | Probe 시작 대기 시간 |
+| template.containers.probe.periodSeconds | Body | Integer | O | Probe 실행 간격 |
+| template.containers.probe.timeoutSeconds | Body | Integer | O | Probe 실행 제한 시간 |
+| template.containers.probe.exec | Body | String List | O | Probe 실행 명령어 |
+| template.containers.stopTimeout | Body | Integer | X | 초기화 컨테이너 실행 제한 시간(초) |
+| template.containers.sharedMemory | Body | Object | X | 컨테이너 공유 메모리 설정 정보 |
+| template.containers.sharedMemory.changed | Body | Boolean | O | 컨테이너 공유 메모리 설정 변경 여부<ul><li>true: 변경</li><li>false: 변경 안 함</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | 컨테이너에 설정하는 공유 메모리(MiB) |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "history": {
+    "id": 1,
+    "createdAt": "2024-10-27T22:29:05.996Z",
+    "deletedAt": null,
+    "templateId": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+    "templateVersion": "first",
+    "name": "nginx-template",
+    "status": "Succeeded"
+  },
+  "template": {
+    "createdAt": "2024-10-24T05:24:14.053Z",
+    "updatedAt": "2024-10-24T05:24:14.053Z",
+    "id": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+    "name": "nginx-template",
+    "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+    "containers": [
+      {
+        "id": "51be9a5d-4737-4323-ae57-0ade225f4f4d",
+        "name": "nginx",
+        "image": "nginx:latest",
+        "imageRegistry": "other",
+        "imageRegistryType": "public",
+        "cpus": 0.25,
+        "memoryLimit": {
+          "hard": 256
+        },
+        "ports": [
+          {
+            "hostPort": 80,
+            "containerPort": 80,
+            "protocol": "TCP"
+          }
+        ],
+        "restartCount": 0,
+        "probe": [
+          {
+            "type": "liveness",
+            "exec": [
+              "bash",
+              "-c",
+              "curl -f http://localhost || exit 1"
+            ],
+            "initialDelaySeconds": 5,
+            "failureThreshold": 3,
+            "timeoutSeconds": 1,
+            "periodSeconds": 10
+          },
+          {
+            "type": "startup",
+            "exec": [
+              "bash",
+              "-c",
+              "curl -f http://localhost || exit 1"
+            ],
+            "initialDelaySeconds": 5,
+            "failureThreshold": 3,
+            "timeoutSeconds": 1,
+            "periodSeconds": 10
+          }
+        ],
+        "type": "normal"
+      }
+    ],
+    "networks": [
+      {
+        "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+        "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+      }
+    ],
+    "dnsConfig": [
+      "223.255.201.241",
+      "211.50.32.6"
+    ],
+    "version": "first"
+  }
+}
+```
+
+</details>
+
+<a id="view-workload-scheduled-run-history"></a>
+### 워크로드 예약 실행 히스토리 보기 { #view-workload-scheduled-run-history }
+
+예약 실행 히스토리를 조회합니다.
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/schedulehistory
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="view-workload-scheduled-run-history-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| workloadId | URL | String | O | 워크로드 ID |
+| token | Header | String | O | NHN Cloud Token |
+| page | Query | Integer | X | 조회할 페이지 번호 |
+| size | Query | Integer | X | 조회할 페이지 크기(default: 10) |
+
+<a id="view-workload-scheduled-run-history-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| schedulehistory | Body | List | O | 예약 실행 히스토리 목록 |
+| schedulehistory.id | Body | String | O | 작업 ID |
+| schedulehistory.createdAt | Body | String | O | 시작 시간 |
+| schedulehistory.finishedAt | Body | Object | O | 종료 시간 |
+| schedulehistory.status | Body | String | O | 예약 작업 상태<ul><li>Error</li><li>Completed</li><li>Waiting</li><li>Running</li></ul> |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "schedulehistory": [
+    {
+      "id": "6a8241f7-13ba-468b-ae03-dc1e7a35ccb8",
+      "createdAt": "2024-10-27T22:48:00Z",
+      "finishedAt": "2024-10-27T22:48:45Z",
+      "status": "Completed"
+    }
+  ]
+}
+
+```
+
+</details>
+
+<a id="create-workload"></a>
+### 워크로드 생성하기 { #create-workload }
+
+워크로드를 생성합니다.
+
+```bash
+POST /ncs/v1.0/appkeys/{appKey}/workloads
+Content-Type: application/json
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="create-workload-request"></a>
+#### 요청
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| token | Header | String | O | NHN Cloud Token |
+| workload | Body | Object | O | 워크로드 정보 |
+| workload.name | Body | String | O | 워크로드 이름 |
+| workload.type | Body | String | X | 배포 컨트롤러(default:deployment)<ul><li>deployment</li><li>statefulset</li></ul> |
+| workload.templateId | Body | String | O | 워크로드의 템플릿 ID |
+| workload.templateVersion | Body | String | X | 워크로드의 템플릿 버전(default: 최신 버전) |
+| workload.desired | Body | Integer | O | 워크로드 작업 요청 수 |
+| workload.internalLBTimeout | Body | Integer | X | 내부 요청 응답 대기 시간 |
+| workload.loadBalancing | Body | Object | O | 워크로드 로드 밸런서 정보 |
+| workload.loadBalancing.enabled | Body | Boolean | O | 워크로드 로드 밸런서 사용 여부 |
+| workload.loadBalancing.floatingIp | Body | Boolean | O | 워크로드 로드 밸런서 플로팅 IP 사용 여부 |
+| workload.loadBalancing.vipAddress | Body | String | X | 워크로드 로드 밸런서 지정 IP |
+| workload.loadBalancing.healthMonitor | Body | Object | X | 로드 밸런서의 상태 확인 정보 |
+| workload.loadBalancing.healthMonitor.delay | Body | Integer | O | 상태 확인 주기 |
+| workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | 최대 응답 대기 시간 |
+| workload.loadBalancing.healthMonitor.maxRetries | Body | Integer | O | 최대 재시도 횟수 |
+| workload.loadBalancing.healthMonitor.httpMethod | Body | String | X | HTTP 메서드<ul><li>GET</li></ul> |
+| workload.loadBalancing.healthMonitor.expectedCodes | Body | String | X | HTTP 상태 코드<ul><li>200</li><li>200,202</li><li>200-204</li></ul> |
+| workload.loadBalancing.healthMonitor.urlPath | Body | String | X | HTTP URL |
+| workload.loadBalancing.certificate | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 인증서 |
+| workload.loadBalancing.privateKey | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 개인 키 |
+| workload.loadBalancing.tlsVersion | Body | String | X | TERMINATED\_HTTPS 사용 시 TLS 버전<ul><li>SSLv3</li><li>TLSv1.0</li><li>TLSv1.0\_2016</li><li>TLSv1.1</li><li>TLSv1.2</li><li>TLSv1.3</li></ul> |
+| workload.loadBalancing.containerHref | Body | String | X | 시크릿 컨테이너 ID<li>Load Balancer API를 이용하여 TERMINATED\_HTTPS에서 사용할 인증서,개인 키를 별도로 등록한 경우 사용</li> |
+| workload.loadBalancing.ipAclGroupsBinding | Body | List | X | 로드 밸런서에 적용할 IP 접근 제어 그룹 목록 |
+| workload.loadBalancing.ipAclGroupsBinding.ipAclGroupId | Body | String | O | IP 접근 제어 그룹 ID |
+| workload.schedule | Body | Object | X | 예약 실행 설정 정보 |
+| workload.schedule.timeZone | Body | String | O | 예약 실행 기준 시간<ul><li>예: Asia/Seoul, UTC</li><li>[List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)</li></ul> |
+| workload.schedule.cron | Body | String | O | 예약 실행 Cron 표현식 |
+| workload.schedule.jobsHistoryLimit | Body | Integer | O | 예약 실행 히스토리 보관 수 |
+| workload.schedule.concurrencyPolicy | Body | String | O | 동시 실행 정책<ul><li>Forbid</li><li>Replace</li></ul> |
+| workload.internalLoadBalancing | Body | Object | X | 내부 로드 밸런서 정보 |
+| workload.internalLoadBalancing.enalbed | Body | Boolean | O | 내부 로드 밸런서 사용 여부 |
+| workload.internalLoadBalancing.type | Body | String | X | 내부 로드 밸런서 IP 할당 방법<ul><li>dynamic: 자동 할당</li><li>static: IP 지정</li></ul> |
+| workload.internalLoadBalancing.ip | Body | String | X | 내부 로드 밸런서 지정 IP |
+| workload.privateDns | Body | Object | X | Private DNS에 워크로드 작업 IP 등록 여부 결정 |
+| workload.privateDns.ttl | Body | Integer | O | 레코드 세트의 TTL 값 |
+| workload.privateDns.zoneId | Body | String | O | 워크로드에서 사용하는 Private DNS Zone ID |
+| workload.privateDns.domain | Body | String | O | Private DNS에 등록된 도메인 정보 |
+| workload.activeDeadline | Body | Object | X | 워크로드 예약 종료 정보 |
+| workload.activeDeadline.timeZone | Body | String | O | 예약 종료 기준 시간<li>예: Asia/Seoul, UTC</li> |
+| workload.activeDeadline.timeOffset | Body | String | O | 예약 종료 기준 시간 Offset |
+| workload.activeDeadline.time | Body | String | O | 예약 종료 시간 |
+| workload.autoScaler | Body | Object | X | AutoScaler 설정 정보 |
+| workload.autoScaler.scaleOut | Body | Object | O | ScaleOut 정보 |
+| workload.autoScaler.scaleOut.enabled | Body | Boolean | O | ScaleOut 사용 여부 |
+| workload.autoScaler.scaleOut.maxReplicas | Body | Integer | X | 오토 스케일링 최대 작업 수 |
+| workload.autoScaler.scaleOut.coolDownMinute | Body | Integer | X | 증설 후 대기 시간 |
+| workload.autoScaler.scaleOut.condition | Body | List | X | 증설 조건 |
+| workload.autoScaler.scaleOut.condition.resource | Body | String | X | 증설 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workload.autoScaler.scaleOut.condition.threshold | Body | Integer | X | 증설 조건 리소스 사용량(1~100) |
+| workload.autoScaler.scaleOut.condition.duration | Body | Integer | X | 증설 조건 리소스 사용량 유지 시간(분) |
+| workload.autoScaler.scaleIn | Body | Object | X | ScaleIn 정보 |
+| workload.autoScaler.scaleIn.enabled | Body | Boolean | O | ScaleIn 사용 여부 |
+| workload.autoScaler.scaleIn.minReplicas | Body | Integer | X | 오토 스케일링 최소 작업 수 |
+| workload.autoScaler.scaleIn.coolDownMinute | Body | Integer | X | 감축 후 대기 시간 |
+| workload.autoScaler.scaleIn.condition | Body | List | X | 감축 조건 |
+| workload.autoScaler.scaleIn.condition.resource | Body | String | X | 감축 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workload.autoScaler.scaleIn.condition.threshold | Body | Integer | X | 감축 조건 리소스 사용량(1~100) |
+| workload.autoScaler.scaleIn.condition.duration | Body | Integer | X | 감축 조건 리소스 사용량 유지 시간(분) |
+| workload.securityGroups | Body | List | X | SecurityGroups 정보 |
+| workload.securityGroups.id | Body | String | O | SecurityGroups ID |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "workload": {
+    "description": "api workload",
+    "desired": 1,
+    "loadBalancing": {
+      "enabled": false,
+      "floatingIp": false
+    },
+    "name": "ncs-workload",
+    "templateId": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+    "templateVersion": "first",
+    "type": "deployment"
+  }
+}
+```
+
+</details>
+
+<a id="create-workload-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| workload | Body | Object | O | 워크로드 정보 |
+| workload.id | Body | UUID | O | 워크로드 ID |
+| workload.name | Body | String | O | 워크로드 이름 |
+| workload.type | Body | String | O | 배포 컨트롤러<ul><li>deployment</li><li>statefulset</li></ul> |
+| workload.templateId | Body | String | O | 워크로드의 템플릿 ID |
+| workload.templateVersion | Body | String | O | 워크로드의 템플릿 버전 |
+| workload.createdAt | Body | String | O | 생성 시간(UTC) |
+| workload.desired | Body | Integer | O | 워크로드 작업 요청 수 |
+| workload.internalLBTimeout | Body | Integer | X | 내부 요청 응답 대기 시간 |
+| workload.loadBalancing | Body | Object | O | 워크로드 로드 밸런서 정보 |
+| workload.loadBalancing.enabled | Body | Boolean | O | 워크로드 로드 밸런서 사용 여부 |
+| workload.loadBalancing.floatingIp | Body | Boolean | O | 워크로드 로드 밸런서 플로팅 IP 사용 여부 |
+| workload.loadBalancing.vipAddress | Body | String | X | 워크로드 로드 밸런서 지정 IP |
+| workload.loadBalancing.healthMonitor | Body | Object | X | 로드 밸런서의 상태 확인 정보 |
+| workload.loadBalancing.healthMonitor.delay | Body | Integer | O | 상태 확인 주기 |
+| workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | 최대 응답 대기 시간 |
+| workload.loadBalancing.healthMonitor.maxRetries | Body | Integer | O | 최대 재시도 횟수 |
+| workload.loadBalancing.healthMonitor.httpMethod | Body | String | X | HTTP 메서드<ul><li>GET</li></ul> |
+| workload.loadBalancing.healthMonitor.expectedCodes | Body | String | X | HTTP 상태 코드<ul><li>200</li><li>200,202</li><li>200-204</li></ul> |
+| workload.loadBalancing.healthMonitor.urlPath | Body | String | X | HTTP URL |
+| workload.loadBalancing.certificate | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 인증서 |
+| workload.loadBalancing.privateKey | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 개인 키 |
+| workload.loadBalancing.tlsVersion | Body | String | X | TERMINATED\_HTTPS 사용 시 TLS 버전<ul><li>SSLv3</li><li>TLSv1.0</li><li>TLSv1.0\_2016</li><li>TLSv1.1</li><li>TLSv1.2</li><li>TLSv1.3</li></ul> |
+| workload.loadBalancing.containerHref | Body | String | X | 시크릿 컨테이너 ID<li>Load Balancer API를 이용하여 TERMINATED\_HTTPS에서 사용할 인증서,개인 키를 별도로 등록한 경우 사용</li> |
+| workload.loadBalancing.ipAclGroupsBinding | Body | List | X | 로드 밸런서에 적용할 IP 접근 제어 그룹 목록 |
+| workload.loadBalancing.ipAclGroupsBinding.ipAclGroupId | Body | String | O | IP 접근 제어 그룹 ID |
+| workload.schedule | Body | Object | X | 예약 실행 설정 정보 |
+| workload.schedule.timeZone | Body | String | O | 예약 실행 기준 시간<ul><li>예: Asia/Seoul, UTC</li><li>[List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)</li></ul> |
+| workload.schedule.cron | Body | String | O | 예약 실행 Cron 표현식 |
+| workload.schedule.jobsHistoryLimit | Body | Integer | O | 예약 실행 히스토리 보관 수 |
+| workload.schedule.concurrencyPolicy | Body | String | O | 동시 실행 정책<ul><li>Forbid</li><li>Replace</li></ul> |
+| workload.schedule.timeOffset | Body | String | O | 예약 실행 기준 시간 Offset |
+| workload.internalLoadBalancing | Body | Object | X | 내부 로드 밸런서 정보 |
+| workload.internalLoadBalancing.enalbed | Body | Boolean | O | 내부 로드 밸런서 사용 여부 |
+| workload.internalLoadBalancing.type | Body | String | X | 내부 로드 밸런서 IP 할당 방법<ul><li>dynamic: 자동 할당</li><li>static: IP 지정</li></ul> |
+| workload.internalLoadBalancing.ip | Body | String | X | 내부 로드 밸런서 지정 IP |
+| workload.privateDns | Body | Object | X | Private DNS에 워크로드 작업 IP 등록 여부 결정 |
+| workload.privateDns.ttl | Body | Integer | O | 레코드 세트의 TTL 값 |
+| workload.privateDns.zoneId | Body | String | O | 워크로드에서 사용하는 Private DNS Zone ID |
+| workload.privateDns.domain | Body | String | O | Private DNS에 등록된 도메인 정보 |
+| workload.activeDeadline | Body | Object | X | 워크로드 예약 종료 정보 |
+| workload.activeDeadline.timeZone | Body | String | O | 예약 종료 기준 시간<li>예: Asia/Seoul, UTC</li> |
+| workload.activeDeadline.timeOffset | Body | String | O | 예약 종료 기준 시간 Offset |
+| workload.activeDeadline.time | Body | String | O | 예약 종료 시간 |
+| workload.autoScaler | Body | Object | X | AutoScaler 설정 정보 |
+| workload.autoScaler.scaleOut | Body | Object | O | ScaleOut 정보 |
+| workload.autoScaler.scaleOut.enabled | Body | Boolean | O | ScaleOut 사용 여부 |
+| workload.autoScaler.scaleOut.maxReplicas | Body | Integer | X | 오토 스케일링 최대 작업 수 |
+| workload.autoScaler.scaleOut.coolDownMinute | Body | Integer | X | 증설 후 대기 시간 |
+| workload.autoScaler.scaleOut.condition | Body | List | X | 증설 조건 |
+| workload.autoScaler.scaleOut.condition.resource | Body | String | X | 증설 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workload.autoScaler.scaleOut.condition.threshold | Body | Integer | X | 증설 조건 리소스 사용량(1~100) |
+| workload.autoScaler.scaleOut.condition.duration | Body | Integer | X | 증설 조건 리소스 사용량 유지 시간(분) |
+| workload.autoScaler.scaleIn | Body | Object | X | ScaleIn 정보 |
+| workload.autoScaler.scaleIn.enabled | Body | Boolean | O | ScaleIn 사용 여부 |
+| workload.autoScaler.scaleIn.minReplicas | Body | Integer | X | 오토 스케일링 최소 작업 수 |
+| workload.autoScaler.scaleIn.coolDownMinute | Body | Integer | X | 감축 후 대기 시간 |
+| workload.autoScaler.scaleIn.condition | Body | List | X | 감축 조건 |
+| workload.autoScaler.scaleIn.condition.resource | Body | String | X | 감축 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workload.autoScaler.scaleIn.condition.threshold | Body | Integer | X | 감축 조건 리소스 사용량(1~100) |
+| workload.autoScaler.scaleIn.condition.duration | Body | Integer | X | 감축 조건 리소스 사용량 유지 시간(분) |
+| workload.securityGroups | Body | List | X | SecurityGroups 정보 |
+| workload.securityGroups.id | Body | String | O | SecurityGroups ID |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "workload": {
+    "createdAt": "2024-10-27T22:51:32.305Z",
+    "updatedAt": "2024-10-27T22:51:32.305Z",
+    "id": "6c6201b5-5b68-4035-adf7-40cd5f9402e5",
+    "name": "ncs-workload",
+    "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+    "description": "api workload",
+    "templateId": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+    "templateName": "nginx-template",
+    "templateVersion": "first",
+    "desired": 1,
+    "available": 0,
+    "status": "",
+    "loadBalancing": {
+      "enabled": false,
+      "floatingIp": false
+    },
+    "type": "deployment"
+  }
+}
+```
+
+</details>
+
+<a id="change-workload"></a>
+### 워크로드 변경하기 { #change-workload }
+
+워크로드를 변경합니다.
+
+```bash
+PUT /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
+Content-Type: application/json
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="change-workload-request"></a>
+#### 요청
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| workloadId | URL | String | O | 워크로드 ID |
+| token | Header | String | O | NHN Cloud Token |
+| workload | Body | Object | O | 워크로드 정보 |
+| workload.name | Body | String | O | 워크로드 이름 |
+| workload.templateId | Body | String | O | 워크로드의 템플릿 ID |
+| workload.templateVersion | Body | String | O | 워크로드의 템플릿 버전 |
+| workload.desired | Body | Integer | O | 워크로드 작업 요청 수 |
+| workload.internalLBTimeout | Body | Integer | X | 내부 요청 응답 대기 시간 |
+| workload.loadBalancing | Body | Object | O | 워크로드 로드 밸런서 정보 |
+| workload.loadBalancing.enabled | Body | Boolean | O | 워크로드 로드 밸런서 사용 여부 |
+| workload.loadBalancing.floatingIp | Body | Boolean | O | 워크로드 로드 밸런서 플로팅 IP 사용 여부 |
+| workload.loadBalancing.vipAddress | Body | String | X | 워크로드 로드 밸런서 지정 IP |
+| workload.loadBalancing.healthMonitor | Body | Object | X | 로드 밸런서의 상태 확인 정보 |
+| workload.loadBalancing.healthMonitor.delay | Body | Integer | O | 상태 확인 주기 |
+| workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | 최대 응답 대기 시간 |
+| workload.loadBalancing.healthMonitor.maxRetries | Body | Integer | O | 최대 재시도 횟수 |
+| workload.loadBalancing.healthMonitor.httpMethod | Body | String | X | HTTP 메서드<ul><li>GET</li></ul> |
+| workload.loadBalancing.healthMonitor.expectedCodes | Body | String | X | HTTP 상태 코드<ul><li>200</li><li>200,202</li><li>200-204</li></ul> |
+| workload.loadBalancing.healthMonitor.urlPath | Body | String | X | HTTP URL |
+| workload.loadBalancing.certificate | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 인증서 |
+| workload.loadBalancing.privateKey | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 개인 키 |
+| workload.loadBalancing.tlsVersion | Body | String | X | TERMINATED\_HTTPS 사용 시 TLS 버전<ul><li>SSLv3</li><li>TLSv1.0</li><li>TLSv1.0\_2016</li><li>TLSv1.1</li><li>TLSv1.2</li><li>TLSv1.3</li></ul> |
+| workload.loadBalancing.containerHref | Body | String | X | 시크릿 컨테이너 ID<li>Load Balancer API를 이용하여 TERMINATED\_HTTPS에서 사용할 인증서,개인 키를 별도로 등록한 경우 사용</li> |
+| workload.loadBalancing.ipAclGroupsBinding | Body | List | X | 로드 밸런서에 적용할 IP 접근 제어 그룹 목록 |
+| workload.loadBalancing.ipAclGroupsBinding.ipAclGroupId | Body | String | O | IP 접근 제어 그룹 ID |
+| workload.schedule | Body | Object | X | 예약 실행 설정 정보 |
+| workload.schedule.timeZone | Body | String | O | 예약 실행 기준 시간<ul><li>예: Asia/Seoul, UTC</li><li>[List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)</li></ul> |
+| workload.schedule.cron | Body | String | O | 예약 실행 Cron 표현식 |
+| workload.schedule.jobsHistoryLimit | Body | Integer | O | 예약 실행 히스토리 보관 수 |
+| workload.schedule.concurrencyPolicy | Body | String | O | 동시 실행 정책<ul><li>Forbid</li><li>Replace</li></ul> |
+| workload.internalLoadBalancing | Body | Object | X | 내부 로드 밸런서 정보 |
+| workload.internalLoadBalancing.enalbed | Body | Boolean | O | 내부 로드 밸런서 사용 여부 |
+| workload.internalLoadBalancing.type | Body | String | X | 내부 로드 밸런서 IP 할당 방법<ul><li>dynamic: 자동 할당</li><li>static: IP 지정</li></ul> |
+| workload.internalLoadBalancing.ip | Body | String | X | 내부 로드 밸런서 지정 IP |
+| workload.activeDeadline | Body | Object | X | 워크로드 예약 종료 정보 |
+| workload.activeDeadline.timeZone | Body | String | O | 예약 종료 기준 시간<li>예: Asia/Seoul, UTC</li> |
+| workload.activeDeadline.timeOffset | Body | String | O | 예약 종료 기준 시간 Offset |
+| workload.activeDeadline.time | Body | String | O | 예약 종료 시간 |
+| workload.autoScaler | Body | Object | X | AutoScaler 설정 정보 |
+| workload.autoScaler.scaleOut | Body | Object | O | ScaleOut 정보 |
+| workload.autoScaler.scaleOut.enabled | Body | Boolean | O | ScaleOut 사용 여부 |
+| workload.autoScaler.scaleOut.maxReplicas | Body | Integer | X | 오토 스케일링 최대 작업 수 |
+| workload.autoScaler.scaleOut.coolDownMinute | Body | Integer | X | 증설 후 대기 시간 |
+| workload.autoScaler.scaleOut.condition | Body | List | X | 증설 조건 |
+| workload.autoScaler.scaleOut.condition.resource | Body | String | X | 증설 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workload.autoScaler.scaleOut.condition.threshold | Body | Integer | X | 증설 조건 리소스 사용량(1~100) |
+| workload.autoScaler.scaleOut.condition.duration | Body | Integer | X | 증설 조건 리소스 사용량 유지 시간(분) |
+| workload.autoScaler.scaleIn | Body | Object | X | ScaleIn 정보 |
+| workload.autoScaler.scaleIn.enabled | Body | Boolean | O | ScaleIn 사용 여부 |
+| workload.autoScaler.scaleIn.minReplicas | Body | Integer | X | 오토 스케일링 최소 작업 수 |
+| workload.autoScaler.scaleIn.coolDownMinute | Body | Integer | X | 감축 후 대기 시간 |
+| workload.autoScaler.scaleIn.condition | Body | List | X | 감축 조건 |
+| workload.autoScaler.scaleIn.condition.resource | Body | String | X | 감축 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workload.autoScaler.scaleIn.condition.threshold | Body | Integer | X | 감축 조건 리소스 사용량(1~100) |
+| workload.autoScaler.scaleIn.condition.duration | Body | Integer | X | 감축 조건 리소스 사용량 유지 시간(분) |
+| workload.securityGroups | Body | List | X | SecurityGroups 정보 |
+| workload.securityGroups.id | Body | String | O | SecurityGroups ID |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "workload": {
+    "description": "api workload",
+    "desired": 2,
+    "loadBalancing": {
+      "enabled": true,
+      "floatingIp": false
+    },
+    "name": "ncs-workload",
+    "templateId": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+    "templateVersion": "first",
+    "type": "deployment"
+  }
+}
+```
+
+</details>
+
+<a id="change-workload-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| workloads | Body | Object | O | 워크로드 정보 |
+| workload.id | Body | UUID | O | 워크로드 ID |
+| workload.name | Body | String | O | 워크로드 이름 |
+| workload.type | Body | String | O | 배포 컨트롤러<ul><li>deployment</li><li>statefulset</li></ul> |
+| workload.templateId | Body | String | O | 워크로드의 템플릿 ID |
+| workload.templateVersion | Body | String | O | 워크로드의 템플릿 버전 |
+| workload.createdAt | Body | String | O | 생성 시간(UTC) |
+| workload.desired | Body | Integer | O | 워크로드 작업 요청 수 |
+| workload.internalLBTimeout | Body | Integer | X | 내부 요청 응답 대기 시간 |
+| workload.loadBalancing | Body | Object | O | 워크로드 로드 밸런서 정보 |
+| workload.loadBalancing.enabled | Body | Boolean | O | 워크로드 로드 밸런서 사용 여부 |
+| workload.loadBalancing.floatingIp | Body | Boolean | O | 워크로드 로드 밸런서 플로팅 IP 사용 여부 |
+| workload.loadBalancing.vipAddress | Body | String | X | 워크로드 로드 밸런서 지정 IP |
+| workload.loadBalancing.healthMonitor | Body | Object | X | 로드 밸런서의 상태 확인 정보 |
+| workload.loadBalancing.healthMonitor.delay | Body | Integer | O | 상태 확인 주기 |
+| workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | 최대 응답 대기 시간 |
+| workload.loadBalancing.healthMonitor.maxRetries | Body | Integer | O | 최대 재시도 횟수 |
+| workload.loadBalancing.healthMonitor.httpMethod | Body | String | X | HTTP 메서드<ul><li>GET</li></ul> |
+| workload.loadBalancing.healthMonitor.expectedCodes | Body | String | X | HTTP 상태 코드<ul><li>200</li><li>200,202</li><li>200-204</li></ul> |
+| workload.loadBalancing.healthMonitor.urlPath | Body | String | X | HTTP URL |
+| workload.loadBalancing.certificate | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 인증서 |
+| workload.loadBalancing.privateKey | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 개인 키 |
+| workload.loadBalancing.tlsVersion | Body | String | X | TERMINATED\_HTTPS 사용 시 TLS 버전<ul><li>SSLv3</li><li>TLSv1.0</li><li>TLSv1.0\_2016</li><li>TLSv1.1</li><li>TLSv1.2</li><li>TLSv1.3</li></ul> |
+| workload.loadBalancing.containerHref | Body | String | X | 시크릿 컨테이너 ID<li>Load Balancer API를 이용하여 TERMINATED\_HTTPS에서 사용할 인증서,개인 키를 별도로 등록한 경우 사용</li> |
+| workload.loadBalancing.ipAclGroupsBinding | Body | List | X | 로드 밸런서에 적용할 IP 접근 제어 그룹 목록 |
+| workload.loadBalancing.ipAclGroupsBinding.ipAclGroupId | Body | String | O | IP 접근 제어 그룹 ID |
+| workload.schedule | Body | Object | X | 예약 실행 설정 정보 |
+| workload.schedule.timeZone | Body | String | O | 예약 실행 기준 시간<ul><li>예: Asia/Seoul, UTC</li><li>[List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)</li></ul> |
+| workload.schedule.cron | Body | String | O | 예약 실행 Cron 표현식 |
+| workload.schedule.jobsHistoryLimit | Body | Integer | O | 예약 실행 히스토리 보관 수 |
+| workload.schedule.concurrencyPolicy | Body | String | O | 동시 실행 정책<ul><li>Forbid</li><li>Replace</li></ul> |
+| workload.schedule.timeOffset | Body | String | O | 예약 실행 기준 시간 Offset |
+| workload.internalLoadBalancing | Body | Object | X | 내부 로드 밸런서 정보 |
+| workload.internalLoadBalancing.enalbed | Body | Boolean | O | 내부 로드 밸런서 사용 여부 |
+| workload.internalLoadBalancing.type | Body | String | X | 내부 로드 밸런서 IP 할당 방법<ul><li>dynamic: 자동 할당</li><li>static: IP 지정</li></ul> |
+| workload.internalLoadBalancing.ip | Body | String | X | 내부 로드 밸런서 지정 IP |
+| workload.privateDns | Body | Object | X | Private DNS에 워크로드 작업 IP 등록 여부 결정 |
+| workload.privateDns.ttl | Body | Integer | O | 레코드 세트의 TTL 값 |
+| workload.privateDns.zoneId | Body | String | O | 워크로드에서 사용하는 Private DNS Zone ID |
+| workload.privateDns.domain | Body | String | O | Private DNS에 등록된 도메인 정보 |
+| workload.activeDeadline | Body | Object | X | 워크로드 예약 종료 정보 |
+| workload.activeDeadline.timeZone | Body | String | O | 예약 종료 기준 시간<li>예: Asia/Seoul, UTC</li> |
+| workload.activeDeadline.timeOffset | Body | String | O | 예약 종료 기준 시간 Offset |
+| workload.activeDeadline.time | Body | String | O | 예약 종료 시간 |
+| workload.autoScaler | Body | Object | X | AutoScaler 설정 정보 |
+| workload.autoScaler.scaleOut | Body | Object | O | ScaleOut 정보 |
+| workload.autoScaler.scaleOut.enabled | Body | Boolean | O | ScaleOut 사용 여부 |
+| workload.autoScaler.scaleOut.maxReplicas | Body | Integer | X | 오토 스케일링 최대 작업 수 |
+| workload.autoScaler.scaleOut.coolDownMinute | Body | Integer | X | 증설 후 대기 시간 |
+| workload.autoScaler.scaleOut.condition | Body | List | X | 증설 조건 |
+| workload.autoScaler.scaleOut.condition.resource | Body | String | X | 증설 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workload.autoScaler.scaleOut.condition.threshold | Body | Integer | X | 증설 조건 리소스 사용량(1~100) |
+| workload.autoScaler.scaleOut.condition.duration | Body | Integer | X | 증설 조건 리소스 사용량 유지 시간(분) |
+| workload.autoScaler.scaleIn | Body | Object | X | ScaleIn 정보 |
+| workload.autoScaler.scaleIn.enabled | Body | Boolean | O | ScaleIn 사용 여부 |
+| workload.autoScaler.scaleIn.minReplicas | Body | Integer | X | 오토 스케일링 최소 작업 수 |
+| workload.autoScaler.scaleIn.coolDownMinute | Body | Integer | X | 감축 후 대기 시간 |
+| workload.autoScaler.scaleIn.condition | Body | List | X | 감축 조건 |
+| workload.autoScaler.scaleIn.condition.resource | Body | String | X | 감축 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workload.autoScaler.scaleIn.condition.threshold | Body | Integer | X | 감축 조건 리소스 사용량(1~100) |
+| workload.autoScaler.scaleIn.condition.duration | Body | Integer | X | 감축 조건 리소스 사용량 유지 시간(분) |
+| workload.securityGroups | Body | List | X | SecurityGroups 정보 |
+| workload.securityGroups.id | Body | String | O | SecurityGroups ID |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "workload": {
+    "createdAt": "2024-10-27T22:51:32.305Z",
+    "updatedAt": "2024-10-27T22:54:30.734Z",
+    "id": "6c6201b5-5b68-4035-adf7-40cd5f9402e5",
+    "name": "ncs-workload",
+    "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+    "description": "api workload",
+    "templateId": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+    "templateName": "nginx-template",
+    "templateVersion": "first",
+    "desired": 2,
+    "available": 0,
+    "status": "",
+    "networks": [
+      {
+        "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+        "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+      }
+    ],
+    "loadBalancing": {
+      "enabled": true,
+      "floatingIp": false
+    },
+    "type": "deployment"
+  }
+}
+```
+
+</details>
+
+<a id="changing-workload-parts"></a>
+### 워크로드 부분 변경하기 { #changing-workload-parts }
+
+워크로드의 일부만 수정할 수 있습니다.
+
+<a id="changing-workload-parts-request"></a>
+#### 요청
+
+* 이 API를 사용하는 경우 Content-Type은 application/json-patch+json으로 설정해야 합니다.
+
+```bash
+PATCH /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
+Content-Type: application/json-patch+json
+x-nhn-authorization: Bearer {accessToken}
+```
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| workloadId | URL | String | O | 워크로드 ID |
+| token | Header | String | O | NHN Cloud Token |
+| op | Body | String | O | Operation<ul><li>Add</li><li>Remove</li><li>Replace</li><li>Copy</li><li>Move</li><li>Test</li></ul> |
+| path | Body | String | O | 변경하는 데이터 경로 |
+| value | Body | String | X | 변경 값 |
+| from | Body | String | X | 기존 데이터 경로 |
+
+<details>
+   <summary>예시</summary>
+
+```json
+[
+  {
+    "op": "replace",
+    "path": "/workload/desired",
+    "value": 1
+  }
+]
+```
+
+</details>
+
+<a id="changing-workload-parts-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| workloads | Body | Object | O | 워크로드 정보 |
+| workload.id | Body | UUID | O | 워크로드 ID |
+| workload.name | Body | String | O | 워크로드 이름 |
+| workload.type | Body | String | O | 배포 컨트롤러<ul><li>deployment</li><li>statefulset</li></ul> |
+| workload.templateId | Body | String | O | 워크로드의 템플릿 ID |
+| workload.templateVersion | Body | String | O | 워크로드의 템플릿 버전 |
+| workload.createdAt | Body | String | O | 생성 시간(UTC) |
+| workload.desired | Body | Integer | O | 워크로드 작업 요청 수 |
+| workload.internalLBTimeout | Body | Integer | X | 내부 요청 응답 대기 시간 |
+| workload.loadBalancing | Body | Object | O | 워크로드 로드 밸런서 정보 |
+| workload.loadBalancing.enabled | Body | Boolean | O | 워크로드 로드 밸런서 사용 여부 |
+| workload.loadBalancing.floatingIp | Body | Boolean | O | 워크로드 로드 밸런서 플로팅 IP 사용 여부 |
+| workload.loadBalancing.vipAddress | Body | String | X | 워크로드 로드 밸런서 지정 IP |
+| workload.loadBalancing.healthMonitor | Body | Object | X | 로드 밸런서의 상태 확인 정보 |
+| workload.loadBalancing.healthMonitor.delay | Body | Integer | X | 상태 확인 주기 |
+| workload.loadBalancing.healthMonitor.timeout | Body | Integer | X | 최대 응답 대기 시간 |
+| workload.loadBalancing.healthMonitor.maxRetries | Body | Integer | X | 최대 재시도 횟수 |
+| workload.loadBalancing.healthMonitor.httpMethod | Body | String | X | HTTP 메서드<ul><li>GET</li></ul> |
+| workload.loadBalancing.healthMonitor.expectedCodes | Body | String | X | HTTP 상태 코드<ul><li>200</li><li>200,202</li><li>200-204</li></ul> |
+| workload.loadBalancing.healthMonitor.urlPath | Body | String | X | HTTP URL |
+| workload.loadBalancing.certificate | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 인증서 |
+| workload.loadBalancing.privateKey | Body | String | X | TERMINATED\_HTTPS 사용 시 로드 밸런서에서 사용하는 개인 키 |
+| workload.loadBalancing.tlsVersion | Body | String | X | TERMINATED\_HTTPS 사용 시 TLS 버전<ul><li>SSLv3</li><li>TLSv1.0</li><li>TLSv1.0\_2016</li><li>TLSv1.1</li><li>TLSv1.2</li><li>TLSv1.3</li></ul> |
+| workload.loadBalancing.containerHref | Body | String | X | 시크릿 컨테이너 ID<li>Load Balancer API를 이용하여 TERMINATED\_HTTPS에서 사용할 인증서,개인 키를 별도로 등록한 경우 사용</li> |
+| workload.loadBalancing.ipAclGroupsBinding | Body | List | X | 로드 밸런서에 적용할 IP 접근 제어 그룹 목록 |
+| workload.loadBalancing.ipAclGroupsBinding.ipAclGroupId | Body | String | O | IP 접근 제어 그룹 ID |
+| workload.schedule | Body | Object | X | 예약 실행 설정 정보 |
+| workload.schedule.timeZone | Body | String | O | 예약 실행 기준 시간<ul><li>예: Asia/Seoul, UTC</li><li>[List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)</li></ul> |
+| workload.schedule.cron | Body | String | O | 예약 실행 Cron 표현식 |
+| workload.schedule.jobsHistoryLimit | Body | Integer | O | 예약 실행 히스토리 보관 수 |
+| workload.schedule.concurrencyPolicy | Body | String | O | 동시 실행 정책<ul><li>Forbid</li><li>Replace</li></ul> |
+| workload.schedule.timeOffset | Body | String | O | 예약 실행 기준 시간 Offset |
+| workload.internalLoadBalancing | Body | Object | X | 내부 로드 밸런서 정보 |
+| workload.internalLoadBalancing.enalbed | Body | Boolean | O | 내부 로드 밸런서 사용 여부 |
+| workload.internalLoadBalancing.type | Body | String | X | 내부 로드 밸런서 IP 할당 방법<ul><li>dynamic: 자동 할당</li><li>static: IP 지정</li></ul> |
+| workload.internalLoadBalancing.ip | Body | String | X | 내부 로드 밸런서 지정 IP |
+| workload.privateDns | Body | Object | X | Private DNS에 워크로드 작업 IP 등록 여부 결정 |
+| workload.privateDns.ttl | Body | Integer | O | 레코드 세트의 TTL 값 |
+| workload.privateDns.zoneId | Body | String | O | 워크로드에서 사용하는 Private DNS Zone ID |
+| workload.privateDns.domain | Body | String | O | Private DNS에 등록된 도메인 정보 |
+| workload.activeDeadline | Body | Object | X | 워크로드 예약 종료 정보 |
+| workload.activeDeadline.timeZone | Body | String | O | 예약 종료 기준 시간<li>예: Asia/Seoul, UTC</li> |
+| workload.activeDeadline.timeOffset | Body | String | O | 예약 종료 기준 시간 Offset |
+| workload.activeDeadline.time | Body | String | O | 예약 종료 시간 |
+| workload.autoScaler | Body | Object | X | AutoScaler 설정 정보 |
+| workload.autoScaler.scaleOut | Body | Object | O | ScaleOut 정보 |
+| workload.autoScaler.scaleOut.enabled | Body | Boolean | O | ScaleOut 사용 여부 |
+| workload.autoScaler.scaleOut.maxReplicas | Body | Integer | X | 오토 스케일링 최대 작업 수 |
+| workload.autoScaler.scaleOut.coolDownMinute | Body | Integer | X | 증설 후 대기 시간 |
+| workload.autoScaler.scaleOut.condition | Body | List | X | 증설 조건 |
+| workload.autoScaler.scaleOut.condition.resource | Body | String | X | 증설 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workload.autoScaler.scaleOut.condition.threshold | Body | Integer | X | 증설 조건 리소스 사용량(1~100) |
+| workload.autoScaler.scaleOut.condition.duration | Body | Integer | X | 증설 조건 리소스 사용량 유지 시간(분) |
+| workload.autoScaler.scaleIn | Body | Object | X | ScaleIn 정보 |
+| workload.autoScaler.scaleIn.enabled | Body | Boolean | O | ScaleIn 사용 여부 |
+| workload.autoScaler.scaleIn.minReplicas | Body | Integer | X | 오토 스케일링 최소 작업 수 |
+| workload.autoScaler.scaleIn.coolDownMinute | Body | Integer | X | 감축 후 대기 시간 |
+| workload.autoScaler.scaleIn.condition | Body | List | X | 감축 조건 |
+| workload.autoScaler.scaleIn.condition.resource | Body | String | X | 감축 조건 기준 리소스<ul><li>cpu</li><li>memory</li><li>gpu</li><li>gpu-memory</li></ul> |
+| workload.autoScaler.scaleIn.condition.threshold | Body | Integer | X | 감축 조건 리소스 사용량(1~100) |
+| workload.autoScaler.scaleIn.condition.duration | Body | Integer | X | 감축 조건 리소스 사용량 유지 시간(분) |
+| workload.securityGroups | Body | List | X | SecurityGroups 정보 |
+| workload.securityGroups.id | Body | String | O | SecurityGroups ID |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "workload": {
+    "createdAt": "2024-10-27T22:51:32.305Z",
+    "updatedAt": "2024-10-27T22:57:00.663Z",
+    "id": "6c6201b5-5b68-4035-adf7-40cd5f9402e5",
+    "name": "ncs-workload",
+    "namespace": "abd7f92e-3353-4b45-944c-510a97ef89c9",
+    "description": "api workload",
+    "templateId": "bf095f99-1547-48f4-b57d-1124e853f6e2",
+    "templateName": "nginx-template",
+    "templateVersion": "first",
+    "desired": 1,
+    "available": 0,
+    "status": "",
+    "networks": [
+      {
+        "vpcId": "aeeafe4e-287d-4dd4-b91a-294b87688457",
+        "subnetId": "abd7f92e-3353-4b45-944c-510a97ef89c9"
+      }
+    ],
+    "loadBalancing": {
+      "enabled": true,
+      "floatingIp": false
+    },
+    "type": "deployment"
+  }
+}
+```
+
+</details>
+
+<a id="stop-workload"></a>
+### 워크로드 중지 { #stop-workload }
+워크로드를 중지합니다.
+
+```bash
+POST /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/pause
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="stop-workload-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| workloadId | URL | String | O | 템플릿 ID |
+| token | Header | String | O | NHN Cloud Token |
+
+<a id="stop-workload-response"></a>
+#### 응답
+이 API는 공통 정보만 응답합니다.
+
+<a id="restart-workload"></a>
+### 워크로드 재시작 { #restart-workload }
+중지 상태의 워크로드를 재시작합니다.
+
+```bash
+POST /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/resume
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="restart-workload-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| workloadId | URL | String | O | 워크로드 ID |
+| token | Header | String | O | NHN Cloud Token |
+
+<a id="restart-workload-response"></a>
+#### 응답
+이 API는 공통 정보만 응답합니다.
+
+<a id="delete-workload"></a>
+### 워크로드 작업 재시작 { #delete-workload }
+워크로드의 작업을 재시작합니다.
+
+```bash
+POST /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/tasks/{taskId}/restart
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="delete-workload-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| workloadId | URL | String | O | 워크로드 ID |
+| taskId | URL | String | O | 작업 ID |
+| token | Header | String | O | NHN Cloud Token |
+
+<a id="delete-workload-response"></a>
+#### 응답
+이 API는 공통 정보만 응답합니다.
+
+<a id="workload-1"></a>
+### 워크로드 삭제하기 { #workload-1 }
+
+워크로드를 삭제합니다.
+
+```bash
+DELETE /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="workload-1-1"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| workloadId | URL | String | O | 워크로드 ID |
+| token | Header | String | O | NHN Cloud Token |
+
+<a id="workload-1-2"></a>
+#### 응답
+
+이 API는 공통 정보만 응답합니다.
+
+<a id="view-malware-scan-settings"></a>
+### 악성 코드 검사 설정 조회 { #view-malware-scan-settings }
+설정되어 있는 악성 코드 검사 설정을 조회합니다.
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/malware/config
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="view-malware-scan-settings-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| token | Header | String | O | NHN Cloud Token |
+
+
+<a id="view-malware-scan-settings-respose"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| enabled | Body | String | O | 악성 코드 검사 설정 결과<ul><li>true: 사용</li><li>false: 사용 안 함</li></ul>|
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "enabled": true 
+}
+```
+</details>
+
+<a id="configure-malware-scan"></a>
+### 악성코드 검사 설정 { #configure-malware-scan }
+악성 코드 검사 설정을 합니다.
+
+```bash
+POST /ncs/v1.0/appkeys/{appKey}/malware/config
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="configure-malware-scan-request"></a>
+#### 요청
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| token | Header | String | O | NHN Cloud Token |
+| enabled | Body | String | O | 악성 코드 검사 설정<ul><li>true: 사용</li><li>false: 사용 안 함</li></ul>|
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "enabled": true 
+}
+```
+</details>
+
+<a id="configure-malware-scan-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| enabled | Body | String | O | 악성 코드 검사 설정 결과<ul><li>true: 사용</li><li>false: 사용 안 함</li></ul>|
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "enabled": true 
+}
+```
+</details>
+
+<a id="view-malware-scan-result"></a>
+### 악성코드 검사 결과 조회 { #view-malware-scan-result }
+
+악성 코드 검사 결과를 조회합니다.
+
+```bash
+GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/history/{historyId}/malware
+x-nhn-authorization: Bearer {accessToken}
+```
+
+<a id="view-malware-scan-result-request"></a>
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| appKey | URL | String | O | 서비스 Appkey |
+| token | Header | String | O | NHN Cloud Token |
+| workloadId | URL | String | O | 워크로드 ID |
+
+
+<a id="view-malware-scan-result-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| X-Total-Count | Header | Integer | O | 워크로드 스캔 결과 개수 |
+| scannedAt | Body | String | X | 스캔 완료 시간 |
+| infectedFiles | Body | String | X | 검출된 악성코드 개수 |
+| scannedDirectories | Body | String | X | 스캔 디렉터리 수 |
+| scannedFiles | Body | String | X | 스캔 파일 수 |
+| reports | Body | Array | X | 리포트 개수 |
+| reports.image | Body | String | O | 이미지 이름:태그 |
+| reports.digest | Body | String | O | 이미지 다이제스트 |
+| reports.layer | Body | String | O | 이미지 레이어 |
+| reports.detection | Body | String | O | 탐지 항목 |
+| reports.result | Body | String | O | 결과<br><ul><li>Clean</li><li>Infected</li></ul> |
+
+<details>
+  <summary>예시</summary>
+
+```json
+{
+  "header": {
+    "resultCode": 200,
+    "resultMessage": "SUCCESS",
+    "isSuccessful": true
+  },
+  "scannedAt": "2025-10-28T00:00:00Z",
+  "infectedFiles": 0,
+  "scannedDirectories": 689,
+  "scannedFiles": 4210,
+  "reports": [
+    {
+      "image": "nginx:latest",
+      "digest": "sha256:d5f28ef21aabddd098f3dbc21fe5b7a7d7a184720bc07da0b6c9b9820e97f25e",
+      "layer": "sha256:36f5f951f60a9fa1d51878e76fc16ba7b752f4d464a21b758a8ac88f0992c488",
+      "detection": "-",
+      "result": "Clean"
+    },
+    {
+      "image": "nginx:latest",
+      "digest": "sha256:d5f28ef21aabddd098f3dbc21fe5b7a7d7a184720bc07da0b6c9b9820e97f25e",
+      "layer": "sha256:c855abf10cdcf792853d61ec842e41c85cb82a5cb926c86217a7fa632dfc56c4",
+      "detection": "-",
+      "result": "Clean"
+    },
+    {
+      "image": "nginx:latest",
+      "digest": "sha256:d5f28ef21aabddd098f3dbc21fe5b7a7d7a184720bc07da0b6c9b9820e97f25e",
+      "layer": "sha256:8e7d6b51107830934d3dcdcf0883f193250d22b3d0dc7a2d7d57e4403d1a3489",
+      "detection": "-",
+      "result": "Clean"
+    },
+    {
+      "image": "nginx:latest",
+      "digest": "sha256:d5f28ef21aabddd098f3dbc21fe5b7a7d7a184720bc07da0b6c9b9820e97f25e",
+      "layer": "sha256:50da593f622278859c89ed290484a8cafa3ddb1fef0090530fff63c9de06845f",
+      "detection": "-",
+      "result": "Clean"
+    },
+    {
+      "image": "nginx:latest",
+      "digest": "sha256:d5f28ef21aabddd098f3dbc21fe5b7a7d7a184720bc07da0b6c9b9820e97f25e",
+      "layer": "sha256:72fa904a482c9806187aeb804837f58f54da8aeb564f0ce4ef01426e08f68a01",
+      "detection": "-",
+      "result": "Clean"
+    },
+    {
+      "image": "nginx:latest",
+      "digest": "sha256:d5f28ef21aabddd098f3dbc21fe5b7a7d7a184720bc07da0b6c9b9820e97f25e",
+      "layer": "sha256:7d95a4a72e110d4fe6bab4059f2d2968058c8006d0f3976ea7065186acc49fbd",
+      "detection": "-",
+      "result": "Clean"
+    },
+    {
+      "image": "nginx:latest",
+      "digest": "sha256:d5f28ef21aabddd098f3dbc21fe5b7a7d7a184720bc07da0b6c9b9820e97f25e",
+      "layer": "sha256:3ce214e9ebc59367731dc352744c8392822aceddcee0a3806537dfd9fa984268",
+      "detection": "-",
+      "result": "Clean"
+    }
+  ]
+}
+```
+</details>
+
+<a id="response-code"></a>
+## 응답 코드 { #response-code }
+| resultCode | resultMessage | 설명 |
+| --- | --- | --- |
+| 200 | SUCCESS | 요청 성공 |
+| 10001 | Authentication error. | 유효하지 않은 AppKey입니다. |
+| 10002 | Bad Request. | 유효하지 않은 값이 요청되었습니다. |
+| 10003 | An error occurred while parsing the request body. | 요청 본문을 구문 분석하는 과정에서 오류가 발생했습니다. |
+| 10004 | Internal server error. | 내부 서버 오류입니다. |
+| 10005 | No permissions. | 권한이 없습니다. |
+| 10006 | You have exceeded the maximum number of {{.Resource}} that can be created. Please contact the Customer Center to increase the limit. | 생성 가능한 {{.Resource}} 수를 초과하였습니다. |
+| 10041 | Could not find the template. | 템플릿을 찾을 수 없습니다. |
+| 10042 | Could not use the ECR. | ECR의 이미지는 사용할 수 없습니다. |
+| 10043 | The network information does not exist. | 네트워크 정보가 존재하지 않습니다. |
+| 10044 | The template in use by the workload cannot be deleted. | 워크로드에서 사용 중인 템플릿은 삭제할 수 없습니다. |
+| 10045 | Duplicate container port exists in the template. | 템플릿에 동일한 컨테이너 포트가 존재합니다. |
+| 10046 | Template with the same name already exists. | 동일한 이름의 템플릿이 이미 존재합니다. |
+| 10047 | Resource {{.gpuFlavor}} is not available. If you want to use, please contact the Customer Center. | {{.gpuFlavor}} 자원은 가용되지 않고 있습니다. |
+| 10048 | Failed to download ConfigMaps. | 컨피그맵 다운로드에 실패하였습니다. |
+| 10049 | ConfigMaps can only use the object storage from the same organization. | 컨피그맵은 동일한 조직의 Object Storage만 사용할 수 있습니다. |
+| 10050 | The total size of the template's ConfigMap cannot exceed 1 MiB. | 템플릿의 컨피그맵 총 크기는 1MiB를 초과할 수 없습니다. |
+| 10051 | Failed to download secrets from Secure Key Manager. | Secure Key Manager에서 시크릿 다운로드에 실패하였습니다. |
+| 10052 | Could not create a template that consists only of init containers. | 초기화 컨테이너로만 구성된 템플릿은 생성할 수 없습니다. |
+| 10053 | The {{.Resource}} of an init container must be less than the sum of the normal containers. | 초기화 컨테이너의 {{.Resource}}는 일반 컨테이너의 합보다 작아야 합니다. |
+| 10054 | Could not set the GPU type of an init container differently than a regular container. | 초기화 컨테이너의 GPU 타입을 일반 컨테이너와 다르게 설정할 수 없습니다. |
+| 10061 | Could not find the workload. | 워크로드를 찾을 수 없습니다. |
+| 10062 | Task does not exist. | 작업이 존재하지 않습니다. |
+| 10063 | You cannot use the load balancer because the container port is not specified in the template. | 템플릿에 컨테이너 포트가 지정되지 않아 로드 밸런서를 사용할 수 없습니다. |
+| 10064 | A workload with the same name already exists. | 동일한 이름의 워크로드가 이미 존재합니다. |
+| 10065 | Invalid container specifications in the template. | 템플릿의 컨테이너 사양이 유효하지 않습니다. |
+| 10066 | Could not create a workload due to insufficient resources. | 리소스가 부족하여 워크로드를 생성할 수 없습니다. |
+| 10067 | You cannot change the workload name. | 워크로드 이름은 변경할 수 없습니다. |
+| 10068 | You cannot change to the template that uses a different network. | 다른 네트워크를 사용하는 템플릿으로 변경할 수 없습니다. |
+| 10069 | In the template, you must set the same container port as the port used by the load balancer. | 로드 밸런서에서 사용 중인 포트와 동일한 컨테이너 포트가 템플릿에 설정되어야 합니다. |
+|	10070 | You cannot use the load balancer in legacy network environments. | 레거시 네트워크 환경에서는 로드 밸런서를 사용할 수 없습니다. |
+|	10071 | UDP protocol cannot use load balancer. | UDP 프로토콜은 로드 밸런서를 사용할 수 없습니다. |
+|	10072 | If the workload runs less than {{.Minutes}} minutes, you cannot use the load balancer. | 워크로드 실행 주기가 {{.Minutes}}분 이하인 경우 로드 밸런서를 이용할 수 없습니다. |
+|	10073 | Invalid cron expression. | 유효하지 않은 cron 표현식입니다. |
+|	10074 | Invalid time zone. | 유효하지 않은 Timezone입니다. |
+|	10075 | You cannot change the load balancer to Use while the workload is stopped. | 워크로드 중지 상태에서는 로드 밸런서를 사용으로 변경할 수 없습니다. |
+|	10076 | The certificate and private key are invalid. To use TERMINATED_HTTPS, you must register a valid certificate and private key. | 인증서와 개인 키가 올바르지 않습니다. TERMINATED_HTTPS를 사용하려면 유효한 인증서와 개인 키를 등록해야 합니다. |
+|	10077 | Only one security group can be used. | 하나의 Security Groups만 사용할 수 있습니다. |
+|	10078 | The actions of all groups must be the same. | 그룹들의 action은 모두 동일해야 합니다. |
+|	10079 | Invalid Private DNS zone. | 유효하지 않은 Private DNS zone입니다. |
+|	10080 | Could not change the load balancer to Enabled while the workload is terminated. | 워크로드 종료 상태에서는 로드 밸런서를 사용으로 변경할 수 없습니다.  |
+|	10081 | The task is not in a restartable state. | 작업이 재시작 가능한 상태가 아닙니다. |
