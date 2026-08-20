@@ -1,1970 +1,994 @@
-<a id="compute-instance-api-v2-guide"></a>
-## Compute > Instance > API v2 가이드
+<!-- pre-align:aligned sig=fbbff493af43 -->
 
-API를 사용하려면 API 엔드포인트와 토큰 등이 필요합니다. [API 사용 준비](/Compute/Compute/ko/identity-api/)를 참고하여 API 사용에 필요한 정보를 준비합니다.
+<a id="network-service-gateway-api-v2-guide"></a>
+## Network > Service Gateway > API v2 가이드 { #network-service-gateway-api-v2-guide }
 
-인스턴스 API는 `compute` 타입 엔드포인트를 이용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
+NHN Cloud Network 서비스는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token)을 참고하세요.
+
+서비스 게이트웨이 API는 `network` 타입 엔드포인트를 이용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
 | 타입 | 리전 | 엔드포인트 |
 |---|---|---|
-| compute | 한국(판교) 리전<br>한국(평촌) 리전<br>한국(광주) 리전<br>일본 리전 | https://kr1-api-instance-infrastructure.nhncloudservice.com<br>https://kr2-api-instance-infrastructure.nhncloudservice.com<br>https://kr3-api-instance-infrastructure.nhncloudservice.com<br>https://jp1-api-instance-infrastructure.nhncloudservice.com |
+| network | 한국(판교) 리전<br>한국(평촌) 리전<br>한국(광주) 리전 | https://kr1-api-network-infrastructure.nhncloudservice.com<br>https://kr2-api-network-infrastructure.nhncloudservice.com<br>https://kr3-api-network-infrastructure.nhncloudservice.com |
 
 API 응답에 가이드에 명시되지 않은 필드가 나타날 수 있습니다. 이런 필드는 NHN Cloud 내부 용도로 사용되며 사전 공지 없이 변경될 수 있으므로 사용하지 않습니다.
 
-<a id="instance-flavors"></a>
-## 인스턴스 타입
+<a id="service-gateway"></a>
+## 서비스 게이트웨이 { #service-gateway }
 
-<a id="list-flavors"></a>
-### 타입 목록 보기
+<a id="get-a-list-of-service-gateways"></a>
+### 서비스 게이트웨이 목록 보기 { #get-a-list-of-service-gateways }
 
 ```
-GET /v2/{tenantId}/flavors
+GET /v2.0/gateways/servicegateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="get-a-list-of-service-gateways-request"></a>
 #### 요청
-
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
 | tokenId | Header | String | O | 토큰 ID |
-| minDisk | Query | Integer | - | 최소 블록 스토리지 크기(GB)<br>지정한 크기보다 블록 스토리지 크기가 큰 타입만 반환 |
-| minRam | Query | Integer | - | 최소 RAM 크기(MB)<br>지정한 크기보다 RAM 크기가 큰 타입만 반환 |
+| id | Query | UUID | - | 조회할 서비스 게이트웨이 ID |
+| name | Query | String | - | 조회할 서비스 게이트웨이 이름 |
+| service_endpoint_id | Query | UUID | - | 조회할 서비스 게이트웨이의 서비스 엔드포인트(또는 사용자 정의 엔드포인트) ID |
+| network_id | Query | UUID | - | 조회할 서비스 게이트웨이 VPC ID |
+| subnet_id | Query | UUID | - | 조회할 서비스 게이트웨이 서브넷 ID |
+| port_id | Query | UUID | - | 조회할 서비스 게이트웨이 포트 ID |
+| fixed_ip| Query | String | - | 조회할 서비스 게이트웨이 IP 주소 |
+| include_gateway_identity| Query | Boolean | - | NAT IP 주소 고정 사용 여부 |
 
+
+<a id="get-a-list-of-service-gateways-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| flavors | Body | Object | 인스턴스 타입 목록 객체 |
-| flavors.id | Body | UUID | 인스턴스 타입 ID |
-| flavors.links | Body | Object | 인스턴스 타입 경로 객체 |
-| flavors.name | Body | String | 인스턴스 타입 이름 |
-
+| servicegateways | Body | Array | 서비스 게이트웨이 정보 객체 목록 |
+| servicegateways.id | Body | UUID | 서비스 게이트웨이 ID |
+| servicegateways.name | Body | String | 서비스 게이트웨이 이름 |
+| servicegateways.port_id | Body | UUID | 포트 ID |
+| servicegateways.tenant_id | Body | String | 테넌트 ID |
+| servicegateways.network_id | Body | UUID | VPC ID |
+| servicegateways.subnet_id | Body | UUID | 서브넷 ID |
+| servicegateways.fixed_ip | Body | String | 서비스 게이트웨이 IP 주소 |
+| servicegateways.include_gateway_identity| Body | Boolean | NAT IP 주소 고정 사용 여부 |
+| servicegateways.service_endpoint_id | Body | UUID | 서비스 엔드포인트(또는 사용자 정의 엔드포인트) ID |
+| servicegateways.service_provider | Body | String | 연결 유형(연결된 엔드포인트의 값). `csp`=서비스 엔드포인트 / `user`=사용자 정의 엔드포인트 |
+| servicegateways.description | Body | String | 서비스 게이트웨이 설명 |
 
 <details><summary>예시</summary>
-<p>
 
 ```json
 {
-  "flavors": [
+  "servicegateways": [
     {
-      "id": "013bea75-8541-4c6f-9abe-a03fee3d74fe",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/013bea75-8541-4c6f-9abe-a03fee3d74fe",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/013bea75-8541-4c6f-9abe-a03fee3d74fe",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "x1.c32m256"
-    },
-    {
-      "id": "0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "x1.c32m128"
+      "status": "AVAILABLE",
+      "include_gateway_identity": true,
+      "description": "",
+      "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+      "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+      "fixed_ip": "192.168.0.82",
+      "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+      "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+      "service_provider": "csp",
+      "create_time": "2023-08-31 02:11:09",
+      "project_id": "302406c4a1d44b2cb2bc07a652c0b202",
+      "port_id": "182a31be-9e29-400d-983b-f701cf9b4bbc",
+      "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+      "name": "sgw_test"
     }
   ]
 }
 ```
 
-</p>
 </details>
 
 ---
-
-<a id="list-flavors-with-details"></a>
-### 타입 목록 상세 보기
+<a id="get-a-service-gateway"></a>
+### 서비스 게이트웨이 보기 { #get-a-service-gateway }
 
 ```
-GET /v2/{tenantId}/flavors/detail
+GET /v2.0/gateways/servicegateways/{serviceGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
-#### 요청
-
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| minDisk | Query | Integer | - | 최소 블록 스토리지 크기(GB)<br>지정한 크기보다 블록 스토리지 크기가 큰 타입만 반환 |
-| minRam | Query | Integer | - | 최소 RAM 크기(MB)<br>지정한 크기보다 RAM 크기가 큰 타입만 반환 |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명             |
-|---|---|---|----------------|
-| flavors | Body | Object | 인스턴스 타입 목록 객체  |
-| flavors.id | Body | UUID | 인스턴스 타입 ID     |
-| flavors.links | Body | Object | 인스턴스 타입 경로 객체  |
-| flavors.name | Body | String | 인스턴스 타입 이름     |
-| flavors.ram | Body | Integer | 메모리 크기(MB)     |
-| flavors.OS-FLV-DISABLED:disabled | Body | Boolean | 활성화 여부         |
-| flavors.vcpus | Body | Integer | vCPU 개수        |
-| flavors.extra_specs | Body | Object | 추가 사양 객체       |
-| flavors.swap | Body | Integer | 스와프 영역 크기(GB)  |
-| flavors.os-flavor-access:is_public | Body | Boolean | 공유 여부          |
-| flavors.rxtx_factor | Body | Float | 네트워크 송신/수신 패킷 비율 |
-| flavors.OS-FLV-EXT-DATA:ephemeral | Body | Integer | 임시 블록 스토리지 크기(GB)     |
-| flavors.disk | Body | Integer | 루트 블록 스토리지 크기(GB) |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "flavors": [
-    {
-      "name": "x1.c32m256",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/97604802-a090-43fa-a5ce-c7cfd737fbba",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/97604802-a090-43fa-a5ce-c7cfd737fbba",
-          "rel": "bookmark"
-        }
-      ],
-      "ram": 262144,
-      "OS-FLV-DISABLED:disabled": false,
-      "vcpus": 32,
-      "extra_specs": {
-        "flavor_type": "performance"
-      },
-      "swap": "",
-      "os-flavor-access:is_public": true,
-      "rxtx_factor": 1.0,
-      "OS-FLV-EXT-DATA:ephemeral": 0,
-      "disk": 0,
-      "id": "97604802-a090-43fa-a5ce-c7cfd737fbba"
-    },
-    {
-      "name": "x1.c32m128",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/31fa632d-aeec-4f12-8a57-ce9d146228e5",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/31fa632d-aeec-4f12-8a57-ce9d146228e5",
-          "rel": "bookmark"
-        }
-      ],
-      "ram": 131072,
-      "OS-FLV-DISABLED:disabled": false,
-      "vcpus": 32,
-      "extra_specs": {
-        "flavor_type": "performance"
-      },
-      "swap": "",
-      "os-flavor-access:is_public": true,
-      "rxtx_factor": 1.0,
-      "OS-FLV-EXT-DATA:ephemeral": 0,
-      "disk": 0,
-      "id": "31fa632d-aeec-4f12-8a57-ce9d146228e5"
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="availability-zones"></a>
-## 가용성 영역
-
-<a id="list-availability-zones"></a>
-### 가용성 목록 보기
-
-```
-GET /v2/{tenantId}/os-availability-zone
-X-Auth-Token: {tokenId}
-```
-
+<a id="get-a-service-gateway-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
 | tokenId | Header | String | O | 토큰 ID |
+| serviceGatewayId | URL | UUID | O | 서비스 게이트웨이 ID |
 
+<a id="get-a-service-gateway-response"></a>
 #### 응답
+
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| availabilityZoneInfo | Body | Object | 가용성 영역 정보 객체 |
-| availabilityZoneInfo.zoneName | Body | String | 가용성 영역 이름 |
-| availabilityZoneInfo.zoneState | Body | Object | 가용성 영역 상태 정보 객체 |
-| availabilityZoneInfo.available | Body | Object | 가용성 영역 상태 |
+| servicegateway | Body | Object | 서비스 게이트웨이 정보 객체|
+| servicegateway.id | Body | UUID | 서비스 게이트웨이 ID |
+| servicegateway.name | Body | String | 서비스 게이트웨이 이름 |
+| servicegateway.port_id | Body | UUID | 포트 ID |
+| servicegateway.tenant_id | Body | String | 테넌트 ID |
+| servicegateway.network_id | Body | UUID | VPC ID |
+| servicegateway.subnet_id | Body | UUID | 서브넷 ID |
+| servicegateway.fixed_ip | Body | String | 서비스 게이트웨이 IP 주소 |
+| servicegateway.include_gateway_identity| Body | Boolean | NAT IP 주소 고정 사용 여부 |
+| servicegateway.service_endpoint_id | Body | UUID | 서비스 엔드포인트(또는 사용자 정의 엔드포인트) ID |
+| servicegateway.service_provider | Body | String | 연결 유형(연결된 엔드포인트의 값). `csp`=서비스 엔드포인트 / `user`=사용자 정의 엔드포인트 |
+| servicegateway.api_endpoints | Body | Array | API 엔드포인트 정보 객체 목록 |
+| servicegateway.api_endpoints.domain_name | Body | String | API 엔드포인트 도메인 |
+| servicegateway.description | Body | String | 서비스 게이트웨이 설명 |
 
 <details><summary>예시</summary>
-<p>
 
 ```json
 {
-    "availabilityZoneInfo": [
+  "servicegateway": {
+    "status": "AVAILABLE",
+    "include_gateway_identity": true,
+    "description": "",
+    "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+    "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "fixed_ip": "192.168.0.82",
+    "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+    "api_endpoints": [
       {
-        "zoneState": {
-          "available": true
-        },
-        "zoneName": "kr-pub-a"
-      },
-      {
-        "zoneState": {
-          "available": true
-        },
-        "zoneName": "kr-pub-b"
-      }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="key-pairs"></a>
-## 키페어
-
-<a id="list-key-pairs"></a>
-### 키페어 목록 보기
-```
-GET /v2/{tenantId}/os-keypairs
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| keypairs | Body | Array | 키페어 객체 목록 |
-| keypairs.keypair | Body | Object | 키페어 객체 |
-| keypairs.keypair.name | Body | String | 키페어 이름 |
-| keypairs.keypair.public_key | Body | String | 공개키 |
-| keypairs.keypair.fingerprint | Body | String | 키페어 지문 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "keypairs": [
-    {
-      "keypair": {
-        "public_key": "ssh-rsa ... Generated-by-Nova",
-        "name": "keypair",
-        "fingerprint": "SHA256:..."
-      }
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="show-key-pair"></a>
-### 키페어 보기
-```
-GET /v2/{tenantId}/os-keypairs/{keypairName}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| keypairName | URL | String | O | 키페어 이름 |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| keypair | Body | Object | 키페어 객체 목록 |
-| keypair.public_key | Body | String | 공개키 |
-| keypair.user_id | Body | String | 키페어 소유주 ID |
-| keypair.name | Body | String | 키페어 이름 |
-| keypair.deleted | Body | Boolean | 키페어 삭제 여부 |
-| keypair.created_at | Body | Datetime | 키페어 생성 시각<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.updated_at | Body | Datetime | 키페어 수정 시각<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.deleted_at | Body | Datetime | 키페어 삭제 시각<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.fingerprint | Body | String | 키페어 지문 |
-| keypair.id | Body | Integer | 키페어 ID |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "keypair": {
-    "public_key": "ssh-rsa ... Generated-by-Nova",
-    "user_id": "826a1213b3f746829515486965690dfe",
-    "name": "keypair",
-    "deleted": false,
-    "created_at": "2020-02-07T03:46:48.000000",
-    "updated_at": null,
-    "fingerprint": "SHA256:...",
-    "deleted_at": null,
-    "id": 51
-  }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="createregister-key-pair"></a>
-### 키페어 생성/등록하기
-
-```
-POST /v2/{tenantId}/os-keypairs
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| keypair | Body | Object | O | 키페어 객체 |
-| keypair.name | Body | String | O | 생성 또는 등록할 키페어 이름 |
-| keypair.public_key | Body | String | - | 등록할 공개키. 이 필드가 생략되면 새로운 키페어를 생성합니다. |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "keypair": {
-        "name": "keypair-d20a3d59-9433-4b79-8726-20b431d89c78",
-        "public_key": "ssh-rsa ... Generated-by-Nova"
-    }
-}
-```
-
-</p>
-</details>
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| keypair | Body | Object | 키페어 객체 |
-| keypair.public_key | Body | String | 공개키 |
-| keypair.private_key | Body | String | 비밀키, 새로운 키페어를 생성한 경우에 비밀키를 반환합니다. |
-| keypair.user_id | Body | String | 키페어 소유주 ID |
-| keypair.name | Body | String | 키페어 이름 |
-| keypair.fingerprint | Body | String | 키페어 지문 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "keypair": {
-        "fingerprint": "SHA256:+EZoD ... /DKiGnY4zf5tYrcix0",
-        "name": "keypair",
-        "public_key": "ssh-rsa ... Generated-by-Nova",
-        "user_id": "436f727b7c9142f896ddd56be591dd7f"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="delete-key-pair"></a>
-### 키페어 삭제하기
-```
-DELETE /v2/{tenantId}/os-keypairs/{keypairName}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| keypairName | URL | String | O | 키페어 이름 |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
-
-<a id="instance"></a>
-## 인스턴스
-
-<a id="instance-status"></a>
-### 인스턴스 상태
-
-인스턴스는 다양한 상태를 가지며 상태에 따라 취할 수 있는 동작이 정해져 있습니다. 인스턴스 상태 목록은 다음과 같습니다.
-
-| 상태명              | 설명                                                                                                |
-|-------------------|---------------------------------------------------------------------------------------------------|
-| `ACTIVE` | 인스턴스가 활성 상태인 경우 |
-| `BUILD` | 인스턴스가 생성 중인 경우 |
-| `DELETED` | 인스턴스가 삭제된 경우 |
-| `ERROR` | 직전 인스턴스에 취한 동작이 실패한 경우 |
-| `HARD_REBOOT` | 인스턴스를 강제 재시작한 경우<br> 물리 서버의 전원을 내리고 다시 켜는 것과 동일한 동작 |
-| `MIGRATING` | 인스턴스가 마이그레이션 중인 경우<br> 이는 실시간 마이그레이션(활성 인스턴스 이동) 작업으로 인해 발생함 |
-| `PASSWORD` | 인스턴스에서 비밀번호를 재설정하는 중인 경우 |
-| `PAUSED` | 인스턴스가 일시 정지된 경우<br>일시 정지된 인스턴스는 하이퍼바이저의 메모리에 저장됨 |
-| `REBOOT` | 인스턴스가 소프트 재부팅 상태인 경우<br> 재부팅 명령이 가상머신 운영 체제에 전달됨 |
-| `REBUILD` | 인스턴스를 생성 당시 이미지로부터 새롭게 만들어 내는 상태 |
-| `RESCUE` | 인스턴스를 복구 모드에서 실행 중인 경우 |
-| `RESIZE` | 인스턴스 타입을 변경하거나 인스턴스를 다른 호스트로 옮기는 경우<br>인스턴스가 중지되었다가 다시 시작된 상태 |
-| `REVERT_RESIZE` | 인스턴스 타입을 변경하거나 인스턴스를 다른 호스트로 옮기는 과정에서 실패했을 때 원상태로 돌아가기 위해 복구하는 경우 |
-| `VERIFY_RESIZE` | 인스턴스가 타입 변경 또는 인스턴스를 다른 호스트로 옮기는 과정을 마치고 사용자의 승인을 기다리는 경우<br>NHN Cloud에서는 이 경우 자동으로 `ACTIVE` 상태가 됨 |
-| `SHELVED_OFFLOADED` | 인스턴스가 종료된 경우 |
-| `SHUTOFF` | 인스턴스가 중지된 경우 |
-| `SUSPENDED` | 인스턴스가 관리자에 의해 최대 절전 모드로 진입한 경우 |
-| `UNKNOWN` | 인스턴스의 상태를 알 수 없는 경우<br>`인스턴스가 이 상태로 진입한 경우 관리자에게 문의합니다.` | 
-
-<a id="list-instances"></a>
-### 인스턴스 목록 보기
-
-```
-GET /v2/{tenantId}/servers
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| reservation_id | Query | String | - | 인스턴스 생성 예약 ID. <br>예약 ID를 지정하면 동시에 생성된 인스턴스 목록만 반환함 |
-| changes-since | Query | Datetime | - | 지정된 시각 이후로 변경된 인스턴스 목록을 반환. `YYYY-MM-DDThh:mm:ss`의 형태. |
-| image | Query | UUID | - | 이미지 ID<br>지정된 이미지를 사용한 인스턴스 목록을 반환 |
-| flavor | Query | UUID | - | 인스턴스 타입 ID<br>지정된 타입을 사용한 인스턴스 목록을 반환 |
-| name | Query | String | - | 인스턴스 이름<br>지정된 이름을 가진 인스턴스 목록을 반환, 정규 표현식으로 질의 가능 |
-| status | Query | Enum | - | 인스턴스 상태<br>지정된 상태를 가진 인스턴스 목록을 반환 |
-| limit | Query | Integer | - | 인스턴스 목록 개수<br>지정된 개수 만큼의 인스턴스 목록을 반환 |
-| marker | Query | UUID | - | 목록의 첫번째 인스턴스 UUID<br>정렬 기준에 따라 `marker`로 지정된 인스턴스부터 `limit` 개수 만큼의 인스턴스 목록을 반환 |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| servers | Body | Object | 인스턴스 목록 객체 |
-| id | Body | UUID | 인스턴스 UUID |
-| links | body | Object | 인스턴스 경로 객체 |
-| name | body | String | 인스턴스 이름 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "servers": [
-    {
-      "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "Web-Server"
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="list-instances-with-details"></a>
-### 인스턴스 목록 상세 보기
-
-인스턴스 목록 보기와 동일하게 현재 테넌트에 생성된 인스턴스 목록을 반환합니다. 단, 인스턴스별 상세한 정보가 같이 조회됩니다.
-
-```
-GET /v2/{tenantId}/servers/detail
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-인스턴스 목록 보기와 동일한 요청 형태입니다.
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명                                                                                                                                                                                                        |
-|---|---|---|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| servers | body | Object | 인스턴스 목록 객체                                                                                                                                                                                                |
-| status | body | Enum | 인스턴스 상태                                                                                                                                                                                                   |
-| servers.id | Body | UUID | 인스턴스 ID                                                                                                                                                                                                   |
-| servers.name | Body | String | 인스턴스 이름, 최대 255자                                                                                                                                                                                          |
-| servers.updated | Body | Datetime | 인스턴스 최종 수정 시각, `YYYY-MM-DDThh:mm:ssZ` 형식                                                                                                                                                                  |
-| servers.hostId | Body | String | 인스턴스가 구동 중인 호스트 ID                                                                                                                                                                                        |
-| servers.addresses | Body | Object | 인스턴스 IP 목록 객체. <br>인스턴스에 연결된 포트 수 만큼 목록이 생성됨.                                                                                                                                                             |
-| servers.addresses."Network 이름" | Body | Object | 인스턴스에 연결된 Network별 포트 정보                                                                                                                                                                                  |
-| servers.addresses."Network 이름".OS-EXT-IPS-MAC:mac_addr | Body | String | 인스턴스에 연결된 포트의 MAC 주소                                                                                                                                                                                      |
-| servers.addresses."Network 이름".version | Body | Integer | 인스턴스에 연결된 포트의 IP 버전<br>NHN Cloud는 IPv4만 지원                                                                                                                                                                |
-| servers.addresses."Network 이름".addr | Body | String | 인스턴스에 연결된 포트의 IP 주소                                                                                                                                                                                       |
-| servers.addresses."Network 이름".OS-EXT-IPS:type | Body | Enum | 포트의 IP 주소 타입<br>`fixed` 또는 `floating` 중 하나                                                                                                                                                                |
-| servers.links | Body | Object | 인스턴스 경로 객체                                                                                                                                                                                                |
-| servers.key_name | Body | String | 인스턴스 키페어 이름                                                                                                                                                                                               |
-| servers.image | Body | Object | 인스턴스 이미지 객체                                                                                                                                                                                               |
-| servers.image.id | Body | UUID | 인스턴스 이미지 ID                                                                                                                                                                                               |
-| servers.image.links | Body | Object | 인스턴스 이미지 경로 객체                                                                                                                                                                                            |
-| servers.OS-EXT-STS:task_state | Body | String | 인스턴스 작업 상태<br>인스턴스에 동작을 가했을 때 동작 진행 상태를 알려줌                                                                                                                                                               |
-| servers.OS-EXT-STS:vm_state | Body | String | 인스턴스 현재 상태                                                                                                                                                                                                |
-| servers.OS-SRV-USG:launched_at | Body | Datetime | 인스턴스 마지막 부팅 시각<br>`YYYY-MM-DDThh:mm:ss.ssssss` 형식                                                                                                                                                         |
-| servers.OS-SRV-USG:terminated_at | Body | Datetime | 인스턴스 삭제 시각<br>`YYYY-MM-DDThh:mm:ssZ` 형식                                                                                                                                                                   |
-| servers.flavor | Body | Object | 인스턴스 타입 정보 객체                                                                                                                                                                                             |
-| servers.flavor.id | Body | UUID | 인스턴스 타입 ID                                                                                                                                                                                                |
-| servers.flavor.links | Body | Object | 인스턴스 타입 경로 객체                                                                                                                                                                                             |
-| servers.security_groups | Body | Object | 인스턴스에 할당된 보안 그룹 목록 객체                                                                                                                                                                                     |
-| servers.security_groups.name | Body | String | 인스턴스에 할당된 보안 그룹 이름                                                                                                                                                                                        |
-| servers.user_id | Body | String | 인스턴스를 생성한 사용자 ID                                                                                                                                                                                          |
-| servers.created | Body | Datetime | 인스턴스 생성 시각. `YYYY-MM-DDThh:mm:ssZ` 형식                                                                                                                                                                     |
-| servers.tenant_id | Body | String | 인스턴스가 속한 테넌트 ID                                                                                                                                                                                           |
-| servers.os-extended-volumes:volumes_attached | Body | Object | 인스턴스에 연결된 추가 블록 스토리지 목록 객체                                                                                                                                                                                |
-| servers.os-extended-volumes:volumes_attached.id | Body | UUID | 인스턴스에 연결된 추가 블록 스토리지 ID                                                                                                                                                                                   |
-| servers.OS-EXT-STS:power_state | Body | Integer | 인스턴스의 전원 상태<br>- `1`: On<br>- `4`: Off                                                                                                                                                                    |
-| servers.metadata | Body | Object | 인스턴스 메타데이터 객체<br>인스턴스 메타데이터를 키-값 쌍으로 보관                                                                                                                                                                   |
-| server.NHN-EXT-ATTR:ephemeral_disk_size | Body | Integer | 인스턴스에 연결된 추가 로컬 블록 스토리지 크기                                                                                                                                                                   |
-| server.NHN-EXT-ATTR:protect | Body | Boolean | 인스턴스 삭제 보호 여부                                                                                                                                                                   |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "servers": [
-    {
-      "status": "ACTIVE",
-      "updated": "2020-02-25T01:22:24Z",
-      "hostId": "078d06f898889699f8731d030812e43d2c417edb2cf641dda598c7bd",
-      "addresses": {
-        "vpc2": [
-          {
-            "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:54:a7:64",
-            "version": 4,
-            "addr": "172.16.0.40",
-            "OS-EXT-IPS:type": "fixed"
-          }
-        ]
-      },
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "bookmark"
-        }
-      ],
-      "key_name": "access-key",
-      "image": {
-        "id": "8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-        "links": [
-          {
-            "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/images/8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-            "rel": "bookmark"
-          }
-        ]
-      },
-      "OS-EXT-STS:task_state": null,
-      "OS-EXT-STS:vm_state": "active",
-      "OS-SRV-USG:launched_at": "2020-02-25T01:22:23.000000",
-      "flavor": {
-        "id": "35a73b57-58a7-434d-aa08-5249aaa95b3e",
-        "links": [
-          {
-            "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/35a73b57-58a7-434d-aa08-5249aaa95b3e",
-            "rel": "bookmark"
-          }
-        ]
-      },
-      "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-      "security_groups": [
-        {
-          "name": "default"
-        }
-      ],
-      "OS-SRV-USG:terminated_at": null,
-      "OS-EXT-AZ:availability_zone": "kr-pub-b",
-      "user_id": "b6ab578c20c94306ac1f41ffc4415b29",
-      "name": "Web-Server",
-      "created": "2020-02-25T01:15:46Z",
-      "tenant_id": "6cdebe3eb0094910bc41f1d42ebe4cb7",
-      "os-extended-volumes:volumes_attached": [
-        {
-          "id": "90712f4f-2faa-4e4f-8eb1-9313a8595570"
-        }
-      ],
-      "accessIPv4": "",
-      "accessIPv6": "",
-      "progress": 0,
-      "OS-EXT-STS:power_state": 1,
-      "config_drive": "",
-      "metadata": {
-        "os_distro": "Windows",
-        "description": "Windows 2012 R2 STD (2020.02.18)",
-        "os_version": "2012 R2 STD",
-        "project_domain": "NORMAL",
-        "hypervisor_type": "qemu",
-        "monitoring_agent": "sysmon",
-        "image_name": "Windows 2012 R2 STD (2020.02.18) EN",
-        "volume_size": "50",
-        "os_architecture": "amd64",
-        "login_username": "Administrator",
-        "os_type": "Windows",
-        "tc_env": "sysmon"
-      },
-      "NHN-EXT-ATTR:ephemeral_disk_size": 0,
-      "NHN-EXT-ATTR:protect": false
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="get-instance"></a>
-### 인스턴스 보기
-
-```
-GET /v2/{tenantId}/servers/{serverId}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명                                                                                                                                                                                                       |
-|---|---|---|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| server | body | Object | 인스턴스 객체                                                                                                                                                                                                  |
-| status | body | Enum | 인스턴스 상태                                                                                                                                                                                                  |
-| server.id | Body | UUID | 인스턴스 ID                                                                                                                                                                                                  |
-| server.name | Body | String | 인스턴스 이름, 최대 255자                                                                                                                                                                                         |
-| server.updated | Body | Datetime | 인스턴스 최종 수정 시각, `YYYY-MM-DDThh:mm:ssZ` 형식                                                                                                                                                                 |
-| server.hostId | Body | String | 인스턴스가 구동 중인 호스트 ID                                                                                                                                                                                       |
-| server.addresses | Body | Object | 인스턴스 IP 목록 객체 <br>인스턴스에 연결된 포트 수 만큼 목록이 생성됨                                                                                                                                                              |
-| server.addresses."Network 이름" | Body | Object | 인스턴스에 연결된 Network별 포트 정보                                                                                                                                                                                 |
-| server.addresses."Network 이름".OS-EXT-IPS-MAC:mac_addr | Body | String | 인스턴스에 연결된 포트의 MAC 주소                                                                                                                                                                                     |
-| server.addresses."Network 이름".version | Body | Integer | 인스턴스에 연결된 포트의 IP 버전<br>NHN Cloud는 IPv4만 지원                                                                                                                                                               |
-| server.addresses."Network 이름".addr | Body | String | 인스턴스에 연결된 포트의 IP 주소                                                                                                                                                                                      |
-| server.addresses."Network 이름".OS-EXT-IPS:type | Body | Enum | 포트의 IP 주소 타입<br>`fixed` 또는 `floating` 중 하나                                                                                                                                                               |
-| server.links | Body | Object | 인스턴스 경로 객체                                                                                                                                                                                               |
-| server.key_name | Body | String | 인스턴스 키페어 이름                                                                                                                                                                                              |
-| server.image | Body | Object | 인스턴스 이미지 객체                                                                                                                                                                                              |
-| server.image.id | Body | UUID | 인스턴스 이미지 ID                                                                                                                                                                                              |
-| server.image.links | Body | Object | 인스턴스 이미지 경로 객체                                                                                                                                                                                           |
-| server.OS-EXT-STS:task_state | Body | String | 인스턴스 작업 상태<br>인스턴스에 동작을 가했을 때 동작 진행 상태를 알림                                                                                                                                                               |
-| server.OS-EXT-STS:vm_state | Body | String | 인스턴스 현재 상태                                                                                                                                                                                               |
-| server.OS-SRV-USG:launched_at | Body | Datetime | 인스턴스 마지막 부팅 시각<br>`YYYY-MM-DDThh:mm:ss.ssssss` 형식                                                                                                                                                        |
-| server.OS-SRV-USG:terminated_at | Body | Datetime | 인스턴스 삭제 시각<br>`YYYY-MM-DDThh:mm:ssZ` 형식                                                                                                                                                                  |
-| server.flavor | Body | Object | 인스턴스 타입 정보 객체                                                                                                                                                                                            |
-| server.flavor.id | Body | UUID | 인스턴스 타입 ID                                                                                                                                                                                               |
-| server.flavor.links | Body | Object | 인스턴스 타입 경로 객체                                                                                                                                                                                            |
-| server.security_groups | Body | Object | 인스턴스에 할당된 보안 그룹 목록 객체                                                                                                                                                                                    |
-| server.security_groups.name | Body | String | 인스턴스에 할당된 보안 그룹 이름                                                                                                                                                                                       |
-| server.user_id | Body | String | 인스턴스를 생성한 사용자 ID                                                                                                                                                                                         |
-| server.created | Body | Datetime | 인스턴스 생성 시각, `YYYY-MM-DDThh:mm:ssZ` 형식                                                                                                                                                                    |
-| server.tenant_id | Body | String | 인스턴스가 속한 테넌트 ID                                                                                                                                                                                          |
-| server.os-extended-volumes:volumes_attached | Body | Object | 인스턴스에 연결된 추가 블록 스토리지 목록 객체                                                                                                                                                                               |
-| server.os-extended-volumes:volumes_attached.id | Body | UUID | 인스턴스에 연결된 추가 블록 스토리지 ID                                                                                                                                                                                  |
-| server.OS-EXT-STS:power_state | Body | Integer | 인스턴스의 전원 상태<br>- `1`: On<br>- `4`: Off                                                                                                                                                                   |
-| server.metadata | Body | Object | 인스턴스 메타데이터 객체<br>인스턴스 메타데이터를 키-값 쌍으로 보관                                                                                                                                                                  |
-| server.NHN-EXT-ATTR:ephemeral_disk_size | Body | Integer | 인스턴스에 연결된 추가 로컬 블록 스토리지 크기                                                                                                                                                                  |
-| server.NHN-EXT-ATTR:protect | Body | Boolean | 인스턴스 삭제 보호 여부                                                                                                                                                                  |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "server": {
-    "status": "ACTIVE",
-    "updated": "2020-02-25T01:22:24Z",
-    "hostId": "078d06f898889699f8731d030812e43d2c417edb2cf641dda598c7bd",
-    "addresses": {
-      "vpc2": [
-        {
-          "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:54:a7:64",
-          "version": 4,
-          "addr": "172.16.0.40",
-          "OS-EXT-IPS:type": "fixed"
-        }
-      ]
-    },
-    "links": [
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-        "rel": "self"
-      },
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-        "rel": "bookmark"
+        "domain_name": "test.test.com"
       }
     ],
-    "key_name": "access-key",
-    "image": {
-      "id": "8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/images/8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-          "rel": "bookmark"
-        }
-      ]
-    },
-    "OS-EXT-STS:task_state": null,
-    "OS-EXT-STS:vm_state": "active",
-    "OS-SRV-USG:launched_at": "2020-02-25T01:22:23.000000",
-    "flavor": {
-      "id": "35a73b57-58a7-434d-aa08-5249aaa95b3e",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/35a73b57-58a7-434d-aa08-5249aaa95b3e",
-          "rel": "bookmark"
-        }
-      ]
-    },
-    "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-    "security_groups": [
-      {
-        "name": "default"
-      }
-    ],
-    "OS-SRV-USG:terminated_at": null,
-    "OS-EXT-AZ:availability_zone": "kr-pub-b",
-    "user_id": "b6ab578c20c94306ac1f41ffc4415b29",
-    "name": "Web-Server",
-    "created": "2020-02-25T01:15:46Z",
-    "tenant_id": "6cdebe3eb0094910bc41f1d42ebe4cb7",
-    "os-extended-volumes:volumes_attached": [
-      {
-        "id": "90712f4f-2faa-4e4f-8eb1-9313a8595570"
-      }
-    ],
-    "accessIPv4": "",
-    "accessIPv6": "",
-    "progress": 0,
-    "OS-EXT-STS:power_state": 1,
-    "config_drive": "",
-    "metadata": {
-      "os_distro": "Windows",
-      "description": "Windows 2012 R2 STD (2020.02.18)",
-      "os_version": "2012 R2 STD",
-      "project_domain": "NORMAL",
-      "hypervisor_type": "qemu",
-      "monitoring_agent": "sysmon",
-      "image_name": "Windows 2012 R2 STD (2020.02.18) EN",
-      "volume_size": "50",
-      "os_architecture": "amd64",
-      "login_username": "Administrator",
-      "os_type": "Windows",
-      "tc_env": "sysmon"
-    },
-    "NHN-EXT-ATTR:ephemeral_disk_size": 0,
-    "NHN-EXT-ATTR:protect": false
+    "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+    "service_provider": "csp",
+    "create_time": "2023-08-31 02:11:09",
+    "project_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "port_id": "182a31be-9e29-400d-983b-f701cf9b4bbc",
+    "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+    "name": "sgw_test"
   }
 }
 ```
 
-</p>
 </details>
 
 ---
-
-<a id="create-instance"></a>
-### 인스턴스 생성하기
-
-인스턴스를 생성합니다.
-
-인스턴스 생성 API를 호출한 후에 인스턴스 조회를 통해 인스턴스 상태를 확인합니다.
-
-* 인스턴스의 상태가 **ACTIVE**가 되면 인스턴스가 정상적으로 생성 완료됩니다.
-* 인스턴스 상태가 **BUILDING**에서 오래 지속되거나 **ERROR**인 경우, 인스턴스 생성 매개 변수를 확인하고 다시 생성을 시도합니다.
-
-Windows 인스턴스는 안정적인 동작을 위해 다음과 같은 생성 제약 조건이 있습니다.
-
-* RAM이 2GB 이상인 인스턴스 타입을 사용합니다.
-* 50GB 이상의 루트 블록 스토리지가 필요합니다.
-* U2 타입은 Windows 이미지를 사용할 수 없습니다.
-
-루트 블록 스토리지 크기는 Linux는 10GB, Windows는 50GB부터 지정할 수 있습니다.
-
-인스턴스 생성 요청 시 스케줄러 힌트를 통해 배치 정책을 할당할 수 있습니다.
-
-
+<a id="create-a-service-gateway"></a>
+### 서비스 게이트웨이 생성하기 { #create-a-service-gateway }
 
 ```
-POST /v2/{tenantId}/servers
+POST /v2.0/gateways/servicegateways
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-a-service-gateway-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
 | tokenId | Header | String | O | 토큰 ID |
-| server | body | Object | O | 서버 객체 |
-| server.security_groups | body | Object | - | 보안 그룹 목록 객체<br>생략할 경우 `default` 그룹이 추가됨 |
-| server.security_groups.name | body | String | - | **(조건부 필수)** 인스턴스에 추가할 보안 그룹 이름 |
-| server.user_data | body | String | - | 인스턴스 부팅 후 실행할 스크립트 및 설정<br>base64 인코딩된 문자열로 65535 바이트까지 허용 |
-| server.availability_zone | body | String | - | 인스턴스를 생성할 가용성 영역<br>지정하지 않을 경우 임의로 선택됨<br>루트 블록 스토리지의 소스 타입이 `volume`, `snapshot`인 경우 원본 블록 스토리지의 가용성 영역과 동일하게 설정 필요 |
-| server.imageRef | Body | String | - | 인스턴스를 생성할 때 사용할 이미지 ID<br>루트 블록 스토리지의 소스 타입이 `volume`, `snapshot`인 경우 설정 불필요 |
-| server.flavorRef | Body | String | O | 인스턴스를 생성할 때 사용할 인스턴스 타입 ID |
-| server.networks | Body | Object | O | 인스턴스를 생성할 때 사용할 네트워크 정보 객체<br>지정한 개수만큼 NIC가 추가되며, 네트워크 ID, 서브넷 ID, 포트 ID, 고정 IP 중 하나로 지정 |
-| server.networks.uuid | Body | UUID | - | **(조건부 필수)** 인스턴스를 생성할 때 사용할 네트워크 ID |
-| server.networks.subnet | Body | UUID | - | **(조건부 필수)** 인스턴스를 생성할 때 사용할 네트워크의 서브넷 ID |
-| server.networks.port | Body | UUID | - | **(조건부 필수)** 인스턴스를 생성할 때 사용할 포트 ID<br>포트 ID 지정 시 요청한 보안 그룹은 지정한 기존 포트에 적용되지 않음 |
-| server.networks.fixed_ip | Body | String | - | **(조건부 필수)** 인스턴스를 생성할 때 사용할 고정 IP |
-| server.name | Body | String | O | 인스턴스의 이름<br>영문자 기준 255자까지 허용되지만, Windows 이미지의 경우 15자 이하여야 함 |
-| server.metadata | Body | Object | - | 인스턴스에 추가할 메타데이터 객체<br>최대 길이 255자 이하의 키-값 쌍 |
-| server.block_device_mapping_v2 | Body | Object | O | 인스턴스의 블록 스토리지 정보 객체 |
-| server.block_device_mapping_v2.source_type | Body | Enum | O | 생성할 블록 스토리지 원본의 타입<br>- `image`: 이미지를 이용해 블록 스토리지 생성<br>- `blank`: 빈 블록 스토리지 생성(루트 블록 스토리지로 사용할 수 없음)<br>- `volume`: 기존에 생성된 블록 스토리지를 사용<br>- `snapshot`: 스냅숏을 이용해 블록 스토리지 생성 |
-| server.block_device_mapping_v2.uuid | Body | String | - | **(조건부 필수)** 블록 스토리지의 소스 타입에 따라 다르게 설정 필요<br>- 소스 타입이 `image`인 경우 이미지 ID를 설정<br>- 소스 타입이 `volume`인 경우 기존에 생성된 블록 스토리지 ID를 설정<br>- 소스 타입이 `snapshot`인 경우 스냅숏 ID를 설정<br>- 소스 타입이 `blank`인 경우 설정 불필요<br>루트 블록 스토리지인 경우 반드시 부팅 가능한 원본이어야 함 |
-| server.block_device_mapping_v2.boot_index | Body | Integer | O | 지정한 블록 스토리지의 부팅 순서<br>-`0`이면 루트 블록 스토리지<br>- 그 외는 추가 블록 스토리지<br>크기가 클수록 부팅 순서는 낮아짐 |
-| server.block_device_mapping_v2.destination_type | Body | Enum | O | 인스턴스 블록 스토리지의 위치, 인스턴스 타입에 따라 다르게 설정 필요.<br>- `local`: GPU 인스턴스, U2 인스턴스 타입을 이용하는 경우<br>- `volume`: 그 외의 인스턴스 타입을 이용하는 경우 |
-| server.block_device_mapping_v2.volume_type | Body | Enum    | - | **(조건부 필수)** 생성할 블록 스토리지의 타입<br>블록 스토리지의 소스 타입이 `volume`, `snapshot`인 경우 설정 불필요<br>`사용자 가이드 > Storage > Block Storage > API v2 가이드`에서 **블록 스토리지 타입 목록 보기** 응답의 `name` 참고 |
-| server.block_device_mapping_v2.delete_on_termination | Body | Boolean | - | 인스턴스 삭제 시 블록 스토리지 처리 여부, 기본값은 `false`.<br>`true`면 삭제, `false`면 유지 |
-| server.block_device_mapping_v2.volume_size | Body | Integer | - | **(조건부 필수)** 생성할 블록 스토리지 크기<br>블록 스토리지의 소스 타입에 따라 다르게 설정 필요<br>- 소스 타입이 `volume`인 경우 설정 불필요<br>- 소스 타입이 `snapshot`인 경우 원본 블록 스토리지 크기보다 같거나 크게 설정<br>`GB` 단위<br>U2 인스턴스 타입을 사용하고 루트 블록 스토리지를 생성하는 경우에는 U2 인스턴스 타입에 명시된 크기로 생성되며 이 값은 무시됨<br>인스턴스 타입에 따라 생성할 수 있는 루트 블록 스토리지의 크기가 다르므로 자세한 내용은 `사용자 가이드 > Compute > Instance > 콘솔 사용 가이드 > 인스턴스 생성 > 블록 스토리지 크기`를 참고 |
-| server.block_device_mapping_v2.nhn_encryption                   | Body | Object | - | **(조건부 필수)** 블록 스토리지의 암호화 정보                                                                                                                                                                                        |
-| server.block_device_mapping_v2.nhn_encryption.skm_appkey        | Body | String | - | **(조건부 필수)** Secure Key Manager 서비스의 앱키                                                                                                                                                                              |
-| server.block_device_mapping_v2.nhn_encryption.skm_key_id        | Body | String | - | **(조건부 필수)** 암호화 블록 스토리지 생성에 사용할 Secure Key Manager의 대칭 키 ID                                                                                                                                  |
-| server.key_name | Body | String | O | 인스턴스 접속에 사용할 키페어 |
-| server.min_count | Body | Integer | - | 현재 요청으로 생성할 인스턴스 개수의 최솟값.<br>기본값은 1.<br>블록 스토리지의 소스 타입이 `volume`인 경우 `1`로만 설정 가능 |
-| server.max_count | Body | Integer | - | 현재 요청으로 생성할 인스턴스 개수의 최댓값.<br>기본값은 min_count, 최댓값은 10.<br>블록 스토리지의 소스 타입이 `volume`인 경우 `1`로만 설정 가능 |
-| server.return_reservation_id | Body | Boolean | - | 인스턴스 생성 요청 예약 ID.<br>True로 지정하면 인스턴스 생성 정보 대신 예약 ID를 반환.<br>기본값은 False |
-| os:scheduler_hints | Body | Object | - | 스케줄러 힌트 객체 |
-| os:scheduler_hints.group | Body | String | - | 배치 정책 ID |
+| servicegateway | Body | Object | O | 서비스 게이트웨이 정보 객체 |
+| servicegateway.name | Body | String | - | 서비스 게이트웨이 이름 |
+| servicegateway.description | Body | String | - | 서비스 게이트웨이 설명 |
+| servicegateway.network_id | Body | UUID | O | VPC ID |
+| servicegateway.subnet_id | Body | UUID | O | 서브넷 ID |
+| servicegateway.fixed_ip | Body | String | - | 서비스 게이트웨이 IP 주소 |
+| servicegateway.include_gateway_identity| Body | Boolean | - | NAT IP 주소 고정 사용 여부 |
+| servicegateway.service_endpoint_id | Body | UUID | O | 서비스 엔드포인트(또는 사용자 정의 엔드포인트) ID |
+
+> 사용자 정의 엔드포인트에 연결하려면 게시자에게 전달받은 `service_name`으로 [서비스 엔드포인트 목록 보기](#get-a-list-of-service-endpoints)를 조회해 얻은 `service_endpoint_id`를 사용합니다. 연결 유형(`service_provider`)은 연결된 엔드포인트에서 자동으로 결정되며 요청 값으로 지정하지 않습니다.
+
 
 <details><summary>예시</summary>
-<p>
 
 ```json
 {
-  "server": {
-    "name": "DB-Master",
-    "imageRef": "9956f822-29c9-4f81-9410-0c392d9c8c24",
-    "flavorRef": "a4b6a0f7-aeff-4d78-a8d5-7de9f007012d",
-    "networks": [{
-      "subnet": "b83863ff-0355-4c73-8c10-0bdf66a69aab"
-    }],
-    "availability_zone": "kr-pub-a",
-    "key_name": "access-key",
-    "max_count": 1,
-    "min_count": 1,
-    "block_device_mapping_v2": [{
-      "source_type": "image",
-      "uuid": "9956f822-29c9-4f81-9410-0c392d9c8c24",
-      "boot_index": 0,
-      "volume_size": 1000,
-      "destination_type": "volume",
-      "delete_on_termination": 1
-    }],
-    "security_groups": [{
-      "name": "default"
-    }]
-  },
-  "os:scheduler_hints": {
-    "group": "f878bd5b-49a7-499f-966e-1eceb21cb06b"
+  "servicegateway": {
+    "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+    "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+    "fixed_ip": "192.168.0.82",
+    "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+    "name": "sgw_test",
+    "description": "test"
   }
 }
 ```
 
-</p>
 </details>
 
+<a id="create-a-service-gateway-response"></a>
 #### 응답
 
-| 이름 | 종류 | 형식 | 설명                                                                                                                                                                                                           |
-|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| server.security_groups.name | Body | String | 생성한 인스턴스의 보안 그룹 이름                                                                                                                                                                                           |
-| server.id | Body | UUID | 생성한 인스턴스의 ID                                                                                                                                                                                                 |
+| 이름 | 종류 | 형식 | 설명 |
+|---|---|---|---|
+| servicegateway | Body | Object | 서비스 게이트웨이 정보 객체 목록 |
+| servicegateway.id | Body | UUID | 서비스 게이트웨이 ID |
+| servicegateway.name | Body | String | 서비스 게이트웨이 이름 |
+| servicegateway.port_id | Body | UUID | 포트 ID |
+| servicegateway.tenant_id | Body | String | 테넌트 ID |
+| servicegateway.network_id | Body | UUID | VPC ID |
+| servicegateway.subnet_id | Body | UUID | 서브넷 ID |
+| servicegateway.fixed_ip | Body | String | 서비스 게이트웨이 IP 주소 |
+| servicegateway.include_gateway_identity| Body | Boolean | NAT IP 주소 고정 사용 여부 |
+| servicegateway.service_endpoint_id | Body | UUID | 서비스 엔드포인트(또는 사용자 정의 엔드포인트) ID |
+| servicegateway.service_provider | Body | String | 연결 유형(연결된 엔드포인트의 값). `csp`=서비스 엔드포인트 / `user`=사용자 정의 엔드포인트 |
+| servicegateway.api_endpoints | Body | Array | API 엔드포인트 정보 객체 목록 |
+| servicegateway.api_endpoints.domain_name | Body | String | API 엔드포인트 도메인 |
+| servicegateway.description | Body | String | 서비스 게이트웨이 설명 |
+
 
 <details><summary>예시</summary>
-<p>
 
 ```json
 {
-  "server": {
-    "security_groups": [
+  "servicegateway": {
+    "status": "BUILD",
+    "include_gateway_identity": false,
+    "description": "",
+    "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+    "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "fixed_ip": "192.168.0.82",
+    "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+    "api_endpoints": [
       {
-        "name": "default"
+        "domain_name": "test.test.com"
       }
     ],
-    "id": "3a005d5b-63cf-4493-bfc6-49db990b5b50",
-    "links": [
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/3a005d5b-63cf-4493-bfc6-49db990b5b50",
-        "rel": "self"
-      },
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/3a005d5b-63cf-4493-bfc6-49db990b5b50",
-        "rel": "bookmark"
-      }
-    ]
+    "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+    "service_provider": "csp",
+    "create_time": "2023-08-31 02:11:09",
+    "project_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "port_id": "182a31be-9e29-400d-983b-f701cf9b4bbc",
+    "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+    "name": "sgw_test"
   }
 }
 ```
 
-</p>
 </details>
 
 ---
-
-<a id="modify-instance"></a>
-### 인스턴스 수정하기
-생성된 인스턴스를 수정합니다. 변경할 수 있는 속성은 일부 항목으로 제한됩니다.
+<a id="modify-a-service-gateway"></a>
+### 서비스 게이트웨이 수정하기 { #modify-a-service-gateway }
 
 ```
-PUT /v2/{tenantId}/servers/{serverId}
+PUT /v2.0/gateways/servicegateways/{serviceGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-a-service-gateway-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
 | tokenId | Header | String | O | 토큰 ID |
-| server | Body | Object | O | 인스턴스 변경 요청 객체 |
-| server.name | Body | String | - | 인스턴스의 새로운 이름 |
+| serviceGatewayId | URL | UUID | O | 서비스 게이트웨이 ID |
+| servicegateway | Body | Object | O | 서비스 게이트웨이 정보 객체 |
+| servicegateway.name | Body | String | - | 서비스 게이트웨이 이름 |
+| servicegateway.description | Body | String | - | 서비스 게이트웨이 설명 |
+
+> 연결 유형(`service_provider`)은 연결된 엔드포인트의 값을 보여주는 읽기 전용 항목이며, 서비스 게이트웨이 수정으로 변경할 수 없습니다.
 
 <details><summary>예시</summary>
-<p>
 
 ```json
 {
-    "server": {
-        "name": "new-server-test"
-    }
-}
-```
-
-</p>
-</details>
-
-#### 응답
-인스턴스 보기와 동일합니다.
-
----
-
-<a id="delete-instance"></a>
-### 인스턴스 삭제하기
-생성된 인스턴스를 삭제합니다.
-
-```
-DELETE /v2/{tenantId}/servers/{serverId}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 삭제할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-<a id="manage-block-storage-attachment"></a>
-## 블록 스토리지 연결 관리
-
-<a id="list-additional-block-storage-attached-to-the-instance"></a>
-### 인스턴스에 연결된 블록 스토리지 목록 보기
-```
-GET /v2/{tenantId}/servers/{serverId}/os-volume_attachments
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| limit | Query | Integer | - | 조회할 목록 개수 |
-| offset | Query | Integer | - | 반환할 목록의 시작점<br>전체 목록 중 offset번째 블록 스토리지부터 반환 |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| volumeAttachments | Body | Array | 연결 정보 객체 목록 |
-| volumeAttachments.device | Body | String | 인스턴스의 블록 스토리지 이름<br>예) `/dev/vdb` |
-| volumeAttachments.id | Body | UUID | 연결 정보 ID |
-| volumeAttachments.serverId | Body | UUID | 인스턴스 ID |
-| volumeAttachments.volumeId | Body | UUID | 블록 스토리지 ID |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "volumeAttachments": [
-        {
-            "device": "/dev/vda",
-            "id": "227cc671-f30b-4488-96fd-7d0bf13648d8",
-            "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-            "volumeId": "227cc671-f30b-4488-96fd-7d0bf13648d8"
-        },
-        {
-            "device": "/dev/vdb",
-            "id": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113",
-            "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-            "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="list-additional-block-storage-attached-to-the-instance"></a>
-### 인스턴스에 연결된 블록 스토리지 보기
-```
-GET /v2/{tenantId}/servers/{serverId}/os-volume_attachments/{volumeId}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 인스턴스 ID |
-| volumeId | URL | UUID | O | 조회할 블록 스토리지 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| volumeAttachment | Body | Object | 연결 정보 객체 |
-| volumeAttachment.device | Body | String | 인스턴스의 블록 스토리지 이름<br>예) `/dev/vdb` |
-| volumeAttachment.id | Body | UUID | 연결 정보 ID |
-| volumeAttachment.serverId | Body | UUID | 인스턴스 ID |
-| volumeAttachment.volumeId | Body | UUID | 블록 스토리지 ID |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "volumeAttachment": {
-        "device": "/dev/sdb",
-        "id": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113",
-        "serverId": "1ad6852e-6605-4510-b639-d0bff864b49a",
-        "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="attach-additional-block-storage-to-the-instance"></a>
-### 인스턴스에 추가 블록 스토리지 연결하기
-```
-POST /v2/{tenantId}/servers/{serverId}/os-volume_attachments
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| volumeAttachment | Body | Object | O | 블록 스토리지 연결 요청 객체 |
-| volumeAttachment.volumeId | Body | UUID | O | 연결할 블록 스토리지 ID |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "volumeAttachment": {
-      "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
+  "servicegateway": {
+    "name": "sgw_test1",
+    "description": "test1"
   }
 }
 ```
 
-</p>
 </details>
 
+<a id="modify-a-service-gateway-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| volumeAttachment | Body | Object | 연결 정보 객체 |
-| volumeAttachment.device | Body | String | 인스턴스의 블록 스토리지 이름<br>예) `/dev/vdb` |
-| volumeAttachment.id | Body | UUID | 연결 정보 ID |
-| volumeAttachment.serverId | Body | UUID | 인스턴스 ID |
-| volumeAttachment.volumeId | Body | UUID | 블록 스토리지 ID |
+| servicegateway | Body | Object | 서비스 게이트웨이 정보 객체 |
+| servicegateway.id | Body | UUID | 서비스 게이트웨이 ID |
+| servicegateway.name | Body | String | 서비스 게이트웨이 이름 |
+| servicegateway.port_id | Body | UUID | 포트 ID |
+| servicegateway.tenant_id | Body | String | 테넌트 ID |
+| servicegateway.network_id | Body | UUID | VPC ID |
+| servicegateway.subnet_id | Body | UUID | 서브넷 ID |
+| servicegateway.fixed_ip | Body | String | 서비스 게이트웨이 IP 주소 |
+| servicegateway.include_gateway_identity| Body | Boolean | NAT IP 주소 고정 사용 여부 |
+| servicegateway.service_endpoint_id | Body | UUID | 서비스 엔드포인트(또는 사용자 정의 엔드포인트) ID |
+| servicegateway.service_provider | Body | String | 연결 유형(연결된 엔드포인트의 값). `csp`=서비스 엔드포인트 / `user`=사용자 정의 엔드포인트 |
+| servicegateway.api_endpoints | Body | Array | API 엔드포인트 정보 객체 목록 |
+| servicegateway.api_endpoints.domain_name | Body | String | API 엔드포인트 도메인 |
+| servicegateway.description | Body | String | 서비스 게이트웨이 설명 |
+
 
 <details><summary>예시</summary>
-<p>
 
 ```json
 {
-    "volumeAttachment": {
-        "device": "/dev/vdc",
-        "id": "227cc671-f30b-4488-96fd-7d0bf13648d8",
-        "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-        "volumeId": "227cc671-f30b-4488-96fd-7d0bf13648d8"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="detach-block-storage-from-the-instance"></a>
-### 인스턴스 블록 스토리지 연결 끊기
-```
-DELETE /v2/{tenantId}/servers/{serverId}/os-volume_attachments/{volumeId}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 인스턴스 ID |
-| volumeId | URL | UUID | O | 연결을 끊을 블록 스토리지 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-<a id="additional-instance-features"></a>
-## 인스턴스 추가 기능
-NHN Cloud는 다음과 같은 인스턴스 제어 및 부가 기능을 제공합니다.
-
-* 인스턴스 시작, 중지, 종료, 재시작
-* 인스턴스 타입 변경
-* 인스턴스 이미지 생성
-* 보안 그룹 추가 및 삭제
-
-<a id="start-stopped-instance"></a>
-### 중지된 인스턴스 시작
-
-중지된 인스턴스를 다시 시작하고 상태를 **ACTIVE**로 변경합니다. 이 API를 호출하려면 인스턴스의 상태가 **SHUTOFF**여야 합니다.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| os-start | Body | none | O | 인스턴스 시작 요청 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "os-start" : null
-}
-```
-
-</p>
-</details>
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-<a id="start-terminated-instance"></a>
-### 종료된 인스턴스 시작
-
-종료된 인스턴스를 다시 시작하고 상태를 **ACTIVE**로 변경합니다. 이 API를 호출하려면 인스턴스의 상태가 **SHELVED_OFFLOADED**여야 합니다.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|--|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| unshelve | Body | none | O | 인스턴스 시작 요청 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "unshelve" : null
-}
-```
-
-</p>
-</details>
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-<a id="stop-instance"></a>
-### 인스턴스 중지
-
-인스턴스를 중지하고 상태를 **SHUTOFF**로 변경합니다. 이 API를 호출하려면 인스턴스의 상태가 **ACTIVE** 또는 **ERROR**여야 합니다.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| os-stop | Body | none | O | 인스턴스 중지 요청 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "os-stop" : null
-}
-```
-
-</p>
-</details>
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-### 인스턴스 종료
-
-인스턴스를 종료하고 상태를 **SHELVED_OFFLOADED**로 변경합니다. 이 API를 호출하려면 인스턴스의 상태가 **ACTIVE**여야 합니다.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명          |
-|---|---|---|---|-------------|
-| tenantId | URL | String | O | 테넌트 ID      |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID       |
-| shelve | Body | none | O | 인스턴스 종료 요청  |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "shelve" : null
-}
-```
-
-</p>
-</details>
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-### 인스턴스 재시작
-
-인스턴스를 재시작합니다. 재시작 방식은 **SOFT**와 **HARD**로 나눌 수 있습니다.
-
-* **SOFT** 방식: **"우아한 연결 중지(Graceful shutdown)"**를 통해 인스턴스를 중지하고 재시작합니다. 인스턴스가 **ACTIVE** 상태여야 합니다.
-* **HARD** 방식: 강제 중지 후 인스턴스를 재시작합니다. 물리 서버의 전원을 끄고 다시 켜는 것과 동일한 동작입니다. 인스턴스가 다음 상태일 때만 강제로 중지할 수 있습니다.
-    * **ACTIVE**
-    * **ERROR**
-    * **HARD_REBOOT**
-    * **PAUSED**
-    * **REBOOT**
-    * **SHUTOFF**
-    * **SUSPENDED**
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| reboot | Body | Object | O | 인스턴스 재부팅 요청 객체 |
-| reboot.type | Body | Enum | O | 재부팅 방식, **SOFT** 또는 **HARD** |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "reboot" : {
-    "type": "SOFT"
-  }
-}
-```
-
-</p>
-</details>
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-### 인스턴스 타입 변경
-
-인스턴스 타입을 변경합니다. 인스턴스가 **ACTIVE**이거나 **SHUTOFF** 상태일 때만 인스턴스 타입 변경할 수 있습니다. 인스턴스의 상태가 **ACTIVE**인 경우에는 인스턴스 타입 변경 과정에서 인스턴스는 중지되고 다시 시작됩니다.
-
-사용하는 이미지나 인스턴스 타입에 따라 변경할 수 있는 타입이 제한될 수 있습니다. 자세한 변경 제약 사항은 콘솔 사용자 가이드를 참고합니다.
-
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명                                                                                                                                                                                                                 |
-|---|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| tenantId | URL | String | O | 테넌트 ID                                                                                                                                                                                                             |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID                                                                                                                                                                                                        |
-| tokenId | Header | String | O | 토큰 ID                                                                                                                                                                                                              |
-| resize | Body | Object | O | 인스턴스 타입 변경 요청                                                                                                                                                                                                      |
-| resize.flavorRef | Body | UUID | O | 변경할 인스턴스 타입 ID                                                                                                                                                                                                     |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "resize" : {
-    "flavorRef": "b5f1c148-732c-417d-9d1b-1dffca105dbe"
-  }
-}
-```
-
-</p>
-</details>
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
----
-
-### 인스턴스 이미지 생성
-
-인스턴스로부터 이미지를 생성합니다. `U2` 타입의 인스턴스만 이 API를 통해 이미지를 생성할 수 있습니다. `U2` 타입 이외의 인스턴스 이미지 생성은 [블록 스토리지 API](/Storage/Block Storage/ko/public-api/#create-image-with-block-storage)를 참고합니다.
-
-인스턴스의 상태가 **ACTIVE**, **SHUTOFF**, **SUSPENDED**, **PAUSED**일 때만 이미지를 생성할 수 있습니다. 이미지 생성은 데이터 정합성을 보장하기 위해 인스턴스를 중지한 상태에서 진행하는 것을 권장합니다.
-
-이미지 생성이 성공하면 이미지 상태가 `active`로 바뀝니다. 이미지 생성이 완료되는 것을 확인하려면 이미지 조회 API를 통해 지속적으로 상태를 확인합니다.
-
-> [주의]
-> 생성된 이미지의 크기는 루트 블록 스토리지의 실제 사용량보다 더 클 수 있습니다.
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| createImage | Body | Object | O | 이미지 생성 요청 |
-| createImage.name | Body | String | O | 생성할 이미지 이름 |
-| createImage.metadata | Body | Object | - | 생성할 이미지의 메타데이터<br>Key-Value 형태로 기술 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-  "createImage" : {
-      "name" : "foo-image",
-      "metadata": {
-          "meta_var": "meta_val"
+  "servicegateway": {
+    "status": "AVAILABLE",
+    "include_gateway_identity": false,
+    "description": "test1",
+    "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+    "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "fixed_ip": "192.168.0.82",
+    "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+    "api_endpoints": [
+      {
+        "domain_name": "test.test.com"
       }
+    ],
+    "service_endpoint_id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5",
+    "service_provider": "csp",
+    "create_time": "2023-08-31 02:11:09",
+    "project_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "port_id": "182a31be-9e29-400d-983b-f701cf9b4bbc",
+    "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+    "name": "sgw_test1"
   }
 }
 ```
 
-</p>
 </details>
-
-
-#### 응답
-
-이 API는 응답 본문을 반환하지 않습니다. 생성된 이미지는 응답 헤더의 `Location`으로 확인합니다.
-
-| 이름 | 종류 | 형식 | 설명 |
-|--|--|--|--|
-| Location | Header | String | 생성한 이미지 URL |
 
 ---
-
-### 보안 그룹 추가
-
-인스턴스에 보안 그룹을 추가합니다. 추가한 보안 그룹은 인스턴스의 모든 포트에 적용됩니다.
+<a id="delete-a-service-gateway"></a>
+### 서비스 게이트웨이 삭제하기 { #delete-a-service-gateway }
 
 ```
-POST /v2/{tenantId}/servers/{serverId}/action
+DELETE /v2.0/gateways/servicegateways/{serviceGatewayId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-a-service-gateway-request"></a>
 #### 요청
+이 API는 요청 본문을 요구하지 않습니다.
+
 | 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | 토큰 ID |
-| addSecurityGroup | Body | Object | O | 보안 그룹 추가 요청 객체 |
-| addSecurityGroup.name | Body | String | O | 추가할 보안 그룹 이름 |
+| serviceGatewayId | URL | UUID | O | 서비스 게이트웨이 ID |
+
+
+<a id="delete-a-service-gateway-response"></a>
+#### 응답
+이 API는 응답 본문을 반환하지 않습니다.
+
+<a id="service-endpoint"></a>
+## 서비스 엔드포인트 { #service-endpoint }
+
+<a id="get-a-list-of-service-endpoints"></a>
+### 서비스 엔드포인트 목록 보기 { #get-a-list-of-service-endpoints }
+
+```
+GET /v2.0/gateways/serviceendpoints/
+X-Auth-Token: {tokenId}
+```
+
+<a id="get-a-list-of-service-endpoints-request"></a>
+#### 요청
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 토큰 ID |
+| id | Query | UUID | - | 조회할 서비스 엔드포인트 ID |
+| display_name | Query | String | - | 조회할 서비스 엔드포인트 이름 |
+| service_name | Query | String | - | 조회할 서비스 이름(사용자 정의 엔드포인트 연결 시 사용, 형식 `{region}.sep-{12 hex}`) |
+
+> 서비스 게이트웨이를 사용자 정의 엔드포인트에 연결할 때는 게시자에게 전달받은 `service_name`으로 조회하여 서비스 엔드포인트 ID를 획득합니다. 보안을 위해 `service_name` 값은 응답에 포함되지 않으며, 허용 프로젝트에 포함되지 않은 경우 빈 목록이 반환됩니다.
+
+
+<a id="get-a-list-of-service-endpoints-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 설명 |
+|---|---|---|---|
+| serviceendpoints | Body | Array | 서비스 엔드포인트 정보 객체 목록 |
+| serviceendpoints.id | Body | UUID | 서비스 엔드포인트 ID |
+| serviceendpoints.display_name | Body | String | 콘솔에 출력되는 서비스 엔드포인트 이름 |
+| serviceendpoints.support_gateway_identity | Body | Boolean | NAT IP 주소 고정 사용 가능 여부 |
+| serviceendpoints.description | Body | String | 서비스 엔드포인트 설명 |
 
 <details><summary>예시</summary>
-<p>
 
 ```json
 {
-    "addSecurityGroup": {
-        "name": "test"
+  "serviceendpoints": [
+    {
+      "display_name": "Object Storage",
+      "support_gateway_identity": true,
+      "description": "",
+      "name": "OBS",
+      "id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5"
     }
+  ]
 }
 ```
 
-</p>
 </details>
 
+---
+<a id="get-a-service-endpoint"></a>
+### 서비스 엔드포인트 보기 { #get-a-service-endpoint }
 
+```
+GET /v2.0/gateways/serviceendpoints/{seerviceEndpointId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="get-a-service-endpoint-request"></a>
+#### 요청
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 토큰 ID |
+| serviceEndpointId | URL | UUID | O | 서비스 엔드포인트 ID |
+
+<a id="get-a-service-endpoint-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 설명 |
+|---|---|---|---|
+| serviceendpoint | Body | Object | 서비스 엔드포인트 정보 객체  |
+| serviceendpoint.id | Body | UUID | 서비스 엔드포인트 ID |
+| serviceendpoint.display_name | Body | String | 콘솔에 출력되는 서비스 엔드포인트 이름 |
+| serviceendpoint.support_gateway_identity | Body | Boolean | NAT IP 주소 고정 사용 가능 여부 |
+| serviceendpoint.description | Body | String | 서비스 엔드포인트 설명 |
+
+<details><summary>예시</summary>
+
+```json
+{
+  "serviceendpoint": {
+      "display_name": "Object Storage",
+      "support_gateway_identity": true,
+      "description": "",
+      "name": "OBS",
+      "id": "7ba5b6e7-d871-43d3-90d2-7e2beecaaae5"
+  }
+}
+```
+
+</details>
+
+---
+<a id="custom-endpoints"></a>
+## 사용자 정의 엔드포인트 { #custom-endpoints }
+
+사용자가 자신의 리소스(로드 밸런서)를 엔드포인트로 게시하여 다른 프로젝트와 공유하는 기능입니다. 게시자(소유자)가 생성/관리하며, 생성 시 공유용 서비스 이름(`service_name`)이 발급됩니다.
+
+<a id="view-custom-endpoint-list"></a>
+### 사용자 정의 엔드포인트 목록 보기 { #view-custom-endpoint-list }
+
+```
+GET /v2.0/gateways/myserviceendpoints
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-custom-endpoint-list-request"></a>
+#### 요청
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 토큰 ID |
+| id | Query | UUID | - | 조회할 사용자 정의 엔드포인트 ID |
+| endpoint_type | Query | String | - | 조회할 엔드포인트 유형(예: `lb.type1`) |
+| port_id | Query | UUID | - | 조회할 대상 리소스(로드 밸런서) 포트 ID |
+
+<a id="view-custom-endpoint-list-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 설명 |
+|---|---|---|---|
+| myserviceendpoints | Body | Array | 사용자 정의 엔드포인트 정보 객체 목록 |
+| myserviceendpoints.id | Body | UUID | 사용자 정의 엔드포인트 ID |
+| myserviceendpoints.name | Body | String | 이름 |
+| myserviceendpoints.display_name | Body | String | 표시 이름(서비스 게이트웨이에 노출되는 이름) |
+| myserviceendpoints.endpoint_type | Body | String | 엔드포인트 유형(리소스 유형, 예: `lb.type1`) |
+| myserviceendpoints.port_id | Body | UUID | 대상 리소스(로드 밸런서) 포트 ID. `GET /v2.0/lbaas/loadbalancers?vip_port_id={port_id}`로 대상 로드 밸런서를 찾을 수 있습니다. |
+| myserviceendpoints.service_name | Body | String | 공유용 서비스 이름(형식 `{region}.sep-{12 hex}`) |
+| myserviceendpoints.max_count | Body | Integer | 최대 생성 개수(이 엔드포인트로 생성 가능한 서비스 게이트웨이 최대 개수). `0`=생성 차단, 미설정=무제한 |
+| myserviceendpoints.current_count | Body | Integer | 사용 현황(이 엔드포인트로 현재 생성된 서비스 게이트웨이 수) |
+| myserviceendpoints.service_provider | Body | String | 연결 유형(사용자 정의 엔드포인트는 `user`) |
+| myserviceendpoints.description | Body | String | 설명 |
+| myserviceendpoints.project_id | Body | String | 테넌트 ID |
+
+<details><summary>예시</summary>
+
+```json
+{
+  "myserviceendpoints": [
+    {
+      "id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+      "name": "my-lb-service",
+      "display_name": "My LB Service",
+      "endpoint_type": "lb.type1",
+      "port_id": "a6e6ff53-8c70-48db-95ec-8b4895f002c2",
+      "service_name": "kr1.sep-0a1b2c3d4e5f",
+      "max_count": 10,
+      "current_count": 3,
+      "service_provider": "user",
+      "description": "",
+      "project_id": "302406c4a1d44b2cb2bc07a652c0b202"
+    }
+  ]
+}
+```
+
+</details>
+
+---
+<a id="get-a-custom-endpoint"></a>
+### 사용자 정의 엔드포인트 보기 { #get-a-custom-endpoint }
+
+```
+GET /v2.0/gateways/myserviceendpoints/{serviceEndpointId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="get-a-custom-endpoint-request"></a>
+#### 요청
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 토큰 ID |
+| serviceEndpointId | URL | UUID | O | 사용자 정의 엔드포인트 ID |
+
+<a id="get-a-custom-endpoint-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 설명 |
+|---|---|---|---|
+| myserviceendpoint | Body | Object | 사용자 정의 엔드포인트 정보 객체 |
+| myserviceendpoint.id | Body | UUID | 사용자 정의 엔드포인트 ID |
+| myserviceendpoint.name | Body | String | 이름 |
+| myserviceendpoint.display_name | Body | String | 표시 이름 |
+| myserviceendpoint.endpoint_type | Body | String | 엔드포인트 유형(리소스 유형) |
+| myserviceendpoint.port_id | Body | UUID | 대상 리소스(로드 밸런서) 포트 ID. `GET /v2.0/lbaas/loadbalancers?vip_port_id={port_id}`로 대상 로드 밸런서를 찾을 수 있습니다. |
+| myserviceendpoint.service_name | Body | String | 공유용 서비스 이름 |
+| myserviceendpoint.max_count | Body | Integer | 최대 생성 개수 |
+| myserviceendpoint.current_count | Body | Integer | 사용 현황(현재 생성된 서비스 게이트웨이 수) |
+| myserviceendpoint.service_provider | Body | String | 연결 유형(`user`) |
+| myserviceendpoint.description | Body | String | 설명 |
+| myserviceendpoint.project_id | Body | String | 테넌트 ID |
+
+<details><summary>예시</summary>
+
+```json
+{
+  "myserviceendpoint": {
+    "id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+    "name": "my-lb-service",
+    "display_name": "My LB Service",
+    "endpoint_type": "lb.type1",
+    "port_id": "a6e6ff53-8c70-48db-95ec-8b4895f002c2",
+    "service_name": "kr1.sep-0a1b2c3d4e5f",
+    "max_count": 10,
+    "current_count": 3,
+    "service_provider": "user",
+    "description": "",
+    "project_id": "302406c4a1d44b2cb2bc07a652c0b202"
+  }
+}
+```
+
+</details>
+
+---
+<a id="create-a-custom-endpoint"></a>
+### 사용자 정의 엔드포인트 생성하기 { #create-a-custom-endpoint }
+
+```
+POST /v2.0/gateways/myserviceendpoints
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-a-custom-endpoint-request"></a>
+#### 요청
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 토큰 ID |
+| myserviceendpoint | Body | Object | O | 사용자 정의 엔드포인트 정보 객체 |
+| myserviceendpoint.name | Body | String | O | 이름(255자 이내, 영문/숫자/-/_) |
+| myserviceendpoint.display_name | Body | String | - | 표시 이름(생략 시 `name`과 동일하게 적용) |
+| myserviceendpoint.port_id | Body | UUID | O | 대상 리소스(로드 밸런서) 포트 ID. 로드 밸런서 보기(`GET /v2.0/lbaas/loadbalancers/{loadbalancerId}`) 응답의 `vip_port_id`를 사용합니다. |
+| myserviceendpoint.max_count | Body | Integer | - | 최대 생성 개수(0~1,000). 0: 생성 차단, null 또는 미입력: 무제한 |
+| myserviceendpoint.description | Body | String | - | 설명 |
+
+> 대상 리소스로 로드 밸런서를 지정하면 `endpoint_type`이 `lb.type1`로, `service_provider`가 `user`로 자동 설정됩니다. 생성이 완료되면 공유용 `service_name`이 자동으로 발급됩니다. 프로젝트당 기본 5개까지 생성할 수 있습니다.
+
+<details><summary>예시</summary>
+
+```json
+{
+  "myserviceendpoint": {
+    "name": "my-lb-service",
+    "display_name": "My LB Service",
+    "port_id": "a6e6ff53-8c70-48db-95ec-8b4895f002c2",
+    "max_count": 10,
+    "description": ""
+  }
+}
+```
+
+</details>
+
+<a id="create-a-custom-endpoint-response"></a>
+#### 응답
+응답 본문은 [사용자 정의 엔드포인트 보기](#get-a-custom-endpoint)와 동일하며, 자동 발급된 `service_name`이 포함됩니다.
+
+---
+<a id="modify-a-custom-endpoint"></a>
+### 사용자 정의 엔드포인트 수정하기 { #modify-a-custom-endpoint }
+
+```
+PUT /v2.0/gateways/myserviceendpoints/{serviceEndpointId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-a-custom-endpoint-request"></a>
+#### 요청
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 토큰 ID |
+| serviceEndpointId | URL | UUID | O | 사용자 정의 엔드포인트 ID |
+| myserviceendpoint | Body | Object | O | 사용자 정의 엔드포인트 정보 객체 |
+| myserviceendpoint.name | Body | String | - | 이름 |
+| myserviceendpoint.display_name | Body | String | - | 표시 이름 |
+| myserviceendpoint.max_count | Body | Integer | - | 최대 생성 개수(0~1000). 0: 생성 차단, null: 무제한으로 변경, 필드 미포함 시 기존 값 유지 |
+| myserviceendpoint.description | Body | String | - | 설명 |
+
+> 리소스 유형(`endpoint_type`)과 대상 리소스(`port_id`)는 변경할 수 없습니다. 최대 생성 개수를 줄여도 기존 서비스 게이트웨이는 유지되며, 현재 개수가 최대 생성 개수를 초과하는 동안에는 추가 생성할 수 없습니다.
+
+<details><summary>예시</summary>
+
+```json
+{
+  "myserviceendpoint": {
+    "name": "my-lb-renamed",
+    "display_name": "My LB (renamed)",
+    "max_count": 20,
+    "description": "renamed"
+  }
+}
+```
+
+</details>
+
+<a id="modify-a-custom-endpoint-response"></a>
+#### 응답
+응답 본문은 [사용자 정의 엔드포인트 보기](#get-a-custom-endpoint)와 동일합니다.
+
+---
+<a id="delete-custom-endpoint"></a>
+### 사용자 정의 엔드포인트 삭제하기 { #delete-custom-endpoint }
+
+```
+DELETE /v2.0/gateways/myserviceendpoints/{serviceEndpointId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-custom-endpoint-request"></a>
+#### 요청
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 토큰 ID |
+| serviceEndpointId | URL | UUID | O | 사용자 정의 엔드포인트 ID |
+
+> 이 엔드포인트를 사용 중인 서비스 게이트웨이가 있으면 삭제할 수 없습니다. 삭제 시 등록된 허용 프로젝트도 함께 삭제됩니다.
+
+<a id="delete-custom-endpoint-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다.
 
 ---
-
-### 보안 그룹 삭제
-
-인스턴스에서 보안 그룹을 삭제합니다. 인스턴스의 모든 포트로부터 지정한 보안 그룹이 삭제됩니다.
+<a id="reissue-a-service-name"></a>
+### 서비스 이름 재발급하기 { #reissue-a-service-name }
 
 ```
-POST /v2/{tenantId}/servers/{serverId}/action
+PUT /v2.0/gateways/serviceendpoints/{serviceEndpointId}/generate_service_name
 X-Auth-Token: {tokenId}
 ```
 
+<a id="reissue-a-service-name-request"></a>
 #### 요청
+이 API는 요청 본문을 요구하지 않습니다.
+
 | 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | 테넌트 ID |
-| serverId | URL | UUID | O | 변경할 인스턴스 ID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | 토큰 ID |
-| removeSecurityGroup | Body | Object | O | 보안 그룹 삭제 요청 객체 |
-| removeSecurityGroup.name | Body | String | O | 삭제할 보안 그룹 이름 |
+| serviceEndpointId | URL | UUID | O | 사용자 정의 엔드포인트 ID |
 
-<details><summary>예시</summary>
-<p>
+> 엔드포인트를 생성한 프로젝트의 구성원(소유자)만 수행할 수 있습니다. 재발급 시 기존 `service_name`은 즉시 폐기되어 더 이상 조회되지 않습니다. 기존 `service_name`으로 생성한 서비스 게이트웨이는 정상 동작하지만, 신규 생성 시에는 재발급된 `service_name`을 사용해야 합니다.
 
-```json
-{
-    "removeSecurityGroup": {
-        "name": "test"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
-
-<a id="terminate-instance"></a>
-## 인스턴스 메타데이터
-
-인스턴스 메타데이터 값에 따라 콘솔의 **Compute > Instance** 서비스 페이지에서 인스턴스 상세 정보 화면의 내용을 결정합니다. 인스턴스 메타데이터별 내용은 다음과 같습니다.
-
-| 인스턴스 메타데이터     | 내용                                           |
-|----------------|----------------------------------------------|
-| os_distro      | **기본 정보**의 **OS**의 이름<br>os_version과 조합하여 사용 |
-| os_version     | **기본 정보**의 **OS**의 버전<br>os_distro와 조합하여 사용  |
-| image_name     | **기본 정보**의 **이미지 이름**                        |
-| os_type      | **접속 정보** 형식                                 |
-| login_username | **접속 정보**의 사용자 이름                            |
-
-> [주의] 인스턴스 메타데이터 변경 및 삭제 시 연관 서비스 및 기능에 영향이 발생할 수 있으며, 이에 따른 결과에 대한 책임은 사용자에게 있습니다.
-
-### 인스턴스 메타데이터 목록 보기
-
-```
-GET /v2/{tenantId}/servers/{serverId}/metadata
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름       | 종류 | 형식 | 필수 | 설명                                               |
-|----------|---|---|---|--------------------------------------------------|
-| tenantId | URL | String | O | 테넌트 ID                                           |
-| serverId | URL | UUID | O | 인스턴스 ID                                          |
-| tokenId  | Header | String | O | 토큰 ID                                            |
-
-#### 응답
-
-| 이름       | 종류 | 형식 | 설명                                               |
-|----------|---|---|--------------------------------------------------|
-| metadata | Body | Object | 인스턴스에 생성 혹은 수정할 메타데이터 객체<br>최대 길이 255자 이하의 키-값 쌍 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "metadata": {
-        "os_distro": "ubuntu",
-        "description": "Ubuntu Server 20.04.6 LTS (2023.11.21)",
-        "volume_size": "20",
-        "project_domain": "NORMAL",
-        "monitoring_agent": "sysmon",
-        "image_name": "Ubuntu Server 20.04.6 LTS (2023.11.21)",
-        "os_version": "Server 20.04 LTS",
-        "os_architecture": "amd64",
-        "login_username": "ubuntu",
-        "os_type": "linux",
-        "tc_env": "sysmon,dfeac7db42a192a73959d5646117af58"
-    }
-}
-```
-
-</p>
-</details>
-
-
-<a id="restart-instance"></a>
-### 인스턴스 메타데이터 보기
-
-```
-GET /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름       | 종류 | 형식 | 필수 | 설명                       |
-|----------|---|---|---|--------------------------|
-| tenantId | URL | String | O | 테넌트 ID                   |
-| serverId | URL | UUID | O | 인스턴스 ID                  |
-| key      | URL | String | O | 인스턴스에 생성 혹은 수정할 메타데이터의 키 |
-| tokenId  | Header | String | O | 토큰 ID                    |
-
-#### 응답
-
-| 이름   | 종류 | 형식 | 설명                                               |
-|------|---|---|--------------------------------------------------|
-| meta | Body | Object | 인스턴스에 생성 혹은 수정할 메타데이터 객체<br>최대 길이 255자 이하의 키-값 쌍 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-<a id="change-instance-flavor"></a>
-### 인스턴스 메타데이터 생성/수정하기
-
-인스턴스의 메타데이터를 생성하거나 수정합니다.
-요청하는 키가 기존 키와 일치하는 경우 키-값을 요청 값으로 변경합니다.
-
-```
-PUT /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름       | 종류 | 형식 | 필수 | 설명                                               |
-|----------|---|---|---|--------------------------------------------------|
-| tenantId | URL | String | O | 테넌트 ID                                           |
-| serverId | URL | UUID | O | 인스턴스 ID                                          |
-| key      | URL | String | O | 인스턴스에 생성 혹은 수정할 메타데이터의 키                         |
-| tokenId  | Header | String | O | 토큰 ID                                            |
-| meta     | Body | Object | O | 인스턴스에 생성 혹은 수정할 메타데이터 객체<br>최대 길이 255자 이하의 키-값 쌍 |
-
-<details>
-<summary>예시</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### 응답
-
-| 이름   | 종류 | 형식 | 설명                                               |
-|------|---|---|--------------------------------------------------|
-| meta | Body | Object | 인스턴스에 생성 혹은 수정할 메타데이터 객체<br>최대 길이 255자 이하의 키-값 쌍 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-
-<a id="create-instance-image"></a>
-### 인스턴스 메타데이터 삭제하기
-
-요청하는 키와 일치하는 인스턴스의 메타데이터를 삭제합니다.
-
-```
-DELETE /v2/{tenantId}/servers/{serverId}/metadata/{key}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름       | 종류 | 형식 | 필수 | 설명                  |
-|----------|---|---|---|---------------------|
-| tenantId | URL | String | O | 테넌트 ID              |
-| serverId | URL | UUID | O | 인스턴스 ID             |
-| key      | URL | String | O | 인스턴스에서 삭제할 메타데이터의 키 |
-| tokenId  | Header | String | O | 토큰 ID               |
-
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다.
-
-
-## 배치 정책
-
-<a id="add-security-group"></a>
-### 배치 정책 생성하기
-
-배치 정책을 생성합니다.
-분산 배치를 위한 `anti-affinity` 배치 정책 유형만 제공합니다.
-
-```
-POST /v2/{tenantId}/os-server-groups
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | 테넌트 ID |
-| tokenId | Header | String | O | 토큰 ID |
-| server_group | Body | Object | O | 배치 정책 객체 |
-| server_group.name | Body | String | O | 배치 정책 이름 |
-| server_group.policies | Body | Array | O | 배치 정책 유형<br>`anti-affinity`만 설정 가능 |
-
-<details>
-<summary>예시</summary>
-<p>
-
-```json
-{
-    "server_group": {
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"            
-        ]
-    }
-}
-```
-
-</p>
-</details>
-
+<a id="reissue-a-service-name-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
-|-----|-----|-----|-----|
-| server_group | Body | Object | 배치 정책 객체 |
-| server_group.id | Body | String | 배치 정책 ID |
-| server_group.name | Body | String | 배치 정책 이름 |
-| server_group.policies | Body | Array | 배치 정책 유형 |
-| server_group.members | Body | Array | 배치 정책에 할당된 인스턴스 ID 목록 |
-| server_group.metadata | Body | Object | 배치 정책 메타데이터 객체<br>항상 빈 값으로 표시됨 |
+|---|---|---|---|
+| service_name | Body | String | 재발급된 공유용 서비스 이름 |
 
 <details><summary>예시</summary>
-<p>
 
 ```json
 {
-    "server_group": {
-        "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"
-        ],
-        "members": [],
-        "metadata": {}
-    }
+  "service_name": "kr1.sep-9f8e7d6c5b4a"
 }
 ```
 
-</p>
 </details>
 
-<a id="delete-security-group"></a>
-### 배치 정책 목록 보기
+---
+<a id="allowed-projects"></a>
+## 허용 프로젝트 { #allowed-projects }
+
+사용자 정의 엔드포인트에 연결(서비스 게이트웨이 생성)을 허용할 대상(테넌트)을 관리하는 목록(white list)입니다. 순수 허용 목록(권한)이며 생성 개수 제한은 다루지 않습니다(개수 제한은 엔드포인트의 `max_count`에서 관리).
+
+<a id="view-allow-project-list"></a>
+### 허용 프로젝트 목록 보기 { #view-allow-project-list }
 
 ```
-GET /v2/{tenantId}/os-server-groups
+GET /v2.0/gateways/serviceendpointallowprojects
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-allow-project-list-request"></a>
 #### 요청
-
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | 테넌트 ID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | 토큰 ID |
+| service_endpoint_id | Query | UUID | - | 조회할 사용자 정의 엔드포인트 ID |
+| target_tenant_id | Query | String | - | 조회할 허용 대상 테넌트 ID |
 
+<a id="view-allow-project-list-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
-|-----|-----|-----|-----|
-| server_groups | Body | Array | 배치 정책 객체 목록 |
-| server_groups.id | Body | String | 배치 정책 ID |
-| server_groups.name | Body | String | 배치 정책 이름 |
-| server_groups.policies | Body | Array | 배치 정책 유형 |
-| server_groups.members | Body | Array | 배치 정책에 할당된 인스턴스 ID 목록 |
-| server_groups.metadata | Body | Object | 배치 정책 메타데이터 객체<br>항상 빈 값으로 표시됨 |
+|---|---|---|---|
+| serviceendpointallowprojects | Body | Array | 허용 프로젝트 정보 객체 목록 |
+| serviceendpointallowprojects.id | Body | UUID | 허용 프로젝트 ID |
+| serviceendpointallowprojects.service_endpoint_id | Body | UUID | 사용자 정의 엔드포인트 ID |
+| serviceendpointallowprojects.target_tenant_id | Body | String | 허용 대상. `*`=전체 프로젝트 / 테넌트 ID=특정 프로젝트 |
+| serviceendpointallowprojects.name | Body | String | 이름(참고용) |
+| serviceendpointallowprojects.description | Body | String | 설명 |
 
 <details><summary>예시</summary>
-<p>
 
 ```json
 {
-    "server_groups": [
-        {
-            "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-            "name": "policy-test1",
-            "policies": [
-                "anti-affinity"
-            ],
-            "members": [
-                "c040455d-6495-4628-ad81-ade79cf7b8d6",
-                "524e7d81-f373-43a0-b2ff-0a15f8255bb5"            
-            ],
-            "metadata": {}
-        },
-        {
-            "id": "f947c657-cbe0-4bf2-a2aa-59d198f8e096",
-            "name": "policy-test2",
-            "policies": [
-                "anti-affinity"
-            ],
-            "members": [],
-            "metadata": {}
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
-### 배치 정책 보기
-
-```
-GET /v2/{tenantId}/os-server-groups/{servergroupId}
-X-Auth-Token: {tokenId}
-```
-
-#### 요청
-
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | 테넌트 ID |
-| servergroupId | URL | String | O | 배치 정책 ID |
-| tokenId | Header | String | O | 토큰 ID |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|-----|-----|-----|-----|
-| server_group | Body | Object | 배치 정책 객체 |
-| server_group.id | Body | String | 배치 정책 ID |
-| server_group.name | Body | String | 배치 정책 이름 |
-| server_group.policies | Body | Array | 배치 정책 유형 |
-| server_group.members | Body | Array | 배치 정책에 할당된 인스턴스 ID 목록 |
-| server_group.metadata | Body | Object | 배치 정책 메타데이터 객체<br>항상 빈 값으로 표시됨 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-    "server_group": {
-        "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"
-        ],
-        "members": [
-            "c040455d-6495-4628-ad81-ade79cf7b8d6",
-            "524e7d81-f373-43a0-b2ff-0a15f8255bb5"            
-        ],
-        "metadata": {}
+  "serviceendpointallowprojects": [
+    {
+      "id": "d9e0f111-2222-3333-4444-555566667777",
+      "service_endpoint_id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+      "target_tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+      "name": "allow-b",
+      "description": "allow b-tenant"
     }
+  ]
 }
 ```
 
-</p>
 </details>
 
-### 배치 정책 삭제하기
+---
+<a id="view-allowed-projects"></a>
+### 허용 프로젝트 보기 { #view-allowed-projects }
 
 ```
-DELETE /v2/{tenantId}/os-server-groups/{servergroupId}
+GET /v2.0/gateways/serviceendpointallowprojects/{allowProjectId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-allowed-projects-request"></a>
 #### 요청
-
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | 테넌트 ID |
-| servergroupId | URL | String | O | 배치 정책 ID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | 토큰 ID |
+| allowProjectId | URL | UUID | O | 허용 프로젝트 ID |
 
+<a id="view-allowed-projects-response"></a>
 #### 응답
+응답 본문은 [허용 프로젝트 목록 보기](#view-allow-project-list)의 단일 객체(`serviceendpointallowproject`)와 동일합니다.
 
+---
+<a id="create-an-allowed-project"></a>
+### 허용 프로젝트 생성하기 { #create-an-allowed-project }
+
+```
+POST /v2.0/gateways/serviceendpointallowprojects
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-an-allowed-project-request"></a>
+#### 요청
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 토큰 ID |
+| serviceendpointallowproject | Body | Object | O | 허용 프로젝트 정보 객체 |
+| serviceendpointallowproject.service_endpoint_id | Body | UUID | O | 사용자 정의 엔드포인트 ID |
+| serviceendpointallowproject.target_tenant_id | Body | String | O | 허용 대상. `*`=전체 프로젝트 / 테넌트 ID(32 hex)=특정 프로젝트 |
+| serviceendpointallowproject.name | Body | String | - | 이름(참고용) |
+| serviceendpointallowproject.description | Body | String | - | 설명 |
+
+> 전체 허용(`*`)과 특정 프로젝트를 함께 등록한 경우 더 좁은 범위(특정 프로젝트)가 적용됩니다. 이를 이용해 무중단으로 허용 범위를 전환할 수 있습니다. 엔드포인트 소유자의 테넌트 ID는 등록할 수 없습니다(소유자는 항상 허용). 동일(엔드포인트, 테넌트) 조합이 이미 있으면 409.
+
+<details><summary>예시</summary>
+
+```json
+{
+  "serviceendpointallowproject": {
+    "service_endpoint_id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+    "target_tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+    "name": "allow-b",
+    "description": "allow b-tenant"
+  }
+}
+```
+
+</details>
+
+<a id="create-an-allowed-project-response"></a>
+#### 응답
+응답 본문은 [허용 프로젝트 목록 보기](#view-allow-project-list)의 단일 객체(`serviceendpointallowproject`)와 동일합니다.
+
+---
+<a id="modify-allowed-projects"></a>
+### 허용 프로젝트 수정하기 { #modify-allowed-projects }
+
+```
+PUT /v2.0/gateways/serviceendpointallowprojects/{allowProjectId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-allowed-projects-request"></a>
+#### 요청
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 토큰 ID |
+| allowProjectId | URL | UUID | O | 허용 프로젝트 ID |
+| serviceendpointallowproject | Body | Object | O | 허용 프로젝트 정보 객체 |
+| serviceendpointallowproject.name | Body | String | - | 이름(참고용) |
+| serviceendpointallowproject.description | Body | String | - | 설명 |
+
+> 허용 대상(`target_tenant_id`)과 엔드포인트(`service_endpoint_id`)는 변경할 수 없으며, `name`·`description`만 수정할 수 있습니다.
+
+<details><summary>예시</summary>
+
+```json
+{
+  "serviceendpointallowproject": {
+    "name": "allow-b-renamed",
+    "description": "B 프로젝트 연동"
+  }
+}
+```
+
+</details>
+
+<a id="modify-allowed-projects-response"></a>
+#### 응답
+응답 본문은 [허용 프로젝트 목록 보기](#view-allow-project-list)의 단일 객체(`serviceendpointallowproject`)와 동일합니다.
+
+---
+<a id="delete-an-allowed-project"></a>
+### 허용 프로젝트 삭제하기 { #delete-an-allowed-project }
+
+```
+DELETE /v2.0/gateways/serviceendpointallowprojects/{allowProjectId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-an-allowed-project-request"></a>
+#### 요청
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 토큰 ID |
+| allowProjectId | URL | UUID | O | 허용 프로젝트 ID |
+
+<a id="delete-an-allowed-project-response"></a>
+#### 응답
 이 API는 응답 본문을 반환하지 않습니다.
+
+---
+<a id="usage-status"></a>
+## 사용 현황 { #usage-status }
+
+사용자 정의 엔드포인트를 사용 중인(연결한) 소비자 측 서비스 게이트웨이 목록을 조회합니다.
+
+<a id="view-usage-status-list"></a>
+### 사용 현황 목록 보기 { #view-usage-status-list }
+
+```
+GET /v2.0/gateways/serviceendpointusages
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-usage-status-list-request"></a>
+#### 요청
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | 토큰 ID |
+| id | Query | UUID | - | 조회할 사용자 정의 엔드포인트 ID(복수 지정 가능, 생략 시 소유한 모든 엔드포인트 대상) |
+| network_id | Query | UUID | - | 조회할 서비스 게이트웨이 VPC ID(복수 지정 가능) |
+| subnet_id | Query | UUID | - | 조회할 서비스 게이트웨이 서브넷 ID(복수 지정 가능) |
+| limit | Query | Integer | - | 한 번에 조회할 최대 개수(생략 시 전체 반환) |
+| marker | Query | UUID | - | 직전 페이지 마지막 항목의 서비스 게이트웨이 ID(다음 페이지 조회 시 사용) |
+| page_reverse | Query | Boolean | - | `true`로 지정하면 이전 페이지 방향으로 조회 |
+| sort_key | Query | String | - | 정렬 기준 필드(복수 지정 가능) |
+| sort_dir | Query | String | - | 정렬 방향(`asc` 또는 `desc`). `sort_key`와 반드시 쌍으로, 같은 개수로 지정 |
+
+> 결과는 기본적으로 서비스 게이트웨이 ID(`id`) 오름차순으로 정렬됩니다. 생성 시각순으로 조회하려면 `sort_key=create_time&sort_dir=desc`와 같이 명시해야 합니다. `sort_key`에는 응답 필드(`id`, `name`, `fixed_ip`, `status`, `tenant_id`, `network_id`, `subnet_id`, `service_endpoint_id`, `create_time`)를 사용할 수 있습니다.
+> `limit`을 지정하면 응답에 다음/이전 페이지 링크(`serviceendpointusages_links`)가 포함됩니다. 다음 페이지는 링크의 URL을 그대로 호출하거나, 현재 페이지 마지막 항목의 `id`를 `marker`로 지정해 조회합니다. 페이지를 순회하는 동안에는 동일한 필터/정렬 조건을 유지해야 합니다.
+
+<a id="view-usage-status-list-response"></a>
+#### 응답
+
+| 이름 | 종류 | 형식 | 설명 |
+|---|---|---|---|
+| serviceendpointusages | Body | Array | 사용 현황 정보 객체 목록 |
+| serviceendpointusages.id | Body | UUID | 서비스 게이트웨이 ID |
+| serviceendpointusages.name | Body | String | 서비스 게이트웨이 이름 |
+| serviceendpointusages.fixed_ip | Body | String | 서비스 게이트웨이 IP 주소 |
+| serviceendpointusages.status | Body | String | 서비스 게이트웨이 상태 |
+| serviceendpointusages.tenant_id | Body | String | 서비스 게이트웨이를 생성한 소비자 프로젝트의 테넌트 ID |
+| serviceendpointusages.network_id | Body | UUID | 서비스 게이트웨이 VPC ID |
+| serviceendpointusages.subnet_id | Body | UUID | 서비스 게이트웨이 서브넷 ID |
+| serviceendpointusages.service_endpoint_id | Body | UUID | 연결된 사용자 정의 엔드포인트 ID |
+| serviceendpointusages.create_time | Body | String | 서비스 게이트웨이 생성 시각 |
+| serviceendpointusages_links | Body | Array | 페이지네이션 링크 목록(`limit` 지정 시에만 포함) |
+| serviceendpointusages_links.rel | Body | String | 링크 유형. `next`=다음 페이지 / `previous`=이전 페이지 |
+| serviceendpointusages_links.href | Body | String | 해당 페이지를 조회할 수 있는 URL |
+
+<details><summary>예시</summary>
+
+```json
+{
+  "serviceendpointusages": [
+    {
+      "id": "d383a4a3-dae7-4609-b2db-ecdf5859fac5",
+      "name": "sgw_partner",
+      "fixed_ip": "192.168.0.51",
+      "status": "AVAILABLE",
+      "tenant_id": "302406c4a1d44b2cb2bc07a652c0b202",
+      "network_id": "55529e1d-c6ee-4be8-baa9-2b6546667e6d",
+      "subnet_id": "72d9d6e0-3ee2-4287-bcf9-be45a8422ff1",
+      "service_endpoint_id": "ef2b41aa-81f4-40de-9dc9-677ca58428f1",
+      "create_time": "2023-08-31 02:11:09"
+    }
+  ],
+  "serviceendpointusages_links": [
+    {
+      "rel": "next",
+      "href": "https://kr1-api-network-infrastructure.nhncloudservice.com/v2.0/gateways/serviceendpointusages?limit=20&marker=d383a4a3-dae7-4609-b2db-ecdf5859fac5"
+    },
+    {
+      "rel": "previous",
+      "href": "https://kr1-api-network-infrastructure.nhncloudservice.com/v2.0/gateways/serviceendpointusages?limit=20&marker=d383a4a3-dae7-4609-b2db-ecdf5859fac5&page_reverse=True"
+    }
+  ]
+}
+```
+
+</details>
