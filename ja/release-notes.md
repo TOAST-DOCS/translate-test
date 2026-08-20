@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=dead32bfc6a5 -->
+<!-- pre-align:aligned sig=10a43f9987e6 -->
 
 <a id="content-delivery-cdn-release-notes"></a>
 ## Content Delivery > CDN > Release Notes { #content-delivery-cdn-release-notes }
