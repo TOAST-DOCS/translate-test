@@ -1,505 +1,757 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > Console Guide
+<!-- machine_translated: true -->
 
-<a id="create-instances"></a>
-## Create Instances
+{% include-markdown '../_object-storage-vars.md' %}
 
-You can create instances either by using the settings below or by using instance templates. To create instances using instance templates, select **Use instance template** from the Create Instance page. To learn how to create instance templates, see [Instance Template Console Guide](/Compute/Instance%20Template/en/console-guide/).
+<!-- pre-align:aligned sig=b6b8b52c0876 -->
 
-<a id="os-settings"></a>
-### OS Settings
+<a id="storage-object-storage-console-guide"></a>
+## Storage > Object Storage > Console Guide { #storage-object-storage-console-guide }
 
-Determine how the root block storage is created that will be used when an instance is created.
+This document describes how to manage containers and objects in Object Storage from the NHN Cloud console.
 
-- Select either **Create New and Set up** or **Use Existing Resource**.
-- If you select **Create New and Set up**, create root block storage using an image.
-- If you select **Use Existing Resource**, use a previously created block storage or snapshot.
+<a id="container"></a>
+## Container { #container }
 
-<a id="image"></a>
-### Image
+<a id="create-container"></a>
+### Create Container { #create-container }
+Creates containers. Uploading objects in an object storage requires one or more containers.{% if encrypt %} If you set encryption, the uploaded object is automatically encrypted and saved.{% endif %}
 
-Select the image that contains the operating system you need. You can choose between public images provided by NHN Cloud, images you've previously created, or shared images.
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Item</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    {# An additional row may appear depending on whether EC exists #}
+    <td rowspan="$[ '5' if ec else '4' ]$">Create Container</td>
+    <td>Name</td>
+    <td>A container name must be between 3 and 63 characters long, and can only contain lowercase letters, numbers, `-`, `.`, and `+`.<br>The container name must begin and end with a letter or number.<br>Names in IP address format cannot be used.</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Container Access Policy</td>
+    <td><b>PRIVATE</b>: Only permitted users can access objects within a container.</td>
+  </tr>
+  <tr>
+    <td><b>PUBLIC</b>: Anyone with a public URL can access objects within a container.</td>
+  </tr>
+  {%- if ec %}
+  <tr>
+    <td rowspan="2">Storage Class</td>
+    <td><b>Standard</b>: The default class.</td>
+  </tr>
+  <tr>
+    <td><b>Economy</b>: Class ideal for long-term storage of infrequently accessed data.</td>
+  </tr>
+  {% else %}
+  <tr>
+    <td>Storage Class</td>
+    <td><b>Standard</b>: The default class.</td>
+  </tr>
+  {%- endif %}
+  <tr>
+    <td rowspan="2">Object Lock Settings</td>
+    <td>Object Lock</td>
+    <td>Select whether to enable object lock.</td>
+  </tr>
+  <tr>
+    <td>Lock Period</td>
+    <td>Enter the object lock period in days.</td>
+  </tr>
+  {%- if encrypt %}
+  <tr>
+    <td rowspan="2">Encryption Settings</td>
+    <td>Encryption</td>
+    <td>Select whether to enable object encryption.</td>
+  </tr>
+  <tr>
+    <td>Symmetric Key ID</td>
+    <td>Enter the symmetric key ID managed by the Secure Key Manager service.</td>
+  </tr>
+  {%- endif %}
+</table>
 
-The available instance flavors vary depending on the image you choose, so we recommended you choose an image first when creating an instance.
+{% if ec %}
+<a id="storage-class"></a>
+### Storage class { #storage-class }
+You can choose a storage class based on how often you access your data and your cost requirements. We offer Standard class for frequently accessed data and Economy class for long-term storage of less frequently accessed data at a lower cost.
 
-| OS                         | Block Storage     | Memory   |
-| -------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB or more  | 1GB or more |
-| Windows                           | 50GB or more  | 2GB or more |
+!!! tip "Note"
+    You cannot change the storage class of an already created container.
 
-<a id="root-block-storage"></a>
-### Root Block Storage
+    Objects uploaded to Economy class containers are subject to a minimum storage period of 30 days. Objects deleted before 30 days are also charged for the remaining storage period.
 
-Set up root block storage according to the **OS settings**.
+    Economy class containers are charged per 1,000 API requests (excluding HEAD/DELETE requests).
 
-- If you select **Create New and Set up**, create the root block store by specifying the **block storage type** and **block storage size**.
-- If you select **Use Existing Resource**, specify the **original resource** to use as root block storage.
+{% endif %}
+<a id="set-object-lock-cycle"></a>
+#### Object Lock Settings
+Objects uploaded to the Object Lock container are stored using the **WORM (Write-Once-Read-Many)** model. For objects uploaded to the object lock container, the lock expiration date is configured. You cannot overwrite or delete objects before the lock expiration date set on each object.
 
-#### Original Resource
+{% if encrypt %}
+<a id="set-object-encryption"></a>
+#### Encryption Settings
+Objects uploaded to encryption containers are encrypted using a symmetric key managed by the NHN Cloud's Secure Key Manager service. Therefore, in order to create an encryption container, you must create a symmetric key in the Secure Key Manager service in advance.
 
-You can select either a previously created **block storage** or **snapshot**.
+The policies for encryption container are as follows.
 
-- When you select **block storage**, use the previously created block storage as the root block storage.
-- When you select **snapshot**, the root block storage is created using a previously created snapshot.
+* Objects uploaded to encryption containers are encrypted and stored using the configured symmetric key.
+* If you download the encrypted object, it is sent after being decrypted. 
+* If you copy an object of the encryption container or copy it to another container through the inter-region container replication, the object is stored re-encrypted or decrypted according to the encryption settings for the container.
+* You cannot change the symmetric key ID that is registered when creating an encryption container. To change the symmetric key, you must use the key rotation feature of Secure Key Manager.
+* If you rotate the symmetric key configured in an encryption container in Secure Key Manager and upload the key to a new object, the object encrypted with the previous version of the key is re-encrypted with the rotated key. This task can take a long time, depending on usage. Be cautious not to delete the previous version key before re-encryption is complete.
 
-#### Block Storage Size
+!!! danger "Caution"
+    If you delete the symmetric key configured in an encryption container from Secure Key Manager, the encrypted object cannot be decrypted. You must carefully manage the symmetric key not to delete it accidentally.
 
-Specify the root block storage size of an instance.
+{% endif %}
+<a id="empty-a-container"></a>
+### Empty a Container { #empty-a-container }
+Deletes all objects inside the selected container.
 
-- The block storage size must be at least the minimum size required by the image.
+!!! tip "Note"
+    Objects whose lock expiration date has not passed are not deleted.
 
-The root block storage size varies depending on instance flavor.
+    For multipart objects inside the selected container, only the manifest object is deleted. Segment objects located in other containers are not deleted.
 
-| Flavors               | Supported Block Storage Size         |
-| -------------------| -------------------------- |
-| u2 flavors             | 20 ~ 100 GB (varies by flavor) |
-| t2, m2, c2, r2, and x1 flavors | 20 ~ 2000 GB               |
+!!! danger "Caution"
+    If you are using the replication setting, objects in the target container might also be deleted.
 
-> [Note]
-> Because you are charged by block storage size, it is inefficient to make the default block storage size large without consideration. We recommend that you add additional block storage as needed.
-> If you select **block storage** for **Use Existing Resource** in the **OS settings**, you can't change the block storage size.
-> If you select **snapshot** for **Use Existing Resource** in the **OS settings**, block storage size must be set equal to or larger than the original block storage size.
+    If you upload objects to a container that is undergoing a container emptying operation, they might be deleted.
 
-#### Block Storage Type
+<a id="delete-container"></a>
+### Delete Container { #delete-container }
+Deletes selected containers. Check if the containers are empty before deleting them. If any objects are left inside a container, you cannot delete the relevant container.
 
-Determines the default block storage type of an instance.
+<a id="manage-container"></a>
+### Manage Container { #manage-container }
+Checks basic information of the selected containers and manage the settings.
 
-- Choose either **HDD** or **SSD**. The choice of block storage type affects pricing and performance.
-- You cannot change the block storage type once the instance is created.
+<a id="container-basic-info"></a>
+#### Basic Information
+You can view the container's $[ "basic and encryption information" if encrypt else "basic information" ]$, and change settings such as access policies, static websites, and cross-origin resource sharing.
 
-> [Note]
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the block storage type.
+<br>
 
-<a id="availability-zone"></a>
-### Availability Zone
+<a id="set-container-access-policy"></a>
+##### Container Access Policy
 
-If an availability zone is not specified, a random zone is selected. An instance can use a block storage only if they both exist in the same availability zone. If the block storage you wish to use exists in a particular availability zone, then select that zone.
+Sets the basic access policy and manages role-based access policies for each tenant or user. For more details, refer to [ACL Configuration Guide](acl-guide$[ file_suffix ]$/).
 
-> [Note]
-> Resources in a VPC can be used in any availability zone.
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the availability zone.
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Option</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="2">Basic Access Policy</td>
+    <td>PRIVATE</td>
+    <td>Only permitted users can access objects within a container.</td>
+  </tr>
+  <tr>
+    <td>PUBLIC</td>
+    <td>Anyone can access objects within a container through a public URL.</td>
+  </tr>
+  <tr>
+    <td rowspan="4">Role-Based Access Policy Settings</td>
+    <td></td>
+    <td>Selects whether to use an access policy.</td>
+  </tr>
+  </tr>
+  <tr>
+    <td>Tenant ID</td>
+    <td>Enter the tenant ID or <code>*</code> to allow access. You can check the tenant ID in the API Endpoint setting dialog box on the console.</td>
+  </tr>
+  <tr>
+    <td>API User ID</td>
+    <td>Enter the tenant API user ID or <code>*</code> to allow access. You can check the API user ID in the API Endpoint setting dialog on the console.</td>
+  </tr>
+  <tr>
+    <td>Permission</td>
+    <td>Select access permissions (<code>Read</code>, <code>Write</code>, and <code>View</code>) to allow.</td>
+  </tr>
+</table>
 
-For more details on availability zones, see [Availability Zone in Instance Overview](./overview/#availability-zone).
+<br/>
 
-<a id="flavor"></a>
-### Flavor
+<a id="set-container-ip-acl"></a>
+##### IP ACL
 
-You can select various flavors depending on virtual hardware performance specifications. However, the choice of some flavors may be limited depending on the virtual hardware performance that your image requires. For more details, see [Instance Overview](./overview).
+Manages IP-based access policies. For more details on configuring access policies, refer to [ACL Configuration Guide](acl-guide$[ file_suffix ]$/).
 
-> [Note] 
-> 1 vCPU refers to one socket composed of one thread and one core, the number of threads and the number of cores per socket are constant, one each.
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Option</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="2">Whitelist</td>
+    <td>IPv4</td>
+    <td>Enter an IP to register in the whitelist. You can enter in IP (192.168.0.1) or CIDR (192.168.0.0/24) format.</td>
+  </tr>
+  <tr>
+    <td>Access right</td>
+    <td>Select access rights (Read, Write, View) to allow.</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Blacklist</td>
+    <td>IPv4</td>
+    <td>Enter an IP to register in the blacklist. You can enter in IP (192.168.0.1) or CIDR (192.168.0.0/24) format.</td>
+  </tr>
+  <tr>
+    <td>Access right</td>
+    <td>Select access rights not to allow (Read, Write).</td>
+  </tr>
+  <tr>
+    <td rowspan="5">Service Gateway IP</td>
+    <td>Disable</td>
+    <td>Do not set access control on requests through the service gateway.</td>
+  </tr>
+  <tr>
+    <td>Allow Read</td>
+    <td>Allow read requests through the service gateway.</td>
+  </tr>
+  <tr>
+    <td>Allow Write</td>
+    <td>Allow write requests through the service gateway.</td>
+  </tr>
+  <tr>
+    <td>Allow Read / Write</td>
+    <td>Allow read and write requests through the service gateway.</td>
+  </tr>
+  <tr>
+    <td>Block</td>
+    <td>Do not allow requests through the service gateway.</td>
+  </tr>
+</table>
 
-Instance flavors can be changed in the NHN Cloud console even after instance creation, from higher to lower specs and vice versa. However, note that some flavors cannot be changed. See [Modify flavor](./console-guide/#modify-flavor) for details.
+<a id="set-container-static-website"></a>
+##### Static Website Settings
 
-> [Caution] An instance's root block storagecannot be changed by changing instance flavors.
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Option</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="2">Static Website Settings</td>
+    <td>Index document</td>
+    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br>Up to 256 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+  </tr>
+  <tr>
+    <td>Error document</td>
+    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br>Up to 256 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>) are allowed.</td>
+  </tr>
+</table>
 
-<a id="number-of-instances"></a>
-### Number of Instances
+If you set the access policy of a container to **PUBLIC** and enter the index document and error document, you can host a static website in the container. You can get the URL of the static website by clicking the **Copy URL** button on the container list.
 
-You can specify the number of instances you want to create when creating multiple instances with the same image, availability zone, flavor, block storage size, key pair, and network settings. The instance names will be the name you specified, with numbers such as `-1` and `-2` appended to the end. For example, creating two instances named `my-instance` will result in `my-instance-1` and `my-instance-2`. The maximum number of instances you can create at once is 10.
+The name for an object to be used as an index document or error document for a static website must consist of one or more alphanumeric characters, or some special characters(`-`, `_`, `.`, `/`), and the file extension must be `html` in hypertext format. If the conditions are not satisfied, you cannot configure the settings or the static website may not work.
 
-When you create multiple instances without specifying an availability zone, each instance will be created in a randomly selected availability zone. For example, if two instances are created without specifying an availability zone, they may be created in the same zone or they may be created in different zones. If all instances need to be created in the same availability zone, select a particular zone.
+The name for an error document of a static website has the form of `{error code}{suffix}`. For example, if you configure the error document as `error.html`, the name for an error document to display when a 404 error occurs is `404error.html`. You can upload and use error documents for each error situation. If error documents are not defined or error objects that matches error codes do not exist, a default error document of a web browser will be displayed.
+<br>
 
-> [Note]
-> If you select **block storage** for **Use Existing Resource** in the **OS settings** or **Use Existing Network Interface** in the **network settings**, the number of instances is limited to `1`.
+<br>
 
-<a id="key-pair"></a>
-### Key Pair
+<a id="set-container-cors"></a>
+##### Change Cross-Origin Resource Sharing (CORS)
 
-Use an existing key pair or create a new key pair. To register an existing key pair, see [Import Key Pair (Windows)](./console-guide/#import-key-pairs-windows) for Windows users, and [Import Key Pair (Mac and Linux)](./console-guide/#import-key-pairs-mac-and-linux) for Mac and Linux users.
+To call the Object Storage API directly from the browser, you need to set Cross-Origin Resource Sharing (CORS). You can register the source URLs to allow by clicking the Change button of the cross-origin resource sharing item. The URL must include the protocols (`https://` or `http://`). You can allow all source URLs by entering `*`.
 
-> [Note]
-> Key Pair is a resource assigned to the user account, so it's not deleted when you delete a project.
+<br>
 
-<a id="network"></a>
-### Network
+<a id="set-container-upload-policy"></a>
+##### Change Upload Policy Settings
+Set an upload policy based on object names in the container. Upload policy settings allow you to restrict or prevent uploads of objects with certain extensions or keywords in their names.
 
-Select a subnet defined in your VPC to connect to an instance. For each selected subnet, a network interface is created in the instance to connect to that subnet. You can change the order of selected subnets to change network interfaces, in which case the first network interface (`eth0`) will be set as the default gateway.
+Upload policies can set up `whitelist` or `blacklist`, but not both at the same time. You can set the extension of files to be uploaded, or keywords to be included in the filename. However, for objects that include a path, the policy reflects the object name without the path. The upload policy is applied to newly uploaded objects from the time it is set.
 
-For more details on creating and managing networks, refer to [VPC Overview](/Network/VPC/en/overview/).
+If you set `exe` and `jpg` as whitelist, only objects with the extensions can be uploaded. Adding the filename `example` will allow only objects with both the set filename and extension to be uploaded, such as `exe_example.exe`, `image_example.jpg`.
 
-<a id="floating-ip"></a>
-### Floating IP
+For blacklist, setting `exe`, `jpg` as blacklist will prevent all objects with `.exe`, `.jpg` extensions from being uploaded. Setting the additional filename `example` will prevent both files with restricted extensions, such as `test.exe`, `image.jpg`, and files with restricted keywords, such as `text_example.txt`, from being uploaded.
+<br>
 
-Select whether you will use a floating IP after instance creation. If you enable this option, a new floating IP is created and connected to the first network interface. Note that the first network interface must be connected to a subnet where an internet gateway is configured.
+<br>
 
-Floating IP can be managed from Instance > Management, or Instance > Floating IP. For more details on floating IP, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+<a id="set-object-lifecycle"></a>
+#### Lifecycle
 
-<a id="security-group"></a>
-### Security Group
+Views and modifies the lifecycle rules of objects stored in containers.
 
-Select security groups that the instance will be included in. One instance can be included in multiple security groups, in which case,
+For detailed information on how to configure lifecycle settings, see [How to Apply Lifecycle Rules](container-policy-guide$[ file_suffix ]$/#lifecycle-apply).
 
-- The instance can communicate over the network with all other instances included in each security group. When you are dealing with an instance with sensitive data that is not meant to be accessible by other instances, you must carefully select security groups.
-- The rules of each security group are aggregated and applied to the instance's external network communication.
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Type</th>
+    <th>Item</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="3">Basic Rules</td>
+    <td>Object Lifecycle</td>
+    <td>Enter the object lifecycle in days.</td>
+  </tr>
+  <tr>
+    <td>Lifecycle Expiration Action</td>
+    <td>Select how to handle objects whose lifecycle has expired.</td>
+  </tr>
+  <tr>
+    <td>Destination Container</td>
+    <td>When you select <b>Move Container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
+  </tr>
+  <tr>
+    <td rowspan="5">Conditional Rules</td>
+    <td>Rule Name</td>
+    <td>Enter the name of the lifecycle rule.</td>
+  </tr>
+  <tr>
+    <td>Condition</td>
+    <td>Specify the condition to which the rule applies.</td>
+  </tr>
+  <tr>
+    <td>Object Lifecycle</td>
+    <td>Enter the object lifecycle in days.</td>
+  </tr>
+  <tr>
+    <td>Lifecycle Expiration Action</td>
+    <td>Select how to handle objects whose lifecycle has expired.</td>
+  </tr>
+  <tr>
+    <td>Destination Container</td>
+    <td>When you select <b>Move Container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
+  </tr>
+</table>
 
-For more details on security groups, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+You can view and change the lifecycle rules for objects stored in a container.
+For more information on lifecycle settings, see [How to apply lifecycle rules](container-policy-guide/#lifecycle-apply).
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Type</th>
+    <th>Option</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan=3>Default rule</td>
+    <td>Object lifecycle</td>
+    <td>Enter the object lifecycle in days.</td>
+  </tr>
+  <tr>
+    <td>Lifecycle expiration action</td>
+    <td>Select how to handle objects whose lifecycle has expired.</td>
+  </tr>
+  <tr>
+    <td>Target container</td>
+    <td>When you select <b>Move container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
+  </tr>
+  <tr>
+    <td rowspan=5>Conditional rule</td>
+    <td>Rule name</td>
+    <td>Enter the name of the lifecycle rule.</td>
+  </tr>
+  <tr>
+    <td>Condition</td>
+    <td>Specify the conditions under which the rule is applied.</td>
+  </tr>
+  <tr>
+    <td>Object lifecycle</td>
+    <td>Enter the object lifecycle in days.</td>
+  </tr>
+  <tr>
+    <td>Lifecycle expiration action</td>
+    <td>Select how to handle objects whose lifecycle has expired.</td>
+  </tr>
+  <tr>
+    <td>Target container</td>
+    <td>When you select <b>Move container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
+  </tr>
+</table>
 
-<a id="additional-block-storage"></a>
-### Additional Block Storage
+Up to 30 condition rules can be configured. This limit also applies when configuring via [container policy](container-policy-guide$[ file_suffix ]$/#lifecycle).
+{%- if ec %}
+    Objects stored in Standard class containers can be moved to Economy class containers over their lifecycle to reduce the cost of long-term storage.
 
-Select whether you will attach an additional block storage after instance creation. If you enable this option, a new block storage separate from the root block storage is created and attached to the instance. As with the root block storage, you can specify the name, storage type, and size of the additional block storage you create.
+{% endif %}
 
-By using the root block storage only for the OS and storing your frequently used applications and data on the additional block storage, you can easily migrate or copy your applications and data using the block storage attach/detach and snapshot features. In addition, when an instance failure occurs, you can easily recover your services by simply detaching the additional block storage and attaching it to another instance.
+<a id="set-object-lifecycle-batch"></a>
+##### Bulk Apply Rules
 
-Block storage can also be managed from Instance > Block Storage. For more details on block storage, see [Block Storage Guide](/Storage/Block%20Storage/en/overview/).
+Clicking the **Bulk Apply Rules** button resets the lifecycle of all objects in the container according to the rules at once.
+Rules are applied in order of priority, and the lifecycle is recalculated based on the time of bulk application.
 
-<a id="placement-policy"></a>
-### Placement Policy
+<a id="set-object-versioning"></a>
+#### Object Version
 
-You can use placement policies to place instances on different hypervisors. When you set a placement policy at instance creation time, instances assigned to the same placement policy are created on different hypervisors.
- 
-> [Caution]
-> Instance creation may fail in situations where distributed deployment is not possible.
+Object version control settings allow you to keep previous versions of objects. Previous versions are kept in the archive container when the object is updated or deleted. If you set the lifecycle for previous versions, versions that exceed the set lifecycle are automatically deleted.
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Item</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Versioning policy</td>
+    <td>Select whether to use the versioning policy.</td>
+  </tr>
+  <tr>
+    <td>Archive container</td>
+    <td>Enter the container in which to store previous versions of objects.</td>
+  </tr>
+  <tr>
+    <td>Archived object<br/>lifecycle</td>
+    <td>Enter the lifecycle of previous versions of objects in days. If left blank, the lifecycle setting is disabled.</td>
+  </tr>
+</table>
 
-<a id="user-script"></a>
-### User Script
+!!! danger "Caution"
+    If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
+    If you specify an encryption container as the archive container and then delete the symmetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
 
-You can specify a script to be executed after instance creation. The user script is executed following the instance's initial boot and after the initialization process including network configuration has completed. User scripts in NHN Cloud are executed by automated tools such as cloud-init (Linux) and Cloudbase-init (Windows), which are embedded in the official images.
 
-> [Caution]
-> User scripts are executed with root (Linux)/Administrator (Windows) privileges.
+!!! danger "Caution"
+    If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
+{%- if encrypt %}
+    If you specify an encryption container as the archive container and then delete the symmetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
 
-#### Linux
-The first line of a user script must begin with `#!`.
+{% endif %}
+
+<a id="change-object-lock-cycle"></a>
+#### Object Lock
+
+You can check and change the object lock cycle of object lock containers. The object lock cycle can be entered in days, and cannot be turned off.
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Option</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="2">Object lock settings</td>
+    <td>Object lock</td>
+    <td>Select whether to use the object lock.</td>
+  </tr>
+  <tr>
+    <td>Lock cycle</td>
+    <td>Enter the object lock cycle in days.</td>
+  </tr>
+</table>
+
+!!! tip "Note"
+    The changed object lock cycle is applied to objects uploaded after changing the settings.
+    You cannot change a general container to an object lock container and vice versa.
+    You cannot specify an object lock container as an archive container or replication target container.
+
+You cannot change a general container to an object lock container and vice versa.
+
+Object lock containers cannot be designated as archive containers$[ " or replication target containers" if replication else "" ]$.
+
+{% if replication %}
+<a id="set-container-replication"></a>
+#### Replication
+
+Replication settings allow you to replicate objects in a container to another container in a different region. Replication settings are for disaster recovery, and objects in the source region are replicated to the target region and managed. Replication proceed in the background at regular intervals.
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Option</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="6">Replication settings</td>
+    <td>Replication</td>
+    <td>Select whether to use the replication feature.</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Project type</td>
+    <td><b>Same project</b>: Select a container of the same project for the replication target container.</td>
+  </tr>
+  <tr>
+    <td><b>Different project</b>: Select a container of a different project for the replication target container.</td>
+  </tr>
+  <tr>
+    <td>Target project</td>
+    <td>Enter a project to replicate. Click View to check the permissions of the project.</td>
+  </tr>
+  <tr>
+    <td>Target region</td>
+    <td>Select a region to replicate to. If the project type is same project, the region you are currently using is excluded.</td>
+  </tr>
+  <tr>
+    <td>Target container</td>
+    <td>Enter the target container for replication or select the target container by clicking Search.</td>
+  </tr>
+</table>
+
+The replication policies are as follows:
+
+* **Default behavior**
+    * When an object in the source container is changed (uploaded, metadata updated, or deleted), the change is reflected in the replication target container.
+    * Changes made to objects in the replication target container are not reflected in the source container.
+    * Replication operates based on the last modified time of the object. If an object in the replication target container was modified more recently than the source, it will not be replicated.
+* **Configuration considerations**
+    * It is recommended to use an empty container as the replication target container. If an object with the same name as an object in the source container already exists in the target container, replication may not proceed smoothly.
+    * If an object with the same name has previously been deleted in the replication target container, the last updated time of the replicated object may be changed to the replication configuration time.
+    * It is recommended to use the same name for the source container and the replication target container. If the container names differ, access to replicated large objects may fail.
+    * If the segment objects of a large object uploaded via multipart upload are stored in a different container, replication must also be configured for the container where the segments are stored in the same way, in order to access the replicated large object.
+* **Configuration change considerations**
+    * If the replication setting is changed to disabled, replication stops but already replicated objects are retained.
+    * If the replication direction is switched, objects in the replication target container are restored to the source container. Objects deleted from the source container are also included in the restoration, and the last updated time of restored objects is changed to the replication configuration time.
+    * If the replication target container is deleted, replication will not resume even if a container with the same name is created again. To resume replication, the replication settings must be reconfigured.
+* **Limitations and exceptions**
+    * The replication target container cannot be replicated to a different region, or configured as a replication target for another container simultaneously.
+    * When objects whose lifecycle has expired but have not yet been deleted are replicated to the target container, the lifecycle setting is removed. When subsequently deleted from the source container, the deletion is propagated to the target container and the object is deleted.
+    * Delete marker objects in the archive container are not replicated.
+
+{% if encrypt %}
+!!! danger "Caution"
+    If you specify an encryption container as the replication target container and then delete the symmetric key from Secure Key Manager, the encryption container fails to be replicated.
+
+{% endif %}
+
+<br>
+
+<a id="resume-container-replication"></a>
+##### Resume Replication
+
+Resumes the replication of a suspended container from the point it was suspended.
+
+<br>
+
+<a id="suspend-container-replication"></a>
+##### Suspend Replication
+
+Suspends container replication. While replication is suspended, any deletions or modifications to objects in the source container are not replicated.
+
+!!! danger "Caution"
+    Objects in the source container that are deleted during the replication suspend period might not be reflected in the target container.
+
+<br>
+
+{% endif %}
+<a id="task-record"></a>
+#### Task History
+You can view the history of tasks that batch-process multiple objects. The task types for which history is provided are as follows:
+
+* [Empty a Container](#empty-a-container)
+* [Delete Object](#delete-object)
+* [Copy Object](#copy-or-move-object)
+* [Move Object](#copy-or-move-object)
+* [Apply Lifecycle Rules in Batch](#set-object-lifecycle-batch)
+
+!!! tip "Tip"
+    Task history is retained for 90 days from the date the task ends.
+
+<a id="task-record-list"></a>
+##### Task List
+You can view the list of stored tasks. Click the **Export History** button to download the list of completed tasks as a file.
+
+<a id="task-record-detail"></a>
+##### Task Details
+You can view detailed information for each task. The information available is as follows:
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Item</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="10">Basic Information</td>
+    <td>Task ID</td>
+    <td>Indicates the unique ID of the task.</td>
+  </tr>
+  <tr>
+    <td>Container</td>
+    <td>Indicates the name of the container where the task was executed.</td>
+  </tr>
+  <tr>
+    <td>Execution Path</td>
+    <td>Indicates the path in the container from which the task was requested.<br>If the task was performed on all objects (such as emptying a container) or was executed from the root path of the container, this field is displayed as empty.</td>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>Indicates the type of the task.</td>
+  </tr>
+  <tr>
+    <td rowspan="6">Status</td>
+    <td><b>Pending</b>: The task has been created and is waiting to be executed.</td>
+  </tr>
+  <tr>
+    <td><b>In Progress</b>: The task is currently running.</td>
+  </tr>
+  <tr>
+    <td><b>Completed</b>: The task has ended after all objects were processed successfully.</td>
+  </tr>
+  <tr>
+    <td><b>Failed</b>: The task has ended with some objects failing to be processed.</td>
+  </tr>
+  <tr>
+    <td><b>Canceling</b>: A cancellation request has been received from the user and the task is waiting to be canceled.</td>
+  </tr>
+  <tr>
+    <td><b>Canceled</b>: The cancellation is complete and the task has ended.</td>
+  </tr>
+  <tr>
+    <td rowspan="6">Progress / Result</td>
+    <td>User</td>
+    <td>Indicates the ID of the user who requested the task.</td>
+  </tr>
+  <tr>
+    <td>Task Request Time</td>
+    <td>Indicates the time when the user requested the task.</td>
+  </tr>
+  <tr>
+    <td>Task Start Time</td>
+    <td>Indicates the time when the task requested by the user began processing.</td>
+  </tr>
+  <tr>
+    <td>Task End Time</td>
+    <td>Indicates the time when the task ended.</td>
+  </tr>
+  <tr>
+    <td>Total Duration</td>
+    <td>Indicates the time elapsed from when the task started until it ended.</td>
+  </tr>
+  <tr>
+    <td>Progress Counter</td>
+    <td>Indicates the total number of objects for which processing was attempted, as well as the number of successes and failures.</td>
+  </tr>
+  <tr>
+    <td>Failure Results</td>
+    <td>View Failure Results</td>
+    <td>You can view the list of failed objects along with the failure reason and request time for each object.</td>
+  </tr>
+</table>
+
+The following additional information is displayed for object copy/move tasks:
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Item</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="2">Copy/Move Target Information</td>
+    <td>Target Container</td>
+    <td>Indicates the name of the container to which the object is copied/moved.</td>
+  </tr>
+  <tr>
+    <td>Target Path</td>
+    <td>Indicates the path in the target container to which the object is copied/moved.</td>
+  </tr>
+</table>
+
+<br>
+
+<a id="object"></a>
+## Object { #object }
+
+<a id="create-folder"></a>
+### Create Folder { #create-folder }
+Create folders. Folders are virtual units to bundle objects within a container into a group. Similar to folders in Windows or directories in Linux, they help users to manage objects hierarchically. Folder names are limited to 256 letters in English or 85 characters in Korean.
+
+!!! tip "Note"
+    Folder for object storage is different from the directory provided by the file system. It is a pseudo folder provided for user's convenience. When a folder is created, an empty object named `{folder-name}/` is created. Objects within the folder will have names in the form of `{folder-name}/{object-name}`. Objects in the form of `{folder-name}/{object-name}` can be created directly without generating empty objects in the form of `{folder-name}/` by using the Copy Object function to copy objects into a new folder. If this copied object is deleted, it will appear as if the folder is also deleted. If you copy the object to a folder that you created in advance, the folder remains even if the object is deleted.
+
+<a id="delete-folder"></a>
+### Delete Folder { #delete-folder }
+Deletes a folder. Deletes all objects in the folder and the folder object.
+For multipart objects inside a folder, only the manifest object is deleted; segment objects that are not included in the selection are not deleted.
+
+<a id="upload-object"></a>
+### Upload Object { #upload-object }
+All objects must be uploaded to containers. One object cannot be larger than 5GB.
+
+!!! tip "Note"
+    Files exceeding 5 GB cannot be uploaded to the console. If the size of the object to be uploaded exceeds 5 GB, it must be split by using a command-line tool such as `split`, or the user application must be programmed to divide the object into segments less than 5 GB before uploading. For more details, refer to [Multipart Upload](api-guide$[ file_suffix ]$/#multipart-upload) of the API guide.
+
+<a id="download-object"></a>
+### Download Object { #download-object }
+Download selected objects. If you have set up the container access policy as **PRIVATE** at the time of creation, only permitted users can access the objects. If the access policy was set up as **PUBLIC**, click the **Copy URL** button on the list to check the public URL of the object. With this URL, it is possible to create a hyperlink of the object or directly download it.
+
+<details style="padding-top: 15px; padding-bottom: 10px;">
+<summary>Hyperlink Example</summary>
+
+Write a web page.
+
 ```
-#!/bin/bash
-...
+# cat > index.html
+<html>
+<body> hello world!
+<a href="$[ object_storage_url ]$/v1/{account}/{container}/{object}">Download</a>
+</body>
+</html>
 ```
 
-For a user script to run successfully, log files in the instance must be checked. You can check output logs printed by standard output/error from the script in `/var/log/cloud-init-output.log`.
+Run a web server using the http module of Python3.
 
-#### Windows
-
-Windows images support both Batch and PowerShell formats for user scripts. The format is determined by an indicator specified in the first line.
-
-* Batch Script
 ```
-rem cmd
-...
+# python -m http.server
+Serving HTTP on :: port 8000 (http://[::]:8000/) ...
 ```
 
-* PowerShell Script
-```
-#ps1_sysnative
-...
-```
+After accessing **http://localhost:8000** through a web browser, click **Download** to confirm the file is being downloaded properly.
 
-To use both Batch and PowerShell in your script, use the following format.
+</details>
 
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
+<a id="copy-or-move-object"></a>
+### Copy/Move Object { #copy-or-move-object }
+Copy or move objects to the specified container. You can select multiple objects to copy or move to a different container or to a new path in the same container.
 
-Logs from user scripts can be found in `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`.
+!!! tip "Note"
+    The maximum length of the path that can be entered depends on the length of the object name. The length of the path to copy plus the object name must be 1024 bytes or less.
 
-For more details regarding user scripts, see the [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) or [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) guides.
+    `{Maximum length of the path} = 1024 - {Length of the object name} - 1`
 
-<a id="additional-instance-features"></a>
-## Additional Instance Features
+    For multipart objects, only manifest objects can be copied or moved.
 
-<a id="change-instance-status"></a>
-### Change Instance Status
+<a id="delete-object"></a>
+### Delete Object { #delete-object }
+Deletes the selected objects. You can select and delete multiple objects at the same time. 
 
-An instance’s status can be changed by stopping, terminating, deleting, and starting it.
+!!! tip "Note"
+    When you delete a multipart object, only the selected manifest object is deleted. Unselected segment objects are not deleted.
 
-For more details on hypervisor resources and fees for stopping, terminating, and deleting instances, see the table below.
+<a id="create-signed-url"></a>
+### Create Signed URL { #create-signed-url }
+Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies. For more information on how to use it, see the [Signed URL Guide](presigned-url-guide$[ file_suffix ]$/).
 
-| Classification | Stop instance | Terminate Instance | Delete Instance |
-| --- | -- | --- | --- |
-| Hypervisor resource | Resource remain allocated  | Resource returned and reallocated when an instance is started | Resource removed |
-| Pricing for instance | Price for stopping applied | Free | Free |
-| Pricing for other connected resources | Charged| Charged | Charged |
+!!! tip "Note"
+    Only single objects can be selected, not folder objects.
 
-> [Note] GPU Instances cannot be terminated and will incur normal (100%) rates when stopped.
+    The validity period can be set in minutes, up to 720 minutes.
 
-<a id="create-image"></a>
-### Create Image
+!!! danger "Caution"
+    Signed URLs should be used with caution because if they are exposed, anyone can access the selected object. It is recommended that you set an appropriate validity period for your situation and use it to reduce the damage if your signed URL is exposed.
 
-Create an image from an instance's root block storage. It is recommended to stop instances before creating an image in order to ensure data integrity.
+<a id="manage-object"></a>
+### Manage Object { #manage-object }
+Check the selected object information and manage the properties.
 
-While it is possible to create an image from an instance that has no available free space in its root block storage, those images are unusable by other instances because they cannot be properly initialized. Before creating an image, ensure that your instance has at least 100KB of free space.
+!!! tip "Note"
+    If you set both an object expiration date and a lock expiration date, the object expiration date must always be set after the lock expiration date.
 
-Created images are registered as private images in **Compute > Image**. You can use the registered image to create an instance with a block storage identical to that of the original instance.
+<a id="set-object-expiration"></a>
+#### Change Object Expiration Date
 
-> [Caution]
-> The size of the created image may be larger than the actual usage of the root block storage.
+You can change the expiration date for selected objects.
 
-<a id="associatedisassociate-floating-ip"></a>
-### Associate/Disassociate Floating IP
+<a id="set-object-lock-expiration"></a>
+#### Change Object Lock Date
 
-Floating IP can be associated with or disassociated from an instance, regardless of the instance's status. If you have no available floating IP or if the floating IP you want is not available, you can create one by clicking **Create**. Alternatively, floating IP can also be created from **Network > VPC > Floating IP**.
+You can change the lock expiration date for selected objects. It cannot be changed prior to the previously set expiration date.
 
-For more details on floating IP, see [VPC Overview](/Network/VPC/en/overview/).
+<a id="prefix-search"></a>
+## Prefix Search { #prefix-search }
+If you enter a prefix in the search bar and click the **Search** button, you can search for containers, folders, and objects that begin with the prefix you entered. You can search for containers in the container list, and search for folders and objects in the object list.
 
-<a id="modify-security-group"></a>
-### Modify Security Group
+<a id="s3-api-credentials"></a>
+## S3 API Credentials { #s3-api-credentials }
+You can obtain credentials required to use Amazon S3 compatible API. S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
 
-An instance's security groups can be modified regardless of the instance's status. Modified security groups are applied immediately.
-
-For more details on security groups, see [Security Group](./console-guide/#security-group) and [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="change-network-subnet"></a>
-### Change Network Subnet
-
-An instance's network subnet can only be changed while the instance is stopped. When you add a subnet, a network interface that will be connected to that subnet is automatically created on your instance. If you add multiple subnets at once, the order of the newly created network interfaces on the instance is set randomly. Deleting a subnet from an instance automatically deletes the network interface that was created along with the subnet.
-
-<a id="modify-flavor"></a>
-### Modify Flavor
-
-Instance flavors can be changed once an instance has been stopped. If an instance is running, click **Stop Instance** in **Additional Features** to stop the instance.
-
-You can only change an instance to another flavor that is compatible with its current flavor.
-
-* m2, c2, r2, t2, x1 flavor instances can be changed to m2, c2, r2, t2, x1 flavors.
-* m2, c2, r2, t2, x1 flavor instances cannot be changed to u2 flavors.
-* u2 flavor instances cannot be changed to other flavors once they have been created, not even to those of the same u2 flavor.
-
-When you modify flavors, instance resize and resize confirmation tasks proceed. When all tasks are completed, the VM changes its status to **Shutoff**. You can start the instance by clicking **Start Instance** in **Additional Features**.
-
-> [Note] The instance's root block storage size cannot be modified. If an instance requires additional block storage space, attach a block storage. For details on how to attach block storage, see [Block Storage Overview](/Storage/Block%20Storage/en/overview/).
-
-Instances will be charged using the new flavor from the moment the modification completes.
-
-<a id="change-instance-os-details"></a>
-### Change Instance OS Details
-
-You can change instance OS information regardless of the state of the instance. 
-
-On the **Compute > Instance** page, click the instance whose OS information you want to change. On the **Basic Information** tab of that instance's details screen, click **OS > Modify**.
-
-> [Note] You can't change the OS type.
-
-<a id="change-instance-description"></a>
-### Change Instance Description
- 
-You can change instance description regardless of the state of the instance. 
- 
-On the **Compute > Instance** page, click the instance whose information you want to change. On the **Basic Information** tab of that instance's details screen, click **Description > Change**.
-
-<a id="change-instance-key-pair"></a>
-### Change Instance Key Pair
-
-You can change the instance key pair only if the instance is active.
-
-On the **Compute > Instance** page, click the instance whose key pair information you want to change. On the **Basic Information** tab of that instance's details screen, click **Key Pair > Change**.
-
-Change the key pair of the instance default account to the selected key pair. The instance default account can be found on the **Connection Information** tab of the instance's bottom details screen.
-
-> [Caution] Changing an instance key pair deletes all public key information in the instance except for the selected key pair.
-
-> [Note] Only project members with the ADMIN permissions for the basic infrastructure can change the instance key pair, which cannot be changed if it is a Windows OS instance.
-
-> [Note] If the image version used to create the instance is low, the feature to change key pairs may not be available.
-
-<a id="manage-placement-policies"></a>
-### Manage Placement Policies
-
-You can create and delete placement policies and view a list of instances assigned to placement policies.
-
-Only the `anti-affinity` placement policy type for distributed placement is provided.
-
-You can delete a placement policy even if instances are assigned to it, in which case the instances are not deleted.
-
-<a id="key-pairs"></a>
-## Key Pairs
-
-<a id="import-key-pairs-windows"></a>
-### Import Key Pairs (Windows)
-
-You can use puttygen, which is installed when you install the PuTTY SSH client, to create a key pair and register it with NHN Cloud.
-
-Make sure you have [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) installed.
-
-Run puttygen.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
-
-Select **RSA** (or SSH-2 RSA in older versions of puttygen) under **Parameters**. Click **Generate** under **Actions**. Continuously move your mouse in the empty space in order to generate the key.
-
-After the key is generated, the public key file contents will be visible as shown below. Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
-
-Click **Save private key** under **Actions** to save the private key. If you save the private key leaving the **Key passphrase** field blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to use your converted private key more securely, set a passphrase before saving.
-
-> [Caution]
-> If you wish to be able to automatically login to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### Import Key Pairs (Mac and Linux)
-
-Key pairs created using `ssh-keygen` in Mac or Linux can be registered with NHN Cloud. Use the following command to create a key pair.
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-You can choose to set a passphrase for the key pair, although it is not required. If you wish to use your key pair more securely, we recommend setting a passphrase. The file with `.pub` appended to the specified key pair name contains the public key.
-
-	$ cat my_key.key.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-	
-Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## Appendix 1. Change Language Packs in Windows
-
-NHN Cloud provides Windows images with English as the primary language. You may change your language preferences with the following steps.
-
-1. Go to **START > Control Panel > Clock, Language, and Region > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. Select **Change your language preferences > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. Choose a language in **Add a language** and click **Add**.
-![Image1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. Check the language pack just added.
-![Image1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. Download and install the language pack.
-![Image1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. Download and install updates.
-![Image1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. To change to the installed language pack, double-click the selected language or select **Options**.
-![Image1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. Choose **Make this the primary language** for Windows display language.
-![Image1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. To apply the changes, click **Log off now**.
-![Image1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. Log in again, and you can see Windows is displayed using the language pack of your choice.
-![Image1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## Appendix 2. Change Routing in Windows
-
-Routing in NHN Cloud Windows instances can be changed as follows.
-
-* Press **Windows Key + R** to open an execution window, and enter `cmd` and execute to open a command prompt window. You can enter route commands here.
-
-Route commands
-
-* Print current configuration: route print
-* Add : route add "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Change : route change "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Delete : route delete "Destination" mask "Destination subnet" "gateway" metric "Metric value" if "Interface number"
-* Option : -p (specify as persistent route)
-
-  
-Description
-
-![Image1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* Metric Value: A lower value indicates higher priority
-* Interface Number: This value can be obtained from route print (red box above)
-* Persistent Route: Use the -p option to avoid the configured routes being reset across system reboots (blue box above)
-
-Example 1 - Restricting external communication for particular interfaces
-
-* You can restrict an interface from communicating externally by using the route change command to change its route metric or by leaving the default gateway field blank when configuring fixed IP settings.
-* How to Modify Metrics
-    * Increase interface metric value
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* How to Set Fixed IP
-    1. Use the ipconfig /all command to view IP information.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. Enter the corresponding IP information, leaving the default gateway field blank, in the IP Properties window.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. Check the results using the route print command.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Example 2 - Setting routes for a particular address range
-
-* Use the route add command to set routes for a particular address range.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Example 3 - Removing a particular route
-
-* Use the route delete command to remove specified routes.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## Appendix 3. Change System Locale
-
-System locale in NHN Cloud Windows instances can be changed as follows.
-
-1. Go to **Windows Key > Control Panel > Clock, Language, and Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. Select **Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. From the **Administrative** tab, click **Change system locale**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. Select a system locale to use.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. Restart the system to apply the changes.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## Appendix 4. Restarting Instances for Hypervisor Maintenance
-NHN Cloud updates hypervisor software on a regular basis to enhance the security and stability of infrastructure services that we provide.
-Instances running on a hypervisor that requires maintenance must be restarted and migrated to a hypervisor which has completed maintenance.
-
-To restart an instance, use the **! Restart** button that has been created next to the instance name in the console.
-`Using the "Restart Instances" button in the console or rebooting the operating system will not migrate an instance to another hypervisor.`
-Follow the guide below to use the restart feature in the console.
-
-Go to the project where your instance requiring maintenance is located.
-
-**1. Check if your instance requires maintenance.**
-
-Any instance that has the **! Restart** button before its name requires maintenance.
-Put the mouse cursor over the **! Restart** button to find maintenance schedule details.
-![Instance Maintenance Image 1](http://static.toastoven.net/prod_instance/instance_p_migration_en_1.png)    
-
-**2. Deactivate or stop application programs running on an instance which requires maintenance.**
-
-Any application programs running on an instance which requires maintenance must be deactivated or stopped in order not to impact your service.
-If there is no way to do so without impacting your service, please contact NHN Cloud Customer Center and we will provide you with guidance on appropriate measures to take.
-
-**3. Click the [! Restart] button created next to the name of the target instance.**
-
-![Instance Maintenance Image 2](http://static.toastoven.net/prod_instance/instance_p_migration_en_2.png)
-
-**4. Click [Confirm] in the Restart Instances confirmation window.**
-
-![Instance Maintenance Image3](http://static.toastoven.net/prod_instance/instance_p_migration_en_3.png)
-
-**5. Wait until the instance status turns green and the [! Restart] button disappers.**
-
-If the status does not change or the **! Restart** button is not disabled, try refreshing the page.
-
-You cannot operate or modify the instance while a restart is underway.
-If an instance restart does not complete successfully, the administrator will automatically be notified and you'll also be contacted by NHN Cloud.
+!!! danger "Caution"
+    If the S3 API credentials key is leaked, anyone can access the object using the leaked key. If the key is leaked, it is recommended to delete the leaked credentials and obtain a new one.
