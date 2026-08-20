@@ -1,1969 +1,2607 @@
-<a id="compute-instance-api-v2-guide"></a>
-## Compute > Instance > API v2ガイド
+<!-- pre-align:aligned sig=0cdc970c9318 -->
 
-APIを使用するにはAPIエンドポイントとトークンなどが必要です。 [API使用準備](/Compute/Compute/ja/identity-api/)を参照してAPIを使用するのに必要な情報を準備します。
+<a id="network-transit-hub-api-v2-guide"></a>
+## Network > Transit Hub > API v2ガイド { #network-transit-hub-api-v2-guide }
 
-インスタンスAPIは`compute`タイプエンドポイントを利用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
+NHN Cloud Networkサービスは、API呼び出し時の認証/認可のためにIaaSトークンを使用します。IaaSトークンは、NHN CloudのOpenStackベースのインフラサービス(IaaS)で使用する認証トークンです。IaaSトークンの発行及び使用に関する詳細は、[IaaSトークン](/nhncloud/ja/public-api/iaas-token)を参照してください。
+
+トランジットハブAPIは`network`タイプエンドポイントを利用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
 
 | タイプ | リージョン | エンドポイント |
 |---|---|---|
-| compute | 韓国(パンギョ)リージョン<br>韓国(ピョンチョン)リージョン<br>韓国(クァンジュ)リージョン<br>日本リージョン | https://kr1-api-instance-infrastructure.nhncloudservice.com<br>https://kr2-api-instance-infrastructure.nhncloudservice.com<br>https://kr3-api-instance-infrastructure.nhncloudservice.com<br>https://jp1-api-instance-infrastructure.nhncloudservice.com |
+| network | 韓国(パンギョ)リージョン<br>韓国(ピョンチョン)リージョン<br>韓国(光州)リージョン | https://kr1-api-network-infrastructure.nhncloudservice.com<br>https://kr2-api-network-infrastructure.nhncloudservice.com<br>https://kr3-api-network-infrastructure.nhncloudservice.com |
 
-APIレスポンスにガイドに明示されていないフィールドが表示される場合があります。それらのフィールドは、NHN Cloud内部用途で使用され、事前に告知せずに変更する場合があるため使用しないでください。
+APIレスポンスにガイドに記載されていないフィールドが表示される場合があります。このようなフィールドは、NHN Cloudの内部用途で使用され、事前告知なしに変更される可能性があるため、使用しないでください。
 
-<a id="instance-flavors"></a>
-## インスタンスタイプ
+<a id="transit-hub"></a>
+## トランジットハブ { #transit-hub }
 
-<a id="list-flavors"></a>
-### タイプリスト表示
+<a id="view-transit-hubs"></a>
+### トランジットハブリスト表示 { #view-transit-hubs }
 
 ```
-GET /v2/{tenantId}/flavors
+GET /v2.0/gateways/transithubs
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-transit-hubs-request"></a>
 #### リクエスト
-
 このAPIはリクエスト本文を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
 | tokenId | Header | String | O | トークンID |
-| minDisk | Query | Integer | - | 最小ブロックストレージサイズ(GB)<br>指定したサイズよりブロックストレージサイズが大きいタイプのみ返す |
-| minRam | Query | Integer | - | 最小RAMサイズ(MB)<br>指定したサイズよりRAMサイズが大きいタイプのみ返す |
+| id | Query | UUID | - | 照会するトランジットハブID |
+| name | Query | String | - | 照会するトランジットハブ名 |
 
+
+<a id="view-transit-hubs-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| flavors | Body | Object | インスタンスタイプリストオブジェクト |
-| flavors.id | Body | UUID | インスタンスタイプID |
-| flavors.links | Body | Object | インスタンスタイプパスオブジェクト |
-| flavors.name | Body | String | インスタンスタイプ名 |
-
+| transithubs | Body | Array | トランジットハブ情報オブジェクトリスト |
+| transithubs.id | Body | UUID | トランジットハブID |
+| transithubs.tenant_id | Body | String | テナントID |
+| transithubs.name | Body | String | トランジットハブ名 |
+| transithubs.description | Body | String | トランジットハブの説明 |
+| transithubs.multicast_enable | Body | Boolean | マルチキャスト機能の使用有無 |
+| transithubs.default_association_enable | Body | Boolean | 基本ルーティングテーブル接続機能の使用有無 |
+| transithubs.default_propagation_enable | Body | Boolean | 基本ルーティングテーブル伝播機能の使用有無 |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-  "flavors": [
-    {
-      "id": "013bea75-8541-4c6f-9abe-a03fee3d74fe",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/013bea75-8541-4c6f-9abe-a03fee3d74fe",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/013bea75-8541-4c6f-9abe-a03fee3d74fe",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "x1.c32m256"
-    },
-    {
-      "id": "0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/0f19a344-bc66-4228-8cb1-fb9ca82c54f5",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "x1.c32m128"
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="list-flavors-with-details"></a>
-### タイプリスト詳細表示
-
-```
-GET /v2/{tenantId}/flavors/detail
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-| minDisk | Query | Integer | - | 最小ブロックストレージサイズ(GB)<br>指定したサイズよりブロックストレージサイズが大きいタイプのみ返す |
-| minRam | Query | Integer | - | 最小RAMサイズ(MB)<br>指定したサイズよりRAMサイズが大きいタイプのみ返す |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明            |
-|---|---|---|----------------|
-| flavors | Body | Object | インスタンスタイプリストオブジェクト |
-| flavors.id | Body | UUID | インスタンスタイプID     |
-| flavors.links | Body | Object | インスタンスタイプパスオブジェクト |
-| flavors.name | Body | String | インスタンスタイプ名    |
-| flavors.ram | Body | Integer | メモリサイズ(MB)     |
-| flavors.OS-FLV-DISABLED:disabled | Body | Boolean | 有効/無効         |
-| flavors.vcpus | Body | Integer | vCPU数       |
-| flavors.extra_specs | Body | Object | 追加仕様オブジェクト      |
-| flavors.swap | Body | Integer | スワップ領域サイズ(GB)  |
-| flavors.os-flavor-access:is_public | Body | Boolean | 共有有無          |
-| flavors.rxtx_factor | Body | Float | ネットワーク送信/受信パケット比率 |
-| flavors.OS-FLV-EXT-DATA:ephemeral | Body | Integer | 臨時ブロックストレージサイズ(GB) |
-| flavors.disk | Body | Integer | ルートブロックストレージサイズ(GB) |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "flavors": [
-    {
-      "name": "x1.c32m256",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/97604802-a090-43fa-a5ce-c7cfd737fbba",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/97604802-a090-43fa-a5ce-c7cfd737fbba",
-          "rel": "bookmark"
-        }
-      ],
-      "ram": 262144,
-      "OS-FLV-DISABLED:disabled": false,
-      "vcpus": 32,
-      "extra_specs": {
-        "flavor_type": "performance"
-      },
-      "swap": "",
-      "os-flavor-access:is_public": true,
-      "rxtx_factor": 1.0,
-      "OS-FLV-EXT-DATA:ephemeral": 0,
-      "disk": 0,
-      "id": "97604802-a090-43fa-a5ce-c7cfd737fbba"
-    },
-    {
-      "name": "x1.c32m128",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/31fa632d-aeec-4f12-8a57-ce9d146228e5",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/31fa632d-aeec-4f12-8a57-ce9d146228e5",
-          "rel": "bookmark"
-        }
-      ],
-      "ram": 131072,
-      "OS-FLV-DISABLED:disabled": false,
-      "vcpus": 32,
-      "extra_specs": {
-        "flavor_type": "performance"
-      },
-      "swap": "",
-      "os-flavor-access:is_public": true,
-      "rxtx_factor": 1.0,
-      "OS-FLV-EXT-DATA:ephemeral": 0,
-      "disk": 0,
-      "id": "31fa632d-aeec-4f12-8a57-ce9d146228e5"
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="availability-zones"></a>
-## アベイラビリティゾーン
-
-<a id="list-availability-zones"></a>
-### 可用性リスト表示
-
-```
-GET /v2/{tenantId}/os-availability-zone
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| availabilityZoneInfo.hosts | Body | - | アベイラビリティゾーンに属しているホスト情報オブジェクト<br>常にnullと表示 |
-| availabilityZoneInfo.zoneName | Body | String | アベイラビリティゾーン名 |
-| availabilityZoneInfo.zoneState | Body | Object | アベイラビリティゾーン状態情報オブジェクト |
-| availabilityZoneInfo.available | Body | Object | アベイラビリティゾーンの状態 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "availabilityZoneInfo": [
-      {
-        "zoneState": {
-          "available": true
-        },
-        "zoneName": "kr-pub-a"
-      },
-      {
-        "zoneState": {
-          "available": true
-        },
-        "zoneName": "kr-pub-b"
-      }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="key-pairs"></a>
-## キーペア
-
-<a id="list-key-pairs"></a>
-### キーペアリスト表示
-```
-GET /v2/{tenantId}/os-keypairs
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| keypairs | Body | Array | キーペアオブジェクトリスト |
-| keypairs.keypair | Body | Object | キーペアオブジェクト |
-| keypairs.keypair.name | Body | String | キーペア名 |
-| keypairs.keypair.public_key | Body | String | 公開鍵 |
-| keypairs.keypair.fingerprint | Body | String | キーペア指紋 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "keypairs": [
-    {
-      "keypair": {
-        "public_key": "ssh-rsa ... Generated-by-Nova",
-        "name": "keypair",
-        "fingerprint": "SHA256:..."
-      }
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="show-key-pair"></a>
-### キーペア表示
-```
-GET /v2/{tenantId}/os-keypairs/{keypairName}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| keypairName | URL | String | O | キーペア名 |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| keypair | Body | Object | キーペアオブジェクトリスト |
-| keypair.public_key | Body | String | 公開鍵 |
-| keypair.user_id | Body | String | キーペアのオーナーID |
-| keypair.name | Body | String | キーペア名 |
-| keypair.deleted | Body | Boolean | キーペアが削除されているかどうか |
-| keypair.created_at | Body | Datetime | キーペア作成日時<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.updated_at | Body | Datetime | キーペア修正日時<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.deleted_at | Body | Datetime | キーペア削除日時<br>`YYYY-MM-DDThh:mm:ss.SSSSSS` |
-| keypair.fingerprint | Body | String | キーペア指紋 |
-| keypair.id | Body | Integer | キーペアID |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "keypair": {
-    "public_key": "ssh-rsa ... Generated-by-Nova",
-    "user_id": "826a1213b3f746829515486965690dfe",
-    "name": "keypair",
-    "deleted": false,
-    "created_at": "2020-02-07T03:46:48.000000",
-    "updated_at": null,
-    "fingerprint": "SHA256:...",
-    "deleted_at": null,
-    "id": 51
-  }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="createregister-key-pair"></a>
-### キーペアの作成/登録
-
-```
-POST /v2/{tenantId}/os-keypairs
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-| keypair | Body | Object | O | キーペアオブジェクト |
-| keypair.name | Body | String | O | 作成または登録するキーペア名 |
-| keypair.public_key | Body | String | - | 登録する公開鍵。このフィールドが省略されている場合、新しいキーペアを作成します。|
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "keypair": {
-        "name": "keypair-d20a3d59-9433-4b79-8726-20b431d89c78",
-        "public_key": "ssh-rsa ... Generated-by-Nova"
-    }
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| keypair | Body | Object | キーペアオブジェクト |
-| keypair.public_key | Body | String | 公開鍵 |
-| keypair.private_key | Body | String | 秘密鍵。新しいキーペアを作成した場合に秘密鍵を返します。|
-| keypair.user_id | Body | String | キーペアのオーナーID |
-| keypair.name | Body | String | キーペア名 |
-| keypair.fingerprint | Body | String | キーペア指紋 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "keypair": {
-        "fingerprint": "SHA256:+EZoD ... /DKiGnY4zf5tYrcix0",
-        "name": "keypair",
-        "public_key": "ssh-rsa ... Generated-by-Nova",
-        "user_id": "436f727b7c9142f896ddd56be591dd7f"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="delete-key-pair"></a>
-### キーペアを削除する
-```
-DELETE /v2/{tenantId}/os-keypairs/{keypairName}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| keypairName | URL | String | O | キーペア名 |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
-
-<a id="instance"></a>
-## インスタンス
-
-<a id="instance-status"></a>
-### インスタンス状態
-
-インスタンスはさまざまな状態を持ち、状態によって行える動作が決められています。インスタンス状態リストは次のとおりです。
-
-| 状態名              | 説明                                                                                               |
-|-------------------|---------------------------------------------------------------------------------------------------|
-| `ACTIVE` | インスタンスがアクティブな状態の場合 |
-| `BUILD` | インスタンスが作成中中の場合 |
-| `DELETED` | インスタンスが削除された場合 |
-| `ERROR` | 直前にインスタンスに行った動作が失敗した場合 |
-| `HARD_REBOOT` | インスタンスを強制的に再起動した場合<br> 物理サーバーの電源を切って再起動するのと同じ動作 |
-| `MIGRATING` | インスタンスがマイグレーション中の場合<br> これはリアルタイムマイグレーション(アクティブインスタンス移動)作業により発生する |
-| `PASSWORD` | インスタンスでパスワードをリセットしている場合 |
-| `PAUSED` | インスタンスが一時停止した場合<br>一時停止したインスタンスはハイパーバイザのメモリに保存される。 |
-| `REBOOT` | インスタンスがソフト再起動状態である場合<br> 再起動コマンドが仮想マシンのオペレーティングシステムに伝達される。 |
-| `REBUILD` | インスタンスを作成時、イメージから新たに作り出す状態 |
-| `RESCUE` | インスタンスを復旧モードで実行中の場合 |
-| `RESIZE` | インスタンスタイプを変更したり、インスタンスを別のホストに移動する場合<br>インスタンスが停止して再起動した状態 |
-| `REVERT_RESIZE` | インスタンスタイプを変更したり、インスタンスを他のホストに移動する過程で失敗したときに、元の状態に戻すために復旧する場合 |
-| `VERIFY_RESIZE` | インスタンスがタイプ変更またはインスタンスを他のホストに移動する過程を終えてユーザーの承認を待っている場合<br>NHN Cloudでは、この場合、自動的に`ACTIVE`状態になります。 |
-| `SHELVED_OFFLOADED` | インスタンスが終了した場合 |
-| `SHUTOFF` | インスタンスが停止した場合 |
-| `SUSPENDED` | インスタンスが管理者により最大節電モードになっている場合 |
-| `UNKNOWN` | インスタンスの状態が不明な場合<br>`インスタンスがこの状態になった場合、管理者に問い合わせます。` | 
-
-<a id="list-instances"></a>
-### インスタンスリスト表示
-
-```
-GET /v2/{tenantId}/servers
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-| reservation_id | Query | String | - | インスタンス作成予約ID。<br>予約IDを指定すると、同時に作成されたインスタンスリストのみ返す。 |
-| changes-since | Query | Datetime | - | 指定された日時以降に変更されたインスタンスリストを返す。`YYYY-MM-DDThh:mm:ss`の形式。|
-| image | Query | UUID | - | イメージID<br>指定されたイメージを使用したインスタンスリストを返す |
-| flavor | Query | UUID | - | インスタンスタイプID<br>指定されたタイプを使用しているインスタンスリストを返す |
-| name | Query | String | - | インスタンス名<br>指定された名前のインスタンスリストを返す。正規表現を使用可能。|
-| status | Query | Enum | - | インスタンスの状態<br>指定された状態のインスタンスリストを返す |
-| limit | Query | Integer | - | インスタンスリスト数<br>指定された数のインスタンスリストを返す |
-| marker | Query | UUID | - | リストの最初のインスタンスUUID<br>ソート基準に従って`marker`に指定されたインスタンスから`limit`数分のインスタンスリストを返す |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| servers | Body | Object | インスタンスリストオブジェクト |
-| id | Body | UUID | インスタンスUUID |
-| links | body | Object | インスタンスパスオブジェクト |
-| name | body | String | インスタンス名 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "servers": [
-    {
-      "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "bookmark"
-        }
-      ],
-      "name": "Web-Server"
-    }
-  ]
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="list-instances-with-details"></a>
-### インスタンスリスト詳細表示
-
-インスタンスリスト表示と同じように現在テナントに作成されているインスタンスリストを返します。ただし、各インスタンスの詳細な情報が一緒に照会されます。
-
-```
-GET /v2/{tenantId}/servers/detail
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-インスタンスリスト表示と同じリクエスト形式です。
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明                                                                                                                                                                                                       |
-|---|---|---|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| servers | body | Object | インスタンスリストオブジェクト                                                                                                                                                                                               |
-| status | body | Enum | インスタンスの状態                                                                                                                                                                                                  |
-| servers.id | Body | UUID | インスタンスID                                                                                                                                                                                                   |
-| servers.name | Body | String | インスタンス名。最大255文字。                                                                                                                                                                                         |
-| servers.updated | Body | Datetime | インスタンスの最終修正日時。`YYYY-MM-DDThh:mm:ssZ`形式。                                                                                                                                                                 |
-| servers.hostId | Body | String | インスタンスが起動中のホストID                                                                                                                                                                                        |
-| servers.addresses | Body | Object | インスタンスIPリストオブジェクト。<br>インスタンスに接続されたポート数分のリストが作成される。                                                                                                                                                             |
-| servers.addresses."Network名" | Body | Object | インスタンスに接続されている各Networkのポート情報                                                                                                                                                                                 |
-| servers.addresses."Network名".OS-EXT-IPS-MAC:mac_addr | Body | String | インスタンスに接続されたポートのMACアドレス                                                                                                                                                                                     |
-| servers.addresses."Network名".version | Body | Integer | インスタンスに接続されたポートのIPバージョン<br>NHN CloudはIPv4のみサポート                                                                                                                                                               |
-| servers.addresses."Network名".addr | Body | String | インスタンスに接続されたポートのIPアドレス                                                                                                                                                                                      |
-| servers.addresses."Network名".OS-EXT-IPS:type | Body | Enum | ポートのIPアドレスタイプ<br>`fixed`または`floating`のいずれか1つ                                                                                                                                                                |
-| servers.links | Body | Object | インスタンスパスオブジェクト                                                                                                                                                                                               |
-| servers.key_name | Body | String | インスタンスキーペア名                                                                                                                                                                                              |
-| servers.image | Body | Object | インスタンスイメージオブジェクト                                                                                                                                                                                              |
-| servers.image.id | Body | UUID | インスタンスイメージID                                                                                                                                                                                               |
-| servers.image.links | Body | Object | インスタンスイメージパスオブジェクト                                                                                                                                                                                           |
-| servers.OS-EXT-STS:task_state | Body | String | インスタンス作業状態<br>インスタンスに動作を加えた時、動作進行状態を伝える。                                                                                                                                                               |
-| servers.OS-EXT-STS:vm_state | Body | String | インスタンスの現在の状態                                                                                                                                                                                               |
-| servers.OS-SRV-USG:launched_at | Body | Datetime | インスタンスの最終起動日時<br>`YYYY-MM-DDThh:mm:ss.ssssss`形式                                                                                                                                                        |
-| servers.OS-SRV-USG:terminated_at | Body | Datetime | インスタンスの削除日時<br>`YYYY-MM-DDThh:mm:ssZ`形式                                                                                                                                                                  |
-| servers.flavor | Body | Object | インスタンスタイプ情報オブジェクト                                                                                                                                                                                            |
-| servers.flavor.id | Body | UUID | インスタンスタイプID                                                                                                                                                                                                |
-| servers.flavor.links | Body | Object | インスタンスタイプパスオブジェクト                                                                                                                                                                                            |
-| servers.security_groups | Body | Object | インスタンスに割り当てられたセキュリティグループリストオブジェクト                                                                                                                                                                                    |
-| servers.security_groups.name | Body | String | インスタンスに割り当てられたセキュリティグループ名                                                                                                                                                                                       |
-| servers.user_id | Body | String | インスタンスを作成したユーザーID                                                                                                                                                                                          |
-| servers.created | Body | Datetime | インスタンス作成日時。`YYYY-MM-DDThh:mm:ssZ`形式                                                                                                                                                                    |
-| servers.tenant_id | Body | String | インスタンスが属しているテナントID                                                                                                                                                                                           |
-| servers.os-extended-volumes:volumes_attached | Body | Object | インスタンスに接続された追加ブロックストレージリストオブジェクト                                                                                                                                                                               |
-| servers.os-extended-volumes:volumes_attached.id | Body | UUID | インスタンスに接続された追加ブロックストレージID                                                                                                                                                                                   |
-| servers.OS-EXT-STS:power_state | Body | Integer | インスタンスの電源の状態<br>- `1`: On<br>- `4`: Off                                                                                                                                                                    |
-| servers.metadata | Body | Object | インスタンスメタデータオブジェクト<br>インスタンスメタデータをキーと値のペアで保管                                                                                                                                                                  |
-| server.NHN-EXT-ATTR:ephemeral_disk_size | Body | Integer | インスタンスに接続された追加ローカルブロックストレージサイズ                                                                                                                                                                 |
-| server.NHN-EXT-ATTR:protect | Body | Boolean | インスタンス削除保護の有無      
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "servers": [
+  "transithubs": [
     {
       "status": "ACTIVE",
-      "updated": "2020-02-25T01:22:24Z",
-      "hostId": "078d06f898889699f8731d030812e43d2c417edb2cf641dda598c7bd",
-      "addresses": {
-        "vpc2": [
-          {
-            "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:54:a7:64",
-            "version": 4,
-            "addr": "172.16.0.40",
-            "OS-EXT-IPS:type": "fixed"
-          }
-        ]
-      },
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "self"
-        },
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-          "rel": "bookmark"
-        }
-      ],
-      "key_name": "access-key",
-      "image": {
-        "id": "8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-        "links": [
-          {
-            "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/images/8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-            "rel": "bookmark"
-          }
-        ]
-      },
-      "OS-EXT-STS:task_state": null,
-      "OS-EXT-STS:vm_state": "active",
-      "OS-SRV-USG:launched_at": "2020-02-25T01:22:23.000000",
-      "flavor": {
-        "id": "35a73b57-58a7-434d-aa08-5249aaa95b3e",
-        "links": [
-          {
-            "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/35a73b57-58a7-434d-aa08-5249aaa95b3e",
-            "rel": "bookmark"
-          }
-        ]
-      },
-      "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-      "security_groups": [
-        {
-          "name": "default"
-        }
-      ],
-      "OS-SRV-USG:terminated_at": null,
-      "OS-EXT-AZ:availability_zone": "kr-pub-b",
-      "user_id": "b6ab578c20c94306ac1f41ffc4415b29",
-      "name": "Web-Server",
-      "created": "2020-02-25T01:15:46Z",
-      "tenant_id": "6cdebe3eb0094910bc41f1d42ebe4cb7",
-      "os-extended-volumes:volumes_attached": [
-        {
-          "id": "90712f4f-2faa-4e4f-8eb1-9313a8595570"
-        }
-      ],
-      "accessIPv4": "",
-      "accessIPv6": "",
-      "progress": 0,
-      "OS-EXT-STS:power_state": 1,
-      "config_drive": "",
-      "metadata": {
-        "os_distro": "Windows",
-        "description": "Windows 2012 R2 STD (2020.02.18)",
-        "os_version": "2012 R2 STD",
-        "project_domain": "NORMAL",
-        "hypervisor_type": "qemu",
-        "monitoring_agent": "sysmon",
-        "image_name": "Windows 2012 R2 STD (2020.02.18) EN",
-        "volume_size": "50",
-        "os_architecture": "amd64",
-        "login_username": "Administrator",
-        "os_type": "Windows",
-        "tc_env": "sysmon"
-      },
-      "NHN-EXT-ATTR:ephemeral_disk_size": 0,
-      "NHN-EXT-ATTR:protect": false
+      "description": null,
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "created_at": "2024-02-12 22:19:05",
+      "multicast_enable": true,
+      "updated_at": "2024-02-12 22:19:05",
+      "default_propagation_enable": true,
+      "default_association_enable": true,
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+      "name": "thub"
     }
   ]
 }
 ```
-
-</p>
 </details>
 
 ---
-
-<a id="get-instance"></a>
-### インスタンス表示
+<a id="view-transit-hub"></a>
+### トランジットハブ表示 { #view-transit-hub }
 
 ```
-GET /v2/{tenantId}/servers/{serverId}
+GET /v2.0/gateways/transithubs/{transitHubId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-transit-hub-request"></a>
 #### リクエスト
-
 このAPIはリクエスト本文を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | インスタンスID |
 | tokenId | Header | String | O | トークンID |
+| transitHubId | URL | UUID | O | トランジットハブID |
 
+<a id="view-transit-hub-response"></a>
 #### レスポンス
 
-| 名前 | 種類 | 形式 | 説明                                                                                                                                                                                                      |
-|---|---|---|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| server | body | Object | インスタンスオブジェクト                                                                                                                                                                                                 |
-| status | body | Enum | インスタンスの状態                                                                                                                                                                                                 |
-| server.id | Body | UUID | インスタンスID                                                                                                                                                                                                  |
-| server.name | Body | String | インスタンス名、最大255文字                                                                                                                                                                                        |
-| server.updated | Body | Datetime | インスタンスの最終修正日時。`YYYY-MM-DDThh:mm:ssZ`形式。                                                                                                                                                                |
-| server.hostId | Body | String | インスタンスが起動中のホストID                                                                                                                                                                                       |
-| server.addresses | Body | Object | インスタンスIPリストオブジェクト。<br>インスタンスに接続されたポート数分のリストが作成される。                                                                                                                                                             |
-| server.addresses."Network名" | Body | Object | インスタンスに接続された各Networkのポート情報                                                                                                                                                                                |
-| server.addresses."Network名".OS-EXT-IPS-MAC:mac_addr | Body | String | インスタンスに接続されたポートのMACアドレス                                                                                                                                                                                    |
-| server.addresses."Network名".version | Body | Integer | インスタンスに接続されたポートのIPバージョン<br>NHN CloudはIPv4のみサポート                                                                                                                                                              |
-| server.addresses."Network名".addr | Body | String | インスタンスに接続されたポートのIPアドレス                                                                                                                                                                                     |
-| server.addresses."Network名".OS-EXT-IPS:type | Body | Enum | ポートのIPアドレスタイプ<br>`fixed`または`floating`のいずれか1つ。                                                                                                                                                               |
-| server.links | Body | Object | インスタンスパスオブジェクト                                                                                                                                                                                              |
-| server.key_name | Body | String | インスタンスキーペア名                                                                                                                                                                                             |
-| server.image | Body | Object | インスタンスイメージオブジェクト                                                                                                                                                                                             |
-| server.image.id | Body | UUID | インスタンスイメージID                                                                                                                                                                                              |
-| server.image.links | Body | Object | インスタンスイメージパスオブジェクト                                                                                                                                                                                          |
-| server.OS-EXT-STS:task_state | Body | String | インスタンス作業状態<br>インスタンスに動作を加えた時、動作進行状態を伝える。                                                                                                                                                              |
-| server.OS-EXT-STS:vm_state | Body | String | インスタンスの現在状態                                                                                                                                                                                              |
-| server.OS-SRV-USG:launched_at | Body | Datetime | インスタンスの最終起動日時<br>`YYYY-MM-DDThh:mm:ss.ssssss`形式                                                                                                                                                       |
-| server.OS-SRV-USG:terminated_at | Body | Datetime | インスタンスの削除日時<br>`YYYY-MM-DDThh:mm:ssZ`形式                                                                                                                                                                 |
-| server.flavor | Body | Object | インスタンスタイプ情報オブジェクト                                                                                                                                                                                           |
-| server.flavor.id | Body | UUID | インスタンスタイプID                                                                                                                                                                                               |
-| server.flavor.links | Body | Object | インスタンスタイプパスオブジェクト                                                                                                                                                                                           |
-| server.security_groups | Body | Object | インスタンスに割り当てられたセキュリティグループリストオブジェクト                                                                                                                                                                                   |
-| server.security_groups.name | Body | String | インスタンスに割り当てられたセキュリティグループ名                                                                                                                                                                                      |
-| server.user_id | Body | String | インスタンスを作成したユーザーID                                                                                                                                                                                         |
-| server.created | Body | Datetime | インスタンスの作成日時。`YYYY-MM-DDThh:mm:ssZ`形式                                                                                                                                                                   |
-| server.tenant_id | Body | String | インスタンスが属しているテナントID                                                                                                                                                                                          |
-| server.os-extended-volumes:volumes_attached | Body | Object | インスタンスに接続された追加ブロックストレージリストオブジェクト                                                                                                                                                                              |
-| server.os-extended-volumes:volumes_attached.id | Body | UUID | インスタンスに接続された追加ブロックストレージID                                                                                                                                                                                  |
-| server.OS-EXT-STS:power_state | Body | Integer | インスタンスの電源の状態<br>- `1`: On<br>- `4`: Off                                                                                                                                                                   |
-| server.metadata | Body | Object | インスタンスメタデータオブジェクト<br>インスタンスメタデータをキーと値のペアで保管                                                                                                                                                                 |
-| server.NHN-EXT-ATTR:ephemeral_disk_size | Body | Integer | インスタンスに接続された追加ローカルブロックストレージサイズ                                                                                                                                                                |
-| server.NHN-EXT-ATTR:protect | Body | Boolean | インスタンス削除保護の有無                                                                                                                                                                 |
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub | Body | Object | トランジットハブ情報オブジェクト |
+| transithub.id | Body | UUID | トランジットハブID |
+| transithub.tenant_id | Body | String | テナントID |
+| transithub.name | Body | String | トランジットハブ名 |
+| transithub.description | Body | String | トランジットハブの説明 |
+| transithub.multicast_enable | Body | Boolean | マルチキャスト機能の使用有無 |
+| transithub.default_association_enable | Body | Boolean | 基本ルーティングテーブル接続の使用有無 |
+| transithub.default_propagation_enable | Body | Boolean | 基本ルーティングテーブル伝播の使用有無 |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-  "server": {
+  "transithub": {
     "status": "ACTIVE",
-    "updated": "2020-02-25T01:22:24Z",
-    "hostId": "078d06f898889699f8731d030812e43d2c417edb2cf641dda598c7bd",
-    "addresses": {
-      "vpc2": [
-        {
-          "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:54:a7:64",
-          "version": 4,
-          "addr": "172.16.0.40",
-          "OS-EXT-IPS:type": "fixed"
-        }
-      ]
-    },
-    "links": [
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-        "rel": "self"
-      },
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-        "rel": "bookmark"
-      }
-    ],
-    "key_name": "access-key",
-    "image": {
-      "id": "8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/images/8b9f8d47-b89b-45af-b1d6-3f7ce7e06a11",
-          "rel": "bookmark"
-        }
-      ]
-    },
-    "OS-EXT-STS:task_state": null,
-    "OS-EXT-STS:vm_state": "active",
-    "OS-SRV-USG:launched_at": "2020-02-25T01:22:23.000000",
-    "flavor": {
-      "id": "35a73b57-58a7-434d-aa08-5249aaa95b3e",
-      "links": [
-        {
-          "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/flavors/35a73b57-58a7-434d-aa08-5249aaa95b3e",
-          "rel": "bookmark"
-        }
-      ]
-    },
-    "id": "aaf2778b-ea03-4ccc-8b1b-92f4b686c3ec",
-    "security_groups": [
-      {
-        "name": "default"
-      }
-    ],
-    "OS-SRV-USG:terminated_at": null,
-    "OS-EXT-AZ:availability_zone": "kr-pub-b",
-    "user_id": "b6ab578c20c94306ac1f41ffc4415b29",
-    "name": "Web-Server",
-    "created": "2020-02-25T01:15:46Z",
-    "tenant_id": "6cdebe3eb0094910bc41f1d42ebe4cb7",
-    "os-extended-volumes:volumes_attached": [
-      {
-        "id": "90712f4f-2faa-4e4f-8eb1-9313a8595570"
-      }
-    ],
-    "accessIPv4": "",
-    "accessIPv6": "",
-    "progress": 0,
-    "OS-EXT-STS:power_state": 1,
-    "config_drive": "",
-    "metadata": {
-      "os_distro": "Windows",
-      "description": "Windows 2012 R2 STD (2020.02.18)",
-      "os_version": "2012 R2 STD",
-      "project_domain": "NORMAL",
-      "hypervisor_type": "qemu",
-      "monitoring_agent": "sysmon",
-      "image_name": "Windows 2012 R2 STD (2020.02.18) EN",
-      "volume_size": "50",
-      "os_architecture": "amd64",
-      "login_username": "Administrator",
-      "os_type": "Windows",
-      "tc_env": "sysmon"
-    },
-    "NHN-EXT-ATTR:ephemeral_disk_size": 0,
-    "NHN-EXT-ATTR:protect": false
+    "description": null,
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-02-12 22:19:05",
+    "multicast_enable": true,
+    "updated_at": "2024-02-12 22:19:05",
+    "default_propagation_enable": true,
+    "default_association_enable": true,
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "name": "thub"
   }
 }
 ```
-
-</p>
 </details>
 
 ---
-
-<a id="create-instance"></a>
-### インスタンスを作成する
-
-インスタンスを作成します。
-
-インスタンス作成APIを呼び出し、インスタンス照会でインスタンスの状態を確認します。
-
-* インスタンスの状態が**ACTIVE**になるとインスタンスが正常に作成完了します。
-* インスタンスの状態が**BUILDING**から長時間変わらなかったり、**ERROR**の場合は、インスタンス作成引数を確認し、再度作成してください。
-
-* RAMが2GB以上のインスタンスタイプを使用します。
-
-* Windowsインスタンスは2GB以上のRAMが必要です。RAM 2GB以上のインスタンスタイプを使用します。
-* 50GB以上のルートブロックストレージが必要です。
-* U2タイプはWindowsイメージを使用できません。
-
-ルートブロックストレージサイズは、Linuxは10GB、Windowsは50GBから指定できます。
-
-インスタンス作成リクエスト時にスケジューラヒントで配置ポリシーを割り当てることができます。
-
-
+<a id="create-transit-hub"></a>
+### トランジットハブを作成する { #create-transit-hub }
 
 ```
-POST /v2/{tenantId}/servers
+POST /v2.0/gateways/transithubs
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-transit-hub-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
 | tokenId | Header | String | O | トークンID |
-| server | body | Object | O | サーバーオブジェクト |
-| server.security_groups | body | Object | - | セキュリティグループリストオブジェクト<br>省略する場合`default`グループが追加される |
-| server.security_groups.name | body | String | - | **(条件付き必須)** インスタンスに追加するセキュリティグループ名 |
-| server.user_data | body | String | - | インスタンス起動後に実行するスクリプトおよび設定<br>base64エンコーディングされた文字列で65535バイトまで許可 |
-| server.availability_zone | body | String | - | インスタンスを作成するアベイラビリティゾーン<br>指定しない場合、任意のゾーンが選択される<br>ルートブロックストレージのソースタイプが`volume`, `snapshot`の場合、元のブロックストレージのアベイラビリティゾーンと同じに設定する必要があります。 |
-| server.imageRef | Body | String | - | インスタンスを作成する際に使用するイメージID<br>ルートブロックストレージのソースタイプが`volume`, `snapshot`の場合は設定不要 |
-| server.flavorRef | Body | String | O | インスタンスを作成する時に使用するインスタンスタイプID |
-| server.networks | Body | Object | O | インスタンスを作成する時に使用するネットワーク情報オブジェクト<br>指定した数のNICが追加される。ネットワークID、サブネットID、ポートID、固定IPの中から1つ指定 |
-| server.networks.uuid | Body | UUID | - |  **(条件付き必須)**インスタンスを作成する時に使用するネットワークID |
-| server.networks.subnet | Body | UUID | - |  **(条件付き必須)**インスタンスを作成する時に使用するネットワークのサブネットID |
-| server.networks.port | Body | UUID | - |  **(条件付き必須)**インスタンスを作成する際に使用するポートID<br>ポートIDを指定する際に要求したセキュリティグループは、指定した既存のポートには適用されない。 |
-| server.networks.fixed_ip | Body | String | - |  **(条件付き必須)**インスタンスを作成する時に使用する固定IP |
-| server.name | Body | String | O | インスタンスの名前<br>英字基準255文字まで許可、ただし、Windowsイメージの場合は15文字以下にする必要がある。 |
-| server.metadata | Body | Object | - | インスタンスに追加するメタデータオブジェクト<br>255文字以下のキーと値のペア |
-| server.block_device_mapping_v2 | Body | Object | O | インスタンスのブロックストレージ情報オブジェクト<br>**ローカルブロックストレージを使用するU2以外のインスタンスタイプを使用する場合は必ず指定する必要がある。** |
-| server.block_device_mapping_v2.source_type | Body | Enum | O | 作成するブロックストレージ原本のタイプ<br>- `image`:イメージを利用してブロックストレージを作成<br>- `blank`:空のブロックストレージ作成(ルートブロックストレージとして使用できない)<br>- `volume`:既存のブロックストレージを使用<br>- `snapshot`:スナップショットを利用してブロックストレージ作成 |
-| server.block_device_mapping_v2.uuid | Body | String | - |  **(条件付き必須)**ブロックストレージのソースタイプによって異なる設定が必要<br>- ソースタイプが`image`の場合、イメージIDを設定<br>- ソースタイプが`volume`の場合、既存のブロックストレージIDを設定<br>- ソースタイプが`snapshot`の場合、スナップショットIDを設定<br>- ソースタイプが`blank`の場合、設定不要<br>ルートブロックストレージの場合、必ず起動可能な原本である必要があります。 |
-| server.block_device_mapping_v2.boot_index | Body | Integer | O | 指定したブロックストレージの起動順序<br>-`0`はルートブロックストレージ<br>- それ以外は追加ブロックストレージ<br>サイズが大きいほど起動順序が下がる。 |
-| server.block_device_mapping_v2.destination_type | Body | Enum | O | インスタンスブロックストレージの位置。インスタンスタイプに応じて別々に設定必要。<br>- `local`：GPUインスタンス、U2インスタンスタイプを利用する場合。<br>- `volume`：その他のインスタンスタイプを利用する場合。 |
-| server.block_device_mapping_v2.volume_type | Body | Enum    | - |  **(条件付き必須)**作成するブロックストレージのタイプ<br>ブロックストレージのソースタイプが`volume`, `snapshot`の場合設定不要<br>`ユーザーガイド > Storage > Block Storage > API v2ガイド`で**ブロックストレージタイプリスト表示**レスポンスの`name`参考 |
-| server.block_device_mapping_v2.delete_on_termination | Body | Boolean | - | インスタンスを削除する時のブロックストレージ処理。デフォルト値は`false`。<br>`true`なら削除、`false`なら維持 |
-| server.block_device_mapping_v2.volume_size | Body | Integer | - | **(条件付き必須)**作成するブロックストレージサイズ<br>ブロックストレージのソースタイプによって異なる設定が必要<br>- ソースタイプが`volume`の場合は設定不要<br>- ソースタイプが`snapshot`の場合は原本ブロックストレージサイズ以上に設定<br>`GB`単位<br>U2インスタンスタイプを使用してルートブロックストレージを作成する場合にはU2インスタンスタイプに明示されたサイズで作成され、この値は無視される。<br>インスタンスタイプによって作成できるルートブロックストレージのサイズが異なるため、詳細は`ユーザーガイド > Compute > Instance > コンソール使用ガイド > インスタンス作成 > ブロックストレージサイズ`を参考 |
-| server.block_device_mapping_v2.nhn_encryption                   | Body | Object | - | **(条件付き必須)**ブロックストレージの暗号化情報                                                                                                                                                                                      |
-| server.block_device_mapping_v2.nhn_encryption.skm_appkey        | Body | String | - | **(条件付き必須)**Secure Key Managerサービスのアプリケーションキー                                                                                                                                                                            |
-| server.block_device_mapping_v2.nhn_encryption.skm_key_id        | Body | String | - | **(条件付き必須)**暗号化ブロックストレージの作成に使用するSecure Key Managerの対称鍵ID                                                                                                                                  |
-| server.key_name | Body | String | O | インスタンスの接続に使用するキーペア |
-| server.min_count | Body | Integer | - | 現在のリクエストで作成するインスタンス数の最小値。<br>デフォルト値は1。<br>ブロックストレージのソースタイプが`volume`の場合、`1`のみ設定可能 |
-| server.max_count | Body | Integer | - | 現在のリクエストで作成するインスタンス数の最大値。<br>デフォルト値はmin_count、最大値は10。<br>ブロックストレージのソースタイプが`volume`の場合、`1`のみ設定可能 |
-| server.return_reservation_id | Body | Boolean | - | インスタンス作成リクエスト予約ID。<br>Trueに指定すると、インスタンス作成情報の代わりに予約IDを返す。<br>デフォルト値はFalse |
-| os:scheduler_hints | Body | Object | - | スケジューラヒントオブジェクト |
-| os:scheduler_hints.group | Body | String | - | 配置ポリシーID |
+| transithub | Body | Object | O | トランジットハブ情報オブジェクト |
+| transithub.name | Body | String | - | トランジットハブ名 |
+| transithub.description | Body | String | - | トランジットハブの説明 |
+| transithub.multicast_enable | Body | Boolean | O | マルチキャストの使用有無 |
+| transithub.default_association_enable | Body | Boolean | O | 基本ルーティングテーブル接続の使用有無 |
+| transithub.default_propagation_enable | Body | Boolean | O | 基本ルーティングテーブル伝播の使用有無 |
+
+
+
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-  "server": {
-    "name": "DB-Master",
-    "imageRef": "9956f822-29c9-4f81-9410-0c392d9c8c24",
-    "flavorRef": "a4b6a0f7-aeff-4d78-a8d5-7de9f007012d",
-    "networks": [{
-      "subnet": "b83863ff-0355-4c73-8c10-0bdf66a69aab"
-    }],
-    "availability_zone": "kr-pub-a",
-    "key_name": "access-key",
-    "max_count": 1,
-    "min_count": 1,
-    "block_device_mapping_v2": [{
-      "source_type": "image",
-      "uuid": "9956f822-29c9-4f81-9410-0c392d9c8c24",
-      "boot_index": 0,
-      "volume_size": 1000,
-      "destination_type": "volume",
-      "delete_on_termination": 1
-    }],
-    "security_groups": [{
-      "name": "default"
-    }]
-  },
-  "os:scheduler_hints": {
-    "group": "f878bd5b-49a7-499f-966e-1eceb21cb06b"    
+  "transithub": {
+    "default_propagation_enable": true,
+    "default_association_enable": true,
+    "multicast_enable": true,
+    "name": "thub",
+    "description": "test"
   }
 }
 ```
-
-</p>
 </details>
 
+<a id="create-transit-hub-response"></a>
 #### レスポンス
 
-| 名前 | 種類 | 形式 | 説明                                                                                                                                                                                                          |
-|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| server.security_groups.name | Body | String | 作成したインスタンスのセキュリティグループ名                                                                                                                                                                                          |
-| server.id | Body | UUID | 作成したインスタンスのID                                                                                                                                                                                                 |
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub | Body | Object | トランジットハブ情報オブジェクト |
+| transithub.id | Body | UUID | トランジットハブID |
+| transithub.tenant_id | Body | String | テナントID |
+| transithub.name | Body | String | トランジットハブ名 |
+| transithub.description | Body | String | トランジットハブの説明 |
+| transithub.multicast_enable | Body | Boolean | マルチキャスト機能の使用有無 |
+| transithub.default_association_enable | Body | Boolean | 基本ルーティングテーブル接続の使用有無 |
+| transithub.default_propagation_enable | Body | Boolean | 基本ルーティングテーブル伝播の使用有無 |
+
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-  "server": {
-    "security_groups": [
-      {
-        "name": "default"
-      }
-    ],
-    "id": "3a005d5b-63cf-4493-bfc6-49db990b5b50",
-    "links": [
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/3a005d5b-63cf-4493-bfc6-49db990b5b50",
-        "rel": "self"
-      },
-      {
-        "href": "https://kr1-api-instance-infrastructure.nhncloudservice.com/6cdebe3eb0094910bc41f1d42ebe4cb7/servers/3a005d5b-63cf-4493-bfc6-49db990b5b50",
-        "rel": "bookmark"
-      }
-    ]
+  "transithub": {
+    "status": "ACTIVE",
+    "description": null,
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-02-12 22:19:05",
+    "multicast_enable": true,
+    "updated_at": "2024-02-12 22:19:05",
+    "default_propagation_enable": true,
+    "default_association_enable": true,
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "name": "thub"
   }
 }
 ```
-
-</p>
 </details>
 
 ---
-
-<a id="modify-instance"></a>
-### インスタンスを修正する
-作成されたインスタンスを修正します。変更できるプロパティは一部の項目に制限されます。
+<a id="modify-transit-hub"></a>
+### トランジットハブを修正する { #modify-transit-hub }
 
 ```
-PUT /v2/{tenantId}/servers/{serverId}
+PUT /v2.0/gateways/transithubs/{transitHubId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-transit-hub-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
 | tokenId | Header | String | O | トークンID |
-| server | Body | Object | O | インスタンス変更リクエストオブジェクト |
-| server.name | Body | String | - | インスタンスの新しい名前 |
+| transitHubId | URL | UUID | O | トランジットハブID |
+| transithub | Body | Object | O | トランジットハブ情報オブジェクト |
+| transithub.name | Body | String | - | トランジットハブ名 |
+| transithub.description | Body | String | - | トランジットハブの説明 |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "server": {
-        "name": "new-server-test"
-    }
+  "transithub": {
+    "name": "thub1",
+    "description": "test1"
+  }
 }
 ```
-
-</p>
 </details>
 
-#### レスポンス
-インスタンスの表示と同じです。
-
----
-
-<a id="delete-instance"></a>
-### インスタンスを削除する
-作成されたインスタンスを削除します。
-
-```
-DELETE /v2/{tenantId}/servers/{serverId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 削除するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-<a id="manage-block-storage-attachment"></a>
-## ブロックストレージ接続管理
-
-<a id="list-additional-block-storage-attached-to-the-instance"></a>
-### インスタンスに接続されたブロックストレージリスト表示
-```
-GET /v2/{tenantId}/servers/{serverId}/os-volume_attachments
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| limit | Query | Integer | - | 照会するリストの数 |
-| offset | Query | Integer | - | 返されるリストの開始点<br>全てのリストの中からoffset番目のブロックストレージから返す |
-
+<a id="modify-transit-hub-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| volumeAttachments | Body | Array | 接続情報オブジェクトリスト |
-| volumeAttachments.device | Body | String | インスタンスのブロックストレージ名<br>例) `/dev/vdb` |
-| volumeAttachments.id | Body | UUID | 接続情報ID |
-| volumeAttachments.serverId | Body | UUID | インスタンスID |
-| volumeAttachments.volumeId | Body | UUID | ブロックストレージID |
+| transithub | Body | Object | トランジットハブ情報オブジェクト |
+| transithub.id | Body | UUID | トランジットハブID |
+| transithub.tenant_id | Body | String | テナントID |
+| transithub.name | Body | String | トランジットハブ名 |
+| transithub.description | Body | String | トランジットハブの説明 |
+| transithub.multicast_enable | Body | Boolean | マルチキャスト機能の使用有無 |
+| transithub.default_association_enable | Body | Boolean | 基本ルーティングテーブル接続の使用有無 |
+| transithub.default_propagation_enable | Body | Boolean | 基本ルーティングテーブル伝播の使用有無 |
+
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "volumeAttachments": [
-        {
-            "device": "/dev/vda",
-            "id": "227cc671-f30b-4488-96fd-7d0bf13648d8",
-            "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-            "volumeId": "227cc671-f30b-4488-96fd-7d0bf13648d8"
-        },
-        {
-            "device": "/dev/vdb",
-            "id": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113",
-            "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-            "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-        }
-    ]
+  "transithub": {
+    "status": "ACTIVE",
+    "description": "test1",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-02-12 22:19:05",
+    "multicast_enable": true,
+    "updated_at": "2024-03-04 01:59:00.961621",
+    "default_propagation_enable": true,
+    "default_association_enable": true,
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "name": "thub1"
+  }
 }
 ```
-
-</p>
 </details>
 
 ---
+<a id="delete-transit-hub"></a>
+### トランジットハブを削除する { #delete-transit-hub }
 
-<a id="list-additional-block-storage-attached-to-the-instance"></a>
-### インスタンスに接続されたブロックストレージ表示
 ```
-GET /v2/{tenantId}/servers/{serverId}/os-volume_attachments/{volumeId}
+DELETE /v2.0/gateways/transithubs/{transitHubId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-transit-hub-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | インスタンスID |
-| volumeId | URL | UUID | O | 照会するブロックストレージID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | トークンID |
+| transitHubId | URL | UUID | O | トランジットハブID |
 
+
+<a id="delete-transit-hub-response"></a>
+#### レスポンス
+このAPIはレスポンス本文を返しません。
+
+
+
+
+
+
+
+
+
+
+<a id="attachment"></a>
+## 接続 { #attachment }
+
+<a id="view-attachments"></a>
+### 接続リスト表示 { #view-attachments }
+
+```
+GET /v2.0/gateways/transithub_attachments
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-attachments-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会する接続ID |
+| name | Query | String | - | 照会する接続名 |
+| resource_id | Query | UUID | - | 照会するリソースID(VPC) |
+| subnet_id | Query | UUID | - | 照会するサブネットID |
+| transithub_id | Query | UUID | - | 照会するトランジットハブID |
+
+
+
+<a id="view-attachments-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| volumeAttachment | Body | Object | 接続情報オブジェクト |
-| volumeAttachment.device | Body | String | インスタンスのブロックストレージ名<br>例) `/dev/vdb` |
-| volumeAttachment.id | Body | UUID | 接続情報ID |
-| volumeAttachment.serverId | Body | UUID | インスタンスID |
-| volumeAttachment.volumeId | Body | UUID | ブロックストレージID |
+| transithub_attachments | Body | Array | 接続情報オブジェクトリスト |
+| transithub_attachments.id | Body | UUID | 接続ID |
+| transithub_attachments.tenant_id | Body | String | テナントID |
+| transithub_attachments.name | Body | String | 接続名 |
+| transithub_attachments.description | Body | String | 接続の説明 |
+| transithub_attachments.resource_id | Body | UUID | リソースID(VPC) |
+| transithub_attachments.subnet_id | Body | UUID | サブネットID |
+| transithub_attachments.transithub_id | Body | UUID | トランジットハブID |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "volumeAttachment": {
-        "device": "/dev/sdb",
-        "id": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113",
-        "serverId": "1ad6852e-6605-4510-b639-d0bff864b49a",
-        "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
+  "transithub_attachments": [
+    {
+      "status": "ACTIVE",
+      "remote": false,
+      "name": "thub-attachment",
+      "resource_id": "8eabc2c1-78a2-41e2-b03d-c1021042701f",
+      "subnet_id": "4263b32d-4bc5-45cc-bb3e-fded960e8f46",
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "created_at": "2024-02-13 01:22:09",
+      "updated_at": "2024-02-13 01:22:11",
+      "resource_cidr": "172.16.0.0/12",
+      "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "port_id": "eecaf943-fdcc-40da-bda2-45949026f668",
+      "id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+      "description": null
     }
+  ]
 }
 ```
-
-</p>
 </details>
 
 ---
+<a id="view-attachment"></a>
+### 接続の表示 { #view-attachment }
 
-<a id="attach-additional-block-storage-to-the-instance"></a>
-### インスタンスに追加ブロックストレージを接続する
 ```
-POST /v2/{tenantId}/servers/{serverId}/os-volume_attachments
+GET /v2.0/gateways/transithub_attachments/{attachmentId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-attachment-request"></a>
 #### リクエスト
+このAPIはリクエスト本文を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | トークンID |
-| volumeAttachment | Body | Object | O | ブロックストレージ接続リクエストオブジェクト |
-| volumeAttachment.volumeId | Body | UUID | O | 接続するブロックストレージID |
+| attachmentId | URL | UUID | O | 接続ID |
 
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "volumeAttachment": {
-      "volumeId": "a07f71dc-8151-4e7d-a0cc-cd24a3f11113"
-  }
-}
-```
-
-</p>
-</details>
-
+<a id="view-attachment-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| volumeAttachment | Body | Object | 接続情報オブジェクト |
-| volumeAttachment.device | Body | String | インスタンスのブロックストレージ名<br>例) `/dev/vdb` |
-| volumeAttachment.id | Body | UUID | 接続情報ID |
-| volumeAttachment.serverId | Body | UUID | インスタンスID |
-| volumeAttachment.volumeId | Body | UUID | ブロックストレージID |
+| transithub_attachment | Body | Object | 接続情報オブジェクト |
+| transithub_attachment.id | Body | UUID | 接続ID |
+| transithub_attachment.tenant_id | Body | String | テナントID |
+| transithub_attachment.name | Body | String | 接続名 |
+| transithub_attachment.description | Body | String | 接続の説明 |
+| transithub_attachment.resource_id | Body | UUID | リソースID(VPC) |
+| transithub_attachment.subnet_id | Body | UUID | サブネットID |
+| transithub_attachment.transithub_id | Body | UUID | トランジットハブID |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "volumeAttachment": {
-        "device": "/dev/vdc",
-        "id": "227cc671-f30b-4488-96fd-7d0bf13648d8",
-        "serverId": "4b293d31-ebd5-4a7f-be03-874b90021e54",
-        "volumeId": "227cc671-f30b-4488-96fd-7d0bf13648d8"
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-<a id="detach-block-storage-from-the-instance"></a>
-### インスタンスブロックストレージの接続を切る
-```
-DELETE /v2/{tenantId}/servers/{serverId}/os-volume_attachments/{volumeId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | インスタンスID |
-| volumeId | URL | UUID | O | 接続を切るブロックストレージID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-<a id="additional-instance-features"></a>
-## インスタンス追加機能
-NHN Cloudは、次のようなインスタンス制御および付加機能を提供します。
-
-* インスタンスの起動、停止、終了、再起動
-* インスタンスタイプ変更
-* インスタンスイメージ作成
-* セキュリティグループの追加および削除
-
-<a id="start-stopped-instance"></a>
-### 停止したインスタンスの起動
-
-停止したインスタンスを再び起動し、状態を**ACTIVE**に変更します。このAPIを呼び出すにはインスタンスの状態が**SHUTOFF**になっている必要があります。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| os-start | Body | none | O | インスタンス起動リクエスト |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "os-start" : null
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-<a id="start-terminated-instance"></a>
-### 終了したインスタンスの起動
-
-停止したインスタンスを再起動し、状態を**ACTIVE**に変更します。このAPIを呼び出すには、インスタンスの状態が**SHELVED_OFFLOADED**である必要があります。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|--|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| unshelve | Body | none | O | インスタンス起動リクエスト |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "unshelve" : null
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-<a id="stop-instance"></a>
-### インスタンス停止
-
-インスタンスを停止し、状態を**SHUTOFF**に変更します。このAPIを呼び出すにはインスタンスの状態が**ACTIVE**または**ERROR**になっている必要があります。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| os-stop | Body | none | O | インスタンス停止リクエスト |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "os-stop" : null
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-### インスタンス停止
-
-インスタンスを終了し、状態を**SHELVED_OFFLOADED**に変更します。このAPIを呼び出すためには、インスタンスの状態が**ACTIVE**でなければなりません。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明         |
-|---|---|---|---|-------------|
-| tenantId | URL | String | O | テナントID      |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID       |
-| shelve | Body | none | O | インスタンス停止リクエスト |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "shelve" : null
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
----
-
-### インスタンス再起動
-
-インスタンスを再起動します。再起動の方法は**SOFT**と**HARD**があります。
-
-* **SOFT**方式：**「優雅な接続停止(Graceful shutdown)」**でインスタンスを停止し、再起動します。インスタンスが**ACTIVE**状態になっている必要があります。
-* **HARD**方式：強制停止してインスタンスを再起動します。物理サーバーの電源を落とし、再び入れるのと同じ動作です。インスタンスが次の状態の時のみ強制停止できます。
-    * **ACTIVE**
-    * **ERROR**
-    * **HARD_REBOOT**
-    * **PAUSED**
-    * **REBOOT**
-    * **SHUTOFF**
-    * **SUSPENDED**
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| reboot | Body | Object | O | インスタンス再起動リクエストオブジェクト |
-| reboot.type | Body | Enum | O | 再起動方法。**SOFT**または**HARD** |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-  "reboot" : {
-    "type": "SOFT"
+  "transithub_attachment": {
+    "status": "ACTIVE",
+    "remote": false,
+    "name": "thub-attachment",
+    "resource_id": "8eabc2c1-78a2-41e2-b03d-c1021042701f",
+    "subnet_id": "4263b32d-4bc5-45cc-bb3e-fded960e8f46",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-02-13 01:22:09",
+    "updated_at": "2024-02-13 01:22:11",
+    "resource_cidr": "172.16.0.0/12",
+    "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "port_id": "eecaf943-fdcc-40da-bda2-45949026f668",
+    "id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+    "description": null
   }
 }
 ```
-
-</p>
 </details>
 
-#### レスポンス
-このAPIはレスポンス本文を返しません。
-
 ---
-
-### インスタンスタイプ変更
-
-インスタンスタイプを変更します。インスタンスが**ACTIVE**または**SHUTOFF**状態の時のみインスタンスタイプを変更できます。インスタンスの状態が**ACTIVE**の場合はインスタンスタイプ変更過程でインスタンスは停止し、再起動します。
-
-使用するイメージやインスタンスタイプによって、変更できるタイプが制限される場合があります。詳細はコンソールユーザーガイドを参照してください。
-
+<a id="create-attachment"></a>
+### 接続を作成する { #create-attachment }
 
 ```
-POST /v2/{tenantId}/servers/{serverId}/action
+POST /v2.0/gateways/transithub_attachments
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-attachment-request"></a>
 #### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明                                                                                                                                                                                                                |
-|---|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| tenantId | URL | String | O | テナントID                                                                                                                                                                                                             |
-| serverId | URL | UUID | O | 変更するインスタンスID                                                                                                                                                                                                        |
-| tokenId | Header | String | O | トークンID                                                                                                                                                                                                              |
-| resize | Body | Object | O | インスタンスタイプ変更リクエスト                                                                                                                                                                                                     |
-| resize.flavorRef | Body | UUID | O | 変更するインスタンスタイプID                                                                                                                                                                                                     |
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| transithub_attachment | Body | Object | O | ロードバランサー情報オブジェクト |
+| transithub_attachment.name | Body | String | - | 接続名 |
+| transithub_attachment.description | Body | String | - | 接続の説明 |
+| transithub_attachment.resource_id | Body | UUID | O | リソースID(VPC) |
+| transithub_attachment.subnet_id | Body | UUID | O | サブネットID |
+| transithub_attachment.transithub_id | Body | UUID | O | 接続が登録されるトランジットハブID |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-  "resize" : {
-    "flavorRef": "b5f1c148-732c-417d-9d1b-1dffca105dbe"
+  "transithub_attachment": {
+    "resource_id": "8eabc2c1-78a2-41e2-b03d-c1021042701f",
+    "subnet_id": "4263b32d-4bc5-45cc-bb3e-fded960e8f46",
+    "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "name": "thub-attachment",
+    "description": null
   }
 }
 ```
-
-</p>
 </details>
 
+<a id="create-attachment-response"></a>
 #### レスポンス
-このAPIはレスポンス本文を返しません。
 
----
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_attachment | Body | Object | 接続情報オブジェクト |
+| transithub_attachment.id | Body | UUID | 接続ID |
+| transithub_attachment.tenant_id | Body | String | テナントID |
+| transithub_attachment.name | Body | String | 接続名 |
+| transithub_attachment.description | Body | String | 接続の説明 |
+| transithub_attachment.resource_id | Body | UUID | リソースID(VPC) |
+| transithub_attachment.subnet_id | Body | UUID | サブネットID |
+| transithub_attachment.transithub_id | Body | UUID | トランジットハブID |
 
-### インスタンスイメージ作成
-
-インスタンスからイメージを作成します。`U2`タイプのインスタンスのみ、このAPIでイメージを作成できます。`U2`タイプ以外のインスタンスイメージを作成するには[ブロックストレージAPI](/Storage/Block Storage/ja/public-api/#create-image-with-block-storage)を参照します。
-
-インスタンスの状態が**ACTIVE**、**SHUTOFF**、**SUSPENDED**、**PAUSED**の時のみイメージを作成できます。イメージの作成は、データの整合性を保障するためにインスタンスを停止した状態で進行することを推奨します。
-
-イメージの作成に成功すると、イメージの状態が`active`に変わります。イメージの作成が完了したことを確認するにはイメージ照会APIで持続的に状態を確認します。
-
-> [注意]
-> 作成されたイメージのサイズはルートブロックストレージの実際の使用量より大きくなる可能性があります。
-
-```
-POST /v2/{tenantId}/servers/{serverId}/action
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
-| tokenId | Header | String | O | トークンID |
-| createImage | Body | Object | O | イメージ作成リクエスト |
-| createImage.name | Body | String | O | 作成するイメージの名前 |
-| createImage.metadata | Body | Object | - | 作成するイメージのメタデータ<br>Key-Value形式で記述 |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-  "createImage" : {
-      "name" : "foo-image",
-      "metadata": {
-          "meta_var": "meta_val"
-      }
+  "transithub_attachment": {
+    "status": "ACTIVE",
+    "remote": false,
+    "name": "thub-attachment",
+    "resource_id": "8eabc2c1-78a2-41e2-b03d-c1021042701f",
+    "subnet_id": "4263b32d-4bc5-45cc-bb3e-fded960e8f46",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-02-13 01:22:09",
+    "updated_at": "2024-02-13 01:22:11",
+    "resource_cidr": "172.16.0.0/12",
+    "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "port_id": "eecaf943-fdcc-40da-bda2-45949026f668",
+    "id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+    "description": null
   }
 }
 ```
-
-</p>
 </details>
-
-
-#### レスポンス
-
-このAPIはレスポンス本文を返しません。作成されたイメージはレスポンスヘッダの`Location`で確認します。
-
-| 名前 | 種類 | 形式 | 説明 |
-|--|--|--|--|
-| Location | Header | String | 作成したイメージURL |
 
 ---
-
-### セキュリティグループ追加
-
-インスタンスにセキュリティグループを追加します。追加したセキュリティグループはインスタンスのすべてのポートに適用されます。
+<a id="modify-attachment"></a>
+### 接続を修正する { #modify-attachment }
 
 ```
-POST /v2/{tenantId}/servers/{serverId}/action
+PUT /v2.0/gateways/transithub_attachments/{attachmentId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-attachment-request"></a>
 #### リクエスト
+
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | トークンID |
-| addSecurityGroup | Body | Object | O | セキュリティグループ追加リクエストオブジェクト |
-| addSecurityGroup.name | Body | String | O | 追加するセキュリティグループ名 |
+| attachmentId | URL | UUID | O | 接続ID |
+| transithub_attachment | Body | Object | O | 接続情報オブジェクト |
+| transithub_attachment.name | Body | String | - | 接続名 |
+| transithub_attachment.description | Body | String | - | 接続の説明 |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "addSecurityGroup": {
-        "name": "test"
-    }
+  "transithub_attachment": {
+    "name": "thub-attachment1",
+    "description": "test1"
+  }
 }
 ```
-
-</p>
 </details>
 
-
+<a id="modify-attachment-response"></a>
 #### レスポンス
-このAPIはレスポンス本文を返しません。
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_attachment | Body | Object | 接続情報オブジェクト |
+| transithub_attachment.id | Body | UUID | 接続ID |
+| transithub_attachment.tenant_id | Body | String | テナントID |
+| transithub_attachment.name | Body | String | 接続名 |
+| transithub_attachment.description | Body | String | 接続の説明 |
+| transithub_attachment.resource_id | Body | UUID | リソースID(VPC) |
+| transithub_attachment.subnet_id | Body | UUID | サブネットID |
+| transithub_attachment.transithub_id | Body | UUID | トランジットハブID |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_attachment": {
+    "status": "ACTIVE",
+    "remote": false,
+    "name": "thub-attachment1",
+    "resource_id": "8eabc2c1-78a2-41e2-b03d-c1021042701f",
+    "subnet_id": "4263b32d-4bc5-45cc-bb3e-fded960e8f46",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-02-13 01:22:09",
+    "updated_at": "2024-02-13 01:22:11",
+    "resource_cidr": "172.16.0.0/12",
+    "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "port_id": "eecaf943-fdcc-40da-bda2-45949026f668",
+    "id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+    "description": "test1"
+  }
+}
+```
+</details>
 
 ---
-
-### セキュリティグループ削除
-
-インスタンスからセキュリティグループを削除します。インスタンスのすべてのポートから指定したセキュリティグループが削除されます。
+<a id="delete-attachment"></a>
+### 接続を削除する { #delete-attachment }
 
 ```
-POST /v2/{tenantId}/servers/{serverId}/action
+DELETE /v2.0/gateways/transithub_attachments/{attachmentId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="delete-attachment-request"></a>
 #### リクエスト
+このAPIはリクエスト本文を要求しません。
+
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|--|
-| tenantId | URL | String | O | テナントID |
-| serverId | URL | UUID | O | 変更するインスタンスID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | トークンID |
-| removeSecurityGroup | Body | Object | O | セキュリティグループ削除リクエストオブジェクト |
-| removeSecurityGroup.name | Body | String | O | 削除するセキュリティグループ名 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "removeSecurityGroup": {
-        "name": "test"
-    }
-}
-```
-
-</p>
-</details>
+| attachmentId | URL | UUID | O | 接続ID |
 
 
+<a id="delete-attachment-response"></a>
 #### レスポンス
 このAPIはレスポンス本文を返しません。
 
 
-<a id="terminate-instance"></a>
-## インスタンスメタデータ
 
-インスタンスメタデータ値に基づいてコンソールの**Compute > Instance**サービスページでインスタンス詳細情報画面の内容を決定します。インスタンスメタデータの内容は次のとおりです。
 
-| インスタンスメタデータ   | 内容                                         |
-|----------------|----------------------------------------------|
-| os_distro      | **基本情報**の**OS**の名前<br>os_versionと組み合わせて使用 |
-| os_version     | **基本情報**の**OS**のバージョン<br>os_distroと組み合わせて使用 |
-| image_name     | **基本情報**の**イメージ名**                        |
-| os_type      | **接続情報**形式                               |
-| login_username | **接続情報**のユーザー名                          |
 
-> [注意]インスタンスメタデータの変更及び削除の際、関連サービス及び機能に影響が発生する可能性があり、これによる結果に対する責任はユーザーにあります。
-### インスタンスメタデータリスト表示
+
+
+
+
+
+<a id="routing-table"></a>
+## ルーティングテーブル { #routing-table }
+
+<a id="view-routing-tables"></a>
+### ルーティングテーブルリストの表示 { #view-routing-tables }
 
 ```
-GET /v2/{tenantId}/servers/{serverId}/metadata
+GET /v2.0/gateways/transithub_routing_tables
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-tables-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
-| 名前     | 種類 | 形式 | 必須 | 説明                                             |
-|----------|---|---|---|--------------------------------------------------|
-| tenantId | URL | String | O | テナントID                                           |
-| serverId | URL | UUID | O | インスタンスID                                          |
-| tokenId  | Header | String | O | トークンID                                            |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会するルーティングテーブルID |
+| name | Query | String | - | 照会するルーティングテーブル名 |
+| transithub_id | Query | UUID | - | 照会するトランジットハブID |
 
+
+
+<a id="view-routing-tables-response"></a>
 #### レスポンス
 
-| 名前     | 種類 | 形式 | 説明                                             |
-|----------|---|---|--------------------------------------------------|
-| metadata | Body | Object | インスタンスに作成または修正するメタデータオブジェクト<br>最大長さ255文字以下のキーと値のペア |
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_routing_tables | Body | Array | ルーティングテーブル情報オブジェクトリスト |
+| transithub_routing_tables.id | Body | UUID | ルーティングテーブルID |
+| transithub_routing_tables.tenant_id | Body | String | テナントID |
+| transithub_routing_tables.name | Body | String | ルーティングテーブル名 |
+| transithub_routing_tables.description | Body | String | ルーティングテーブルの説明 |
+| transithub_routing_tables.transithub_id | Body | UUID | トランジットハブID |
+| transithub_routing_tables.default_table | Body | Boolean | 基本ルーティングテーブルかどうか |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "metadata": {
-        "os_distro": "ubuntu",
-        "description": "Ubuntu Server 20.04.6 LTS (2023.11.21)",
-        "volume_size": "20",
-        "project_domain": "NORMAL",
-        "monitoring_agent": "sysmon",
-        "image_name": "Ubuntu Server 20.04.6 LTS (2023.11.21)",
-        "os_version": "Server 20.04 LTS",
-        "os_architecture": "amd64",
-        "login_username": "ubuntu",
-        "os_type": "linux",
-        "tc_env": "sysmon,dfeac7db42a192a73959d5646117af58"
+  "transithub_routing_tables": [
+    {
+      "status": "ACTIVE",
+      "description": "",
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "created_at": "2024-02-12 22:19:05",
+      "updated_at": "2024-02-12 22:19:08",
+      "default_table": true,
+      "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "id": "f5b96823-260a-415f-a162-d1914341137e",
+      "name": "default-9d01afbb-0e"
     }
+  ]
 }
 ```
-
-</p>
 </details>
 
-
-<a id="restart-instance"></a>
-### インスタンスメタデータ表示
+---
+<a id="view-routing-table"></a>
+### ルーティングテーブルの表示 { #view-routing-table }
 
 ```
-GET /v2/{tenantId}/servers/{serverId}/metadata/{key}
+GET /v2.0/gateways/transithub_routing_tables/{routingTableId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-table-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
-| 名前     | 種類 | 形式 | 必須 | 説明                     |
-|----------|---|---|---|--------------------------|
-| tenantId | URL | String | O | テナントID                   |
-| serverId | URL | UUID | O | インスタンスID                  |
-| key      | URL | String | O | インスタンスに作成または修正するメタデータのキー |
-| tokenId  | Header | String | O | トークンID                    |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| routingTableId | URL | UUID | O | ルーティングテーブルID |
 
+<a id="view-routing-table-response"></a>
 #### レスポンス
 
-| 名前 | 種類 | 形式 | 説明                                             |
-|------|---|---|--------------------------------------------------|
-| meta | Body | Object | インスタンスに作成または修正するメタデータオブジェクト<br>最大長さ255文字以下のキーと値のペア |
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_routing_table | Body | Object | ルーティングテーブル情報オブジェクト |
+| transithub_routing_table.id | Body | UUID | ルーティングテーブルID |
+| transithub_routing_table.tenant_id | Body | String | テナントID |
+| transithub_routing_table.name | Body | String | ルーティングテーブル名 |
+| transithub_routing_table.description | Body | String | ルーティングテーブルの説明 |
+| transithub_routing_table.transithub_id | Body | UUID | トランジットハブID |
+| transithub_routing_table.default_table | Body | Boolean | 基本ルーティングテーブルかどうか |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
+  "transithub_routing_table": {
+    "status": "ACTIVE",
+    "description": "",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-02-12 22:19:05",
+    "updated_at": "2024-02-12 22:19:08",
+    "default_table": true,
+    "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "f5b96823-260a-415f-a162-d1914341137e",
+    "name": "default-9d01afbb-0e"
+  }
 }
 ```
-
-</p>
 </details>
 
-<a id="change-instance-flavor"></a>
-### インスタンスメタデータを作成/修正する
-
-インスタンスのメタデータを作成または修正します。
-リクエストするキーが既存のキーと一致する場合、キーと値をリクエスト値に変更します。
+---
+<a id="create-routing-table"></a>
+### ルーティングテーブルを作成する { #create-routing-table }
 
 ```
-PUT /v2/{tenantId}/servers/{serverId}/metadata/{key}
+POST /v2.0/gateways/transithub_routing_tables
 X-Auth-Token: {tokenId}
 ```
 
+<a id="create-routing-table-request"></a>
 #### リクエスト
-| 名前     | 種類 | 形式 | 必須 | 説明                                             |
-|----------|---|---|---|--------------------------------------------------|
-| tenantId | URL | String | O | テナントID                                           |
-| serverId | URL | UUID | O | インスタンスID                                          |
-| key      | URL | String | O | インスタンスに作成または修正するメタデータのキー                        |
-| tokenId  | Header | String | O | トークンID                                            |
-| meta     | Body | Object | O | インスタンスに作成または修正するメタデータオブジェクト<br>最大長さ255文字以下のキーと値のペア |
 
-<details>
-<summary>例</summary>
-<p>
-
-```json
-{
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
-}
-```
-
-</p>
-</details>
-
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明                                             |
-|------|---|---|--------------------------------------------------|
-| meta | Body | Object | インスタンスに作成または修正するメタデータオブジェクト<br>最大長さ255文字以下のキーと値のペア |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| transithub_routing_table | Body | Object | O | ルーティングテーブル情報オブジェクト |
+| transithub_routing_table.name | Body | String | - | ルーティングテーブル名 |
+| transithub_routing_table.description | Body | String | - | ルーティングテーブルの説明 |
+| transithub_routing_table.transithub_id | Body | UUID | O | ルーティングテーブルが登録されるトランジットハブID |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "meta": {
-        "os_version": "Server 20.04 LTS"
-    }
+  "transithub_routing_table": {
+    "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "name": "thub-routing-table",
+    "description": null
+  }
 }
 ```
-
-</p>
 </details>
 
+<a id="create-routing-table-response"></a>
+#### レスポンス
 
-<a id="create-instance-image"></a>
-### インスタンスメタデータを削除する
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_routing_table | Body | Object | ルーティングテーブル情報オブジェクト |
+| transithub_routing_table.id | Body | UUID | ルーティングテーブルID |
+| transithub_routing_table.tenant_id | Body | String | テナントID |
+| transithub_routing_table.name | Body | String | ルーティングテーブル名 |
+| transithub_routing_table.description | Body | String | ルーティングテーブルの説明 |
+| transithub_routing_table.transithub_id | Body | UUID | トランジットハブID |
+| transithub_routing_table.default_table | Body | Boolean | 基本ルーティングテーブルかどうか |
 
-リクエストするキーと一致するインスタンスのメタデータを削除します。
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_table": {
+    "status": "BUILD",
+    "description": null,
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-03-05 22:38:41",
+    "updated_at": "2024-03-05 22:38:41",
+    "default_table": false,
+    "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "051eabf3-30f1-4e7a-a9bc-973c64f3c24a",
+    "name": "thub-routing-table"
+  }
+}
+```
+</details>
+
+---
+<a id="modify-routing-table"></a>
+### ルーティングテーブルを修正する { #modify-routing-table }
 
 ```
-DELETE /v2/{tenantId}/servers/{serverId}/metadata/{key}
+PUT /v2.0/gateways/transithub_routing_tables/{routingTableId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="modify-routing-table-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| routingTableId | URL | UUID | O | ルーティングテーブルID |
+| transithub_routing_table | Body | Object | O | ルーティングテーブル情報オブジェクト |
+| transithub_routing_table.name | Body | String | - | ルーティングテーブル名 |
+| transithub_routing_table.description | Body | String | - | ルーティングテーブルの説明 |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_table": {
+    "name": "thub-routing-table1",
+    "description": "test"
+  }
+}
+```
+</details>
+
+<a id="modify-routing-table-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_routing_table | Body | Object | ルーティングテーブル情報オブジェクト |
+| transithub_routing_table.id | Body | UUID | ルーティングテーブルID |
+| transithub_routing_table.tenant_id | Body | String | テナントID |
+| transithub_routing_table.name | Body | String | ルーティングテーブル名 |
+| transithub_routing_table.description | Body | String | ルーティングテーブルの説明 |
+| transithub_routing_table.transithub_id | Body | UUID | トランジットハブID |
+| transithub_routing_table.default_table | Body | Boolean | 基本ルーティングテーブルかどうか |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_table": {
+    "status": "ACTIVE",
+    "description": "test",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-03-05 22:38:41",
+    "updated_at": "2024-03-05 22:40:44.303417",
+    "default_table": false,
+    "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "051eabf3-30f1-4e7a-a9bc-973c64f3c24a",
+    "name": "thub-routing-table1"
+  }
+}
+```
+</details>
+
+---
+<a id="delete-routing-table"></a>
+### ルーティングテーブルを削除する { #delete-routing-table }
+
+```
+DELETE /v2.0/gateways/transithub_routing_tables/{routingTableId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-routing-table-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
-| 名前     | 種類 | 形式 | 必須 | 説明                |
-|----------|---|---|---|---------------------|
-| tenantId | URL | String | O | テナントID              |
-| serverId | URL | UUID | O | インスタンスID             |
-| key      | URL | String | O | インスタンスから削除するメタデータのキー |
-| tokenId  | Header | String | O | トークンID               |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| routingTableId | URL | UUID | O | ルーティングテーブルID |
 
+
+<a id="delete-routing-table-response"></a>
 #### レスポンス
 このAPIはレスポンス本文を返しません。
 
 
-## 配置ポリシー
 
-<a id="add-security-group"></a>
-### 配置ポリシーを作成する
 
-配置ポリシーを作成します。
-分散バッチのための`anti-affinity`配置ポリシータイプのみ提供します。
+
+
+
+
+
+
+
+<a id="routing-association"></a>
+## ルーティング接続 { #routing-association }
+
+<a id="view-routing-associations"></a>
+### ルーティング接続リストを表示 { #view-routing-associations }
 
 ```
-POST /v2/{tenantId}/os-server-groups
+GET /v2.0/gateways/transithub_routing_associations
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-associations-request"></a>
 #### リクエスト
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | テナントID |
-| tokenId | Header | String | O | トークンID |
-| server_group | Body | Object | O | 配置ポリシーオブジェクト |
-| server_group.name | Body | String | O | 配置ポリシー名 |
-| server_group.policies | Body | Array | O | 配置ポリシータイプ<br>`anti-affinity`のみ設定可能 |
-
-<details>
-<summary>例</summary>
-<p>
-
-```json
-{
-    "server_group": {
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"            
-        ]
-    }
-}
-```
-
-</p>
-</details>
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|-----|-----|-----|-----|
-| server_group | Body | Object | 配置ポリシーオブジェクト |
-| server_group.id | Body | String | 配置ポリシーID |
-| server_group.name | Body | String | 配置ポリシー名 |
-| server_group.policies | Body | Array | 配置ポリシータイプ |
-| server_group.members | Body | Array | 配置ポリシーに割り当てられたインスタンスIDリスト |
-| server_group.metadata | Body | Object | 配置ポリシーメタデータオブジェクト<br>常に空の値で表示されます |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "server_group": {
-        "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"
-        ],
-        "members": [],
-        "metadata": {}
-    }
-}
-```
-
-</p>
-</details>
-
-<a id="delete-security-group"></a>
-### 配置ポリシーリスト表示
-
-```
-GET /v2/{tenantId}/os-server-groups
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
 このAPIはリクエスト本文を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | テナントID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会するルーティング接続ID |
+| attachment_id | Query | UUID | - | 照会する接続ID |
+| routing_table_id | Query | UUID | - | 照会するルーティングテーブルID |
 
+
+
+<a id="view-routing-associations-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
-|-----|-----|-----|-----|
-| server_groups | Body | Array | 配置ポリシーオブジェクトリスト |
-| server_groups.id | Body | String | 配置ポリシーID |
-| server_groups.name | Body | String | 配置ポリシー名 |
-| server_groups.policies | Body | Array | 配置ポリシータイプ |
-| server_groups.members | Body | Array | 配置ポリシーに割り当てられたインスタンスIDリスト |
-| server_groups.metadata | Body | Object | 配置ポリシーメタデータオブジェクト<br>常に空の値で表示されます |
+|---|---|---|---|
+| transithub_routing_associations | Body | Array | ルーティング接続情報オブジェクトリスト |
+| transithub_routing_associations.id | Body | UUID | ルーティング接続ID |
+| transithub_routing_associations.tenant_id | Body | String | テナントID |
+| transithub_routing_associations.description | Body | String | ルーティング接続の説明 |
+| transithub_routing_associations.attachment_id | Body | UUID | 接続(Attachment) ID |
+| transithub_routing_associations.routing_table_id | Body | UUID | ルーティングテーブルID |
 
 <details><summary>例</summary>
-<p>
 
 ```json
 {
-    "server_groups": [
-        {
-            "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-            "name": "policy-test1",
-            "policies": [
-                "anti-affinity"
-            ],
-            "members": [
-                "c040455d-6495-4628-ad81-ade79cf7b8d6",
-                "524e7d81-f373-43a0-b2ff-0a15f8255bb5"            
-            ],
-            "metadata": {}
-        },
-        {
-            "id": "f947c657-cbe0-4bf2-a2aa-59d198f8e096",
-            "name": "policy-test2",
-            "policies": [
-                "anti-affinity"
-            ],
-            "members": [],
-            "metadata": {}
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
-### 配置ポリシー表示
-
-```
-GET /v2/{tenantId}/os-server-groups/{servergroupId}
-X-Auth-Token: {tokenId}
-```
-
-#### リクエスト
-
-このAPIはリクエスト本文を要求しません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | テナントID |
-| servergroupId | URL | String | O | 配置ポリシーID |
-| tokenId | Header | String | O | トークンID |
-
-#### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|-----|-----|-----|-----|
-| server_group | Body | Object | 配置ポリシーオブジェクト |
-| server_group.id | Body | String | 配置ポリシーID |
-| server_group.name | Body | String | 配置ポリシー名 |
-| server_group.policies | Body | Array | 配置ポリシータイプ |
-| server_group.members | Body | Array | 配置ポリシーに割り当てられたインスタンスIDリスト |
-| server_group.metadata | Body | Object | 配置ポリシーメタデータオブジェクト<br>常に空の値で表示されます |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-    "server_group": {
-        "id": "11f5a850-9ecc-4895-af77-de6ea471b65a",
-        "name": "policy-test1",
-        "policies": [
-            "anti-affinity"
-        ],
-        "members": [
-            "c040455d-6495-4628-ad81-ade79cf7b8d6",
-            "524e7d81-f373-43a0-b2ff-0a15f8255bb5"            
-        ],
-        "metadata": {}
+  "transithub_routing_associations": [
+    {
+      "status": "ACTIVE",
+      "attachment_id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+      "description": "",
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "routing_table_id": "f5b96823-260a-415f-a162-d1914341137e",
+      "created_at": "2024-02-13 01:22:09",
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "id": "56f5c3d2-2a9f-4ada-a358-356c6387de76",
+      "updated_at": "2024-02-13 01:22:09"
     }
+  ]
 }
 ```
-
-</p>
 </details>
 
-### 配置ポリシーを削除する
+---
+<a id="view-routing-association"></a>
+### ルーティング接続を表示 { #view-routing-association }
 
 ```
-DELETE /v2/{tenantId}/os-server-groups/{servergroupId}
+GET /v2.0/gateways/transithub_routing_associations/{routingAssociationId}
 X-Auth-Token: {tokenId}
 ```
 
+<a id="view-routing-association-request"></a>
 #### リクエスト
-
 このAPIはリクエスト本文を要求しません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
-|-----|-----|-----|-----|-----|
-| tenantId | URL | String | O | テナントID |
-| servergroupId | URL | String | O | 配置ポリシーID |
+|---|---|---|---|---|
 | tokenId | Header | String | O | トークンID |
+| routingAssociationId | URL | UUID | O | ルーティング接続ID |
 
+<a id="view-routing-association-response"></a>
 #### レスポンス
 
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_routing_association | Body | Object | ルーティング接続情報オブジェクト |
+| transithub_routing_association.id | Body | UUID | ルーティング接続ID |
+| transithub_routing_association.tenant_id | Body | String | テナントID |
+| transithub_routing_association.description | Body | String | ルーティング接続の説明 |
+| transithub_routing_association.attachment_id | Body | UUID | 接続(Attachment) ID |
+| transithub_routing_association.routing_table_id | Body | UUID | ルーティングテーブルID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_association": {
+    "status": "ACTIVE",
+    "attachment_id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+    "description": "",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "routing_table_id": "f5b96823-260a-415f-a162-d1914341137e",
+    "created_at": "2024-02-13 01:22:09",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "56f5c3d2-2a9f-4ada-a358-356c6387de76",
+    "updated_at": "2024-02-13 01:22:09"
+  }
+}
+```
+</details>
+
+---
+<a id="create-routing-association"></a>
+### ルーティング接続を作成する { #create-routing-association }
+
+```
+POST /v2.0/gateways/transithub_routing_associations
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-routing-association-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| transithub_routing_association | Body | Object | O | ルーティング接続情報オブジェクト |
+| transithub_routing_association.description | Body | String | - | ルーティング接続の説明 |
+| transithub_routing_association.attachment_id | Body | UUID | O | 接続(Attachment) ID |
+| transithub_routing_association.routing_table_id | Body | UUID | O | ルーティング接続が登録されるルーティングテーブルID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_association": {
+    "routing_table_id": "f5b96823-260a-415f-a162-d1914341137e",
+    "attachment_id": "23fc5818-c667-4e90-b50b-70b9e8727f49"
+  }
+}
+```
+</details>
+
+<a id="create-routing-association-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_routing_association | Body | Object | ルーティング接続情報オブジェクト |
+| transithub_routing_association.id | Body | UUID | ルーティング接続ID |
+| transithub_routing_association.tenant_id | Body | String | テナントID |
+| transithub_routing_association.description | Body | String | ルーティング接続の説明 |
+| transithub_routing_association.attachment_id | Body | UUID | 接続(Attachment) ID |
+| transithub_routing_association.routing_table_id | Body | UUID | ルーティングテーブルID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_association": {
+    "status": "ACTIVE",
+    "attachment_id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+    "description": "",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "routing_table_id": "f5b96823-260a-415f-a162-d1914341137e",
+    "created_at": "2024-03-05 22:51:48",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "a5532ee9-1d7b-44bd-a622-85198171ee98",
+    "updated_at": "2024-03-05 22:51:48"
+  }
+}
+```
+</details>
+
+---
+<a id="delete-routing-association"></a>
+### ルーティング接続を削除する { #delete-routing-association }
+
+```
+DELETE /v2.0/gateways/transithub_routing_associations/{routingAssociationId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-routing-association-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| routingAssociationId | URL | UUID | O | ルーティング接続ID |
+
+
+<a id="delete-routing-association-response"></a>
+#### レスポンス
 このAPIはレスポンス本文を返しません。
+
+
+
+
+
+
+
+
+
+
+
+<a id="routing-propagation"></a>
+## ルーティング伝播 { #routing-propagation }
+
+<a id="routing-propagation-view-routing-associations"></a>
+### ルーティング伝播リストを表示 { #routing-propagation-view-routing-associations }
+
+```
+GET /v2.0/gateways/transithub_routing_propagations
+X-Auth-Token: {tokenId}
+```
+
+<a id="routing-propagation-view-routing-associations-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会するルーティング伝播ID |
+| attachment_id | Query | UUID | - | 照会する接続ID |
+| routing_table_id | Query | UUID | - | 照会するルーティングテーブルID |
+
+
+
+<a id="routing-propagation-view-routing-associations-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_routing_propagations | Body | Array | ルーティング伝播情報オブジェクトリスト |
+| transithub_routing_propagations.id | Body | UUID | ルーティング伝播ID |
+| transithub_routing_propagations.tenant_id | Body | String | テナントID |
+| transithub_routing_propagations.description | Body | String | ルーティング伝播の説明 |
+| transithub_routing_propagations.attachment_id | Body | UUID | 接続(Attachment) ID |
+| transithub_routing_propagations.routing_table_id | Body | UUID | ルーティングテーブルID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_propagations": [
+    {
+      "status": "ACTIVE",
+      "attachment_id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+      "description": "",
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "routing_table_id": "f5b96823-260a-415f-a162-d1914341137e",
+      "created_at": "2024-02-13 01:22:09",
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "id": "6bf0efaa-6d32-4fef-a341-7662e9bf1eb1",
+      "updated_at": "2024-02-13 01:22:09"
+    }
+  ]
+}
+```
+</details>
+
+---
+<a id="view-routing-propagation"></a>
+### ルーティング伝播を表示 { #view-routing-propagation }
+
+```
+GET /v2.0/gateways/transithub_routing_propagations/{routingPropagationId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-routing-propagation-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| routingPropagationId | URL | UUID | O | ルーティング伝播ID |
+
+<a id="view-routing-propagation-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_routing_propagation | Body | Object | ルーティング伝播情報オブジェクト |
+| transithub_routing_propagation.id | Body | UUID | ルーティング伝播ID |
+| transithub_routing_propagation.tenant_id | Body | String | テナントID |
+| transithub_routing_propagation.description | Body | String | ルーティング伝播の説明 |
+| transithub_routing_propagation.attachment_id | Body | UUID | 接続(Attachment) ID |
+| transithub_routing_propagation.routing_table_id | Body | UUID | ルーティングテーブルID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_propagation": {
+    "status": "ACTIVE",
+    "attachment_id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+    "description": "",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "routing_table_id": "f5b96823-260a-415f-a162-d1914341137e",
+    "created_at": "2024-02-13 01:22:09",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "6bf0efaa-6d32-4fef-a341-7662e9bf1eb1",
+    "updated_at": "2024-02-13 01:22:09"
+  }
+}
+```
+</details>
+
+---
+<a id="create-routing-propagation"></a>
+### ルーティング伝播を作成する { #create-routing-propagation }
+
+```
+POST /v2.0/gateways/transithub_routing_propagations
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-routing-propagation-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| transithub_routing_propagation | Body | Object | O | ルーティング伝播情報オブジェクト |
+| transithub_routing_propagation.description | Body | String | - | ルーティング伝播の説明 |
+| transithub_routing_propagation.attachment_id | Body | UUID | O | 接続(Attachment) ID |
+| transithub_routing_propagation.routing_table_id | Body | UUID | O | ルーティング伝播が登録されるルーティングテーブルID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_propagation": {
+    "routing_table_id": "f5b96823-260a-415f-a162-d1914341137e",
+    "attachment_id": "23fc5818-c667-4e90-b50b-70b9e8727f49"
+  }
+}
+```
+</details>
+
+<a id="create-routing-propagation-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_routing_propagation | Body | Object | ルーティング伝播情報オブジェクト |
+| transithub_routing_propagation.id | Body | UUID | ルーティング伝播ID |
+| transithub_routing_propagation.tenant_id | Body | String | テナントID |
+| transithub_routing_propagation.description | Body | String | ルーティング伝播の説明 |
+| transithub_routing_propagation.attachment_id | Body | UUID | 接続(Attachment) ID |
+| transithub_routing_propagation.routing_table_id | Body | UUID | ルーティングテーブルID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_propagation": {
+    "status": "ACTIVE",
+    "attachment_id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+    "description": "",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "routing_table_id": "f5b96823-260a-415f-a162-d1914341137e",
+    "created_at": "2024-03-05 22:56:58",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "d1b54e63-0032-44dc-bb31-22d5723782ee",
+    "updated_at": "2024-03-05 22:56:58.825231"
+  }
+}
+```
+</details>
+
+---
+<a id="delete-routing-propagation"></a>
+### ルーティング伝播を削除する { #delete-routing-propagation }
+
+```
+DELETE /v2.0/gateways/transithub_routing_propagations/{routingPropagationId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-routing-propagation-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| routingPropagationId | URL | UUID | O | ルーティング伝播ID |
+
+
+<a id="delete-routing-propagation-response"></a>
+#### レスポンス
+このAPIはレスポンス本文を返しません。
+
+
+
+
+
+
+
+
+
+
+
+<a id="routing-rule"></a>
+## ルーティングルール { #routing-rule }
+
+<a id="view-routing-rules"></a>
+### ルーティングルールリストの表示 { #view-routing-rules }
+
+```
+GET /v2.0/gateways/transithub_routing_rules
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-routing-rules-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会するルーティングルールID |
+| action | Query | Enum | - | 照会するルーティングルールアクション<br>`FORWARD`, `BLACKHOLE`のいずれか |
+| rule_type | Query | Enum | - | 照会するルーティングルールタイプ<br>`STATIC`, `PROPAGATED`のいずれか |
+| attachment_id | Query | UUID | - | 照会する接続(Attachment) ID |
+| routing_table_id | Query | UUID | - | 照会するルーティングテーブルID |
+
+
+
+<a id="view-routing-rules-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_routing_rules | Body | Array | ルーティングルール情報オブジェクトリスト |
+| transithub_routing_rules.id | Body | UUID | ルーティングルールID |
+| transithub_routing_rules.tenant_id | Body | String | テナントID |
+| transithub_routing_rules.description | Body | String | ルーティングルールの説明 |
+| transithub_routing_rules.cidr | Body | String | ルーティングルールIP帯域 |
+| transithub_routing_rules.action | Body | Enum | ルーティングルールアクション<br>`FORWARD`, `BLACKHOLE`のいずれか |
+| transithub_routing_rules.rule_type | Body | Enum | ルーティングルールタイプ<br>`STATIC`, `PROPAGATED`のいずれか |
+| transithub_routing_rules.attachment_id | Body | UUID | 接続(Attachment) ID |
+| transithub_routing_rules.routing_table_id | Body | UUID | ルーティングテーブルID |
+| transithub_routing_rules.propagation_id | Body | UUID | ルーティング伝播ID、伝播によりルーティングタイプが`PROPAGATED`の場合に使用 |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_rules": [
+    {
+      "status": "ACTIVE",
+      "rule_type": "PROPAGATED",
+      "attachment_id": "ea9bb603-893c-4955-a7bb-64b6438a6f5b",
+      "description": "",
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "created_at": "2024-02-12 22:35:48",
+      "updated_at": "2024-02-12 22:35:48",
+      "action": "FORWARD",
+      "routing_table_id": "f5b96823-260a-415f-a162-d1914341137e",
+      "cidr": "172.16.0.0/12",
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "propagation_id": "7a5d3159-a3a6-495b-bb0f-522c4d8a9933",
+      "id": "3d10d565-8813-4c3c-9f1c-1af96eee9f14"
+    }
+  ]
+}
+```
+</details>
+
+---
+<a id="view-routing-rule"></a>
+### ルーティングルールの表示 { #view-routing-rule }
+
+```
+GET /v2.0/gateways/transithub_routing_rules/{routingRuleId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-routing-rule-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| routingRuleId | URL | UUID | O | ルーティングルールID |
+
+<a id="view-routing-rule-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_routing_rule | Body | Object | ルーティングルール情報オブジェクト |
+| transithub_routing_rule.id | Body | UUID | ルーティングルールID |
+| transithub_routing_rule.tenant_id | Body | String | テナントID |
+| transithub_routing_rule.description | Body | String | ルーティングルールの説明 |
+| transithub_routing_rule.cidr | Body | String | ルーティングルールIP帯域 |
+| transithub_routing_rule.action | Body | Enum | ルーティングルールアクション<br>`FORWARD`, `BLACKHOLE`のいずれか |
+| transithub_routing_rule.rule_type | Body | Enum | ルーティングルールタイプ<br>`STATIC`, `PROPAGATED`のいずれか |
+| transithub_routing_rule.attachment_id | Body | UUID | 接続(Attachment) ID |
+| transithub_routing_rule.routing_table_id | Body | UUID | ルーティングテーブルID |
+| transithub_routing_rule.propagation_id | Body | UUID | ルーティング伝播ID、伝播によりルーティングタイプが`PROPAGATED`の場合に使用 |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_rule": {
+    "status": "ACTIVE",
+    "rule_type": "PROPAGATED",
+    "attachment_id": "ea9bb603-893c-4955-a7bb-64b6438a6f5b",
+    "description": "",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-02-12 22:35:48",
+    "updated_at": "2024-02-12 22:35:48",
+    "action": "FORWARD",
+    "routing_table_id": "f5b96823-260a-415f-a162-d1914341137e",
+    "cidr": "172.16.0.0/12",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "propagation_id": "7a5d3159-a3a6-495b-bb0f-522c4d8a9933",
+    "id": "3d10d565-8813-4c3c-9f1c-1af96eee9f14"
+  }
+}
+```
+</details>
+
+---
+<a id="create-routing-rule"></a>
+### ルーティングルールを作成する { #create-routing-rule }
+
+```
+POST /v2.0/gateways/transithub_routing_rules
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-routing-rule-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| transithub_routing_rule | Body | Object | O | ルーティングルール情報オブジェクト |
+| transithub_routing_rule.name | Body | String | - | ルーティングルール名 |
+| transithub_routing_rule.description | Body | String | - | ルーティングルールの説明 |
+| transithub_routing_rule.cidr | Body | String | O | ルーティングルールIP帯域 |
+| transithub_routing_rule.action | Body | Enum | - | ルーティングルールアクション<br>`FORWARD`, `BLACKHOLE`のいずれか<br>入力しない場合は`FORWARD` |
+| transithub_routing_rule.attachment_id | Body | UUID | O | 接続(Attachment) ID |
+| transithub_routing_rule.routing_table_id | Body | UUID | O | ルーティングルールが登録されるルーティングテーブルID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_rule": {
+    "routing_table_id": "e5cb6442-4b5d-4298-84e2-adc9289c650e",
+    "cidr": "1.1.1.0/24",
+    "attachment_id": "6489cee8-0b5f-4053-b72d-1aa8b2921962"
+  }
+}
+```
+</details>
+
+<a id="create-routing-rule-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_routing_rule | Body | Object | ルーティングルール情報オブジェクト |
+| transithub_routing_rule.id | Body | UUID | ルーティングルールID |
+| transithub_routing_rule.tenant_id | Body | String | テナントID |
+| transithub_routing_rule.description | Body | String | ルーティングルールの説明 |
+| transithub_routing_rule.cidr | Body | String | ルーティングルールIP帯域 |
+| transithub_routing_rule.action | Body | Enum | ルーティングルールアクション<br>`FORWARD`, `BLACKHOLE`のいずれか |
+| transithub_routing_rule.rule_type | Body | Enum | ルーティングルールタイプ<br>`STATIC`, `PROPAGATED`のいずれか |
+| transithub_routing_rule.attachment_id | Body | UUID | 接続(Attachment) ID |
+| transithub_routing_rule.routing_table_id | Body | UUID | ルーティングテーブルID |
+| transithub_routing_rule.propagation_id | Body | UUID | ルーティング伝播ID、伝播によりルーティングタイプが`PROPAGATED`の場合に使用 |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_routing_rule": {
+    "status": "ACTIVE",
+    "rule_type": "STATIC",
+    "attachment_id": "6489cee8-0b5f-4053-b72d-1aa8b2921962",
+    "description": "",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-03-06 23:00:05",
+    "updated_at": "2024-03-06 23:00:05",
+    "action": "FORWARD",
+    "routing_table_id": "e5cb6442-4b5d-4298-84e2-adc9289c650e",
+    "cidr": "1.1.1.0/24",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "propagation_id": null,
+    "id": "3f765a36-bd6a-450a-9e05-366ecb8446c3"
+  }
+}
+```
+</details>
+
+---
+<a id="delete-routing-rule"></a>
+### ルーティングルールを削除する { #delete-routing-rule }
+
+```
+DELETE /v2.0/gateways/transithub_routing_rules/{routingRuleId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-routing-rule-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| routingRuleId | URL | UUID | O | ルーティングルールID |
+
+
+<a id="delete-routing-rule-response"></a>
+#### レスポンス
+このAPIはレスポンス本文を返しません。
+
+
+
+
+
+
+
+
+
+
+
+
+<a id="multicast-domain"></a>
+## マルチキャストドメイン { #multicast-domain }
+
+<a id="view-multicast-domains"></a>
+### マルチキャストドメインリストの表示 { #view-multicast-domains }
+
+```
+GET /v2.0/gateways/transithub_multicast_domains
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-multicast-domains-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会するマルチキャストドメインID |
+| name | Query | String | - | 照会するマルチキャストドメイン名 |
+| transithub_id | Query | UUID | - | 照会するトランジットハブID |
+
+
+<a id="view-multicast-domains-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_multicast_domains | Body | Array | マルチキャストドメイン情報オブジェクトリスト |
+| transithub_multicast_domains.id | Body | UUID | マルチキャストドメインID |
+| transithub_multicast_domains.tenant_id | Body | String | テナントID |
+| transithub_multicast_domains.name | Body | String | マルチキャストドメイン名 |
+| transithub_multicast_domains.description | Body | String | マルチキャストドメインの説明 |
+| transithub_multicast_domains.transithub_id | Body | UUID | トランジットハブID |
+
+<details><summary>例</summary>
+  
+```json
+{
+  "transithub_multicast_domains": [
+    {
+      "status": "ACTIVE",
+      "description": null,
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "created_at": "2024-02-13 01:20:31",
+      "updated_at": "2024-02-13 01:20:32",
+      "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "id": "d55022de-947f-4db3-a7b0-5a4cee9a2369",
+      "name": "thub-domain"
+    }
+  ]
+}
+```
+</details>
+
+---
+<a id="view-multicast-domain"></a>
+### マルチキャストドメインの表示 { #view-multicast-domain }
+
+```
+GET /v2.0/gateways/transithub_multicast_domains/{multicastDomainId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-multicast-domain-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| multicastDomainId | URL | UUID | O | マルチキャストドメインID |
+
+<a id="view-multicast-domain-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| tokenId | Header | String | トークンID |
+| transithub_multicast_domain | Body | Object | マルチキャストドメイン情報オブジェクト |
+| transithub_multicast_domain.name | Body | String | マルチキャストドメイン名 |
+| transithub_multicast_domain.description | Body | String | マルチキャストドメインの説明 |
+| transithub_multicast_domain.transithub_id | Body | UUID | マルチキャストドメインを登録するトランジットハブID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_domain": {
+    "status": "ACTIVE",
+    "description": null,
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-02-13 01:20:31",
+    "updated_at": "2024-02-13 01:20:32",
+    "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "d55022de-947f-4db3-a7b0-5a4cee9a2369",
+    "name": "thub-domain"
+  }
+}
+```
+</details>
+
+
+
+---
+<a id="create-multicast-domain"></a>
+### マルチキャストドメインを作成する { #create-multicast-domain }
+
+```
+POST /v2.0/gateways/transithub_multicast_domains
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-multicast-domain-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| transithub_multicast_domain | Body | Object | O | マルチキャストドメイン情報オブジェクト |
+| transithub_multicast_domain.name | Body | String | - | マルチキャストドメイン名 |
+| transithub_multicast_domain.description | Body | String | - | マルチキャストドメインの説明 |
+| transithub_multicast_domain.transithub_id | Body | UUID | O | マルチキャストドメインを登録するトランジットハブID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_domain": {
+    "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "name": "thub-domain1"
+  }
+}
+```
+</details>
+
+<a id="create-multicast-domain-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_multicast_domain | Body | Object | マルチキャストドメイン情報オブジェクト |
+| transithub_multicast_domain.id | Body | UUID | マルチキャストドメインID |
+| transithub_multicast_domain.tenant_id | Body | String | テナントID |
+| transithub_multicast_domain.name | Body | String | マルチキャストドメイン名 |
+| transithub_multicast_domain.description | Body | String | マルチキャストドメインの説明 |
+| transithub_multicast_domain.transithub_id | Body | UUID | トランジットハブID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_domain": {
+    "status": "BUILD",
+    "description": null,
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-03-06 23:03:07",
+    "updated_at": "2024-03-06 23:03:07",
+    "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "fba53b77-431b-466f-8a31-784942649e73",
+    "name": "thub-domain1"
+  }
+}
+```
+</details>
+
+
+---
+<a id="modify-multicast-domain"></a>
+### マルチキャストドメインを修正する { #modify-multicast-domain }
+
+```
+PUT /v2.0/gateways/transithub_multicast_domains/{multicastDomainId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="modify-multicast-domain-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| multicastDomainId | URL | UUID | O | マルチキャストドメインID |
+| transithub_multicast_domain | Body | Object | O | マルチキャストドメイン情報オブジェクト |
+| transithub_multicast_domain.name | Body | String | - | マルチキャストドメイン名 |
+| transithub_multicast_domain.description | Body | String | - | マルチキャストドメインの説明 |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_domain": {
+    "name": "thub-domain",
+    "description": "test"
+  }
+}
+```
+</details>
+
+<a id="modify-multicast-domain-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_multicast_domain | Body | Object | マルチキャストドメイン情報オブジェクト |
+| transithub_multicast_domain.id | Body | UUID | マルチキャストドメインID |
+| transithub_multicast_domain.tenant_id | Body | String | テナントID |
+| transithub_multicast_domain.name | Body | String | マルチキャストドメイン名 |
+| transithub_multicast_domain.description | Body | String | マルチキャストドメインの説明 |
+| transithub_multicast_domain.transithub_id | Body | UUID | トランジットハブID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_domain": {
+    "status": "ACTIVE",
+    "description": "test",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-03-06 23:03:07",
+    "updated_at": "2024-03-06 23:06:18.031473",
+    "transithub_id": "9d01afbb-0e95-423e-9360-15a3f2e9a233",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "fba53b77-431b-466f-8a31-784942649e73",
+    "name": "thub-domain"
+  }
+}
+```
+</details>
+
+
+---
+<a id="delete-multicast-domain"></a>
+### マルチキャストドメインを削除する { #delete-multicast-domain }
+
+```
+DELETE /v2.0/gateways/transithub_multicast_domains/{multicastDomainId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-multicast-domain-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| multicastDomainId | URL | UUID | O | マルチキャストドメインID |
+
+
+<a id="delete-multicast-domain-response"></a>
+#### レスポンス
+このAPIはレスポンス本文を返しません。
+
+
+
+
+
+
+
+
+
+<a id="multicast-association"></a>
+## マルチキャスト接続 { #multicast-association }
+
+<a id="multicast-association-view-multicast-domains"></a>
+### マルチキャスト接続リストを表示 { #multicast-association-view-multicast-domains }
+
+```
+GET /v2.0/gateways/transithub_multicast_associations
+X-Auth-Token: {tokenId}
+```
+
+<a id="multicast-association-view-multicast-domains-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会するマルチキャスト接続ID |
+| name | Query | String | - | 照会するマルチキャスト接続名 |
+| domain_id | Query | UUID | - | 照会するマルチキャストドメインID |
+
+
+<a id="multicast-association-view-multicast-domains-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_multicast_associations | Body | Array | マルチキャスト接続情報オブジェクトリスト |
+| transithub_multicast_associations.id | Body | UUID | マルチキャスト接続ID |
+| transithub_multicast_associations.tenant_id | Body | String | テナントID |
+| transithub_multicast_associations.description | Body | String | マルチキャスト接続の説明 |
+| transithub_multicast_associations.attachment_id | Body | UUID | 接続(Attachment) ID |
+| transithub_multicast_associations.subnet_id | Body | UUID | サブネットID |
+| transithub_multicast_associations.domain_id | Body | UUID | マルチキャストドメインID |
+
+<details><summary>例</summary>
+  
+```json
+{
+  "transithub_multicast_associations": [
+    {
+      "status": "ACTIVE",
+      "attachment_id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+      "description": "",
+      "subnet_id": "4263b32d-4bc5-45cc-bb3e-fded960e8f46",
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "created_at": "2024-02-13 01:22:37",
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "id": "3da29ae0-f544-4b8e-88c4-eb2ef78d0214",
+      "updated_at": "2024-02-13 01:22:37",
+      "domain_id": "d55022de-947f-4db3-a7b0-5a4cee9a2369"
+    }
+  ]
+}
+```
+</details>
+
+
+---
+<a id="view-multicast-association"></a>
+### マルチキャスト接続の表示 { #view-multicast-association }
+
+```
+GET /v2.0/gateways/transithub_multicast_associations/{multicastAssociationId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-multicast-association-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| multicastAssociationId | URL | UUID | O | ルーティングルールID |
+
+<a id="view-multicast-association-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| tokenId | Header | String | トークンID |
+| transithub_multicast_association | Body | Object | マルチキャスト接続情報オブジェクト |
+| transithub_multicast_association.id | Body | UUID | マルチキャスト接続ID |
+| transithub_multicast_association.tenant_id | Body | String | テナントID |
+| transithub_multicast_association.description | Body | String | マルチキャスト接続の説明 |
+| transithub_multicast_association.attachment_id | Body | UUID | 接続(Attachment) ID |
+| transithub_multicast_association.subnet_id | Body | UUID | サブネットID |
+| transithub_multicast_association.domain_id | Body | UUID | マルチキャストドメインID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_association": {
+    "status": "ACTIVE",
+    "attachment_id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+    "description": "",
+    "subnet_id": "4263b32d-4bc5-45cc-bb3e-fded960e8f46",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-02-13 01:22:37",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "3da29ae0-f544-4b8e-88c4-eb2ef78d0214",
+    "updated_at": "2024-02-13 01:22:37",
+    "domain_id": "d55022de-947f-4db3-a7b0-5a4cee9a2369"
+  }
+}
+```
+</details>
+
+
+---
+<a id="create-multicast-association"></a>
+### マルチキャスト接続を作成する { #create-multicast-association }
+
+```
+POST /v2.0/gateways/transithub_multicast_associations
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-multicast-association-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| transithub_multicast_association | Body | Object | O | マルチキャスト接続情報オブジェクト |
+| transithub_multicast_association.description | Body | String | - | マルチキャスト接続の説明 |
+| transithub_multicast_association.attachment_id | Body | UUID | O | 接続(Attachment) ID |
+| transithub_multicast_association.domain_id | Body | UUID | O | マルチキャストドメインID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_association": {
+    "attachment_id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+    "domain_id": "d55022de-947f-4db3-a7b0-5a4cee9a2369"
+  }
+}
+```
+</details>
+
+<a id="create-multicast-association-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_multicast_association | Body | Object | マルチキャスト接続情報オブジェクト |
+| transithub_multicast_association.id | Body | UUID | マルチキャスト接続ID |
+| transithub_multicast_association.tenant_id | Body | String | テナントID |
+| transithub_multicast_association.description | Body | String | マルチキャスト接続の説明 |
+| transithub_multicast_association.attachment_id | Body | UUID | 接続(Attachment) ID |
+| transithub_multicast_association.subnet_id | Body | UUID | サブネットID |
+| transithub_multicast_association.domain_id | Body | UUID | マルチキャストドメインID |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_association": {
+    "status": "ACTIVE",
+    "attachment_id": "23fc5818-c667-4e90-b50b-70b9e8727f49",
+    "description": "",
+    "subnet_id": "4263b32d-4bc5-45cc-bb3e-fded960e8f46",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-03-07 00:22:59",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "4da8461b-6c92-4225-8368-60e1e49e3d92",
+    "updated_at": "2024-03-07 00:22:59",
+    "domain_id": "d55022de-947f-4db3-a7b0-5a4cee9a2369"
+  }
+}
+```
+</details>
+
+---
+<a id="delete-multicast-association"></a>
+### マルチキャスト接続を削除する { #delete-multicast-association }
+
+```
+DELETE /v2.0/gateways/transithub_multicast_associations/{multicastAssociationId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-multicast-association-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| multicastAssociationId | URL | UUID | O | マルチキャスト接続ID |
+
+
+<a id="delete-multicast-association-response"></a>
+#### レスポンス
+このAPIはレスポンス本文を返しません。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a id="multicast-group"></a>
+## マルチキャストグループ { #multicast-group }
+
+<a id="view-multicast-group"></a>
+### マルチキャストグループリストの表示 { #view-multicast-group }
+
+```
+GET /v2.0/gateways/transithub_multicast_groups
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-multicast-group-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会するマルチキャストグループID |
+| name | Query | String | - | 照会するマルチキャストグループ名 |
+| domain_id | Query | UUID | - | 照会するマルチキャストグループID |
+
+
+<a id="view-multicast-group-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_multicast_groups | Body | Array | マルチキャストグループ情報オブジェクトリスト |
+| transithub_multicast_groups.id | Body | UUID | マルチキャストグループID |
+| transithub_multicast_groups.tenant_id | Body | String | テナントID |
+| transithub_multicast_groups.description | Body | String | マルチキャストグループの説明 |
+| transithub_multicast_groups.association_id | Body | UUID | マルチキャスト接続ID |
+| transithub_multicast_groups.ipaddress | Body | String | マルチキャストグループIPアドレス |
+| transithub_multicast_groups.member_type | Body | String | マルチキャストメンバータイプ |
+| transithub_multicast_groups.source_type | Body | String | マルチキャストソースタイプ |
+| transithub_multicast_groups.port_id | Body | UUID | マルチキャスト対象ポートID |
+
+<details><summary>例</summary>
+  
+```json
+{
+  "transithub_multicast_groups": [
+    {
+      "description": "",
+      "updated_at": "2024-03-07 00:28:20",
+      "member_type": "STATIC",
+      "source_type": null,
+      "port_id": "b0ca1c15-13e1-4746-b8e1-9ec8e685d228",
+      "ipaddress": "224.0.0.3",
+      "id": "ce8c5fef-6859-4e68-8b46-4cd395c44b37",
+      "subnet_id": "4263b32d-4bc5-45cc-bb3e-fded960e8f46",
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "created_at": "2024-03-07 00:28:20",
+      "domain_id": "27d79c71-ccce-4928-af3c-5ffa5c3ed3fd",
+      "association_id": "b4ba8acd-34d2-48f9-b2f6-cbfe5e92d0f8",
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b"
+    }
+  ]
+}
+```
+</details>
+
+---
+<a id="multicast-group-view-multicast-group"></a>
+### マルチキャストグループの表示 { #multicast-group-view-multicast-group }
+
+```
+GET /v2.0/gateways/transithub_multicast_groups/{multicastGroupId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="multicast-group-view-multicast-group-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| multicastGroupId | URL | UUID | O | マルチキャストグループID |
+
+<a id="multicast-group-view-multicast-group-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_multicast_group | Body | Object | マルチキャストグループ情報オブジェクト |
+| transithub_multicast_group.id | Body | UUID | マルチキャストグループID |
+| transithub_multicast_group.tenant_id | Body | String | テナントID |
+| transithub_multicast_group.description | Body | String | マルチキャストグループの説明 |
+| transithub_multicast_group.association_id | Body | UUID | マルチキャスト接続ID |
+| transithub_multicast_group.ipaddress | Body | String | マルチキャストグループIPアドレス |
+| transithub_multicast_group.member_type | Body | String | マルチキャストメンバータイプ |
+| transithub_multicast_group.source_type | Body | String | マルチキャストソースタイプ |
+| transithub_multicast_group.port_id | Body | UUID | マルチキャスト対象ポートID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_group": {
+    "description": "",
+    "updated_at": "2024-03-07 00:28:20",
+    "member_type": "STATIC",
+    "source_type": null,
+    "port_id": "b0ca1c15-13e1-4746-b8e1-9ec8e685d228",
+    "ipaddress": "224.0.0.3",
+    "id": "ce8c5fef-6859-4e68-8b46-4cd395c44b37",
+    "subnet_id": "4263b32d-4bc5-45cc-bb3e-fded960e8f46",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-03-07 00:28:20",
+    "domain_id": "27d79c71-ccce-4928-af3c-5ffa5c3ed3fd",
+    "association_id": "b4ba8acd-34d2-48f9-b2f6-cbfe5e92d0f8",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b"
+  }
+}
+```
+</details>
+
+---
+<a id="create-multicast-group"></a>
+### マルチキャストグループを作成する { #create-multicast-group }
+
+```
+POST /v2.0/gateways/transithub_multicast_groups
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-multicast-group-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| transithub_multicast_group | Body | Object | O | マルチキャストグループ情報オブジェクト |
+| transithub_multicast_group.description | Body | String | - | マルチキャストグループの説明 |
+| transithub_multicast_group.association_id | Body | UUID | O | マルチキャスト接続ID |
+| transithub_multicast_group.ipaddress | Body | String | O | マルチキャストグループIPアドレス |
+| transithub_multicast_group.member_type | Body | String | - | マルチキャストメンバータイプ、メンバーとして使用する場合は`STATIC`を入力<br>メンバータイプとソースタイプのいずれかの入力必須 |
+| transithub_multicast_group.source_type | Body | String | - | マルチキャストソースタイプ、ソースとして使用する場合は`STATIC`を入力<br>メンバータイプとソースタイプのいずれかの入力必須 |
+| transithub_multicast_group.port_id | Body | UUID | O | マルチキャスト対象ポートID |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_group": {
+    "association_id": "b4ba8acd-34d2-48f9-b2f6-cbfe5e92d0f8",
+    "port_id": "b0ca1c15-13e1-4746-b8e1-9ec8e685d228",
+    "ipaddress": "224.0.0.10",
+    "member_type": "STATIC"
+  }
+}
+```
+</details>
+
+<a id="create-multicast-group-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_multicast_group | Body | Object | マルチキャストグループ情報オブジェクト |
+| transithub_multicast_group.id | Body | UUID | マルチキャストグループID |
+| transithub_multicast_group.tenant_id | Body | String | テナントID |
+| transithub_multicast_group.description | Body | String | マルチキャストグループの説明 |
+| transithub_multicast_group.association_id | Body | UUID | マルチキャスト接続ID |
+| transithub_multicast_group.ipaddress | Body | String | マルチキャストグループIPアドレス |
+| transithub_multicast_group.member_type | Body | String | マルチキャストメンバータイプ |
+| transithub_multicast_group.source_type | Body | String | マルチキャストソースタイプ |
+| transithub_multicast_group.port_id | Body | UUID | マルチキャスト対象ポートID |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_group": {
+    "description": "",
+    "association_id": "b4ba8acd-34d2-48f9-b2f6-cbfe5e92d0f8",
+    "subnet_id": "4263b32d-4bc5-45cc-bb3e-fded960e8f46",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "created_at": "2024-03-07 00:40:19",
+    "updated_at": "2024-03-07 00:40:19",
+    "member_type": "STATIC",
+    "domain_id": "27d79c71-ccce-4928-af3c-5ffa5c3ed3fd",
+    "source_type": null,
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "ipaddress": "224.0.0.10",
+    "id": "91b281f8-41ab-4d27-8639-da27b23d21db"
+  }
+}
+```
+</details>
+
+
+---
+<a id="delete-multicast-group"></a>
+### マルチキャストグループを削除する { #delete-multicast-group }
+
+```
+DELETE /v2.0/gateways/transithub_multicast_groups/{multicastGroupId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-multicast-group-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| multicastGroupId | URL | UUID | O | マルチキャストグループID |
+
+
+<a id="delete-multicast-group-response"></a>
+#### レスポンス
+このAPIはレスポンス本文を返しません。
+
+
+
+
+
+
+
+<a id="share-transit-hub"></a>
+## トランジットハブ共有 { #share-transit-hub }
+
+<a id="view-sharing-allowed-list"></a>
+### 共有許可リストを表示 { #view-sharing-allowed-list }
+
+```
+GET /v2.0/gateways/transithub_allow_projects
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-sharing-allowed-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会する共有許可情報ID |
+| transithub_id | Query | UUID | - | 照会するトランジットハブID |
+
+
+<a id="view-sharing-allowed-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_allow_projects | Body | Array | 共有許可情報リスト |
+| transithub_allow_projects.id | Body | UUID | 共有許可情報ID |
+| transithub_allow_projects.tenant_id | Body | String | テナントID |
+| transithub_allow_projects.transithub_id | Body | UUID | 共有するトランジットハブID |
+| transithub_allow_projects.transithub_name | Body | String | トランジットハブ名 |
+| transithub_allow_projects.target_project_id | Body | UUID | 共有対象テナントID |
+
+<details><summary>例</summary>
+  
+```json
+{
+  "transithub_allow_projects": [
+    {
+      "target_project_id": "cd29a534a15e46049b968dd0835b129b",
+      "description": "",
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "transithub_name": "thub1",
+      "transithub_id": "efb688ea-15c2-4d36-b123-6044e3c37d8c",
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "id": "186717d3-8e26-40ec-ad00-67a8463ccc4c"
+    }
+  ]
+}
+```
+</details>
+
+---
+<a id="create-sharing-allowed-information"></a>
+### 共有許可情報を作成する { #create-sharing-allowed-information }
+
+```
+POST /v2.0/gateways/transithub_allow_projects
+X-Auth-Token: {tokenId}
+```
+
+<a id="create-sharing-allowed-information-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| transithub_allow_project | Body | Object | O | 共有許可情報オブジェクト |
+| transithub_allow_project.transithub_id | Body | UUID | O | 共有するトランジットハブID |
+| transithub_allow_project.target_project_id | Body | UUID | O | 共有対象テナントID |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_allow_project": {
+    "target_project_id": "cd29a534a15e46049b968dd0835b129b",
+    "transithub_id": "efb688ea-15c2-4d36-b123-6044e3c37d8c"
+  }
+}
+```
+</details>
+
+<a id="create-sharing-allowed-information-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_allow_project | Body | Object | 共有許可情報オブジェクト |
+| transithub_allow_project.id | Body | UUID | 共有許可情報ID |
+| transithub_allow_project.tenant_id | Body | String | テナントID |
+| transithub_allow_project.transithub_id | Body | UUID | 共有するトランジットハブID |
+| transithub_allow_project.transithub_name | Body | String | トランジットハブ名 |
+| transithub_allow_project.target_project_id | Body | UUID | 共有対象テナントID |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_allow_project": {
+    "target_project_id": "cd29a534a15e46049b968dd0835b129b",
+    "description": "",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "transithub_name": "dj-thub1",
+    "transithub_id": "efb688ea-15c2-4d36-b123-6044e3c37d8c",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "3d962640-385f-4874-8766-aa1b4480e7e4"
+  }
+}
+```
+</details>
+
+
+---
+<a id="delete-sharing-allowed-information"></a>
+### 共有許可情報を削除する { #delete-sharing-allowed-information }
+
+```
+DELETE /v2.0/gateways/transithub_allow_projects/{allowProjectId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="delete-sharing-allowed-information-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| allowProjectId | URL | UUID | O | 共有許可情報ID |
+
+
+<a id="delete-sharing-allowed-information-response"></a>
+#### レスポンス
+このAPIはレスポンス本文を返しません。
+
+
+
+<a id="view-shared-list"></a>
+### 共有されたリストを表示 { #view-shared-list }
+
+```
+GET /v2.0/gateways/transithub_shared_lists
+X-Auth-Token: {tokenId}
+```
+
+<a id="view-shared-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| transithub_id | Query | UUID | - | 照会するトランジットハブID |
+
+
+<a id="view-shared-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_shared_lists | Body | Array | 共有された情報リスト |
+| transithub_shared_lists.id | Body | UUID | 共有された情報ID |
+| transithub_shared_lists.tenant_id | Body | String | テナントID |
+| transithub_shared_lists.transithub_id | Body | UUID | 共有されたトランジットハブID |
+| transithub_shared_lists.transithub_name | Body | String | 共有されたトランジットハブ名 |
+| transithub_shared_lists.transithub_project_id | Body | UUID | 共有されたトランジットハブのテナントID |
+
+<details><summary>例</summary>
+  
+```json
+{
+  "transithub_shared_lists": [
+    {
+      "description": "",
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "transithub_project_id": "1fb0cf13afb341b699f74bbbecab2117",
+      "transithub_name": "thub",
+      "transithub_id": "4050efd6-b6cc-4e2d-9402-dd5e1520872f",
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "id": "51c8fd9c-ae82-474f-9664-9fc31c77a563"
+    }
+  ]
+}
+```
+</details>
+
+
+
+
+
+
+
+<a id="share-multicast-domain"></a>
+## マルチキャストドメイン共有 { #share-multicast-domain }
+
+<a id="share-multicast-domain-view-sharing-allowed-list"></a>
+### 共有許可リストを表示 { #share-multicast-domain-view-sharing-allowed-list }
+
+```
+GET /v2.0/gateways/transithub_multicast_domain_allow_projects
+X-Auth-Token: {tokenId}
+```
+
+<a id="share-multicast-domain-view-sharing-allowed-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| id | Query | UUID | - | 照会する共有許可情報ID |
+| domain_id | Query | UUID | - | 照会するマルチキャストドメインID |
+
+
+<a id="share-multicast-domain-view-sharing-allowed-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_multicast_domain_allow_projects | Body | Array | 共有許可情報リスト |
+| transithub_multicast_domain_allow_projects.id | Body | UUID | 共有許可情報ID |
+| transithub_multicast_domain_allow_projects.tenant_id | Body | String | テナントID |
+| transithub_multicast_domain_allow_projects.domain_id | Body | UUID | 共有するマルチキャストドメインID |
+| transithub_multicast_domain_allow_projects.domain_name | Body | String | マルチキャストドメイン名 |
+| transithub_multicast_domain_allow_projects.target_project_id | Body | UUID | 共有対象テナントID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_domain_allow_projects": [
+    {
+      "target_project_id": "cd29a534a15e46049b968dd0835b129b",
+      "description": "",
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "domain_name": "domain1",
+      "domain_id": "d55022de-947f-4db3-a7b0-5a4cee9a2369",
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "id": "186717d3-8e26-40ec-ad00-67a8463ccc4c"
+    }
+  ]
+}
+```
+</details>
+
+---
+<a id="share-multicast-domain-create-sharing-allowed-information"></a>
+### 共有許可情報を作成する { #share-multicast-domain-create-sharing-allowed-information }
+
+```
+POST /v2.0/gateways/transithub_multicast_domain_allow_projects
+X-Auth-Token: {tokenId}
+```
+
+<a id="share-multicast-domain-create-sharing-allowed-information-request"></a>
+#### リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| transithub_multicast_domain_allow_project | Body | Object | O | 共有許可情報オブジェクト |
+| transithub_multicast_domain_allow_project.domain_id | Body | UUID | O | 共有するマルチキャストドメインID |
+| transithub_multicast_domain_allow_project.target_project_id | Body | UUID | O | 共有対象テナントID |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_domain_allow_project": {
+    "target_project_id": "cd29a534a15e46049b968dd0835b129b",
+    "domain_id": "efb688ea-15c2-4d36-b123-6044e3c37d8c"
+  }
+}
+```
+</details>
+
+<a id="share-multicast-domain-create-sharing-allowed-information-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_multicast_domain_allow_project | Body | Object | 共有許可情報オブジェクト |
+| transithub_multicast_domain_allow_project.id | Body | UUID | 共有許可情報ID |
+| transithub_multicast_domain_allow_project.tenant_id | Body | String | テナントID |
+| transithub_multicast_domain_allow_project.domain_id | Body | UUID | 共有するマルチキャストドメインID |
+| transithub_multicast_domain_allow_project.domain_name | Body | String | マルチキャストドメイン名 |
+| transithub_multicast_domain_allow_project.target_project_id | Body | UUID | 共有対象テナントID |
+
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_domain_allow_project": {
+    "target_project_id": "cd29a534a15e46049b968dd0835b129b",
+    "description": "",
+    "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "domain_name": "domain1",
+    "domain_id": "d55022de-947f-4db3-a7b0-5a4cee9a2369",
+    "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+    "id": "3d962640-385f-4874-8766-aa1b4480e7e4"
+  }
+}
+```
+</details>
+
+
+---
+<a id="share-multicast-domain-delete-sharing-allowed-information"></a>
+### 共有許可情報を削除する { #share-multicast-domain-delete-sharing-allowed-information }
+
+```
+DELETE /v2.0/gateways/transithub_multicast_domain_allow_projects/{allowProjectId}
+X-Auth-Token: {tokenId}
+```
+
+<a id="share-multicast-domain-delete-sharing-allowed-information-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| allowProjectId | URL | UUID | O | 共有許可情報ID |
+
+
+<a id="share-multicast-domain-delete-sharing-allowed-information-response"></a>
+#### レスポンス
+このAPIはレスポンス本文を返しません。
+
+
+
+<a id="share-multicast-domain-view-shared-list"></a>
+### 共有されたリストを表示 { #share-multicast-domain-view-shared-list }
+
+```
+GET /v2.0/gateways/transithub_multicast_domain_shared_lists
+X-Auth-Token: {tokenId}
+```
+
+<a id="share-multicast-domain-view-shared-list-request"></a>
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| tokenId | Header | String | O | トークンID |
+| domain_id | Query | UUID | - | 照会するマルチキャストドメインID |
+
+
+<a id="share-multicast-domain-view-shared-list-response"></a>
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| transithub_multicast_domain_shared_lists | Body | Array | 共有された情報リスト |
+| transithub_multicast_domain_shared_lists.id | Body | UUID | 共有された情報ID |
+| transithub_multicast_domain_shared_lists.tenant_id | Body | String | テナントID |
+| transithub_multicast_domain_shared_lists.domain_id | Body | UUID | 共有されたマルチキャストドメインID |
+| transithub_multicast_domain_shared_lists.domain_name | Body | String | 共有されたマルチキャストドメイン名 |
+| transithub_multicast_domain_shared_lists.domain_project_id | Body | UUID | 共有されたマルチキャストドメインのテナントID |
+
+<details><summary>例</summary>
+
+```json
+{
+  "transithub_multicast_domain_shared_lists": [
+    {
+      "description": "",
+      "tenant_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "domain_project_id": "1fb0cf13afb341b699f74bbbecab2117",
+      "domain_name": "domain1",
+      "domain_id": "d55022de-947f-4db3-a7b0-5a4cee9a2369",
+      "project_id": "5fdb378e72ca4aff9db04f40f7955f0b",
+      "id": "51c8fd9c-ae82-474f-9664-9fc31c77a563"
+    }
+  ]
+}
+```
+</details>
