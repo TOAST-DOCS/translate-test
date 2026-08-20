@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=1ab82bf77f7a -->
 
 <a id="ai-service-speech-to-text-release-notes"></a>
@@ -7,11 +9,11 @@
 ### July 7, 2026 { #july-7-2026 }
 
 * Changed the domain
-* Changed the file size limit
-* Changed the audio file duration limit
-* API v1.1, v2.1 released
-  * Added API using User Access Key token authentication.
-  * For more information on issuing and using User Access Key tokens, see the [User Access Key Token](/nhncloud/en/public-api/user-access-key-token).
+* Changed the capacity limit
+* Changed the voice file time limit
+* Released API v1.1 and v2.1
+  * Added APIs that use User Access Key token authentication.
+  * For more information on issuing and using User Access Key tokens, please refer to the [User Access Key Token](/nhncloud/en/public-api/user-access-key-token).
 
 <a id="august-14-2025"></a>
 ### August 14, 2025 { #august-14-2025 }
