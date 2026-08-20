@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=8e75522b754c -->
 
 <a id="alimtalk-api-guide"></a>
