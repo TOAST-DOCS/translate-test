@@ -8,7 +8,6 @@
 Secure Key Manager は、ユーザーの重要なデータを安全に保管し、アクセス権限を制御するサービスです。ユーザーは Secure Key Manager に機密データ、対称鍵、非対称鍵を保存できます。Secure Key Manager に保存したデータは、ユーザーが設定した認証方法を通過したクライアントのみアクセスできます。
 
 <a id="main-features"></a>
-
 ## 主要機能 { #main-features }
 * データ管理
     * 機密データの登録、管理、照会
@@ -22,37 +21,30 @@ Secure Key Manager は、ユーザーの重要なデータを安全に保管し�
     * データおよびデータアクセス制御の変更を承認者と要請者に分けて管理
 
 <a id="feature-description"></a>
-
 ## 機能説明 { #feature-description }
 Secure Key Manager は、ユーザーの重要なデータを安全に保管し、アクセス権限を制御する機能を提供します。Secure Key Manager で管理できるデータは、機密データ、対称鍵、非対称鍵に区分されます。
 
 <a id="confidential-data-management"></a>
-
 ### 機密データ管理 { #confidential-data-management }
 データベース接続情報や API 呼び出しに使用するアプリキーなど、クライアントが直接管理するとセキュリティリスクにさらされる可能性があるデータを管理する機能を提供します。ユーザーは 32KB 以下のテキストデータを機密データとして登録できます。登録した機密データには、ユーザーが設定した認証方法を通過したクライアントのみアクセスできます。機密データ管理の活用方法については、「参考 - Secure Key Manager 機密データ管理機能を活用したデータベース接続情報管理」を参照してください。
 
 <a id="symmetric-key-management"></a>
-
 ### 対称鍵管理 { #symmetric-key-management }
 データの暗号化/復号に使用できるユーザー対称鍵を管理する機能を提供します。ユーザーは Secure Key Manager にユーザー対称鍵を作成して保存できます。ユーザーが設定した認証方法を通過したクライアントは、Secure Key Manager に保存したユーザー対称鍵を使用して 32KB 以下のテキストデータを暗号化/復号できます。ユーザー対称鍵はいかなる場合もクライアントに直接公開されず、API を通じた使用のみ許可されます。これにより、ユーザー対称鍵が外部に漏洩しないよう保護できます。また、Secure Key Manager のキーローテーション機能を使用すると、クライアントを変更せずにユーザー対称鍵の値を更新できます。対称鍵管理の活用方法については、「参考 - Secure Key Manager 対称鍵管理機能を活用したエンベロープ暗号化」を参照してください。
 
 <a id="asymmetric-key-management"></a>
-
 ### 非対称鍵管理 { #asymmetric-key-management }
 データの署名/検証に使用できるユーザー非対称鍵を管理する機能を提供します。ユーザーは Secure Key Manager にユーザー非対称鍵を作成して保存できます。ユーザーが設定した認証方法を通過したクライアントは、Secure Key Manager に保存したユーザー非対称鍵を使用して 245Byte 以下のテキストデータを署名/検証できます。ユーザー非対称鍵はいかなる場合もクライアントに直接公開されず、API を通じた使用のみ許可されます。これにより、ユーザー非対称鍵が外部に漏洩するリスクから保護できます。また、Secure Key Manager のキーローテーション機能を使用すると、クライアントを変更せずにユーザー非対称鍵の値を更新できます。
 
 <a id="access-control"></a>
-
 ### アクセス制御 { #access-control }
 Secure Key Manager は、ユーザーデータを保護するためのさまざまな認証方法を提供します。認証を通過したクライアントのみ、Secure Key Manager に保存したデータを使用できます。認証方法は、クライアントの IPv4 アドレスを確認する「IPv4アドレス認証」、クライアントの MAC アドレスを確認する「MACアドレス認証」、クライアントが通信に使用する証明書を確認する「クライアント証明書認証」に区分されます。ユーザーは最低 1 つ以上の認証方法を選択する必要があり、2 つ以上を選択した場合は認証方式の組み合わせオプションで組み合わせ方式を指定できます。組み合わせ方式は、有効化したすべての認証を通過する必要がある「すべて通過（AND、デフォルト）」と、有効化した認証のうち 1 つを通過するだけでよい「いずれか通過（OR）」に区分されます。
 
 <a id="approval-feature"></a>
-
 ### 承認機能 { #approval-feature }
 国内外のセキュリティ認証審査（ISMS-P、ISO など）で要求される安全な暗号化キー管理要件を満たすために、キー作成、修正、削除およびアクセス制御に対する責任者の承認手続きを追加できます。
 
 <a id="structure-of-service"></a>
-
 ## サービス構造 { #structure-of-service }
 Secure Key Manager は、ユーザーデータを安全に保管するために、ルートキーとシステムキーという 2 つの暗号鍵を内部的に使用します。ルートキーはシステムキーを保護するために使用し、システムキーはユーザーデータを保護するために使用します。システムキーはルートキーで暗号化して Secure Key Manager システムキー管理サーバーに保存します。Secure Key Manager サーバーはサービス起動時に認証プロセスを経て、Secure Key Manager システムキー管理サーバーから暗号化されたシステムキーを取得します。ルートキーを使用して復号すると、システムキー処理モジュールがシステムキーを使用できる状態になります。Secure Key Manager に保存したユーザーデータに不正な方法でアクセスするには、物理的に分離された 3 つのシステムからルートキー、システムキー、ユーザーデータをすべて取得する必要があります。
 
@@ -63,22 +55,18 @@ Secure Key Manager は、クライアントサーバーで使用できるさま�
 ![overview-01](http://static.toastoven.net/prod_kms/2023-03-28/overview-01.png)
 
 <a id="reference"></a>
-
 ## 参考 { #reference }
 
 <a id="managing-database-access-information-with-confidential-data-management-of-secure-key-manager"></a>
-
 ### Secure Key Manager 機密データ管理機能を活用したデータベース接続情報管理 { #managing-database-access-information-with-confidential-data-management-of-secure-key-manager }
 データベースを使用するアプリケーションは、データベース接続情報を設定ファイルに保存します。アプリケーションを実行するサーバーが増えるにつれて、データベース接続情報を保存するサーバーも増加し、データベース接続情報が漏洩するリスクも高まります。また、データベース接続情報を変更した場合、設定を修正した後にすべてのサーバーへ再デプロイが必要になるという不便さがあります。
 Secure Key Manager の機密データ管理機能を活用すると、データベース接続情報を集中的かつ安全に管理できます。データベース接続が必要なアプリケーションは、サービス起動時に Secure Key Manager からデータベース接続情報を取得して使用します。ユーザーは Secure Key Manager を通じて、データベースへのアクセスを許可するアプリケーションサーバーを管理できます。データベース接続情報を変更しても、アプリケーションを修正することなく Secure Key Manager で接続情報を更新できます。
 
 <a id="envelope-encryption-with-symmetric-key-management-of-secure-key-manager"></a>
-
 ### Secure Key Manager 対称鍵管理機能を活用したエンベロープ暗号化 { #envelope-encryption-with-symmetric-key-management-of-secure-key-manager }
 Secure Key Manager は、データを暗号化/復号できる対称鍵管理機能を提供します。アプリケーションは Secure Key Manager API を使用して、任意のデータを暗号化/復号できます。ただし、アプリケーションが処理するすべてのデータを Secure Key Manager API で暗号化/復号すると、パフォーマンスおよびコストの問題が発生する可能性があります。このような状況で一般的に使用される解決策は、エンベロープ暗号化（envelope encryption）の手法です。エンベロープ暗号化とは、暗号化対象データを暗号化する際に使用した暗号鍵のみを外部の別の暗号鍵で保護する処理方式です。データはアプリケーションが自体で管理するローカル暗号鍵を使用して暗号化し、ローカル暗号鍵は Secure Key Manager API で暗号化して保管します。データの復号が必要な場合は、暗号化されたローカル暗号鍵を Secure Key Manager API で復号してデータの復号に使用します。
 
 <a id="glossary"></a>
-
 ### 用語説明 { #glossary }
 | 用語 | 説明 |
 |---|---|
