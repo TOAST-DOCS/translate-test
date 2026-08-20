@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=a929413d0034 -->
+
 ## Data & Analytics > Log & Crash Search > API 가이드
 ### Appkey と SecretKey
 Log & Crash Search API を使用するには、Appkey と SecretKey が必要です。
