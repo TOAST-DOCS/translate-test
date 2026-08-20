@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=24efee552792 -->
 
 <style>
@@ -19,11 +21,11 @@ To use the RCS Bizmessage service, you have to register your brand after signing
 
 ### Create a Brand
 1. In RCS Biz Center, click **Sign up** > **Sign up as Business Representative** to sign up and get approved.
-    * A copy of your business license is required when you sign up.
+    * A copy of your business registration certificate is required when signing up.
     * RCS manager will approve and it will take 2 business days to process your membership.
 2. An RCS brand is a corporate profile. After you create a brand, you request approval.
-    * You can find related guides by clicking **Brand Guide**at the top of the Create a brand page.
-      * [Brand Opening Guide Shortcut](https://docs.rcsbizcenter.com/useguide/readme/brandopen)
+    * You can find related guides by clicking **Brand Guide**.
+        * [Go to Brand Guide](https://docs.rcsbizcenter.com/useguide/readme/brandopen)
     * RCS manager will approve, which can take about 2 business days for brand creation approval.
 
 <a id="set-up-a-brand-agency"></a>
@@ -40,10 +42,10 @@ After completing the RCS brand approval, set the agency to "NHN Cloud".
 ### Register Chat Room (sender number)
 You can receive and view messages in chats in the Messages app. You can send and view messages on a per-chat basis.
 
-1. Go to **Business Dashboard > Brand Dashboard > Register Chat Room**, and register a chat room with a caller ID.
-    * **You can refer to the relevant guide in Chat Room Registration Guide**.
-      * [RCS Biz Center - Chat Room Registration Guide Shortcut](https://docs.rcsbizcenter.com/useguide/readme/chatbot#id-1)
-    * A certificate of use of communication services issued within the last month is required.
+1. Go to **Business Dashboard > Brand Dashboard > Register Chatroom** and register a chatroom with a sender number.
+    * You can find related guides in the **Chatroom Registration Guide**.
+      * [Go to RCS Biz Center - Chatroom Registration Guide](https://docs.rcsbizcenter.com/useguide/readme/chatbot#id-1)
+    * A proof of telecommunications service usage dated within the last 1 month is required.
     * RCS business messaging does not support 010 numbers.
     * RCS manager will approve and it will take 2 business days to approve your chatroom.
 
@@ -55,11 +57,11 @@ You can receive and view messages in chats in the Messages app. You can send and
 Templates are RCS business messages that have pre-registered message content and style for your brand.
 To send a template message, you need to register the template in RCS Biz Center. (You do not need to register a separate template for sending with RCS SMS/LMS/MMS messages).
 
-1. Go to **Business Dashboard > Brand Dashboard > Register Template**, and register the template.
-    * You can find related guides by clicking **Template Guide**at the top of the Create a brand page.
-      * [RCS Biz Center - Template Guide Shortcut](https://docs.rcsbizcenter.com/useguide/readme/msg#id-1)
-    * Only text/image templates can be registered. See **Supported delivery types** below.
-    * RCS manager will approve and it will take 2 business days to approve your chatroom.
+1. Go to **Business Dashboard > Brand Dashboard > Template Registration** to register a template.
+    * You can find related guides by clicking **Template Guide**.
+      * [RCS Biz Center - Go to Template Guide](https://docs.rcsbizcenter.com/useguide/readme/msg#id-1)
+    * Only text/image templates can be registered. Refer to the **Delivery Supported Types** section below.
+    * RCS manager will approve, which can take about 2 business days for template approval.
 
 2. If your template registration is complete (approved), you can link it to the NHN Cloud Console in **Notification** > **RCS Bizmessage** > **Manage RCS Bizmessage** > **Brand Management** tab.
 
