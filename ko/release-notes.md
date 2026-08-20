@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=dead32bfc6a5 -->
+<!-- pre-align:aligned sig=10a43f9987e6 -->
 
 <a id="content-delivery-cdn-release-notes"></a>
 ## Content Delivery > CDN > 릴리스 노트 { #content-delivery-cdn-release-notes }
@@ -9,7 +9,7 @@
 <a id="june-23-2026-feature-updates"></a>
 #### 기능 개선/변경
 * CDN Public API v3.0 추가
-  * 자세한 내용은 [API v3.0 가이드](./api-guide-v3.0/)를 참고하세요.
+  * 자세한 내용은 [API v3.0 가이드](./api-guide-v3.0)를 참고하세요.
 
 <a id="april-28-2026"></a>
 ### 2026. 04. 28. { #april-28-2026 }

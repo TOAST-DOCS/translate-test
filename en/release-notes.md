@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=dead32bfc6a5 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=10a43f9987e6 -->
 
 <a id="content-delivery-cdn-release-notes"></a>
 ## Content Delivery > CDN > Release Notes { #content-delivery-cdn-release-notes }
@@ -10,20 +12,20 @@
 #### Feature Updates
 
 * Added CDN Public API v3.0
-  * For more information, see [API v3.0 Guide](./api-guide-v3.0/).
+  * For more information, see [API v3.0 Guide](./api-guide-v3.0).
 
 <a id="april-28-2026"></a>
 ### April 28, 2026 { #april-28-2026 }
 
 <a id="april-28-2026-added-features"></a>
 #### Added Features
-* Added alias domain feature
+* Added Domain Alias feature
 	* Added an alias domain feature that allows you to register a domain you own as an alias for a CDN service domain.
 	* Supports DNS TXT record addition, HTTP file authentication, and HTTP redirect authentication as domain ownership validation methods.
-	* For more information, see [Console Guide > Alias Domain](./console-guide/#alias-domain).
-* Added alias domain API
+	* For more information, see [Console Guide > Domain Alias](./console-guide/#alias-domain).
+* Added Domain Alias API
 	* Added APIs for alias domain registration, retrieval, and deletion, as well as domain validation, validation status refresh, and validation token reissue.
-	* For more information, see [API v2.0 Guide > Alias Domain API](./api-guide-v2.0/#alias-domain-api).
+	* For more information, see [API v2.0 Guide > Domain Alias API](./api-guide-v2.0/#alias-domain-api).
 
 <a id="april-28-2026-feature-updates"></a>
 #### Feature Updates
@@ -149,7 +151,7 @@
 
 <a id="may-25-2021-feature-updates"></a>
 #### Feature Updates
-* The root path accessibility function has been added. For more details, please refer to [Console Guide > Root Path Access Control ](./console-guide/#controlling-the-access-of-root-path).
+* The root path accessibility function has been added. For more details, please refer to [Console Guide > Controlling the access of root path](./console-guide/#controlling-the-access-of-root-path).
 
 <a id="october-6-2020"></a>
 ### October 6, 2020 { #october-6-2020 }

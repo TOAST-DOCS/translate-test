@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=dead32bfc6a5 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=10a43f9987e6 -->
 
 <a id="content-delivery-cdn-release-notes"></a>
 ## Content Delivery > CDN > Release Notes { #content-delivery-cdn-release-notes }
@@ -9,7 +11,7 @@
 <a id="june-23-2026-feature-updates"></a>
 #### 機能改善・変更
 * CDN Public API v3.0の追加
-* 詳細は[API v3.0 ガイド](./api-guide-v3.0/)をご参照ください。
+* 詳細は[API v3.0 ガイド](./api-guide-v3.0)をご参照ください。
 
 <a id="april-28-2026"></a>
 ### 2026. 04. 28. { #april-28-2026 }
@@ -17,12 +19,12 @@
 <a id="april-28-2026-added-features"></a>
 #### 機能追加
 * ドメインエイリアス機能の追加
-\t* 独自のドメインをCDNサービスの別名(エイリアス)として登録し、配信ドメインとして利用できる「ドメインエイリアス機能」を追加しました。
-\t* ドメイン所有権の検証方式として、「DNS TXTレコードの追加」「HTTPファイル認証」「HTTPリダイレクト認証」をサポートしています。
-\t* 詳細については、[コンソールユーザーガイド > ドメインエイリアス](./console-guide/#alias-domain)をご参照ください。
-* ドメインエイリアスAPIの追加
-\t* ドメインエイリアスの登録/照会/削除、ドメイン検証の実行/状態更新、検証トークンの再発行を行うAPIを追加しました。
-\t* 詳細については、[API v2.0 ガイド > ドメインエイリアスAPI](./api-guide-v2.0/#alias-domain-api)をご参照ください。
+	* 所有するドメインを CDN サービスドメインのエイリアスとして登録して使用できるドメインエイリアス機能が追加されました。
+	* ドメイン所有権の検証方式として、DNS TXT レコードの追加、HTTP ファイル認証、HTTP リダイレクト認証をサポートします。
+	* 詳細については、[コンソールガイド > ドメインエイリアス](./console-guide/#alias-domain)を参照してください。
+* ドメインエイリアス API の追加
+	* ドメインエイリアスの登録/照会/削除、ドメイン検証、検証状態の更新、検証トークンの再発行 API が追加されました。
+	* 詳細については、[API v2.0 ガイド > ドメインエイリアス API](./api-guide-v2.0/#alias-domain-api)を参照してください。
 
 <a id="april-28-2026-feature-updates"></a>
 #### 機能改善/変更
@@ -147,7 +149,7 @@
 
 <a id="may-25-2021-feature-updates"></a>
 #### 機能改善/変更
-* ルートパスアクセス管理機能が追加されました。詳しい内容は[コンソールガイド > ルートパスアクセス管理](./console-guide/#controlling-the-access-of-root-path)をご覧ください。
+* ルートパスのアクセス管理機能が追加されました。詳細については、[コンソールガイド > ルートパスのアクセス管理](./console-guide/#controlling-the-access-of-root-path)を参照してください。
 
 <a id="october-6-2020"></a>
 ### 2020. 10. 06. { #october-6-2020 }
