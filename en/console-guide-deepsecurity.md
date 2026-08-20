@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=7d3db0b31e4f -->
 
 <a id="security-vaccine-console-user-guide-trend-microdeep-security"></a>
