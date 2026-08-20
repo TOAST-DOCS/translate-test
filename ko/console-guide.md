@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=72d665d34e38 -->
+<!-- pre-align:aligned sig=aadbdb109e62 -->
 
 <a id="management-certificate-manager-console-user-guide"></a>
 ## Management > Certificate Manager > 콘솔 사용 가이드 { #management-certificate-manager-console-user-guide }
