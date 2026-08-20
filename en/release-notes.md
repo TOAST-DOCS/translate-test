@@ -1,28 +1,27 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=262dba70bc7f -->
+<!-- pre-align:aligned sig=0aaefcde2aad -->
 
 <a id="release-notes"></a>
 ## Notification > KakaoTalk Bizmessage > Release Notes { #release-notes }
+
 <a id="august-25-2026"></a>
 ### August 25, 2026 { #august-25-2026 }
 
 <a id="august-25-2026-added-features"></a>
 #### Added Features
-* [API] Added a group tag key field to the Brand Message Sending API
-    * Added a group tag key field to the Brand Message free-form and standard type sending APIs for use with Kakao statistics.
-* [API] Added a Brand Message mass delivery query API
-    * Added an API to query Brand Message mass delivery records.
 
-<a id="august-25-2026-feature-updates"></a>
-#### Feature Updates
-* [API] Changed the allowed range for discount rates in Brand Message Commerce/Carousel Commerce
-  * Following a Kakao specification change, the allowed range for the discount rate (`discountRate`) in Commerce and Carousel Commerce types has been changed from 0–100 to 1–100.
+* [API] Added group tag key fields to the Brand Message Sending API
+    * Added group tag key fields to the Brand Message free-form and basic-type sending APIs for use in Kakao statistics.
+* [API] Added a Brand Message mass delivery query API
+    * Added an API to retrieve mass delivery history for Brand Messages.
 
 <a id="july-28-2026"></a>
 ### July 28, 2026 { #july-28-2026 }
+
 <a id="feature-additions"></a>
 #### Feature Updates
+
 * [API] Added Brand Message result update query API
     * An API to query brand message delivery results by result update date (`result_date`) has been added.
         * Endpoint: `GET /brand-message/v1.0/appkeys/{appKey}/message-results`
@@ -36,6 +35,7 @@
 
 <a id="june-23-2026-feature-additions"></a>
 #### Added Features
+
 * [Console] Added brand message video upload feature
     * You can now directly upload and manage videos for brand message premium video in the console.
 * [API] Added brand message video upload API
@@ -43,11 +43,13 @@
 
 <a id="bug-fixes"></a>
 #### Bug Fixes
+
 * [API] Improved 080 opt-out number handling for brand message and FriendTalk ad fallback sending
     * Fixed an issue where messages were sent as general messages in some cases where no 080 opt-out number was registered during brand message and FriendTalk ad fallback sending.
 
 <a id="may-27-2026"></a>
 ### May 27, 2026 { #may-27-2026 }
+
 * [API] Added KakaoBizCenter statistics retrieval API
     * Added an API to retrieve sending statistics and template statistics for AlimTalk and brand messages provided by KakaoBizCenter.
     * Daily (DAILY) or monthly (MONTHLY) statistics data can be retrieved based on the sender key.
@@ -67,6 +69,7 @@
 
 <a id="april-28-2026"></a>
 ### April 28, 2026 { #april-28-2026 }
+
 * [API] Automatic cleanup of sender profiles and template data deleted after dormancy
     * Synchronizes and automatically cleans up sender profiles and template data that were deleted by Kakao after remaining dormant for over 1 year.
 * [API] Added channel add button (AC type) support for free-form brand message delivery
@@ -80,6 +83,7 @@
 
 <a id="march-24-2026"></a>
 ### March 24, 2026 { #march-24-2026 }
+
     * Added a feature to retrieve statistics data for AlimTalk and brand messages provided by KakaoBizCenter.
 
 * [Console] Added KakaoBizCenter group tag management feature
@@ -95,6 +99,7 @@
     
 <a id="february-24-2026"></a>
 ### February 24, 2026 { #february-24-2026 }
+
 * [API] Added Brand Message carousel fixed placeholder feature
     * Enable unique placeholder values for each item within carousel-type templates.
     * Allow per-item personalization using path-based parameters (`key@$.carousel.list[index]`).
@@ -126,11 +131,13 @@
   
 <a id="january-27-2026"></a>
 ### January 27, 2026 { #january-27-2026 }
+
 * [API] Added webhook API link for send result inquiry to scheduled delivery and bulk delivery result webhooks
     * An API link for send result inquiry has been added to the webhooks for scheduled delivery and bulk delivery results.
 
 <a id="december-31-2025"></a>
 ### December 31, 2025 { #december-31-2025 }
+
 * [API, Console] End of FriendTalk service
     * Friend Talk service will be terminated on Wednesday, December 31, 2025.
     * FriendTalk API temporarily supports brand message conversion through compatible header settings.
@@ -167,6 +174,7 @@
 
 <a id="october-28-2025"></a>
 ### October 28, 2025 { #october-28-2025 }
+
 * [API, Console] Changed the validity of the AlimTalk template
     * The maximum character limit for the AlimTalk template has been increased from 1,000 to 1,300 characters, allowing you to send longer messages.
 
@@ -215,6 +223,7 @@
 
 <a id="july-29-2025"></a>
 ### July 29, 2025 { #july-29-2025 }
+
 * [API, Console] FriendTalk Upgrade -> Changed brand message name
     * The brand message service has been renamed to brand message.
     * The existing brand message API will be changed to brand message API.
@@ -241,6 +250,7 @@
 
 <a id="june-24-2025"></a>
 ### June 24, 2025 { #june-24-2025 }
+
 * [API, Console] Added brand message webhook feature
     * Added webhook feature when updating the sending result.
 * [API, Console] Added the feature to send alternative brand messages
@@ -270,6 +280,7 @@
 
 <a id="may-13-2025"></a>
 ### May 13, 2025 { #may-13-2025 }
+
 * [API] Brand messaging service beta launch
     * Brand message basic type M,N group (targeting members who have agreed to receive marketing) can be sent to** : if the conditions below are met, you can send after registering on the whitelist (requires Kakao approval)
         * **Conditions for sending**: Have more than 50,000 KakaoTalk business channel friends + have a history of sending AlimTalk messages (last 3 months) + submit evidence of consent to receive marketing messages + register a number to opt out of receiving messages
@@ -298,6 +309,7 @@
 
 <a id="january-14-2025"></a>
 ### January 14, 2025 { #january-14-2025 }
+
 * [API] Scheduled to segment the respose code (3018) that was bounced back when KakaoTalk could not send a message as follows
 
   | Product | code | Description  |
@@ -312,6 +324,7 @@
 
 <a id="november-12-2024"></a>
 ### November 12, 2024 { #november-12-2024 }
+
 * [Console] Improved so that comma (,) is usable for FriendTalk coupon titles
     * Improved so that comma (,) is usable for FriendTalk coupon titles.
 * [Console] Improved so that the FriendTalk send history can be viewed by the FriendTalk send type
@@ -319,6 +332,7 @@
 
 <a id="august-27-2024"></a>
 ### August 27, 2024 { #august-27-2024 }
+
 * [Console] Added new features to FriendTalk (v2.4)
     * Added FriendTalk carousel commerce, premium video, commerce, and adult message settings.
 * [Console] Added the feature to set resend after nighttime ad sending timeout
@@ -326,11 +340,13 @@
 
 <a id="july-23-2024"></a>
 ### July 23, 2024 { #july-23-2024 }
+
 * [API] Fixed an issue where channel-add and composite templates could not be registered in the sender profile group
     * Improved to register channel-add and composite templates in the sender profile group.
 
 <a id="june-25-2024"></a>
 ### June 25, 2024 { #june-25-2024 }
+
 * [API] Improved to use strikethrough style for certain fields
     * Dynamically adding \s to the end of template titles in highlighted templates and item highlight titles in item list templates when sending AlimTalk will apply strikethrough.
     * But, the style does not apply if you add \s to the fields beforehand when registering a template
@@ -341,18 +357,21 @@
 
 <a id="may-28-2024"></a>
 ### May 28, 2024 { #may-28-2024 }
+
 * [API] Changed the sorting criteria for responses of the get message list API
     * (Previous) Sort by requestDate in descending order
     * (Current) Sort by requestDate in descending order, Sort by requestId, recipientSeq in descending order if requestDate is the same
 
 <a id="may-12-2024"></a>
 ### May 12, 2024 { #may-12-2024 }
+
 * [API] Changed the carousel type field in FriendTalk
     * (AS-IS) The carousel type field with a required tail padding in FriendTalk, coupons unavailable
     * (TO-BE) The carousel type field with an optional tail padding in FriendTalk, coupons available for each carousel
 
 <a id="april-23-2024"></a>
 ### April 23, 2024 { #april-23-2024 }
+
 * [API] Added the feature to handle failures on duplicate message sending requests
     * Added the feature to fail requests with the same key value for 10 minutes based on the value of the X-NC-API-IDEMPOTENCY-KEY header when sending messages. [Send Message Request API Guide](https://docs.nhncloud.com/en/Notification/KakaoTalk%20Bizmessage/en/alimtalk-api-guide/#_3)
 * [Console] Changed the maximum number of days for scheduled delivery
@@ -365,6 +384,7 @@
 
 <a id="march-26-2024"></a>
 ### March 26, 2024 { #march-26-2024 }
+
 * [Console] Role Segmentation
     * Added the feature to grant separate KTB menu access and feature control permissions based on role.
     * To set up roles, see the [Console User Guide > Manage Members > Project Members](https://docs.nhncloud.com/en/nhncloud/en/console-guide/#_24) paragraph.
@@ -378,6 +398,7 @@
 
 <a id="february-27-2024"></a>
 ### February 27, 2024 { #february-27-2024 }
+
 * [Console] Allow inquiries and attachments when registering AlimTalk templates
     * Improved so that comments and attachments can be registered for template review during the template creation process.
     * When registering a template with the Send button included, you must attach the captured image of the payment page where the payer can be identified' for review. [Bank Transfer App Link Guide](https://t1.daumcdn.net/kakaopay/static/guide/account-remittance-app-link/index.html)
@@ -402,6 +423,7 @@
 
 <a id="january-23-2024"></a>
 ### January 23, 2024 { #january-23-2024 }
+
 * [Console] Fixed a bug of past dates being requested when mass sending AlimTalk messages
     * FIxed a bug where a past date is requested when mass sending AlimTalk messages.
 * [API] Fixed a bug where some request failure messages are not sent as alternative delivery
@@ -409,18 +431,21 @@
 
 <a id="december-19-2023"></a>
 ### December 19, 2023 { #december-19-2023 }
+
 * [API] Changed the character limit for Alimtalk item list body
     * (AS-IS) Maximum 1,000 characters for Alimtalk item list body
     * (TO-BE) Maximum 700 characters for Alimtalk item list body
 
 <a id="november-28-2023"></a>
 ### November 28, 2023 { #november-28-2023 }
+
 * [API] Changed the limit on the number of FriendTalk wide image buttons
     * (AS-IS) Maximum 1 button when sending a FriendTalk wide image
     * (To-BE) Maximum 2 buttons when sending a FriendTalk wide image
 
 <a id="september-26-2023"></a>
 ### September 26, 2023 { #september-26-2023 }
+
 * [Console] Changed the fixed text when adding a Alimtalk channel
     * (As-Is) Add a channel and receive relevant ads and marketing messages via KakaoTalk
     * (To-Be) Add a channel and receive relevant marketing messages via KakaoTalk
@@ -429,6 +454,7 @@
 
 <a id="august-29-2023"></a>
 ### August 29, 2023 { #august-29-2023 }
+
 * [API] Added a webhook field for message sending result code update
     * Added the recipientGroupingKey and senderGroupingKey fields to the message sending result code update webhook.
 * [Console] Improved display of the total number of sending result views
@@ -436,6 +462,7 @@
 
 <a id="july-25-2023"></a>
 ### July 25, 2023 { #july-25-2023 }
+
 * [Console] Added a new field to the Template Registration Using File Uploads feature (v2.3)
     * Improved so that, when registering a template using file uploads, new fields such as Alimtalk Item List, Quick Reply, Primary Link could be applied.
 * [Console] Improved the identity verification process
@@ -444,11 +471,13 @@
 
 <a id="june-27-2023"></a>
 ### June 27, 2023 { #june-27-2023 }
+
 * [Console] Added a new field when querying sender profiles (v2.3)
     * Added KakaoTalk channel spam status (profileSpamLevel) and KakaoTalk message spam status (profileMessageSpamLevel) fields.
 
 <a id="may-30-2023"></a>
 ### May 30, 2023 { #may-30-2023 }
+
 * [Console] Added New Features for AlimTalk/FriendTalk(v2.3)
     * Added Quick Reply, Item List type, Talk Biz plugin, Main Link, and Business Form button.
     * Added FriendTalk wide item list, carousel feed, coupon, and business form button features.
@@ -457,6 +486,7 @@
 
 <a id="february-28-2023"></a>
 ### February 28, 2023 { #february-28-2023 }
+
 * [Console] Improved displaying the total number of delivery results
     * Improved so that, when the number of delivery results exceeds 10,000, the total number of cases appears as '9,999+'.
 * [Console] Improved recipient confirmation time when sending in bulk
@@ -465,11 +495,13 @@
 
 <a id="january-31-2023"></a>
 ### January 31, 2023 { #january-31-2023 }
+
 * [API] Ended Brandtalk feature
     * Brandtalk feature ended after Kakao's CBT feature ended
 
 <a id="november-29-2022"></a>
 ### November 29, 2022 { #november-29-2022 }
+
 *[Console] First User Restrictions on Sending Profile
 * Sending Profile Restrictions on First User registration have been added to prevent abusing activity in accordance with Kakao Policy.
 1. Unable to add as a member to Group Profile
@@ -477,6 +509,7 @@
 
 <a id="october-25-2022"></a>
 ### October 25, 2022 { #october-25-2022 }
+
 * [API] Delete Sending Profile enquiry API isSearchKakaoStatus field
     * isSearchKakaoStatus field was deleted from Sending Profile enquiry API and it has been improved to available for semi-real-time Kakao status enquiry.(Synchronize status at 6-hour intervals)
 * [API] API buttons Field Improved for Notification Talk Replacement Request
@@ -484,6 +517,7 @@
 
 <a id="augutst-23-2022"></a>
 ### Augutst 23, 2022 { #augutst-23-2022 }
+
 * [Console] TemplateAd whole Change for Notification Talk Template Channel Addition(AD) and Multiple(MI) Message Type
     * In accordance with Kakao policy, it is to be changed as a whole Add a channel and receive ads and marketing messages for this channel via Kakao Talk .
 * [API] When sending, add Statistics ID Length Validation Test
@@ -491,6 +525,7 @@
 
 <a id="july-26-2022"></a>
 ### July 26, 2022 { #july-26-2022 }
+
 * [Console] Launched Brandtalk feature
     * The BrandTalk feature which is Kakao’s CBT feature is launched.
       *Only Sending Profile with the CBT feature activated is available to use.
@@ -500,17 +535,20 @@
 
 <a id="june-14-2022"></a>
 ### June 14, 2022 { #june-14-2022 }
+
 * [Console] Changes to Ad Included/Mixed Purposes Templates
     * Due to the change of KakaoTalk BizMessage policy, in the case of Ad Included/Mixed Purposes template, the Add Channel button and templateAd are fixed.
 
 <a id="may-24-2022"></a>
 ### May 24, 2022 { #may-24-2022 }
+
 * [API] Improved the deletion of AlimTalk templates
     * Made improvements so that templates in a status other than the rejected status can be deleted.
     * For details, refer to the [API Guide](./alimtalk-api-guide/#delete-templates).
 
 <a id="april-26-2022"></a>
 ### April 26, 2022 { #april-26-2022 }
+
 * [API] Added public fields for SMS alternative delivery
     * Made improvements so that the statsId, senderGroupingKey, and recipientGroupingKey fields are added when resending SMS messages for AlimTalk/FriendTalk.
 * [API] Improved validation of template for AlimTalk full text delivery
@@ -518,6 +556,7 @@
 
 <a id="mar-29-2022"></a>
 ### Mar 29, 2022 { #mar-29-2022 }
+
 * [Console] Changed the base date for backup of AlimTalk delivery results
     * The base date for backup of AlimTalk delivery results has been changed from 180 days to 90 days.
 * [Console] Improved the feature to download general, mass, and tag delivery results
@@ -525,6 +564,7 @@
 
 <a id="january-11-2022"></a>
 ### January 11, 2022 { #january-11-2022 }
+
 * [Console] Fade-out of(Old)Statistics
     * Due to introduction of new statistics, the(Old)Statistics tab has been deleted.
 * [Console] Limit of maximum 5,000 members for the sender profile group
@@ -534,6 +574,7 @@
 
 <a id="december-2-2021"></a>
 ### December 2, 2021 { #december-2-2021 }
+
 * [API] Changed the AlimTalk template inquiry API
     * Due to changes in the Kakao API specification, if you inquire about a template that is in the Rejected status, the template will be changed to the 'Inspection Underway' status.
 * [API] Fixed a bug in the API to list templates
@@ -541,6 +582,7 @@
 
 <a id="october-26-2021"></a>
 ### October 26, 2021 { #october-26-2021 }
+
 * [API] Added AlimTalk/FriendTalk APIs to list mass delivery information
     * AlimTalk/FriendTalk APIs to list mass delivery information have been added.
 * [API] Added statistics API
@@ -556,22 +598,26 @@
 
 <a id="august-24-2021"></a>
 ### August 24, 2021 { #august-24-2021 }
+
 * [Console] Image AlimTalk feature
     * An image AlimTalk feature has been added.
 
 <a id="july-27-2021"></a>
 ### July 27, 2021 { #july-27-2021 }
+
 * [Console] New statistics feature
     * New statistics has been added to enhance the functionality.
     * The collection for(Old)Statistics service will be performed until July 31, 2021, and will end on December 31, 2021.
 
 <a id="june-29-2021"></a>
 ### June 29, 2021 { #june-29-2021 }
+
 * [Console] Webhook feature for the update of the sending result
     * A webhook feature for the update of the sending result has been added.
 
 <a id="may-25-2021"></a>
 ### May 25, 2021 { #may-25-2021 }
+
 * [Console] Added a Kakao template code field
     * A field for template code that is actually registered in Kakao has been added.
 * [Console] Webhook feature for the change of template status/inquiry content
@@ -582,12 +628,14 @@
 
 <a id="april-27-2021"></a>
 ### April 27, 2021 { #april-27-2021 }
+
 * [Console] Added a feature to register the same sender's profile
     * Improved the system so that the same sender's profile can be registered for other projects.
     * Even though it is the same sender's profile, its data such as template/sender profile per project and profile group/send history is independently treated.
 
 <a id="march-23-2021"></a>
 ### March 23, 2021 { #march-23-2021 }
+
 * [Console] Added a sender profile group feature
     * Templates evaluated and approved as a group can be used by the sender profile belonging to the group.
     * It is useful when the same template is shared among multiple sender profiles.
@@ -596,6 +644,7 @@
 
 <a id="january-26-2021"></a>
 ### January 26, 2021 { #january-26-2021 }
+
 * [Console] Added a feature to back up the FriendTalk delivery results.
     * Added a feature to back up the FriendTalk delivery results.
     * An Excel file containing the delivery results can be created based on the search conditions used on console.
@@ -603,6 +652,7 @@
 
 <a id="november-24-2020"></a>
 ### November 24, 2020 { #november-24-2020 }
+
 * [API] AlimTalk template category code added
     * Category Code field added for registration or modification of AlimTalk template.
     * The template with a category entered is screened first.
@@ -614,6 +664,7 @@
 
 <a id="october-27-2020"></a>
 ### October 27, 2020 { #october-27-2020 }
+
 * [API] Changed the fields of the AlimTalk that are exposed to/hidden from PC
     * The pcFlag field has been changed to securityFlag field.(Default: false)
     * A field used to show whether there is a security template. It must be configured for security messages like OTP.
@@ -632,6 +683,7 @@
 
 <a id="august-25-2020"></a>
 ### August 25, 2020 { #august-25-2020 }
+
 * [API] Show/Not Show AlimTalk on PC
     * Added the feature of selecting Show/Not Show on PC, when registering a template
 * [Console] Supports Excel Files for Bulk Delivery
@@ -639,6 +691,7 @@
 
 <a id="july-28-2020"></a>
 ### July 28, 2020 { #july-28-2020 }
+
 * [API] Template Emphasizing AlimTalk Messages
     * Officially added as a feature, with CBT closed.
 * [API] More Types for AlimTalk Template Messages
@@ -648,11 +701,13 @@
 
 <a id="june-23-2020"></a>
 ### June 23, 2020 { #june-23-2020 }
+
 * [API] Allowed AlimTalk Emphasized template
     * It has been changed to allow emphasized template for Register Template API
 
 <a id="may-26-2020"></a>
 ### May 26, 2020 { #may-26-2020 }
+
 * [API] FriendTalk in Wide Images
     * Added the feature of uploading and sending FriendTalk messages in wide images.
 * [Console] Delete Plus Friends with Unregistered Tokens
@@ -660,6 +715,7 @@
 
 <a id="november-26-2019"></a>
 ### November 26, 2019 { #november-26-2019 }
+
 * [Console] Template Registration Using File Uploads
     * Added the feature of file uploading for mass templates
 * [Console] Template Query Upgrades
@@ -669,12 +725,14 @@
 
 <a id="october-29-2019"></a>
 ### October 29, 2019 { #october-29-2019 }
+
 * [API] Tighter validity checks for the delivery of certification messages
     * Message delivery is unavailable when authentication message is not included
     * For more details, see [API User Guide](./alimtalk-api-guide/#precautions-authword).
 
 <a id="september-24-2019"></a>
 ### September 24, 2019 { #september-24-2019 }
+
 * [Console] Canceling Scheduled Delivery of AlimTalk/FriendTalk
     - Added the feature of canceling scheduled delivery of AlimTalk/FriendTalk from the **Query Delivery Result** tab, if it is yet to be delivered.
     - Canceling is available by querying time after scheduled delivery is requested.
@@ -687,12 +745,14 @@
 
 <a id="july-30-2019"></a>
 ### July 30, 2019 { #july-30-2019 }
+
 * [Console] Field Added for Result Code of Alternative SMS Delivery Request
     - To query details of alternative delivery message, result code of SMS request has been added.
 * [System] Server Replacement for Service Stabilization
 
 <a id="june-27-2019"></a>
 ### June 27, 2019 { #june-27-2019 }
+
 * [Console] Allowed alternative delivery, and added split delivery, for mass delivery of FriendTalk messages
     - Fields related to alternative delivery can be specified, such as content of alternative delivery/sender number/alternative delivery.
     - Features have been added to send in splits by specifying split times/interval.
@@ -715,6 +775,7 @@
 
 <a id="may-28-2019"></a>
 ### May 28, 2019 { #may-28-2019 }
+
 * [API] For delivery, a country code can be included in recipient numbers.
     - The recipientNo field can now include country code for delivery.
     - Available to send to users authenticated for overseas mobile phone on the KakaoTalk application.
@@ -729,11 +790,13 @@
 
 <a id="april-30-2019"></a>
 ### April 30, 2019 { #april-30-2019 }
+
 * [Console] Rolled back the business verification method used when adding a Plus friend
     - Reverted the way to verify a Plus friend's business to the previous method because the previous method took too much time to verify.
 
 <a id="april-23-2019"></a>
 ### April 23, 2019 { #april-23-2019 }
+
 * [Console] Added a feature to be used to specify <b>alternative delivery and split delivery </b>when mass sending AlimTalk messages
     - Added a feature that specifies the fields related to alternative delivery, including the alternative delivery content/sender number/whether to apply alternative delivery fields.
     - Added a feature of split delivery over a specific number of times in a specific interval.
@@ -756,6 +819,7 @@
 
 <a id="march-26-2019"></a>
 ### March 26, 2019 { #march-26-2019 }
+
 * [Console] Added the AlimTalk preview UI
     - Added the UI for AlimTalk inbox screen preview.
 * [API] Added the Auth API for sending an AlimTalk for verification
@@ -763,6 +827,7 @@
 
 <a id="february-26-2019"></a>
 ### February 26, 2019 { #february-26-2019 }
+
 * [Console] Fixed the bug in which delivery fails when mass sending AlimTalk messages
     - Fixed a bug in which delivery would fail due to some invalid recipient numbers.
 * [Console] Fixed a bug in which batch delivery recipient numbers would be masked when mass sending FriendTalk messages.
@@ -770,6 +835,7 @@
 
 <a id="january-29-2019"></a>
 ### January 29, 2019 { #january-29-2019 }
+
 * [API] Added FriendTalk v1.2 API
     - Added the sender/receiver grouping key field when sending a message.
     - Added the <b>request success/failure</b> field per recipient in the delivery response field.
@@ -794,6 +860,7 @@
 
 <a id="december-4-2018"></a>
 ### December 4, 2018 { #december-4-2018 }
+
 * [API] Added AlimTalk v1.2 API
     - Added the sender/receiver grouping key field when sending a message.
     - Added the <b>request success/failure</b> field per recipient in the delivery response field.
@@ -808,6 +875,7 @@
 
 <a id="november-13-2018"></a>
 ### November 13, 2018 { #november-13-2018 }
+
 * [API] Advanced AlimTalk delivery API alternative delivery
     - Added the alternative delivery title field for delivery.
     - The name of LMS can be specified when performing alternative delivery with LMS using the alternative delivery title field.
@@ -817,6 +885,7 @@
 
 <a id="october-23-2018"></a>
 ### October 23, 2018 { #october-23-2018 }
+
 * [API] Added a feature that schedules AlimTalk delivery API
     - A message can be sent at any time using the schedule feature.
     - The scheduled message can be canceled at any time before it is sent.
@@ -832,11 +901,13 @@
 
 <a id="august-28-2018"></a>
 ### August 28, 2018 { #august-28-2018 }
+
 * [Console] Improved the delivery result view
     - Improved the system so that template code can be manually entered when viewing AlimTalk delivery results.
 
 <a id="july-24-2018"></a>
 ### July 24, 2018 { #july-24-2018 }
+
 * [Console] Changed the name of the service
     - The service name of AlimTalk has been changed to KakaoTalkBizmessage.
 * [Console] Added a FriendTalk feature
@@ -861,20 +932,25 @@ Delivery body text
 
 <a id="june-26-2018"></a>
 ### June 26, 2018 { #june-26-2018 }
+
 <a id="feature-updates"></a>
 #### Feature Updates
+
 * [Console] Added the request field when adding a Plus friend
     - To comply with the latest Kakao issuance procedure, a business license number and business category are needed when adding a Plus friend.
 
 <a id="bug-fixes-2"></a>
 #### Bug Fixes
+
 * [Console] Changed the statistics chart to a version where bugs are fixed
     - Changed the statistics chart to a version where the bugs related to exporting .xls files on IE are fixed.
 
 <a id="may-29-2018"></a>
 ### May 29, 2018 { #may-29-2018 }
+
 <a id="more-features"></a>
 #### More Features
+
 * [API] Added the API that views a single delivery result
     - Added the API that views a specific delivery result.
     - For more information, see [AlimTalk API guide](./alimtalk-api-guide/#_14).
@@ -883,13 +959,16 @@ Delivery body text
 
 <a id="bug-fixes-3"></a>
 #### Bug Fixes
+
 * [API] Fixed a bug related to the substitution delivery API
     - Fixed a bug in which the templateParameter field of Request Body would be recognized as a required field.
 
 <a id="april-24-2018"></a>
 ### April 24, 2018 { #april-24-2018 }
+
 <a id="more-features-2"></a>
 #### More Features
+
 * [Console] Added a feature that is used for template chat bubble
     - Added a feature for multiple button template.
     - Added new button types:(delivery view, web link, app link, bot keyword, and message forwarding)
@@ -899,14 +978,17 @@ Delivery body text
 
 <a id="feature-updates-2"></a>
 #### Feature Updates
+
 * [API] Edited the resending feature after a failed delivery
     - Fixed the system so that messages are sent as SMS or LMS according to their length.
     - Changed the body text of resending message:(Body + web link button name + button link)
 
 <a id="march-22-2018"></a>
 ### March 22, 2018 { #march-22-2018 }
+
 <a id="more-features-3"></a>
 #### More Features
+
 * [Console] Added a feature that is used to edit or delete templates and register queries
     - Added a feature that is used to edit or delete templates.
     - Added a feature that is used to register a query to reviewer.
@@ -917,15 +999,19 @@ Delivery body text
 
 <a id="february-22-2018"></a>
 ### February 22, 2018 { #february-22-2018 }
+
 <a id="more-features-4"></a>
 #### More Features
+
 * [Console] Added a feature that is used to send messages to a large number of recipients
     - Users can now send a FriendTalk message to a large number of recipients using a csv file.
 
 <a id="january-25-2018"></a>
 ### January 25, 2018 { #january-25-2018 }
+
 <a id="feature-updates-3"></a>
 #### Feature Updates
+
 * [Console] Improved template registration
     - Added a feature that is used to remove spaces in front and back of a button name.
     - Edited the length limit:(Template code: 10 characters -> 20 characters, button name: 10 characters -> 14 characters)
@@ -933,12 +1019,15 @@ Delivery body text
 
 <a id="more-features-5"></a>
 #### More Features
+
 * [API] Added the API to view delivery result
 
 <a id="november-23-2017"></a>
 ### November 23, 2017 { #november-23-2017 }
+
 <a id="more-features-6"></a>
 #### More Features
+
 * [Console] Register multiple Plus friends
     - Previously, only 1 Plus friend could be added at a time. Now, multiple Plus friends can be added at a time.
 * [Console] When a template is rejected, provides the reason in the template details.
@@ -948,14 +1037,17 @@ Delivery body text
 
 <a id="august-24-2017"></a>
 ### August 24, 2017 { #august-24-2017 }
+
 <a id="more-features-7"></a>
 #### More Features
+
 * [Console] Provided the AlimTalk delivery statistics screen
     - Provides the by date/by time/by day of a week statistics screen.
     - Allows you to look up by delivery date and template.
 
 <a id="feature-updates-4"></a>
 #### Feature Updates
+
 * [Console] Changed the URL verification when adding a free button template
     - http:// or https:// must be included when adding a URL to a free button -> Like #{url}, the template substituter can now be added.
     - If it is not a template substituter in the form of #{url}, the http:// or https:// verification will be maintained.
@@ -964,21 +1056,26 @@ Delivery body text
 
 <a id="july-20-2017"></a>
 ### July 20, 2017 { #july-20-2017 }
+
 <a id="more-features-8"></a>
 #### More Features
+
 * [Console] Added AlimTalk delivery result view
     - The message delivery result can be viewed with conditions such as date of delivery, recipient number, and template.
 
 <a id="june-22-2017"></a>
 ### June 22, 2017 { #june-22-2017 }
+
 <a id="feature-updates-5"></a>
 #### Feature Updates
+
 * [Console] Added the sender profile management page
 * [Console] Added the test delivery page
 * [Console] Added the added template view page
 
 <a id="more-features-9"></a>
 #### More Features
+
 * [Console] Added the delivery failure setting
     - This is a feature that is used to send the message via LMS when AlimTalk delivery fails
 * [Console] Added a feature that is used to substitute the free button type of a template
@@ -986,13 +1083,17 @@ Delivery body text
 
 <a id="may-25-2017"></a>
 ### May 25, 2017 { #may-25-2017 }
+
 <a id="feature-updates-6"></a>
 #### Feature Updates
+
 * [Console] Improved the main page markup
 
 <a id="april-20-2017"></a>
 ### April 20, 2017 { #april-20-2017 }
+
 <a id="new-product-release"></a>
 #### New Product Release
+
     * AlimTalk is a product based on mobile phones with which users can send informative messages such as delivery message, schedule notification, and others without adding the recipient as a friend.
     * It provides RESTful API for users to easily link it to apps.
