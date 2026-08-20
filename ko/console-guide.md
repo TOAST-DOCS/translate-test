@@ -1,506 +1,245 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > 콘솔 사용 가이드
+<!-- pre-align:aligned sig=4cffce67e4ac -->
 
-<a id="create-instances"></a>
-## 인스턴스 생성
+<a id="network-service-gateway-console-user-guide"></a>
+## Network > Service Gateway > 콘솔 사용 가이드 { #network-service-gateway-console-user-guide }
 
-아래 설정들을 통하여 인스턴스를 생성하거나 인스턴스 템플릿(Instance Template)을 통해 인스턴스를 생성할 수 있습니다. 인스턴스 템플릿을 통해 인스턴스를 생성하려면 인스턴스 생성 화면에서 **인스턴스 템플릿 사용**을 선택합니다. 인스턴스 템플릿 생성 방법은 [인스턴스 템플릿 콘솔 가이드](/Compute/Instance%20Template/ko/console-guide/)를 참고합니다.
+콘솔에서 **Service Gateway** 서비스를 사용하는 방법을 설명합니다.
 
-<a id="os-settings"></a>
-### OS 설정
+<a id="service-gateway"></a>
+## 서비스 게이트웨이 { #service-gateway }
 
-인스턴스 생성 시 사용될 루트 블록 스토리지의 생성 방식을 결정합니다.
+<a id="create-a-service-gateway"></a>
+### 서비스 게이트웨이 생성 { #create-a-service-gateway }
 
-- **신규 생성 및 설정** 또는 **기존 리소스 지정** 중 하나를 선택합니다.
-- **신규 생성 및 설정**을 선택한 경우 이미지를 이용하여 루트 블록 스토리지를 생성합니다.
-- **기존 리소스 지정**을 선택한 경우 기존에 생성된 블록 스토리지 또는 스냅숏을 이용합니다.
+서비스 게이트웨이를 생성하는 방법은 다음과 같습니다.
 
-<a id="image"></a>
-### 이미지
+1. **Network > Service Gateway**로 이동합니다.
+2. **서비스 게이트웨이 생성** 버튼을 클릭하면 생성 화면이 나타납니다.
+3. 서비스 게이트웨이에 사용할 **이름**을 입력합니다.
+4. **연결 유형**을 선택합니다. 서비스 게이트웨이에 할당된 IP로 접근 시 선택한 대상과 연결됩니다.
+    * **서비스 엔드포인트**: NHN Cloud가 제공하는 서비스에 연결합니다. 목록에서 연결할 **서비스**를 선택합니다.
+    * **사용자 정의 엔드포인트**: 다른 사용자가 게시한 리소스(로드 밸런서)에 연결합니다. 엔드포인트 게시자에게 전달받은 **대상 서비스 이름**을 입력합니다. 서비스 이름은 `{region}.sep-{12자리 16진수}` 형식입니다(예: `kr1.sep-0a1b2c3d4e5f`).
 
-원하는 운영체제가 설치된 이미지를 선택합니다. 이미지는 NHN Cloud에서 제공하는 퍼블릭 이미지, 기존에 만들어 둔 사용자 이미지, 공유 이미지에서 선택할 수 있습니다.
+    !!! tip "알아두기"
+        입력한 서비스 이름은 생성 시 유효성이 검증되며, 게시자의 허용 프로젝트에 포함된 경우에만 연결할 수 있습니다.
 
-사용할 이미지에 따라 인스턴스 타입(flavor)이 달라지므로 인스턴스 생성 시에는 가장 먼저 이미지를 선택하고 진행하도록 합니다.
+5. **VPC**를 선택합니다. 선택된 VPC에 종속된 서비스 게이트웨이가 생성됩니다.
+6. **서브넷**을 선택합니다. 선택된 서브넷에서 서비스 게이트웨이의 IP가 할당됩니다.
+7. **사설 IP** 할당 방법을 선택합니다.
+    * 자동 할당: 선택된 서브넷의 CIDR 범위 내에서 자동으로 할당합니다.
+    * 지정: 사용할 IP 주소를 수동으로 입력합니다.
 
-| 운영체제                         | 블록 스토리지     | 메모리   |
-| ------------------------------ | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB 이상  | 1GB 이상 |
-| Windows                         | 50GB 이상  | 2GB 이상 |
+    !!! tip "알아두기"
+        입력하는 IP 주소는 선택된 서브넷의 CIDR 범위 내에 있어야 합니다.
 
-<a id="root-block-storage"></a>
-### 루트 블록 스토리지
+8. **NAT IP 고정** 여부를 선택합니다.
+    * 일반적으로는 선택할 필요가 없으며, 선택한 **서비스**에서 접근제어 설정이 필요한 경우만 선택합니다.
+    * 생성 시에만 선택이 가능하며 변경은 지원하지 않습니다.
 
-**OS 설정**에 따라 루트 블록 스토리지를 설정합니다.
+    !!! tip "알아두기"
+        선택이 가능한 서비스에서만 활성화됩니다.
 
-- **신규 생성 및 설정**을 선택한 경우 **블록 스토리지 타입** 및 **블록 스토리지 크기**를 지정하여 루트 블록 스토리지를 생성합니다.
-- **기존 리소스 지정**을 선택한 경우 **원본 리소스**를 지정하여 루트 블록 스토리지로 사용합니다.
+<a id="view-a-service-gateway"></a>
+### 서비스 게이트웨이 조회 { #view-a-service-gateway }
 
-#### 원본 리소스
+생성한 서비스 게이트웨이는 **Network > Service Gateway** 화면에서 확인할 수 있습니다. 서비스 게이트웨이를 선택하면 하단에 서비스 게이트웨이 정보가 나타납니다. 연결 유형이 **사용자 정의 엔드포인트**인 경우, 상세 정보의 **연결 대상**에서 엔드포인트의 표시 이름과 식별자를 확인할 수 있습니다.
 
-기존에 생성된 **블록 스토리지** 또는 **스냅숏** 중 하나를 선택할 수 있습니다.
+<a id="modify-a-service-gateway"></a>
+### 서비스 게이트웨이 변경 { #modify-a-service-gateway }
 
-- **블록 스토리지**를 선택 시 기존에 생성된 블록 스토리지를 루트 블록 스토리지로 사용합니다.
-- **스냅숏**을 선택 시 기존에 생성된 스냅숏을 이용하여 루트 블록 스토리지를 생성합니다.
+서비스 게이트웨이를 변경하는 방법은 다음과 같습니다. **이름**, **설명**만 변경할 수 있습니다.
 
-#### 블록 스토리지 크기
+1. **Network > Service Gateway**로 이동합니다.
+2. **서비스 게이트웨이 변경** 버튼을 클릭한 후 변경 화면에서 원하는 항목을 변경합니다.
 
-인스턴스의 루트 블록 스토리지 크기를 결정합니다.
+<a id="delete-a-service-gateway"></a>
+### 서비스 게이트웨이 삭제 { #delete-a-service-gateway }
 
-- 블록 스토리지 크기는 이미지가 요구하는 최소 크기 이상으로 만들어야 합니다.
+서비스 게이트웨이를 삭제하려면 **Network > Service Gateway** 화면에서 삭제할 서비스 게이트웨이를 선택하고 **서비스 게이트웨이 삭제** 버튼을 클릭합니다.
 
-인스턴스의 루트 블록 스토리지 크기는 인스턴스 타입에 따라 달라집니다.
+<a id="custom-endpoints"></a>
+## 사용자 정의 엔드포인트 { #custom-endpoints }
 
-| 타입               | 지원하는 블록 스토리지 크기         |
-| -------------------| -------------------------- |
-| u2 타입             | 20 ~ 100 GB (타입별로 고정) |
-| t2, m2, c2, r2, x1 타입 | 20 ~ 2000GB               |
+사용자 정의 엔드포인트는 사용자가 자신의 리소스(로드 밸런서)를 엔드포인트로 게시하여, 다른 프로젝트에서 서비스 게이트웨이로 연결할 수 있도록 공유하는 기능입니다. 게시자는 공유용 ***서비스 이름**(`service_name`)을 발급받아 연결을 허용할 대상에게 전달하고, 허용 프로젝트를 직접 관리합니다.
 
-> [참고]
-> 블록 스토리지 크기에 따라 과금되므로 기본 블록 스토리지의 크기를 무조건 크게 만드는 것은 비효율적입니다. 필요에 따라 블록 스토리지를 추가하여 사용하는 것이 좋습니다.
-> **OS 설정**에서 **기존 리소스 지정**을 **블록 스토리지**로 선택한 경우 블록 스토리지 크기 변경은 불가능합니다.
-> **OS 설정**에서 **기존 리소스 지정**을 **스냅숏**으로 선택한 경우 블록 스토리지 크기는 원본 블록 스토리지 크기보다 같거나 크게 설정되어야 합니다.
+<a id="create-a-custom-endpoint"></a>
+### 사용자 정의 엔드포인트 생성 { #create-a-custom-endpoint }
 
-#### 블록 스토리지 타입
+사용자 정의 엔드포인트를 생성하는 방법은 다음과 같습니다.
 
-인스턴스의 기본 블록 스토리지 타입을 결정합니다.
+1. **Network > Service Gateway**로 이동한 후 **사용자 정의 엔드포인트** 탭을 선택합니다.
+2. **사용자 정의 엔드포인트 생성** 버튼을 클릭하면 생성 화면이 나타납니다.
+3. 엔드포인트에 사용할 **이름**을 입력합니다. (255자 이내, 영문/숫자/-/_만 입력 가능)
+4. **표시 이름**을 입력합니다. 이 엔드포인트에 연결하는 서비스 게이트웨이에 표시되는 이름입니다. 생략하면 이름과 동일하게 적용됩니다.
+5. **리소스 유형**과 **대상 리소스**를 선택합니다. 현재 리소스 유형은 **Load Balancer**만 지원하며, 대상 리소스에서 엔드포인트로 게시할 로드 밸런서를 선택합니다.
+6. **최대 생성 개수**를 선택합니다. 이 엔드포인트로 생성할 수 있는 서비스 게이트웨이의 최대 개수입니다.
+    * 제한 없음: 개수 제한 없이 생성할 수 있습니다. 1,000을 초과하는 개수가 필요한 경우에도 제한 없음을 선택합니다.
+    * 직접 입력: 0부터 1,000까지 입력할 수 있습니다. 0을 입력하면 생성이 차단됩니다.
+7. 필요 시 **설명**을 입력하고 **확인** 버튼을 클릭합니다.
+8. 생성이 완료되면 공유용 **서비스 이름**(`{region}.sep-{12자리 16진수}`)이 자동으로 발급됩니다. 이 서비스 이름을 연결을 허용할 소비자에게 전달합니다.
 
-- **HDD** 또는 **SSD** 중 하나를 선택합니다. 타입에 따라 요금과 성능이 달라집니다.
-- 한번 선택한 블록 스토리지 타입은 변경할 수 없습니다.
+!!! tip "알아두기"
+    사용자 정의 엔드포인트는 프로젝트당 기본 5개까지 생성할 수 있습니다.
 
-> [참고] 
-> **OS 설정**에서 **기존 리소스 지정**을 선택한 경우 블록 스토리지 타입 변경은 불가능합니다.
+<a id="view-custom-endpoints"></a>
+### 사용자 정의 엔드포인트 조회 { #view-custom-endpoints }
 
-<a id="availability-zone"></a>
-### 가용성 영역(availability zone)
+**사용자 정의 엔드포인트** 탭에서 생성한 엔드포인트 목록을 확인할 수 있습니다. 엔드포인트를 선택하면 하단에 상세 정보가 나타나며, **기본 정보**(서비스 이름, 리소스 유형, 대상 리소스, 최대 생성 개수 등), **허용 프로젝트**, **사용 현황**을 확인할 수 있습니다.
 
-가용성 영역을 명시적으로 설정하지 않는 경우, 임의의 영역으로 설정됩니다. 가용성 영역에 따라 이 인스턴스가 사용할 수 있는 블록 스토리지가 결정됩니다. 사용하려는 블록 스토리지가 특정 가용성 영역에 존재한다면 해당 가용성 영역으로 설정하여 사용합니다.
+<a id="modify-a-custom-endpoint"></a>
+### 사용자 정의 엔드포인트 변경 { #modify-a-custom-endpoint }
 
-> [참고] 
-> VPC의 자원들은 모든 가용성 영역에서 사용할 수 있습니다.
-> **OS 설정**에서 **기존 리소스 지정**을 선택한 경우 가용성 영역은 변경이 불가능합니다.
+**이름**, **표시 이름**, **최대 생성 개수**, **설명**만 변경할 수 있습니다. 리소스 유형과 대상 리소스는 변경할 수 없습니다.
 
-가용성 영역에 대한 자세한 설명은 [인스턴스 개요의 가용성 영역](./overview/#availability-zone)을 참고합니다.
+1. **사용자 정의 엔드포인트** 탭에서 변경할 엔드포인트를 선택합니다.
+2. **변경** 버튼을 클릭한 후 변경 화면에서 원하는 항목을 변경합니다.
 
-<a id="flavor"></a>
-### 타입(flavor)
+!!! tip "알아두기"
+    최대 생성 개수를 줄여도 이미 생성된 서비스 게이트웨이는 유지됩니다. 다만 현재 개수가 최대 생성 개수를 초과하는 동안에는 새 서비스 게이트웨이를 추가로 생성할 수 없습니다.
 
-가상 하드웨어의 성능에 따라 다양한 타입을 선택할 수 있습니다. 다만, 이미지에서 요구하는 가상 하드웨어의 성능에 따라 선택할 수 있는 타입이 제한될 수 있습니다. 보다 자세한 설명은 [인스턴스 개요](./overview)를 참고합니다.
+<a id="delete-a-custom-endpoint"></a>
+### 사용자 정의 엔드포인트 삭제 { #delete-a-custom-endpoint }
 
-> [참고]
-> 1 vCPU는 스레드 하나와 코어 하나로 구성된 소켓 한 개를 의미하며, 소켓 한 개당 스레드 수와 코어 수는 각각 한 개로 일정합니다.
+**사용자 정의 엔드포인트** 탭에서 삭제할 엔드포인트를 선택하고 **삭제** 버튼을 클릭합니다.
 
-인스턴스의 타입은 생성 이후에도 NHN Cloud 콘솔에서 변경할 수 있습니다. 높은 타입에서 낮은 타입으로 변경할 수 있고, 낮은 타입에서 높은 타입으로도 변경할 수 있습니다. 일부 타입은 변경할 수 없는 경우도 있으니, 자세한 것은 [인스턴스 타입 변경](./console-guide/#modify-flavor)을 참고합니다.
+!!! danger "주의"
+    이 엔드포인트를 사용 중인 서비스 게이트웨이가 하나라도 있으면 삭제할 수 없습니다. 엔드포인트를 삭제하면 등록된 허용 프로젝트도 함께 삭제됩니다.
 
-> [주의] 인스턴스의 루트 블록 스토리지는 타입 변경으로 바꿀 수 없습니다.
+<a id="reissue-a-service-name"></a>
+### 서비스 이름 재발급 { #reissue-a-service-name }
 
-<a id="number-of-instances"></a>
-### 인스턴스 수
+공유한 서비스 이름이 외부에 유출되는 등 변경이 필요한 경우 서비스 이름을 재발급할 수 있습니다.
 
-이미지, 가용성 영역, 타입, 블록 스토리지 크기, 키페어, 네트워크 설정이 모두 동일한 인스턴스를 여러 개 생성할 경우에 사용합니다. 인스턴스의 이름은 설정한 이름 뒤에 `-1`, `-2`와 같이 번호가 붙어 생성됩니다. 예를 들어, 인스턴스 이름을 `my-instance`로 인스턴스를 2개 만들면, `my-instance-1`, `my-instance-2`가 생성됩니다. 한 번에 생성할 수 있는 최대 인스턴스의 개수는 10개입니다.
+1. **사용자 정의 엔드포인트** 탭에서 엔드포인트를 선택한 후 **기본 정보**에서 서비스 이름의 **재발급** 버튼을 클릭합니다.
+2. 확인 창에서 **재발급** 버튼을 클릭합니다.
 
-임의의 가용성 영역에 인스턴스를 여러 개 생성한 경우, 각각 인스턴스는 임의의 가용성 영역에 만들어집니다. 예를 들어, 2개의 인스턴스를 임의의 가용성 영역으로 생성한 경우, 2개가 같은 가용성 영역에 만들어질 수도 있고 다른 가용성 영역에 만들어질 수도 있습니다. 모든 인스턴스가 같은 가용성 영역에 생성되어야 한다면, 특정 가용성 영역을 선택하여 생성합니다.
+!!! danger "주의"
+    재발급하면 기존 서비스 이름은 즉시 폐기되어 더 이상 조회되지 않습니다. 기존 서비스 이름으로 생성한 서비스 게이트웨이는 정상 동작하지만, 새로 서비스 게이트웨이를 생성하려면 재발급된 서비스 이름을 사용해야 합니다.
 
-> [참고]
-> **OS 설정**에서 **기존 리소스 지정**을 **블록 스토리지**로 선택하거나 **네트워크 설정**에서 **기존 네트워크 인터페이스 지정**을 선택한 경우 인스턴스 수는 `1`로 제한됩니다.
+!!! tip "알아두기"
+    서비스 이름 재발급은 엔드포인트를 생성한 프로젝트의 구성원(소유자)만 수행할 수 있습니다.
 
-<a id="key-pair"></a>
-### 키페어
+<a id="manage-allowed-projects"></a>
+### 허용 프로젝트 관리 { #manage-allowed-projects }
 
-기존 키페어를 사용하거나, 새로 키페어를 생성하여 사용합니다. 기존 키페어 등록은 Windows 사용자의 경우 [키페어 가져오기(Windows 사용자)](./console-guide/#import-key-pairs-windows), Mac과 Linux 사용자의 경우 [키페어 가져오기(Mac, Linux 사용자)](./console-guide/#import-key-pairs-mac-and-linux)를 참고합니다.
+허용 프로젝트는 이 엔드포인트로 연결(서비스 게이트웨이 생성)을 허용할 대상을 관리하는 목록입니다.
 
-> [참고]
-> 키페어는 사용자 계정에 할당된 리소스이므로 프로젝트를 삭제해도 삭제되지 않고 유지됩니다.
+1. 엔드포인트를 선택한 후 상세 정보의 **허용 프로젝트** 탭으로 이동합니다.
+2. **추가** 버튼을 클릭하고 **허용 범위**를 선택합니다.
+    * **전체 프로젝트(*)**: 모든 프로젝트의 연결을 허용합니다.
+    * **특정 프로젝트**: 허용할 프로젝트의 **테넌트 ID**(32자리 16진수)를 입력합니다.
+3. 필요 시 **설명**을 입력하고 **확인** 버튼을 클릭합니다.
 
-<a id="network"></a>
-### 네트워크
+!!! tip "알아두기"
+    전체 허용(*)과 특정 프로젝트를 함께 등록한 경우 더 좁은 범위(특정 프로젝트)가 적용됩니다. 이를 이용하면 무중단으로 허용 범위를 전환할 수 있습니다. 예를 들어 전체 허용(*) 상태에서 특정 프로젝트를 추가한 뒤 전체 허용(*)을 삭제하면, 연결 중단 없이 특정 프로젝트만 허용하도록 전환됩니다.
 
-VPC에서 정의된 서브넷 중에서 인스턴스에 연결할 서브넷을 선택합니다. 서브넷을 하나 선택할 때마다 인스턴스에 해당 서브넷에 연결될 네트워크 인터페이스가 만들어집니다. 선택된 서브넷의 순서를 바꾸어서 네트워크 인터페이스를 변경할 수도 있습니다. 이 경우, 첫 번째 네트워크 인터페이스(`eth0`)가 기본 게이트웨이로 설정됩니다.
+기존 허용 대상은 **설명**만 변경할 수 있으며, 허용 범위와 테넌트 ID는 변경할 수 없습니다. 허용 대상을 삭제하려면 목록에서 대상을 선택하고 **삭제** 버튼을 클릭합니다.
 
-네트워크 생성과 관리에 대한 자세한 설명은 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
+<a id="check-usage-status"></a>
+### 사용 현황 확인 { #check-usage-status }
 
-<a id="floating-ip"></a>
-### 플로팅 IP
+엔드포인트 상세 정보의 **사용 현황** 탭에서 이 엔드포인트에 연결 중인 서비스 게이트웨이 목록을 확인할 수 있습니다. (읽기 전용)
 
-인스턴스 생성 후 플로팅 IP 사용 여부를 지정합니다. 플로팅 IP 사용을 선택하면, 플로팅 IP를 새로 생성하여 첫번째 네트워크 인터페이스에 연결합니다. 이 때 첫번째 네트워크 인터페이스는 반드시 인터넷 게이트웨이가 설정된 서브넷에 연결되어 있어야 합니다.
+<a id="use-a-service-gateway"></a>
+## 서비스 게이트웨이 사용 { #use-a-service-gateway }
 
-플로팅 IP 관리는 인스턴스 > 관리 페이지 또는 인스턴스 > 플로팅 IP 페이지에서도 할 수 있습니다. 플로팅 IP에 대한 보다 자세한 설명은 [VPC 콘솔 사용 가이드](/Network/VPC/ko/console-guide/)를 참고합니다.
+<a id="check-the-service-gateway-ip"></a>
+### 서비스 게이트웨이 IP확인 { #check-the-service-gateway-ip }
 
-<a id="security-group"></a>
-### 보안 그룹
+1. **Network > Service Gateway**로 이동합니다.
+2. 서비스 게이트웨이 목록에서 **IP 주소**를 확인합니다.<br>
+   이 VM Instance에서 이 IP 주소로 접속 시 서비스 게이트웨이가 연결하고 있는 서비스로 연결됩니다.
 
-인스턴스가 속할 보안 그룹을 지정합니다. 인스턴스 하나는 여러 보안 그룹에 속할 수 있습니다. 인스턴스가 여러 보안 그룹에 속한 경우에는 다음을 참고합니다.
+<a id="connect-to-the-service-gateway"></a>
+### 서비스 게이트웨이 접속 { #connect-to-the-service-gateway }
 
-- 각 보안 그룹에 속한 모든 인스턴스와 네트워크 통신이 가능합니다. 다른 인스턴스의 의도하지 않은 접근을 막아야할 민감한 데이터를 가진 인스턴스의 경우에는 신중하게 보안 그룹을 지정해야 합니다.
-- 각 보안 그룹의 모든 룰이 합쳐져서 해당 인스턴스의 외부 통신에 적용됩니다.
+생성된 서비스 게이트웨이의 IP 주소가 `192.168.1.42`라 할 경우 다음과 같은 방법으로 서비스에 접근이 가능합니다.
 
-보안 그룹에 대한 보다 자세한 설명은 [VPC 콘솔 사용 가이드](/Network/VPC/ko/console-guide/)를 참고합니다.
+* VM Instance에서 서비스 게이트웨이 IP로 접속하면 서비스 게이트웨이 생성 시 선택된 서비스로 연결되어 서비스 사용이 가능합니다.
+    * IP 주소를 사용하여 https 프로토콜을 이용할 경우 인증서 관련 오류가 발생할 수도 있습니다.
+    * https 사용이 필요한 경우 VM Instance의 `/etc/hosts`에 IP 주소와 URL을 추가하시기 바랍니다.
+    * 예시) IP 주소를 이용하여 오브젝트 스토리지에서 파일 다운로드
 
-<a id="additional-block-storage"></a>
-### 추가 블록 스토리지
+            ~# wget http://192.168.1.42/v1/AUTH_8222a22c22244badbf876dcd521f3f98/test-obs/test_file.txt
 
-인스턴스 생성 후 추가 블록 스토리지 연결 여부를 지정합니다. 추가 블록 스토리지 사용을 선택하면 루트 블록 스토리지와 별개인 새로운 블록 스토리지를 생성하여 인스턴스에 연결합니다. 루트 블록 스토리지와 마찬가지로 추가 블록 스토리지를 생성할 때 이름, 스토리지 타입, 크기를 지정할 수 있습니다.
+* 서비스 게이트웨이를 이용하여 서비스 접근 시 URL을 지원하지 않습니다. URL 접근이 필요한 경우 아래 예시와 같이 `/etc/hosts` 파일에 URL을 추가해야 합니다.
+    * 예시) URL을 이용하여 **오브젝트 스토리지**에서 파일 다운로드<br>
+      `/etc/hosts` 파일에 아래와 같이 서비스 게이트웨이의 IP 주소와 Object Storage의 URL을 추가합니다.
 
-루트 블록 스토리지는 OS 용도로만 사용하고 추가 블록 스토리지에 자주 사용하는 응용 프로그램이나 데이터를 보관하면 블록 스토리지 연결/해제 또는 스냅샷 기능을 통해 쉽게 이전하거나 복제할 수 있습니다. 또한 인스턴스 장애가 발생했을 때 추가 블록 스토리지만 해제한 뒤 다른 인스턴스에 연결하여 쉽게 서비스를 복구할 수 있습니다.
+            192.168.1.42    kr1-api-object-storage.nhncloudservice.com
 
-블록 스토리지 관리는 인스턴스 > 블록 스토리지 페이지에서도 할 수 있습니다. 블록 스토리지에 대한 보다 자세한 설명은 [블록 스토리지 가이드](/Storage/Block%20Storage/ko/overview/)를 참고합니다.
+        IP 주소 대신 `/etc/hosts`에 추가한 URL로 접속
 
-<a id="placement-policy"></a>
-### 배치 정책
+            ~# wget https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_8222a22c22244badbf876dcd521f3f98/test-obs/test_file.txt
 
-배치 정책을 사용하여 인스턴스들을 서로 다른 하이퍼바이저로 배치할 수 있습니다. 인스턴스 생성 시 배치 정책을 설정하면 동일 배치 정책에 할당된 인스턴스들은 서로 다른 하이퍼바이저에 생성됩니다.
+<a id="example-of-using-object-storage-from-a-service-gateway"></a>
+## 서비스 게이트웨이에서 오브젝트 스토리지 사용 예제 { #example-of-using-object-storage-from-a-service-gateway }
 
-> [주의]
-> 분산 배치가 불가능한 상황인 경우 인스턴스 생성에 실패할 수 있습니다.
+**오브젝트 스토리지**에 관련된 내용은 예제 설명을 위한 수준에서만 기술합니다. 오브젝트 스토리지의 자세한 사용 방법은 **사용자 가이드 > Storage > Oject Storage**를 참고하시기 바랍니다.
 
-<a id="user-script"></a>
-### 사용자 스크립트
+<a id="example-of-using-object-storage-from-a-service-gateway-create-a-service-gateway"></a>
+### 서비스 게이트웨이 생성 { #example-of-using-object-storage-from-a-service-gateway-create-a-service-gateway }
 
-인스턴스 생성 후 실행할 스크립트를 지정합니다. 사용자 스크립트는 인스턴스의 첫 번째 부팅이 완료된 후 네트워크 설정 등 초기화 과정이 끝나고 난 뒤 실행됩니다. NHN Cloud의 사용자 스크립트는 공식 이미지에 내장된 cloud-init (Linux), Cloudbase-init (Windows)과 같은 자동화 도구에 의해서 실행됩니다.
+**오브젝트 스토리지 API**를 사용하려면 **인증 토큰**을 발급받아야 합니다. 인터넷 사용이 불가능한 격리된 환경의 VPC에서 Object Storage를 사용하려면 인증 토큰도 서비스 게이트웨이를 이용하여 발급받아야 하며, 다음 절차에 따라서 서비스 게이트웨이를 생성해야 합니다.
 
-> [주의]
-> 사용자 스크립트는 root (Linux)/Administrator (Windows) 사용자 권한으로 실행됩니다.
+1. **Object Storage** 서비스를 선택하여 서비스 게이트웨이를 생성합니다.<br>
+   오브젝트 스토리지 API 접속을 위한 서비스 게이트웨이입니다.
+2. **IaaS API Identity** 서비스를 선택하여 서비스 게이트웨이를 생성합니다.<br>
+   인증 토큰(token) 발급을 위한 서비스 게이트웨이입니다.
+3. 생성된 두 개의 서비스 게이트웨이에서 IP 주소를 확인합니다.
 
-#### Linux
+<a id="edit-the-etchosts-file"></a>
+### /etc/hosts 파일 편집 { #edit-the-etchosts-file }
 
-사용자 스크립트의 첫 번째 줄은 반드시 `#!`으로 시작해야 합니다.
+**Object Storage**를 선택하여 생성한 서비스 게이트웨이의 IP 주소가 192.168.1.42이고 **IaaS API Identity**를 선택하여 생성한 서비스 게이트웨이의 IP 주소로 192.168.1.57을 할당받은 경우, VM Instance의 `/etc/hosts` 파일에 아래와 같이 IP 주소와 URL을 추가합니다.
+
+!!! tip "알아두기"
+    오브젝트 스토리지의 API URL 주소는 콘솔 화면의 **Storage > Object Storage**에서 **API 엔드포인트 설정** 버튼을 클릭하여 확인할 수 있습니다.
+
+!!! danger "주의"
+    리전마다 사용하는 오브젝트 스토리지 API의 URL 주소는 다르기 때문에 **API 엔드포인트 설정**의 URL을 반드시 확인해 주시기 바랍니다.
+
 ```
-#!/bin/bash
-...
+192.168.1.42	api-identity-infrastructure.nhncloudservice.com
+192.168.1.57	kr1-api-object-storage.nhncloudservice.com
 ```
 
-사용자 스크립트가 정상적으로 동작하기 위해서는 인스턴스 내부의 로그 파일을 확인해야 합니다. 스크립트에서 표준 출력/에러 장치로 출력한 로그는 `/var/log/cloud-init-output.log`에서 확인할 수 있습니다.
+<a id="obtain-the-authentication-token"></a>
+### 인증 토큰 발급 { #obtain-the-authentication-token }
 
-#### Windows
+오브젝트 스토리지의 **API 비밀번호 설정**을 하고 인증 토큰을 발급받습니다.
 
-Windows 이미지에서는 사용자 스크립트 형식으로 Batch 스크립트 형식, Powershell 스크립트 형식을 모두 지원합니다. 각 형식들은 첫 번째 줄에 명시하는 지시자에 의해 구분됩니다.
+* API 비밀번호 설정
+    1. **Storage > Object Storage**에서 **API 엔드포인트 설정** 버튼을 클릭합니다.
+    2. **API 엔드포인트 설정** 화면의 **API 비밀번호 설정**에 사용할 비밀번호를 입력하고 **변경** 버튼을 클릭합니다.
 
-* Batch 스크립트
-```
-rem cmd
-...
-```
+    !!! tip "알아두기"
+        상세한 사용 방법은 [사용자 가이드 > Storage > Object Storage > API 가이드](https://docs.nhncloud.com/ko/Storage/Object%20Storage/ko/api-guide/)를 참고하시기 바랍니다.
 
-* PowerShell 스크립트
-```
-#ps1_sysnative
-...
-```
+* 인증 토큰 발급 요청<br>
+  **NHN Cloud 로그인 ID**와 앞서 설정한 **API 비밀번호 설정**의 비밀번호를 이용하여 아래와 같이 **IaaS API Identify** 서비스용으로 생성한 서비스 게이트웨이 URL에 토큰 발급을 요청합니다.
+    * `auth.passwordCredentials.username`에는 NHN Cloud 로그인 ID 사용
+    * `auth.passwordCredentials.password`에는 API 비밀번호 설정에 입력한 비밀번호 사용
+  
 
-만약 Batch 스크립트와 PowerShell 스크립트를 같이 사용하고 싶다면 아래와 같이 기술합니다.
+            ~# curl -X POST -H 'Content-Type:application/json' https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens -d '{"auth": {"tenantId": "2fda9d4b88244a0a92ff23841198e2e6", "passwordCredentials": {"username": "example@nhn.com", "password": "example123"}}}'
 
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
+* 인증 토큰 발급 응답<br>
+  아래 응답에서 `access.token.id` 항목의 값이 인증 토큰입니다. `access.token.expires`에 기록된 시간까지 인증 토큰이 유효합니다.
 
-사용자 스크립트의 로그는 `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`에서 확인할 수 있습니다.
+            {"access":{"token":{"id":"gAAAAABiVnmCOJVJhh1W2eXGo3aL0eaZxXmd-SMDMIE3zmip2lXy6eH0BlZAlTZBG20dWEm7TF4zi4YIOTKnc6yKh_wqZsyxgMWKkpVNShzE-k6GaSThBP54QeUePSjC2t-R10X6G4xL_Wecl-V-lV-bnOfVo6Ccpz6rv9eLYJnbJw7KrIMSSiY","expires":"2022-04-13T19:19:30Z","tenant":{"id":"2fda9d4b8821111192ff23841198e2e6","name":"tTMgSSSF","groupId":"XXj2zkH7777modGU","description":"","enabled":true,"project_domain":"NORMAL","swift":true},"issued_at":"2022-04-13T07:32:14.000441"},"serviceCatalog":[{"endpoints":[{"region":"KR1","publicURL":"https://api-identity.infrastructure.cloud.toast.com/v2.0"}],"type":"identity","name":"keystone"},{"endpoints":[{"region":"KR2","publicURL":"https://kr2-api-storage.cloud.toast.com/v1/AUTH_2fda9d4b88244a0a92ff23841198e2e6"},{"region":"KR1","publicURL":"https://api-storage.cloud.toast.com/v1/AUTH_2fda9d4b88244a0a92ff23841198e2e6"}],"type":"object-store","name":"swift"}],"user":{"id":"80884888887b45dbaf9b815117130671","username":"5111111c-b111-4b11-b11b-01111f81111f","name":"5211122c-bfc4-4115-b11b-05b52f84
 
-사용자 스크립트와 관련하여 보다 자세한 설명은 [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) 또는 [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) 가이드를 참고합니다.
+<a id="use-the-object-storage-api"></a>
+### 오브젝트 스토리지 API 사용 { #use-the-object-storage-api }
 
-<a id="additional-instance-features"></a>
-## 인스턴스 추가 기능
+인증 토큰 발급을 마쳤으면 오브젝트 스토리지 API를 사용할 수 있습니다. 오브젝트 스토리지에 example이라는 컨테이너를 생성하고 test_file.txt를 넣어 놨다고 가정할 경우, 아래와 같은 API 사용법으로 컨테이너에 있는 파일을 조회할 수 있습니다.
 
-<a id="change-instance-status"></a>
-### 인스턴스 상태 변경
+* 요청<br>
+  `X-Auth-Token`에 인증 토큰을 추가하여 요청
 
-인스턴스 중지, 종료, 삭제, 시작을 통해 인스턴스의 상태를 변경할 수 있습니다.
+        ~# curl -X GET -H 'X-Auth-Token:gAAAAABiVnmCOJVJhh1W2eXGo3aL0eaZxXmd-SMDMIE3zmip2lXy6eH0BlZAlTZBG20dWEm7TF4zi4YIOTKnc6yKh_wqZsyxgMWKkpVNShzE-k6GaSThBP54QeUePSjC2t-R10X6G4xL_Wecl-V-lV-bnOfVo6Ccpz6rv9eLYJnbJw7KrIMSSiY' https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2fda9d4b88244a0a92ff23841198e2e6/example
 
-인스턴스 중지, 종료, 삭제의 하이퍼바이저 리소스 및 요금 관련 정보는 아래 표를 참고합니다.
+* 응답<br>
+  오브젝트 스토리지 컨테이너에 있는 파일 목록 확인
 
-| 구분 | 인스턴스 중지 | 인스턴스 종료 | 인스턴스 삭제 |
-| --- | -- | --- | --- |
-| 하이퍼바이저 리소스 | 리소스 할당 상태 유지 | 리소스 반납 및 인스턴스 시작 시 재할당 | 리소스 제거 |
-| 인스턴스 요금 | 중지 요금 정책 적용 | 무료 | 무료 |
-| 연결된 다른 리소스 요금 | 과금됨| 과금됨 | 과금됨 |
-
-> [참고] GPU Instance는 종료할 수 없으며 중지 시에도 정상(100%) 요금이 발생합니다.
-
-<a id="create-image"></a>
-### 이미지 생성
-
-인스턴스의 루트 블록 스토리지로부터 이미지를 생성합니다. 이미지 생성은 데이터 정합성을 보장하기 위해 인스턴스를 중지한 상태에서 진행하는 것을 권장합니다.
-
-인스턴스의 루트 블록 스토리지에 여유 공간이 전혀 없을 경우 이미지 생성은 가능하나, 이미지를 다른 인스턴스에서 사용하기 위한 초기화 작업은 불가하여 정상적으로 사용할 수 없습니다. 이미지를 생성하기 전에 인스턴스에서 최소 100KB의 여유 공간을 확보해야 합니다.
-
-생성된 이미지는 **Compute > Image**에 Private 이미지로 등록됩니다. 등록된 이미지를 이용하여 원본 인스턴스와 동일한 블록 스토리지를 가진 인스턴스를 생성할 수 있습니다.
-
-> [주의]
-> 생성된 이미지의 크기는 루트 블록 스토리지의 실제 사용량보다 더 클 수 있습니다.
-
-<a id="associatedisassociate-floating-ip"></a>
-### 플로팅 IP 연결과 해제
-
-인스턴스의 상태에 관계없이 플로팅 IP를 연결하고 해제할 수 있습니다. 사용 가능한 플로팅 IP가 없거나 원하는 플로팅 IP가 없는 경우, **생성** 버튼을 클릭해 플로팅 IP를 생성하여 연결할 수 있습니다. 또는 **Network > VPC > Floating IP**에서 플로팅 IP를 생성하여 사용해도 됩니다.
-
-플로팅 IP에 대한 자세한 설명은 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
-
-<a id="modify-security-group"></a>
-### 보안 그룹 수정
-
-인스턴스의 상태에 관계없이 인스턴스의 보안 그룹을 수정할 수 있습니다. 수정된 보안 그룹은 바로 적용됩니다.
-
-보안 그룹에 대한 자세한 설명은 [보안 그룹](./console-guide/#security-group)과 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
-
-<a id="change-network-subnet"></a>
-### 네트워크 서브넷 변경
-
-인스턴스의 네트워크 서브넷은 인스턴스가 중지된 상태에서만 변경할 수 있습니다. 서브넷을 추가하면 자동으로 인스턴스에 해당 서브넷에 연결될 네트워크 인터페이스가 만들어집니다. 이 때, 한 번에 여러 서브넷을 추가하면 인스턴스에 새로 생성되는 네트워크 인터페이스 순서는 임의로 지정됩니다. 서브넷을 인스턴스에서 삭제하면 생성되었던 네트워크 인터페이스도 자동으로 삭제됩니다.
-
-<a id="modify-flavor"></a>
-### 인스턴스 타입 변경
-
-인스턴스 타입은 인스턴스를 중지한 후 변경할 수 있습니다. 인스턴스가 실행 중이면 **추가 기능**의 **인스턴스 중지**를 클릭하여 인스턴스를 중지합니다.
-
-현재 타입에 따라 변경할 수 있는 인스턴스 타입이 다릅니다.
-
-* m2, c2, r2, t2, x1 타입의 인스턴스는 m2, c2, r2, t2, x1 타입의 인스턴스 타입으로 변경할 수 있습니다.
-* m2, c2, r2, t2, x1 타입의 인스턴스는 u2 타입의 인스턴스 타입으로 변경할 수 없습니다.
-* u2 타입은 생성 이후에 타입을 변경할 수 없습니다. 같은 u2 타입의 인스턴스 타입으로도 변경할 수 없습니다.
-
-인스턴스 타입을 변경하면, 변경 작업과 변경 확인 작업이 진행됩니다. 모든 작업이 완료되면 VM 상태가 **Shutoff** 상태가 되며, **추가 기능**의 **Start instance**를 클릭하여 인스턴스를 시작할 수 있습니다.
-
-> [참고] 인스턴스의 루트 블록 스토리지 크기는 변경할 수 없습니다. 인스턴스의 블록 스토리지 공간이 부족하다면 블록 스토리지를 추가하여 사용합니다. 자세한 블록 스토리지 추가 방법은 [블록 스토리지 개요](/Storage/Block%20Storage/ko/overview/)를 참고합니다.
-
-인스턴스는 변경 시점을 기준으로 변경된 타입으로 과금됩니다.
-
-<a id="change-instance-os-details"></a>
-### 인스턴스 OS 정보 변경
-
-인스턴스의 상태에 관계없이 인스턴스 OS 정보를 변경할 수 있습니다. 
-
-**Compute > Instance** 서비스 페이지에서 OS 정보를 변경할 인스턴스를 클릭합니다. 해당 인스턴스 상세 정보 화면의 **기본 정보** 탭에서 **OS > 변경**을 클릭합니다.
-
-> [참고] OS 구분은 변경할 수 없습니다.
-
-<a id="change-instance-description"></a>
-### 인스턴스 설명 변경
-
-인스턴스의 상태에 관계없이 인스턴스 설명을 변경할 수 있습니다. 
-
-**Compute > Instance** 서비스 페이지에서 설명을 변경할 인스턴스를 클릭합니다. 해당 인스턴스 상세 정보 화면의 **기본 정보** 탭에서 **설명 > 변경**을 클릭합니다.
-
-<a id="change-instance-key-pair"></a>
-### 인스턴스 키페어 변경
-
-인스턴스 키페어는 인스턴스가 활성 상태인 경우에만 변경할 수 있습니다.
-
-**Compute > Instance** 서비스 페이지에서 키페어 정보를 변경할 인스턴스를 클릭합니다. 해당 인스턴스 상세 정보 화면의 **기본 정보** 탭에서 **키페어 > 변경**을 클릭합니다.
-
-인스턴스 기본 계정의 키페어를 선택한 키페어로 변경합니다. 인스턴스 기본 계정은 인스턴스 하단 상세 정보 화면의 **접속 정보** 탭에서 확인할 수 있습니다.
-
-> [주의] 인스턴스 키페어 변경 시 선택한 키페어를 제외한 인스턴스 내 모든 공개 키 내용이 삭제됩니다.
-
-> [참고] 기본 인프라 서비스 ADMIN 권한이 있는 프로젝트 멤버만 인스턴스 키페어를 변경할 수 있으며, Windows OS 인스턴스인 경우 변경할 수 없습니다.
-
-> [참고] 인스턴스 생성에 사용한 이미지 버전이 낮은 경우 키페어 변경 기능을 지원하지 않을 수 있습니다.
-
-<a id="manage-placement-policies"></a>
-### 배치 정책 관리
-
-배치 정책을 생성 및 삭제할 수 있으며 배치 정책에 할당된 인스턴스 목록을 보여줍니다.
-
-분산 배치를 위한 `anti-affinity` 배치 정책 유형만 제공합니다.
-
-배치 정책에 인스턴스가 할당된 경우에도 배치 정책 삭제가 가능하며 이 경우 인스턴스는 삭제되지 않습니다.
-
-<a id="key-pairs"></a>
-## 키페어
-
-<a id="import-key-pairs-windows"></a>
-### 키페어 가져오기(Windows 사용자)
-
-PuTTY SSH 클라이언트를 설치하면 함께 설치되는 puttygen 프로그램으로 키페어를 생성하고 NHN Cloud에 등록하여 사용할 수 있습니다.
-
-[PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 또는 한글패치가 적용된 [iPuTTY](https://github.com/iPuTTY/iPuTTY/releases/tag/l0.70i)를 설치합니다.
-
-puttygen을 실행합니다.
-
-![이미지1](http://static.toastoven.net/prod_instance/putty-ssh-001.png)
-
-**매개변수**에서 **RSA**(또는 구 버전의 puttygen에서는 SSH-2 RSA)를 선택합니다. **작업**에 있는 **생성** 버튼을 클릭합니다. 키를 생성하기 위해서 빈 공간 안에서 마우스를 계속 움직입니다.
-
-키가 생성되면 아래 그림처럼 공개 키 파일 내용이 보입니다. 공개 키 내용 전체를 **키페어 가져오기**의 **공개 Key:** 입력란에 붙여 넣어서 키페어를 등록합니다.
-
-![이미지1](http://static.toastoven.net/prod_instance/putty-ssh-002.png)
-
-**작업**의 **개인 키 저장** 버튼을 클릭해 개인 키를 저장합니다. 키 암호어구를 빈 칸으로 두고 개인 키를 저장하면, **암호어구로 보호하지 않은 채 이 키를 저장하겠습니까?** 메시지가 나타납니다. 변환된 개인 키를 좀 더 안전하게 사용하려면 암호어구를 설정하여 저장합니다.
-
-> [주의]
-인스턴스에 자동으로 로그인하려면 암호어구를 사용하지 않아야 합니다. 암호어구를 사용하면 로그인할 때 개인 키에 대한 비밀번호를 직접 입력해야 합니다.
-
-등록한 키페어는 인스턴스를 생성할 때 사용할 수 있고, 인스턴스 접속 시에는 이 키페어의 개인 키로 접속하여야 합니다. 인스턴스 접속 방법은 [인스턴스 접속 방법](./overview/#how-to-access-instances)를 참고합니다.
-
-NHN Cloud에서 생성한 키페어와 마찬가지로 이렇게 만든 키페어의 개인 키도 외부 유출 시에 누구나 유출된 개인 키로 해당 인스턴스에 접근할 수 있게 되므로 신중하게 관리해야 합니다.
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### 키페어 가져오기(Mac, Linux 사용자)
-
-Mac이나 Linux의 `ssh-keygen`으로 만든 키페어를 NHN Cloud에 등록하여 사용할 수 있습니다. 키페어는 다음 명령으로 생성합니다.
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-키페어의 비밀번호는 설정해도 되지만 설정하지 않아도 사용하는 데에 문제는 없습니다. 보안 수준을 높이려면 비밀번호 설정을 추천합니다. 입력한 키페어의 이름에 `.pub` 확장자가 추가된 파일 안에 키페어 공개 키가 들어 있습니다.
-
-	$ cat my_key.key.pub
-	ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-
-이 내용 전체를 **키페어 가져오기**의 **공개 Key:** 입력란에 붙여 넣어서 키페어를 등록합니다.
-
-등록한 키페어는 인스턴스를 생성할 때 사용할 수 있고, 인스턴스 접속 시에는 이 키페어의 개인 키로 접속해야 합니다. 인스턴스 접속 방법은 [인스턴스 접속 방법](./overview/#how-to-access-instances)을 참고합니다.
-
-NHN Cloud에서 생성한 키페어와 마찬가지로 이렇게 만든 키페어의 개인 키도 외부 유출 시에 누구나 유출된 개인 키로 해당 인스턴스에 접근할 수 있게 되므로 신중하게 관리해야 합니다.
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## 부록 1. Windows 언어팩 변경
-
-NHN Cloud Windows 이미지는 영문판을 기본으로 제공하고 있습니다. 다른 언어를 기본으로 사용하기 원하는 사용자는 다음의 방법에 따라 사용이 가능합니다.
-
-1. START -> Control Panel -> Clock, Language, and Region -> Add a language
-![이미지1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. 언어 기본 설정 변경 -> 언어 추가
-![이미지1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. 언어 추가 -> 사용하려는 언어 선택 -> 추가
-![이미지1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. 추가된 언어팩 확인
-![이미지1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. 추가된 언어팩 다운로드 및 설치
-![이미지1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. 업데이트 다운로드 및 설치
-![이미지1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. 설치된 언어팩 변경을 위해 선택언어 더블클릭 또는 옵션 선택
-![이미지1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. 언어 옵션에서 기본 언어로 설정 선택
-![이미지1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. 기본 언어로 설정후 적용되기 위해서 로그오프
-![이미지1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. 다시 로그인 하시면 사용자가 선택한 언어팩으로 변경 되어있는것을 볼수있습니다.
-![이미지1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## 부록 2. Windows 라우팅 변경
-
-NHN Cloud Windows 에서 라우팅을 변경하는 방법은 다음과 같은 방법 등이 있습니다.
-
-* START -> Run -> cmd
-
-Route 커맨드
-
-* 현재 설정 출력 : route print
-* 추가 : route add "목적지" mask "subnet" "gateway" metric "Metric 값" if "Interface 번호"
-* 변경 : route change "목적지" mask "subnet" "gateway" metric "Metric 값" if "Interface 번호"
-* 삭제 : route delete "목적지" mask "목적지 subnet" "gateway" metric "Metric 값" if "Interface 번호"
-* 옵션 : -p (영구 경로 지정)
-
-설명
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* Metric 값 : 값이 낮을 수록 우선 순위 높음
-* Interface 번호 : route print에서 확인 가능 (빨간색 테두리)
-* 영구 경로 : -p 옵션을 사용하지 않는 경우 시스템 재시작 시에 설정한 경로가 초기화 되기 때문에 사용 (파란색 테두리)
-
-Case 1 - 특정 인터페이스만 외부 통신 설정
-
-* route change 커맨드를 통해 외부 통신을 원치 않는 인터페이스 경로의 metric을 수정하거나 고정 IP 설정에서 기본 게이트웨이 정보를 입력하지 않는 방법 등이 있습니다.
-* Metric 수정 방법
-    * 인터페이스의 metric 증가
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* 고정 IP 설정 방법
-    1. ipconfig /all을 통해 IP정보 확인
-![이미지1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. 확인된 IP정보를 이용하여 IP설정 창에서 기본 게이트웨이를 제외하고 입력
-![이미지1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. route print를 통해 확인
-![이미지1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Case 2 - 특정 대역에 대한 경로 설정
-
-* route add 커맨드를 통해 특정 대역에 대한 경로를 설정합니다.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Case 3 - 특정 경로 제거
-
-* route delete를 통해 지정된 경로를 제거합니다.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## 부록 3. 시스템 로캘 변경
-
-NHN Cloud Windows에서 시스템 로캘을 변경하는 방법은 다음과 같습니다.
-
-1. **Windows 키 > 제어판 > 시계 및 국가**를 선택합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. **국가 또는 지역**을 선택합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. **관리자 옵션** 탭에서 **시스템 로캘 변경**을 클릭합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. 변경할 시스템 로캘을 선택합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. 적용하려면 시스템을 재시작합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## 부록 4. 하이퍼바이저 점검을 위한 인스턴스 재시작 가이드
-
-NHN Cloud는 주기적으로 하이퍼바이저 소프트웨어를 업데이트하여 기본 인프라 서비스의 보안과 안정성을 향상시키고 있습니다.
-점검 대상 하이퍼바이저에서 구동 중인 인스턴스는 재시작을 통해 점검이 완료된 하이퍼바이저로 이동해야 합니다.
-
-인스턴스를 재시작하려면 콘솔을 통해 인스턴스 이름 옆에 생성된 **! 재시작** 버튼을 사용해야 합니다.
-`콘솔에 있는 인스턴스 재부팅 또는 운영체제의 재시작 기능으로는 인스턴스가 다른 하이퍼바이저로 이동하지 않습니다.`
-아래 가이드에 따라 콘솔에 있는 재시작 기능을 이용하시기 바랍니다.
-
-점검 대상으로 지정된 인스턴스가 있는 프로젝트로 이동합니다.
-
-**1. 점검 대상 인스턴스를 확인합니다.**
-
-인스턴스 이름 앞에 **! 재시작** 버튼이 있는 인스턴스가 점검 대상 인스턴스입니다.
-**! 재시작** 버튼 위에 마우스 커서를 올리면 자세한 점검 일정을 확인할 수 있습니다.
-![인스턴스 점검 이미지1](http://static.toastoven.net/prod_instance/instance_p_migration_ko_1.png)    
-
-**2. 점검 대상 인스턴스에서 구동 중인 응용 프로그램을 비활성화하거나 종료합니다.**
-
-점검 대상 인스턴스에서 구동 중인 응용 프로그램을 비활성화하거나 종료하여 서비스에 영향을 주지 않도록 조치해야 합니다. 
-서비스에 영향을 줄 수 밖에 없을 때는 NHN Cloud 고객 센터로 연락해 주시면 적합한 조치를 안내해 드리겠습니다.
-
-**3. 점검 대상 인스턴스 이름 옆에 생성된 [! 재시작] 버튼을 클릭합니다.**
-
-![인스턴스 점검 이미지2](http://static.toastoven.net/prod_instance/instance_p_migration_ko_2.png)
-
-**4. 인스턴스 재시작 여부를 묻는 창이 나타나면 [확인] 버튼을 클릭합니다.**
-
-![인스턴스 점검 이미지3](http://static.toastoven.net/prod_instance/instance_p_migration_ko_3.png)
-
-**5. 인스턴스 상태 표시등이 초록색으로 변하고, [! 재시작] 버튼이 사라질 때까지 대기합니다.**
-
-인스턴스 상태 표시등이 변하지 않거나 **! 재시작** 버튼이 비활성화되지 않는다면 '새로 고침'을 해보시기 바랍니다.
-
-인스턴스가 재부팅되는 동안에는 해당 인스턴스에 아무런 조작을 할 수 없습니다.
-인스턴스 재부팅이 정상적으로 완료되지 않으면 자동으로 관리자에게 보고되며, NHN Cloud에서 별도로 연락을 드립니다.
+        test_file.txt
