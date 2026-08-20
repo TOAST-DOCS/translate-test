@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=98254bdf44b8 -->
 
 <a id="security-web-firewall-product-introduction-penta-security-wapples-sa"></a>
