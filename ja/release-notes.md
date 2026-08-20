@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=cd25e9b09cb4 -->
 
 <a id="data-lake-storage-release-notes"></a>
