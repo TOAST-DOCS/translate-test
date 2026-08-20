@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=bfea2e9c91d3 -->
 
 <a id="data-lake-storage-overview"></a>
@@ -26,7 +28,7 @@ Built on high compatibility with the AWS S3 API, you can use the SDKs, CLIs, and
 
 <a id="how-it-works"></a>
 ## How it works { #how-it-works }
-![Data Lake Storage 동작 방식](../static/images/15_data&analytics_data-lake-storage_img_en.png)
+![How Data Lake Storage works](../static/images/15_data&analytics_data-lake-storage_img_kr.png)
 
 <a id="glossary"></a>
 ## Glossary { #glossary }
