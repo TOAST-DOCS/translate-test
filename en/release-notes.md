@@ -5,10 +5,11 @@
 <a id="compute-release-notes"></a>
 ## Compute > Release Notes { #compute-release-notes }
 
-<a id="may-27-2026"></a>
-## August 20, 2026
+<a id="agust-20-2026"></a>
+## August 20, 2026 { #agust-20-2026 }
 
-### Image
+<a id="agust-20-2026-image"></a>
+### Image { #agust-20-2026-image }
 
 * GPU-related (Linux)
     * NVIDIA driver update: 580.105.08 → 580.173.02
@@ -49,7 +50,7 @@
 ## April 28, 2026 { #april-28-2026 }
 
 <a id="april-28-2026-image"></a>
-### Image
+### Image { #april-28-2026-image }
 
 * Added new images
     * Ubuntu Server 22.04.5 LTS for Deep Learning v8.0.0(2026.04.28.)
