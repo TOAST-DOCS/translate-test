@@ -1,505 +1,242 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > Console Guide
-
-<a id="create-instances"></a>
-## Create Instances
-
-You can create instances either by using the settings below or by using instance templates. To create instances using instance templates, select **Use instance template** from the Create Instance page. To learn how to create instance templates, see [Instance Template Console Guide](/Compute/Instance%20Template/en/console-guide/).
-
-<a id="os-settings"></a>
-### OS Settings
-
-Determine how the root block storage is created that will be used when an instance is created.
-
-- Select either **Create New and Set up** or **Use Existing Resource**.
-- If you select **Create New and Set up**, create root block storage using an image.
-- If you select **Use Existing Resource**, use a previously created block storage or snapshot.
-
-<a id="image"></a>
-### Image
-
-Select the image that contains the operating system you need. You can choose between public images provided by NHN Cloud, images you've previously created, or shared images.
-
-The available instance flavors vary depending on the image you choose, so we recommended you choose an image first when creating an instance.
-
-| OS                         | Block Storage     | Memory   |
-| -------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB or more  | 1GB or more |
-| Windows                           | 50GB or more  | 2GB or more |
-
-<a id="root-block-storage"></a>
-### Root Block Storage
-
-Set up root block storage according to the **OS settings**.
-
-- If you select **Create New and Set up**, create the root block store by specifying the **block storage type** and **block storage size**.
-- If you select **Use Existing Resource**, specify the **original resource** to use as root block storage.
-
-#### Original Resource
-
-You can select either a previously created **block storage** or **snapshot**.
-
-- When you select **block storage**, use the previously created block storage as the root block storage.
-- When you select **snapshot**, the root block storage is created using a previously created snapshot.
-
-#### Block Storage Size
-
-Specify the root block storage size of an instance.
-
-- The block storage size must be at least the minimum size required by the image.
-
-The root block storage size varies depending on instance flavor.
-
-| Flavors               | Supported Block Storage Size         |
-| -------------------| -------------------------- |
-| u2 flavors             | 20 ~ 100 GB (varies by flavor) |
-| t2, m2, c2, r2, and x1 flavors | 20 ~ 2000 GB               |
-
-> [Note]
-> Because you are charged by block storage size, it is inefficient to make the default block storage size large without consideration. We recommend that you add additional block storage as needed.
-> If you select **block storage** for **Use Existing Resource** in the **OS settings**, you can't change the block storage size.
-> If you select **snapshot** for **Use Existing Resource** in the **OS settings**, block storage size must be set equal to or larger than the original block storage size.
-
-#### Block Storage Type
-
-Determines the default block storage type of an instance.
-
-- Choose either **HDD** or **SSD**. The choice of block storage type affects pricing and performance.
-- You cannot change the block storage type once the instance is created.
-
-> [Note]
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the block storage type.
-
-<a id="availability-zone"></a>
-### Availability Zone
-
-If an availability zone is not specified, a random zone is selected. An instance can use a block storage only if they both exist in the same availability zone. If the block storage you wish to use exists in a particular availability zone, then select that zone.
-
-> [Note]
-> Resources in a VPC can be used in any availability zone.
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the availability zone.
-
-For more details on availability zones, see [Availability Zone in Instance Overview](./overview/#availability-zone).
-
-<a id="flavor"></a>
-### Flavor
-
-You can select various flavors depending on virtual hardware performance specifications. However, the choice of some flavors may be limited depending on the virtual hardware performance that your image requires. For more details, see [Instance Overview](./overview).
-
-> [Note] 
-> 1 vCPU refers to one socket composed of one thread and one core, the number of threads and the number of cores per socket are constant, one each.
-
-Instance flavors can be changed in the NHN Cloud console even after instance creation, from higher to lower specs and vice versa. However, note that some flavors cannot be changed. See [Modify flavor](./console-guide/#modify-flavor) for details.
-
-> [Caution] An instance's root block storagecannot be changed by changing instance flavors.
-
-<a id="number-of-instances"></a>
-### Number of Instances
-
-You can specify the number of instances you want to create when creating multiple instances with the same image, availability zone, flavor, block storage size, key pair, and network settings. The instance names will be the name you specified, with numbers such as `-1` and `-2` appended to the end. For example, creating two instances named `my-instance` will result in `my-instance-1` and `my-instance-2`. The maximum number of instances you can create at once is 10.
-
-When you create multiple instances without specifying an availability zone, each instance will be created in a randomly selected availability zone. For example, if two instances are created without specifying an availability zone, they may be created in the same zone or they may be created in different zones. If all instances need to be created in the same availability zone, select a particular zone.
-
-> [Note]
-> If you select **block storage** for **Use Existing Resource** in the **OS settings** or **Use Existing Network Interface** in the **network settings**, the number of instances is limited to `1`.
-
-<a id="key-pair"></a>
-### Key Pair
-
-Use an existing key pair or create a new key pair. To register an existing key pair, see [Import Key Pair (Windows)](./console-guide/#import-key-pairs-windows) for Windows users, and [Import Key Pair (Mac and Linux)](./console-guide/#import-key-pairs-mac-and-linux) for Mac and Linux users.
-
-> [Note]
-> Key Pair is a resource assigned to the user account, so it's not deleted when you delete a project.
-
-<a id="network"></a>
-### Network
-
-Select a subnet defined in your VPC to connect to an instance. For each selected subnet, a network interface is created in the instance to connect to that subnet. You can change the order of selected subnets to change network interfaces, in which case the first network interface (`eth0`) will be set as the default gateway.
-
-For more details on creating and managing networks, refer to [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="floating-ip"></a>
-### Floating IP
-
-Select whether you will use a floating IP after instance creation. If you enable this option, a new floating IP is created and connected to the first network interface. Note that the first network interface must be connected to a subnet where an internet gateway is configured.
-
-Floating IP can be managed from Instance > Management, or Instance > Floating IP. For more details on floating IP, see [VPC Console Guide](/Network/VPC/en/console-guide/).
-
-<a id="security-group"></a>
-### Security Group
-
-Select security groups that the instance will be included in. One instance can be included in multiple security groups, in which case,
-
-- The instance can communicate over the network with all other instances included in each security group. When you are dealing with an instance with sensitive data that is not meant to be accessible by other instances, you must carefully select security groups.
-- The rules of each security group are aggregated and applied to the instance's external network communication.
-
-For more details on security groups, see [VPC Console Guide](/Network/VPC/en/console-guide/).
-
-<a id="additional-block-storage"></a>
-### Additional Block Storage
-
-Select whether you will attach an additional block storage after instance creation. If you enable this option, a new block storage separate from the root block storage is created and attached to the instance. As with the root block storage, you can specify the name, storage type, and size of the additional block storage you create.
-
-By using the root block storage only for the OS and storing your frequently used applications and data on the additional block storage, you can easily migrate or copy your applications and data using the block storage attach/detach and snapshot features. In addition, when an instance failure occurs, you can easily recover your services by simply detaching the additional block storage and attaching it to another instance.
-
-Block storage can also be managed from Instance > Block Storage. For more details on block storage, see [Block Storage Guide](/Storage/Block%20Storage/en/overview/).
-
-<a id="placement-policy"></a>
-### Placement Policy
-
-You can use placement policies to place instances on different hypervisors. When you set a placement policy at instance creation time, instances assigned to the same placement policy are created on different hypervisors.
- 
-> [Caution]
-> Instance creation may fail in situations where distributed deployment is not possible.
-
-<a id="user-script"></a>
-### User Script
-
-You can specify a script to be executed after instance creation. The user script is executed following the instance's initial boot and after the initialization process including network configuration has completed. User scripts in NHN Cloud are executed by automated tools such as cloud-init (Linux) and Cloudbase-init (Windows), which are embedded in the official images.
-
-> [Caution]
-> User scripts are executed with root (Linux)/Administrator (Windows) privileges.
-
-#### Linux
-The first line of a user script must begin with `#!`.
-```
-#!/bin/bash
-...
-```
-
-For a user script to run successfully, log files in the instance must be checked. You can check output logs printed by standard output/error from the script in `/var/log/cloud-init-output.log`.
-
-#### Windows
-
-Windows images support both Batch and PowerShell formats for user scripts. The format is determined by an indicator specified in the first line.
-
-* Batch Script
-```
-rem cmd
-...
-```
-
-* PowerShell Script
-```
-#ps1_sysnative
-...
-```
-
-To use both Batch and PowerShell in your script, use the following format.
-
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
-
-Logs from user scripts can be found in `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`.
-
-For more details regarding user scripts, see the [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) or [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) guides.
-
-<a id="additional-instance-features"></a>
-## Additional Instance Features
-
-<a id="change-instance-status"></a>
-### Change Instance Status
-
-An instance’s status can be changed by stopping, terminating, deleting, and starting it.
-
-For more details on hypervisor resources and fees for stopping, terminating, and deleting instances, see the table below.
-
-| Classification | Stop instance | Terminate Instance | Delete Instance |
-| --- | -- | --- | --- |
-| Hypervisor resource | Resource remain allocated  | Resource returned and reallocated when an instance is started | Resource removed |
-| Pricing for instance | Price for stopping applied | Free | Free |
-| Pricing for other connected resources | Charged| Charged | Charged |
-
-> [Note] GPU Instances cannot be terminated and will incur normal (100%) rates when stopped.
-
-<a id="create-image"></a>
-### Create Image
-
-Create an image from an instance's root block storage. It is recommended to stop instances before creating an image in order to ensure data integrity.
-
-While it is possible to create an image from an instance that has no available free space in its root block storage, those images are unusable by other instances because they cannot be properly initialized. Before creating an image, ensure that your instance has at least 100KB of free space.
-
-Created images are registered as private images in **Compute > Image**. You can use the registered image to create an instance with a block storage identical to that of the original instance.
-
-> [Caution]
-> The size of the created image may be larger than the actual usage of the root block storage.
-
-<a id="associatedisassociate-floating-ip"></a>
-### Associate/Disassociate Floating IP
-
-Floating IP can be associated with or disassociated from an instance, regardless of the instance's status. If you have no available floating IP or if the floating IP you want is not available, you can create one by clicking **Create**. Alternatively, floating IP can also be created from **Network > VPC > Floating IP**.
-
-For more details on floating IP, see [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="modify-security-group"></a>
-### Modify Security Group
-
-An instance's security groups can be modified regardless of the instance's status. Modified security groups are applied immediately.
-
-For more details on security groups, see [Security Group](./console-guide/#security-group) and [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="change-network-subnet"></a>
-### Change Network Subnet
-
-An instance's network subnet can only be changed while the instance is stopped. When you add a subnet, a network interface that will be connected to that subnet is automatically created on your instance. If you add multiple subnets at once, the order of the newly created network interfaces on the instance is set randomly. Deleting a subnet from an instance automatically deletes the network interface that was created along with the subnet.
-
-<a id="modify-flavor"></a>
-### Modify Flavor
-
-Instance flavors can be changed once an instance has been stopped. If an instance is running, click **Stop Instance** in **Additional Features** to stop the instance.
-
-You can only change an instance to another flavor that is compatible with its current flavor.
-
-* m2, c2, r2, t2, x1 flavor instances can be changed to m2, c2, r2, t2, x1 flavors.
-* m2, c2, r2, t2, x1 flavor instances cannot be changed to u2 flavors.
-* u2 flavor instances cannot be changed to other flavors once they have been created, not even to those of the same u2 flavor.
-
-When you modify flavors, instance resize and resize confirmation tasks proceed. When all tasks are completed, the VM changes its status to **Shutoff**. You can start the instance by clicking **Start Instance** in **Additional Features**.
-
-> [Note] The instance's root block storage size cannot be modified. If an instance requires additional block storage space, attach a block storage. For details on how to attach block storage, see [Block Storage Overview](/Storage/Block%20Storage/en/overview/).
-
-Instances will be charged using the new flavor from the moment the modification completes.
-
-<a id="change-instance-os-details"></a>
-### Change Instance OS Details
-
-You can change instance OS information regardless of the state of the instance. 
-
-On the **Compute > Instance** page, click the instance whose OS information you want to change. On the **Basic Information** tab of that instance's details screen, click **OS > Modify**.
-
-> [Note] You can't change the OS type.
-
-<a id="change-instance-description"></a>
-### Change Instance Description
- 
-You can change instance description regardless of the state of the instance. 
- 
-On the **Compute > Instance** page, click the instance whose information you want to change. On the **Basic Information** tab of that instance's details screen, click **Description > Change**.
-
-<a id="change-instance-key-pair"></a>
-### Change Instance Key Pair
-
-You can change the instance key pair only if the instance is active.
-
-On the **Compute > Instance** page, click the instance whose key pair information you want to change. On the **Basic Information** tab of that instance's details screen, click **Key Pair > Change**.
-
-Change the key pair of the instance default account to the selected key pair. The instance default account can be found on the **Connection Information** tab of the instance's bottom details screen.
-
-> [Caution] Changing an instance key pair deletes all public key information in the instance except for the selected key pair.
-
-> [Note] Only project members with the ADMIN permissions for the basic infrastructure can change the instance key pair, which cannot be changed if it is a Windows OS instance.
-
-> [Note] If the image version used to create the instance is low, the feature to change key pairs may not be available.
-
-<a id="manage-placement-policies"></a>
-### Manage Placement Policies
-
-You can create and delete placement policies and view a list of instances assigned to placement policies.
-
-Only the `anti-affinity` placement policy type for distributed placement is provided.
-
-You can delete a placement policy even if instances are assigned to it, in which case the instances are not deleted.
-
-<a id="key-pairs"></a>
-## Key Pairs
-
-<a id="import-key-pairs-windows"></a>
-### Import Key Pairs (Windows)
-
-You can use puttygen, which is installed when you install the PuTTY SSH client, to create a key pair and register it with NHN Cloud.
-
-Make sure you have [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) installed.
-
-Run puttygen.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
-
-Select **RSA** (or SSH-2 RSA in older versions of puttygen) under **Parameters**. Click **Generate** under **Actions**. Continuously move your mouse in the empty space in order to generate the key.
-
-After the key is generated, the public key file contents will be visible as shown below. Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
-
-Click **Save private key** under **Actions** to save the private key. If you save the private key leaving the **Key passphrase** field blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to use your converted private key more securely, set a passphrase before saving.
-
-> [Caution]
-> If you wish to be able to automatically login to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### Import Key Pairs (Mac and Linux)
-
-Key pairs created using `ssh-keygen` in Mac or Linux can be registered with NHN Cloud. Use the following command to create a key pair.
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-You can choose to set a passphrase for the key pair, although it is not required. If you wish to use your key pair more securely, we recommend setting a passphrase. The file with `.pub` appended to the specified key pair name contains the public key.
-
-	$ cat my_key.key.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-	
-Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## Appendix 1. Change Language Packs in Windows
-
-NHN Cloud provides Windows images with English as the primary language. You may change your language preferences with the following steps.
-
-1. Go to **START > Control Panel > Clock, Language, and Region > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. Select **Change your language preferences > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. Choose a language in **Add a language** and click **Add**.
-![Image1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. Check the language pack just added.
-![Image1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. Download and install the language pack.
-![Image1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. Download and install updates.
-![Image1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. To change to the installed language pack, double-click the selected language or select **Options**.
-![Image1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. Choose **Make this the primary language** for Windows display language.
-![Image1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. To apply the changes, click **Log off now**.
-![Image1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. Log in again, and you can see Windows is displayed using the language pack of your choice.
-![Image1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## Appendix 2. Change Routing in Windows
-
-Routing in NHN Cloud Windows instances can be changed as follows.
-
-* Press **Windows Key + R** to open an execution window, and enter `cmd` and execute to open a command prompt window. You can enter route commands here.
-
-Route commands
-
-* Print current configuration: route print
-* Add : route add "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Change : route change "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Delete : route delete "Destination" mask "Destination subnet" "gateway" metric "Metric value" if "Interface number"
-* Option : -p (specify as persistent route)
-
-  
-Description
-
-![Image1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* Metric Value: A lower value indicates higher priority
-* Interface Number: This value can be obtained from route print (red box above)
-* Persistent Route: Use the -p option to avoid the configured routes being reset across system reboots (blue box above)
-
-Example 1 - Restricting external communication for particular interfaces
-
-* You can restrict an interface from communicating externally by using the route change command to change its route metric or by leaving the default gateway field blank when configuring fixed IP settings.
-* How to Modify Metrics
-    * Increase interface metric value
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* How to Set Fixed IP
-    1. Use the ipconfig /all command to view IP information.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. Enter the corresponding IP information, leaving the default gateway field blank, in the IP Properties window.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. Check the results using the route print command.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Example 2 - Setting routes for a particular address range
-
-* Use the route add command to set routes for a particular address range.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Example 3 - Removing a particular route
-
-* Use the route delete command to remove specified routes.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## Appendix 3. Change System Locale
-
-System locale in NHN Cloud Windows instances can be changed as follows.
-
-1. Go to **Windows Key > Control Panel > Clock, Language, and Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. Select **Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. From the **Administrative** tab, click **Change system locale**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. Select a system locale to use.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. Restart the system to apply the changes.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## Appendix 4. Restarting Instances for Hypervisor Maintenance
-NHN Cloud updates hypervisor software on a regular basis to enhance the security and stability of infrastructure services that we provide.
-Instances running on a hypervisor that requires maintenance must be restarted and migrated to a hypervisor which has completed maintenance.
-
-To restart an instance, use the **! Restart** button that has been created next to the instance name in the console.
-`Using the "Restart Instances" button in the console or rebooting the operating system will not migrate an instance to another hypervisor.`
-Follow the guide below to use the restart feature in the console.
-
-Go to the project where your instance requiring maintenance is located.
-
-**1. Check if your instance requires maintenance.**
-
-Any instance that has the **! Restart** button before its name requires maintenance.
-Put the mouse cursor over the **! Restart** button to find maintenance schedule details.
-![Instance Maintenance Image 1](http://static.toastoven.net/prod_instance/instance_p_migration_en_1.png)    
-
-**2. Deactivate or stop application programs running on an instance which requires maintenance.**
-
-Any application programs running on an instance which requires maintenance must be deactivated or stopped in order not to impact your service.
-If there is no way to do so without impacting your service, please contact NHN Cloud Customer Center and we will provide you with guidance on appropriate measures to take.
-
-**3. Click the [! Restart] button created next to the name of the target instance.**
-
-![Instance Maintenance Image 2](http://static.toastoven.net/prod_instance/instance_p_migration_en_2.png)
-
-**4. Click [Confirm] in the Restart Instances confirmation window.**
-
-![Instance Maintenance Image3](http://static.toastoven.net/prod_instance/instance_p_migration_en_3.png)
-
-**5. Wait until the instance status turns green and the [! Restart] button disappers.**
-
-If the status does not change or the **! Restart** button is not disabled, try refreshing the page.
-
-You cannot operate or modify the instance while a restart is underway.
-If an instance restart does not complete successfully, the administrator will automatically be notified and you'll also be contacted by NHN Cloud.
+<!-- pre-align:aligned sig=72d665d34e38 -->
+
+<a id="management-certificate-manager-console-user-guide"></a>
+## Management > Certificate Manager > Console User Guide { #management-certificate-manager-console-user-guide }
+Console User Guide describes basic requirements to enable Certificate Manager.
+* Notification Group
+* Certificate
+* Domain
+* User Data
+* Authorization for Retrieve/Download certificates API
+
+<a id="notification-group"></a>
+## Notification Group { #notification-group }
+
+Certificate Manager sets notification cycle on each expiration date and manages notification recipients, by notification group.
+
+![20260728_alarm_group_01_en.png](http://static.toastoven.net/prod_certificate_manager/2026-07-28/20260728_alarm_group_01_en.png)
+
+<a id="creating-notification-groups"></a>
+### Creating Notification Groups { #creating-notification-groups }
+
+1. Click **+ Create Groups** on the main page of notification group, and you'll find a page like below.
+![20260728_alarm_group_02_en.png](http://static.toastoven.net/prod_certificate_manager/2026-07-28/20260728_alarm_group_02_en.png)
+2. Enter name for a group. No duplicate name is allowed.
+3. Enter whether to enable notification. You can choose whether to send all notifications, including expiration dates, to group users.
+4. Click **Add** and create a notification group.
+
+<a id="detail-page"></a>
+### Detail Page { #detail-page }
+
+1. Click **Details** on the main page, and it shows name of the group, whether notification is enabled, and management data. **Managed Data** refers to certificate/domain/user data that are integrated with each notification group.
+2. Click **Edit** to change name of the group or notification enabled/disabled.
+
+![20260728_alarm_group_03_en.png](http://static.toastoven.net/prod_certificate_manager/2026-07-28/20260728_alarm_group_03_en.png)
+
+<a id="notification-setup"></a>
+### Notification Setup { #notification-setup }
+
+1. Click **Notification Setting** on the main page and you can find notification policy for expiration dates set for each notification group.
+2. By default, notification policy is not set. You need to add notification policy to be notified on each expiration date.
+![20260728_alarm_group_04_en.png](http://static.toastoven.net/prod_certificate_manager/2026-07-28/20260728_alarm_group_04_en.png)
+
+<a id="adding-notifications"></a>
+### Adding Notifications { #adding-notifications }
+
+1. Click **+** at the bottom left of the table to add notification policy.
+![20260728_alarm_group_05_en.png](http://static.toastoven.net/prod_certificate_manager/2026-07-28/20260728_alarm_group_05_en.png)
+2. **D-day for Notification Start** refers to since how many days ago notifications can be sent from expiration dates of certificate/domain/user data.
+3. **Notification Cycle** means how often notification is to be sent from D-day for notification start.
+4. In **Receiving group**, select a group to receive notifications. Receiving groups can be edited in the project settings.
+5. Click **-** of **Delete** to delete notification policy.
+6. **D-day for Notification Start** and **Notification Cycle** cannot be redundantly set.
+7. Click **Completed** to save notification policy as configured.
+![20260728_alarm_group_06_en.png](http://static.toastoven.net/prod_certificate_manager/2026-07-28/20260728_alarm_group_06_en.png)
+
+<a id="certificate"></a>
+## Certificate { #certificate }
+
+Enter domain name (e.g. *.toast.com) and expiration date of certificate, and then notification is sent to user, in accordance with notification policy of an integrated notification group.
+
+To upload certificate files (.pem), following items are automatically collected from such files.
+* Domains [CN(CommonName) + SAN(SubjectAlternativeNames)]
+* Creation date
+* Expiration date
+* Signature type of a certificate (ex: sha256RSA)
+* Certification institution (ex. Digicert)
+
+To register certificate installation information, import certificate from the IP and port of such information so as to compare them with registered certificate and expiration date at CertificateManager.
+If auto-collected certificate installation information has earlier expiration date than that of the registered certificate at CertificateManager, notification is sent to alert that certificate needs to be replaced.
+
+<a id="main-page"></a>
+### Main Page { #main-page }
+On the main page of certificate, you can find list of certificates and remaining days until expired.
+
+![certificate-1.png](http://static.toastoven.net/prod_certificate_manager/202511/certificate-1-en.png)
+
+* You can find and search the list of already registered certificates.
+* If a certificate file is uploaded, you can check the automatically extracted Domains [CN (CommonName) + SAN (SubjectAlternativeNames)] information.
+* Also check remaining days until expired.
+* As of today, expired data are displayed in red, whereas data with less than 30 days until expired are displayed in orange.
+
+<a id="creating-certificates"></a>
+### Creating Certificates { #creating-certificates }
+
+1. On the main page of a certificate, click **+ Add Certificates** and you can find the page as follows.
+![certificate-2.png](http://static.toastoven.net/prod_certificate_manager/202511/certificate-2-en.png)
+2. Select a **Notification Group** to integrate. In case a notification group is not created, there is no available notification group, and hence certificate cannot be created.
+3. Enter **Name** of a certificate.
+    * Certificate names cannot be redundantly registered in the project.
+    * The certificate name can be freely composed using any combination of English letters, Korean characters, and numbers.
+    * Only special characters (-, _, ., *) are allowed.
+4. Register the certificate file in **Register Certificate**.
+   A certificate is the required value.
+    * A certificate (.pem) is a pem file comprised of a private key and a certificate.
+    * For supported type of certificate file (.pem), see '[Troubleshooting Guide > Converting Certificate File Formats](/Management/Certificate%20Manager/en/troubleshooting-guide/#converting-certificate-file-formats)'.
+    * The maximum uploadable certificate is 512KB.
+5. Enter **Passphrase** of the private key included within certificate file.
+6. Click **Add**.
+7. In order to integrate with [Network > Load Balancer](/Network/Load%20Balancer/en/overview), **passphrase** of the certificate file must be deleted.
+    * Use the following command to delete **passphrase**.
+    ```bash
+    openssl rsa -in my_private_input.key -out my_private_output.key
+    ```
+
+<a id="certificate-detail-page"></a>
+### Detail Page { #certificate-detail-page }
+
+1. Click **Details** on the main page of a certificate to find information of the certificate and file.
+    * Fields specified as **(Auto Collect)** after field name refer to automatically collected items from certificate files. If there is no registered certificate file, '-' shows.
+          ![certificate-3-1.png](http://static.toastoven.net/prod_certificate_manager/202511/certificate-3-1-en.png)
+2. Click **Edit** to modify certificate information or (re)upload certificate files.
+    * Certificate names cannot be edited. If a name must be edited, delete a registered certificate and create a new one.
+    * Only one certificate file can be uploaded per certificate.
+    * When renewing an existing certificate file, the Domains [CN (CommonName) + SAN (SubjectAlternativeNames)] of the new certificate file must be identical to those of the existing certificate file.
+      ![certificate-3-2.png](http://static.toastoven.net/prod_certificate_manager/202511/certificate-3-2-en.png)
+
+<a id="creating-certificate-usageinstallation-information"></a>
+### Creating Certificate Usage/Installation Information { #creating-certificate-usageinstallation-information }
+
+1. Click **Certificate Usages** on the main page, and find usage and installation information of certificate. By default, no item is registered.
+![certificate-4.png](http://static.toastoven.net/prod_certificate_manager/202511/certificate-4-1-en.png)
+2. Click **Edit** to find a page as below:
+![certificate-5.png](http://static.toastoven.net/prod_certificate_manager/202511/certificate-4-2-en.png)
+3. There are two ways to add certificate usage information:
+    * **Add User**: Click the **+ Add** button in the top right corner to bring up fields where you can enter information.
+![certificate-6.png](http://static.toastoven.net/prod_certificate_manager/202511/certificate-4-3-en.png)
+    * **Load**: you can import usage information from other certificates by clicking the **Load** button in the upper right corner.
+        1. Click the **Load** button will bring up the certificate search window.
+![certificate-9.png](http://static.toastoven.net/prod_certificate_manager/202511/certificate-4-4-en.png)
+        2. Search for the certificate name you want to retrieve in the search box.
+![certificate-10.png](http://static.toastoven.net/prod_certificate_manager/202511/certificate-4-5-en.png)
+        3. Click **OK** to automatically retrieve the list of usage information for the certificate.
+![certificate-11.png](http://static.toastoven.net/prod_certificate_manager/202511/certificate-4-6-en.png)
+4. Enter name for certificate usage information.
+    * The domain name in the usage information must be included in the Domains [CN (CommonName) + SAN (SubjectAlternativeNames)] automatically registered when uploading the certificate file.
+5. Enter whether to enable notification for certificate usage information.
+6. To enter certificate installation information, click **+ Add** next to Certificate Installation Information. Then, a window like below shows.
+![certificate-7.png](http://static.toastoven.net/prod_certificate_manager/202511/certificate-4-8-en.png)
+    * Enter **IP address** and **Port No.**. When auto-collect is enabled, download certificate via IP address and port number to compare expiration dates.
+    * In case of a private IP address (e.g. 192.168.0.1, 172.20.0.1, 10.0.0.1 ), downloading may fail and notification on failed auto collection may be sent.
+7. Click **Completed** to save usage and installation information of the certificate as set.
+
+<a id="page-of-certificate-usage-information"></a>
+### Page of Certificate Usage Information { #page-of-certificate-usage-information }
+* On the main page of a certificate, click **Certificate Usages** to check usage and installation information of certificate.
+* Notifications of usage information can be filtered by selecting **Total**, **Enabled**, or **Not Use** on top right.
+
+![certificate-8.png](http://static.toastoven.net/prod_certificate_manager/202511/certificate-4-7-en.png)
+
+<a id="domain"></a>
+## Domain { #domain }
+Enter name of domain (the highest domain name of DNS, e.g. toast.com) and expiration date, and notifications are sent to users in accordance with notification policy of an integrated notification group.
+
+If 'Auto Collect' is enabled for domain, domain information is automatically collected from the whois server.
+Following items are automatically collected:
+* Creation Date
+* Expiration Date
+* Registrar (ex.Gabia, Inc.)
+* Registration institution (Registrant, domain's real owner)
+* Name server
+
+<a id="domain-main-page"></a>
+### Main Page { #domain-main-page }
+
+You can find and search the list of already registered domains.
+
+![domain-1.png](http://static.toastoven.net/prod_certificate_manager/202002/domain-1.png)
+
+Also check remaining days until expired.
+
+As of today, expired data are displayed in red, whereas data with less than 30 days until expired are displayed in orange.
+
+<a id="creating-domains"></a>
+### Creating Domains { #creating-domains }
+
+1. On the main page of a domain, click **+ Add Domains** and you can find the page as follows.
+![domain-2.png](http://static.toastoven.net/prod_certificate_manager/202002/domain-2.png)
+2. Select a notification group to integrate. In case a notification group is not created, there is no available notification group, and hence domain cannot be created.
+3. Enter **Name** of a upper domain: upper domain names cannot be redundantly registered.
+4. Enter **Date of expiration** of the domain.
+5. Select **Type**.
+    * **For Service** refers to registering and using domains on a DNS server
+    * while **For Defense** refers to acquiring by purchase of domain for the purpose of service credibility, although it is not practically applied.
+6. Select whether to enable notifications. It shows whether to send notifications to each domain, and with **Not Use**, no notification is sent to the corresponding domain.
+7. Select to enable/disable **Auto Collect**. If Auto Collect is **Enable**, following items are automatically collected from the whois server:
+    * Creation Date
+    * Expiration Date
+    * Registrar (ex.Gabia, Inc.)
+    * Registration institution (Registrant, domain's real owner)
+    * Name server
+8. Enter whether to auto-collect sub-domain and name of the domain.
+    * With auto-collect enabled, call ping to the corresponding domain to check if it gets response successfully.
+    * A sub-domain name must belong to a upper domain.
+        * Name of a sub-domain must be same as that of a upper domain, or end with "[Name of Upper Domain]".
+        * ex. If a upper domain is named "toast.com", a sub-domain can be named as "toast.com", "www.toast.com", or "www2.toast.com".
+9. Click **Add** to save domain information as configured.
+
+<a id="domain-detail-page"></a>
+### Detail Page { #domain-detail-page }
+
+1. Click **Detail Information** on the main page of a domain to find information of the domain and sub-domain and file.
+2. Fields specified as **(Auto Collect)** after field name refer to automatically collected items. If there is no automatically collected information, '-' shows.
+3. Click **Edit** to modify upper domain information, delete a registered sub-domain or add a sub-domain.
+    * Upper domain names cannot be edited. If a name must be edited, delete a registered domain and create a new one.
+
+![domain-3.png](http://static.toastoven.net/prod_certificate_manager/202002/domain-3.png)
+
+<a id="user-data"></a>
+## User Data { #user-data }
+
+Enter data with expiration dates (e.g. license key) and notifications are sent to users in accordance with notification policy of an integrated notification group.
+This feature is applicable when notification is required on a regular basis to specific user groups.
+
+<a id="user-data-main-page"></a>
+### Main Page { #user-data-main-page }
+
+You can find and search the list of already registered certificates. Also check remaining days until expired.
+As of today, expired data are displayed in red, whereas data with less than 30 days until expired are displayed in orange.
+
+![userdata-1.png](http://static.toastoven.net/prod_certificate_manager/202002/userdata-1.png)
+
+<a id="creating-user-data"></a>
+### Creating User Data { #creating-user-data }
+
+Click **+ Add User Data** on the main user data page and it shows the following.
+
+![userdata-2.png](http://static.toastoven.net/prod_certificate_manager/202002/userdata-2.png)
+
+* Select a notification group to integrate. In case a notification group is not created, there is no available notification group, and hence user data cannot be created.
+* Enter name of user data: user data name cannot be redundantly registered.  Enter name of user data: user data names cannot be redundantly registered.
+* Select whether to send notification, which refers to whether to send notifications on corresponding user data. With **Not Use**, no notification is sent regarding the user data.
+* Enter expiration date of the user data.
+* Click **Add** and save user data as configured.
+
+<a id="user-data-detail-page"></a>
+### Detail Page { #user-data-detail-page }
+
+Click **Details** on the main user data page, and user data information as saved shows up.
+
+Click **Edit** to edit user data information.
+
+![userdata-3.png](http://static.toastoven.net/prod_certificate_manager/202002/userdata-3.png)
