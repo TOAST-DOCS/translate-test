@@ -1,505 +1,786 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > Console Guide
+<!-- machine_translated: true -->
 
-<a id="create-instances"></a>
-## Create Instances
+<!-- pre-align:aligned sig=e20de7487902 -->
 
-You can create instances either by using the settings below or by using instance templates. To create instances using instance templates, select **Use instance template** from the Create Instance page. To learn how to create instance templates, see [Instance Template Console Guide](/Compute/Instance%20Template/en/console-guide/).
+<a id="nhn-cloud-console-policy-guide"></a>
+## NHN Cloud > Console Policy Guide { #nhn-cloud-console-policy-guide }
 
-<a id="os-settings"></a>
-### OS Settings
+NHN Cloud console serves as a management tool and task window for using NHN Cloud services.
+This document guides you through the basic setup and use of the NHN Cloud console.
 
-Determine how the root block storage is created that will be used when an instance is created.
+NHN Cloud console provides the following features:
 
-- Select either **Create New and Set up** or **Use Existing Resource**.
-- If you select **Create New and Set up**, create root block storage using an image.
-- If you select **Use Existing Resource**, use a previously created block storage or snapshot.
+- Manage basic information to use services (organization, project)
+- Enable/disable services
+- Manage members who use services
+- Provide billing information
 
-<a id="image"></a>
-### Image
+<a id="quick-guide"></a>
+## Quick Guide { #quick-guide }
+This is a quick guide to the basic features provided by the console.
 
-Select the image that contains the operating system you need. You can choose between public images provided by NHN Cloud, images you've previously created, or shared images.
+![tutorial_1_en.png](http://static.toastoven.net/toast/console_guide/consoleguide_01_202109_en.png)
+![tutorial_2_en.png](http://static.toastoven.net/toast/console_guide/consoleguide_02_202109_en.png)
 
-The available instance flavors vary depending on the image you choose, so we recommended you choose an image first when creating an instance.
 
-| OS                         | Block Storage     | Memory   |
-| -------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB or more  | 1GB or more |
-| Windows                           | 50GB or more  | 2GB or more |
+<a id="organization-management"></a>
+## Organization Management { #organization-management }
 
-<a id="root-block-storage"></a>
-### Root Block Storage
+An organization is a group that is created to use and manage NHN Cloud services efficiently.
+In an organization, users can share and use the same service policy.
 
-Set up root block storage according to the **OS settings**.
+<a id="create-an-organization"></a>
+### Create an Organization { #create-an-organization }
 
-- If you select **Create New and Set up**, create the root block store by specifying the **block storage type** and **block storage size**.
-- If you select **Use Existing Resource**, specify the **original resource** to use as root block storage.
+- To use NHN Cloud services, an organization must be created.
+- Both personal and business members can create organizations.
+- A member who creates an organization automatically becomes the OWNER of the organization.
+- To create an organization, a member's payment method must be registered.
+- An organization manages organization name and domain information.
+- Domain information of an organization must be unique, because it is required for use by services.
 
-#### Original Resource
+<a id="guide-to-creating-an-organization"></a>
+### Guide to Creating an Organization { #guide-to-creating-an-organization }
 
-You can select either a previously created **block storage** or **snapshot**.
+![console_guide_1_en.png](http://static.toastoven.net/toast/console_guide/consoleguide_03_202109_en.png)
+![console_guide_2_en.png](http://static.toastoven.net/toast/console_guide/consoleguide_04_202109_en.png)
 
-- When you select **block storage**, use the previously created block storage as the root block storage.
-- When you select **snapshot**, the root block storage is created using a previously created snapshot.
+1. Go to the console and click the **+** button next to **Create an Organization** in the top menu.
+2. In the **Create Organization** window, enter a name for your organization. The organization name can include Korean letters, English letters, special characters, and numbers.
+3. Click the **OK** button to complete the organization creation.
+4. The created organization name is displayed in the top menu of the console.
+5. Click the **Settings** button to check information of the created organization. Enter your domain information as additional information for your organization. The domain must be set as a unique value in NHN Cloud.
 
-#### Block Storage Size
 
-Specify the root block storage size of an instance.
+<a id="organization-services"></a>
+### Organization Services { #organization-services }
 
-- The block storage size must be at least the minimum size required by the image.
+Once the organization is created, you can select services.
+Services that can be enabled for each organization include the following:
 
-The root block storage size varies depending on instance flavor.
+- Dooray!
+- Contact Center
+- CloudTrail
+- Resource Watcher
 
-| Flavors               | Supported Block Storage Size         |
-| -------------------| -------------------------- |
-| u2 flavors             | 20 ~ 100 GB (varies by flavor) |
-| t2, m2, c2, r2, and x1 flavors | 20 ~ 2000 GB               |
 
-> [Note]
-> Because you are charged by block storage size, it is inefficient to make the default block storage size large without consideration. We recommend that you add additional block storage as needed.
-> If you select **block storage** for **Use Existing Resource** in the **OS settings**, you can't change the block storage size.
-> If you select **snapshot** for **Use Existing Resource** in the **OS settings**, block storage size must be set equal to or larger than the original block storage size.
 
-#### Block Storage Type
+<a id="delete-an-organization"></a>
+### Delete an Organization { #delete-an-organization }
 
-Determines the default block storage type of an instance.
+- An organization can be deleted only by the OWNER of the organization.
+- To delete an organization, all the services being used must be deleted.
+- When an organization is deleted, all information of the organization is deleted and cannot be restored.
 
-- Choose either **HDD** or **SSD**. The choice of block storage type affects pricing and performance.
-- You cannot change the block storage type once the instance is created.
+<a id="organization-governance-setting"></a>
+### Organization Governance Setting { #organization-governance-setting }
 
-> [Note]
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the block storage type.
+You can set and manage policies for stable and efficient use of NHN Cloud services. Set up a common organization policy for security compliance such as login and personal information, so that the members within the organization can comply with the policy.
 
-<a id="availability-zone"></a>
-### Availability Zone
+<a id="organization-governance-setting-ip-acl-setting"></a>
+#### IP ACL Setting
+NHN Cloud services are accessible only from IP addresses registered in the IP ACL settings.
+IP ACLs are applied to both console access and Public API calls using User Access Key tokens. [View Supported Authentication Methods](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/supported-authentication-methods/)
+For Dooray! services, IP ACL can be set on the service's console screen.
 
-If an availability zone is not specified, a random zone is selected. An instance can use a block storage only if they both exist in the same availability zone. If the block storage you wish to use exists in a particular availability zone, then select that zone.
+1. Go to **Console** and access the **Organization Management** page of the organization you want to set up.
+2. In the sub-tab menu, select **Governance Settings**.
+3. You can set and manage IP ACL under **Set IP ACL** in the Organization Governance Setting.
+    * Service
+        * Common Settings: IP ACL can be set globally for all services.
+        * Individual Settings for Each Service: IP ACL can be set for each service (Cloud, Contiple, etc.).
+    * IP ACL
+        * Disabled: Console access and API calls are allowed from all IP addresses (or IP ranges).
+        * Allow registered IPs or service gateways only: Console access and API calls are allowed only from registered IP addresses (or IP ranges) and service gateways.
+            * IP/IP range: Enter an IP or IP range you want to allow.
+            * Service Gateway: Enter the Service Gateway ID.
+                * IP ACL is applied only to service gateways with API Gateway service connection and NAT IP fixed settings configured.
+                * If a service gateway ID is registered, the NAT IP configured for the service gateway is retrieved and applied to the IP ACL.
 
-> [Note]
-> Resources in a VPC can be used in any availability zone.
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the availability zone.
 
-For more details on availability zones, see [Availability Zone in Instance Overview](./overview/#availability-zone).
-
-<a id="flavor"></a>
-### Flavor
-
-You can select various flavors depending on virtual hardware performance specifications. However, the choice of some flavors may be limited depending on the virtual hardware performance that your image requires. For more details, see [Instance Overview](./overview).
-
-> [Note] 
-> 1 vCPU refers to one socket composed of one thread and one core, the number of threads and the number of cores per socket are constant, one each.
-
-Instance flavors can be changed in the NHN Cloud console even after instance creation, from higher to lower specs and vice versa. However, note that some flavors cannot be changed. See [Modify flavor](./console-guide/#modify-flavor) for details.
-
-> [Caution] An instance's root block storagecannot be changed by changing instance flavors.
-
-<a id="number-of-instances"></a>
-### Number of Instances
-
-You can specify the number of instances you want to create when creating multiple instances with the same image, availability zone, flavor, block storage size, key pair, and network settings. The instance names will be the name you specified, with numbers such as `-1` and `-2` appended to the end. For example, creating two instances named `my-instance` will result in `my-instance-1` and `my-instance-2`. The maximum number of instances you can create at once is 10.
-
-When you create multiple instances without specifying an availability zone, each instance will be created in a randomly selected availability zone. For example, if two instances are created without specifying an availability zone, they may be created in the same zone or they may be created in different zones. If all instances need to be created in the same availability zone, select a particular zone.
-
-> [Note]
-> If you select **block storage** for **Use Existing Resource** in the **OS settings** or **Use Existing Network Interface** in the **network settings**, the number of instances is limited to `1`.
-
-<a id="key-pair"></a>
-### Key Pair
-
-Use an existing key pair or create a new key pair. To register an existing key pair, see [Import Key Pair (Windows)](./console-guide/#import-key-pairs-windows) for Windows users, and [Import Key Pair (Mac and Linux)](./console-guide/#import-key-pairs-mac-and-linux) for Mac and Linux users.
-
-> [Note]
-> Key Pair is a resource assigned to the user account, so it's not deleted when you delete a project.
-
-<a id="network"></a>
-### Network
-
-Select a subnet defined in your VPC to connect to an instance. For each selected subnet, a network interface is created in the instance to connect to that subnet. You can change the order of selected subnets to change network interfaces, in which case the first network interface (`eth0`) will be set as the default gateway.
-
-For more details on creating and managing networks, refer to [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="floating-ip"></a>
-### Floating IP
-
-Select whether you will use a floating IP after instance creation. If you enable this option, a new floating IP is created and connected to the first network interface. Note that the first network interface must be connected to a subnet where an internet gateway is configured.
-
-Floating IP can be managed from Instance > Management, or Instance > Floating IP. For more details on floating IP, see [VPC Console Guide](/Network/VPC/en/console-guide/).
-
-<a id="security-group"></a>
-### Security Group
-
-Select security groups that the instance will be included in. One instance can be included in multiple security groups, in which case,
-
-- The instance can communicate over the network with all other instances included in each security group. When you are dealing with an instance with sensitive data that is not meant to be accessible by other instances, you must carefully select security groups.
-- The rules of each security group are aggregated and applied to the instance's external network communication.
-
-For more details on security groups, see [VPC Console Guide](/Network/VPC/en/console-guide/).
-
-<a id="additional-block-storage"></a>
-### Additional Block Storage
-
-Select whether you will attach an additional block storage after instance creation. If you enable this option, a new block storage separate from the root block storage is created and attached to the instance. As with the root block storage, you can specify the name, storage type, and size of the additional block storage you create.
-
-By using the root block storage only for the OS and storing your frequently used applications and data on the additional block storage, you can easily migrate or copy your applications and data using the block storage attach/detach and snapshot features. In addition, when an instance failure occurs, you can easily recover your services by simply detaching the additional block storage and attaching it to another instance.
-
-Block storage can also be managed from Instance > Block Storage. For more details on block storage, see [Block Storage Guide](/Storage/Block%20Storage/en/overview/).
-
-<a id="placement-policy"></a>
-### Placement Policy
-
-You can use placement policies to place instances on different hypervisors. When you set a placement policy at instance creation time, instances assigned to the same placement policy are created on different hypervisors.
- 
-> [Caution]
-> Instance creation may fail in situations where distributed deployment is not possible.
-
-<a id="user-script"></a>
-### User Script
-
-You can specify a script to be executed after instance creation. The user script is executed following the instance's initial boot and after the initialization process including network configuration has completed. User scripts in NHN Cloud are executed by automated tools such as cloud-init (Linux) and Cloudbase-init (Windows), which are embedded in the official images.
-
-> [Caution]
-> User scripts are executed with root (Linux)/Administrator (Windows) privileges.
-
-#### Linux
-The first line of a user script must begin with `#!`.
-```
-#!/bin/bash
-...
-```
-
-For a user script to run successfully, log files in the instance must be checked. You can check output logs printed by standard output/error from the script in `/var/log/cloud-init-output.log`.
-
-#### Windows
-
-Windows images support both Batch and PowerShell formats for user scripts. The format is determined by an indicator specified in the first line.
-
-* Batch Script
-```
-rem cmd
-...
-```
-
-* PowerShell Script
-```
-#ps1_sysnative
-...
-```
-
-To use both Batch and PowerShell in your script, use the following format.
-
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
-
-Logs from user scripts can be found in `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`.
-
-For more details regarding user scripts, see the [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) or [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) guides.
-
-<a id="additional-instance-features"></a>
-## Additional Instance Features
-
-<a id="change-instance-status"></a>
-### Change Instance Status
-
-An instance’s status can be changed by stopping, terminating, deleting, and starting it.
-
-For more details on hypervisor resources and fees for stopping, terminating, and deleting instances, see the table below.
-
-| Classification | Stop instance | Terminate Instance | Delete Instance |
-| --- | -- | --- | --- |
-| Hypervisor resource | Resource remain allocated  | Resource returned and reallocated when an instance is started | Resource removed |
-| Pricing for instance | Price for stopping applied | Free | Free |
-| Pricing for other connected resources | Charged| Charged | Charged |
-
-> [Note] GPU Instances cannot be terminated and will incur normal (100%) rates when stopped.
-
-<a id="create-image"></a>
-### Create Image
-
-Create an image from an instance's root block storage. It is recommended to stop instances before creating an image in order to ensure data integrity.
-
-While it is possible to create an image from an instance that has no available free space in its root block storage, those images are unusable by other instances because they cannot be properly initialized. Before creating an image, ensure that your instance has at least 100KB of free space.
-
-Created images are registered as private images in **Compute > Image**. You can use the registered image to create an instance with a block storage identical to that of the original instance.
-
-> [Caution]
-> The size of the created image may be larger than the actual usage of the root block storage.
-
-<a id="associatedisassociate-floating-ip"></a>
-### Associate/Disassociate Floating IP
-
-Floating IP can be associated with or disassociated from an instance, regardless of the instance's status. If you have no available floating IP or if the floating IP you want is not available, you can create one by clicking **Create**. Alternatively, floating IP can also be created from **Network > VPC > Floating IP**.
-
-For more details on floating IP, see [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="modify-security-group"></a>
-### Modify Security Group
-
-An instance's security groups can be modified regardless of the instance's status. Modified security groups are applied immediately.
-
-For more details on security groups, see [Security Group](./console-guide/#security-group) and [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="change-network-subnet"></a>
-### Change Network Subnet
-
-An instance's network subnet can only be changed while the instance is stopped. When you add a subnet, a network interface that will be connected to that subnet is automatically created on your instance. If you add multiple subnets at once, the order of the newly created network interfaces on the instance is set randomly. Deleting a subnet from an instance automatically deletes the network interface that was created along with the subnet.
-
-<a id="modify-flavor"></a>
-### Modify Flavor
-
-Instance flavors can be changed once an instance has been stopped. If an instance is running, click **Stop Instance** in **Additional Features** to stop the instance.
-
-You can only change an instance to another flavor that is compatible with its current flavor.
-
-* m2, c2, r2, t2, x1 flavor instances can be changed to m2, c2, r2, t2, x1 flavors.
-* m2, c2, r2, t2, x1 flavor instances cannot be changed to u2 flavors.
-* u2 flavor instances cannot be changed to other flavors once they have been created, not even to those of the same u2 flavor.
-
-When you modify flavors, instance resize and resize confirmation tasks proceed. When all tasks are completed, the VM changes its status to **Shutoff**. You can start the instance by clicking **Start Instance** in **Additional Features**.
-
-> [Note] The instance's root block storage size cannot be modified. If an instance requires additional block storage space, attach a block storage. For details on how to attach block storage, see [Block Storage Overview](/Storage/Block%20Storage/en/overview/).
-
-Instances will be charged using the new flavor from the moment the modification completes.
-
-<a id="change-instance-os-details"></a>
-### Change Instance OS Details
-
-You can change instance OS information regardless of the state of the instance. 
-
-On the **Compute > Instance** page, click the instance whose OS information you want to change. On the **Basic Information** tab of that instance's details screen, click **OS > Modify**.
-
-> [Note] You can't change the OS type.
-
-<a id="change-instance-description"></a>
-### Change Instance Description
- 
-You can change instance description regardless of the state of the instance. 
- 
-On the **Compute > Instance** page, click the instance whose information you want to change. On the **Basic Information** tab of that instance's details screen, click **Description > Change**.
-
-<a id="change-instance-key-pair"></a>
-### Change Instance Key Pair
-
-You can change the instance key pair only if the instance is active.
-
-On the **Compute > Instance** page, click the instance whose key pair information you want to change. On the **Basic Information** tab of that instance's details screen, click **Key Pair > Change**.
-
-Change the key pair of the instance default account to the selected key pair. The instance default account can be found on the **Connection Information** tab of the instance's bottom details screen.
-
-> [Caution] Changing an instance key pair deletes all public key information in the instance except for the selected key pair.
-
-> [Note] Only project members with the ADMIN permissions for the basic infrastructure can change the instance key pair, which cannot be changed if it is a Windows OS instance.
-
-> [Note] If the image version used to create the instance is low, the feature to change key pairs may not be available.
-
-<a id="manage-placement-policies"></a>
-### Manage Placement Policies
-
-You can create and delete placement policies and view a list of instances assigned to placement policies.
-
-Only the `anti-affinity` placement policy type for distributed placement is provided.
-
-You can delete a placement policy even if instances are assigned to it, in which case the instances are not deleted.
-
-<a id="key-pairs"></a>
-## Key Pairs
-
-<a id="import-key-pairs-windows"></a>
-### Import Key Pairs (Windows)
-
-You can use puttygen, which is installed when you install the PuTTY SSH client, to create a key pair and register it with NHN Cloud.
-
-Make sure you have [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) installed.
-
-Run puttygen.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
-
-Select **RSA** (or SSH-2 RSA in older versions of puttygen) under **Parameters**. Click **Generate** under **Actions**. Continuously move your mouse in the empty space in order to generate the key.
-
-After the key is generated, the public key file contents will be visible as shown below. Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
-
-Click **Save private key** under **Actions** to save the private key. If you save the private key leaving the **Key passphrase** field blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to use your converted private key more securely, set a passphrase before saving.
-
-> [Caution]
-> If you wish to be able to automatically login to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### Import Key Pairs (Mac and Linux)
-
-Key pairs created using `ssh-keygen` in Mac or Linux can be registered with NHN Cloud. Use the following command to create a key pair.
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-You can choose to set a passphrase for the key pair, although it is not required. If you wish to use your key pair more securely, we recommend setting a passphrase. The file with `.pub` appended to the specified key pair name contains the public key.
-
-	$ cat my_key.key.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-	
-Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## Appendix 1. Change Language Packs in Windows
-
-NHN Cloud provides Windows images with English as the primary language. You may change your language preferences with the following steps.
-
-1. Go to **START > Control Panel > Clock, Language, and Region > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. Select **Change your language preferences > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. Choose a language in **Add a language** and click **Add**.
-![Image1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. Check the language pack just added.
-![Image1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. Download and install the language pack.
-![Image1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. Download and install updates.
-![Image1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. To change to the installed language pack, double-click the selected language or select **Options**.
-![Image1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. Choose **Make this the primary language** for Windows display language.
-![Image1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. To apply the changes, click **Log off now**.
-![Image1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. Log in again, and you can see Windows is displayed using the language pack of your choice.
-![Image1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## Appendix 2. Change Routing in Windows
-
-Routing in NHN Cloud Windows instances can be changed as follows.
-
-* Press **Windows Key + R** to open an execution window, and enter `cmd` and execute to open a command prompt window. You can enter route commands here.
-
-Route commands
-
-* Print current configuration: route print
-* Add : route add "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Change : route change "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Delete : route delete "Destination" mask "Destination subnet" "gateway" metric "Metric value" if "Interface number"
-* Option : -p (specify as persistent route)
-
-  
-Description
-
-![Image1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* Metric Value: A lower value indicates higher priority
-* Interface Number: This value can be obtained from route print (red box above)
-* Persistent Route: Use the -p option to avoid the configured routes being reset across system reboots (blue box above)
-
-Example 1 - Restricting external communication for particular interfaces
-
-* You can restrict an interface from communicating externally by using the route change command to change its route metric or by leaving the default gateway field blank when configuring fixed IP settings.
-* How to Modify Metrics
-    * Increase interface metric value
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* How to Set Fixed IP
-    1. Use the ipconfig /all command to view IP information.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. Enter the corresponding IP information, leaving the default gateway field blank, in the IP Properties window.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. Check the results using the route print command.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Example 2 - Setting routes for a particular address range
-
-* Use the route add command to set routes for a particular address range.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Example 3 - Removing a particular route
-
-* Use the route delete command to remove specified routes.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## Appendix 3. Change System Locale
-
-System locale in NHN Cloud Windows instances can be changed as follows.
-
-1. Go to **Windows Key > Control Panel > Clock, Language, and Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. Select **Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. From the **Administrative** tab, click **Change system locale**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. Select a system locale to use.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. Restart the system to apply the changes.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## Appendix 4. Restarting Instances for Hypervisor Maintenance
-NHN Cloud updates hypervisor software on a regular basis to enhance the security and stability of infrastructure services that we provide.
-Instances running on a hypervisor that requires maintenance must be restarted and migrated to a hypervisor which has completed maintenance.
-
-To restart an instance, use the **! Restart** button that has been created next to the instance name in the console.
-`Using the "Restart Instances" button in the console or rebooting the operating system will not migrate an instance to another hypervisor.`
-Follow the guide below to use the restart feature in the console.
-
-Go to the project where your instance requiring maintenance is located.
-
-**1. Check if your instance requires maintenance.**
-
-Any instance that has the **! Restart** button before its name requires maintenance.
-Put the mouse cursor over the **! Restart** button to find maintenance schedule details.
-![Instance Maintenance Image 1](http://static.toastoven.net/prod_instance/instance_p_migration_en_1.png)    
-
-**2. Deactivate or stop application programs running on an instance which requires maintenance.**
-
-Any application programs running on an instance which requires maintenance must be deactivated or stopped in order not to impact your service.
-If there is no way to do so without impacting your service, please contact NHN Cloud Customer Center and we will provide you with guidance on appropriate measures to take.
-
-**3. Click the [! Restart] button created next to the name of the target instance.**
-
-![Instance Maintenance Image 2](http://static.toastoven.net/prod_instance/instance_p_migration_en_2.png)
-
-**4. Click [Confirm] in the Restart Instances confirmation window.**
-
-![Instance Maintenance Image3](http://static.toastoven.net/prod_instance/instance_p_migration_en_3.png)
-
-**5. Wait until the instance status turns green and the [! Restart] button disappers.**
-
-If the status does not change or the **! Restart** button is not disabled, try refreshing the page.
-
-You cannot operate or modify the instance while a restart is underway.
-If an instance restart does not complete successfully, the administrator will automatically be notified and you'll also be contacted by NHN Cloud.
+ * Caution: If you also set up overseas access block, even if an IP is registered in the IP ACL, access to the console can be restricted if it is not included in the access allowed countries.
+
+<a id="organization-governance-setting-overseas-access-block-settings"></a>
+#### Overseas Access Block Settings
+If you need to block overseas access, we provide the feature to make the console accessible only from access-allowed countries.
+
+* You can enable or disable the feature in **Overseas Access Block Settings**.
+    * Disable: Console access is available in all countries.
+    * Enable: Console access is only available in access allowed countries.
+* Access Allowed Countries
+    * If you have overseas access block set up, you can set which countries are allowed to access.
+    * You must select at least one country to allow access.
+* Caution: If you set IP ACL together, access to the console can be restricted if the IP ACLs do not include IPs from countries that are allowed to access.
+
+<a id="organization-governance-setting-set-approval-process-management"></a>
+#### Set approval process management
+If you need an approval process when using a service, a feature to establish an approval process of the approver is provided for each service.
+
+* You can select Disabled/Enabled in **Set approval process management.**
+* If you select **Set** in Set approval process management, you can use the approval process provided by each service. 
+* Services that provide an approval process
+    * Secure Key Manager 
+
+<a id="organization-governance-setting-set-instance-name-management"></a>
+#### Set instance name management
+When using the instance service, you can set instance name management rules. 
+
+* When selecting **Duplicate allowed management**, the instance name is managed as the name entered by the user, and duplicate instance names are allowed.
+* When selecting **Unique management**, the instance name is managed as a unique instance name by combining the name entered by the user and the characters generated by the system.
+
+<a id="organization-governance-setting-set-control-of-resource-permissions-and-restriction-on-terminal-access"></a>
+#### Set control of resource permissions and restriction on terminal access
+When NHN Cloud administrator need to view customer's resources (instance, etc.) information for operational purposes, such as responding to failures, users with project ADMIN/MEMBER permissions will be notified by email and the administrator can view the resource information in an isolated environment with enhanced security.
+
+* You can select Disabled/Enabled in the Set control of resource permissions and restriction on terminal access.
+* This setting limits the feature to view customer resources by NHN Cloud administrator, which may cause delays in response in emergency situations such as failures.
+
+<a id="organization-governance-setting-privacy-setting"></a>
+#### Privacy Setting
+The privacy setting feature is available if you need to protect your privacy.
+You can mask personal information that is exposed on the service, or if you need to download personal information, you can make it available only in a separate network environment. 
+
+* Privacy Setting
+    * Organization/Project > Manage Member > IAM Account > Download List
+        * If not set, any member who can download the IAM account list can download the member list.
+        *  If set up, the feature to download member lists is disabled and only exceptionally allowed IPs or IP bands can download member lists.
+
+    * Organization > CloudTrail > Privacy
+        * If not set, all members who can view the log list will see the full information in the log list.
+        * If set up, personal information (email, name, ID) in the log list is masked.
+
+<a id="iam-governance-setting"></a>
+### IAM Governance Setting { #iam-governance-setting }
+
+<a id="iam-governance-setting-login-security-setting"></a>
+#### Login Security Setting
+
+* To strengthen the console access security of IAM accounts, Login Security Setting feature is provided.
+* You can set it globally for all organization services (Cloud, Contiple, Dooray!, etc.), or set it differently for each service.
+![console_guide_4_en.png](http://static.toastoven.net/toast/console_guide/consoleguide_06_202303_en.png)
+
+1. Go to the console and access the Organization Management page of the organization you want to set up.
+2. Select Governance Setting from the submenu.
+3. You can set and manage login security setting in IAM Governance Setting.
+
+<a id="iam-governance-setting-two-factor-authentication"></a>
+#### Two-factor Authentication
+
+You can enable two-factor authentication by setting it as a required feature.
+
+* Service
+    * Common Settings: Set the two-factor authentication globally for all organization services.
+    * Individual Settings for Each Service: You can set two-factor authentication differently for each service (Cloud, Contiple, Dooray!, etc.).
+* Two-factor Authentication
+    * Not Configured: Users can log in by entering their ID and password without two-factor authentication.
+    * Google OTP: After entering ID and password, users can log in by entering the One Time Password provided by the Google OTP app.
+    * Email/Phone: After entering ID and password, users can log in by clicking the **Verify** button sent to their email address for authentication.
+* Exclusion IP
+    * Not Configured: When logging in, users can log in after two-factor authentication from all IP ranges.
+    * Configured: Users can log in without two-factor authentication when logging in from the configured IP or IP range.
+
+<a id="iam-governance-setting-maximum-login-attempts"></a>
+#### Maximum Login Attempts
+
+You can adjust setting so that users can log in again after a certain period of time when they failed to log in repeatedly.
+
+* Service
+    * Common Setting: Applies the maximum login attempt settings uniformly across all organization services. (Individual Settings for Each Service is not provided)
+* Maximum login attempts
+    * Not Configured: Users can continue to try to log in even if login fails.
+    * Configured: If you enter the desired number of failures and lock time, if users fail to log in for the configured number of times, users will not be able to log in during the entered lock time.
+
+<a id="iam-governance-setting-login-session"></a>
+#### Login Session
+
+Depending on the login session setting, a login session will be maintained or expire automatically.
+After the login expires, the user must log in again to access the console.
+This setting is a common configuration that applies uniformly to the IAM console and does not support per-service configuration.
+* Login Session Count
+    * Set the number of simultaneous logins with the same ID on multiple devices.
+    * If this is set to 1, users cannot log in with the same ID on other devices such as PC or smartphone at the same time.
+    E.g., PC - maintain login, Smartphone - automatically logged out
+* Login Session Maintenance Time
+    * Set the amount of time to maintain login without any action such as clicking.
+    * If a user do not perform any actions such as clicking for a configured period of time, the user will be automatically logged out.
+    * Setting it too long is not good for security, so please consider setting it to an appropriate value.
+
+<a id="iam-governance-setting-password-policy-settings"></a>
+#### Password Policy Settings
+* To set passwords for IAM accounts, the Password Policy Settings is provided.
+* The password policy is set the same for all organization services (Cloud, Contiple, Dooray!, etc.).
+* Go to **IAM Governance Setting** \> **Password Policy Settings** to manage password policies.
+    * Default Password Policy
+        * Default password policy is provided as follows.
+            * Consists of at least 8 digits, including alphabets, numbers, and special characters.
+            * Case sensitive.
+            * Unable to use more than four consecutive letters or numbers (for example, 1111, 1234, abcd, etc.).
+            * Passwords must be changed every 90 days, and after 90 days, you'll be guided to change your password.
+    * User Password Policy
+        * Provides password policies that allow you to set minimum password length, password strength, password expiration, password reuse limit, and more.
+            * Minimum Password Length: Set the password minimum length to between 8 and 15 characters. (The maximum length is 15 characters.)
+            * Password Strength: Set the password strength using a combination of consecutive characters, uppercase, lowercase, numbers, special characters, and more.
+            * Password Expiration: Choose whether to expire the password, and set the length of time it expires upon setup, and whether it can be extended upon expiration.
+            * Restrict Password Reuse: Choose whether to restrict password reuse and set the number of reuse limits at setup by choosing between 1 and 3.
+            * When to Apply Password Policy: Set when the password policy is applied by selecting **Apply on Password Change** or **Apply Immediately** .
+                * If **Apply on Password Change** is selected, the new policy applies when an IAM account changes the password.
+                * If **Apply Immediately** is selected, the policy applies immediately after the password is set, making it the new policy at the time of IAM account login.
+
+<a id="project-common-role-group-setting"></a>
+### Project Common role Group Setting { #project-common-role-group-setting }
+
+You can create and manage role groups for common use in projects belonging to your organization.
+The configured role groups can be used to grant roles in bulk by selecting NHN Cloud accounts and IAM accounts in the project's role group management.
+
+1. After selecting Organization Setting, click the Project Common role Group Setting menu.
+2. Select **Add role Group** to add roles for each service.
+3. Enter the role group name, description, and add roles for each service.
+    * The role group name can include Korean letters, English letters, numbers, and special characters, and can contain up to 40 characters.
+    * Description is a additional description of the role group, and contain up to 100 characters.
+4. roles can be selected from **Detailed Usage roles for Each Service**.
+    * After searching for the service name on the left side, select the role on the right side.
+5. Check the selected role and add or delete the role.
+    * You can delete the selected service by clicking the x button next to the service name.
+6. Click the Add button to add a role group.
+7. When a role group is added, its name is displayed in the role group list. You can check the detailed role details by selecting the role group name.
+8. Clicking Add role leads you to the Add role Group screen in Step 3. You can add or delete roles.
+
+<a id="project-management"></a>
+## Project Management { #project-management }
+
+After creating an organization, you can create a project to use NHN Cloud services.
+In a project, you can enable project services and use them.
+Project services are used on a per-project basis and are billed accordingly.
+
+<a id="create-a-project"></a>
+### Create a Project { #create-a-project }
+
+* To create a project, you need to create an organization.
+* A member who creates a project has ADMIN role for the project.
+* When creating a project, enter the project name and project description.
+* After creating a project, you can enable project services and use them.
+* After creating a project, if collaboration is required, you can add project members to share the project.
+
+<a id="create-a-project-guide-to-creating-a-project"></a>
+#### Guide to Creating a Project
+
+![console_guide_5_en.png](http://static.toastoven.net/toast/console_guide/consoleguide_07_202109_en.png)
+![console_guide_6_en.png](http://static.toastoven.net/toast/console_guide/consoleguide_08_202109_en.png)
+
+1. After an organization is created, a **Create New Project** button is enabled. Click the **Create New Project** button to create a project.
+2. Enter **Project Name** and **Project Description**.
+3. Click **Confirm** to create a project.
+4. The project name is displayed on the console menu when the project is created.
+5. Click the **Project Settings** button to check project information.
+
+<a id="project-services"></a>
+### Project Services { #project-services }
+
+Once the project is created, you can select services.
+Services that can be enabled for each project include the following:
+
+* Compute
+* Container
+* Network
+* Storage
+* Database
+* Hybrid & Private Cloud
+* Game
+* Security
+* Content Delivery
+* Notification
+* AI Service
+* Machine Learning
+* Application Service
+* Mobile Service
+* Search
+* Data & Analytics
+* Dev Tools
+* Management
+* Bill
+
+<a id="guide-to-enabling-project-services"></a>
+### Guide to Enabling Project Services { #guide-to-enabling-project-services }
+
+![console_guide_6_en.png](http://static.toastoven.net/toast/console_guide/consoleguide_09_202109_en.png)
+![console_guide_7_en.png](http://static.toastoven.net/toast/console_guide/consoleguide_10_202109_en.png)
+
+1. After creating a project, click the **Select Service** button to select the service to be used in the project.
+2. On the Select Service screen, select the service you want to enable. When prompted to enable the service, click **Confirm**.
+3. A list of enabled services can be found in the menu on the left side of the console. Click the desired service from the list to display the service page.
+
+<a id="delete-a-project"></a>
+### Delete a Project { #delete-a-project }
+
+A project can be deleted if there is no service in use in the project.
+When a project is deleted, all resources of the project are deleted and cannot be restored.
+You can immediately pay for and delete the usage history for all the resources you have used so far.
+However, if you delete the project without paying immediately, the bills used so far will be automatically charged on the next billing date.
+
+<a id="member-management"></a>
+## Member Management { #member-management }
+
+Member management allows you to control per-user authentication (login) and role.
+You can manage members separately in projects and organizations.
+
+<a id="policy-for-nhn-cloud-members-iam-members-and-service-accounts"></a>
+### Policy for NHN Cloud Members, IAM Members, and Service Accounts { #policy-for-nhn-cloud-members-iam-members-and-service-accounts }
+
+| Classification | [NHN Cloud](http://nhncloud.com) Members | IAM Members | Service Accounts |
+| --- | --- | --- | --- |
+| Definition                    | - Members for organization management<br>- NHN Cloud members who consent to Terms of Use and hence are responsible and obligated for the service use <br>- The members are valid throughout the whole NHN Cloud services and remain as NHN Cloud members even if their organizations are deleted. | - Members for the service use<br>- Members who do not consent to the Terms of Use <br>- Members who are valid only within their organizations, and to be disqualified if their organizations are deleted | - Accounts used not by a person logging in directly, but to separate permissions when a service performs tasks or accesses another service<br>&nbsp;&nbsp;- Separate the create/manage permissions of user accounts (NHN Cloud members, IAM members) from the permissions used when a service performs tasks<br>- Divided into system service accounts and user service accounts |
+| Method of Member Registration | - Owner/Admin of an organization enters NHN Cloud ID for registration | - Owner/Admin of an organization enters unique ID for registration <br>- Register via SSO or API integration | - System service account<br>&nbsp;&nbsp;- Predefined and provided by NHN Cloud for each service<br>&nbsp;&nbsp;- Cannot be arbitrarily modified or deleted by ADMIN or MEMBER_ADMIN<br>- User service account<br>&nbsp;&nbsp;- Created by ADMIN or MEMBER_ADMIN by directly defining the name, role, and more<br>- Register an organization's service account to a project, or a project's service account to an organization via the external service account registration feature for cross-use as needed |
+| Console Access | - Access NHN Cloud console([https://console.nhncloud.com/](https://console.nhncloud.com/))<br>- NHN Cloud > Log in with member ID/password<br >- (optional) Two-factor (email or SMS) authentication | - IAM console (https://{organization domain}.console.nhncloud.com/) access<br>- Access Dooray! and ERP service with the service domain<br>- Log in with ID/PW set by the organization's OWNER (or ADMIN)<br>- Authenticate with login security set by the organization (two-factor authentication, settings per service) | - Unable to log in to the console |
+
+
+<a id="member-roles"></a>
+### Member Roles { #member-roles }
+
+ * You can grant roles held by an NHN Cloud member to other NHN Cloud members.
+
+| Role | Description |
+| --- | --- |
+| OWNER | Create/Read/Update/Delete All Member Account Services, Including Payment Management and Station Management  |
+| BILLING VIEWER | Read Member Payment |
+| STATION VIEWER | Read Station List and Detail |
+| MEMBER NOTICE_GROUP MANAGEMENT ADMIN | Create/Read/Update/Delete Member Notification Group Management, Read for Member List | 
+| MEMBER NOTICE_GROUP MANAGEMENT VIEWER | Read Member Notification Group Management, Read for Member List |
+
+
+<a id="organization-member-roles"></a>
+### Organization Member Roles { #organization-member-roles }
+
+* IAM accounts have different roles that can be configured for each organization service (e.g., Contiple).
+* The cloud service roles for NHN Cloud accounts and IAM accounts are as follows.
+* However, IAM accounts are granted the NONE role upon enrollment, and must be granted the required role through role settings after enrollment.
+
+<a id="organization-member-roles-organization-management"></a>
+#### Organization Management    
+
+| Role | Description |
+| ---- | ----------- |
+| OWNER | Create, Read, Update, Delete, and Delete organizations across the organization, including Organization Management, Member Management, Organization Services Management, Payment Management, and Project Management. |
+| ADMIN | Create/Read/Update/Delete for the entire organization, including Organization Management, Member Management, Organization Services Management, Payment Management, Project Management, and more. |
+| MEMBER | Create project, read organization dashboard, read project |
+| ORG_MEMBER_ADMIN | Create, Read, Update, Delete for organization members<br>Create, Read, Update, Delete for organization's role groups |
+| ORG_MEMBER_VIEWER | Read for organization members<br>Read for organization's role groups |
+| BILLING_VIEWER | Read payment management usage and budget management, and usage status of project in organization. |
+| BUDGET_ADMIN | Create, Read, Update, and Delete in budget management |
+| BUDGET_VIEWER | Read budget management |
+| LOG_VIEWER | Create/Read/Update/Delete user action logs management |
+| ORG_DASHBOARD\_ADMIN | Create, Read, Update, and Delete organization dashboard |
+| ORG_DASHBOARD\_VIEWER | Read organization dashboard |
+| ORG_SUPPORT_ADMIN | Create organization inquiry |
+| ORG_AUTHENTICATION_MANAGEMENT_ADMIN | Create, Read, Update, and Delete in organization authentication management |
+| NONE | Read organization dashboard and organization default settings |
+
+<a id="organization-member-roles-service-use"></a>
+#### Service Use 
+
+| Service | Role | Description |
+| --- | --- | --- |
+| Contiple | ADMIN | Create, Read, Update, Delete Contiple service |
+| Contiple | VIEWER | Read Contiple Service |
+| CloudTrail | ADMIN | Create, Read, Update, Delete CloudTrail service |
+| CloudTrail | VIEWER | Read CloudTrail Service |
+| CloudTrail | External Storage Config ADMIN | Create, Read, Update, Delete CloudTrail external storage settings |
+| Resource Watcher | ADMIN | Create, Read, Update, and Delete Resource Watcher Service |
+| Resource Watcher | VIEWER | Read Resource Watcher Service |
+
+
+<a id="organization-member-roles-service-permission"></a>
+#### Service PERMISSION 
+
+* The Organization Services PERMISSION role can enable or disable individual services.
+* However, services that are enabled at the time of organization creation (CloudTrail, Resource Watcher, etc.) do not provide a separate PERMISSION role.
+
+
+| Role | Description |
+| --- | --- |
+| Service Name PERMISSION | Service Enable, Disable  |
+
+
+<a id="project-member-roles"></a>
+### Project Member Roles { #project-member-roles }
+
+* You can grant multiple required roles to project members.
+
+<a id="project-member-roles-project-management"></a>
+#### Project Management 
+
+| Role | Description |
+| --- | --- |
+| ADMIN | Create, Read, Update, Delete for the entire project |
+| MARKETPLACE_ADMIN | Marketplace Service Create, Read, Update, Delete |
+| MARKETPLACE_VIEWER | Marketplace Service Read |
+| MEMBER | Create, Read, Update, Delete for all service resources in the project - Some services excluded (check related roles/permissions) |
+| BILLING VIEWER | Read for usage status |
+| PROJECT MANAGEMENT ADMIN | Update for project's basic information<br>Create, Read, Update, Delete for project's integrated Appkey<br>Enable, Disable project services<br>Delete for projects |
+| PROJECT MANAGEMENT VIEWER | Read for project's basic information<br>Read for project's integrated Appkey |
+| PROJECT MEMBER ADMIN | Create, Read, Update, Delete for project members<br>Create, Read, Update, Delete for project's role groups |
+| PROJECT MEMBER VIEWER | Read for project members<br>Read for project's role groups |
+| PROJECT NOTICE GROUP MANAGEMENT ADMIN | Create, Read, Update, Delete for project's Notification Receiver Group Management <br> Read for project members <br> Read for project's role groups|
+| PROJECT NOTICE GROUP MANAGEMENT VIEWER | Read for project's Notification Receiver Group Management <br> Read for project's role groups|
+| PROJECT NOTICE MANAGEMENT ADMIN | Create, Read, Update, Delete for project's Notification Management <br> Read for project members <br> Read for project's role groups| Read for project's Notification Receiver Group Management
+| PROJECT NOTICE MANAGEMENT VIEWER | Read for project's Notification Management <br> Read for project's role groups| Read for project's Notification Receiver Group Management
+| PROJECT API SECURITY SETTING ADMIN | Create, Read, Update, Delete for project's API Security Setting|
+| PROJECT API SECURITY SETTING VIEWER | Read for project's API Security Setting|
+| PROJECT AUTHENTICATION MANAGEMENT ADMIN | Create, Read, Update, Delete for project's Authentication Info Management|
+| PROJECT QUOTA MANAGEMENT ADMIN| Create, Read, Update, Delete for project's Quota Management|
+| PROJECT QUOTA MANAGEMENT VIEWER| Read for project's Quota Management|
+| PROJECT_SUPPORT_ADMIN| Create project inquiry|
+
+
+<a id="project-member-roles-service-use"></a>
+#### Service Use 
+
+* For detailed permissions by role for the [basic infrastructure service (Infrastructure)](../en/overview.md), see [View Full Permission Matrix](../etc/infrastructure_roles_guide.html){:target="_blank" rel="noopener"}.
+
+| Service | Role | Description |
+| --- | --- | --- |
+| Infrastructure | ADMIN | Create, Read, Update, and Delete access to basic infrastructure services |
+| Infrastructure | MEMBER | Read access to network services (excluding Network Interface, Floating IP, and Direct Connect) and to NKS, NCS, NAS and Storage Gateway. <br> Create, Read, Update, and Delete access to all other basic infrastructure services.|
+| Infrastructure | VIEWER | Create, Read, Update, and Delete access to Key Pair, Direct Connect, and NAS (Offline). <br> Read access to all other basic infrastructure services. |
+| Infrastructure | Routing ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to Routing |
+| Infrastructure | Security Group ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to Security Groups |
+| Infrastructure | Load Balancer ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to Load Balancer |
+| Infrastructure | Transit Hub ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to Transit Hub |
+| Infrastructure | Peering Gateway ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to Peering Gateway |
+| Infrastructure | Colocation Gateway ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to Colocation Gateway |
+| Infrastructure | NAT Gateway ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to NAT Gateway |
+| Infrastructure | Service Gateway ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to Service Gateway |
+| Infrastructure | Private DNS ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to Private DNS |
+| Infrastructure | Flow Log ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to Flow Log |
+| Infrastructure | NCS ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to NCS |
+| Infrastructure | NKS ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to NKS |
+| Infrastructure | NAS ADMIN | Infrastructure MEMBER role, plus Create, Read, Update, and Delete access to NAS |
+| Virtual Desktop | ADMIN | Create, Read, Update, Delete for Virtual Desktop Service |
+| Cloud Functions | ADMIN | Create, Read, Update, Delete for Cloud Functions Service |
+| NHN Container Registry (NCR) | ADMIN | Create, Read, Update, Delete for NHN Container Registry (NCR) Service |
+| NHN Container Registry (NCR) | VIEWER | Read for NHN Container Registry (NCR) Service |
+| NHN Container Registry (NCR) | IMAGE UPLOADER | Read for NHN Container Registry (NCR) Service <br> Upload Image, Create Artifact, Create Tag |
+| DNS Plus | ADMIN | Create, Read, Update, Delete for DNS Plus Service |
+| DNS Plus | VIEWER | Read for DNS Plus Service |
+| Object Storage | ADMIN | Create, Read, Update, Delete for Object Storage Service |
+| Object Storage | Container OPERATOR | Read a detailed list of containers in the Object Storage service and all their information. Create, Update, and Delete container management |
+| Object Storage | Container VIEWER | Read a list of containers in the Object Storage service |
+| Object Storage | Object READER | Read a list of containers in the Object Storage service and details of some of their information. Read a list of objects and their details. Read object download |
+| Object Storage | Object WRITER | Read a list of containers in the Object Storage service and details of some of their information. Create, Update, and Delete container management |
+| Object Storage | Object VIEWER | Read a list of containers in the Object Storage service and details of some of their information. Read a list of objects and their details |
+| Backup | ADMIN | Create, Read, Update, Delete for Backup Service |
+| RDS for MySQL | ADMIN | Create, Read, Update, Delete for RDS for MySQL Service |
+| RDS for MySQL | VIEWER | Read for RDS for MySQL Service |
+| RDS for PostgreSQL | ADMIN | Create, Read, Update, Delete for RDS for PostgreSQL Service |
+| RDS for PostgreSQL | VIEWER | Read for RDS for PostgreSQL Service |
+| RDS for MariaDB | ADMIN | Create, Read, Update, Delete for RDS for MariaDB Service |
+| RDS for MariaDB | VIEWER | Read for RDS for MariaDB Service |
+| RDS for MS-SQL | ADMIN | Create, Read, Update, Delete for RDS for MS-SQL Service |
+| EasyCache | ADMIN | Create, Read, Update, Delete for EasyCache Service |
+| EasyCache | VIEWER | Read for EasyCache Service Replication Group menu, Read for Monitoring menu |
+| Cloud Monitoring | ADMIN | Create, Read, Update, Delete for Cloud Monitoring |
+| Cloud Monitoring | VIEWER | Read for Cloud Monitoring |
+| Gamebase | ADMIN | Create, Read, Update, Delete for Gamebase Service |
+| Gamebase | ANALYTICS VIEWER - ALL | Read for all metrics |
+| Gamebase | ANALYTICS VIEWER - EXCLUDING SALES | Read for all metrics except sales |
+| Gamebase | ANALYTICS VIEWER - ONLY REAL-TIME | Read for real-time metrics |
+| Gamebase | APP ADMIN | Create, Read, Update, Delete for APP menu |
+| Gamebase | APP VIEWER | Read for APP menu |
+| Gamebase | BAN ADMIN | Create, Read, Update, Delete for Suspended menu |
+| Gamebase | BAN VIEWER | Read for Suspended menu |
+| Gamebase | COUPON ADMIN | Create, Read, Update, Delete for Coupon menu |
+| Gamebase | COUPON VIEWER | Read for Coupon menu |
+| Gamebase | CS ADMIN | Create, Read, Update, Delete for Customer Center menu |
+| Gamebase | CS INQUIRY SUPPORT | Read, Update for Contact Customer Center menu, Read for member menu |
+| Gamebase | IAP ADMIN | Create, Read, Update, Delete for Purchase menu |
+| Gamebase | IAP VIEWER | Read for Purchase menu |
+| Gamebase | LEADERBOARD ADMIN | Create, Read, Update, Delete for Leaderboard menu |
+| Gamebase | LEADERBOARD VIEWER | Read for Leaderboard menu |
+| Gamebase | MANAGEMENT ADMIN | Create, Read, Update, Delete for Admin menu |
+| Gamebase | MEMBER ADMIN | Create, Read, Update, Delete for Member menu |
+| Gamebase | MEMBER VIEWER | Read for Member menu |
+| Gamebase | MEMBER FILE DOWNLOAD | Read and Download for menus including Metrics, Sales, Members |
+| Gamebase | OPERATION ADMIN | Create, Read, Update, Delete for Operation menu |
+| Gamebase | OPERATION VIEWER | Read for Operation menu |
+| Gamebase | PUSH ADMIN | Create, Read, Update, Delete for Push menu |
+| Gamebase | PUSH VIEWER | Read for Push Menu |
+| GameAnvil  | ADMIN | GameAnvil Create, Read, Update, and Delete Services  |
+| GameAnvil  | MEMBER | GameAnvil Read Service. Create, Read, Update, or Delete for Monitoring menu |
+| GameAnvil  | VIEWER | GameAnvil Read Services  |
+| GameStarter  | ADMIN | Create, Read, Update for menus game settings, distribution |
+| GameStarter  | VIEWER | Read for menus game settings, distribution |
+| Leaderboard | ADMIN | Create, Read, Update, Delete for Leaderboard Service |
+| Leaderboard | VIEWER | Read for Leaderboard Service |
+| Launching | ADMIN | Create, Read, Update, Delete for Launching Service |
+| Smart Downloader | ADMIN | Create, Read, Update, Delete for Smart Downloader Service |
+| NHN AppGuard | ADMIN | Create, Read, Update, Delete for NHN AppGuard Service|
+| Server Security Check | ADMIN | Create, Read, Update, Delete for Server Security Check  Service |
+| Server Security Check | VIEWER | Read for Server Security Check  Service |
+| Security Monitoring | ADMIN | Create, Read, Update, Delete for Security Monitoring Service |
+| CAPTCHA | ADMIN | Create, Read, Update, Delete or CAPTCHA Service |
+| WEB Firewall | ADMIN | Create, Read, Update, Delete for WEB Firewall Service |
+| Vaccine | ADMIN | Create, Read, Update, Delete for Vaccine Service |
+| Secure Key Manager | ADMIN | Create, Read, Update, Delete for Secure Key Manager Service |
+| Secure Key Manager | APPROVAL ADMIN | Approve, deny, query,create, query for approval requests for Secure Key Manager Service |
+| Secure Key Manager | VIEWER | Read for Secure Key Manager Service |
+| Security Compliance | ADMIN | Create, Read, Update, Delete for Security Compliance Service|
+| Webshell Threat Detector | ADMIN | Create, Read, Update, Delete for Webshell Threat Detector Service |
+| Security Advisor | ADMIN | Create, Read, Update, Delete for Security Advisor Service |
+| Security Advisor | VIEWER | Read for Security Advisor Service  |
+| Network Firewall | ADMIN | Create, Read, Update, Delete for Network Firewall Service  |
+| Network Firewall | VIEWER | Read for Network Firewall Service  |
+| NHN Bastion | ADMIN | Create, Read, Update, Delete for NHN Bastion Service |
+| NHN Bastion | VIEWER | Read for NHN Bastion Service |
+| NHN Bastion | USER | Use NHN Bastion Service Terminal |
+| Cloud Access | ADMIN | Create, Read, Update, Delete for Cloud Access Service |
+| Cloud Access | VIEWER | Read for Cloud Access Service |
+| CDN | ADMIN | Create, Read, Update, Delete for CDN Service |
+| Image Manager | ADMIN | Create, Read, Update, Delete for Image Manager Service |
+| Notification Hub | ADMIN | Create, Read, Update, Delete for Notification Hub Service |
+| Push | ADMIN | Create, Read, Update, Delete for Push Service |
+| SMS | ADMIN | Create, Read, Update, Delete for SMS Service |
+| SMS | SEND ADMIN | Create, Read in Deliver SMS |
+| SMS | DELIVERY RESULT ADMIN | Read in Retrieve by SMS Request, Create Download Search Result <br> Read in Retrieve Bulk SMS Delivery, Create Download Retrieve Result <br> Read in Retrieve Tagged SMS Delivery, Create Download Retrieve Result |
+| SMS | SETTING ADMIN | Create, Read, Update, Delete in Manage Templates <br> Create, Read, Update, Delete in Preregistration Outgoing Numbers <br> Read in Retrieve Outgoing Number, Create, Read, Update, Delete in Manage Tags <br> Create, Read, Update, Delete in Manage UIDs <br> Create, Read, Update, Delete in Manage Webhooks<br> Create, Read, Update, Delete in Set 080 Call Rejects <br> Create, Read, Update, Delete in Delivery Setting <br> Create, Read, Update, Delete in Statistics Event Key |
+| SMS | STATISTICS ADMIN | Read in Statistics, Create Download Search Result |
+| RCS Bizmessage | ADMIN | Create, Read, Update, Delete for RCS Bizmessage Service |
+| Email | ADMIN | Create, Read, Update, Delete for Email Service |
+| Email | SEND ADMIN | Create, Read in Deliver Mails |
+| Email | DELIVERY RESULT ADMIN | Read in Retrieve by Mail Request, Create Download Search Result <br> Read in Retrieve Scheduled Mail Delivery, Create Download Search Result <br> Read in Retrieve Bulk Mail Delivery, Create Download Search Result <br> Read in Retrieve Tagged Mail Delivery, Create Download Search Result |
+| Email | SETTING ADMIN | Create, Read, Update, Delete in Manage Templates <br> Create, Read, Update, Delete in Manage Call Rejects <br> Create, Read, Update, Delete in Manage Mail Domains <br> Create, Read, Update, Delete in Manage Tags <br> Create, Read, Update, Delete in Manage UIDs <br> Create, Read, Update, Delete in Delivery Setting <br> Create, Read, Update, Delete in Manage Webhooks |
+| Email | STATISTICS ADMIN | Read in Retrieve Statistics, Create Download Search Result |
+| KakaoTalk Bizmessage | ADMIN | Create, Read, Update, Delete for KakaoTalk Bizmessage Service |
+| KakaoTalk Bizmessage | SEND ADMIN | (AlimTalk) Create, Read in Send|
+| KakaoTalk Bizmessage | DELIVERY RESULT ADMIN | (AlimTalk) Read Query Delivery Result in KakaoTalk Bizmessage, Create Download Search Result<br> (AlimTalk) Read in Query Mass Delivery, Create Download Search Result <br> (FriendTalk)Read in Query Delivery Result, Create Download Search Result|
+| KakaoTalk Bizmessage | SETTING ADMIN | Create, Read, Update, Delete in Manage Senders<br> (AlimTalk) Create, Read, Update, Delete in Manage Templates<br> (AlimTalk) Create, Read, Update, Delete in Manage Alternative Delivery<br> (AlimTalk) Create, Read, Update, Delete in Manage sender profile group <br>(FriendTalk)Read, Delete in Manage Images <br>(FriendTalk)Create, Read, Update, Delete in Manage Alternative Delivery<br> Create, Read, Update, Delete in Sending settings<br> Create, Read, Update, Delete in Manage Webhooks<br> Create, Read, Update, Delete in Statistics Event Key |
+| KakaoTalk Bizmessage | STATISTICS ADMIN | Read in Statistics, Create Download Search Result |
+| Face Recognition | ADMIN | Create, Read, Update, Delete for Face Recognition Service |
+| OCR | ADMIN | Create, Read, Update, Delete for OCR |
+| Text to Speech | ADMIN | Create, Read, Update, Delete for Text to Speech |
+| Speech to Text | ADMIN | Create, Read, Update, Delete for Speech to Text |
+| AI EasyMaker | ADMIN | Create, Read, Update, Delete for AI EasyMaker |
+| NHN Cloud Foundry | ADMIN | Create, Read, Update, Delete the NHN Cloud Foundry service |
+| ROLE | ADMIN | Create, Read, Update, Delete for ROLE Service |
+| API Gateway | ADMIN | Create, Read, Update, Delete for API Gateway Service |
+| RTCS | ADMIN | Create, Read, Update, Delete for RTCS Service |
+| ShortURL | ADMIN | Create, Read, Update, Delete for ShortURL Service |
+| File-Crafter | ADMIN | Create, Read, Update, Delete for File-Crafter Service |
+| Cloud Scheduler | ADMIN | Create, Read, Update, Delete for Cloud Scheduler Service |
+| IAP | ADMIN | Create, Read, Update, Delete for IAP Service |
+| Mobile Device Info | ADMIN | Create, Read, Update, Delete for Mobile Device Info Service |
+| Cloud Search | ADMIN | Create, Read, Update, Delete for Cloud Search Service |
+| Autocomplete | ADMIN | Create, Read, Update, Delete for Autocomplete Service |
+| Corporation Search | ADMIN | Create, Read, Update, Delete for Corporation Search Service |
+| Log & Crash Search | ADMIN | Create, Read, Update, Delete for Log & Crash Search Service |
+| DataFlow | ADMIN | Create, Read, Update, Delete for DataFlow Service |
+| DataQuery | ADMIN | Create, Read, Update, Delete for DataQuery Service |
+| DataQuery | CLUSTER ADMIN | DataQuery service cluster On, Off, Spec Configuration |
+| DataQuery | DATASOURCE ADMIN | Create, Update, Delete DataQuery service data sources |
+| Data Lake Storage | ADMIN | Create, Read, Update, Delete for Data Lake Storage Service |
+| Data Lake Storage | OPERATOR | Read a detailed list of buckets in the Data Lake Storage service and all their information. Create, Update, and Delete bucket management. |
+| Data Lake Storage | VIEWER | Read a detailed list of buckets in the Data Lake Storage service and all their information. |
+| EasyQueue | ADMIN | Create, Read, Update, Delete and Send/Receive Messages EasyQueue Service |
+| EasyQueue | CLIENT | Read EasyQueue Service, Send/Receive Messages |
+| EasyQueue | VIEWER | EasyQueue Service Read |
+| Pipeline | ADMIN | Create, Read, Update, Delete for Pipeline Service |
+| Deploy | ADMIN | Create, Read, Update, Delete for Deploy Service |
+| Deploy | VIEWER | Read for Deploy Service |
+| Managed | ADMIN | Create, Read, Update, Delete for Managed Service |
+| Service Monitoring | ADMIN | Create, Read, Update, Delete for Service Monitoring Service |
+| Certificate Manager | ADMIN | Create, Read, Update, Delete for Certificate Manager Service |
+| Certificate Manager | VIEWER | Read for Certificate Manager Service |
+| Private CA | ADMIN | Create, Read, Update, Delete for Service Private CA |
+| Private CA | VIEWER | Read for Private CA Service |
+| eTax | ADMIN | Create, Read, Update, Delete for eTax Service |
+| eTax | VIEWER | Read for eTax Service |
+
+
+<a id="project-member-roles-service-permission"></a>
+#### Service PERMISSION 
+Service PERMISSION Role can enable or disable each service.
+
+| Role | Description |
+| --- | --- |
+| Service Name PERMISSION | Service Enable, Disable  |
+
+
+
+<a id="billing-management"></a>
+## Billing Management { #billing-management }
+
+You can check the usage fee for NHN Cloud service and make payment.
+In the **View My Info > Manage Billing** menu, you can check the bill, expected payment amount, and usage information of the NHN Cloud account who registered a payment method.
+
+The following features are provided along with the billing details of the payment method for the month.
+
+- Immediate Payment: You can pay with the immediate payment feature before automatic payment that occurs on the 8th of every month.
+- Sales slip: If you paid by credit card, you can view the sales slip.
+- Tax Invoice: If you paid by bank transfer, you can view your tax invoice.
+
+The details displayed on the payment management invoice are as follows.
+
+- Usage Amount: The amount calculated by service usage and unit price
+- Discount/Surcharge Amount: Contract discount, manager discount/surcharge, etc.
+- VAT: 10% of (Usage Amount - Discount Amount + Surcharge Amount)
+- Late Fee
+    - Korean members: In case of non-payment for the Total Amount of Payment, 2% of the amount
+    - Japanese members: There is no late fee in accordance with the Japanese Consumer Contract Law.
+- Total Amount of Payment: (Usage Amount - Discount Amount + Surcharge Amount) + VAT
+
+
+
+<a id="manage-notifications"></a>
+## Manage Notifications { #manage-notifications }
+
+Manage Notifications is a feature that allows you to set the recipients and notification method (Email, SMS) for each notification sent by NHN Cloud.
+
+1. Click **Organization > Manage Notifications** or **Project > Manage Notifications**.
+    - You can manage the notifications you receive for each of your organizations and projects.
+
+2. Among notifications, find a notification for which you want to change the recipient and go to **Modify Receiver > Modify**.
+    - You can find notifications by selecting from the list on the left, or by searching for the notification name, recipient, and more in the top-right search area.
+    - To bulk modify recipients of multiple notifications, select the checkboxes of notifications, then click Bulk Modify Receiver at the top of the notification list.
+
+3. Select who should receive notifications and how they should be **notified (Email, SMS) by member, notification recipient group, and role**.
+    - Webhook is not supported for the notifications.
+    - Notification methods differ depending on notifications.
+    - When you add a notification receiver group to Recipient, the notification method set for that group must match the notification method supported by each notification in order to receive notifications.
+
+4. Click **Save** to save your settings.
+
+
+<a id="notification-receiver-group-management"></a>
+## Notification Receiver Group Management { #notification-receiver-group-management }
+
+Notification Receiver Group Management allows you to set up receiver groups for notifications sent by NHN Cloud.
+
+Email and SMS notifications are supported with receiver settings based on organization/project roles and receiver settings for members.
+Webhook notifications provide default webhooks and custom webhooks.
+The corresponding notification receiver groups are available when setting up notifications in the **service**.
+
+<a id="create-notification-receiver-group"></a>
+### Create Notification Receiver Group { #create-notification-receiver-group }
+
+1. To create a **notification receiver group**, click **Notification Receiver Group Management** in the organization or project menu.
+2. Click ** + Add Notification Receiver Group**.
+3. In **Basic information**, enter a name and description for the group receiving notifications.
+    - In **Notifications Receiver Group Name**, enter up to 40 characters of Korean, alphanumeric characters, numbers, and special characters
+    - In **Description**, enter up to 100 characters without character limit to distinguish the notification receiver group name.
+
+4. **Receiving Role Setting**
+    - Organization > Receiving Role Setting
+        * Supports setting up email and SMS notifications for organization/project roles, organization/project role groups, and service-specific roles.
+    * Project > Receiving Role Setting
+        * Supports setting up email and SMS notifications for project roles, project role groups, and service-specific roles.
+
+5. **Receiving Target Manual Setting**
+    - You can set your own receivers in Add Notification Receiver Group.
+    - Supports setting up email and SMS notifications for each member.
+
+6. **Webhook Settings**
+    - When sending out notifications, you can set them to a webhook of your choice.
+    - Provides default and custom webhooks by type.  (maximum 5)
+
+<a id="webhook-settings"></a>
+### Webhook Settings { #webhook-settings }
+1. On the Organization, Project tab, select the ** Notification Receiver Group Management** tab.
+2. Select ** +Add Webhook** in the **Webhook Settings** menu at the bottom.
+3. The **+ Add webhook** popup provides default and custom webhooks by type.
+    - Default Webhook
+        - The default webhook can only be sent on service notifications that it supports.
+        - Webhook name
+            - You can enter a name for the default webhook you want to set up, with no character limit and up to 40 characters.
+            - Webhook names cannot be duplicated within the same notification receiver group.
+        - Target
+            - You can enter a URL to receive the webhook.
+        - Secret Key
+            - The secret key to encrypt the URI and the id, source, type, and time with the SHA256 hash algorithm.
+                - Send Authorization in the default webhook header only if a secret key is set.
+                - Example: Authorization : HMAC-SHA256 Signature={encrypted character}"
+                    - You can prevent received requests from being tampered with by man-in-the-middle attackers by checking the Authorization Header.
+        - The HTTP Mehod is POST and the Request Body is in the format below, with the body field varying by service.
+       ```json
+       {
+          "id": "String",
+          "source": "String",
+          "specversion": "String",
+          "type": "String",
+          "body" : "Object"
+         }
+        ```
+    - Custom Webhook
+        - Custom webhooks can only be sent on service notifications that support them.
+        - Webhook name
+            - You can enter a name for the custom webhook you want to set up, up to 40 characters long, with no character limit.
+            * Webhook names cannot be duplicated within the same notification receiver group.
+        * Send to
+            * You can select a destination (custom dashboard or service) to send the webhook to.
+            * You can only select menus or services that offer custom webhooks.
+        * Target
+            * You can enter a URL and HTTP Method to receive the webhook.
+
+          | Target to offer | Range to offer |
+          | -- | -- |
+          | HTTP Method | POST <br> PUT |
+          | Transport Protocol | HTTP<br> HTTPS | 
+        - Request data
+            - In Request data, you can enter parameters that are provided by the target.
+                - You can click Ctrl + Space to see which parameters are supported by that the target.
+                - You can see the Value provided in the bottom-right preview.
+                    - "alertId": "${alertId}" ,"orgName": "${orgName}"
+        - Header
+            - You can enter headers to pass to the target.
+            - The Content-type header to pass to the target supports application/json and cannot be modified.
+
+          | Header Item | Header Value |
+          | -- | -- |
+          | Custom-Header1 | Value1 |
+          | Custom-Header2 | Value2 | 
+
+        - Enter a name, send to, and receive to, then click **Confirm** to create the webhook.
+
+4. The webhooks you added can be found in the webhook settings list.
+    * You can click **View** to see the webhook details.
+    * You can edit the webhook information by clicking the pencil icon.
+    * You can delete a webhook by clicking the trash can icon.
+
+5. The created webhook is available by adding a **notification receiver group** to the service that provides webhook delivery.
+
+
+<a id="technical-support"></a>
+## Technical support { #technical-support }
+
+Technical support is a feature that allows you to register or manage inquiries with members of your organization or project.
+Registered inquiries are visible to all members within the same organization or project. If necessary, you can leave additional questions to an inquiry registered by another member.
+
+For individual inquiries, use the NHN Cloud Customer Center [1:1](https://www.nhncloud.com/kr/support/inquiry) Inquiry.
+
+
+<a id="list-of-inquiries"></a>
+### List of Inquiries { #list-of-inquiries }
+
+1. In the console, click **Organization > Technical Support** or **Project > Technical Support**.
+    * You can see a **list of inquiries** received from organizations and projects.
+
+<a id="submit-inquiry"></a>
+### Submit Inquiry { #submit-inquiry }
+
+1. On the **list** screen, click **Submit Inquiry**.
+2. Select the type of inquiry you want to submit and complete each field as instructed.
+    * The input fields can vary depending on the type of inquiry.
+3. Click **Accept** at the bottom.
+    * If validation (such as required values) fails, a warning message is exposed in the corresponding input field.
+
+<a id="submit-additional-questions"></a>
+### Submit Additional Questions { #submit-additional-questions }
+
+1. On the **Inquiry list** screen, click the row of the inquiry that you want to accept additional questions for.
+2. Fill out an **additional question** at the bottom of the **Details of Inquiry** section.
+3. Click **Submit** in the **Additional Question** section.
+    * The additional question and phone number are required.
+    * If the phone number listed in the member information exists, the input field is populated with the default value.
+
+<a id="check-response-to-inquiry"></a>
+### Check Response to Inquiry { #check-response-to-inquiry }
+
+1. On the **Inquiry list** screen, click the row of the inquiry you want to see the answer to.
+2. You can view your inquiry, additional questions, and answers on the **Details of Inquiry** screen.
