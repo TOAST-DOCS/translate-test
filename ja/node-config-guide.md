@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=1d41682f4f26 -->
 
 <a id="data-analytics-dataflow-node-type-guide"></a>
@@ -171,12 +173,12 @@ JSON形式の文字列を入力します。
 <a id="schema-definition"></a>
 ### スキーマの定義 { #schema-definition }
 
-* Sourceノードの**Codec**タブでスキーマを定義できます。
-* 次のコーデックを使用する場合、Sourceノードでスキーマを定義できます。
+* Sourceノードの **Codec** タブでスキマを定義できます。
+* 次のコーデックを使用する場合、Sourceノードでスキマを定義できます。
     * json
-* plainコーデックはデータが`message`フィールドに固定でマッピングされるため、該当フィールドのみ定義可能です。
-* フィールド名とデータタイプを追加してスキーマを構成します。
-* スキーマを定義すると、フローの実行時に定義されたフィールドのみを選択的にパースします。
+* plain コーデックはデータが `message` フィールドに固定マッピングされるため、該当フィールドのみ定義できます。
+* フィールド名とデータ型を追加してスキマを構成します。
+* スキマを定義すると、フロー実行時に定義されたフィールドのみを選択的にパースします。
 
 <a id="schema-propagation-and-conversion"></a>
 ### スキーマの伝播及び変換 { #schema-propagation-and-conversion }
@@ -243,11 +245,11 @@ JSON形式の文字列を入力します。
 <a id="message-imported-by-codec"></a>
 ### コーデック別のメッセージ取り込み { #message-imported-by-codec }
 
-* Log & Crash Searchは基本的にJSON形式のデータを扱います。
-* Log & Crash Searchログの各フィールドを活用したい場合は、jsonコーデックを使用することをおすすめします。
+* Log & Crash Search は基本的に JSON 形式のデータを扱います。
+* Log & Crash Search ログの各フィールドを活用したい場合は、json コーデックを使用することをお勧めします。
 
-サポートするコーデック
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データのパース
+対応コーデック
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式のデータの解析
 
 <a id="source-nhn-cloud-cloudtrail"></a>
 ## Source > (NHN Cloud) CloudTrail { #source-nhn-cloud-cloudtrail }
@@ -280,11 +282,11 @@ JSON形式の文字列を入力します。
 <a id="source-nhn-cloud-cloudtrail-message-imported-by-codec"></a>
 ### コーデック別のメッセージ取り込み { #source-nhn-cloud-cloudtrail-message-imported-by-codec }
 
-* CloudTrailは基本的にJSON形式のデータを扱います。
-* CloudTrailデータの各フィールドを活用したい場合は、jsonコーデックを使用することを推奨します。
+* CloudTrail は基本的に JSON 形式のデータを扱います。
+* CloudTrail データの各フィールドを活用したい場合は、json コーデックを使用することをお勧めします。
 
-サポートするコーデック
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データのパース
+対応コーデック
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式データのパース
 
 <a id="source-nhn-cloud-object-storage"></a>
 ## Source > (NHN Cloud) Object Storage { #source-nhn-cloud-object-storage }
@@ -317,8 +319,8 @@ JSON形式の文字列を入力します。
 ### コーデック別のメッセージ取り込み { #source-nhn-cloud-object-storage-message-imported-by-codec }
 
 サポートするコーデック
-* [plainコーデック](./codec-config-guide.md#plain-codec) - オリジナルデータの文字列の保存
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データのパース
+* [plain コーデック](./codec-config-guide.md#plain-codec) - 元データの文字列を保存
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式のデータをパース
 
 <a id="source-nhn-cloud-data-lake-storage"></a>
 ## Source > (NHN Cloud) Data Lake Storage { #source-nhn-cloud-data-lake-storage }
@@ -346,9 +348,9 @@ JSON形式の文字列を入力します。
 
 <a id="message-ingestion-by-codec-type"></a>
 ### コーデック別のメッセージ入力 { #message-ingestion-by-codec-type }
-サポートコーデック
-* [plainコーデック](./codec-config-guide.md#plain-codec) - 元データ文字列の保存
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データの解析
+サポートされているコーデック
+* [plain コーデック](./codec-config-guide.md#plain-codec) - 元データ文字列の保存
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式データのパース
 
 <a id="source-amazon-s3"></a>
 ## Source > (Amazon) S3 { #source-amazon-s3 }
@@ -386,9 +388,9 @@ JSON形式の文字列を入力します。
 <a id="source-amazon-s3-message-imported-by-codec"></a>
 ### コーデック別のメッセージ取り込み { #source-amazon-s3-message-imported-by-codec }
 
-サポートするコーデック
-* [plainコーデック](./codec-config-guide.md#plain-codec) - オリジナルデータの文字列の保存
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データのパース
+対応コーデック
+* [plain コーデック](./codec-config-guide.md#plain-codec) - 元のデータ文字列を保存
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式のデータをパース
 
 <a id="source-nhn-cloud-easyqueue"></a>
 ## Source > (NHN Cloud) EasyQueue { #source-nhn-cloud-easyqueue }
@@ -439,9 +441,9 @@ STREAMING：キューに新しいメッセージが到着するたびにデー�
 
 <a id="source-nhn-cloud-easyqueue-message-ingestion-by-codec-type"></a>
 ### コーデック別のメッセージ入力 { #source-nhn-cloud-easyqueue-message-ingestion-by-codec-type }
-サポートコーデック
-* [plainコーデック](./codec-config-guide.md#plain-codec) - 元データ文字列の保存
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データの解析
+対応コーデック
+* [plain コーデック](./codec-config-guide.md#plain-codec) - 元データ文字列をそのまま保存
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式のデータを解析
 
 <a id="source-apache-kafka"></a>
 ## Source > (Apache) Kafka { #source-apache-kafka }
@@ -495,9 +497,9 @@ STREAMING: トピックに新しいメッセージが届くたびにデータを
 <a id="source-apache-kafka-message-imported-by-codec"></a>
 ### コーデック別のメッセージ取り込み { #source-apache-kafka-message-imported-by-codec }
 
-サポートするコーデック
-* [plainコーデック](./codec-config-guide.md#plain-codec) - オリジナルデータの文字列の保存
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データのパース
+サポートしているコーデック
+* [plain コーデック](./codec-config-guide.md#plain-codec) - 元のデータ文字列をそのまま保存
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式のデータを解析
 
 <a id="filter-2"></a>
 ## Filter { #filter-2 }
@@ -1379,10 +1381,10 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 <a id="sink-nhn-cloud-object-storage-node-description"></a>
 ### ノードの説明 { #sink-nhn-cloud-object-storage-node-description }
 
-* NHN CloudのObject Storageにデータをアップロードするノードです。
-* 他の設定を行わずに基本設定のみで作成すると、オブジェクトは次のパスフォーマットに合わせて出力されます。
+* NHN Cloud の Object Storage にデータをアップロードするノードです。
+* 追加設定なしにデフォルト設定のみで作成した場合、オブジェクトは次のパス形式で出力されます。
     * `/{bucket_name}/year={yyyy}/month={MM}/day={dd}/hour={HH}/part-{uuid}-{file_counter}`   
-* 提供するコーデックは、json、line、parquetです。
+* 提供されるコーデックは json、line、parquet です。
 
 <a id="sink-nhn-cloud-object-storage-property-description"></a>
 ### プロパティの説明 { #sink-nhn-cloud-object-storage-property-description }
@@ -1406,9 +1408,9 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 ### コーデック別の出力例 { #output-examples-by-codec-type }
 
 サポートするコーデック
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データのパース
-* [lineコーデック](./codec-config-guide.md#line-codec) - 行単位でのメッセージ処理
-* [parquetコーデック](./codec-config-guide.md#parquet-codec) - データをParquet形式で圧縮 
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式データのパース
+* [line コーデック](./codec-config-guide.md#line-codec) - 行単位のメッセージ処理
+* [parquet コーデック](./codec-config-guide.md#parquet-codec) - データを Parquet 形式に圧縮
 
 <a id="prefix-example---field"></a>
 ### Prefixの例 - フィールド { #prefix-example---field }
@@ -1500,10 +1502,10 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="sink-nhn-cloud-data-lake-storage-node-description"></a>
 ### ノードの説明 { #sink-nhn-cloud-data-lake-storage-node-description }
-* NHN CloudのData Lake Storageにデータをアップロードするノードです。
-* 他の設定を行わずにデフォルト設定のみで作成すると、オブジェクトは次のパスフォーマットに合わせて出力されます。
+* NHN Cloud の Data Lake Storage にデータをアップロードするノードです。
+* 他の設定を行わずデフォルト設定のみで作成した場合、オブジェクトは次のパスフォーマットで出力されます。
     * `/{bucket_name}/year={yyyy}/month={MM}/day={dd}/hour={HH}/part-{uuid}-{file_counter}`   
-* 提供コーデックはjson、line、parquetです。
+* 提供するコーデックは json、line、parquet です。
 
 <a id="sink-nhn-cloud-data-lake-storage-property-description"></a>
 ### プロパティの説明 { #sink-nhn-cloud-data-lake-storage-property-description }
@@ -1525,9 +1527,9 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 <a id="sink-nhn-cloud-data-lake-storage-output-examples-by-codec-type"></a>
 ### コーデック別の出力例 { #sink-nhn-cloud-data-lake-storage-output-examples-by-codec-type }
 サポートコーデック
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データの解析
-* [lineコーデック](./codec-config-guide.md#line-codec) - 行単位のメッセージ処理
-* [parquetコーデック](./codec-config-guide.md#parquet-codec) - データをParquet形式で圧縮
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式データのパース
+* [line コーデック](./codec-config-guide.md#line-codec) - 行単位のメッセージ処理
+* [parquet コーデック](./codec-config-guide.md#parquet-codec) - データを Parquet 形式に圧縮
 
 <a id="sink-nhn-cloud-data-lake-storage-prefix-example---field"></a>
 ### Prefixの例 - フィールド { #sink-nhn-cloud-data-lake-storage-prefix-example---field }
@@ -1612,7 +1614,7 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 ### ノードの説明 { #sink-amazon-s3-node-description }
 
 * Amazon S3にデータをアップロードするノードです。
-* 提供するコーデックは、json、line、parquetです。
+* 提供コーデックはjson、line、parquetです。
 
 <a id="sink-amazon-s3-property-description"></a>
 ### プロパティの説明 { #sink-amazon-s3-property-description }
@@ -1639,10 +1641,10 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 <a id="sink-amazon-s3-output-examples-by-codec-type"></a>
 ### コーデック別の出力例 { #sink-amazon-s3-output-examples-by-codec-type }
 
-サポートするコーデック
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データのパース
-* [lineコーデック](./codec-config-guide.md#line-codec) - 行単位でのメッセージ処理
-* [parquetコーデック](./codec-config-guide.md#parquet-codec) - データをParquet形式で圧縮 
+サポートされているコーデック
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式データのパース
+* [line コーデック](./codec-config-guide.md#line-codec) - 行単位のメッセージ処理
+* [parquet コーデック](./codec-config-guide.md#parquet-codec) - データを Parquet 形式に圧縮
 
 <a id="sink-nhn-cloud-easyqueue"></a>
 ## Sink > (NHN Cloud) EasyQueue { #sink-nhn-cloud-easyqueue }
@@ -1680,9 +1682,9 @@ NHN CloudのEasyQueueにデータを送信するノードです。
 
 <a id="sink-nhn-cloud-easyqueue-output-examples-by-codec-type"></a>
 ### コーデック別の出力例 { #sink-nhn-cloud-easyqueue-output-examples-by-codec-type }
-サポートコーデック
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データの解析
-* [lineコーデック](./codec-config-guide.md#line-codec) - 行単位のメッセージ処理
+サポートされているコーデック
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式データのパース
+* [line コーデック](./codec-config-guide.md#line-codec) - 行単位のメッセージ処理
 
 <a id="sink-apache-kafka"></a>
 ## Sink > (Apache) Kafka { #sink-apache-kafka }
@@ -1720,9 +1722,9 @@ Kafkaにデータを送信するノードです。
 <a id="sink-apache-kafka-output-examples-by-codec-type"></a>
 ### コーデック別の出力例 { #sink-apache-kafka-output-examples-by-codec-type }
 
-サポートするコーデック
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データ出力
-* [lineコーデック](./codec-config-guide.md#line-codec) - 行単位メッセージ出力
+サポートされているコーデック
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式データの出力
+* [line コーデック](./codec-config-guide.md#line-codec) - 行単位メッセージの出力
 
 <a id="sink-stdout"></a>
 ## Sink > Stdout { #sink-stdout }
@@ -1736,9 +1738,9 @@ Kafkaにデータを送信するノードです。
 <a id="example-output-by-codec"></a>
 ### コーデック別の出力例 { #example-output-by-codec }
 
-サポートするコーデック
-* [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データ出力
-* [lineコーデック](./codec-config-guide.md#line-codec) - 行単位メッセージ出力
+対応コーデック
+* [json コーデック](./codec-config-guide.md#json-codec) - JSON 形式のデータを出力
+* [line コーデック](./codec-config-guide.md#line-codec) - 行単位のメッセージを出力
 
 <a id="branch"></a>
 ## Branch { #branch }

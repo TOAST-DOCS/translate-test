@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=66678fc2a2b5 -->
 
 <a id="data-analytics-dataflow-codec-configuration-guide"></a>
