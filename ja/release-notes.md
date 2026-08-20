@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=72f2d8d91edc -->
 
 <a id="security-vaccine-release-notes"></a>
