@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=7b3576dbe008 -->
 
 <a id='network-load-balancer-console-guide'></a>
@@ -498,7 +500,7 @@ SSLポリシーを削除できます。ただし、1つ以上のリスナーに�
 
 <a id='apply-ssl-policies'></a>
 #### SSLポリシーの適用
-SSLポリシーは、リスナー作成画面または[リスナーの変更及び詳細情報](#change-listener)画面でリスナーに接続します。
+SSL ポリシーは、リスナー作成画面または[リスナーの変更と詳細情報](#change-listener)画面でリスナーに関連付けます。
 
 * リスナーのプロトコルがTERMINATED_HTTPSの場合にのみ、SSLポリシーを接続できます。
 * リスナーにSSLポリシーを接続する場合、リスナーのTLSバージョンは選択したポリシーの最小TLSバージョンと一致する必要があります。
