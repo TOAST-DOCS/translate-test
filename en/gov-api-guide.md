@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=a929413d0034 -->
+
 ## Data & Analytics > Log & Crash Search > API Guide
 ### Appkey and SecretKey
 To use the Log & Crash Search API, you need an Appkey and a SecretKey.
