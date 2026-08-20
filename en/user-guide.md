@@ -537,8 +537,8 @@ Infrastructure NCS ADMIN permissions alone are only for viewing.
 | Graphics Optimized | ncs1 | ncs1.g1m5 | 5GB | 1 | MIG 1g.5gb |
 | Graphics Optimized | ncs1 | ncs1.g2m10 | 10GB | 2 | MIG 2g.10gb |
 
-<a id="problem-solving"></a>
-### Assign a Load Balancer IP to a Workload
+<a id="loadbalancer-static-ip"></a>
+### Assign a Load Balancer IP to a Workload { #loadbalancer-static-ip }
 
 * You can assign a load balancer IP to a workload via API.
 * If you do not assign a load balancer IP, the IP may change when the load balancer is recreated.
