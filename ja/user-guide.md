@@ -541,8 +541,8 @@ NCSサービスを利用するためには、次のロールが必要です。
 | Graphics Optimized | ncs1 | ncs1.g1m5 | 5GB | 1 | MIG 1g.5gb |
 | Graphics Optimized | ncs1 | ncs1.g2m10 | 10GB | 2 | MIG 2g.10gb |
 
-<a id="problem-solving"></a>
-### ワークロードロードバランサーIPの指定
+<a id="loadbalancer-static-ip"></a>
+### ワークロードロードバランサーIPの指定 { #loadbalancer-static-ip }
 
 * API でワークロードのロードバランサー IP を指定できます。
 * ロードバランサー IP を指定しない場合、ロードバランサーが再作成されると IP が変更される場合があります。
