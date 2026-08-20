@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=0cdc970c9318 -->
 
 <a id="network-transit-hub-api-v2-guide"></a>

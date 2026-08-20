@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=e491fe6cb22c -->
 
 <a id="network-transit-hub-overview"></a>
