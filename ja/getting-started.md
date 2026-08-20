@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=76d6e0cfc969 -->
 
 <a id="security-secure-key-manager-console-user-guide-getting-started"></a>
