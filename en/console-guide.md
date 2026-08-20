@@ -1,505 +1,333 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > Console Guide
+<!-- machine_translated: true -->
 
-<a id="create-instances"></a>
-## Create Instances
+<!-- pre-align:aligned sig=716f88137cb3 -->
 
-You can create instances either by using the settings below or by using instance templates. To create instances using instance templates, select **Use instance template** from the Create Instance page. To learn how to create instance templates, see [Instance Template Console Guide](/Compute/Instance%20Template/en/console-guide/).
+{% include-markdown '../_online-nas-vars.md' %}
 
-<a id="os-settings"></a>
-### OS Settings
 
-Determine how the root block storage is created that will be used when an instance is created.
 
-- Select either **Create New and Set up** or **Use Existing Resource**.
-- If you select **Create New and Set up**, create root block storage using an image.
-- If you select **Use Existing Resource**, use a previously created block storage or snapshot.
+<a id="storage-nas-console-user-guide"></a>
+## Storage > NAS > Console User Guide { #storage-nas-console-user-guide }
 
-<a id="image"></a>
-### Image
+This document describes how to manage NAS volumes and snapshots and connect them to instances in the NHN Cloud console.
 
-Select the image that contains the operating system you need. You can choose between public images provided by NHN Cloud, images you've previously created, or shared images.
+<a id="volume"></a>
+## Volume { #volume }
 
-The available instance flavors vary depending on the image you choose, so we recommended you choose an image first when creating an instance.
+<a id="create_volume"></a>
+### Create Volume { #create_volume }
 
-| OS                         | Block Storage     | Memory   |
-| -------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB or more  | 1GB or more |
-| Windows                           | 50GB or more  | 2GB or more |
+Creates a new volume. The created volume can be accessed from instances using the network file system (NFS) and common internet file system (CIFS) protocols.
 
-<a id="root-block-storage"></a>
-### Root Block Storage
+| Item | Description |
+| --- |---------------------------------------------------------------------------------------------------------------------------|
+| Name | Name of the volume to be created. The NFS or CIFS access path is created using the volume name. The volume name is limited to up to 100 characters, including letters, numbers, and some symbols ('-', '_'). |
+| Description | Description of the volume. |
+| Size | Size of the volume to be created. It can be entered from a minimum of 300 GB to a maximum of 10,000 GB. |
+| Protocol | Select a protocol to access the volume. CIFS and NFS are supported, but not simultaneously. |
+| VPC | The virtual private cloud (VPC) to access the volume. |
+| Subnet | The subnet to access the volume. Only subnets in the selected VPC can be chosen. |
+| Access Control List (ACL) | A list of the IPs or CIDR blocks that allow read and write permissions. |
+| Auto Create Snapshot | Snapshots are created automatically at a specified time once per day. When the maximum number of saves is reached, the first automatically created snapshot is deleted. |
+| Snapshot Reserve Capacity | Pre-allocate space for snapshots to be stored. Data can be stored in any capacity except the one you set. If the actual size of the snapshot is larger than the snapshot reserve capacity setting, the data storage space beyond the reserve capacity is used to store the snapshot.|
+{%- if encryption %}
+| Encryption | Select whether to enable volume encryption. This must be preceded by setting up encryption key storage. |
+{%- endif %}
 
-Set up root block storage according to the **OS settings**.
+!!! tip "Note"
+    The number of subnets available for each project is limited to 3. To increase the limit, contact Customer Support.
 
-- If you select **Create New and Set up**, create the root block store by specifying the **block storage type** and **block storage size**.
-- If you select **Use Existing Resource**, specify the **original resource** to use as root block storage.
+<a id="create_volume.cifs"></a>
+#### Manage CIFS Credentials
+To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register a CIFS credential to access each CIFS volume.
 
-#### Original Resource
+<a id="create_volume.cifs-rules"></a>
+##### CIFS Credential Rules
 
-You can select either a previously created **block storage** or **snapshot**.
+* ID rules
+    * Must start with a lowercase letter or number, and cannot end with a period (.).
+    * Allowed characters are lowercase letters (a-z), numbers (0-9), hyphens (-), periods (.), and underscores (_). No other characters are allowed.
+    * You can enter up to 20 characters.
+    * IDs consisting of numbers only, reserved words (administrator, default, guest, krbtgt), and duplicate IDs cannot be used.
 
-- When you select **block storage**, use the previously created block storage as the root block storage.
-- When you select **snapshot**, the root block storage is created using a previously created snapshot.
+* Password rules
+    * Must be at least 6 characters long and must contain at least three of the following character types: uppercase letters, lowercase letters, numbers, and special characters.
+    * Allowed special characters are `~!@#^*_-+=\|()[]:;"'<>,.?/`. Spaces are not allowed.
+    * Passwords that contain the ID cannot be used.
 
-#### Block Storage Size
+{% if encryption %}
+<a id="create_volume.encryption"></a>
+#### Encryption Key Store Settings
 
-Specify the root block storage size of an instance.
+Encrypted volume stores symmetric keys used for encryption in a key store in the NHN Cloud Secure Key Manager service. Therefore, to create encrypted volume, you must [create a key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service in advance. [Check the ID of the key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption key store settings.
 
-- The block storage size must be at least the minimum size required by the image.
+When you create encrypted volume, the symmetric key is stored in the key store you set up. The symmetric key stored in the key store by the NAS service cannot be deleted while using encrypted volume. If you delete encrypted volume, the symmetric key is also deleted.
 
-The root block storage size varies depending on instance flavor.
+When you change the key store ID, the symmetric key for encrypted volume you create in the future is stored in the changed key store. Symmetric keys stored in the existing key store are retained.
 
-| Flavors               | Supported Block Storage Size         |
-| -------------------| -------------------------- |
-| u2 flavors             | 20 ~ 100 GB (varies by flavor) |
-| t2, m2, c2, r2, and x1 flavors | 20 ~ 2000 GB               |
+!!! tip "Note"
+    You will be charged for key store usage according to the Secure Key Manager service pricing policy. For more information, see [Secure Key Manager pricing](https://www.nhncloud.com/kr/service/security/secure-key-manager#price).
 
-> [Note]
-> Because you are charged by block storage size, it is inefficient to make the default block storage size large without consideration. We recommend that you add additional block storage as needed.
-> If you select **block storage** for **Use Existing Resource** in the **OS settings**, you can't change the block storage size.
-> If you select **snapshot** for **Use Existing Resource** in the **OS settings**, block storage size must be set equal to or larger than the original block storage size.
+    Encrypted volume encrypts data with the XTS-AES-256 algorithm using two different symmetric keys. Therefore, two symmetric keys are stored in the key store for each encrypted volume.
 
-#### Block Storage Type
+{% endif %}
+<a id="change_volume_size"></a>
+### Change Volume Size { #change_volume_size }
 
-Determines the default block storage type of an instance.
+Volume size is changed. Volume can be scaled up and down even while in use.
 
-- Choose either **HDD** or **SSD**. The choice of block storage type affects pricing and performance.
-- You cannot change the block storage type once the instance is created.
+{% if replication -%}
+!!! danger "Caution"
+    The size of a replication target volume can only be changed after replication is stopped.
 
-> [Note]
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the block storage type.
+    The size of the target volume must be equal to or greater than the size of the source volume. It is recommended to set the sizes of the source and target volumes to be the same.
 
-<a id="availability-zone"></a>
-### Availability Zone
+{% endif %}
+<a id="change_acl"></a>
+### Change Access Control List Settings { #change_acl }
 
-If an availability zone is not specified, a random zone is selected. An instance can use a block storage only if they both exist in the same availability zone. If the block storage you wish to use exists in a particular availability zone, then select that zone.
+The settings for the volume’s access control list is changed.
 
-> [Note]
-> Resources in a VPC can be used in any availability zone.
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the availability zone.
+<a id="change_snapshots_settings"></a>
+### Change Snapshot Settings { #change_snapshots_settings }
 
-For more details on availability zones, see [Availability Zone in Instance Overview](./overview/#availability-zone).
+The settings for Auto Create Snapshot and Snapshot Reserve Capacity are changed.
 
-<a id="flavor"></a>
-### Flavor
+<a id="delete_volume"></a>
+### Delete Volume { #delete_volume }
 
-You can select various flavors depending on virtual hardware performance specifications. However, the choice of some flavors may be limited depending on the virtual hardware performance that your image requires. For more details, see [Instance Overview](./overview).
+Volume is deleted.
 
-> [Note] 
-> 1 vCPU refers to one socket composed of one thread and one core, the number of threads and the number of cores per socket are constant, one each.
+!!! danger "Caution"
+    When deleting the volume, all data including snapshots are deleted. Deleted data cannot be recovered.
+    It is recommended to unmount the volume from the associated instance before deleting. Deleting the volume while it is mounted may cause problems on the user's system.
 
-Instance flavors can be changed in the NHN Cloud console even after instance creation, from higher to lower specs and vice versa. However, note that some flavors cannot be changed. See [Modify flavor](./console-guide/#modify-flavor) for details.
+<a id="snapshots"></a>
+## Snapshot { #snapshots }
+Retrieve a list of created snapshots.
 
-> [Caution] An instance's root block storagecannot be changed by changing instance flavors.
+| Item | Description |
+| --- | --- |
+| Name | The name of the snapshot. If created by the system, the name is determined by a specified rule. |
+| Volume usage when snapshots created | The volume usage at the time the snapshot is created. If the snapshot is being stored as it exceeded the snapshot reserve capacity, it appears as the data capacity excluding the excess capacity. |
+| Created date | When the snapshot is created. |
 
-<a id="number-of-instances"></a>
-### Number of Instances
+!!! tip "Note"
+    Snapshots prioritize the storage space on the volume by using the reserved capacity for snapshots. If the total snapshot size exceeds the reserved capacity, the excess is stored in the data storage space.
 
-You can specify the number of instances you want to create when creating multiple instances with the same image, availability zone, flavor, block storage size, key pair, and network settings. The instance names will be the name you specified, with numbers such as `-1` and `-2` appended to the end. For example, creating two instances named `my-instance` will result in `my-instance-1` and `my-instance-2`. The maximum number of instances you can create at once is 10.
+!!! tip "Note"
+    Some snapshots are created by the system and cannot be deleted.
 
-When you create multiple instances without specifying an availability zone, each instance will be created in a randomly selected availability zone. For example, if two instances are created without specifying an availability zone, they may be created in the same zone or they may be created in different zones. If all instances need to be created in the same availability zone, select a particular zone.
 
-> [Note]
-> If you select **block storage** for **Use Existing Resource** in the **OS settings** or **Use Existing Network Interface** in the **network settings**, the number of instances is limited to `1`.
+<a id="snapshots.create"></a>
+### Create Snapshots { #snapshots.create }
 
-<a id="key-pair"></a>
-### Key Pair
+Snapshots of volume are created immediately.
 
-Use an existing key pair or create a new key pair. To register an existing key pair, see [Import Key Pair (Windows)](./console-guide/#import-key-pairs-windows) for Windows users, and [Import Key Pair (Mac and Linux)](./console-guide/#import-key-pairs-mac-and-linux) for Mac and Linux users.
+<a id="snapshots.restore"></a>
+### Restore Snapshots { #snapshots.restore }
+Restores volume to the point in time when the snapshot was created.
 
-> [Note]
-> Key Pair is a resource assigned to the user account, so it's not deleted when you delete a project.
+!!! danger "Caution"
+    When restoring, snapshots created after the point of restoration are automatically deleted.
+
+<a id="snapshots.restore_results"></a>
+### View Snapshot Restore Results { #snapshots.restore_results }
+View the history of volume restores performed using snapshots.
+
+<a id="snapshots.delete"></a>
+### Delete Snapshots { #snapshots.delete }
+
+A specified snapshot is deleted. Once deleted, snapshots cannot be recovered.
 
 <a id="network"></a>
-### Network
+## Network { #network }
+Check the network connection information.
 
-Select a subnet defined in your VPC to connect to an instance. For each selected subnet, a network interface is created in the instance to connect to that subnet. You can change the order of selected subnets to change network interfaces, in which case the first network interface (`eth0`) will be set as the default gateway.
+| Item | Description |
+| --- | --- |
+| Connection information | Displays the connection path to use when mounting from an instance. |
+| Subnet | The subnet information associated with the volume. |
+| Status | The subnet association status. |
 
-For more details on creating and managing networks, refer to [VPC Overview](/Network/VPC/en/overview/).
+<a id="network.add_subnet"></a>
+### Add Subnet Association { #network.add_subnet }
+Add a subnet association. Adding a subnet association allows you to access volume from the added subnet.
 
-<a id="floating-ip"></a>
-### Floating IP
+!!! danger "Caution"
+    After adding a subnet association, if the subnet band does not exist in the ACL, mounting is not possible.
 
-Select whether you will use a floating IP after instance creation. If you enable this option, a new floating IP is created and connected to the first network interface. Note that the first network interface must be connected to a subnet where an internet gateway is configured.
+<a id="network.detach_subnet"></a>
+### Detach Subnet { #network.detach_subnet }
+Remove the subnet associated with the volume. IP ACLs must be removed separately if needed.
 
-Floating IP can be managed from Instance > Management, or Instance > Floating IP. For more details on floating IP, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+!!! danger "Caution"
+    It is recommended to detach the subnet after unmounting from a connected instance. Detaching while mounted can cause problems for user systems.
 
-<a id="security-group"></a>
-### Security Group
+{% if monitoring %}
+<a id="monitoring"></a>
+## Monitoring { #monitoring }
 
-Select security groups that the instance will be included in. One instance can be included in multiple security groups, in which case,
+Check various metrics of volume with graphs. After selecting the volume to check, click the **Monitoring** tab.
 
-- The instance can communicate over the network with all other instances included in each security group. When you are dealing with an instance with sensitive data that is not meant to be accessible by other instances, you must carefully select security groups.
-- The rules of each security group are aggregated and applied to the instance's external network communication.
+The default search period is the latest 1 hour, and you can search any period you want through the search period filter. Descriptions of monitoring metrics are found in the table below.
 
-For more details on security groups, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+| Metric | Unit | Description |
+| --- | --- | --- |
+| Volume capacity | byte | The total capacity of volume and the capacity in use. |
+| Volume usage | % | The capacity in use as a percentage of the total volume capacity. |
+| IOPS | OPS | Volume operations per second. |
+| Latency | usec | The volume latency time. |
+| Snapshot number | - | The number of snapshots in volume. |
+| Snapshot capacity | byte | The amount of capacity that volume is using for the snapshot. |
+| Inode | - | The number of volume inodes. |
+| Volume status | - | The volume status. |
 
-<a id="additional-block-storage"></a>
-### Additional Block Storage
+{% endif %}
+{%- if replication %}
+<a id="replication"></a>
+## Replication { #replication }
 
-Select whether you will attach an additional block storage after instance creation. If you enable this option, a new block storage separate from the root block storage is created and attached to the instance. As with the root block storage, you can specify the name, storage type, and size of the additional block storage you create.
+View information about replication settings.
 
-By using the root block storage only for the OS and storing your frequently used applications and data on the additional block storage, you can easily migrate or copy your applications and data using the block storage attach/detach and snapshot features. In addition, when an instance failure occurs, you can easily recover your services by simply detaching the additional block storage and attaching it to another instance.
+| Setting | Description |
+| --- | --- |
+| Replication Settings | Whether replication is enabled for the volume. |
+| Replication setup status | The status of replication settings between source and target volume.<br>Active: Active status<br>Retrieve failed: Temporary failure to obtain information<br>Halt: Paused state<br>Initial replication progress additionally displays the replication progress and target volume encryption status. |
+| Results of recent replication | The results of the last replication you ran. |
+| Latest replication execution time | The last time you ran a replication. |
+| Last replication success time | The last time replication completed. |
+| Replication direction | The replication direction. |
+| Target region | The replication target region. Only exposed if this is the source volume that you set up replication for. |
+| Target volume | The replication target volume name. Exposed only if it is the source volume for which replication is set up. |
+| Source region | The replication source region. Only exposed if replication is enabled on the target volume. |
+| Source volume | The replication source volume name. Only exposed if replication is enabled on the target volume. |
 
-Block storage can also be managed from Instance > Block Storage. For more details on block storage, see [Block Storage Guide](/Storage/Block%20Storage/en/overview/).
+<a id="replication.settings"></a>
+### Replication Settings { #replication.settings }
 
-<a id="placement-policy"></a>
-### Placement Policy
+You can set up replication to selected regions of a project within your organization.
 
-You can use placement policies to place instances on different hypervisors. When you set a placement policy at instance creation time, instances assigned to the same placement policy are created on different hypervisors.
- 
-> [Caution]
-> Instance creation may fail in situations where distributed deployment is not possible.
+When you set up replication, a target volume is created at the target location that is the same size as the source volume. The target volume is created in a read-only state, and you must stop replication or turn off replication settings to change the state of the target volume.
 
-<a id="user-script"></a>
-### User Script
+When you update or delete data in the source volume, the data in the target volume is also updated or deleted.
 
-You can specify a script to be executed after instance creation. The user script is executed following the instance's initial boot and after the initialization process including network configuration has completed. User scripts in NHN Cloud are executed by automated tools such as cloud-init (Linux) and Cloudbase-init (Windows), which are embedded in the official images.
+Check the range of regions selectable by target project.
 
-> [Caution]
-> User scripts are executed with root (Linux)/Administrator (Windows) privileges.
+| Target project | Selectable region |
+| --- | --- |
+| Same project within an organization | Other regions |
+| Other projects in an organization | All regions |
 
-#### Linux
-The first line of a user script must begin with `#!`.
+!!! danger "Caution"
+    To change the size of a replicated volume, you must change both the source volume and the target volume. If the size of the source volume and the target volume are different, replication might fail.
+
+!!! tip "Tip"
+    Volume replication is performed using snapshots. When replication is configured, snapshots in the format `{volume name}.mirror.%` are automatically created and cannot be deleted.
+
+!!! tip "Note"
+    The target volume created by the replication setup is billed for volume capacity according to the NAS service fee policy.
+
+    You are charged for network traffic generated by replication between different regions.
+
+For more information on pricing, see our [NAS pricing guide](https://www.nhncloud.com/kr/service/storage/nas).
+
+<a id="replication.start"></a>
+### Start Replication { #replication.start }
+
+Resumes replication of volume that is in a stopped state.
+Replication runs asynchronously when changes occur on the source volume. Before replication runs, the data on the source and target volume might not match.
+
+!!! danger "Caution"
+    Replication might fail if the target volume size is smaller than the source volume size.
+
+When replication runs, all existing data on the target volume is deleted, and the target volume is set to the same state as the source volume.
+
+<a id="replication.stop"></a>
+### Stop Replication { #replication.stop }
+
+Stops replicating volume.
+When you stop replication, the target volume becomes writable and can be mounted and used.
+
+!!! danger "Caution"
+    If you stop replication, the data on the source and target volume might not match. 
+
+!!! tip "Note"
+    Volume in the Stop replication state might also experience a small amount of traffic to check replication status.
+
+<a id="replication.change_direction"></a>
+### Change Replication Direction { #replication.change_direction }
+
+Change the direction of replication between source and target volume.
+
+* Change replication direction from **[source→target]** to **[target→source]**
+    * All existing data on the source volume is deleted, and the data on the target volume is replicated to the source volume.
+    * Replication might fail if the source volume size is smaller than the target volume size.
+
+* Change replication direction from **[target→source]** to **[source→target]** (revert)
+    * All existing data on the target volume is deleted, and the data from the source volume is replicated to the target volume.
+    * Replication might fail if the target volume size is smaller than the source volume size.
+
+<a id="replication.disable"></a>
+### Disable Replication Settings { #replication.disable }
+
+Disables volume replication.
+When you disable replication, the target volume retains the source volume data as it was when the last replication completed.
+
+!!! danger "Caution"
+    When you re-establish replication, a new target volume is created. You cannot use the previously used target volume as the replication target volume again.
+
+{% endif %}
+<a id="connect_volume"></a>
+## Connect Volume { #connect_volume }
+
+The created volume can be mounted on an instance using the connection information. However, the instance to be mounted must be connected to the same subnet as the volume.
+
+<a id="connect_volume.nfs"></a>
+### NFS { #connect_volume.nfs }
+
+<a id="connect_volume.nfs-install-nfs-package"></a>
+#### Install NFS Package 
+
+* **Debian, Ubuntu**
 ```
-#!/bin/bash
-...
+sudo apt-get install nfs-common rpcbind
+```
+<br>
+
+* **CentOS**
+```
+sudo yum install nfs-utils rpcbind
+```
+<br>
+
+<a id="connect_volume.nfs-run-rpcbind-service"></a>
+#### Run rpcbind Service 
+
+```
+sudo service rpcbind start
 ```
 
-For a user script to run successfully, log files in the instance must be checked. You can check output logs printed by standard output/error from the script in `/var/log/cloud-init-output.log`.
+<br>
 
-#### Windows
+<a id="connect_volume.nfs-mount-volume"></a>
+#### Mount volume
 
-Windows images support both Batch and PowerShell formats for user scripts. The format is determined by an indicator specified in the first line.
-
-* Batch Script
 ```
-rem cmd
-...
+sudo mount -t nfs <nas source> <mount point>
 ```
 
-* PowerShell Script
+| Item | Description |
+| --- | --- |
+| &lt;nas source&gt; | Volume information<br>Example: 192.168.0.241:/data |
+| &lt;mount point&gt; | Directory to mount the volume<br>Example: /mnt |
+
+<a id="connect_volume.cifs"></a>
+### CIFS { #connect_volume.cifs }
+
+In File Explorer, right-click **My PC** in the left navigation pane and select **Connect Network Drive**. In the Connect Network Drive window, select the drive you want to mount and enter the folder path.
+The folder path is formatted as `\\{volume IP}\{volume name}`.
+
 ```
-#ps1_sysnative
-...
+예: \\192.168.0.100\cifs
 ```
-
-To use both Batch and PowerShell in your script, use the following format.
-
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
-
-Logs from user scripts can be found in `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`.
-
-For more details regarding user scripts, see the [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) or [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) guides.
-
-<a id="additional-instance-features"></a>
-## Additional Instance Features
-
-<a id="change-instance-status"></a>
-### Change Instance Status
-
-An instance’s status can be changed by stopping, terminating, deleting, and starting it.
-
-For more details on hypervisor resources and fees for stopping, terminating, and deleting instances, see the table below.
-
-| Classification | Stop instance | Terminate Instance | Delete Instance |
-| --- | -- | --- | --- |
-| Hypervisor resource | Resource remain allocated  | Resource returned and reallocated when an instance is started | Resource removed |
-| Pricing for instance | Price for stopping applied | Free | Free |
-| Pricing for other connected resources | Charged| Charged | Charged |
-
-> [Note] GPU Instances cannot be terminated and will incur normal (100%) rates when stopped.
-
-<a id="create-image"></a>
-### Create Image
-
-Create an image from an instance's root block storage. It is recommended to stop instances before creating an image in order to ensure data integrity.
-
-While it is possible to create an image from an instance that has no available free space in its root block storage, those images are unusable by other instances because they cannot be properly initialized. Before creating an image, ensure that your instance has at least 100KB of free space.
-
-Created images are registered as private images in **Compute > Image**. You can use the registered image to create an instance with a block storage identical to that of the original instance.
-
-> [Caution]
-> The size of the created image may be larger than the actual usage of the root block storage.
-
-<a id="associatedisassociate-floating-ip"></a>
-### Associate/Disassociate Floating IP
-
-Floating IP can be associated with or disassociated from an instance, regardless of the instance's status. If you have no available floating IP or if the floating IP you want is not available, you can create one by clicking **Create**. Alternatively, floating IP can also be created from **Network > VPC > Floating IP**.
-
-For more details on floating IP, see [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="modify-security-group"></a>
-### Modify Security Group
-
-An instance's security groups can be modified regardless of the instance's status. Modified security groups are applied immediately.
-
-For more details on security groups, see [Security Group](./console-guide/#security-group) and [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="change-network-subnet"></a>
-### Change Network Subnet
-
-An instance's network subnet can only be changed while the instance is stopped. When you add a subnet, a network interface that will be connected to that subnet is automatically created on your instance. If you add multiple subnets at once, the order of the newly created network interfaces on the instance is set randomly. Deleting a subnet from an instance automatically deletes the network interface that was created along with the subnet.
-
-<a id="modify-flavor"></a>
-### Modify Flavor
-
-Instance flavors can be changed once an instance has been stopped. If an instance is running, click **Stop Instance** in **Additional Features** to stop the instance.
-
-You can only change an instance to another flavor that is compatible with its current flavor.
-
-* m2, c2, r2, t2, x1 flavor instances can be changed to m2, c2, r2, t2, x1 flavors.
-* m2, c2, r2, t2, x1 flavor instances cannot be changed to u2 flavors.
-* u2 flavor instances cannot be changed to other flavors once they have been created, not even to those of the same u2 flavor.
-
-When you modify flavors, instance resize and resize confirmation tasks proceed. When all tasks are completed, the VM changes its status to **Shutoff**. You can start the instance by clicking **Start Instance** in **Additional Features**.
-
-> [Note] The instance's root block storage size cannot be modified. If an instance requires additional block storage space, attach a block storage. For details on how to attach block storage, see [Block Storage Overview](/Storage/Block%20Storage/en/overview/).
-
-Instances will be charged using the new flavor from the moment the modification completes.
-
-<a id="change-instance-os-details"></a>
-### Change Instance OS Details
-
-You can change instance OS information regardless of the state of the instance. 
-
-On the **Compute > Instance** page, click the instance whose OS information you want to change. On the **Basic Information** tab of that instance's details screen, click **OS > Modify**.
-
-> [Note] You can't change the OS type.
-
-<a id="change-instance-description"></a>
-### Change Instance Description
- 
-You can change instance description regardless of the state of the instance. 
- 
-On the **Compute > Instance** page, click the instance whose information you want to change. On the **Basic Information** tab of that instance's details screen, click **Description > Change**.
-
-<a id="change-instance-key-pair"></a>
-### Change Instance Key Pair
-
-You can change the instance key pair only if the instance is active.
-
-On the **Compute > Instance** page, click the instance whose key pair information you want to change. On the **Basic Information** tab of that instance's details screen, click **Key Pair > Change**.
-
-Change the key pair of the instance default account to the selected key pair. The instance default account can be found on the **Connection Information** tab of the instance's bottom details screen.
-
-> [Caution] Changing an instance key pair deletes all public key information in the instance except for the selected key pair.
-
-> [Note] Only project members with the ADMIN permissions for the basic infrastructure can change the instance key pair, which cannot be changed if it is a Windows OS instance.
-
-> [Note] If the image version used to create the instance is low, the feature to change key pairs may not be available.
-
-<a id="manage-placement-policies"></a>
-### Manage Placement Policies
-
-You can create and delete placement policies and view a list of instances assigned to placement policies.
-
-Only the `anti-affinity` placement policy type for distributed placement is provided.
-
-You can delete a placement policy even if instances are assigned to it, in which case the instances are not deleted.
-
-<a id="key-pairs"></a>
-## Key Pairs
-
-<a id="import-key-pairs-windows"></a>
-### Import Key Pairs (Windows)
-
-You can use puttygen, which is installed when you install the PuTTY SSH client, to create a key pair and register it with NHN Cloud.
-
-Make sure you have [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) installed.
-
-Run puttygen.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
-
-Select **RSA** (or SSH-2 RSA in older versions of puttygen) under **Parameters**. Click **Generate** under **Actions**. Continuously move your mouse in the empty space in order to generate the key.
-
-After the key is generated, the public key file contents will be visible as shown below. Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
-
-Click **Save private key** under **Actions** to save the private key. If you save the private key leaving the **Key passphrase** field blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to use your converted private key more securely, set a passphrase before saving.
-
-> [Caution]
-> If you wish to be able to automatically login to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### Import Key Pairs (Mac and Linux)
-
-Key pairs created using `ssh-keygen` in Mac or Linux can be registered with NHN Cloud. Use the following command to create a key pair.
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-You can choose to set a passphrase for the key pair, although it is not required. If you wish to use your key pair more securely, we recommend setting a passphrase. The file with `.pub` appended to the specified key pair name contains the public key.
-
-	$ cat my_key.key.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-	
-Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## Appendix 1. Change Language Packs in Windows
-
-NHN Cloud provides Windows images with English as the primary language. You may change your language preferences with the following steps.
-
-1. Go to **START > Control Panel > Clock, Language, and Region > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. Select **Change your language preferences > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. Choose a language in **Add a language** and click **Add**.
-![Image1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. Check the language pack just added.
-![Image1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. Download and install the language pack.
-![Image1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. Download and install updates.
-![Image1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. To change to the installed language pack, double-click the selected language or select **Options**.
-![Image1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. Choose **Make this the primary language** for Windows display language.
-![Image1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. To apply the changes, click **Log off now**.
-![Image1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. Log in again, and you can see Windows is displayed using the language pack of your choice.
-![Image1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## Appendix 2. Change Routing in Windows
-
-Routing in NHN Cloud Windows instances can be changed as follows.
-
-* Press **Windows Key + R** to open an execution window, and enter `cmd` and execute to open a command prompt window. You can enter route commands here.
-
-Route commands
-
-* Print current configuration: route print
-* Add : route add "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Change : route change "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Delete : route delete "Destination" mask "Destination subnet" "gateway" metric "Metric value" if "Interface number"
-* Option : -p (specify as persistent route)
-
-  
-Description
-
-![Image1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* Metric Value: A lower value indicates higher priority
-* Interface Number: This value can be obtained from route print (red box above)
-* Persistent Route: Use the -p option to avoid the configured routes being reset across system reboots (blue box above)
-
-Example 1 - Restricting external communication for particular interfaces
-
-* You can restrict an interface from communicating externally by using the route change command to change its route metric or by leaving the default gateway field blank when configuring fixed IP settings.
-* How to Modify Metrics
-    * Increase interface metric value
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* How to Set Fixed IP
-    1. Use the ipconfig /all command to view IP information.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. Enter the corresponding IP information, leaving the default gateway field blank, in the IP Properties window.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. Check the results using the route print command.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Example 2 - Setting routes for a particular address range
-
-* Use the route add command to set routes for a particular address range.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Example 3 - Removing a particular route
-
-* Use the route delete command to remove specified routes.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## Appendix 3. Change System Locale
-
-System locale in NHN Cloud Windows instances can be changed as follows.
-
-1. Go to **Windows Key > Control Panel > Clock, Language, and Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. Select **Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. From the **Administrative** tab, click **Change system locale**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. Select a system locale to use.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. Restart the system to apply the changes.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## Appendix 4. Restarting Instances for Hypervisor Maintenance
-NHN Cloud updates hypervisor software on a regular basis to enhance the security and stability of infrastructure services that we provide.
-Instances running on a hypervisor that requires maintenance must be restarted and migrated to a hypervisor which has completed maintenance.
-
-To restart an instance, use the **! Restart** button that has been created next to the instance name in the console.
-`Using the "Restart Instances" button in the console or rebooting the operating system will not migrate an instance to another hypervisor.`
-Follow the guide below to use the restart feature in the console.
-
-Go to the project where your instance requiring maintenance is located.
-
-**1. Check if your instance requires maintenance.**
-
-Any instance that has the **! Restart** button before its name requires maintenance.
-Put the mouse cursor over the **! Restart** button to find maintenance schedule details.
-![Instance Maintenance Image 1](http://static.toastoven.net/prod_instance/instance_p_migration_en_1.png)    
-
-**2. Deactivate or stop application programs running on an instance which requires maintenance.**
-
-Any application programs running on an instance which requires maintenance must be deactivated or stopped in order not to impact your service.
-If there is no way to do so without impacting your service, please contact NHN Cloud Customer Center and we will provide you with guidance on appropriate measures to take.
-
-**3. Click the [! Restart] button created next to the name of the target instance.**
-
-![Instance Maintenance Image 2](http://static.toastoven.net/prod_instance/instance_p_migration_en_2.png)
-
-**4. Click [Confirm] in the Restart Instances confirmation window.**
-
-![Instance Maintenance Image3](http://static.toastoven.net/prod_instance/instance_p_migration_en_3.png)
-
-**5. Wait until the instance status turns green and the [! Restart] button disappers.**
-
-If the status does not change or the **! Restart** button is not disabled, try refreshing the page.
-
-You cannot operate or modify the instance while a restart is underway.
-If an instance restart does not complete successfully, the administrator will automatically be notified and you'll also be contacted by NHN Cloud.
