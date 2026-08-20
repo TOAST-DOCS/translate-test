@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=da1eb7ccba75 -->
 
 <a id="network-transit-hub-console-user-guide"></a>
