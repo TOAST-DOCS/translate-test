@@ -1,32 +1,35 @@
-<!-- pre-align:aligned sig=876ecae2be90 -->
+<!-- machine_translated: true -->
 
 <a id="foundry.api.guide"></a>
-## Machine Learning > NHN Cloud Foundry > API 가이드 { #foundry.api.guide }
 
-NHN Cloud Foundry가 제공하는 API를 설명합니다.
+## Machine Learning > NHN Cloud Foundry > APIガイド { #foundry.api.guide }
 
-| API | 설명 |
+NHN Cloud Foundryが提供するAPIについて説明します。
+
+| API | 説明 |
 | --- | --- |
-| Ingest API | 이미 만든 데이터 소스에 데이터를 수집합니다. 스냅샷 파일 업로드를 제공합니다. |
-| 추천 조회 API | 생성한 추천 시스템 앱에 추천 결과를 요청합니다. |
-| 추천 이벤트 API | 추천 결과에 사용자가 보인 반응 이벤트를 수집합니다. |
-
+| Ingest API | 既存のデータソースにデータを収集します。スナップショットファイルのアップロードを提供します。 |
+| 推薦照会 API | 作成した推薦システムアプリに推薦結果を要請します。 |
+| 推薦イベント API | 推薦結果に対してユーザーが示した反応イベントを収集します。 |
 <a id="auth.common"></a>
-## 인증 및 공통 사항 { #auth.common }
+
+## 認証および共通事項 { #auth.common }
 
 <a id="auth.common.preparation"></a>
-### 사전 준비 { #auth.common.preparation }
 
-API를 사용하려면 **Appkey**와 **인증 토큰**이 필요합니다.
+### 事前準備 { #auth.common.preparation }
 
-- Appkey는 NHN Cloud 콘솔의 **Machine Learning > NHN Cloud Foundry** 페이지 상단 **URL & Appkey** 메뉴에서 확인할 수 있습니다.
-- API는 **gateway-public** 엔드포인트를 사용합니다.
-- 인증 토큰(`X-NHN-Authorization` 헤더의 Bearer 토큰) 발급 방법은 [User Access Key 토큰](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/user-access-key-token/) 가이드를 참고하세요.
+APIを使用するには、**Appkey** と**認証トークン**が必要です。
+
+- AppkeyはNHN Cloudコンソールの**Machine Learning > NHN Cloud Foundry**ページ上部の**URL & Appkey**メニューで確認できます。
+- APIは**gateway-public**エンドポイントを使用します。
+- 認証トークン（`X-NHN-Authorization`ヘッダのBearerトークン）の発行方法については、[User Access Keyトークン](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/user-access-key-token/)ガイドを参照してください。
 
 <a id="auth.common.request"></a>
-### 요청 공통 사항 { #auth.common.request }
 
-필수 헤더:
+### リクエスト共通事項 { #auth.common.request }
+
+必須ヘッダ:
 
 ```plaintext
 X-NC-APP-KEY: {appKey}
@@ -41,9 +44,10 @@ https://{gateway-public-host}/api/v1.0
 ```
 
 <a id="auth.common.response"></a>
-### 응답 공통 사항 { #auth.common.response }
 
-모든 API 응답은 `header`와 `body`로 구성됩니다.
+### レスポンス共通事項 { #auth.common.response }
+
+すべての API レスポンスは `header` と `body` で構成されます。
 
 ```json
 {
@@ -56,47 +60,48 @@ https://{gateway-public-host}/api/v1.0
 }
 ```
 
-| 필드 | 타입 | 설명 |
+| フィールド | タイプ | 説明 |
 | --- | --- | --- |
-| header.isSuccessful | Boolean | 요청 성공 여부 |
-| header.resultCode | Integer | 결과 코드. 성공 시 0, 실패 시 오류 코드 |
-| header.resultMessage | String | 결과 메시지. 성공 시 SUCCESS, 실패 시 오류 상세 |
-| body | Object/Array | API별 응답 데이터 |
-
+| header.isSuccessful | Boolean | 요求の成否 |
+| header.resultCode | Integer | 結果コード。成功時は 0、失敗時はエラーコード |
+| header.resultMessage | String | 結果メッセージ。成功時は SUCCESS、失敗時はエラーの詳細 |
+| body | Object/Array | APIごとのレスポンスデータ |
 <a id="ingest.api"></a>
+
 ## Ingest API { #ingest.api }
 
-Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재하는 API입니다.
-업로드한 파일로 데이터 소스의 데이터를 전부 교체하는 스냅샷 업로드 방식을 제공합니다.
+Ingest APIは、コンソールで作成済みのデータソースにデータを積載するAPIです。
+アップロードしたファイルでデータソースのデータをすべて置き換えるスナップショットアップロード方式を提供します。
 
-!!! danger "주의"
-    데이터 소스를 새로 만드는 API는 제공하지 않습니다. Ingest API를 사용하려면 콘솔에서 데이터 소스를 먼저 생성해야 하며, FILE 타입 데이터 소스만 사용할 수 있습니다.
+!!! danger "注意"
+    データソースを新規作成する API は提供していません。Ingest API を使用するには、コンソールでデータソースを先に作成する必要があり、FILE タイプのデータソースのみ使用できます。
 
 <a id="ingest.snapshot"></a>
-### 스냅샷 업로드(파일 업로드) { #ingest.snapshot }
 
-업로드한 파일의 내용으로 데이터 소스의 데이터를 **전부 교체**합니다. 업로드는 3단계로 진행됩니다.
+### スナップショットアップロード(ファイルアップロード) { #ingest.snapshot }
 
-!!! danger "주의"
-    스냅샷 업로드는 데이터 소스에 이미 적재된 데이터를 모두 교체합니다. 기존 데이터는 복구할 수 없습니다.
+アップロードしたファイルの内容でデータソースのデータを**すべて置き換え**ます。アップロードは3段階で進みます。
 
-업로드 제한:
+!!! danger "注意"
+    スナップショットのアップロードは、データソースにすでに積載されているデータをすべて置き換えます。既存のデータは復旧できません。
 
-- 최대 업로드 크기: **10GB**
-- `100MB` 이하 → **단일 업로드(SINGLE)**
-- `100MB` 초과 → **멀티파트 업로드(MULTIPART)**
-- `formPost` 필드 값들은 응답에 포함된 값을 **그대로** 요청에 넣어 사용합니다.
+アップロード制限:
+
+- 最大アップロードサイズ: **10GB**
+- `100MB` 以下 → **単一アップロード (SINGLE)**
+- `100MB` 超過 → **マルチパートアップロード (MULTIPART)**
+- `formPost` フィールドの値は、レスポンスに含まれる値を**そのまま**リクエストに使用します。
 
 <a id="ingest.snapshot.init"></a>
-#### 1. 업로드 초기화(init) { #ingest.snapshot.init }
 
-| 메서드 | URI |
+#### 1. アップロードの初期化 (init) { #ingest.snapshot.init }
+
+| メソッド | URI |
 | --- | --- |
 | POST | /api/v1.0/data-sources/{dataSourceId}/ingest/snapshots/init |
+大容量ファイルをストレージに直接アップロードするための署名済み一時URLを発行します。ファイルサイズに応じて、単一URL（SINGLE）またはマルチパートURL（MULTIPART）を返します。
 
-대용량 파일을 스토리지에 직접 업로드하기 위한 서명된 임시 URL을 발급합니다. 파일 크기에 따라 단일 URL(SINGLE) 또는 멀티파트 URL(MULTIPART)을 반환합니다.
-
-curl 예시:
+curl 例:
 
 ```bash
 curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/snapshots/init" \
@@ -110,12 +115,11 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
   }'
 ```
 
-| 필드 | 타입 | 필수 | 설명 |
+| フィールド | タイプ | 必須 | 説明 |
 | --- | --- | --- | --- |
-| fileName | String | O | 파일 이름. 허용 문자: 영문, 숫자, 점(.), 언더스코어(_), 하이픈(-) |
-| fileSize | Long | O | 파일 크기(bytes). 최소 1, 최대 10GB |
-| contentType | String | X | Content-Type(기본값: application/octet-stream) |
-
+| fileName | String | O | ファイル名。使用可能な文字: 英字、数字、ピリオド(.)、アンダースコア(_)、ハイフン(-) |
+| fileSize | Long | O | ファイルサイズ（bytes）。最小 1、最大 10GB |
+| contentType | String | X | Content-Type（デフォルト: application/octet-stream） |
 Response(SINGLE):
 
 ```json
@@ -178,33 +182,33 @@ Response(MULTIPART):
 }
 ```
 
-!!! tip "알아두기"
-    MULTIPART 응답에도 `formPost`가 포함됩니다. 단, 멀티파트 업로드는 `parts[].uploadUrl`의 쿼리 파라미터(`signature`/`expires`/`max_file_size`/`max_file_count`)로 파트를 전송하므로, `formPost`는 참고용이며 파트 업로드 자체에는 사용하지 않습니다.
+!!! tip "ヒント"
+    MULTIPART レスポンスにも `formPost` が含まれます。ただし、マルチパートアップロードは `parts[].uploadUrl` のクエリパラメータ（`signature`/`expires`/`max_file_size`/`max_file_count`）でパートを転送するため、`formPost` は参考用であり、パートのアップロード自体には使用しません。
 
-| 필드 | 설명 |
+| フィールド | 説明 |
 | --- | --- |
-| body.jobId | 작업 ID. 이후 complete / 상태 조회 요청에 사용합니다 |
-| body.uploadType | 업로드 타입. SINGLE(100MB 이하) 또는 MULTIPART(100MB 초과) |
-| body.uploadUrl | 업로드 URL(단일 업로드 시) |
-| body.uploadId | 멀티파트 업로드 ID(멀티파트 업로드 시) |
-| body.partSize | 파트 크기(bytes, 멀티파트 업로드 시) |
-| body.parts[].partNumber | 파트 번호(1부터 시작) |
-| body.parts[].uploadUrl | 파트 업로드 URL |
-| body.parts[].headUrl | ETag 조회용 URL(업로드 완료 후 HEAD 요청) |
-| body.expiresAt | URL 만료 시간 |
-| body.formPost.objectPrefix | 오브젝트 prefix(파일 이름 앞에 붙는 경로) |
-| body.formPost.signature | HMAC-SHA1 서명 |
-| body.formPost.expires | 만료 시간(UNIX timestamp) |
-| body.formPost.maxFileSize | 최대 파일 크기(bytes) |
-| body.formPost.maxFileCount | 최대 파일 개수 |
-
+| body.jobId | 作業ID。以降の complete / 状態照会リクエストに使用します |
+| body.uploadType | アップロードタイプ。SINGLE（100MB 以下）または MULTIPART（100MB 超過） |
+| body.uploadUrl | アップロードURL（単一アップロード時）|
+| body.uploadId | マルチパートアップロードID（マルチパートアップロード時） |
+| body.partSize | パート サイズ (bytes、マルチパートアップロード時) |
+| body.parts[].partNumber | パート番号 (1から開始) |
+| body.parts[].uploadUrl | パートアップロードURL |
+| body.parts[].headUrl | ETag照会用URL（アップロード完了後にHEADリクエスト） |
+| body.expiresAt | URLの有効期限 |
+| body.formPost.objectPrefix | オブジェクトのプレフィックス（ファイル名の前に付くパス） |
+| body.formPost.signature | HMAC-SHA1 署名 |
+| body.formPost.expires | 有効期限（UNIX timestamp） |
+| body.formPost.maxFileSize | 最大ファイルサイズ(bytes) |
+| body.formPost.maxFileCount | 最大ファイル数 |
 <a id="ingest.snapshot.upload.single"></a>
-#### 2-A. 단일 파일 업로드(100MB 이하) { #ingest.snapshot.upload.single }
 
-init 응답의 `uploadUrl`로 multipart/form-data POST를 보냅니다.
-이 요청은 Object Storage에 직접 보내므로 별도 인증이 필요 없습니다(`signature`가 인증 역할).
+#### 2-A. 単一ファイルアップロード(100MB以下) { #ingest.snapshot.upload.single }
 
-curl 예시:
+init レスポンスの `uploadUrl` に multipart/form-data POST を送信します。
+このリクエストは Object Storage に直接送信されるため、別途認証は不要です（`signature` が認証の役割を担います）。
+
+curl 例:
 
 ```bash
 curl -X POST "{uploadUrl}" \
@@ -216,24 +220,25 @@ curl -X POST "{uploadUrl}" \
   -F "file=@./data.csv;filename=data.csv"
 ```
 
-!!! danger "주의"
-    `file` 필드는 반드시 폼 데이터의 **마지막**에 추가해야 합니다. 성공 시 HTTP `201 Created` 응답을 받습니다.
+!!! danger "注意"
+    `file` フィールドは必ずフォームデータの**最後**に追加する必要があります。成功時は HTTP `201 Created` レスポンスを受信します。
 
 <a id="ingest.snapshot.upload.multipart"></a>
-#### 2-B. 대용량 파일 업로드(100MB 초과, MULTIPART) { #ingest.snapshot.upload.multipart }
 
-응답의 `parts[]` 배열을 받아서 파트별로 업로드합니다.
-각 파트는 **(1) 업로드 → (2) HEAD로 ETag 조회 → (3) `partETags[]`에 `partNumber` 오름차순으로 수집** 순서로 처리합니다.
+#### 2-B. 大容量ファイルのアップロード（100MB超、MULTIPART） { #ingest.snapshot.upload.multipart }
 
-1. 파일을 `partSize`(기본 100MB) 단위로 분할합니다.
-2. 파트마다 `parts[i].uploadUrl`의 쿼리 파라미터(`signature`, `expires`, `max_file_size`, `max_file_count`)를 파싱하여 multipart/form-data로 전송합니다(필드 이름 `file`, 파일 이름 고정 `part`).
-3. 업로드 성공 후 `parts[i].headUrl`로 `HEAD` 요청을 보내 응답 헤더의 `ETag` 값을 수집합니다.
-4. 모든 파트가 완료되면 `partETags` 배열을 `partNumber` 오름차순으로 구성하여 업로드 완료(complete) 요청에 담아 보냅니다.
+レスポンスの `parts[]` 配列を受け取り、パートごとにアップロードします。
+各パートは **(1) アップロード → (2) HEAD で ETag を照会 → (3) `partETags[]` に `partNumber` の昇順で収集** の順序で処理します。
 
-파트 업로드 curl 예시:
+1. ファイルを `partSize`（デフォルト 100MB）単位で分割します。
+2. パートごとに `parts[i].uploadUrl` のクエリパラメータ（`signature`、`expires`、`max_file_size`、`max_file_count`）をパースし、multipart/form-data で送信します（フィールド名 `file`、ファイル名固定 `part`）。
+3. アップロード成功後、`parts[i].headUrl` に `HEAD` リクエストを送信し、レスポンスヘッダの `ETag` 値を収集します。
+4. すべてのパートが完了したら、`partETags` 配列を `partNumber` の昇順で構成し、アップロード完了（complete）リクエストに含めて送信します。
+
+パートアップロード curl の例:
 
 ```bash
-# 1) 업로드
+# 1) アップロード
 curl -X POST "{parts[i].uploadUrl}" \
   -F "redirect=" \
   -F "max_file_size={max_file_size-from-query}" \
@@ -242,18 +247,18 @@ curl -X POST "{parts[i].uploadUrl}" \
   -F "signature={signature-from-query}" \
   -F "file=@./part_i.bin;filename=part"
 
-# 2) ETag 조회
+# 2) ETag 照会
 curl -I "{parts[i].headUrl}" | grep -i '^etag:'
 ```
 
 <a id="ingest.snapshot.complete"></a>
-#### 3. 업로드 완료(complete) { #ingest.snapshot.complete }
 
-| 메서드 | URI |
+#### 3. アップロード完了(complete) { #ingest.snapshot.complete }
+
+| メソッド | URI |
 | --- | --- |
 | POST | /api/v1.0/data-sources/{dataSourceId}/ingest/snapshots/complete |
-
-curl 예시(단일 업로드):
+curl 例(単一アップロード):
 
 ```bash
 curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/snapshots/complete" \
@@ -266,7 +271,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
   }'
 ```
 
-curl 예시(멀티파트 업로드):
+curl 예示(マルチパートアップロード):
 
 ```bash
 curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/snapshots/complete" \
@@ -281,13 +286,12 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
   }'
 ```
 
-| 필드 | 타입 | 필수 | 설명 |
+| フィールド | タイプ | 必須 | 説明 |
 | --- | --- | --- | --- |
-| jobId | String | O | 작업 ID(init 응답의 jobId) |
-| fileName | String | O | 파일 이름 |
-| uploadId | String | X | 멀티파트 업로드 ID(멀티파트 업로드 시에만 필요) |
-| partETags | Array | X | 파트별 ETag 목록(멀티파트 업로드 시에만 필요, partNumber 순) |
-
+| jobId | String | O | 作業ID（initレスポンスのjobId） |
+| fileName | String | O | ファイル名 |
+| uploadId | String | X | マルチパートアップロードID（マルチパートアップロード時のみ必要） |
+| partETags | Array | X | パートごとのETagリスト（マルチパートアップロード時のみ必要、partNumber順） |
 Response:
 
 ```json
@@ -303,18 +307,17 @@ Response:
 }
 ```
 
-| 필드 | 설명 |
+| フィールド | 説明 |
 | --- | --- |
-| body.jobId | 작업 ID. [작업 상태 조회](#ingest.snapshot.job.status)에 사용합니다 |
-
+| body.jobId | 作業ID。[作業状態照会](#ingest.snapshot.job.status)に使用します |
 <a id="ingest.snapshot.cancel"></a>
-#### 업로드 취소 { #ingest.snapshot.cancel }
 
-| 메서드 | URI |
+#### アップロード取消 { #ingest.snapshot.cancel }
+
+| メソッド | URI |
 | --- | --- |
 | DELETE | /api/v1.0/data-sources/{dataSourceId}/ingest/snapshots/{jobId} |
-
-curl 예시(단일 업로드):
+curl 例(単一アップロード):
 
 ```bash
 curl -X DELETE "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/snapshots/{jobId}" \
@@ -322,7 +325,7 @@ curl -X DELETE "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceI
   -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}"
 ```
 
-curl 예시(멀티파트 업로드) - 쿼리 파라미터로 `uploadId`를 함께 전달합니다:
+curl 例(マルチパートアップロード) - クエリパラメータで `uploadId` を一緒に渡します:
 
 ```bash
 curl -X DELETE "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/snapshots/{jobId}?uploadId={uploadId}" \
@@ -331,13 +334,13 @@ curl -X DELETE "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceI
 ```
 
 <a id="ingest.snapshot.job.status"></a>
-#### 작업 상태 조회 { #ingest.snapshot.job.status }
 
-| 메서드 | URI |
+#### 作業状態照会 { #ingest.snapshot.job.status }
+
+| メソッド | URI |
 | --- | --- |
 | GET | /api/v1.0/data-sources/{dataSourceId}/ingest/jobs/{jobId} |
-
-curl 예시:
+curl 例:
 
 ```bash
 curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/jobs/{jobId}" \
@@ -375,47 +378,45 @@ Response:
 }
 ```
 
-| 필드 | 설명 |
+| フィールド | 説明 |
 | --- | --- |
-| body.jobId | 작업 ID |
-| body.dataSourceId | 대상 데이터 소스 ID |
-| body.jobType | 작업 타입. SNAPSHOT(스냅샷 적재) 또는 EVENT(변경 이벤트) |
-| body.status | 작업 상태. 아래 상태 값 참고 |
-| body.obsFilePath | OBS 파일 경로 |
-| body.statistics.totalRecords | 총 레코드 수 |
-| body.statistics.failedRecords | 실패 레코드 수 |
-| body.statistics.successfulRecords | 성공 레코드 수 |
-| body.statistics.successRate | 성공률(0.0~1.0) |
-| body.errorMessage | 오류 메시지(실패 시) |
-| body.createdDatetime | 작업 생성 시각 |
-| body.startedDatetime | 작업 시작 시각 |
-| body.completedDatetime | 작업 완료 시각 |
-| body.modifiedDatetime | 최종 수정 시각 |
+| body.jobId | 作業ID |
+| body.dataSourceId | 対象データソースID |
+| body.jobType | 作業タイプ。SNAPSHOT（スナップショット積載）またはEVENT（変更イベント） |
+| body.status | 作業状態。以下のステータス値を参照 |
+| body.obsFilePath | OBS ファイルパス |
+| body.statistics.totalRecords | 総レコード数 |
+| body.statistics.failedRecords | 失敗レコード数 |
+| body.statistics.successfulRecords | 成功レコード数 |
+| body.statistics.successRate | 成功率（0.0〜1.0） |
+| body.errorMessage | エラーメッセージ(失敗時) |
+| body.createdDatetime | 作業作成日時 |
+| body.startedDatetime | 作業開始日時 |
+| body.completedDatetime | 作業完了日時 |
+| body.modifiedDatetime | 最終更新日時 |
+作業状態（`status`）は次の値を持ちます。
 
-작업 상태(`status`)는 다음 값을 가집니다.
-
-| 값 | 설명 |
+| 値 | 説明 |
 | --- | --- |
-| UPLOADING | 파일을 업로드하고 있습니다. |
-| QUEUED | 업로드가 완료되어 적재 대기 중입니다. |
-| STAGED | 처리 준비가 완료되었습니다. |
-| RUNNING | 데이터를 적재하고 있습니다. |
-| COMPLETED | 작업이 정상적으로 완료되었습니다. |
-| FAILED | 작업이 실패했습니다. |
-
+| UPLOADING | ファイルをアップロードしています。 |
+| STAGED | 処理の準備が完了しました。 |
+| RUNNING | データを積載中です。|
+| COMPLETED | 作業が正常に完了しました。 |
+| FAILED | 作業が失敗しました。 |
 <a id="recommendation.api"></a>
-## 추천 조회 API { #recommendation.api }
 
-생성한 추천 시스템 앱에 추천 결과를 요청합니다. 사용자 이력이 충분하면 모델 기반(Normal Flow), 부족하면 속성 기반(Cold Start)으로 추론합니다.
+## 推薦照会 API { #recommendation.api }
+
+作成した推薦システムアプリに推薦結果をリクエストします。ユーザーの履歴が十分な場合はモデルベース（Normal Flow）、不足している場合は属性ベース（Cold Start）で推論します。
 
 <a id="recommendation.api.recommend"></a>
-### 추천 요청 { #recommendation.api.recommend }
 
-| 메서드 | URI |
+### 推薦リクエスト { #recommendation.api.recommend }
+
+| メソッド | URI |
 | --- | --- |
 | POST | /api/v1.0/recommendation-apps/{appId}/recommend |
-
-curl 예시:
+curl 例:
 
 ```bash
 curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}/recommend" \
@@ -436,22 +437,22 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
   }'
 ```
 
-| 필드 | 타입 | 필수 | 설명 |
+| フィールド | タイプ | 必須 | 説明 |
 | --- | --- | --- | --- |
-| userId | String | O | 추천 대상 사용자 ID. 익명 사용자에게 추천을 요청하려면 빈 문자열("")로 보냅니다 |
-| context.currentItemKey | String | X | 현재 보고 있는 아이템 키 |
-| context.recentlyViewed | Array | X | 최근 조회한 아이템 키 목록 |
-| context.availableItems | Array | X | 추천 대상 아이템 키 목록. 지정하면 이 목록에 포함된 아이템 중에서만 추천합니다 |
-| context.pageType | String | X | 현재 페이지 유형(자유 형식. 예: home, item_detail) |
-| context.sessionId | String | X | 세션 ID |
-| userAttributes | Object | X | 사용자 속성 정보. Cold Start 추론에 사용됩니다 |
-| options.maxRecommendations | Integer | X | 최대 추천 수(1~100). 100을 초과하는 값은 오류 없이 100으로 조정되며, 지정하지 않으면 100이 적용됩니다. 추천 가능한 아이템이 이 값보다 적으면 실제 아이템 수만큼만 반환합니다 |
-| options.mode | String | X | 추론 방식 지정. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) 중 하나. 지정하지 않으면 서버가 자동으로 결정합니다 |
-| options.longtail | Boolean | X | 인기가 낮은 항목까지 포함해 추천 다양성을 높입니다. sequential일 때만 적용됩니다 |
-| options.excludeItemKeys | Array | X | 추천에서 제외할 아이템 키 목록. 제외한 아이템은 최대 추천 수에 포함되지 않습니다 |
-
-!!! tip "알아두기"
-    `userAttributes` 스키마는 향후 선호도 유도(Preference Elicitation) 구현 방향에 따라 수집 방식이나 필드 종류가 변경될 수 있습니다.
+| userId | String | O | 推薦対象のユーザーID |
+| context | Object | X | リクエストのコンテキスト情報 |
+| context.currentItemKey | String | X | 現在表示しているアイテムキー |
+| context.recentlyViewed | Array | X | 最近閲覧したアイテムキーのリスト |
+| context.pageType | String | X | 現在のページタイプ。home、course_detail、course_list、search_result、my_page |
+| context.sessionId | String | X | セッションID |
+| userAttributes | Object | X | ユーザーの属性情報。Cold Start 推論に使用されます |
+| userAttributes.jobCategory | String | X | 職業/職種 |
+| userAttributes.interestArea | Array | X | 関心分野リスト |
+| userAttributes.experienceYears | Integer | X | 経験年数 |
+| options.maxRecommendations | Integer | X | 最大推薦数（1〜100、デフォルト 10） |
+| options.excludeItemKeys | Array | X | 推薦から除外するアイテムキーの一覧 |
+!!! tip "ヒント"
+    `userAttributes` スキーマは、今後の選好度導出 (Preference Elicitation) の実装方針によって、収集方法やフィールドの種類が変更される場合があります。
 
 Response:
 
@@ -471,37 +472,37 @@ Response:
     "metadata": {
       "modelVersion": "v1.2.0",
       "requestId": "req_xyz789",
-      "inferenceType": "sequential",
-      "abTestGroup": ""
+      "inferenceType": "normal",
+      "abTestGroup": "treatment"
     }
   }
 }
 ```
 
-| 필드 | 설명 |
+| フィールド | 説明 |
 | --- | --- |
-| body.userId | 요청한 사용자 ID |
-| body.recommendations[].itemKey | 추천 아이템 키 |
-| body.recommendations[].score | 추천 점수(0.0~1.0) |
-| body.recommendations[].position | 추천 순위 |
-| body.metadata.modelVersion | 사용된 모델 버전 |
-| body.metadata.requestId | 요청 추적 ID. 추천 이벤트 API 전송 시 이 값을 사용합니다 |
-| body.metadata.inferenceType | 추론 유형. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) |
-| body.metadata.abTestGroup | A/B 테스트 그룹(현재는 빈 값으로 반환됩니다) |
-
+| body.userId | リクエストしたユーザーID |
+| body.recommendations[].itemKey | 推薦アイテムキー |
+| body.recommendations[].score | 推薦スコア(0.0〜1.0) |
+| body.recommendations[].position | 推薦順位 |
+| body.metadata.modelVersion | 使用されたモデルバージョン |
+| body.metadata.requestId | リクエスト追跡ID。推薦イベントAPIの送信時にこの値を使用します |
+| body.metadata.inferenceType | 推論タイプ。normal（履歴ベース）またはcold_start（属性ベース） |
+| body.metadata.abTestGroup | A/B テストグループ。treatment、control、none |
 <a id="recommendation.event.api"></a>
-## 추천 이벤트 API { #recommendation.event.api }
 
-추천 결과에 사용자가 보인 반응(클릭 등) 이벤트를 수집합니다. 적재된 이벤트 데이터로 추천 성공률을 분석할 수 있습니다.
+## 推薦イベント API { #recommendation.event.api }
+
+推薦結果に対してユーザーが示した反応（クリックなど）のイベントを収集します。積載されたイベントデータで推薦の成功率を分析できます。
 
 <a id="recommendation.event.api.send"></a>
-### 추천 이벤트 전송 { #recommendation.event.api.send }
 
-| 메서드 | URI |
+### 推薦イベント転送 { #recommendation.event.api.send }
+
+| メソッド | URI |
 | --- | --- |
 | POST | /api/v1.0/recommendation-apps/{appId}/events |
-
-curl 예시:
+curl 例:
 
 ```bash
 curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}/events" \
@@ -520,19 +521,18 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
   }'
 ```
 
-`requestId`, `itemKey`, `userId`는 추천 조회 API 응답에서 받은 값을 그대로 전달합니다.
+`requestId`、`itemKey`、`userId`は、推薦照会 API レスポンスで受け取った値をそのまま渡します。
 
-| 필드 | 필수 | 설명 |
+| フィールド | 必須 | 説明 |
 | --- | --- | --- |
-| eventType | O | 이벤트 유형. 자유롭게 정의할 수 있습니다(예: CLICK, PURCHASE, IMPRESSION). 영문·숫자·언더스코어만 사용(^[A-Za-z0-9_]+$), 최대 64자. 대소문자는 구분하지 않으며 대문자로 정규화되어 저장됩니다. REQUEST, RESPONSE는 예약어로 사용할 수 없습니다 |
-| requestId | O | 추천 API 응답의 body.metadata.requestId 값(opaque string, 최대 128자) |
-| itemKey | O | 사용자가 반응한 추천 아이템의 itemKey |
-| userId | X | 추천 API 응답의 body.userId 값 |
-| context | X | 이벤트 부가 정보(자유 형식 키-값. 예: 노출 위치 position, 지면 placement) |
-| userAttributes | X | 사용자 속성 정보(자유 형식 키-값) |
-| options | X | 부가 옵션(자유 형식 키-값) |
-
-성공 응답(200)은 `header`만 반환합니다.
+| eventType | O | イベントタイプ。自由に定義できます（例: CLICK、PURCHASE、IMPRESSION）。英字・数字・アンダースコアのみ使用可（^[A-Za-z0-9_]+$）、最大 64 文字。大文字・小文字は区別されず、大文字に正規化されて保存されます。REQUEST、RESPONSE は予約語のため使用できません |
+| requestId | O | 推薦 API レスポンスの body.metadata.requestId の値(opaque string、最大 128 文字) |
+| itemKey | O | ユーザーが反応した推薦アイテムのitemKey |
+| userId | X | 推薦 API レスポンスの body.userId の値 |
+| context | X | イベント付加情報（自由形式のキーと値。例: 表示位置 position、面 placement） |
+| userAttributes | X | ユーザー属性情報（自由形式のキーと値） |
+| options | X | 追加オプション（自由形式のキーと値） |
+成功レスポンス（200）は `header` のみを返します。
 
 ```json
 {
@@ -544,7 +544,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 }
 ```
 
-!!! tip "알아두기"
-    - 성공 응답(200)은 수집 파이프라인이 이벤트를 수신했다는 의미이며, 분석 테이블 적재 완료를 보장하지 않습니다.
-    - 이벤트 API 요청 후 데이터셋에 적재까지 최대 10분이 걸릴 수 있습니다.
-    - 타임아웃 후 재시도하면 같은 이벤트가 중복 적재될 수 있습니다. 분석 시 중복 제거를 고려하세요.
+!!! tip "ヒント"
+    - 成功レスポンス（200）は、収集パイプラインがイベントを受信したことを意味し、分析テーブルへの積載完了を保証するものではありません。
+    - イベント API リクエスト後、データセットへの積載まで最大 10 分かかる場合があります。
+    - タイムアウト後にリトライすると、同じイベントが重複して積載される可能性があります。分析時には重複除去を考慮してください。
