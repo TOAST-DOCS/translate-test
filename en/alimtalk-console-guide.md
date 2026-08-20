@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ae151695d20b -->
 
 <a id="alimtalk-console-guide"></a>
