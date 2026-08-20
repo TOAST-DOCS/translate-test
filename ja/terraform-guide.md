@@ -1,211 +1,226 @@
-<a id="third-party-user-guide-terraform-user-guide"></a>
-## サードパーティー使用ガイド > Terraform使用ガイド
-この文書はTerraformでNHN Cloudを使用する方法を説明します。
+<!-- machine_translated: true -->
+
+{% include-markdown '../_online-nas-vars.md' %}
+
+<!-- pre-align:aligned sig=ab931ac9d8ba -->
+
+{% if terraform_support %}
+<a id="storage-nas-terraform-user-guide"></a>
+## Storage > NAS > Terraform使用ガイド { #storage-nas-terraform-user-guide }
+
+このドキュメントでは、Terraformを使用してNHN Cloud NASサービスを使用する方法を説明します。
 
 <a id="terraform"></a>
-## Terraform
-Terraformはインフラを簡単に構築し、安全に変更し、効率的にインフラの形状を管理できるオープンソースのツールです。Terraformの主な特徴は次のとおりです。
+## Terraform { #terraform }
 
-* **Infrastructure as Code**
-    * インフラをコードで定義して生産性と透明性を高めることができます。
-    * 定義したコードを簡単に共有でき、効率的に協業できます。
-* **Execution Plan**
-    * 変更計画と変更適用を分離して変更内容を適用する時に発生しうる失敗をへらすことができます。
-* **Resource Graph**
-    * 些細な変更がインフラ全体にどんな影響を与えるかを事前に確認できます。
-    *従属性グラフを作成し、このグラフを元に計画を立て、この計画を適用した時に変更されるインフラの状態を確認できます。
-* **Change Automation**
-    * 複数の場所に同じ構成のインフラを構築し、変更できるように自動化できます。
-    * インフラを構築するのにかかる時間を節約することができ、失敗も減らすことができます。
+Terraformは、インフラを簡単に構築し、安全に変更し、効率的に構成を管理できるオープンソースツールです。基本的な使用法は、[ユーザーガイド > NHN Cloud > Terraform使用ガイド]($[ terraform_guide_url ]$)を参照します。
 
+<a id="terraform-resource-dependency"></a>
+### リソースの依存関係 { #terraform-resource-dependency }
 
-<a id="supported-resources"></a>
-#### Resourcesサポート
+一般的に各リソースは独立していますが、他の特定のリソースに依存関係を持つ場合もあります。リソースのラベルで他のリソースの情報を参照すると、Terraformは自動的に依存関係を設定します。
 
-* Compute
-    * nhncloud_compute_instance_v2
-    * nhncloud_compute_volume_attach_v2
-    * nhncloud_compute_keypair_v2    
-* Network
-    * nhncloud_lb_loadbalancer_v2
-    * nhncloud_lb_listener_v2
-    * nhncloud_lb_pool_v2
-    * nhncloud_lb_member_v2
-    * nhncloud_lb_monitor_v2
-    * nhncloud_networking_floatingip_v2
-    * nhncloud_networking_floatingip_associate_v2
-    * nhncloud_networking_port_v2
-    * nhncloud_networking_vpc_v2
-    * nhncloud_networking_vpcsubnet_v2
-    * nhncloud_networking_routingtable_v2
-    * nhncloud_networking_routingtable_attach_gateway_v2    
-    * nhncloud_networking_secgroup_v2
-    * nhncloud_networking_secgroup_rule_v2
-    * nhncloud_keymanager_secret_v1
-    * nhncloud_keymanager_container_v1
-* Block Storage
-    * nhncloud_blockstorage_volume_v2
-* Object Storage
-    * nhncloud_objectstorage_container_v1
-    * nhncloud_objectstorage_object_v1
-* Container
-    * nhncloud_kubernetes_cluster_v1
-    * nhncloud_kubernetes_nodegroup_v1
-    * nhncloud_kubernetes_cluster_resize_v1
-    * nhncloud_kubernetes_nodegroup_upgrade_v1
-    
-<a id="supported-data-sources"></a>
-#### Data sourcesサポート
+例えば、`volume1`ボリュームに接続される`interface1`インターフェイスは次のように表現できます。
 
-* nhncloud_images_image_v2
-* nhncloud_blockstorage_volume_v2
-* nhncloud_compute_flavor_v2
-* nhncloud_compute_keypair_v2
-* nhncloud_blockstorage_snapshot_v2
-* nhncloud_networking_vpc_v2
-* nhncloud_networking_vpcsubnet_v2
-* nhncloud_networking_routingtable_v2
-* nhncloud_networking_secgroup_v2
-* nhncloud_keymanager_secret_v1
-* nhncloud_keymanager_container_v1
-* nhncloud_kubernetes_cluster_v1
-* nhncloud_kubernetes_nodegroup_v1
+```hcl
+# ボリュームリソース
+resource "nhncloud_nas_storage_volume_v1" "volume1" {
+  name = "volume1"
+  size_gb = 300
 
-<a id="note"></a>
-### 注意
-
-* **下記例のすべてのデータは実際の情報ではありません。必ず正確な情報に修正して使用します。**
-* **下記の例はすべてTerraform 0.12.24を利用しました。**
-
-
-<a id="terraform-installation"></a>
-## Terraformインストール
-[Terraformダウンロードページ](https://www.terraform.io/downloads.html)でローカルPCのOSに合ったファイルをダウンロードします。ファイルの圧縮を解凍し、任意の場所に入れた後、次の環境設定に該当パスを追加するとインストールが完了します。
-
-次はLinux(Ubuntu/Debian)のインストール例です。
-
-```
-$ wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-$ sudo apt update && sudo apt install terraform
-$ terraform -v
-Terraform v1.14.2
-```
-
-
-
-<a id="local-provider"></a>
-### Local provider設定
-
-Local provider設定を通じてTerraform NHN Cloud providerを使用できます。
-
-Local providerを探すためのディレクトリ構造を作成した後、ダウンロードしたバイナリファイルをプラグインのパスに追加します。バイナリファイルには実行権限が必要です。
-
-以下はOSごとのプラグイン基本パスです。より詳しい基本パスの説明は[Terraformサイト](https://developer.hashicorp.com/terraform/cli/config/config-file#provider-installation)の`Implied Local Mirror Directories
-`項目を参照してください。
-
-* **Linux / macOS** : `${HOME}/.terraform.d/plugins/terraform.local/local/nhncloud/${version}/${platforms}`
-* **Windows** : `%APPDATA%/terraform.d/plugins/terraform.local/local/nhncloud/${version}/${platforms}`
-
-プラグイン基本パス構成ルールについての説明です。
-
-* **version**
-    * providerのバージョンです。
-* **platforms**
-    * パッケージがあるプラットフォームを説明するオブジェクトの配列で、OS識別キーワードとCPUアーキテクチャ識別キーワードで構成されています。
-    * **darwin_adm64** : macOS / AMD64
-    * **darwin_arm64** : macOS / Apple silicon
-    * **linux_amd64** : Linux / AMD64
-    * **windows_amd64** : Windows / AMD64
-
-以下は、バイナリダウンロード後、**OS/アーキテクチャ**ごとのプラグイン設定例です。 
-
-**プラグインを設定する際は1.0.2バージョンを使用することを推奨します。**
-
-`macOS / AMD64`プラグインの設定例です。
-
-```
-$ mkdir -p $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_amd64
-$ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_amd64
-$ chmod +x $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_amd64/terraform-provider-nhncloud_v1.0.2
-```
-
-`macOS / Apple silicon`プラグインの設定例です。
-
-```
-$ mkdir -p $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_arm64
-$ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_arm64
-$ chmod +x $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/darwin_arm64/terraform-provider-nhncloud_v1.0.2
-```
-
-`Linux / AMD64`プラグインの設定例です。
-
-```
-$ mkdir -p $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/linux_amd64
-$ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/linux_amd64
-$ chmod +x $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/linux_amd64/terraform-provider-nhncloud_v1.0.2
-```
-
-`Windows / AMD64`プラグインの設定例です。
-
-```
-$ mkdir -p %APPDATA%/terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/windows_amd64
-$ cp terraform-provider-nhncloud_v1.0.2 $HOME/.terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/windows_amd64
-$ copy terraform-provider-nhncloud_v1.0.2 %APPDATA%/terraform.d/plugins/terraform.local/local/nhncloud/1.0.2/windows_amd64
-```
-
-
-<a id="terraform-initialization"></a>
-## Terraformの初期化
-Terraformを使用する前に、次のようにプロバイダー設定ファイルを作成します。
-
-プロバイダーファイルの名前は任意で設定可能で、この例では`provider.tf`を使用します。
-
-providerバージョンは[NHN Cloud Terraform Registry](https://registry.terraform.io/providers/nhn-cloud/nhncloud/latest)の `VERSION` 情報を参考にして作成します。
-
-```
-# Define required providers
-terraform {
-  required_providers {
-    nhncloud = {
-      source = "nhn-cloud/nhncloud"
-      version = "{VERSION}"
-    }
+  mount_protocol {
+    protocol = "nfs"
   }
 }
 
-# Configure the nhncloud Provider
-provider "nhncloud" {
-  user_name   = "terraform-guide@nhncloud.com"
-  tenant_id   = "aaa4c0a12fd84edeb68965d320d17129"
-  password    = "difficultpassword"
-  auth_url    = "https://api-identity-infrastructure.nhncloudservice.com/v2.0"
-  region      = "KR1"
+# インターフェースリソース
+resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
+  volume_id = nhncloud_nas_storage_volume_v1.volume1.id
+  subnet_id = data.nhncloud_networking_vpcsubnet_v2.default_subnet.id
 }
 ```
 
+!!! tip "ヒント"
+    明示的なリソース依存関係の指定方法については、[Terraform の Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) を参照します。
 
-* **user_name**
-    * NHN Cloud IDを使用します。
-* **tenant_id**
-    * NHN Cloudコンソールの**Compute > Instance > 管理**メニューで**APIエンドポイント設定**ボタンを押してテナントIDを確認します。
-* **password**
-    * **API Endpoint設定**ウィンドウで保存した**APIパスワード**を使用します。
-    * APIパスワードの設定方法は**ユーザーガイド > Compute > Instance > API使用準備**を参照します。
-* **auth_url**
-    * NHN Cloud身元サービスアドレスを明示します。
-    * NHN Cloudコンソールの**Compute > Instance > 管理**メニューで**APIエンドポイント設定**ボタンをクリックして身元サービス(identity) URLを確認します。
-* **region**
-    * NHN Cloudリソースを管理するリージョン情報を入力します。
-    * **KR1**：韓国(パンギョ)リージョン
-    * **KR2**：韓国(ピョンチョン)リージョン
-    * **JP1**：日本(東京)リージョン
+<a id="terraform-resources-nas"></a>
+## リソース { #terraform-resources-nas }
 
-プロバイダー設定ファイルがあるパスで`init`コマンドを利用してTerraformを初期化します。
+<a id="terraform-resources-create-volume"></a>
+### ボリュームの作成 { #terraform-resources-create-volume }
 
+!!! tip "参考: CIFSプロトコルの使用"
+    CIFSプロトコルを使用するには、CIFS認証情報を作成する必要があります。認証情報はプロジェクト単位で管理され、CIFSボリュームごとにアクセスを許可するCIFS認証情報を登録する必要があります。
+    CIFS認証情報は、コンソールの**Storage > NAS > CIFS認証情報管理**画面で作成できます。
+{%- if encryption %}
+<!-- -->
+
+!!! tip "参考: 暗号化キーストア設定"
+    暗号化ボリュームを作成すると、暗号化に使用する共通鍵がNHN Cloud Secure Key Managerサービスのキーストアに保存されます。したがって、暗号化ボリュームを作成するには、事前にSecure Key Managerサービスで[キーストアを作成](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_1)する必要があります。[キーストアのIDを確認](https://docs.nhncloud.com/ja/Security/Secure%20Key%20Manager/ja/getting-started/#_2)し、暗号化キーストア設定に入力します。
+    作成したキーストアIDは、コンソールの**Storage > NAS > 暗号化キーストア設定**画面で入力できます。暗号化ボリュームを作成すると、設定したキーストアに共通鍵が保存されます。キーストアに保存された共通鍵は、暗号化ボリュームの使用中は削除できません。暗号化ボリュームを削除すると、共通鍵も一緒に削除されます。
+    キーストアIDを変更すると、それ以降に作成する暗号化ボリュームの共通鍵は変更されたキーストアに保存されます。既存のキーストアに保存された共通鍵は維持されます。
+{%- endif %}
+```hcl
+# NFSプロトコルの空のNASボリュームの作成
+resource "nhncloud_nas_storage_volume_v1" "volume_01" {
+  name = "nas_volume_01"
+  size_gb = 300
+  mount_protocol {
+    protocol = "nfs"
+  }
+}
+
+# CIFSプロトコルの空のNASボリュームの作成
+resource "nhncloud_nas_storage_volume_v1" "volume_02" {
+  name = "nas_volume_02"
+  size_gb = 300
+  mount_protocol {
+    protocol = "cifs"
+    cifs_auth_ids = ["auth_id"]
+  }
+}
+
+# ACL{% if encryption %}、暗号化設定{% endif %}などの設定を含めたボリュームの作成
+resource "nhncloud_nas_storage_volume_v1" "volume_03" {
+  name = "nas_volume_03"
+  description = "create nas volume by terraform"
+  size_gb = 300
+
+  acl = ["10.10.10.0/24"]
+
+{% if encryption %}
+  encryption {
+    enabled = true
+  }
+
+{% endif %}
+  mount_protocol {
+    protocol = "cifs"
+    cifs_auth_ids = ["auth_id"]
+  }
+
+  snapshot_policy {
+    max_scheduled_count = 3
+    reserve_percent = 10
+
+    schedule {
+      time = "00:00"
+      time_offset = "+09:00"
+      weekdays = [1, 3, 5]
+    }
+  }
+}
 ```
-$ ls
-provider.tf
-$ terraform init
+
+| 名前 | タイプ | 必須 | 変更可能 | 説明 |
+| --- | --- | --- | --- | --- |
+| region | String | N | - | 作成するボリュームのリージョン<br>デフォルト値はプロバイダー設定ファイルに設定されたリージョン |
+| name | String | Y | - | ボリューム名 |
+| description | String | N | O | ボリューム説明 |
+| size_gb | Integer | Y | O | ボリュームサイズ(GB)<br>ボリュームは最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
+| acl | List | N | O | ボリューム作成時に設定するACL一覧<br>IPまたはCIDR形式で入力できます。 |
+{%- if encryption %}
+| encryption | Object | N | - | ボリューム作成時の暗号化設定オブジェクト |
+| encryption.enabled | Boolean | N | - | 暗号化設定の有効化有無<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると暗号化が有効になります。 |
+{%- endif %}
+| mount_protocol | Object | N | - | ボリューム作成時のプロトコル設定オブジェクト |
+| mount_protocol.cifs_auth_ids | List(String) | N | O | CIFS認証ID一覧<br>NFSプロトコル選択時は入力不要 |
+| mount_protocol.protocol | String | Y | - | ボリュームマウント時のプロトコル指定<br>`nfs`、`cifs`のいずれかを選択できます。 |
+| snapshot_policy | Object | N | - | ボリュームスナップショット設定オブジェクト |
+| snapshot_policy.max_scheduled_count | Integer | N | O | スナップショット最大保存数<br>30個まで設定可能であり、最大保存数に達すると、自動的に作成されたスナップショットの中で一番最初に作成されたスナップショットが削除されます。 |
+| snapshot_policy.reserve_percent | Integer | N | O | スナップショット容量の割合 |
+| snapshot_policy.schedule | Object | N | - | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成は設定されません。 |
+| snapshot_policy.schedule.time | String | N | O | スナップショット自動作成時間 |
+| snapshot_policy.schedule.time_offset | String | N | O | スナップショット自動作成基準タイムゾーン |
+| snapshot_policy.schedule.weekdays | List | N | O | スナップショット自動作成曜日<br>空のリストは毎日を意味し、曜日は0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+
+<a id="terraform-resources-connect-interface"></a>
+### ボリュームにインターフェースを接続する { #terraform-resources-connect-interface }
+
+```hcl
+data "nhncloud_networking_vpcsubnet_v2" "default_subnet" {
+  ...
+}
+
+resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
+  volume_id = nhncloud_nas_storage_volume_v1.volume_01.id
+  subnet_id = data.nhncloud_networking_vpcsubnet_v2.default_subnet.id
+}
 ```
 
+| 名前 | タイプ | 必須 | 変更可能 | 説明 |
+| --- | --- | --- | --- | --- |
+| region | String | N | - | 接続するボリュームのリージョン<br>デフォルト値はプロバイダー設定ファイルに設定されたリージョン |
+| volume_id | String | Y | - | 接続するボリュームのID |
+| subnet_id | String | Y | - | 接続するサブネットID |
+
+{% if replication %}
+<a id="terraform-resources-set-replication"></a>
+### レプリケーションの設定 { #terraform-resources-set-replication }
+
+レプリケーション設定リソースを作成すると、対象ボリュームが自動的に作成されます。
+
+レプリケーション設定リソースで`dst_volume`の設定値を変更して対象ボリュームをアップデートできますが、レプリケーション設定リソースを削除しても対象ボリュームは自動的に削除されません。
+
+!!! danger "注意"
+    レプリケーション設定リソースの値を変更すると、既存リソースが削除され新しく作成される場合がありますが、既存の対象ボリュームは削除されません。
+
+    残っている対象ボリュームと新しい対象ボリュームの名前が同じ場合、作成が失敗する可能性があるためご注意ください。
+
+<!-- -->
+
+!!! tip "ヒント"
+    リソースの削除および更新によって削除されずに残っているターゲットボリュームは、コンソールで個別に管理する必要があります。
+
+```hcl
+resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
+  src_volume_id = nhncloud_nas_storage_volume_v1.volume_01.id
+  dst_region    = "KR2"
+  dst_tenant_id = "ba3be1254ab141bcaef674e74630a31f"
+
+  dst_volume {
+    name        = "nas_mirror"
+    description = "create nas mirror by terraform"
+    size_gb     = 400
+
+    mount_protocol {
+      protocol = "nfs"
+    }
+  }
+}
+```
+
+| 名前 | タイプ | 必須 | 変更可能 | 説明 |
+| --- | --- | --- | --- | --- |
+| src_region | String | N | - | ソースボリュームのリージョン<br>デフォルト値はプロバイダー設定ファイルに設定されたリージョン |
+| src_volume_id | String | Y | - | ソースボリュームのID |
+| dst_region | String | Y | - | レプリケーション対象ボリュームのリージョン |
+| dst_tenant_id | String | Y | - | レプリケーション対象ボリュームのテナントID |
+| dst_volume | Object | Y | - | レプリケーション対象ボリューム作成リクエストオブジェクト |
+| dst_volume.acl | List | N | O | ボリューム作成時に設定するACL一覧<br>IPまたはCIDR形式で入力できます。 |
+| dst_volume.description | String | N | O | ボリューム説明 |
+{%- if encryption %}
+| dst_volume.encryption | Object | N | - | ボリューム作成時の暗号化設定オブジェクト |
+| dst_volume.encryption.enabled | Boolean | N | - | 暗号化設定の有効化有無<br>暗号化キーストアが設定された後、該当フィールドを`true`に設定すると暗号化が有効になります。 |
+{%- endif %}
+| dst_volume.mount_protocol | Object | N | - | ボリューム作成時のプロトコル設定オブジェクト |
+| dst_volume.mount_protocol.cifs_auth_ids | List(String) | N | O | CIFS認証ID一覧<br>NFSプロトコル選択時は入力不要 |
+| dst_volume.mount_protocol.protocol | String | Y | - | ボリュームマウント時のプロトコル指定<br>`nfs`、`cifs`のいずれかを選択できます。 |
+| dst_volume.name | String | Y | - | ボリューム名 |
+| dst_volume.size_gb | Integer | Y | O | ボリュームサイズ(GB)<br>ボリュームは最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
+| dst_volume.snapshot_policy | Object | N | - | ボリュームスナップショット設定オブジェクト |
+| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | スナップショット最大保存数<br>30個まで設定可能であり、最大保存数に達すると、自動的に作成されたスナップショットの中で一番最初に作成されたスナップショットが削除されます。 |
+| dst_volume.snapshot_policy.reserve_percent | Integer | N | O | スナップショット容量の割合 |
+| dst_volume.snapshot_policy.schedule | Object | N | O | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成は設定されません。 |
+| dst_volume.snapshot_policy.schedule.time | String | N | O | スナップショット自動作成時間 |
+| dst_volume.snapshot_policy.schedule.time_offset | String | N | O | スナップショット自動作成基準タイムゾーン |
+| dst_volume.snapshot_policy.schedule.weekdays | List | N | O | スナップショット自動作成曜日<br>空のリストは毎日を意味し、曜日は0(日曜日)から6(土曜日)までの数字のリストで指定します。 |
+{%- endif %}
+
+<a id="reference"></a>
+## 参考サイト { #reference }
+
+* Terraform - [https://www.terraform.io/](https://www.terraform.io/)
+* Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
+
+{% endif %}
