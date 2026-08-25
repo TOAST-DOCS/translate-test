@@ -32,62 +32,58 @@ NHN Cloud Webサイトの[カスタマーサポート > お問い合わせ](http
 2.2 [CLIでの保護作業](protection/cli-saas.md)
 2.3 [プラグインでの保護作業](protection/plugin.md)
 
-<a id="index-protection"></a>
-### 3. [SDK連携ガイド](sdk/overview-saas.md) { #index-protection }
+<a id="sdk-integration-guide"></a>
+### 3. [SDK連携ガイド](sdk/overview-saas.md) { #sdk-integration-guide }
 3.1 [SDK連携](sdk/overview-saas.md)
 3.2 [Java SDK連携](sdk/java.md)
 3.3 [Unreal SDK連携](sdk/unreal.md)
 {%- else %}
 
 <!-- pre-align: ko에 대응 섹션 없음 — 검토 필요 (Second occurrence of 適用準備 with no counterpart in KO; 적용 준비 (k6) appears only once in the KO outline) -->
-<a id="sdk-integration-guide"></a>
-### 1. [適用準備](preparation/environment.md) { #sdk-integration-guide }
-1.1 [対応環境](preparation/environment.md)
-1.2 [NHN AppGuard適用方式](preparation/approach.md)
-1.3 [適用前の準備事項](preparation/prerequisites-onprem.md)
-
-<a id="index-sdk-integration-guide"></a>
-### 2. [保護作業](protection/cli-onprem.md) { #index-sdk-integration-guide }
+<!-- pre-align: ko에 대응 섹션 없음 — 검토 필요 (適用準備 (t9) is a duplicate of t6 already matched to k6; no second ko counterpart for 適用準備 exists under 目次) -->
+<a id="index-protection"></a>
+### 2. [保護作業](protection/cli-onprem.md) { #index-protection }
 2.1 [CLIを利用した保護作業](protection/cli-onprem.md)
 
-<a id="encryption-api-application-guide"></a>
-### 3. [SDK連携ガイド](sdk/overview-onprem.md) { #encryption-api-application-guide }
+<a id="index-sdk-integration-guide"></a>
+### 3. [SDK連携ガイド](sdk/overview-onprem.md) { #index-sdk-integration-guide }
 3.1 [SDK連携](sdk/overview-onprem.md)
 3.2 [Java SDK連携](sdk/java.md)
 {%- endif %}
 
-<a id="integrity-verification-guide"></a>
-### 4. [暗号化API適用ガイド](encryption/overview.md) { #integrity-verification-guide }
+<a id="encryption-api-application-guide"></a>
+### 4. [暗号化API適用ガイド](encryption/overview.md) { #encryption-api-application-guide }
 4.1 [暗号化API](encryption/overview.md)
 4.2 [秘密鍵の暗号化構造¶](encryption/key-encryption.md)
 4.3 [暗号化データの構造](encryption/data-structure.md)
 4.4 [暗号化データの復号フロー](encryption/decryption-flow.md)
 4.5 [API Reference](encryption/api-reference.md)
 
-<a id="resource-string-obfuscation"></a>
-### 5. [アプリ証明ガイド](app-attestation/overview.md) { #resource-string-obfuscation }
+<a id="integrity-verification-guide"></a>
+### 5. [アプリ証明ガイド](app-attestation/overview.md) { #integrity-verification-guide }
 5.1 [概要](app-attestation/overview.md)
 5.2 [コンソールアプリ証明設定](app-attestation/console.md)
 5.3 [アプリ証明の使用方法](app-attestation/sdk.md)
 
-<a id="log-and-callback-information"></a>
-### 6. [リソース文字列難読化](resource-string-obfuscation/overview.md) { #log-and-callback-information }
+<a id="resource-string-obfuscation"></a>
+### 6. [リソース文字列難読化](resource-string-obfuscation/overview.md) { #resource-string-obfuscation }
 6.1 [概要](resource-string-obfuscation/overview.md)
 6.2 [設定ファイルの作成方法](resource-string-obfuscation/config.md)
 
-<a id="checks-and-cautions"></a>
-### 7. [ログ及びコールバック情報](logs/overview.md) { #checks-and-cautions }
+<a id="log-and-callback-information"></a>
+### 7. [ログ及びコールバック情報](logs/overview.md) { #log-and-callback-information }
 7.1 [ログ詳細情報](logs/overview.md)
 7.2 [コールバックデータ](logs/callback-data.md)
 7.3 [制裁ガイド](logs/sanctions-guide.md)
 
-<a id="faq"></a>
-### 8. [適用確認及び注意事項](testing/integration.md) { #faq }
+<a id="checks-and-cautions"></a>
+### 8. [適用確認及び注意事項](testing/integration.md) { #checks-and-cautions }
 8.1 [連携テスト](testing/integration.md)
 8.2 [ProGuard適用時の確認事項](testing/proguard.md)
 8.3 [アプリ署名キーの完全性検証](testing/signature-verification.md)
 
-### 9. [FAQ](faq/general.md)
+<a id="faq"></a>
+### 9. [FAQ](faq/general.md) { #faq }
 9.1 [一般的なエラー](faq/general.md)
 9.2 [Cocos2Dゲームのエラー](faq/cocos2d.md)
 

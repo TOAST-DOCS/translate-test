@@ -1,18 +1,14 @@
+<!-- pre-align:aligned sig=3c0b72517c71 -->
+
 # Supported Environment
 
-## Supported Platforms
+<a id="supported-platforms"></a>
+## Supported Platforms { #supported-platforms }
 
 <!-- TODO: translate body -->
 
 <!-- pre-align: ko에 대응 섹션 없음 — 검토 필요 (Renders as 'Unsupported platform', which is semantically opposite to k1 '지원 플랫폼' (Supported Platforms); antonymy disqualifies it as a translation match) -->
-<a id="supported-platforms"></a>
-## Unsupported platform { #supported-platforms }
-
-!!! tip "Platform Requirements"
-    iOS 13 or later
-
-NHN AppGuard iOS SDK works on iOS 13 or later.
-
+<!-- pre-align: ko에 대응 섹션 없음 — 검토 필요 (No ko counterpart — 'Unsupported platform' does not correspond to any heading in the ko outline) -->
 <a id="development-environment"></a>
 ## Development Environment { #development-environment }
 

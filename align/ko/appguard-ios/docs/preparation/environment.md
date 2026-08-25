@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=3c0b72517c71 -->
+
 # 지원 환경
 
 <a id="supported-platforms"></a>

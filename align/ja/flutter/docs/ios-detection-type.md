@@ -91,42 +91,38 @@
 |110101 | NHN AppGuard Function Hooking|
 
 
-<a id="detection-type-screen-capture"></a>
+<a id="detection-type-blacklist"></a>
 #### ブラックリスト
 
 | 検出タイプ(data) | 説明 |
 | --- | --- |
 | 900090|ブラックリスト | 
 
-<a id="detection-type-screen-recording"></a>
+<a id="detection-type-screen-capture"></a>
 #### 画面キャプチャ
 | 検出タイプ(data) | 説明 |
 | --- | --- |
 | 200145|画面キャプチャ | 
 
-<a id="detection-type-vpn"></a>
+<a id="detection-type-screen-recording"></a>
 #### 画面録画
 | 検出タイプ(data) | 説明 |
 | --- | --- |
 | 210146|画面録画 | 
 
-<a id="detection-type-macro-tool"></a>
+<a id="detection-type-vpn"></a>
 #### VPN
 
 <!-- TODO: translate body -->
 
-<a id="detection-type-blacklist"></a>
+<a id="detection-type-macro-tool"></a>
 #### マクロツール
 
 <!-- TODO: translate body -->
 
 <!-- pre-align: ko에 대응 섹션 없음 — 검토 필요 (位置操作 (location manipulation) has no counterpart in the ko outline; ko contains VPN and マクロツール at this position, neither of which matches) -->
+<!-- pre-align: ko에 대응 섹션 없음 — 검토 필요 (位置操作 (location spoofing) has no corresponding ko heading in the source outline) -->
 <a id="detection-type-notification"></a>
-#### 位置操作
-| 検出タイプ(data) | 説明 |
-| --- | --- |
-| 180132|画面録画 | 
-
 #### 通知
 | 検出タイプ(data) | 説明 |
 | --- | --- |
