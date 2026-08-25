@@ -24,23 +24,8 @@ You can download the NHN AppGuard SDK from the NHN Cloud console.
 - [Set up NHN AppGuard Android](./android-native-settings.md)
 - [Set up NHN AppGuard iOS](./ios-native-settings.md)
 
-<a id="install-and-use-react-native-appguard"></a>
-### Install and Use React Native AppGuard { #install-and-use-react-native-appguard }
-
-* [Install and Use NHN AppGuard React Native](./react-native-usage.md)
-
-<!-- pre-align: ko에 대응 섹션 없음 — 검토 필요 (No ko counterpart; 'Hermes Bytecode Obfuscation (optional)' has no equivalent heading in the ko outline) -->
 <a id="protect-apps-with-nhn-appguard"></a>
-### Hermes Bytecode Obfuscation (optional) { #protect-apps-with-nhn-appguard }
-
-Applying Hermes Bytecode obfuscation complicates app analysis.
-
-* [Request Hermes Bytecode obfuscation](./hermes-request.md)
-* [Apply Android Hermes Bytecode obfuscation](./hermes-android-settings.md)
-* [Apply iOS Hermes Bytecode obfuscation](./hermes-ios-settings.md)
-
-
-### Protect Apps with NHN AppGuard
+### Protect Apps with NHN AppGuard { #protect-apps-with-nhn-appguard }
 
 - [Protect Android Apps](./android-app-protection.md)
 - [Protect iOS Apps](./ios-native-settings.md)
