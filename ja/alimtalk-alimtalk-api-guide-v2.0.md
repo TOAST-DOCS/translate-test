@@ -167,7 +167,6 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:
 
 <a id="request-of-sending-full-text"></a>
 ### メッセージ全文送信リクエスト { #request-of-sending-full-text }
-
 [URL]
 
 ```
@@ -177,9 +176,9 @@ Content-Type: application/json;charset=UTF-8
 
 [Path parameter]
 
-| 値 | タイプ | 説明 |
-| ------ | ------ | ------ |
-| appkey | String | 固有のアプリケーションキー |
+| 名前 |	タイプ|	説明|
+|---|---|---|
+|appkey|	String|	固有のアプリキー|
 
 [Header]
 ```
@@ -187,24 +186,25 @@ Content-Type: application/json;charset=UTF-8
   "X-Secret-Key": String
 }
 ```
-| 値    | タイプ | 必須 | 説明                               |
-| ------------ | ------ | ---- | ---------------------------------------- |
-| X-Secret-Key | String | O    | コンソールで作成できます。 |
-|X-NC-API-IDEMPOTENCY-KEY|	String| X | 重複メッセージ送信要求基準key<br>10分間同じkeyで要求すると、その要求を失敗処理します。 |
+| 名前 |	タイプ|	必須|	説明|
+|---|---|---|---|
+|X-Secret-Key|	String| O | コンソールで生成できます。  |
+|X-NC-API-IDEMPOTENCY-KEY|	String| X | 重複メッセージ送信リクエストの基準key<br>10分間同一のkeyでリクエストした場合、該当リクエストを失敗として処理します。 |
 
-[Request body]
+[Request Body]
 
 ```
 {
-    "plusFriendId": String,
+    "senderKey": String,
     "templateCode": String,
     "requestDate": String,
     "senderGroupingKey": String,
+    "createUser": String,
     "recipientList": [
         {
             "recipientNo": String,
             "content": String,
-            "templateTitle":String,
+            "templateTitle": String,
             "buttons": [
                 {
                     "ordering": Integer,
@@ -217,11 +217,11 @@ Content-Type: application/json;charset=UTF-8
                 }
             ],
             "resendParameter": {
-              "isResend":boolean,
-              "resendType":String,
-              "resendTitle":String,
-              "resendContent":String,
-              "resendSendNo":String
+              "isResend": boolean,
+              "resendType": String,
+              "resendTitle": String,
+              "resendContent": String,
+              "resendSendNo": String
             },
             "recipientGroupingKey": String
         }
@@ -233,46 +233,47 @@ Content-Type: application/json;charset=UTF-8
 }
 ```
 
-| 値               | タイプ | 必須 | 説明                                |
-| ---------------------- | ------- | ---- | ---------------------------------------- |
-| senderKey           | String  | O    | 発信キー                                   |
-| templateCode           | String  | O    | 登録した送信テンプレートコード(最大20桁)                    |
-| requestDate            | String  | X    | リクエスト日時(yyyy-MM-dd HH:mm)<br>(入力しない場合は即時送信) |
-| senderGroupingKey      | String  | X    | 発信グルーピングキー(最大100文字)                        |
-| recipientList          | List    | O    | 受信者リスト(最大1,000人)                        |
-| - recipientNo          | String  | O    | 受信番号(最大15桁)                            |
-| - content              | String  | O    | 内容(最大1000文字)                             |
-| - templateTitle        | String  | X    | テンプレートハイライトタイトル(最大50桁) |
-| - buttons              | List    | X    | ボタンリスト(最大5個)                             |
-| -- ordering            | Integer | X    | ボタン順序(ボタンがある場合は必須)                      |
-| -- type                | String  | X    | ボタンタイプ(WL：Webリンク、AL：アプリリンク、DS：配送照会、BK：Botキーワード、MD：メッセージ伝達、BC：相談トーク転換、BT：Bot転換、AC：チャンネル追加) |
-| -- name                | String  | X    | ボタン名(ボタンがある場合は必須、最大14文字)              |
-| -- linkMo              | String  | X    | モバイルWebリンク(WLタイプの場合は必須フィールド、最大500文字)       |
-| -- linkPc              | String  | X    | PC Webリンク(WLタイプの場合は任意フィールド、最大500文字)        |
-| -- schemeIos           | String  | X    | iOSアプリリンク(ALタイプの場合は必須フィールド、最大500文字)       |
-| -- schemeAndroid       | String  | X    | Androidアプリリンク(ALタイプの場合は必須フィールド、最大500文字)   |
-| - resendParameter      | Object  | X    | 代替発送情報 |
-| -- isResend            | boolean | X    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
-| -- resendType          | String  | X    | 代替送信タイプ(SMS、LMS)<br>値がない場合は、テンプレート本文の長さに応じてタイプが決まります。 |
-| -- resendTitle         | String  | X    | LMS代替送信タイトル(最大20文字)<br>(値がない場合は、プラスフレンドIDで再送信されます。) |
-| -- resendContent       | String  | X    | 代替送信内容(最大1000文字)<br>(値がない場合は、テンプレートの内容で再送信されます。) |
-| -- resendSendNo        | String  | X    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
-| - recipientGroupingKey | String  | X    | 受信者グルーピングキー(最大100文字)                       |
-| messageOption          | Object  | X    |	メッセージオプション                                           |
-| - price                | Integer | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
-| - currencyType         | String  | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
+| 名前 |	タイプ|	必須|	説明|
+|---|---|---|---|
+|senderKey|	String|	O | 発信キー（40文字） |
+|templateCode|	String|	O | 登録した送信テンプレートコード（最大20文字） |
+|requestDate| String | X| リクエスト日時（yyyy-MM-dd HH:mm）<br>（入力しない場合は即時送信） |
+|senderGroupingKey| String | X| 発信グルーピングキー（最大100文字） |
+|createUser| String | X| 登録者（コンソールから送信する場合、ユーザーUUIDで保存）|
+|recipientList|	List|	O|	受信者リスト（最大1,000名） |
+|- recipientNo|	String|	O|	受信番号（最大15文字） |
+|- content|	String|	O|	内容（最大1000文字） |
+|- templateTitle| String| X| タイトル（最大50文字） |
+|- buttons|	List |	X | ボタンリスト（最大5個） |
+|-- ordering|	Integer|	X |	ボタンの順序（ボタンがある場合は必須）|
+|-- type| String |	X |	ボタンタイプ（WL: Webリンク、AL: アプリリンク、DS: 配送照会、BK: ボットキーワード、MD: メッセージ転送、BC: 相談トーク転換、BT: ボット転換、AC: チャンネル追加） |
+|-- name| String |	X |	ボタン名（ボタンがある場合は必須、最大14文字）|
+|-- linkMo| String |	X |	モバイルWebリンク（WLタイプの場合は必須フィールド、最大500文字）|
+|-- linkPc | String |	X |PC Webリンク（WLタイプの場合は任意フィールド、最大500文字） |
+|-- schemeIos | String | X |	iOSアプリリンク（ALタイプの場合は必須フィールド、最大500文字） |
+|-- schemeAndroid | String | X |	Androidアプリリンク（ALタイプの場合は必須フィールド、最大500文字） |
+|- resendParameter|	Object|	X| 代替送信情報 |
+|-- isResend|	boolean|	X|	送信失敗時、SMS代替送信の有無<br>コンソールで代替送信設定時、デフォルトで代替送信されます。 |
+|-- resendType|	String|	X|	代替送信タイプ（SMS、LMS）<br>値がない場合、テンプレート本文の長さによってタイプが区分されます。 |
+|-- resendTitle|	String|	X|	LMS代替送信タイトル<br>（値がない場合、プラスフレンドIDで代替送信されます。） |
+|-- resendContent|	String|	X|	代替送信内容<br>（値がない場合、[メッセージ本文とWebリンクボタン名 - WebリンクMobileリンク]で代替送信されます。） |
+|-- resendSendNo | String| X| 代替送信の発信番号<br><span style="color:red">（SMSサービスに登録された発信番号でない場合、代替送信に失敗する可能性があります。）</span> |
+|- recipientGroupingKey|	String|	X|	受信者グルーピングキー（最大100文字） |
+| messageOption | Object |	X | メッセージオプション |
+|- price | Integer |	X | ユーザーに配信されるメッセージ内に含まれる価格/金額/決済金額（モーメント広告に該当） |
+|- currencyType | String |	X| ユーザーに配信されるメッセージ内に含まれる価格/金額/決済金額の通貨単位（KRW、USD、EUR等の国際通貨コードを使用）（モーメント広告に該当） |
 
-* <b>本文とボタンに置換が完了したデータを入れてください。</b>
-* <b>リクエスト日時は呼び出す時点から60日後まで設定可能です。</b>
-* <b>SMSサービスで代替送信されるため、SMSサービスの送信APIの仕様に応じてフィールドを入力する必要があります。(SMSサービスに登録された発信番号、各種フィールドの長さ制限など)</b>
-* <b>SMSサービスは、国際SMSのみサポートします。国際受信者番号の場合、 resendType(代替送信タイプ)をSMSに変更すると正常に代替送信できます。</b>
-* <b>指定した代替送信タイプのバイト制限を超える代替送信のタイトルや内容は、途中で切れて代替送信されることがあります。([[SMS注意事項](https://docs.toast.com/ko/Notification/SMS/ko/api-guide/#_1)]参考)<
-* <b>送信時にtemplateTitleとtemplateItemHighlight.titleフィールドの一番後ろに`\s`文字を追加すると、取り消し線スタイルを適用できます。</b>
-    * <b>ただし、テンプレート登録時にあらかじめ\sをフィールドに追加しておいた場合は適用されません。</b>
+* <b>本文とボタンに置換が完了したデータを入力してください。</b>
+* <b>リクエスト日時は呼び出す時点から60日後まで設定できます。</b>
+* <b>SMSサービスで代替送信されるため、SMSサービスの送信API仕様に従ってフィールドを入力する必要があります。（SMSサービスに登録された発信番号、各種フィールド長制限など）</b>
+* <b>代替送信はSMS、LMSで送信可能で、国際代替送信はSMSのみサポートします。国際受信者番号の場合、resendType（代替送信タイプ）をSMSに変更する必要があります。</b>
+* <b>指定した代替送信タイプのバイト制限を超える代替送信タイトルや内容は、切り捨てられて代替送信される場合があります。（[[SMS 注意事項](https://docs.toast.com/ko/Notification/SMS/ko/api-guide/#_1)] 参照）</b>
+* <b>送信時点で、templateTitleとtemplateItemHighlight.titleフィールドの末尾に`\s`文字を追加すると、取り消し線スタイルを適用できます。</b>
+    * <b>ただし、テンプレート登録時にあらかじめ\sをフィールドに追加しておく場合は適用されません。</b>
 
 [例]
 ```
-curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/raw-messages -d '{"senderKey":"{発信キー}","templateCode":"{テンプレートコード}","requestDate":"2018-10-01 00:00","recipientList":[{"recipientNo":"{受信番号}","content":"{内容}","buttons":[{"ordering":"{ボタン順序}","type":"{ボタンタイプ}","name":"{ボタン名}","linkMo":"{モバイルWebリンク}"}]}]}'
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/raw-messages -d '{"senderKey":"{発信キー}","templateCode":"{テンプレートコード}","requestDate":"2018-10-01 00:00","recipientList":[{"recipientNo":"{受信番号}","content":"{内容}","buttons":[{"ordering":"{ボタンの順序}","type":"{ボタンタイプ}","name":"{ボタン名}","linkMo":"{モバイルWebリンク}"}]}]}'
 ```
 
 <a id="response-2"></a>
@@ -1313,8 +1314,13 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 
 <a id="messages-1"></a>
 ### SMS/LMS 대체 발송 상태 코드 { #messages-1 }
-
-<!-- TODO: translate body -->
+| 名前 |	説明|
+|---|---|
+|RSC01|	代替送信の対象外|
+|RSC02|	代替送信の対象（送信結果が失敗の場合、代替送信が行われます。）|
+|RSC03|	代替送信中|
+|RSC04|	代替送信成功|
+|RSC05|	代替送信失敗|
 
 <a id="templates"></a>
 ## テンプレート { #templates }
@@ -1587,17 +1593,17 @@ Content-Type: application/json;charset=UTF-8
 [URL]
 
 ```
-DELETE  /alimtalk/v2.0/appkeys/{appkey}/plus-friends/{plusFriendId}/templates/{templateCode}
+DELETE  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}
 Content-Type: application/json;charset=UTF-8
 ```
 
 [Path parameter]
 
-| 値    | タイプ | 説明 |
-| ------------ | ------ | -------- |
-| appkey       | String | 固有のアプリケーションキー |
-| plusFriendId | String | 発信キー |
-| templateCode | String | テンプレートコード |
+| 名前 |	タイプ|	説明|
+|---|---|---|
+|appkey|	String|	固有のアプリキー|
+|senderKey|	String|	発信キー |
+|templateCode|	String|	テンプレートコード |
 
 [Header]
 ```
@@ -1632,17 +1638,17 @@ Content-Type: application/json;charset=UTF-8
 [URL]
 
 ```
-PUT  /alimtalk/v2.0/appkeys/{appkey}/plus-friends/{plusFriendId}/templates/{templateCode}/comments
+POST  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}/comments
 Content-Type: application/json;charset=UTF-8
 ```
 
 [Path parameter]
 
-| 値    | タイプ | 説明 |
-| ------------ | ------ | -------- |
-| appkey       | String | 固有のアプリケーションキー |
-| plusFriendId | String | 発信キー |
-| templateCode | String | テンプレートコード |
+| 名前 |	タイプ|	説明|
+|---|---|---|
+|appkey|	String|	固有のアプリキー|
+|senderKey|	String|	発信キー |
+|templateCode|	String|	テンプレートコード |
 
 [Header]
 ```
@@ -1650,21 +1656,21 @@ Content-Type: application/json;charset=UTF-8
   "X-Secret-Key": String
 }
 ```
-| 値    | タイプ | 必須 | 説明                               |
-| ------------ | ------ | ---- | ---------------------------------------- |
-| X-Secret-Key | String | O    | コンソールで作成できます。 |
+| 名前 |	タイプ|	必須|	説明|
+|---|---|---|---|
+|X-Secret-Key|	String| O | コンソールで作成できます。  |
 
-[Request body]
+[Request Body]
 
 ```
 {
-  "comment":String
+  "comment": String
 }
 ```
 
-| 値 | タイプ | 必須 | 説明 |
-| ------- | ------ | ---- | ----- |
-| comment | String | O    | お問い合わせ内容 |
+| 名前 |	タイプ|	必須|	説明|
+|---|---|---|---|
+|comment|	String |	O | お問い合わせ内容 |
 
 <a id="response-15"></a>
 #### レスポンス
@@ -1692,16 +1698,16 @@ Content-Type: application/json;charset=UTF-8
 [URL]
 
 ```
-POST  /alimtalk/v2.0/appkeys/{appkey}/plus-friends/{plusFriendId}/templates/{templateCode}/comments_file
+POST  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}/comments_file
 Content-Type: application/json;charset=UTF-8
 ```
 
 [Path parameter]
 
-|値|	タイプ|	説明|
+| 名前 |	タイプ|	説明|
 |---|---|---|
-|appkey|	String|	固有のAppkey|
-|plusFriendId|	String|	発信キー |
+|appkey|	String|	固有のアプリキー|
+|senderKey|	String|	発信キー |
 |templateCode|	String|	テンプレートコード |
 
 [Header]
@@ -1710,23 +1716,23 @@ Content-Type: application/json;charset=UTF-8
   "X-Secret-Key": String
 }
 ```
-|値|	タイプ|	必須|	説明|
+| 名前 |	タイプ|	必須|	説明|
 |---|---|---|---|
-|X-Secret-Key|	String| O | コンソールで作成できます。 |
+|X-Secret-Key|	String| O | コンソールで作成できます。  |
 
 [Request Body]
 
 ```
 {
-  "comment":String,
-  "attachments":File
+  "comment": String,
+  "attachments": File
 }
 ```
 
-|値|	タイプ|	必須| 	説明              |
-|---|---|---|------------------|
-|comment|	String |	O | お問い合わせ内容         |
-|attachments| List<File> | X | 添付ファイルリスト(最大10個) |
+| 名前 |	タイプ|	必須| 	説明             |
+|---|---|---|-----------------|
+|comment|	String |	O | お問い合わせ内容           |
+|attachments| List<File> | X | 添付ファイルリスト（最大10個） |
 
 <a id="response-16"></a>
 #### レスポンス
@@ -1752,19 +1758,19 @@ Content-Type: application/json;charset=UTF-8
 
 <a id="request-13"></a>
 #### リクエスト
-
 [URL]
 
 ```
-GET  /alimtalk/v2.0/appkeys/{appkey}/templates
+GET  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates
 Content-Type: application/json;charset=UTF-8
 ```
 
 [Path parameter]
 
-| 値 | タイプ | 説明 |
-| ------ | ------ | ------ |
-| appkey | String | 固有のアプリケーションキー |
+| 名前 |	タイプ|	説明|
+|---|---|---|
+|appkey|	String|	固有のアプリキー|
+|senderKey|	String|	発信キー |
 
 [Header]
 ```
@@ -1772,31 +1778,30 @@ Content-Type: application/json;charset=UTF-8
   "X-Secret-Key": String
 }
 ```
-| 値    | タイプ | 必須 | 説明                               |
-| ------------ | ------ | ---- | ---------------------------------------- |
-| X-Secret-Key | String | O    | コンソールで作成できます。 |
+| 名前 |	タイプ|	必須|	説明|
+|---|---|---|---|
+|X-Secret-Key|	String| O | コンソールで作成できます。  |
 
 [Query parameter]
 
-| 値      | タイプ | 必須 | 説明    |
-| -------------- | ------- | ---- | ------------- |
-| plusFriendId   | String  | X    | 発信キー      |
-| templateCode   | String  | X    | テンプレートコード |
-| templateName   | String  | X    | テンプレート名 |
-| templateStatus | String  | X    | テンプレートステータスコード |
-| pageNum        | Integer | X    | ページ番号(基本：1) |
-| pageSize       | Integer | X    | 照会件数(基本：15、最大: 1000) |
+| 名前 |	タイプ|	必須|	説明|
+|---|---|---|---|
+|templateCode|	String|	X |	テンプレートコード|
+|templateName|	String|	X |	テンプレート名|
+|templateStatus| String |	X | テンプレート状態コード|
+|pageNum|	Integer|	X|	ページ番号(Default: 1)|
+|pageSize|	Integer|	X|	照会件数(Default: 15, Max: 1000)|
 
-| テンプレートステータスコード | 説明 |
-| --------- | ---- |
-| TSC01     | リクエスト |
-| TSC02     | 検収中 |
-| TSC03     | 承認 |
-| TSC04     | 差し戻し |
+|テンプレート状態コード| 説明|
+|---|---|
+| TSC01 | 要請 |
+| TSC02 | 検収中 |
+| TSC03 | 承認 |
+| TSC04 | 反映 |
 
 [例]
 ```
-curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/templates?plusFriendId={発信キー}&templateStatus={テンプレートステータスコード}"
+curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates?templateStatus={テンプレート状態コード}"
 ```
 
 <a id="response-17"></a>
@@ -1903,21 +1908,20 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 
 <a id="request-14"></a>
 #### リクエスト
-
 [URL]
 
 ```
-GET  /alimtalk/v2.0/appkeys/{appkey}/plus-friends/{plusFriendId}/templates/{templateCode}/modifications
+GET  /alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}/modifications
 Content-Type: application/json;charset=UTF-8
 ```
 
 [Path parameter]
 
-| 値 | タイプ | 説明 |
+| 名前 |	タイプ|	説明|
 |---|---|---|
-| appkey       | String | 固有のアプリケーションキー |
-| plusFriendId | String | プラスフレンドID |
-| templateCode | String | テンプレートコード |
+|appkey|	String|	固有のアプリキー|
+|senderKey|	String|	発信キー |
+|templateCode|	String|	テンプレートコード |
 
 [Header]
 ```
@@ -1925,13 +1929,13 @@ Content-Type: application/json;charset=UTF-8
   "X-Secret-Key": String
 }
 ```
-| 値    | タイプ | 必須 | 説明                               |
+| 名前 |	タイプ|	必須|	説明|
 |---|---|---|---|
-| X-Secret-Key | String | O    | コンソールで作成できます。 |
+|X-Secret-Key|	String| O | コンソールで作成できます。  |
 
 [例]
 ```
-curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/plus-friends/{plusFriendId}/templates/{templateCode}/modifications"
+curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/senders/{senderKey}/templates/{templateCode}/modifications"
 ```
 
 <a id="response-18"></a>
@@ -2101,7 +2105,6 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:
 
 <a id="section-1-2"></a>
 ### 代替送信設定登録 { #section-1-2 }
-
 [URL]
 
 ```
@@ -2111,9 +2114,9 @@ Content-Type: application/json;charset=UTF-8
 
 [Path parameter]
 
-| 値    | タイプ | 説明 |
-| ------------ | ------ | -------- |
-| appkey       | String | 固有のアプリケーションキー |
+| 名前 |	タイプ|	説明|
+|---|---|---|
+|appkey|	String|	固有のアプリキー|
 
 [Header]
 ```
@@ -2121,31 +2124,30 @@ Content-Type: application/json;charset=UTF-8
   "X-Secret-Key": String
 }
 ```
-
-| 値    | タイプ | 必須 | 説明                               |
-| ------------ | ------ | ---- | ---------------------------------------- |
-| X-Secret-Key | String | O    | コンソールで作成できます。 |
+| 名前 |	タイプ|	必須|	説明|
+|---|---|---|---|
+|X-Secret-Key|	String| O | コンソールで作成できます。  |
 
 
 [Request body]
 
 ```
 {  
-   "plusFriendId": String,
+   "senderKey": String,
    "isResend": Boolean,
    "resendSendNo": String
 }
 ```
 
-| 値               | タイプ | 必須 | 説明                                |
-| ---------------------- | ------- | ---- | ---------------------------------------- |
-| plusFriendId           | String  | O    | プラスフレンドID(最大30文字)                         |
-| isResend             | boolean | O    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
-| resendSendNo         | String  | O    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+| 名前 |	タイプ|	必須|	説明|
+|---|---|---|---|
+|senderKey|	String|	O | 発信キー |
+|isResend|	Boolean|	O | 送信失敗時、SMS代替送信の有無<br>コンソールで代替送信設定時、デフォルトで代替送信されます。 |
+|resendSendNo|	String|	O | 代替送信の発信番号<br><span style="color:red">(SMS商品に登録された発信番号でない場合、代替送信が失敗する可能性があります。)</span> |
 
 [例]
 ```
-curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/failback/appkey -d '{"plusFriendId": "@プラスフレンド","isResend": true,"resendSendNo": "01012341234" }
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" https://kakaotalk-bizmessage.api.nhncloudservice.com/alimtalk/v2.0/appkeys/{appkey}/failback/appkey -d '{"senderKey": "0be23c29de88d6888798aeda57062516354d74ba","isResend": true,"resendSendNo": "01012341234" }
 ```
 
 <a id="section-1-2-1"></a>

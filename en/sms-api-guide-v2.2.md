@@ -776,8 +776,45 @@ Content-Type: application/json;charset=UTF-8
 
 <a id="list-delivery-of-long-mms-request-request"></a>
 #### Request
+[URL]
 
-<!-- TODO: translate body -->
+```
+GET  /sms/v2.2/appKeys/{appKey}/sender/mms
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name | 	Type | 	Description |
+|--------|---------|---------|
+| appKey | 	String | 	Unique app key |
+
+[Query parameter]
+
+* One of the following is required: requestId, startRequestDate + endRequestDate, or startCreateDate + endCreateDate.
+* If you query both the registration date and the delivery date simultaneously, the delivery date is ignored.
+
+| Name                 | 	Type    | Max Length | 	Required | 	Description                                                   |
+|----------------------|----------|-------|-----|-------------------------------------------------------|
+| requestId            | 	String  | 25    | 	Required | 	Request ID                                                |
+| startRequestDate     | 	String  | -     | 	Required | 	Start date of delivery request (yyyy-MM-dd HH:mm:ss)                       |
+| endRequestDate       | 	String  | -     | 	Required | 	End date of delivery request (yyyy-MM-dd HH:mm:ss)                       |
+| startCreateDate      | 	String  | -     | 	Required | 	Start date of registration (yyyy-MM-dd HH:mm:ss)                       |
+| endCreateDate        | 	String  | -     | 	Required | 	End date of registration (yyyy-MM-dd HH:mm:ss)                       |
+| startResultDate      | 	String  | -     | 	Optional | 	Start date of reception (yyyy-MM-dd HH:mm:ss)                       |
+| endResultDate        | 	String  | -     | 	Optional | 	End date of reception (yyyy-MM-dd HH:mm:ss)                       |
+| sendNo               | 	String  | 13    | 	Optional | 	Sender number                                                |
+| recipientNo          | 	String  | 20    | 	Optional | 	Recipient number                                                |
+| templateId           | 	String  | 50    | 	Optional | 	Template ID                                               |
+| msgStatus            | 	String  | 1     | 	Optional | Message status code (0: Failure, 1: Requested, 2: Processing, 3: Success, 4: Reservation canceled, 5: Duplicate failure, 6: Failure (advertising restriction), 7: Waiting for resend (advertising restriction)) |
+| resultCode           | 	String  | 10    | 	Optional | 	Reception result code [[View code table](./error-code/#_2)]                |
+| subResultCode        | 	String  | 10    | 	Optional | 	Detailed reception result code [[View code table](./error-code/#_3)]             |
+| senderGroupingKey    | 	String  | 100   | 	Optional | 	Sender grouping key                                              |
+| recipientGroupingKey | 	String  | 100   | 	Optional | 	Recipient grouping key                                              |
+| receiverRegion       | 	String  | -     | 	Optional | 	Domestic/international (DOMESTIC: Domestic, INTERNATIONAL: International)       |
+| countryCode          | 	String  | -     | 	Optional | 	Country code [[Countries available for sending](./international-sending-policy/#_5)] |
+| pageNum              | 	Integer | -     | 	Optional | 	Page number (default: 1)                                      |
+| pageSize             | 	Integer | 1000  | 	Optional | 	Number of results (default: 15)                                       |
 
 <a id="list-delivery-of-long-mms-request-response"></a>
 #### Response
@@ -1468,8 +1505,49 @@ Free opt out 080-XXX-XXXX
 
 <a id="send-sms-for-advertisement-request"></a>
 #### Request
+[URL]
 
-<!-- TODO: translate body -->
+```
+POST  /sms/v2.2/appKeys/{appKey}/sender/ad-sms
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path Parameter]
+
+| Value | 	Type     | 	Description     |
+|--------|---------|---------|
+| appKey | 	String | 	Unique AppKey |
+
+[Request Body]
+Same as the SMS sending request above.
+[[See Request Body](./api-guide/#sms_2)]
+
+<span style="color:red">However, the body must include the mandatory advertising text.</span>
+
+You can check the 080 number on the **080 Opt-Out Settings** tab in the console.
+
+The rules for mandatory advertising text are as follows:
+- Opening text: `(광고)`
+- Closing text: `무료수신거부 {080수신거부번호}` or `무료거부 {080수신거부번호}`
+  - These texts can include spaces.
+  - The 080 opt-out number can include hyphens (-).
+
+Example
+```
+(Ad)
+
+[Toll-free Opt-out]080XXXXXXX
+```
+```
+(Ad)
+
+Toll-free Opt-out 080XXXXXXX
+```
+```
+(Ads)
+
+Free opt-out 080-XXX-XXXX
+```
 
 <a id="send-mms-for-advertisement"></a>
 ### Send MMS for Advertisement { #send-mms-for-advertisement }
@@ -1519,8 +1597,49 @@ Free opt out 080-XXX-XXXX
 
 <a id="send-mms-for-advertisement-request"></a>
 #### Request
+[URL]
 
-<!-- TODO: translate body -->
+```
+POST  /sms/v2.2/appKeys/{appKey}/sender/ad-mms
+Content-Type: application/json;charset=UTF-8
+```
+
+[Path parameter]
+
+| Name   | Type   | Description    |
+|--------|--------|----------------|
+| appKey | String | Unique app key |
+
+[Request Body]
+Same as MMS sending above.
+[[See Request Body](./api-guide/#mms_1)]
+
+<span style="color:red">However, the body must include mandatory advertising phrases.</span>
+
+You can check the 080 number on the **080 Opt-Out Settings** tab in the console.
+
+The rules for mandatory advertising phrases are as follows:
+- Opening phrase: `(광고)`
+- Closing phrase: `무료수신거부 {080수신거부번호}` or `무료거부 {080수신거부번호}`
+  - The phrase may contain spaces.
+  - The 080 opt-out number may contain hyphens (-).
+
+Example
+```
+(Ad)
+
+[Toll-free Opt-out]080XXXXXXX
+```
+```
+(Ad)
+
+Toll-free Opt-out 080XXXXXXX
+```
+```
+(Ads)
+
+Free opt-out 080-XXX-XXXX
+```
 
 <a id="query-messages-by-result-updates"></a>
 ## Query Messages by Result Updates { #query-messages-by-result-updates }
@@ -3580,7 +3699,6 @@ Content-Type: application/json;charset=UTF-8
 
 <a id="cancel-scheduled-delivery-request"></a>
 #### Request
-
 [URL]
 
 ```
@@ -3590,9 +3708,9 @@ Content-Type: application/json;charset=UTF-8
 
 [Path parameter]
 
-| Value  | Type    | Description     |
-|--------|---------|-----------------|
-| appKey | 	String | Original appkey |
+| Value   | 	Type     | 	Description     |
+|--------|---------|---------|
+| appKey | 	String | 	Unique AppKey |
 
 [Request body]
 
@@ -3608,14 +3726,14 @@ Content-Type: application/json;charset=UTF-8
 }
 ```
 
-| Value                          | Type    | 	Max Length | Required | Description                      |
-|--------------------------------|---------|-------------|----------|----------------------------------|
-| reservationList[].requestId    | String  | 25          | O        | Request ID                       |
-| reservationList[].recipientSeq | Integer | -           | O        | Recipient sequence               |
-| updateUser                     | String  | 100         | O        | Requesting user for cancellation |
+| Value                          | 	Type     | 	Max Length | Required | 	Description     |
+|--------------------------------|---------|--------|----|---------|
+| reservationList[].requestId    | String  | 25     | O  | Request ID   |
+| reservationList[].recipientSeq | Integer | -      | O  | Recipient sequence |
+| updateUser                     | String  | 100    | O  | Cancel requester  |
 
-[Response body]
-
+<a id="cancel-scheduled-delivery-response"></a>
+#### Response
 ```json
 {
   "header": {
@@ -3632,18 +3750,13 @@ Content-Type: application/json;charset=UTF-8
 }
 ```
 
-| Value                    | Type     | Description                       |
-|--------------------------|----------|-----------------------------------|
-| header.isSuccessful      | 	Boolean | Successful or not                 |
-| header.resultCode        | 	Integer | Failure code                      |
-| header.resultMessage     | 	String  | Failure message                   |
-| body.data.requestedCount | 	Integer | Number of failed requests         |
-| body.data.canceledCount  | 	Integer | Number of successful cancellation |
-
-<a id="cancel-scheduled-delivery-response"></a>
-#### Response
-
-<!-- TODO: translate body -->
+| Value                     | 	Type      | 	Description                |
+|--------------------------|----------|-----------|
+| header.isSuccessful      | 	Boolean | 	Success    |
+| header.resultCode        | 	Integer | 	Failure code    |
+| header.resultMessage     | 	String  | 	Failure message   |
+| body.data.requestedCount | 	Integer | 	Number of cancel requests |
+| body.data.canceledCount  | 	Integer | 	Number of successful cancellations |
 
 <a id="download-delivery-result-files"></a>
 ## Download Delivery Result Files { #download-delivery-result-files }
