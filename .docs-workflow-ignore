@@ -1,0 +1,6 @@
+# e2e fixture for cloud-translate PR 844 (workflow-ignore gate test)
+ko/wfi-both.md
+[review]
+ko/wfi-review-only.md
+[translate]
+ko/wfi-translate-only.md
