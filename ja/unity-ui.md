@@ -393,8 +393,9 @@ static void UpdateTerms(GamebaseRequest.Terms.UpdateTermsConfiguration configura
 | Error | Error Code | Description |
 | --- | --- | --- |
 | NOT\_INITIALIZED | 1 | Gamebaseが初期化されていません。 |
+| NOT\_LOGGED_IN | 2 | ログインが必要です。(Standaloneのみ) |
 | UI\_TERMS\_UNREGISTERED\_SEQ | 6923 | 登録されていない約款Seq値を設定しました。 |
-| UI\_TERMS\_ALREADY\_IN\_PROGRESS\_ERROR | 6924 | 以前に呼び出されたTerms APIがまだ完了していません。<br/>しばらくしてから再度試行してください。 |
+| UI\_TERMS\_ALREADY\_IN\_PROGRESS\_ERROR | 6924 | Terms APIの呼び出しがまだ完了していません。<br/>しばらくしてから再度試行してください。 |
 
 
 **Example**
@@ -561,7 +562,16 @@ public void ShowWebView()
 <a id="show-webview-predefined-custom-scheme"></a>
 #### Predefined Custom Scheme
 
-<!-- TODO: translate body -->
+Gamebaseで指定されたスキームです。
+
+| scheme | 用途 |
+| ----------------------------- | ------------------------------ |
+| gamebase://dismiss | WebViewを閉じます。 |
+| gamebase://goBack | WebViewを戻ります。 |
+| gamebase://getUserId          | 現在ログイン中のゲームユーザーのユーザーIDを表示します。 |
+| gamebase://getMaintenanceInfo | メンテナンス内容をWebPageに表示します。 |
+| gamebase://showwebview?link={URLEncodedURL} | linkパラメータのURLをWebViewで開きます。<br>URLEncodedURL : WebViewで開くURL。<br>URLデコードが必要です。 |
+| gamebase://openbrowser?link={URLEncodedURL} | linkパラメータのURLを外部ブラウザで開きます。<br/>URLEncodedURL : 外部ブラウザで開くURL<br/>URLデコードが必要です。 |
 
 <a id="close-webview"></a>
 ### Close WebView { #close-webview }
