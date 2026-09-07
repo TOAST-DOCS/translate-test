@@ -235,14 +235,15 @@ Content-Type: application/json;charset=UTF-8
 
 | 値               | タイプ | 必須 | 説明                                |
 | ---------------------- | ------- | ---- | ---------------------------------------- |
-| senderKey           | String  | O    | 発信キー                                   |
+| senderKey           | String  | O    | 発信キー(40文字)                                   |
 | templateCode           | String  | O    | 登録した送信テンプレートコード(最大20桁)                    |
 | requestDate            | String  | X    | リクエスト日時(yyyy-MM-dd HH:mm)<br>(入力しない場合は即時送信) |
 | senderGroupingKey      | String  | X    | 発信グルーピングキー(最大100文字)                        |
+| createUser             | String  | X    | 登録者(コンソールから送信時にユーザーUUIDで保存)             |
 | recipientList          | List    | O    | 受信者リスト(最大1,000人)                        |
 | - recipientNo          | String  | O    | 受信番号(最大15桁)                            |
 | - content              | String  | O    | 内容(最大1000文字)                             |
-| - templateTitle        | String  | X    | テンプレートハイライトタイトル(最大50桁) |
+| - templateTitle        | String  | X    | タイトル(最大50文字) |
 | - buttons              | List    | X    | ボタンリスト(最大5個)                             |
 | -- ordering            | Integer | X    | ボタン順序(ボタンがある場合は必須)                      |
 | -- type                | String  | X    | ボタンタイプ(WL：Webリンク、AL：アプリリンク、DS：配送照会、BK：Botキーワード、MD：メッセージ伝達、BC：相談トーク転換、BT：Bot転換、AC：チャンネル追加) |
@@ -252,15 +253,15 @@ Content-Type: application/json;charset=UTF-8
 | -- schemeIos           | String  | X    | iOSアプリリンク(ALタイプの場合は必須フィールド、最大500文字)       |
 | -- schemeAndroid       | String  | X    | Androidアプリリンク(ALタイプの場合は必須フィールド、最大500文字)   |
 | - resendParameter      | Object  | X    | 代替発送情報 |
-| -- isResend            | boolean | X    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
+| -- isResend            | boolean | X    | 送信失敗時、SMS代替送信するかどうか<br>コンソールで代替送信設定をした時、デフォルトで代替送信されます。 |
 | -- resendType          | String  | X    | 代替送信タイプ(SMS、LMS)<br>値がない場合は、テンプレート本文の長さに応じてタイプが決まります。 |
-| -- resendTitle         | String  | X    | LMS代替送信タイトル(最大20文字)<br>(値がない場合は、プラスフレンドIDで再送信されます。) |
-| -- resendContent       | String  | X    | 代替送信内容(最大1000文字)<br>(値がない場合は、テンプレートの内容で再送信されます。) |
-| -- resendSendNo        | String  | X    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+| -- resendTitle         | String  | X    | LMS代替送信タイトル<br>(値がない場合は、プラスフレンドIDで再送信されます。) |
+| -- resendContent       | String  | X    | 代替送信内容<br>(値がない場合は、[メッセージ本文とWebリンクボタン名 - WebリンクMobileリンク]で代替送信されます。) |
+| -- resendSendNo        | String  | X    | 代替送信発信番号<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
 | - recipientGroupingKey | String  | X    | 受信者グルーピングキー(最大100文字)                       |
 | messageOption          | Object  | X    |	メッセージオプション                                           |
-| - price                | Integer | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
-| - currencyType         | String  | X    |	message(ユーザーに伝達されるメッセージ)内に含まれた価格/金額/決済金額(モーメント広告に該当) |
+| - price                | Integer | X    |	ユーザーに伝達されるメッセージ内に含まれた価格/金額/決済金額(モーメント広告に該当) |
+| - currencyType         | String  | X    |	ユーザーに伝達されるメッセージ内に含まれた価格/金額/決済金額の通貨単位。KRW、USD、EURなどの国際通貨コードを使用(モーメント広告に該当) |
 
 * <b>本文とボタンに置換が完了したデータを入れてください。</b>
 * <b>リクエスト日時は呼び出す時点から60日後まで設定可能です。</b>
@@ -1314,7 +1315,13 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 <a id="messages-1"></a>
 ### SMS/LMS 대체 발송 상태 코드 { #messages-1 }
 
-<!-- TODO: translate body -->
+| 名前 |	説明|
+|---|---|
+|RSC01|	代替送信の非対象|
+|RSC02|	代替送信の対象（送信結果が失敗の場合、代替送信が行われます。）|
+|RSC03|	代替送信中|
+|RSC04|	代替送信成功|
+|RSC05|	代替送信失敗|
 
 <a id="templates"></a>
 ## テンプレート { #templates }
@@ -1593,10 +1600,10 @@ Content-Type: application/json;charset=UTF-8
 
 [Path parameter]
 
-| 値    | タイプ | 説明 |
+| 名前 | タイプ | 説明 |
 | ------------ | ------ | -------- |
 | appkey       | String | 固有のアプリケーションキー |
-| plusFriendId | String | 発信キー |
+| senderKey    | String | 発信キー |
 | templateCode | String | テンプレートコード |
 
 [Header]
@@ -1641,7 +1648,7 @@ Content-Type: application/json;charset=UTF-8
 | 値    | タイプ | 説明 |
 | ------------ | ------ | -------- |
 | appkey       | String | 固有のアプリケーションキー |
-| plusFriendId | String | 発信キー |
+| senderKey    | String | 発信キー |
 | templateCode | String | テンプレートコード |
 
 [Header]
@@ -1701,7 +1708,7 @@ Content-Type: application/json;charset=UTF-8
 |値|	タイプ|	説明|
 |---|---|---|
 |appkey|	String|	固有のAppkey|
-|plusFriendId|	String|	発信キー |
+|senderKey|	String|	発信キー |
 |templateCode|	String|	テンプレートコード |
 
 [Header]
@@ -1765,6 +1772,7 @@ Content-Type: application/json;charset=UTF-8
 | 値 | タイプ | 説明 |
 | ------ | ------ | ------ |
 | appkey | String | 固有のアプリケーションキー |
+| senderKey | String | 発信キー |
 
 [Header]
 ```
@@ -1916,7 +1924,7 @@ Content-Type: application/json;charset=UTF-8
 | 値 | タイプ | 説明 |
 |---|---|---|
 | appkey       | String | 固有のアプリケーションキー |
-| plusFriendId | String | プラスフレンドID |
+| senderKey    | String | 発信キー |
 | templateCode | String | テンプレートコード |
 
 [Header]
@@ -2137,11 +2145,11 @@ Content-Type: application/json;charset=UTF-8
 }
 ```
 
-| 値               | タイプ | 必須 | 説明                                |
-| ---------------------- | ------- | ---- | ---------------------------------------- |
-| plusFriendId           | String  | O    | プラスフレンドID(最大30文字)                         |
-| isResend             | boolean | O    | 送信失敗時、代替送信するかどうか<br>コンソールで送信失敗設定をした時、デフォルト設定は再送信になっています。 |
-| resendSendNo         | String  | O    | 代替送信発信番号(最大13桁)<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
+| 名前 | タイプ | 必須 | 説明 |
+|---|---|---|---|
+| senderKey | String | O | 発信キー |
+| isResend | Boolean | O | 送信失敗時、SMSによる代替送信を行うかどうか<br>コンソールで代替送信を設定した場合、デフォルトで代替送信されます。 |
+| resendSendNo | String | O | 代替送信発信番号<br><span style="color:red">(SMSサービスに登録された発信番号ではない場合、代替送信が失敗することがあります。)</span> |
 
 [例]
 ```
