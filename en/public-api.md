@@ -28,11 +28,11 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | id | Query | UUID | - | Transit hub ID to query |
-| String | Query | Token ID | - | Transit hub name to query |
+| name | Query | String | - | Transit hub name to query |
 
 
 <a id="view-transit-hubs-response"></a>
@@ -85,10 +85,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transitHubId | O | UUID | Response | Transit Hub ID |
+| tokenId | Header | String | O | Token ID |
+| transitHubId | URL | UUID | O | Transit Hub ID |
 
 <a id="view-transit-hub-response"></a>
 #### Response
@@ -137,15 +137,15 @@ X-Auth-Token: {tokenId}
 <a id="create-transit-hub-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transithub | String | Object | Response | Transit hub information object |
-| transithub.name | String | Token ID | - | Transit Hub Name |
-| transithub.description | String | Token ID | - | Transit Hub description |
-| transithub.multicast_enable | String | Boolean | Response | Whether to enable multicast feature |
-| transithub.default_association_enable | String | Boolean | Response | Whether to enable the default routing table association feature |
-| transithub.default_propagation_enable | String | Boolean | Response | Whether to enable the default routing table propagation feature |
+| tokenId | Header | String | O | Token ID |
+| transithub | Body | Object | O | Transit hub information object |
+| transithub.name | Body | String | - | Transit Hub Name |
+| transithub.description | Body | String | - | Transit Hub description |
+| transithub.multicast_enable | Body | Boolean | O | Whether to enable multicast feature |
+| transithub.default_association_enable | Body | Boolean | O | Whether to enable the default routing table association feature |
+| transithub.default_propagation_enable | Body | Boolean | O | Whether to enable the default routing table propagation feature |
 
 
 
@@ -213,13 +213,13 @@ X-Auth-Token: {tokenId}
 <a id="modify-transit-hub-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transitHubId | O | UUID | Response | Transit Hub ID |
-| transithub | String | Object | Response | Transit hub information object |
-| transithub.name | String | Token ID | - | Transit Hub Name |
-| transithub.description | String | Token ID | - | Transit Hub description |
+| tokenId | Header | String | O | Token ID |
+| transitHubId | URL | UUID | O | Transit Hub ID |
+| transithub | Body | Object | O | Transit hub information object |
+| transithub.name | Body | String | - | Transit Hub Name |
+| transithub.description | Body | String | - | Transit Hub description |
 
 <details><summary>Example</summary>
 
@@ -282,10 +282,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transitHubId | O | UUID | Response | Transit Hub ID |
+| tokenId | Header | String | O | Token ID |
+| transitHubId | URL | UUID | O | Transit Hub ID |
 
 
 <a id="delete-transit-hub-response"></a>
@@ -316,12 +316,12 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | id | Query | UUID | - | Attachment ID to query |
-| String | Query | Token ID | - | Attachment name to query |
-| Resource ID | Query | UUID | - | Resource ID to query (VPC) |
+| name | Query | String | - | Attachment name to query |
+| resource_id | Query | UUID | - | Resource ID to query (VPC) |
 | subnet_id | Query | UUID | - | Subnet ID to query |
 | transithub_id | Query | UUID | - | Transit hub ID to query |
 
@@ -380,10 +380,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| attachmentId | O | UUID | Response | Attachment ID |
+| tokenId | Header | String | O | Token ID |
+| attachmentId | URL | UUID | O | Attachment ID |
 
 <a id="view-attachment-response"></a>
 #### Response
@@ -435,15 +435,15 @@ X-Auth-Token: {tokenId}
 <a id="create-attachment-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transithub_attachment | String | Object | Response | Load Balancer Information object |
-| transithub_attachment.name | String | Token ID | - | Attachment name |
-| transithub_attachment.description | String | Token ID | - | Attachment description |
-| transithub_attachment.resource_id | String | UUID | Response | Resource ID (VPC) |
-| transithub_attachment.subnet_id | String | UUID | Response | Subnet ID |
-| transithub_attachment.transithub_id | String | UUID | Response | Transit hub ID where the attachment will be registered |
+| tokenId | Header | String | O | Token ID |
+| transithub_attachment | Body | Object | O | Load Balancer Information object |
+| transithub_attachment.name | Body | String | - | Attachment name |
+| transithub_attachment.description | Body | String | - | Attachment description |
+| transithub_attachment.resource_id | Body | UUID | O | Resource ID (VPC) |
+| transithub_attachment.subnet_id | Body | UUID | O | Subnet ID |
+| transithub_attachment.transithub_id | Body | UUID | O | Transit hub ID where the attachment will be registered |
 
 <details><summary>Example</summary>
 
@@ -511,13 +511,13 @@ X-Auth-Token: {tokenId}
 <a id="modify-attachment-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| attachmentId | O | UUID | Response | Attachment ID |
-| transithub_attachment | String | Object | Response | Attachment information object |
-| transithub_attachment.name | String | Token ID | - | Attachment name |
-| transithub_attachment.description | String | Token ID | - | Attachment description |
+| tokenId | Header | String | O | Token ID |
+| attachmentId | URL | UUID | O | Attachment ID |
+| transithub_attachment | Body | Object | O | Attachment information object |
+| transithub_attachment.name | Body | String | - | Attachment name |
+| transithub_attachment.description | Body | String | - | Attachment description |
 
 <details><summary>Example</summary>
 
@@ -583,10 +583,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| attachmentId | O | UUID | Response | Attachment ID |
+| tokenId | Header | String | O | Token ID |
+| attachmentId | URL | UUID | O | Attachment ID |
 
 
 <a id="delete-attachment-response"></a>
@@ -617,11 +617,11 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | id | Query | UUID | - | Routing table ID to query |
-| String | Query | Token ID | - | Routing table name to query |
+| name | Query | String | - | Routing table name to query |
 | transithub_id | Query | UUID | - | Transit hub ID to query |
 
 
@@ -674,10 +674,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| routingTableId | O | UUID | Response | Routing table ID |
+| tokenId | Header | String | O | Token ID |
+| routingTableId | URL | UUID | O | Routing table ID |
 
 <a id="view-routing-table-response"></a>
 #### Response
@@ -724,13 +724,13 @@ X-Auth-Token: {tokenId}
 <a id="create-routing-table-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transithub_routing_table | String | Object | Response | Routing table information object |
-| transithub_routing_table.name | String | Token ID | - | Routing table name |
-| transithub_routing_table.description | String | Token ID | - | Routing table description |
-| transithub_routing_table.transithub_id | String | UUID | Response | Transit hub ID where the routing table will be registered |
+| tokenId | Header | String | O | Token ID |
+| transithub_routing_table | Body | Object | O | Routing table information object |
+| transithub_routing_table.name | Body | String | - | Routing table name |
+| transithub_routing_table.description | Body | String | - | Routing table description |
+| transithub_routing_table.transithub_id | Body | UUID | O | Transit hub ID where the routing table will be registered |
 
 <details><summary>Example</summary>
 
@@ -790,13 +790,13 @@ X-Auth-Token: {tokenId}
 <a id="modify-routing-table-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| routingTableId | O | UUID | Response | Routing table ID |
-| transithub_routing_table | String | Object | Response | Routing table information object |
-| transithub_routing_table.name | String | Token ID | - | Routing table name |
-| transithub_routing_table.description | String | Token ID | - | Routing table description |
+| tokenId | Header | String | O | Token ID |
+| routingTableId | URL | UUID | O | Routing Table ID |
+| transithub_routing_table | Body | Object | O | Routing table information object |
+| transithub_routing_table.name | Body | String | - | Routing table name |
+| transithub_routing_table.description | Body | String | - | Routing table description |
 
 <details><summary>Example</summary>
 
@@ -857,10 +857,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| routingTableId | O | UUID | Response | Routing table ID |
+| tokenId | Header | String | O | Token ID |
+| routingTableId | URL | UUID | O | Routing table ID |
 
 
 <a id="delete-routing-table-response"></a>
@@ -892,9 +892,9 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | id | Query | UUID | - | Routing association ID to query |
 | attachment_id | Query | UUID | - | Attachment ID to query |
 | routing_table_id | Query | UUID | - | Routing table ID to query |
@@ -947,10 +947,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| routingAssociationId | O | UUID | Response | Routing Association ID |
+| tokenId | Header | String | O | Token ID |
+| routingAssociationId | URL | UUID | O | Routing Association ID |
 
 <a id="view-routing-association-response"></a>
 #### Response
@@ -995,13 +995,13 @@ X-Auth-Token: {tokenId}
 <a id="create-routing-association-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transithub_routing_association | String | Object | Response | Routing association information object |
-| transithub_routing_association.description | String | Token ID | - | Routing association description |
-| transithub_routing_association.attachment_id | String | UUID | Response | Attachment ID |
-| transithub_routing_association.routing_table_id | String | UUID | Response | Transit hub ID where the routing association will be registered |
+| tokenId | Header | String | O | Token ID |
+| transithub_routing_association | Body | Object | O | Routing association information object |
+| transithub_routing_association.description | Body | String | - | Routing association description |
+| transithub_routing_association.attachment_id | Body | UUID | O | Attachment ID |
+| transithub_routing_association.routing_table_id | Body | UUID | O | Transit hub ID where the routing association will be registered |
 
 <details><summary>Example</summary>
 
@@ -1059,10 +1059,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| routingAssociationId | O | UUID | Response | Routing Association ID |
+| tokenId | Header | String | O | Token ID |
+| routingAssociationId | URL | UUID | O | Routing Association ID |
 
 
 <a id="delete-routing-association-response"></a>
@@ -1095,9 +1095,9 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | id | Query | UUID | - | Routing propagation ID to query |
 | attachment_id | Query | UUID | - | Attachment ID to query |
 | routing_table_id | Query | UUID | - | Routing table ID to query |
@@ -1150,10 +1150,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| routingPropagationId | O | UUID | Response | Routing Propagation ID |
+| tokenId | Header | String | O | Token ID |
+| routingPropagationId | URL | UUID | O | Routing Propagation ID |
 
 <a id="view-routing-propagation-response"></a>
 #### Response
@@ -1198,13 +1198,13 @@ X-Auth-Token: {tokenId}
 <a id="create-routing-propagation-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transithub_routing_propagation | String | Object | Response | Routing propagation information object |
-| transithub_routing_propagation.description | String | Token ID | - | Routing Propagation description |
-| transithub_routing_propagation.attachment_id | String | UUID | Response | Attachment ID |
-| transithub_routing_propagation.routing_table_id | String | UUID | Response | Transit hub ID where the routing propagation will be registered |
+| tokenId | Header | String | O | Token ID |
+| transithub_routing_propagation | Body | Object | O | Routing propagation information object |
+| transithub_routing_propagation.description | Body | String | - | Routing Propagation description |
+| transithub_routing_propagation.attachment_id | Body | UUID | O | Attachment ID |
+| transithub_routing_propagation.routing_table_id | Body | UUID | O | Transit hub ID where the routing propagation will be registered |
 
 <details><summary>Example</summary>
 
@@ -1262,10 +1262,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| routingPropagationId | O | UUID | Response | Routing Propagation ID |
+| tokenId | Header | String | O | Token ID |
+| routingPropagationId | URL | UUID | O | Routing Propagation ID |
 
 
 <a id="delete-routing-propagation-response"></a>
@@ -1297,12 +1297,12 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | id | Query | UUID | - | Routing rule ID to query |
-| Endpoint stage ID | Query | Enum | - | Routing rule action to query<br>One of `FORWARD`, `BLACKHOLE`  |
-| rule_type | Query | Enum | - | Routing rule type to query<br>Either `STATIC` or `PROPAGATED`  |
+| action | Query | Enum | - | Routing rule action to query<br>One of `FORWARD`, `BLACKHOLE` |
+| rule_type | Query | Enum | - | Routing rule type to query<br>Either `STATIC` or `PROPAGATED` |
 | attachment_id | Query | UUID | - | Attachment ID to query |
 | routing_table_id | Query | UUID | - | Routing table ID to query |
 
@@ -1362,10 +1362,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| routingRuleId | O | UUID | Response | Routing Rule ID |
+| tokenId | Header | String | O | Token ID |
+| routingRuleId | URL | UUID | O | Routing Rule ID |
 
 <a id="view-routing-rule-response"></a>
 #### Response
@@ -1418,16 +1418,16 @@ X-Auth-Token: {tokenId}
 <a id="create-routing-rule-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transithub_routing_rule | String | Object | Response | Routing rule information object |
-| transithub_routing_rule.name | String | Token ID | - | Routing rule name |
-| transithub_routing_rule.description | String | Token ID | - | Routing rule description |
-| transithub_routing_rule.cidr | String | Token ID | Response | Routing rule IP band |
-| transithub_routing_rule.action | String | Enum | - | Routing rule action<br>One of `FORWARD`, `BLACKHOLE` <br>If not entered, `FORWARD` |
-| transithub_routing_rule.attachment_id | String | UUID | Response | Attachment ID |
-| transithub_routing_rule.routing_table_id | String | UUID | Response | The routing table ID where the routing rule will be registered. |
+| tokenId | Header | String | O | Token ID |
+| transithub_routing_rule | Body | Object | O | Routing rule information object |
+| transithub_routing_rule.name | Body | String | - | Routing rule name |
+| transithub_routing_rule.description | Body | String | - | Routing rule description |
+| transithub_routing_rule.cidr | Body | String | O | Routing rule IP band |
+| transithub_routing_rule.action | Body | Enum | - | Routing rule action<br>One of `FORWARD`, `BLACKHOLE` <br>If not entered, `FORWARD` |
+| transithub_routing_rule.attachment_id | Body | UUID | O | Attachment ID |
+| transithub_routing_rule.routing_table_id | Body | UUID | O | The routing table ID where the routing rule will be registered. |
 
 <details><summary>Example</summary>
 
@@ -1494,10 +1494,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| routingRuleId | O | UUID | Response | Routing Rule ID |
+| tokenId | Header | String | O | Token ID |
+| routingRuleId | URL | UUID | O | Routing Rule ID |
 
 
 <a id="delete-routing-rule-response"></a>
@@ -1530,11 +1530,11 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | id | Query | UUID | - | Multicast domain ID to query |
-| String | Query | Token ID | - | Multicast domain name to query |
+| name | Query | String | - | Multicast domain name to query |
 | transithub_id | Query | UUID | - | Transit hub ID to query |
 
 
@@ -1584,21 +1584,21 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| multicastDomainId | O | UUID | Response | Multicast Domain ID |
+| tokenId | Header | String | O | Token ID |
+| multicastDomainId | URL | UUID | O | Multicast Domain ID |
 
 <a id="view-multicast-domain-response"></a>
 #### Response
 
-| Format | Description | Description | Header |
+| Name | Type | Format | Description |
 |---|---|---|---|
-| String | O | Token ID | Token ID |
-| transithub_multicast_domain | String | Object | Multicast domain information object |
-| transithub_multicast_domain.name | String | Token ID | Multicast domain name |
-| transithub_multicast_domain.description | String | Token ID | Multicast domain description |
-| transithub_multicast_domain.transithub_id | String | UUID | Transit hub ID where multicast domain will be registered |
+| tokenId | Header | String | Token ID |
+| transithub_multicast_domain | Body | Object | Multicast domain information object |
+| transithub_multicast_domain.name | Body | String | Multicast domain name |
+| transithub_multicast_domain.description | Body | String | Multicast domain description |
+| transithub_multicast_domain.transithub_id | Body | UUID | Transit hub ID where multicast domain will be registered |
 
 <details><summary>Example</summary>
 
@@ -1633,13 +1633,13 @@ X-Auth-Token: {tokenId}
 <a id="create-multicast-domain-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transithub_multicast_domain | String | Object | Response | Multicast domain information object |
-| transithub_multicast_domain.name | String | Token ID | - | Multicast domain name |
-| transithub_multicast_domain.description | String | Token ID | - | Multicast domain description |
-| transithub_multicast_domain.transithub_id | String | UUID | Response | Transit hub ID where multicast domain will be registered |
+| tokenId | Header | String | O | Token ID |
+| transithub_multicast_domain | Body | Object | O | Multicast domain information object |
+| transithub_multicast_domain.name | Body | String | - | Multicast domain name |
+| transithub_multicast_domain.description | Body | String | - | Multicast domain description |
+| transithub_multicast_domain.transithub_id | Body | UUID | O | Transit hub ID where multicast domain will be registered |
 
 <details><summary>Example</summary>
 
@@ -1697,13 +1697,13 @@ X-Auth-Token: {tokenId}
 <a id="modify-multicast-domain-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| multicastDomainId | O | UUID | Response | Multicast Domain ID |
-| transithub_multicast_domain | String | Object | Response | Multicast domain information object |
-| transithub_multicast_domain.name | String | Token ID | - | Multicast domain name |
-| transithub_multicast_domain.description | String | Token ID | - | Multicast domain description |
+| tokenId | Header | String | O | Token ID |
+| multicastDomainId | URL | UUID | O | Multicast Domain ID |
+| transithub_multicast_domain | Body | Object | O | Multicast domain information object |
+| transithub_multicast_domain.name | Body | String | - | Multicast domain name |
+| transithub_multicast_domain.description | Body | String | - | Multicast domain description |
 
 <details><summary>Example</summary>
 
@@ -1762,10 +1762,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| multicastDomainId | O | UUID | Response | Multicast Domain ID |
+| tokenId | Header | String | O | Token ID |
+| multicastDomainId | URL | UUID | O | Multicast Domain ID |
 
 
 <a id="delete-multicast-domain-response"></a>
@@ -1796,11 +1796,11 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | id | Query | UUID | - | Multicast association ID to query |
-| String | Query | Token ID | - | Multicast association name to query |
+| name | Query | String | - | Multicast association name to query |
 | domain_id | Query | UUID | - | Multicast domain ID to query |
 
 
@@ -1853,24 +1853,24 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| multicastAssociationId | O | UUID | Response | Routing Rule ID |
+| tokenId | Header | String | O | Token ID |
+| multicastAssociationId | URL | UUID | O | Routing Rule ID |
 
 <a id="view-multicast-association-response"></a>
 #### Response
 
-| Format | Description | Description | Header |
+| Name | Type | Format | Description |
 |---|---|---|---|
-| String | O | Token ID | Token ID |
-| transithub_multicast_association | String | Object | Multicast association information object |
-| transithub_multicast_association.id | String | UUID | Multicast association ID |
-| transithub_multicast_association.tenant_id | String | Token ID | Tenant ID |
-| transithub_multicast_association.description | String | Token ID | Multicast association description |
-| transithub_multicast_association.attachment_id | String | UUID | Attachment ID |
-| transithub_multicast_association.subnet_id | String | UUID | Subnet ID |
-| transithub_multicast_association.domain_id | String | UUID | Multicast Domain ID |
+| tokenId | Header | String | Token ID |
+| transithub_multicast_association | Body | Object | Multicast association information object |
+| transithub_multicast_association.id | Body | UUID | Multicast association ID |
+| transithub_multicast_association.tenant_id | Body | String | Tenant ID |
+| transithub_multicast_association.description | Body | String | Multicast association description |
+| transithub_multicast_association.attachment_id | Body | UUID | Attachment ID |
+| transithub_multicast_association.subnet_id | Body | UUID | Subnet ID |
+| transithub_multicast_association.domain_id | Body | UUID | Multicast Domain ID |
 
 <details><summary>Example</summary>
 
@@ -1905,13 +1905,13 @@ X-Auth-Token: {tokenId}
 <a id="create-multicast-association-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transithub_multicast_association | String | Object | Response | Multicast association information object |
-| transithub_multicast_association.description | String | Token ID | - | Multicast association description |
-| transithub_multicast_association.attachment_id | String | UUID | Response | Attachment ID |
-| transithub_multicast_association.domain_id | String | UUID | Response | Multicast Domain ID |
+| tokenId | Header | String | O | Token ID |
+| transithub_multicast_association | Body | Object | O | Multicast association information object |
+| transithub_multicast_association.description | Body | String | - | Multicast association description |
+| transithub_multicast_association.attachment_id | Body | UUID | O | Attachment ID |
+| transithub_multicast_association.domain_id | Body | UUID | O | Multicast Domain ID |
 
 <details><summary>Example</summary>
 
@@ -1972,10 +1972,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| multicastAssociationId | O | UUID | Response | Multicast association ID |
+| tokenId | Header | String | O | Token ID |
+| multicastAssociationId | URL | UUID | O | Multicast association ID |
 
 
 <a id="delete-multicast-association-response"></a>
@@ -2012,11 +2012,11 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | id | Query | UUID | - | Multicast group ID to query |
-| String | Query | Token ID | - | Multicast group name to query |
+| name | Query | String | - | Multicast group name to query |
 | domain_id | Query | UUID | - | Multicast group ID to query |
 
 
@@ -2073,10 +2073,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| multicastGroupId | O | UUID | Response | Multicast Group ID |
+| tokenId | Header | String | O | Token ID |
+| multicastGroupId | URL | UUID | O | Multicast Group ID |
 
 <a id="multicast-group-view-multicast-group-response"></a>
 #### Response
@@ -2128,16 +2128,16 @@ X-Auth-Token: {tokenId}
 <a id="create-multicast-group-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transithub_multicast_group | String | Object | Response | Multicast group information object |
-| transithub_multicast_group.description | String | Token ID | - | Multicast group description |
-| transithub_multicast_group.association_id | String | UUID | Response | Multicast association ID |
-| transithub_multicast_group.ipaddress | String | Token ID | Response | Multicast group IP address |
-| transithub_multicast_group.member_type | String | Token ID | - | Multicast member type, enter `STATIC` if used as a member<br>Must enter one of the member type and source type |
-| transithub_multicast_group.source_type | String | Token ID | - | Multicast source type, enter `STATIC` if used as a source<br>Must enter one of the member type and source type |
-| transithub_multicast_group.port_id | String | UUID | Response | Multicast destination port ID |
+| tokenId | Header | String | O | Token ID |
+| transithub_multicast_group | Body | Object | O | Multicast group information object |
+| transithub_multicast_group.description | Body | String | - | Multicast group description |
+| transithub_multicast_group.association_id | Body | UUID | O | Multicast association ID |
+| transithub_multicast_group.ipaddress | Body | String | O | Multicast group IP address |
+| transithub_multicast_group.member_type | Body | String | - | Multicast member type, enter `STATIC` if used as a member<br>Must enter one of the member type and source type |
+| transithub_multicast_group.source_type | Body | String | - | Multicast source type, enter `STATIC` if used as a source<br>Must enter one of the member type and source type |
+| transithub_multicast_group.port_id | Body | UUID | O | Multicast destination port ID |
 
 
 <details><summary>Example</summary>
@@ -2206,10 +2206,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| multicastGroupId | O | UUID | Response | Multicast Group ID |
+| tokenId | Header | String | O | Token ID |
+| multicastGroupId | URL | UUID | O | Multicast Group ID |
 
 
 <a id="delete-multicast-group-response"></a>
@@ -2237,9 +2237,9 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | id | Query | UUID | - | Sharing allowed information ID to query |
 | transithub_id | Query | UUID | - | Transit hub ID to query |
 
@@ -2287,12 +2287,12 @@ X-Auth-Token: {tokenId}
 <a id="create-sharing-allowed-information-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transithub_allow_project | String | Object | Response | Share sharing allowed information object |
-| transithub_allow_project.transithub_id | String | UUID | Response | Transit hub ID to share |
-| transithub_allow_project.target_project_id | String | UUID | Response | Tenant ID to share with |
+| tokenId | Header | String | O | Token ID |
+| transithub_allow_project | Body | Object | O | Share sharing allowed information object |
+| transithub_allow_project.transithub_id | Body | UUID | O | Transit hub ID to share |
+| transithub_allow_project.target_project_id | Body | UUID | O | Tenant ID to share with |
 
 
 <details><summary>Example</summary>
@@ -2351,10 +2351,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| allowProjectId | O | UUID | Response | Sharing allowed information ID |
+| tokenId | Header | String | O | Token ID |
+| allowProjectId | URL | UUID | O | Sharing allowed information ID |
 
 
 <a id="delete-sharing-allowed-information-response"></a>
@@ -2375,9 +2375,9 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | transithub_id | Query | UUID | - | Transit hub ID to query |
 
 
@@ -2433,9 +2433,9 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | id | Query | UUID | - | Sharing allowed information ID to query |
 | domain_id | Query | UUID | - | Multicast domain ID to query |
 
@@ -2483,12 +2483,12 @@ X-Auth-Token: {tokenId}
 <a id="share-multicast-domain-create-sharing-allowed-information-request"></a>
 #### Request
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| transithub_multicast_domain_allow_project | String | Object | Response | Share sharing allowed information object |
-| transithub_multicast_domain_allow_project.domain_id | String | UUID | Response | Multicast domain ID to share |
-| transithub_multicast_domain_allow_project.target_project_id | String | UUID | Response | Tenant ID to share with |
+| tokenId | Header | String | O | Token ID |
+| transithub_multicast_domain_allow_project | Body | Object | O | Share sharing allowed information object |
+| transithub_multicast_domain_allow_project.domain_id | Body | UUID | O | Multicast domain ID to share |
+| transithub_multicast_domain_allow_project.target_project_id | Body | UUID | O | Tenant ID to share with |
 
 
 <details><summary>Example</summary>
@@ -2547,10 +2547,10 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
-| allowProjectId | O | UUID | Response | Sharing allowed information ID |
+| tokenId | Header | String | O | Token ID |
+| allowProjectId | URL | UUID | O | Sharing allowed information ID |
 
 
 <a id="share-multicast-domain-delete-sharing-allowed-information-response"></a>
@@ -2571,9 +2571,9 @@ X-Auth-Token: {tokenId}
 #### Request
 This API does not require a request body.
 
-| Format | Description | Description | tokenId | Header |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| String | O | Token ID | Response | Token ID |
+| tokenId | Header | String | O | Token ID |
 | domain_id | Query | UUID | - | Multicast domain ID to query |
 
 
