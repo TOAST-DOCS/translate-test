@@ -1,0 +1,8 @@
+# e2e fixture for cloud-translate PR 844 (YAML .docs-workflow gate test)
+ignore:
+  all:                             # 검수 + 번역 둘 다 제외
+    - "*/wfi-both.md"              # 선두 * 는 따옴표 필수 형태를 실전 검증
+  review:                          # 한글 검수만 제외
+    - ko/wfi-review-only.md
+  translate:                       # 번역만 제외
+    - ko/wfi-translate-only.md
