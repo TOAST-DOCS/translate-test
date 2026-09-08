@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 ## Overview
 
-The en counterpart of the control doc — must stay a candidate.
+This is a control document that is not excluded from anything. Example: Both review and translation are performed.
