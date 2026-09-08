@@ -1,0 +1,8 @@
+# e2e fixture for cloud-translate PR 844 (YAML, translate real-run parity test)
+ignore:
+  all:
+    - "*/wfi-both.md"
+  review:
+    - ko/wfi-review-only.md
+  translate:
+    - ko/wfi-translate-only.md
