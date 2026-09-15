@@ -1,0 +1,3 @@
+# E2E lifecycle stage 3: 패턴 복원 — 다시 제외
+ignore:
+  - ko/wfi-cycle.md
