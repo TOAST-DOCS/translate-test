@@ -1,9 +1,11 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=9b1876e3ba07 -->
 
 ## Overview {#overview}
 
-This control document is already aligned.
+This is a control document with alignment already applied.
 
-## Setup {#setup}
+## How to set up {#setup}
 
-Save the value.
+Save the value. For example, configure it as shown below.
