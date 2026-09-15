@@ -1,0 +1,6 @@
+# E2E fixture: 구 매핑 스키마 — warning + fail-open 이어야 한다
+ignore:
+  review:
+    - ko/wfi-excluded.md
+  all:
+    - "*/wfi-glob-excluded*.md"
