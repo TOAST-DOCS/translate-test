@@ -1,3 +1,1 @@
-# E2E lifecycle stage 1: wfi-cycle 등재
-ignore:
-  - ko/wfi-cycle.md
+# E2E lifecycle stage 2: 패턴을 전부 뺐다 (주석만 남은 빈 파일)
