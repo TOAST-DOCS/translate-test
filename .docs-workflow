@@ -1,0 +1,4 @@
+# .docs-workflow — 문서 파이프라인 설정 (E2E fixture: 평면 목록 스키마)
+ignore:
+  - ko/wfi-excluded.md            # 정확 일치 케이스
+  - "*/wfi-glob-excluded*.md"     # 선두 * 따옴표 케이스
