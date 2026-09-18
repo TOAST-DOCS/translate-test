@@ -5,8 +5,8 @@
 <a id="foundry-overview"></a>
 ## Machine Learning > NHN Cloud Foundry > Overview { #foundry-overview }
 
-NHN Cloud Foundry is a service that integrates customer data and uses machine learning models (such as recommendation, time-series forecasting/anomaly detection, and structured data classification/numerical prediction) to support effective decision-making.
-You can load data, process it through a visual workflow, and then analyze it using queries, charts, and dashboards, or create an app connected to a recommendation model to use recommendation results in your service.
+NHN Cloud Foundry is a service that integrates customer data and uses machine learning models (recommendation, time-series forecasting/anomaly detection, structured data classification/numerical prediction, and more) to support effective decision-making.
+You can load data, process it through a visual workflow, and analyze it with queries, charts, and dashboards. By creating an app connected to a model, you can use recommendation results or anomaly detection results from metrics in your service.
 
 <a id="main-feature"></a>
 ## Main features { #main-feature }
@@ -24,9 +24,9 @@ You can load data, process it through a visual workflow, and then analyze it usi
 A data source is a unit for storing data to be analyzed in NHN Cloud Foundry.
 When you create a data source by defining a schema, the data is loaded into a table and can then be used in pipelines, analysis, and apps.
 
-Data sources are created in the console, and you can upload data at the same time.
-To add or update data in an existing data source, use the Ingest API.
-Two methods are provided: snapshot upload, which replaces all data, and event method, which adds new data while retaining existing data.
+Data sources are created in the console, and you can upload data at the time of creation.
+When you need to add or update data in an existing data source, use the Ingest API.
+Two methods are available: snapshot upload, which replaces all existing data, and event-based upload, which adds new data while retaining existing data.
 
 When handling metric data, create a Prometheus API type data source and send the data in real time using the collection API. The loaded metrics can be viewed in the Analysis menu and can also be used as input for the univariate time-series anomaly detection app.
 
@@ -75,7 +75,7 @@ The anomaly scores and threshold values from the detection results are sent to t
 ## API { #public-api }
 
 NHN Cloud Foundry provides APIs in addition to the console.
-You can use the Ingest API to load snapshots, events, and metrics into a data source that you have already created, as well as APIs to request recommendation results from a created app and to send user reaction events.
+You can use the Ingest API to load snapshots, events, and metrics into an existing Data Source; APIs to request recommendation results from a created app and send user interaction events; and APIs to start, stop, and delete groups in a univariate time-series anomaly detection app.
 
 For more information, see the [API Guide](./api-guide/).
 
