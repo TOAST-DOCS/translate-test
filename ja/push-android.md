@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ebd262208f55 -->
 
 <a id="nhn-cloud-sdk-user-guide-push-android"></a>
@@ -30,7 +32,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.nhncloud.android:nhncloud-push-fcm:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-push-fcm:1.13.0'
     ...
 }
 ```
@@ -46,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.nhncloud.android:nhncloud-push-adm:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-push-adm:1.13.0'
     ...
 }
 ```
@@ -142,7 +144,7 @@ dependencies {
 <a id="proguard-settings"></a>
 ### Proguard設定 { #proguard-settings }
 
-* Proguardを使用する場合 <b>[proguard-rules.pro](http://proguard-rules.pro)</b>ファイルに以下のように追加します。
+* Proguardを使用する場合 **`proguard-rules.pro`** ファイルに以下のように追加します。
 
 ```groovy
 -libraryjars amazon/libs/amazon-device-messaging-1.2.0.jar
