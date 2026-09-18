@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=a84734711857 -->
+<!-- pre-align:aligned sig=0e590278a12e -->
 
 <a id="nhn-cloud-sdk-user-guide-log-crash-android"></a>
 ## NHN Cloud > SDK使用ガイド > Log & Crash > Android { #nhn-cloud-sdk-user-guide-log-crash-android }
