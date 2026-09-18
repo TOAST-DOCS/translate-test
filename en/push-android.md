@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=ebd262208f55 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=d1c6679fffab -->
 
 <a id="nhn-cloud-sdk-user-guide-push-android"></a>
 ## NHN Cloud > SDK User Guide > Push > Android { #nhn-cloud-sdk-user-guide-push-android }
@@ -30,7 +32,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.nhncloud.android:nhncloud-push-fcm:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-push-fcm:1.13.0'
     ...
 }
 ```
@@ -47,7 +49,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.nhncloud.android:nhncloud-push-adm:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-push-adm:1.13.0'
     ...
 }
 ```
@@ -144,7 +146,7 @@ dependencies {
 <a id="proguard-settings"></a>
 ### Proguard settings { #proguard-settings }
 
-* If you're using Proguard, add the following to the <b>[proguard-rules.pro](http://proguard-rules.pro)</b> file.
+* If you're using Proguard, add the following to the **`proguard-rules.pro`** file.
 
 ```groovy
 -libraryjars amazon/libs/amazon-device-messaging-1.2.0.jar
