@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=df76243180ae -->
 
 <a id="nhn-cloud-sdk-user-guide-ocr-credit-card-android"></a>
@@ -26,7 +28,7 @@ Add dependencies of nhncloud-creditcard-recognizer to the build.gradle file of t
 dependencies {
     ...
     // NHN Cloud Credit Card Recognizer
-    implementation 'com.nhncloud.android:nhncloud-creditcard-recognizer:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-creditcard-recognizer:1.13.0'
 }
 ```
 
@@ -81,7 +83,8 @@ When credit card recognition is successful, credit card recognition data is tran
 For privacy protection, the credit card number and expiration date are returned as SecureString objects, not plain strings.
 The SecureString.charAt(index) method returns the character at the specified index.
 
-> It is vulnerable to security when you create and use the credit card recognition data that is returned as CreditCardData as a String object.
+> It is vulnerable to security when you create and use the credit card recognition data that is returned as CreditCardData as a String object.<br>
+> See [Use SecureTextView](./creditcard-recognizer-android/#use-securetextview) to display on screen.
 
 ```kotlin
 val cardNumbers = creditCardData.cardNumbers
@@ -178,7 +181,8 @@ When credit card recognition is successful, credit card recognition data is tran
 For privacy protection, the credit card number and expiration date are returned as SecureString objects, not plain strings.
 The SecureString.charAt(index) method returns the character at the specified index.
 
-> It is vulnerable to security when you create and use the credit card recognition data that is returned as CreditCardRecognitionData as a String object.
+> It is vulnerable to security when you create and use the credit card recognition data that is returned as CreditCardRecognitionData as a String object.<br>
+> See [Use SecureTextView](./creditcard-recognizer-android/#use-securetextview) to display on screen.
 
 ```kotlin
 val cardNumbers = creditCardData.cardNumbers
