@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=1f5ef2921c62 -->
 
 <a id="nhn-cloud-sdk-user-guide-ocr-id-card-android"></a>
@@ -26,7 +28,7 @@ NHN Cloud ID Card RecognizerはAndroid 5.1以上(API level 22以上)で動作し
 dependencies {
     ...
     // NHN Cloud ID Card Recognizer
-    implementation 'com.nhncloud.android:nhncloud-idcard-recognizer:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-idcard-recognizer:1.13.0'
 }
 ```
 
@@ -85,7 +87,7 @@ IDカード認識に成功すると、IDCardDataを継承実装したオブジ�
 SecureString.charAt(index)メソッドは指定されたindexにある文字を返します。
 
 > IdCardDataで返される身分証明書認識情報をStringオブジェクトとして作成して使用するとセキュリティに脆弱です。<br>
-> 画面に表示するために[SecureTextView使用](./idcard-recognizer-android/#_18)を参照してください。
+> 画面に表示するために[SecureTextView使用](./idcard-recognizer-android/#use-securetextview)を参照してください。
 
 ```kotlin
 when (data) {
@@ -277,7 +279,7 @@ private fun isConfident(data: IdCardRecognitionData): Boolean {
 SecureString.charAt(index)メソッドは指定されたindexにある文字を返します。
 
 > IdCardRecognitionDataで返される身分証認識情報をStringオブジェクトとして作成して使用するとセキュリティに脆弱です。<br>
-> 画面に表示するために[SecureTextView](./idcard-recognizer-android/#_18)使用を参照してください。
+> 画面に表示するために[SecureTextView](./idcard-recognizer-android/#use-securetextview)使用を参照してください。
 
 ```kotlin
 when (data) {
