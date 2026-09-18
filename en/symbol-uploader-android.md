@@ -8,8 +8,8 @@
 <a id="prerequisites"></a>
 ## Prerequisites { #prerequisites }
 
-1. [Add NHN Cloud Logger to your Android project](/nhncloud/en/nhncloud-sdk/log-collector-android/).
-2. If your Android app contains native libraries, [add NHN Cloud Crash Reporter for NDK](/nhncloud/en/nhncloud-sdk/log-collector-ndk/).
+1. [Add NHN Cloud Logger to your Android project](./log-collector-android/).
+2. If your Android app contains native libraries, [add NHN Cloud Crash Reporter for NDK](./log-collector-ndk/).
 3. In the NHN Cloud Console, issue a **User Access Key ID** and **Secret Access Key**.
 
 <a id="library-setting"></a>
