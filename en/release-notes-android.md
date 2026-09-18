@@ -14,13 +14,13 @@
 #### Added Features
 
 * When a Google OOAP (Out-Of-App Purchases) purchase succeeds, the Purchase Updated event in the Gamebase Event Handler is triggered.
-    * [Game > Gamebase > Android SDK 사용 가이드 > ETC > Additional Features > Gamebase Event Handler > Purchase Updated](./aos-etc/#gamebase-event-handler-purchase-updated)
+    * [Game > Gamebase > Android SDK User Guide > ETC > Additional Features > Gamebase Event Handler > Purchase Updated](./aos-etc/#gamebase-event-handler-purchase-updated)
 
 <a id="830-2026-09-17-feature-updates"></a>
 #### Feature Updates
 
 * When an automatic retry transaction succeeds after login or when the app returns from the background to the foreground, the Purchase Updated event in the Gamebase Event Handler is triggered.
-    * [Game > Gamebase > Android SDK 사용 가이드 > ETC > Additional Features > Gamebase Event Handler > Purchase Updated](./aos-etc/#gamebase-event-handler-purchase-updated)
+    * [Game > Gamebase > Android SDK User Guide > ETC > Additional Features > Gamebase Event Handler > Purchase Updated](./aos-etc/#gamebase-event-handler-purchase-updated)
 
 <a id="2-82-0-2026-07-28"></a>
 ### 2.82.0 (2026. 07. 28.) { #2-82-0-2026-07-28 }
@@ -1579,9 +1579,9 @@ The ZIP file for distribution no longer includes AAR files.
 #### Bug Fixes
 
 * [SDK] 2.19.0
-    * (Unity) WebSocket에서 재시도 시 OutOfMemoryException이 발생하는 문제 수정
+    * (Unity) Fixed an issue where OutOfMemoryException occurs when retrying in WebSocket
 * [SDK] 2.19.1
-	* (Android) Weibo 로그인 시도 후 다른 IdP로 로그인 시 크래시가 발생하는 문제 수정
+	* (Android) Fixed an issue where a crash occurred when logging in with a different IdP after attempting Weibo login
 
 <a id="2-18-2-2020-12-15"></a>
 ### 2.18.2 (December 15, 2020) { #2-18-2-2020-12-15 }
@@ -1655,8 +1655,8 @@ Contact our Customer Center if you want to use the Hangame authentication.
 #### Feature Updates
 
 * [SDK] 2.17.0
-	* (공통) Supports the download feature when a Customer Center attachment image is clicked
-	* (공통) TOAST SDK update: Android(0.23.2), Unity(0.21.2)
+	* (Common) Supports the download feature when a Customer Center attachment image is clicked
+	* (Common) Updated TOAST SDK: Android(0.23.2), Unity(0.21.2)
 
 <a id="171-october-13-2020-bug-fixes"></a>
 #### Bug Fixes  
