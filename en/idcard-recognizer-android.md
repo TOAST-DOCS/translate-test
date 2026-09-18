@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=1f5ef2921c62 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=18eaf5875243 -->
 
 <a id="nhn-cloud-sdk-user-guide-ocr-id-card-android"></a>
 ## NHN Cloud > SDK User Guide > OCR > ID Card (Android) { #nhn-cloud-sdk-user-guide-ocr-id-card-android }
@@ -26,7 +28,7 @@ Add dependencies of nhncloud-idcard-recognizer to the build.gradle file of the a
 dependencies {
     ...
     // NHN Cloud ID Card Recognizer
-    implementation 'com.nhncloud.android:nhncloud-idcard-recognizer:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-idcard-recognizer:1.13.0'
 }
 ```
 
@@ -84,7 +86,7 @@ For privacy reasons, ID data is returned as a SecureString object rather than a 
 The SecureString.charAt(index) method returns the character at the specified index.
 
 > It is vulnerable to security when you create and use the ID card recognition data that is returned as IdCardData as a String object.<br>
-> See [](./idcard-recognizer-android/#_18)Use SecureTextView[](./idcard-recognizer-android/#_18) to display on screen.
+> See [Use SecureTextView](./idcard-recognizer-android/#use-securetextview) to display on screen.
 
 ```kotlin
 when (data) {
@@ -275,8 +277,8 @@ Depending on the ID type, a social security card is returned as an IdCardResiden
 For privacy reasons, ID data is returned as a SecureString object rather than a plain string.
 The SecureString.charAt(index) method returns the character at the specified index.
 
-> It is vulnerable to security when you create and use the ID card recognition data that is returned as IdCardRecognitionData as a String object.<br>
-> See [](./idcard-recognizer-android/#_18)Use SecureTextView[](./idcard-recognizer-android/#_18) to display on screen.
+> It is vulnerable to security issues when you create and use the ID card recognition data returned as IdCardRecognitionData as a String object.<br>
+> See [Use SecureTextView](./idcard-recognizer-android/#use-securetextview) to display on screen.
 
 ```kotlin
 when (data) {

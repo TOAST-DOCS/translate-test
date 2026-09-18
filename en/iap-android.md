@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=3ec34520922b -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=923390b5b8a7 -->
 
 <a id="nhn-cloud-sdk-user-guide-iap-android"></a>
 ## NHN Cloud > SDK User Guide > IAP > Android { #nhn-cloud-sdk-user-guide-iap-android }
@@ -46,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.nhncloud.android:nhncloud-iap-google:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-iap-google:1.13.0'
     ...
 }
 ```
@@ -68,14 +70,14 @@ dependencies {
     // ONE store integrated version (V21)
     implementation 'com.onestorecorp.sdk:sdk-iap:21.00.01'
     implementation 'com.onestorecorp.sdk:sdk-configuration-kr:1.0.0'
-    implementation 'com.nhncloud.android:nhncloud-iap-onestore2:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-iap-onestore2:1.13.0'
 
     // ONE store V17
-    implementation 'com.nhncloud.android:nhncloud-iap-onestore:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-iap-onestore:1.13.0'
     
     // ONE store V19
     implementation files('libs/iap_sdk-v19.01.00.aar')
-    implementation 'com.nhncloud.android:nhncloud-iap-onestore-v19:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-iap-onestore-v19:1.13.0'
     ...
 }
 ```
@@ -93,7 +95,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.nhncloud.android:nhncloud-iap-galaxy:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-iap-galaxy:1.13.0'
     ...
 }
 ```
@@ -109,7 +111,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.nhncloud.android:nhncloud-iap-amazon:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-iap-amazon:1.13.0'
     ...
 }
 ```
@@ -153,7 +155,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.nhncloud.android:nhncloud-iap-huawei:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-iap-huawei:1.13.0'
     ...
 }
 ```
@@ -169,7 +171,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.nhncloud.android:nhncloud-iap-mycard:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-iap-mycard:1.13.0'
     ...
 }
 ```
@@ -322,7 +324,7 @@ To test payments, add 'test_mode'. If 'test_mode' is not set, the default value 
 * The [NhnCloudIapConfiguration](./iap-android/#nhncloudiapconfiguration) object contains in-app purchase configuration information.
 * You can create a [NhnCloudIapConfiguration](./iap-android/#nhncloudiapconfiguration) object by using [NhnCloudIapConfiguration.Builder](./iap-android/#nhncloudiapconfigurationbuilder).
 * Set the [AppKey](/Mobile%20Service/IAP/en/console-guide/#appkey) issued from the IAP console by using the setAppKey method.
-* Set the [store code](./iap-android/#_3) to use for in-app purchases by using the setStoreCode method.
+* Set the [store code](./iap-android/#store-codes) to use for in-app purchases by using the setStoreCode method.
 
 <a id="example-of-iap-setting"></a>
 ### In-App Purchase Settings Example { #example-of-iap-setting }
@@ -387,7 +389,7 @@ public class MainApplication extends Application {
 ## Service login { #service-login }
 
 * All products provided by the NHN Cloud SDK (IAP, Log & Crash, etc.) use a single user ID.
-    * You can set the user ID with [NhnCloudSdk.setUserId](/nhncloud/en/nhncloud-sdk/getting-started-android/#userid).
+    * You can set the user ID with [NhnCloudSdk.setUserId](./getting-started-android/#set-user-id).
     * If you do not set a user ID, payments will not proceed.
 * We recommend that you implement the following features during the service login step: setting a user ID, querying unconsumed payment history, and querying active subscription products.
 

@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=3ec34520922b -->
+<!-- pre-align:aligned sig=923390b5b8a7 -->
 
 <a id="nhn-cloud-sdk-user-guide-iap-android"></a>
 ## NHN Cloud > SDK 사용 가이드 > IAP > Android { #nhn-cloud-sdk-user-guide-iap-android }

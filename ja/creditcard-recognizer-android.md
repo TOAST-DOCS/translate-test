@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=df76243180ae -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=abf19794aceb -->
 
 <a id="nhn-cloud-sdk-user-guide-ocr-credit-card-android"></a>
 ## NHN Cloud > SDK User Guide > OCR > Credit Card (Android) { #nhn-cloud-sdk-user-guide-ocr-credit-card-android }
@@ -20,12 +22,13 @@ NHN Cloud Credit Card RecognizerはAndroid 5.1以上(API level 22以上)で動�
 <a id="add-dependency"></a>
 ### 依存関係の追加 { #add-dependency }
 
-アプリのbuild.gradleファイルにnhncloud-creditcard-recognizer依存関係を追加します。
+アプリの build.gradle ファイルに nhncloud-creditcard-recognizer の依存性を追加します。
+
 ```groovy
 dependencies {
     ...
     // NHN Cloud Credit Card Recognizer
-    implementation 'com.nhncloud.android:nhncloud-creditcard-recognizer:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-creditcard-recognizer:1.13.0'
 }
 ```
 
@@ -81,7 +84,7 @@ creditCardRecognizer.launch(activity) { result, data ->
 SecureString.charAt(index)メソッドは指定されたindexにある文字を返します。
 
 > CreditCardDataで返されるクレジットカード認識情報をStringオブジェクトで作成して使用するとセキュリティに脆弱です。<br>
-> 画面に表示するために[SecureTextView使用](./creditcard-recognizer-android/#_18)を参考してください。
+> 画面に表示するために[SecureTextView使用](./creditcard-recognizer-android/#use-securetextview)を参考してください。
 
 ```kotlin
 val cardNumbers = creditCardData.cardNumbers
@@ -177,7 +180,7 @@ private fun isConfident(data: CreditCardRecognitionData): Boolean {
 SecureString.charAt(index)メソッドは指定されたindexにある文字を返します。
 
 > CreditCardRecognitionDataで返されるクレジットカード認識情報をStringオブジェクトで作成して使用するとセキュリティに脆弱です。<br>
-> 画面に表示するために[SecureTextView](./creditcard-recognizer-android/#_18)を参考してください。
+> 画面に表示するために[SecureTextView](./creditcard-recognizer-android/#use-securetextview)を参考してください。
 
 ```kotlin
 val cardNumbers = creditCardData.cardNumbers

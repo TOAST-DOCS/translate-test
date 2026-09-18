@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=a84734711857 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=0e590278a12e -->
 
 <a id="nhn-cloud-sdk-user-guide-log-crash-android"></a>
 ## NHN Cloud > SDK User Guide > Log & Crash > Android { #nhn-cloud-sdk-user-guide-log-crash-android }
@@ -20,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.nhncloud.android:nhncloud-logger:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-logger:1.13.0'
     ...
 }
 ```
