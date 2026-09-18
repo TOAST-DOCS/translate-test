@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=ebd262208f55 -->
+<!-- pre-align:aligned sig=d1c6679fffab -->
 
 <a id="nhn-cloud-sdk-user-guide-push-android"></a>
 ## NHN Cloud > SDK使用ガイド > Push > Android { #nhn-cloud-sdk-user-guide-push-android }
