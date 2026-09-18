@@ -92,7 +92,7 @@ Content-Type: application/json;charset=UTF-8
 | ---------------------- | ------- | -------- | ------------------------------------------------------------ |
 | senderKey              | String  | O        | Sender key                                                   |
 | templateCode           | String  | O        | Registered delivery template code(up to 20 characters)      |
-| requestDate            | String  | X        | Date and time of request(yyyy-MM-dd HH:mm)<br>(send immediately, if it is left blank)<br>최대 30일 이후까지 예약 가능 |
+| requestDate            | String  | X        | Date and time of request(yyyy-MM-dd HH:mm)<br>(send immediately, if it is left blank)<br>Can be scheduled up to 30 days later |
 | senderGroupingKey      | String  | X        | Sender's grouping key(up to 100 characters)                 |
 | createUser             | String  | X        | Registrant(saved as user UUID when delivered via console)   |
 | recipientList          | List    | O        | List of recipients(up to 1000 persons)                      |
@@ -598,7 +598,7 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 
 | Category | Authentication Words |
 | --- | --- |
-| Authentication Messages | auth, password, verif, にんしょう, 認証, 비밀번호, 인증 |
+| Authentication Messages | auth, password, verif, にんしょう, 認証, password, authentication |
 
 - Example 1) Delivery shall fail if the full text(including template replacement) does not include authentication words, in the request of Authentication Messages API(for emergency)
 - Example 2) Validity for English words shall be checked regardless of small or capital letters

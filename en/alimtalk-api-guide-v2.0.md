@@ -1311,7 +1311,7 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 ```
 
 <a id="messages-1"></a>
-### SMS/LMS 대체 발송 상태 코드 { #messages-1 }
+### Status Code of SMS/LMS Resending { #messages-1 }
 
 <!-- TODO: translate body -->
 
@@ -1708,7 +1708,7 @@ Content-Type: application/json;charset=UTF-8
 
 | Value           | Type    | Description       |
 |---|---|---|
-|appkey|	String|	고유의 앱키|
+|appkey|	String|	Unique appkey|
 |senderKey|	String|	Sender Key |
 |templateCode|	String|	Template code |
 
@@ -2048,12 +2048,12 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 | -- createDate        | String  | Date and time of creation                                    |
 | - totalCount         | Integer | Total count                                                  |
 <a id="section-1"></a>
-## 대체 발송 관리 { #section-1 }
+## Manage Fallback { #section-1 }
 
 <!-- TODO: translate body -->
 
 <a id="section-1-1"></a>
-### SMS AppKey 등록 { #section-1-1 }
+### Register an SMS AppKey { #section-1-1 }
 
 <!-- TODO: translate body -->
 
@@ -2063,7 +2063,7 @@ curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{
 <!-- TODO: translate body -->
 
 <a id="section-1-2"></a>
-### 대체 발송 설정 등록 { #section-1-2 }
+### Register Fallback Settings { #section-1-2 }
 
 <!-- TODO: translate body -->
 
