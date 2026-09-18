@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=1f5ef2921c62 -->
+<!-- pre-align:aligned sig=18eaf5875243 -->
 
 <a id="nhn-cloud-sdk-user-guide-ocr-id-card-android"></a>
 ## NHN Cloud > SDK 사용 가이드 > OCR > ID Card (Android) { #nhn-cloud-sdk-user-guide-ocr-id-card-android }
