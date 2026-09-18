@@ -16,31 +16,30 @@
 
 * [Android] 1.14.0.0
     * Added a feature to specify DEX encryption targets
-        * Added a feature to select DEX encryption targets by package or class.
+        * Added a feature to select DEX encryption targets by package or class unit.
         * For more information, see **Android Developer's Guide > 3. Unified Configuration File > 3.2 Settings by Feature > DEX Encryption Target Specification**.
     * Added support for unified configuration files
         * Improved to allow you to manage resource string obfuscation rules and DEX encryption scope in a single unified configuration file.
         * For more information, see **Android Developer's Guide > 3. Unified Configuration File**.
-    * Added an Android ID-based blacklist feature
+    * Added Android ID-based blacklist feature
         * Added a feature to register specific devices to the blacklist based on Android ID.
-    * Added emulator detection patterns
-        * Added UgPhone emulator detection patterns.
-    * Bug Fixes
+    * Bug fixes
         * Fixed an issue where the app terminated abnormally during MyCard payment.
         * Fixed a false positive that occurred when detecting remote control apps.
+    * Stability improvements
 * [iOS] 1.6.0
-    * Raised the minimum supported iOS version
+    * Raised minimum supported iOS version
         * Raised the minimum supported version to iOS 13.
-    * Improved stability
+    * Stability improvements
 * [Unity] 0.5.2
-    * Fixed an issue where blocking did not work correctly when SecureValue was tampered with in iOS environments.
+    * Fixed an issue where blocking did not work correctly when SecureValue was tampered with in an iOS environment.
     * Updated to iOS SDK 1.6.0
 * [Unreal] 0.2.11
     * Updated to iOS SDK 1.6.0
 * [Console]
-    * Added a unified configuration file upload feature for Android
-        * Added a feature to upload unified configuration files for use in Android app protection tasks.
-    * Added an Android ID-based blacklist blocking feature
+    * Added Android unified configuration file upload feature
+        * Added a feature to upload a unified configuration file to be used for Android app protection tasks.
+    * Added Android ID-based blacklist blocking feature
         * Added a feature to block specific devices based on Android ID in the blacklist.
 
 <a id="august-19-2026"></a>
