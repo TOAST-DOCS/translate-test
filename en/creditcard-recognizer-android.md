@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=df76243180ae -->
+<!-- pre-align:aligned sig=abf19794aceb -->
 
 <a id="nhn-cloud-sdk-user-guide-ocr-credit-card-android"></a>
 ## NHN Cloud > SDK User Guide > OCR > Credit Card (Android) { #nhn-cloud-sdk-user-guide-ocr-credit-card-android }
