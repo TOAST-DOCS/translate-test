@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=d1f02419975d -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=23aa2d8497f3 -->
 
 <a id="content-delivery-cdn-api-v15-guide"></a>
 ## Content Delivery > CDN > API v1.5ガイド { #content-delivery-cdn-api-v15-guide }
@@ -220,15 +222,14 @@ Appkeyの代わりに、プロジェクト統合Appkeyを使用することも�
 | distributions[0].region                | String  | サービス地域("GLOBAL"：グローバル)            |
 | distributions[0].description           | String  | 説明                                                    |
 | distributions[0].status                | String  | CDN状態コード([表] CDN状態コード参照)                                 |
-| distributions[0].createTime            | String  | 作成日時                                               |
-| distributions[0].useOrigin             | String  | 原本サーバー設定を使用するか("Y"：原本サーバー設定を使用、 "N"：ユーザー設定) |
+| distributions[0].useOrigin             | String  | オリジンサーバー設定の使用有無("Y"：オリジンサーバー設定を使用、"N"：ユーザー設定) |
 | distributions[0].maxAge                | String  | キャッシュ満了時間(秒)                                           |
-| distributions[0].referrerType          | String  | リファラーアクセス管理("BLACKLIST"：ブラックリスト、 "WHITELIST"：ホワイトリスト) |
+| distributions[0].referrerType          | String  | リファラーアクセス管理("BLACKLIST"：ブラックリスト、"WHITELIST"：ホワイトリスト) |
 | distributions[0].referrers             | String  | リファラーリスト                                             |
-| distributions[0].origins               | List    | 原本サーバーオブジェクトリスト                                 |
-| distributions[0].origins[0].origin     | String  | 原本サーバー(domainまたはIP)                                      |
-| distributions[0].origins[0].originPath | String  | 原本サーバーの下層パス                                     |
-| distributions[0].origins[0].port       | Integer | 原本サーバーポート                                          |
+| distributions[0].origins               | List    | オリジンサーバーオブジェクトリスト                                 |
+| distributions[0].origins[0].origin     | String  | オリジンサーバー(ドメインまたはIP)                                      |
+| distributions[0].origins[0].originPath | String  | オリジンサーバーの下位パス                                     |
+| distributions[0].origins[0].port       | Integer | オリジンサーバーポート                                          |
 | distributions[0].callback              | Object  | サービス作成処理結果の通知を受けるコールバック                   |
 | distributions[0].callback.httpMethod   | String  | コールバックのHTTP Method                                           |
 | distributions[0].callback.url          | String  | コールバックURL                                                     |
@@ -312,15 +313,14 @@ curl -X GET "https://kr1-cdn.api.nhncloudservice.com/v1.5/appKeys/{appKey}/distr
 | distributions[0].region                | String  | サービス地域("GLOBAL":グローバル)                              |
 | distributions[0].description           | String  | 説明                                                    |
 | distributions[0].status                | String  | CDN状態コード([表] CDN状態コード参考)                                 |
-| distributions[0].createTime            | String  | 作成日時                                               |
-| distributions[0].useOrigin             | String  | 原本サーバー設定を使用するか("Y"：原本サーバー設定を使用、 "N"：ユーザーを設定) |
+| distributions[0].useOrigin             | String  | オリジンサーバー設定の使用有無("Y"：オリジンサーバー設定を使用、"N"：ユーザー設定) |
 | distributions[0].maxAge                | String  | キャッシュ満了時間(秒)                                           |
-| distributions[0].referrerType          | String  | リファラーアクセス管理("BLACKLIST"：ブラックリスト、 "WHITELIST"：ホワイトリスト) |
+| distributions[0].referrerType          | String  | リファラーアクセス管理("BLACKLIST"：ブラックリスト、"WHITELIST"：ホワイトリスト) |
 | distributions[0].referrers             | String  | リファラーリスト                                             |
-| distributions[0].origins               | List    | 原本サーバーオブジェクトリスト                                 |
-| distributions[0].origins[0].origin     | String  | 原本サーバー(domainまたはIP)                                      |
-| distributions[0].origins[0].originPath | String  | 原本サーバーの下層パス                                     |
-| distributions[0].origins[0].port       | Integer | 原本サーバーポート                                          |
+| distributions[0].origins               | List    | オリジンサーバーオブジェクトリスト                                 |
+| distributions[0].origins[0].origin     | String  | オリジンサーバー(domainまたはIP)                                      |
+| distributions[0].origins[0].originPath | String  | オリジンサーバーの下位パス                                     |
+| distributions[0].origins[0].port       | Integer | オリジンサーバーポート                                          |
 | distributions[0].callback              | Object  | サービス配布処理結果の通知を受けるコールバック                   |
 | distributions[0].callback.httpMethod   | String  | コールバックのHTTP Method                                           |
 | distributions[0].callback.url          | String  | コールバックURL                                                     |

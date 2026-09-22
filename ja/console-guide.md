@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=9deb1697d05f -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=af4fe5ba4572 -->
 
 <a id="content-delivery-cdn-console-user-guide"></a>
 ## Content Delivery > CDN > コンソール使用ガイド { #content-delivery-cdn-console-user-guide }
@@ -259,7 +261,6 @@ URLベースで生成されるキャッシュキーにリクエストのクエ�
 > [参考] NHN Cloud Object Storageサービスで作成したコンテナをオリジンサーバーとして使用する場合
 > Large File Optimization機能が正常に動作するには、オリジンサーバーから渡される`ETag`レスポンスヘッダが二重引用符で囲まれた形式である必要があります。
 > NHN Cloud Object Storageコンテナでの`ETag`レスポンスヘッダ形式の設定に関する詳細は、Object StorageサービスのAPIガイド内の[コンテナ設定の変更 > RFCに準拠したETag形式の使用設定](/ja/Storage/Object%20Storage/ja/api-guide/#change-container-settings/)をご参照ください。
-
 
 <a id="access-management-for-referer-header"></a>
 ### リファラー(referer)ヘッダのアクセス管理 { #access-management-for-referer-header }
