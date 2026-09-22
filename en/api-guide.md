@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=403401ac9ba3 -->
+<!-- pre-align:aligned sig=47be59ae2082 -->
 
 <a id="foundry.api.guide"></a>
 ## Machine Learning > NHN Cloud Foundry > API Guide { #foundry.api.guide }
@@ -64,6 +64,8 @@ All API responses consist of a `header` and a `body`.
 | header.resultCode | Integer | Result code. 0 for success; error code for failure. |
 | header.resultMessage | String | Result message. SUCCESS for success; error details for failure. |
 | body | Object/Array | Response data for each API |
+
+Even if a request is rejected, the HTTP status code may be returned as `200`. Whether the request is successful is determined by `header.isSuccessful` and `header.resultCode`, not by the HTTP status code. If the authentication token is missing or has expired, HTTP `401` is returned.
 
 <a id="ingest.api"></a>
 ## Ingest API { #ingest.api }
@@ -591,11 +593,13 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | metrics[].labels[].value | String | O | Label value. Commas and equals signs cannot be used |
 | metrics[].metadata | Object | X | Additional information. Stored and delivered as-is without interpretation. The identityKey key is reserved for system use and cannot be used |
 
-Returns HTTP `202 Accepted` on success.
+If successful, returns HTTP `202 Accepted`. If the request is rejected, HTTP `200` is returned with `header.isSuccessful` set to `false`, so use `header` to determine whether the request succeeded.
 
 The collection rules are as follows:
 
+- If required fields are missing, label name or value rules are violated, more than 5,000 items are included in a single request, or required headers are missing, the entire request is rejected and no items are saved.
 - A single request can contain metrics from multiple time series. Because time series are distinguished by label combinations, you do not need to split requests by time series.
+- Send the same time series only once per minute. If you collect data at a shorter interval, aggregate it into a 1-minute average before sending. If multiple values arrive in the same minute, only the first value received is used for analysis, and the rest are discarded.
 - `timestamp` is a millisecond-unit epoch. If you send it in seconds, it will be stored with an incorrect timestamp.
 - If you have specified group labels for the data source, always include those labels when sending data. If a label is missing, the data will not belong to the intended group.
 - Items where `value` is NaN or Infinity are skipped and not stored. The remaining items in the same request are processed normally.
@@ -604,6 +608,59 @@ The collection rules are as follows:
 
 !!! tip "Tips"
     Loading is independent of the transmission interval. However, if this data source is connected to a univariate anomaly detection app, you must send data for the same time series continuously at intervals of one minute or less. Because the app evaluates metrics in one-minute buckets, sending data at longer intervals creates gaps and may prevent preparation from completing in precision mode.
+
+<a id="univariate.api"></a>
+## Univariate Anomaly Detection API { #univariate.api }
+
+<a id="univariate.group.api"></a>
+### Enable, Disable, and Delete a Group { #univariate.group.api }
+
+Enables, disables, or deletes a group in the univariate anomaly detection app. All three APIs share the same request format and differ only in the path.
+
+| Method | URI |
+| --- | --- |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/disable |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/delete |
+
+`servingPipelineId` is the app ID displayed in the app details in the console.
+
+curl example:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "groupKey": [
+      { "name": "region", "value": ["kr1", "jp1"] }
+    ]
+  }'
+```
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| groupKey | Array | Conditional | List of labels that identify the target group. Used only when group labels are specified in the data source. |
+| groupKey[].name | String | O | Name of the group label. Must exactly match the group label name specified in the data source. |
+| groupKey[].value | Array | O | List of values for the label. Each value corresponds to one group. |
+
+On success, `header.isSuccessful` is returned as `true` and `body` is empty.
+
+The following request rules apply:
+
+- If no group label is specified in the data source, do not send `groupKey`. Because the entire data source is treated as a single group, that group becomes the target. If you send `groupKey`, the request is rejected.
+- If a group label is specified in the data source, `groupKey` is required, and the set of label names that you send must exactly match the group labels in the data source. Sending the same label name twice results in rejection.
+- If there are multiple group labels, groups are formed by pairing the value lists in the same order. For example, if you send `["a", "b"]` for `rule_id` and `["q", "w"]` for `instance_id`, the two target groups are `(a, q)` and `(b, w)`. The number of values must be the same for all labels; otherwise, the request is rejected.
+- An empty value list results in rejection. If the same group is specified more than once, it is processed only once.
+- Disabling or deleting a group that is not registered returns an error.
+
+!!! tip "Note"
+    When metrics arrive, a group is automatically registered and begins operating. Use this API to enable, disable, or delete specific groups individually. This operation is not available in the console. You can check registered groups and their status on the **Group List** tab in the app details in the console.
+
+!!! danger "Warning"
+    Disabling a group does not stop detection result transmission. Only the status displayed in the group list changes to inactive.
+    A deleted group is removed along with its status history and cannot be recovered.
 
 <a id="recommendation.api"></a>
 ## Recommendation API { #recommendation.api }
