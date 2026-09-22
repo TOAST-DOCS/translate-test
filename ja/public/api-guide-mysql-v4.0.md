@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=1272d3144247 -->
 
 <a id="database-rds-for-enginepascalcase-api-guide"></a>
@@ -2419,7 +2421,7 @@ GET /v4.0/db-instances/{dbInstanceId}/high-availability
 | 名前 | 形式 | 説明 |
 |-----|-----|-----|
 | useHighAvailability | Boolean | 高可用性を使用するかどうか<br/>- デフォルト値: `false` |
-| haStatus | Enum | 高可用性の状態<br/>- `CREATED`: 作成済み<br/>- `STABLE`: 正常<br/>- `PAUSING`: 一時停止中<br/>- `DISABLE`: 停止<br/>- `DISABLE_MASTER_IN_REPLICATION`: Primaryの異常複製検知による高可用性の中断<br/>- `DISABLE_MHA_PROCESS`: 高可用性プロセスの中断<br/>- `DISABLE_REPLICATION_STOP`: 複製中断による高可用性の中断<br/>- `DISABLE_REPLICATION_DELAY`: 複製遅延による高可用性の中断<br/>- `FAILOVER_STARTED`: フェイルオーバー開始<br/>- `FAILOVER_FAILED`: フェイルオーバー失敗<br/>- `FAILOVER_COMPLETED`: フェイルオーバー完了<br/>- `DELETED`:削除済み<br/>- `PAUSED`: 一時停止<br/>- `PAUSED_DUE_TO_TASK`: 作業による一時停止<br/>- `PAUSED_DUE_TO_STOP`: DBインスタンス停止による一時停止<br/>- `MASTER_FAILURE_DETECTION`: Primary障害検知 |
+| haStatus | Enum | 高可用性の状態<br/>- `CREATED`: 作成済み<br/>- `STABLE`: 正常<br/>- `PAUSING`: 一時停止中<br/>- `DISABLE`: 停止<br/>- `DISABLE_MASTER_IN_REPLICATION`: Primaryの異常複製検知による高可用性の中断<br/>- `DISABLE_MHA_PROCESS`: 高可用性プロセスの中断<br/>- `DISABLE_REPLICATION_STOP`: 複製中断による高可用性の中断<br/>- `DISABLE_REPLICATION_DELAY`: 複製遅延による高可用性の中断<br/>- `FAILOVER_STARTED`: フェイルオーバー開始<br/>- `FAILOVER_FAILED`: フェイルオーバー失敗<br/>- `FAILOVER_COMPLETED`: フェイルオーバー完了<br/>- `FAILOVER_ABORTED`: フェイルオーバー取り消し<br/>- `DELETED`:削除済み<br/>- `PAUSED`: 一時停止<br/>- `PAUSED_DUE_TO_TASK`: 作業による一時停止<br/>- `PAUSED_DUE_TO_STOP`: DBインスタンス停止による一時停止<br/>- `MASTER_FAILURE_DETECTION`: Primary障害検知 |
 | pingInterval | Number | Ping間隔(秒) |
 | pingType | Enum | Ping方式<br/>- `CONNECTION`: CONNECTION方式<br/>- `INSERT`: INSERT方式<br/>- `SELECT`: SELECT方式 |
 
@@ -5410,6 +5412,7 @@ GET /v4.0/parameter-groups
             "parameterGroupName": "parameterGroupName-example",
             "description": "description-example",
             "dbVersion": "MYSQL_V8411",
+            "dbEngineVersionFamily": "MYSQL_V80_FAMILY",
             "parameterGroupType": "USER",
             "parameterGroupStatus": "STABLE",
             "createdYmdt": "2023-12-31T15:00:00+09:00",
@@ -5428,8 +5431,9 @@ GET /v4.0/parameter-groups
 | parameterGroups.parameterGroupId | UUID | パラメータグループの識別子 |
 | parameterGroups.parameterGroupName | String | パラメータグループを識別できる名前 |
 | parameterGroups.description | String | パラメータグループの追加情報 |
-| parameterGroups.dbVersion | Enum | DBエンジンバージョン |
-| parameterGroups.parameterGroupType | Enum | パラメータグループタイプ<br/>- `USER`<br/>- `ADMIN`<br/>- `DEFAULT` |
+| parameterGroups.dbVersion | Enum | DBエンジンバージョン（ファミリーパラメーターグループは null） |
+| parameterGroups.dbEngineVersionFamily | String | DBエンジンバージョンファミリーコード（ファミリーパラメーターグループのみ値を持つ） |
+| parameterGroups.parameterGroupType | Enum | パラメーターグループの種類<br/>- `USER`<br/>- `ADMIN`<br/>- `FAMILY`<br/>- `DEFAULT` |
 | parameterGroups.parameterGroupStatus | Enum | パラメータグループの現在状態<br/>- `STABLE`:適用完了<br/>- `NEED_TO_APPLY`:適用必要<br/>- `DELETED`:削除済み |
 | parameterGroups.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
 | parameterGroups.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
@@ -5463,7 +5467,8 @@ POST /v4.0/parameter-groups
 {
     "parameterGroupName": "parameterGroupName",
     "description": "description-example",
-    "dbVersion": "MYSQL_V8411"
+    "dbVersion": "MYSQL_V8411",
+    "dbEngineVersionFamily": "MYSQL_V80_FAMILY"
 }
 ```
 
@@ -5473,7 +5478,8 @@ POST /v4.0/parameter-groups
 |-----|-----|-----|-----|
 | parameterGroupName | String | Y | パラメータグループを識別できる名前<br/>- 最小長さ: `1`<br/>- 最大長さ: `100` |
 | description | String | N | パラメータグループの追加情報<br/>- 最大長さ: `100` |
-| dbVersion | Enum | Y | DBエンジンバージョン |
+| dbVersion | Enum | N | DBエンジンバージョン（USERタイプ作成時は必須、FAMILYタイプ作成時はnull） |
+| dbEngineVersionFamily | String | N | DBエンジンバージョンファミリーコード（FAMILYタイプ作成時は必須：指定するとファミリーパラメータグループが作成され、同じファミリーのすべてのマイナーバージョンのDBインスタンスに共有適用可能） |
 
 <a id="create-parameter-group-response"></a>
 #### レスポンス
@@ -5582,6 +5588,7 @@ GET /v4.0/parameter-groups/{parameterGroupId}
     "parameterGroupName": "parameterGroupName-example",
     "description": "description-example",
     "dbVersion": "MYSQL_V8411",
+    "dbEngineVersionFamily": "MYSQL_V80_FAMILY",
     "parameterGroupStatus": "STABLE",
     "parameters": [
         {
@@ -5593,7 +5600,11 @@ GET /v4.0/parameter-groups/{parameterGroupId}
             "defaultValue": "defaultValue-example",
             "allowedValue": "allowedValue-example",
             "updateType": "VARIABLE",
-            "applyType": "BOTH"
+            "applyType": "BOTH",
+            "templateRange": {
+                "coversAllVersions": false,
+                "label": "MySQL 8.0.18 ~ MySQL 8.0.27"
+            }
         }
     ],
     "createdYmdt": "2023-12-31T15:00:00+09:00",
@@ -5608,7 +5619,8 @@ GET /v4.0/parameter-groups/{parameterGroupId}
 | parameterGroupId | UUID | パラメータグループの識別子 |
 | parameterGroupName | String | パラメータグループを識別できる名前 |
 | description | String | パラメータグループの追加情報 |
-| dbVersion | Enum | DBエンジンバージョン |
+| dbVersion | Enum | DBエンジンバージョン（ファミリーパラメータグループはnull） |
+| dbEngineVersionFamily | String | DBエンジンバージョンファミリーコード（ファミリーパラメータグループのみ値を持つ） |
 | parameterGroupStatus | Enum | パラメータグループの現在状態<br/>- `STABLE`:適用完了<br/>- `NEED_TO_APPLY`:適用必要<br/>- `DELETED`:削除済み |
 | parameters | Array | パラメータリスト |
 | parameters.parameterId | UUID | パラメータの識別子 |
@@ -5620,6 +5632,9 @@ GET /v4.0/parameter-groups/{parameterGroupId}
 | parameters.allowedValue | String | 許可された値 |
 | parameters.updateType | Enum | 修正タイプ<br/>- `VARIABLE`<br/>- `CONSTANT`<br/>- `INIT_VARIABLE` |
 | parameters.applyType | Enum | 適用タイプ<br/>- `BOTH`<br/>- `SESSION`<br/>- `FILE` |
+| parameters.templateRange | Object | パラメータテンプレート区間（ファミリーパラメータグループのみ値を持つ） |
+| parameters.templateRange.coversAllVersions | Boolean | 区間がファミリーのすべてのDBエンジンバージョンを含むかどうか |
+| parameters.templateRange.label | String | 区間のDBエンジンバージョン範囲 |
 | createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
 | updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
 

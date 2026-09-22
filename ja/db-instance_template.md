@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=997cb14cf991 -->
+<!-- pre-align:aligned sig=3ef2788009e5 -->
 
 <a id="database-rds-for-enginepascalcase-db-instance"></a>
 ## Database > RDS for {{engine.pascalCase}} > DBインスタンス { #database-rds-for-enginepascalcase-db-instance }
@@ -45,7 +45,7 @@ MySQL 8.0.34未満のバージョンは、MySQL LTSサポートポリシーに�
 | バージョン                | 備考                                    |
 |----------------------|---------------------------------------|
 | <strong>8.4</strong> |                                       |
-| MySQL 8.4.11         |                                       |
+| MySQL 8.4.11         |                                |
 | MySQL 8.4.9          |                                       |
 | MySQL 8.4.8          |                                       |
 | MySQL 8.4.7          |                                       |
@@ -61,10 +61,10 @@ MySQL 8.0.34未満のバージョンは、MySQL LTSサポートポリシーに�
 | MySQL 8.0.40         |                                       |
 | MySQL 8.0.36         | 新規に作成したりRead Replicaを追加することはできません。         |
 | MySQL 8.0.35         | 新規に作成したりRead Replicaを追加することはできません。         |
-| MySQL 8.0.34         | 新規に作成したりRead Replicaを追加することはできません。         | 
-| MySQL 8.0.33         | 新規に作成したりRead Replicaを追加することはできません。         | 
-| MySQL 8.0.32         | 新規に作成したりRead Replicaを追加することはできません。         | 
-| MySQL 8.0.28         | 新規に作成したりRead Replicaを追加することはできません。         | 
+| MySQL 8.0.34         | 新規に作成したりRead Replicaを追加することはできません。         |
+| MySQL 8.0.33         | 新規に作成したりRead Replicaを追加することはできません。         |
+| MySQL 8.0.32         | 新規に作成したりRead Replicaを追加することはできません。         |
+| MySQL 8.0.28         | 新規に作成したりRead Replicaを追加することはできません。         |
 | MySQL 8.0.23         | 新規に作成したりRead Replicaを追加することはできません。         |
 | MySQL 8.0.18         | 新規に作成したりRead Replicaを追加することはできません。         |
 | <strong>5.7</strong> |                                       |
@@ -85,19 +85,19 @@ DBエンジンの詳細は[DBエンジン](db-engine/)で確認できます。
 
 | バージョン                  | 備考 |
 |------------------------|----|
-| <strong>12.3</strong>  |    |
-| MariaDB 12.3.3         |    |
+| <strong>12.3</strong>  |                               |
+| MariaDB 12.3.3         |                               |
 | <strong>11.8</strong>  |    |
-| MariaDB 11.8.9         |    |
+| MariaDB 11.8.9         |                               |
 | MariaDB 11.8.8         |    |
 | MariaDB 11.8.6         |    |
 | <strong>11.4</strong>  |    |
-| MariaDB 11.4.13        |    |
-| MariaDB 11.4.12        |    |
+| MariaDB 11.4.13        |                               |
+| MariaDB 11.4.12        |                               |
 | MariaDB 11.4.10        |    |
 | MariaDB 11.4.7         |    |
 | <strong>10.11</strong> |    |
-| MariaDB 10.11.19       |    |
+| MariaDB 10.11.19       |                               |
 | MariaDB 10.11.18       |    |
 | MariaDB 10.11.16       |    |
 | MariaDB 10.11.13       |    |
