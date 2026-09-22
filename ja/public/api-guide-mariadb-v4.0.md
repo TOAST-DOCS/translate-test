@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=1272d3144247 -->
 
 <a id="database-rds-for-enginepascalcase-api-guide"></a>
@@ -99,11 +101,15 @@ APIリクエスト時、認証に失敗したり権限がない場合、次の�
 | MARIADB_V101113 | Y | Y | ED25519, NATIVE |
 | MARIADB_V101116 | Y | Y | ED25519, NATIVE |
 | MARIADB_V101118 | Y | Y | ED25519, NATIVE |
+| MARIADB_V101119 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11407 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11410 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11412 | Y | Y | ED25519, NATIVE |
+| MARIADB_V11413 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11806 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11808 | Y | Y | ED25519, NATIVE |
+| MARIADB_V11809 | Y | Y | ED25519, NATIVE |
+| MARIADB_V12303 | Y | Y | ED25519, NATIVE |
 
 * EnumタイプのdbVersionフィールドに上記の値を使用できます。
 * バージョンによっては作成または復元ができない場合があります。
@@ -145,8 +151,8 @@ GET /v4.0/db-versions
     },
     "dbVersions": [
         {
-            "dbVersion": "MARIADB_V11808",
-            "dbVersionName": "Maria DB 11.8.8",
+            "dbVersion": "MARIADB_V12303",
+            "dbVersionName": "Maria DB 12.3.3",
             "restorableFromObs": true
         }
     ]
@@ -769,7 +775,7 @@ GET /v4.0/db-instances
             "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
             "dbInstanceName": "dbInstanceName-example",
             "description": "description-example",
-            "dbVersion": "MARIADB_V11808",
+            "dbVersion": "MARIADB_V12303",
             "dbPort": 13306,
             "dbInstanceType": "MASTER",
             "dbInstanceStatus": "AVAILABLE",
@@ -828,7 +834,7 @@ POST /v4.0/db-instances
     "dbInstanceName": "dbInstanceName",
     "description": "description-example",
     "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "dbPort": 13306,
     "dbUserName": "dbUserName",
     "dbPassword": "dbPassword",
@@ -980,7 +986,7 @@ POST /v4.0/db-instances/restore-from-obs
     "description": "description-example",
     "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
     "dbPort": 13306,
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "useHighAvailability": false,
     "pingInterval": 3,
     "storage": {
@@ -1220,7 +1226,7 @@ GET /v4.0/db-instances/{dbInstanceId}
     "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
     "dbInstanceName": "dbInstanceName-example",
     "description": "description-example",
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "dbPort": 13306,
     "dbInstanceType": "MASTER",
     "dbInstanceStatus": "AVAILABLE",
@@ -1310,7 +1316,7 @@ PUT /v4.0/db-instances/{dbInstanceId}
     "dbPort": 13306,
     "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
     "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "useSlowQueryAnalysis": false,
     "useDummy": false,
     "dbSecurityGroupIds": [],
@@ -2405,7 +2411,7 @@ GET /v4.0/db-instances/{dbInstanceId}/high-availability
 | 名前 | 形式 | 説明 |
 |-----|-----|-----|
 | useHighAvailability | Boolean | 高可用性を使用するかどうか<br/>- デフォルト値: `false` |
-| haStatus | Enum | 高可用性の状態<br/>- `CREATED`: 作成済み<br/>- `STABLE`: 正常<br/>- `PAUSING`: 一時停止中<br/>- `DISABLE`: 停止<br/>- `DISABLE_MASTER_IN_REPLICATION`: Primaryの異常複製検知による高可用性の中断<br/>- `DISABLE_MHA_PROCESS`: 高可用性プロセスの中断<br/>- `DISABLE_REPLICATION_STOP`: 複製中断による高可用性の中断<br/>- `DISABLE_REPLICATION_DELAY`: 複製遅延による高可用性の中断<br/>- `FAILOVER_STARTED`: フェイルオーバー開始<br/>- `FAILOVER_FAILED`: フェイルオーバー失敗<br/>- `FAILOVER_COMPLETED`: フェイルオーバー完了<br/>- `DELETED`:削除済み<br/>- `PAUSED`: 一時停止<br/>- `PAUSED_DUE_TO_TASK`: 作業による一時停止<br/>- `PAUSED_DUE_TO_STOP`: DBインスタンス停止による一時停止<br/>- `MASTER_FAILURE_DETECTION`: Primary障害検知 |
+| haStatus | Enum | 高可用性の状態<br/>- `CREATED`: 作成済み<br/>- `STABLE`: 正常<br/>- `PAUSING`: 一時停止中<br/>- `DISABLE`: 停止<br/>- `DISABLE_MASTER_IN_REPLICATION`: Primaryの異常複製検知による高可用性の中断<br/>- `DISABLE_MHA_PROCESS`: 高可用性プロセスの中断<br/>- `DISABLE_REPLICATION_STOP`: 複製中断による高可用性の中断<br/>- `DISABLE_REPLICATION_DELAY`: 複製遅延による高可用性の中断<br/>- `FAILOVER_STARTED`: フェイルオーバー開始<br/>- `FAILOVER_FAILED`: フェイルオーバー失敗<br/>- `FAILOVER_COMPLETED`: フェイルオーバー完了<br/>- `FAILOVER_ABORTED`: フェイルオーバーの取り消し<br/>- `DELETED`:削除済み<br/>- `PAUSED`: 一時停止<br/>- `PAUSED_DUE_TO_TASK`: 作業による一時停止<br/>- `PAUSED_DUE_TO_STOP`: DBインスタンス停止による一時停止<br/>- `MASTER_FAILURE_DETECTION`: Primary障害検知 |
 | pingInterval | Number | Ping間隔(秒) |
 | pingType | Enum | Ping方式<br/>- `CONNECTION`: CONNECTION方式<br/>- `INSERT`: INSERT方式<br/>- `SELECT`: SELECT方式 |
 
@@ -3673,7 +3679,7 @@ GET /v4.0/db-instances/{dbInstanceId}/restoration-info
                 "backupStatus": "BACKING_UP",
                 "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
                 "dbInstanceName": "dbInstanceName-example",
-                "dbVersion": "MARIADB_V11808",
+                "dbVersion": "MARIADB_V12303",
                 "backupType": "AUTO",
                 "backupSize": 1,
                 "useBackupLock": false,
@@ -4294,7 +4300,7 @@ GET /v4.0/backups
             "backupName": "backupName-example",
             "backupStatus": "BACKING_UP",
             "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
-            "dbVersion": "MARIADB_V11808",
+            "dbVersion": "MARIADB_V12303",
             "utilVersion": "utilVersion-example",
             "backupType": "AUTO",
             "backupSize": 1,
@@ -4510,7 +4516,7 @@ GET /v4.0/backups/{backupId}
         "backupStatus": "BACKING_UP",
         "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
         "dbInstanceName": "dbInstanceName-example",
-        "dbVersion": "MARIADB_V11808",
+        "dbVersion": "MARIADB_V12303",
         "utilVersion": "utilVersion-example",
         "backupType": "AUTO",
         "backupMethodType": "FULL",
@@ -5395,7 +5401,8 @@ GET /v4.0/parameter-groups
             "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
             "parameterGroupName": "parameterGroupName-example",
             "description": "description-example",
-            "dbVersion": "MARIADB_V11808",
+            "dbVersion": "MARIADB_V12303",
+            "dbEngineVersionFamily": "MYSQL_V80_FAMILY",
             "parameterGroupType": "USER",
             "parameterGroupStatus": "STABLE",
             "createdYmdt": "2023-12-31T15:00:00+09:00",
@@ -5414,8 +5421,9 @@ GET /v4.0/parameter-groups
 | parameterGroups.parameterGroupId | UUID | パラメータグループの識別子 |
 | parameterGroups.parameterGroupName | String | パラメータグループを識別できる名前 |
 | parameterGroups.description | String | パラメータグループの追加情報 |
-| parameterGroups.dbVersion | Enum | DBエンジンバージョン |
-| parameterGroups.parameterGroupType | Enum | パラメータグループタイプ<br/>- `USER`<br/>- `ADMIN`<br/>- `DEFAULT` |
+| parameterGroups.dbVersion | Enum | DBエンジンバージョン（ファミリーパラメータグループの場合は null） |
+| parameterGroups.dbEngineVersionFamily | String | DBエンジンバージョンファミリーコード（ファミリーパラメータグループのみ値を持つ） |
+| parameterGroups.parameterGroupType | Enum | パラメータグループタイプ<br/>- `USER`<br/>- `ADMIN`<br/>- `FAMILY`<br/>- `DEFAULT` |
 | parameterGroups.parameterGroupStatus | Enum | パラメータグループの現在状態<br/>- `STABLE`:適用完了<br/>- `NEED_TO_APPLY`:適用必要<br/>- `DELETED`:削除済み |
 | parameterGroups.createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
 | parameterGroups.updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
@@ -5449,7 +5457,8 @@ POST /v4.0/parameter-groups
 {
     "parameterGroupName": "parameterGroupName",
     "description": "description-example",
-    "dbVersion": "MARIADB_V11808"
+    "dbVersion": "MARIADB_V12303",
+    "dbEngineVersionFamily": "MYSQL_V80_FAMILY"
 }
 ```
 
@@ -5459,7 +5468,8 @@ POST /v4.0/parameter-groups
 |-----|-----|-----|-----|
 | parameterGroupName | String | Y | パラメータグループを識別できる名前<br/>- 最小長さ: `1`<br/>- 最大長さ: `100` |
 | description | String | N | パラメータグループの追加情報<br/>- 最大長さ: `100` |
-| dbVersion | Enum | Y | DBエンジンバージョン |
+| dbVersion | Enum | N | DBエンジンバージョン（USER タイプ作成時は必須、FAMILY タイプ作成時は null） |
+| dbEngineVersionFamily | String | N | DBエンジンバージョンファミリーコード（FAMILY タイプ作成時は必須。指定するとファミリーパラメータグループが作成され、同じファミリーのすべてのマイナーバージョン DBインスタンスに共有適用可能） |
 
 <a id="create-parameter-group-response"></a>
 #### レスポンス
@@ -5567,7 +5577,8 @@ GET /v4.0/parameter-groups/{parameterGroupId}
     "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
     "parameterGroupName": "parameterGroupName-example",
     "description": "description-example",
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
+    "dbEngineVersionFamily": "MYSQL_V80_FAMILY",
     "parameterGroupStatus": "STABLE",
     "parameters": [
         {
@@ -5579,7 +5590,11 @@ GET /v4.0/parameter-groups/{parameterGroupId}
             "defaultValue": "defaultValue-example",
             "allowedValue": "allowedValue-example",
             "updateType": "VARIABLE",
-            "applyType": "BOTH"
+            "applyType": "BOTH",
+            "templateRange": {
+                "coversAllVersions": false,
+                "label": "MySQL 8.0.18 ~ MySQL 8.0.27"
+            }
         }
     ],
     "createdYmdt": "2023-12-31T15:00:00+09:00",
@@ -5594,7 +5609,8 @@ GET /v4.0/parameter-groups/{parameterGroupId}
 | parameterGroupId | UUID | パラメータグループの識別子 |
 | parameterGroupName | String | パラメータグループを識別できる名前 |
 | description | String | パラメータグループの追加情報 |
-| dbVersion | Enum | DBエンジンバージョン |
+| dbVersion | Enum | DBエンジンバージョン（ファミリーパラメータグループの場合は null） |
+| dbEngineVersionFamily | String | DBエンジンバージョンファミリーコード（ファミリーパラメータグループのみ値を持つ） |
 | parameterGroupStatus | Enum | パラメータグループの現在状態<br/>- `STABLE`:適用完了<br/>- `NEED_TO_APPLY`:適用必要<br/>- `DELETED`:削除済み |
 | parameters | Array | パラメータリスト |
 | parameters.parameterId | UUID | パラメータの識別子 |
@@ -5606,6 +5622,9 @@ GET /v4.0/parameter-groups/{parameterGroupId}
 | parameters.allowedValue | String | 許可された値 |
 | parameters.updateType | Enum | 修正タイプ<br/>- `VARIABLE`<br/>- `CONSTANT`<br/>- `INIT_VARIABLE` |
 | parameters.applyType | Enum | 適用タイプ<br/>- `BOTH`<br/>- `SESSION`<br/>- `FILE` |
+| parameters.templateRange | Object | パラメータテンプレート区間（ファミリーパラメータグループのみ値を持つ） |
+| parameters.templateRange.coversAllVersions | Boolean | 区間がファミリーのすべてのDBエンジンバージョンを含むかどうか |
+| parameters.templateRange.label | String | 区間のDBエンジンバージョン範囲 |
 | createdYmdt | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
 | updatedYmdt | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
 
