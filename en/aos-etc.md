@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=7ac23bca4f79 -->
 
 <a id="game-gamebase-android-sdk-user-guide-etc"></a>
@@ -31,15 +33,23 @@ For example, if the language configured for the device is English and you change
 For this, Gamebase provides a Display Language feature for applications that want to use a language that is not the language configured by the device for Gamebase.
 
 Gamebase displays its messages in the language set in Display Language.
-The language code entered for Display Language should be one of the codes listed in the table (**Types of language codes supported by Gamebase) below:
+The language code entered for Display Language follows the BCP 47 language tag standard and is strictly case sensitive.
+
+* Default Language: Lowercase 2-letter language code per ISO 639-1 standard (e.g., ko, en, ja)
+
+* Languages that require regional distinction (such as Chinese): A combination of ISO 639-1 (lowercase)-ISO 3166-1 (uppercase) (e.g., zh-CN, zh-TW)
+
+Only the language codes specified in the table below (**Types of language codes supported by Gamebase**) can be used for the Display Language input.
 
 > <font color="red">[Caution]</font><br/>
 >
-> * Use Display Language only when you want to change the language displayed in Gamebase to a language other than the one configured by the device.
-> * Display Language Code is a case-sensitive value in the form of ISO-639.
-> There could be a problem if it is configured as a value such as 'EN' or 'zh-cn'.
-> * If the value entered for Display Language Code does not exist in the table below (**Types of Language Codes Supported by Gamebase**), Display Language Code is set to the default language set in the Gamebase console.
->     * If the language is not set in the Gamebase console, English (en) is set as the default language.
+> * Use Display Language only when you want to change the display language of Gamebase regardless of the device's language settings.
+> * Case sensitivity:
+>     * 2-letter language codes must be entered in lowercase. (e.g., ko(O) / KO, Ko(X))
+>     * For Chinese with a region code, you must follow the language(lowercase)-country(uppercase) format exactly. (e.g., zh-CN(O) / zh-cn, ZH-CN(X))
+>     * Setting values such as 'EN' or 'zh-cn' may cause issues.
+> * If the value entered as the Display Language Code does not exist in the table below (**Types of language codes supported by Gamebase**), the Display Language Code is set to the default language configured in the Gamebase console.
+>     * If no language setting has been configured in the Gamebase console, English (en) is set as the default language.
 
 > [Note]
 >
@@ -628,7 +638,7 @@ void processObserver(String category, GamebaseEventObserverData data) {
 <a id="gamebase-event-handler-purchase-updated"></a>
 #### Purchase Updated
 
-* This event is triggered when a user acquires an item via a promotion code or when a pending payment (e.g., slow-process payments, parental consent) is successfully completed.
+* This event is triggered when a user acquires an item via OOAP (Out-Of-App Purchases, such as promotion codes, Google Play Points, Rewards, etc.), when a pending payment (e.g., slow-process payments, parental consent) is successfully completed, or when a retry transaction (automatically triggered after login, upon returning to the app foreground, or immediately before a purchase) succeeds.
 * Can acquire payment receipt information.
 
 **Example**
@@ -642,8 +652,8 @@ void eventHandlerSample(Activity activity) {
                 case GamebaseEventCategory.PURCHASE_UPDATED:
                     PurchasableReceipt receipt = PurchasableReceipt.from(message.data);
                     if (receipt != null) {
-                        // If the user got item by 'Promotion Code' or
-                        // 'Lazy purchase', or 'Parents permission',...,
+                        // If the user got item by 'OOAP(Out-Of App Purchases)' or
+                        // 'Pending', or 'Retry transaction succeeded',...,
                         // this event will be occurred.
                     }
                     break;
