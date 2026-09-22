@@ -4,18 +4,23 @@
 
 <a id="nhn-cloud-sdk-user-guide-release-notes-android"></a>
 ## NHN Cloud > SDK User Guide > Release Notes > Android { #nhn-cloud-sdk-user-guide-release-notes-android }
-## 1.13.0 (September 15, 2026)
+<a id="130-september-15-2026"></a>
+## 1.13.0 (September 15, 2026) { #130-september-15-2026 }
 
-### NHN Cloud Logger
+<a id="130-september-15-2026-nhn-cloud-logger"></a>
+### NHN Cloud Logger { #130-september-15-2026-nhn-cloud-logger }
 
+<a id="130-september-15-2026-nhn-cloud-logger-feature-updates"></a>
 #### Feature Updates
 
 * Changed Log & Crash Search API Domain
     * The log collection API domain has changed from api-logncrash.cloud.toast.com to api-logncrash.nhncloudservice.com.
     * The settings API domain has changed from setting-logncrash.cloud.toast.com to api-setting-logncrash.nhncloudservice.com.
 
-### NHN Cloud Push
+<a id="130-september-15-2026-nhn-cloud-push"></a>
+### NHN Cloud Push { #130-september-15-2026-nhn-cloud-push }
 
+<a id="130-september-15-2026-nhn-cloud-push-feature-updates"></a>
 #### Feature Updates
 
 * Changed Push API domain
@@ -23,6 +28,7 @@
 * Improved Notification Hub metric transmission
     * Improved so that the same metrics are not counted as duplicates even when metric transmission is retried.
 
+<a id="130-september-15-2026-nhn-cloud-push-bug-fixes"></a>
 #### Bug Fixes
 
 * Fixed an issue where notification click actions were executed repeatedly
@@ -30,15 +36,19 @@
 * Fixed a Notification Hub token registration failure issue
     * Fixed an issue where token registration always failed after changing the user ID.
 
-### NHN Cloud OCR
+<a id="130-september-15-2026-nhn-cloud-ocr"></a>
+### NHN Cloud OCR { #130-september-15-2026-nhn-cloud-ocr }
 
+<a id="130-september-15-2026-nhn-cloud-ocr-feature-updates"></a>
 #### Feature Updates
 
 * Changed OCR API Domain
     * The OCR API domain has been changed from ocr.api.nhncloudservice.com to api-ocr.nhncloudservice.com.
 
-### TOAST Gradle Plugin (0.1.0)
+<a id="toast-gradle-plugin-010"></a>
+### TOAST Gradle Plugin (0.1.0) { #toast-gradle-plugin-010 }
 
+<a id="toast-gradle-plugin-010-added-features"></a>
 #### Added Features
 
 * Added support for uploading mapping files (mapping.txt) and native symbols using the Log & Crash Search Symbol API v3
