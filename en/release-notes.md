@@ -1,14 +1,27 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=128be9dd92f4 -->
 
 <a id="data-analytics-dataflow-release-notes"></a>
 ## Data & Analytics > DataFlow > Release Notes { #data-analytics-dataflow-release-notes }
 
-<a id="may-27-2026"></a>
-## May 27, 2026 { #may-27-2026 }
+<a id="october-27-2026"></a>
+## October 27, 2026 { #october-27-2026 }
 
 <a id="feature-updates"></a>
 ### Feature Updates { #feature-updates }
+
 * Added new nodes
+    * Filter
+        * Aggregate
+
+<a id="may-27-2026"></a>
+## May 27, 2026 { #may-27-2026 }
+
+<a id="may-27-2026-feature-updates"></a>
+### Feature Updates { #may-27-2026-feature-updates }
+
+* Added a new node
     * Source
         * (NHN Cloud) EasyQueue
         * (NHN Cloud) Data Lake Storage
@@ -18,12 +31,15 @@
 
 <a id="april-28-2026"></a>
 ## April 28, 2026 { #april-28-2026 }
+
 <a id="added-features"></a>
 ### Added Features { #added-features }
+
 * Added a feature to define and use the schema of Source nodes in flow information.
 
 <a id="april-28-2026-feature-updates"></a>
 ### Feature Updates { #april-28-2026-feature-updates }
+
 * Added new nodes
     * Filter
         * Tokenizer
@@ -37,8 +53,10 @@
 
 <a id="march-24-2026"></a>
 ## March 24, 2026 { #march-24-2026 }
+
 <a id="march-24-2026-feature-updates"></a>
 ### Feature Updates { #march-24-2026-feature-updates }
+
 * End of support for V1 engine type
     * Support for the V1 engine type has ended, and existing V1 engine type flows can no longer be executed.
     * All flows are created with the V2 engine type.
@@ -56,12 +74,15 @@
 
 <a id="bug-fixes"></a>
 ### Bug Fixes { #bug-fixes }
+
 * Fixed an issue where the collapse button in the left tree structure of the monitoring screen did not work.
 
 <a id="february-10-2026"></a>
 ## February 10, 2026 { #february-10-2026 }
+
 <a id="february-10-2026-feature-updates"></a>
 ### Feature Updates { #february-10-2026-feature-updates }
+
 * End of support for Cipher node in V1 engine
     * Support for the Cipher node feature in the V1 engine type will be discontinued as of February 10, 2026.
     * If a Cipher node is included in an existing V1 engine type flow, the flow cannot be executed.
@@ -72,6 +93,7 @@
 
 <a id="december-23-2025-added-features"></a>
 ### Added Features { #december-23-2025-added-features }
+
 * Added engine type
     * V1: it is a legacy engine and is fully compatible with all standard nodes and existing templates.
     * V2: it provides faster performance than V1 with the latest architecture-based engine.
@@ -81,6 +103,7 @@
 
 <a id="october-28-2025-bug-fixes"></a>
 ### Bug Fixes { #october-28-2025-bug-fixes }
+
 * Fixed an issue where CPU, Memory, and Network metrics in the Monitoring tab were only displayed for the most recently executed flow.
 * Fixed an issue where saving a flow or template configured using a template containing sensitive information would fail.
 
@@ -89,6 +112,7 @@
 
 <a id="september-23-2025-feature-updates"></a>
 ### Feature Updates { #september-23-2025-feature-updates }
+
 * Made modification so that sensitive information is marked with asterisks when setting up nodes.
     * (NHN Cloud) Object Storage > Secret Key
     * (NHN Cloud) CloudTrail > Appkey
@@ -99,6 +123,7 @@
 
 <a id="september-23-2025-bug-fixes"></a>
 ### Bug Fixes { #september-23-2025-bug-fixes }
+
 * Fixed an issue where charts would not be displayed when selecting a flow that had never been run in the Monitoring tab.
 
 <a id="august-26-2025"></a>
@@ -106,6 +131,7 @@
 
 <a id="august-26-2025-feature-updates"></a>
 ### Feature Updates { #august-26-2025-feature-updates }
+
 * Added a new **Schedule List** tab on the Details screen where you can check the reservation schedule.
 * Moved the **Go to Cloud Scheduler Console** button for scheduling flows from the Basic Info tab to the **Schedule List** tab.
 
@@ -114,11 +140,13 @@
 
 <a id="july-29-2025-feature-updates"></a>
 ### Feature Updates { #july-29-2025-feature-updates }
+
 * Updated the execution mode to be configured at the flow.
 * Renamed CloudTrail event names to match the terminology used in the DataFlow console.
 
 <a id="july-29-2025-bug-fixes"></a>
 ### Bug Fixes { #july-29-2025-bug-fixes }
+
 * Fixed an issue where the flow did not terminate properly after draining.
 * Fixed an issue where log retrieval requests were still made when the View Recent Logs window was open and the flow had ended.
 
@@ -127,6 +155,7 @@
 
 <a id="june-24-2025-feature-updates"></a>
 ### Feature Updates { #june-24-2025-feature-updates }
+
 * Replaced the scheduling functionality to integrate with the Cloud Scheduler service.
 * Added an execution mode setting to the source node.
     * STREAMING: Processes data in real time without exiting the flow.
@@ -137,6 +166,7 @@
 
 <a id="may-27-2025-feature-updates"></a>
 ### Feature Updates { #may-27-2025-feature-updates }
+
 * Added new nodes
     * Filter
         * Mutate: A node that can rename fields or transform field values.
@@ -145,6 +175,7 @@
 
 <a id="may-27-2025-bug-fixes"></a>
 ### Bug Fixes { #may-27-2025-bug-fixes }
+
 * Fixed an issue where View Logs feature did not function properly when logs accumulated too quickly.
 
 <a id="march-4-2025"></a>
@@ -152,6 +183,7 @@
 
 <a id="march-4-2025-bug-fixes"></a>
 ### Bug Fixes { #march-4-2025-bug-fixes }
+
 * Fixed an issue where flow event in/out graphs are not displayed correctly.
 
 <a id="december-24-2024"></a>
@@ -159,6 +191,7 @@
 
 <a id="december-24-2024-feature-updates"></a>
 ### Feature Updates { #december-24-2024-feature-updates }
+
 * Integrated (Amazon) S3 Sink node and (Amazon) S3 - Parquet Sink node.
 * Integrated (NHN Cloud) Object Storage Sink node and (NHN Cloud) Object Storage - Parquet Sink node.
 
@@ -167,6 +200,7 @@
 
 <a id="september-25-2024-feature-updates"></a>
 ### Feature Updates { #september-25-2024-feature-updates }
+
 * Stabilized the flow startup process.
   
 <a id="august-27-2024"></a>
@@ -174,6 +208,7 @@
 
 <a id="august-27-2024-feature-updates"></a>
 ### Feature Updates { #august-27-2024-feature-updates }
+
 * Improved how the Last Executed Time is calculated. 
 * Made modifications so that, when displaying the node settings, required items are displayed first.
 
@@ -182,6 +217,7 @@
 
 <a id="july-23-2024-feature-updates"></a>
 ### Feature Updates { #july-23-2024-feature-updates }
+
 * Improved to use the enter key to input data when entering data in the `array of strings` type in the node settings screen.
 * Separated the **Match** setting for the Date node into a **Source Field** setting and a **Formats** setting.
 * Made notifications so that, when starting or ending a flow that has already started or ended, `FLOW_ALREADY_STARTED`/`FLOW_ALREADY_STOPPED` instead of `ERROR` appears.
@@ -192,12 +228,14 @@
 
 <a id="july-1-2024-feature-updates"></a>
 ### Feature Updates { #july-1-2024-feature-updates }
+
 * Added the feature to set the instance type when running flows 
 * (Amazon) Changed the endpoint, region settings for the (Amazon) S3 Source, Sink, and (Amazon) S3 - Parquet Sink nodes from required to optional 
     * The nodes will work correctly if only one of the endpoint, region settings is entered.
 
 <a id="july-1-2024-bug-fixes"></a>
 ### Bug Fixes { #july-1-2024-bug-fixes }
+
 * Fixed an issue where no CloudTrail logs were left when exiting after flow draining, Log & Crash Search logs save settings, enabling and disabling validation.
 * Fixed an issue where the scheduling feature was not working intermittently. 
 * Fixed an issue where the Cipher node was not working intermittently. 
@@ -211,6 +249,7 @@
 
 <a id="may-28-2024-feature-updates"></a>
 ### Feature Updates { #may-28-2024-feature-updates }
+
 * Deleted some settings.
     * Common > Enable Metrics
     * Filter Node Common > Periodic Flush
@@ -222,6 +261,7 @@
 
 <a id="may-28-2024-bug-fixes"></a>
 ### Bug Fixes { #may-28-2024-bug-fixes }
+
 * Fixed the revision history of unsubscribed users to appear as "UNKNOWN USER" instead of blank.
 * Fixed validation of Object Storage, S3 nodes to expose "S3_NO_SUCH_BUCKET" instead of "ERROR" if an invalid bucket name is entered.
 * Fixed an issue where node names were different on the flow setup screen and the monitoring screen.
@@ -232,10 +272,12 @@
 
 <a id="april-23-2024-added-features"></a>
 ### Added Features { #april-23-2024-added-features }
+
 * Added the flow status change notifications feature.
 
 <a id="april-23-2024-bug-fixes"></a>
 ### Bug Fixes { #april-23-2024-bug-fixes }
+
 * Fixed an issue where, when querying flow monitoring with many nodes, the query fails.
 
 <a id="march-26-2024"></a>
@@ -243,6 +285,7 @@
 
 <a id="march-26-2024-added-features"></a>
 ### Added Features { #march-26-2024-added-features }
+
 * Added the feature to end after flow draining
     * Added the feature to end a flow after draining that processes all remaining events in the flow.
     * A flow that is draining can be ended directly via End Flow.
@@ -253,12 +296,14 @@
 
 <a id="february-27-2024-feature-updates"></a>
 ### Feature Updates { #february-27-2024-feature-updates }
+
 * Changed the words "file" and "object" in the descriptions of S3 and Object Storage nodes to "object".
 * Fixed loading UI to appear on flow save, start, stop, and validation requests.
 * Made the order of node setup more natural.
 
 <a id="february-27-2024-bug-fixes"></a>
 ### Bug Fixes { #february-27-2024-bug-fixes }
+
 * Fixed an issue where saving flows with S3, Object Storage Sink nodes would intermittently leave temporary objects for testing during validation.
 * Fixed an issue where deleting a flow would not delete the scheduling stored in that flow.
 * Fixed an issue where, when creating a flow immediately after activating a project, the flow would fail to run.
@@ -270,6 +315,7 @@
 
 <a id="january-23-2024-feature-updates"></a>
 ### Feature Updates { #january-23-2024-feature-updates }
+
 * Fixed a bug where validation would not turn on unless creating the first flow.
 
 <a id="december-19-2023"></a>
@@ -277,6 +323,7 @@
 
 <a id="december-19-2023-added-features"></a>
 ### Added Features { #december-19-2023-added-features }
+
 * Added a new node
     * Source
         * Added the feature to run queries against the DB to get data.
@@ -286,6 +333,7 @@
 
 <a id="december-19-2023-bug-fixes"></a>
 ### Bug Fixes { #december-19-2023-bug-fixes }
+
 * Fixed a bug where validation would not turn on properly after creating a flow.
 
 <a id="november-28-2023"></a>
@@ -293,6 +341,7 @@
 
 <a id="november-28-2023-feature-updates"></a>
 ### Feature Updates { #november-28-2023-feature-updates }
+
 * Added error codes when saving or validating flows.
 * Changed to allow you to choose whether or not to use the validation feature.
 
@@ -301,6 +350,7 @@
 
 <a id="october-31-2023-feature-updates"></a>
 ### Feature Updates { #october-31-2023-feature-updates }
+
 * Improved the error messages that occur while initializing the DataFlow service environment to be more user-friendly.
 
 <a id="october-17-2023"></a>
@@ -308,6 +358,7 @@
 
 <a id="october-17-2023-feature-updates"></a>
 ### Feature Updates { #october-17-2023-feature-updates }
+
 * Added the SecretKey property to Log & Crash Search Source nodes.
 
 <a id="september-26-2023"></a>
@@ -315,11 +366,13 @@
 
 <a id="september-26-2023-feature-updates"></a>
 ### Feature Updates { #september-26-2023-feature-updates }
+
 * Modified to support At Least Once when processing data.
 * Added new options for time format in Prefix Settings for S3 and Object Storage Sink nodes.
 
 <a id="september-26-2023-bug-fixes"></a>
 ### Bug Fixes { #september-26-2023-bug-fixes }
+
 * Fixed a bug where the flow would not terminate if an error occurred during the shutdown of the Log & Crash Search node.
 * Fixed a bug where, when copying and running a flow containing a Cipher Filter node, the flow would not work correctly.
 * Fixed a bug where, when an error occurred while terminating a flow, a request to terminate again would fail.
@@ -337,11 +390,13 @@
 
 <a id="june-27-2023-added-features"></a>
 ### Added Features { #june-27-2023-added-features }
+
 * Added a feature to enable Log & Crash Search
     * Added a feature to save flow logs in Log & Crash Search.
 
 <a id="june-27-2023-bug-fixes"></a>
 ### Bug Fixes { #june-27-2023-bug-fixes }
+
 * Modified the activation timing of the View Log button
     * Modified the activation timing of the View Log button to the PREPARING stage.
 
