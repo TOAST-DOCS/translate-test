@@ -6,7 +6,7 @@
 ## Machine Learning > NHN Cloud Foundry > Overview { #foundry-overview }
 
 NHN Cloud Foundry is a service that integrates customer data and uses machine learning models (such as recommendation, time-series forecasting/anomaly detection, and structured data classification/numerical prediction) to support effective decision-making.
-You can load data, process it through a visual workflow, and then analyze it using queries, charts, and dashboards, or create an app connected to a recommendation model to use recommendation results in your service.
+You can load data, process it through a visual workflow, and then analyze it using queries, charts, and dashboards. By creating an app connected to a model, you can use recommendation results or anomaly detection results for metrics in your service.
 
 <a id="main-feature"></a>
 ## Main features { #main-feature }
@@ -75,7 +75,7 @@ The anomaly scores and threshold values from the detection results are sent to t
 ## API { #public-api }
 
 NHN Cloud Foundry provides APIs in addition to the console.
-You can use the Ingest API to load snapshots, events, and metrics into a data source that you have already created, as well as APIs to request recommendation results from a created app and to send user reaction events.
+You can use the Ingest API to load snapshots, events, and metrics into a data source that you have already created, as well as APIs to request recommendation results from a created app and to send user reaction events, and APIs to start, stop, and delete groups of a univariate time-series anomaly detection app.
 
 For more information, see the [API Guide](./api-guide/).
 
