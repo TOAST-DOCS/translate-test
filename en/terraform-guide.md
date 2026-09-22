@@ -126,7 +126,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | mount_protocol.cifs_auth_ids | List(String) | N | O | List of CIFS authentication IDs<br>No input required when selecting the NFS protocol |
 | mount_protocol.protocol | String | Y | - | Protocol specification when mounting a volume<br>You can select either `nfs` or `cifs`. |
 | snapshot_policy | Object | N | - | Volume snapshot setting object |
-| snapshot_policy.max_scheduled_count | Integer | N | O | Maximum number of snapshots to store<br>You can set up to 30. When the maximum number of snapshots is reached, the oldest snapshot among the automatically created snapshots will be deleted. |
+| snapshot_policy.max_scheduled_count | Integer | N | O | Maximum number of snapshots to store<br>You can set up to 20. When the maximum number of snapshots is reached, the oldest snapshot among the automatically created snapshots will be deleted. |
 | snapshot_policy.reserve_percent | Integer | N | O | Snapshot capacity ratio |
 | snapshot_policy.schedule | Object | N | - | Snapshot auto-generation object<br>If `null`, automatic snapshot generation is not set. |
 | snapshot_policy.schedule.time | String | N | O | Automatic snapshot generation time |
@@ -157,8 +157,9 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 <a id="terraform-resources-set-replication"></a>
 ### Set up Replication { #terraform-resources-set-replication }
 
-Creating a replication configuration resource automatically generates a destination volume.
-While you can update the destination volume by modifying the `dst_volume` parameters within the replication resource, the destination volume is not automatically deleted even if the replication configuration resource is removed.
+When you create a Replication Settings resource, the target volume is automatically created.
+
+You can update the target volume by changing the `dst_volume` value in the replication settings resource, but deleting the replication settings resource does not automatically delete the target volume.
 
 !!! danger "Caution"
     Modifying certain values in the replication configuration resource may cause the existing resource to be destroyed and recreated; however, the original destination volume will persist.
@@ -206,7 +207,7 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.name | String | Y | - | Volume name |
 | dst_volume.size_gb | Integer | Y | O | Volume Size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
 | dst_volume.snapshot_policy | Object | N | - | Volume Snapshot Setting Object |
-| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | Maximum Number of Snapshots to Store<br>You can set up to 30. When the maximum number of snapshots is reached, the oldest automatically created snapshot will be deleted. |
+| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | Maximum Number of Snapshots to Store<br>You can set up to 20, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
 | dst_volume.snapshot_policy.reserve_percent | Integer | N | O | Snapshot Capacity Ratio |
 | dst_volume.snapshot_policy.schedule | Object | N | O | Automatic Snapshot Creation Object<br>If `null`, automatic snapshot creation is not set. |
 | dst_volume.snapshot_policy.schedule.time | String | N | O | Automatic snapshot creation time |

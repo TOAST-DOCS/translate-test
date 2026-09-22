@@ -119,11 +119,9 @@ $[ ' ' * indent ]$  "10.0.1.0/24"
 $[ ' ' * indent ]$],
 $[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
 $[ ' ' * indent ]$"description": "NAS for Testing",
-{%- if encryption %}
 $[ ' ' * indent ]$"encryption": {
-$[ ' ' * indent ]$  "enabled": false
+$[ ' ' * indent ]$  "enabled": $[ 'true' if encryption else 'false' ]$
 $[ ' ' * indent ]$},
-{%- endif %}
 $[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
 $[ ' ' * indent ]$"interfaces": [
 $[ ' ' * indent ]$  {
@@ -760,11 +758,15 @@ X-Auth-Token: {token-id}
 | header | Body | Object | ヘッダオブジェクト |
 | usage | Body | Object | ボリューム使用状況オブジェクト |
 | usage.snapshotReserveGb | Body | Integer | ボリュームでスナップショットのために予約したスペースサイズ |
+{%- if release_2026_05 %}
 | usage.snapshotUsedGb | Body | Integer | スナップショット使用量 |
 | usage.snapshotUsedGbInReservedSpace | Body | Integer | スナップショット予約容量内の使用量 |
-| usage.snapshotUsedGbInUserSpace | Body | Integer | 予約容量を超過したスナップショット使用量 |
+| usage.snapshotUsedGbInUserSpace | Body | Integer | 予約容量超過スナップショット使用量 |
+{%- endif %}
 | usage.usedGb | Body | Integer | ボリューム使用量 |
-| usage.userDataGb | Body | Integer | ユーザーが実際に記録したデータサイズ |
+{%- if release_2026_05 %}
+| usage.userDataGb | Body | Integer | ユーザーが実際に書き込んだデータサイズ |
+{%- endif %}
 
 <details>
   <summary>レスポンス例</summary>
@@ -777,12 +779,17 @@ X-Auth-Token: {token-id}
     "resultMessage": "Success"
   },
   "usage": {
+{%- if release_2026_05 %}
     "snapshotReserveGb": 20,
     "snapshotUsedGb": 11,
     "snapshotUsedGbInReservedSpace": 11,
     "snapshotUsedGbInUserSpace": 0,
     "usedGb": 152,
     "userDataGb": 152
+{%- else %}
+    "snapshotReserveGb": 30,
+    "usedGb": 2
+{%- endif %}
   }
 }
 ```
