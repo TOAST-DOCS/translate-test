@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=6567c272c6dd -->
 
 <a id="database-rds-for-enginepascalcase-db-instance"></a>
@@ -312,19 +314,19 @@ Search conditions that can be changed are as follows.
 ❶ You can search for DB instances with filtering conditions that require parameter changes to be applied.
 
 <a id="db-instance-group-details"></a>
-## DB 인스턴스 그룹 상세 { #db-instance-group-details }
+## DB Instance Group Details { #db-instance-group-details }
 
-DB 인스턴스 목록을 **그룹** 화면으로 본 뒤 DB 인스턴스 그룹을 선택하면 그룹 상세 정보를 확인할 수 있습니다. 그룹 상세 화면에는 다음 탭이 표시됩니다.
+To view the details of a DB instance group, view the DB instance list in the **Group** screen and select a DB instance group. The group details screen displays the following tabs.
 
-| 탭             | 설명                                                                                                |
-|---------------|---------------------------------------------------------------------------------------------------|
-| 기본 정보         | DB 인스턴스 그룹 이름과 ID, 고가용성 구성, Primary 및 Standby 이름, Ping 설정을 확인합니다.                                  |
-| DB 스키마 & 사용자 | 그룹에 속한 DB 인스턴스의 DB 스키마와 사용자를 관리합니다. DB 스키마와 사용자 기능은 개별 DB 인스턴스 상세가 아닌 DB 인스턴스 그룹 상세에서 제공합니다. |
+| Tab | Description |
+|---|---|
+| Basic Information | View the DB instance group name and ID, high availability configuration, Primary and Standby names, and Ping settings. |
+| DB Schema & Users | Manage the DB schemas and users of the DB instances in the group. The DB schema and user features are provided in the DB instance group details, not in the individual DB instance details. |
 
 <a id="db-schema-and-users"></a>
 ### DB Schema and Users { #db-schema-and-users }
 
-DB 인스턴스 그룹 상세의 **DB 스키마 & 사용자** 탭에서는 그룹에 속한 데이터베이스의 스키마와 사용자를 조회 및 제어할 수 있습니다.
+In the **DB Schema & User** tab of the DB Instance Group details, you can view and manage the schemas and users of databases that belong to the group.
 
 <a id="db-schema-and-users-db-schema-created"></a>
 #### DB schema created
@@ -453,27 +455,27 @@ If you set TLS option for your account to X509, you need a certificate to access
 ❷ Click on **Delete** and **Confirm Delete** pop-up window will appear. You can request deletion by clicking on **Confirm**.
 
 <a id="modify-db-instance-group"></a>
-## DB 인스턴스 그룹 수정 { #modify-db-instance-group }
+## Modify DB Instance Group { #modify-db-instance-group }
 
-그룹 상세 화면의 **기본 정보** 탭에서 **수정**을 클릭하면 그룹 단위로 설정을 변경할 수 있습니다. 변경 요청은 비동기로 처리되며, 완료될 때까지 해당 그룹의 상태와 진행 중인 작업을 확인합니다.
+On the **Basic Information** tab of the group details screen, click **Modify** to change settings at the group level. Change requests are processed asynchronously. You can check the status of the group and any ongoing tasks until the process is complete.
 
-수정 화면에서 다음 항목을 변경할 수 있습니다.
+You can change the following items on the modification screen.
 
-| 항목                 | 설명                                                                     |
+| Item | Description |
 |--------------------|------------------------------------------------------------------------|
-| DB 인스턴스 그룹 이름      | 1~100자의 영문자, 숫자, `-`, `_`, `.`를 사용할 수 있으며 첫 글자는 영문자여야 합니다.             |
-| Primary 이름         | 그룹 이름과는 별도로 관리됩니다.                                                     |
-| 고가용성 여부            | 단일 구성은 고가용성 구성으로 전환할 수 있고, 고가용성 구성은 단일 구성으로 전환할 수 있습니다.                |
-| Standby 이름         | 고가용성을 새로 설정할 때 입력합니다. Primary 이름과 같을 수 없으며, 이름 규칙은 Primary와 같습니다.      |
-| Ping 간격            | 고가용성 구성에서 1~600초 범위로 설정합니다.                                            |
-| Ping 방식            | 고가용성 구성에서 `INSERT` 또는 `SELECT` 중 선택합니다.                                 |
-| DB 스키마 & 사용자 직접 제어 | 그룹에 속한 DB 인스턴스의 스키마와 사용자 직접 제어 사용 여부를 변경합니다.                           |
+| DB instance group name | Can contain between 1 and 100 uppercase and lowercase English letters, numbers, `-`, `_`, and `.`. The first character must be an English letter. |
+| Primary name | Managed separately from the group name. |
+| High availability | A single configuration can be switched to a high-availability configuration, and a high-availability configuration can be switched to a single configuration. |
+| Standby name | Enter this when setting up high availability for the first time. It cannot be the same as the Primary name, and the naming rules are the same as for the Primary name. |
+| Ping interval | Set to a value between 1 and 600 seconds in a high-availability configuration. |
+| Ping method | Select either `INSERT` or `SELECT` in a high-availability configuration. |
+| DB schema & user direct control | Change whether to enable direct control of schemas and users for the DB instances that belong to the group. |
 
 !!! danger "Caution"
-    * 고가용성을 해제하면 Standby가 삭제되고 단일 구성으로 전환됩니다. Standby에만 존재하는 데이터나 설정이 없는지 확인한 뒤 진행하세요.
-    * 장애 조치가 진행 중인 DB 인스턴스 그룹에서는 고가용성 여부를 변경할 수 없습니다.
-    * 사설망에서는 Primary 이름을 변경할 수 없습니다. 또한 기존 고가용성 구성의 Standby 이름은 변경할 수 없으며, 고가용성을 새로 설정할 때만 Standby 이름을 입력할 수 있습니다.
-    * 고가용성 구성에서 Primary와 Standby의 이름은 서로 달라야 합니다.
+    * If you disable high availability, the Standby is deleted and the configuration is switched to a single configuration. Make sure that there is no data or configuration that exists only on the Standby before proceeding.
+    * You cannot change the high availability setting for a DB instance group that has a failover in progress.
+    * You cannot change the Primary name in a private network. Additionally, the Standby name of an existing high-availability configuration cannot be changed — you can only enter the Standby name when setting up high availability for the first time.
+    * In a high-availability configuration, the Primary name and the Standby name must be different from each other.
 
 <a id="db-schema-direct-user-control"></a>
 ### DB Schema & Direct User Control { #db-schema-direct-user-control }
@@ -628,9 +630,10 @@ You can easily change various items in DB instances created through console. Cha
 
 | Item           | Whether or not you can change  | Whether or not you need to restart                |
 |--------------|----------|-------------------------|
-| Availability Zone       | No      |                         |
-| DB Engine        | Yes        | Yes                       |
-| DB Instance Type   | Yes        | Yes                       |
+| Availability zone | No |  |
+| DB Engine | Yes | Yes |
+| DB Instance Type | Yes | Yes |
+| Block Storage Type | No |  |
 | Data Storage Type  | No      |                         |
 | Name           | Yes        | No                     |
 | Description           | Yes        | No                     |
@@ -640,7 +643,6 @@ You can easily change various items in DB instances created through console. Cha
 | Parameter group      | Yes        | Determined by whether or not to restart changed parameters |
 | DB Security Group     | Yes        | No                     |
 | Backup Settings        | Yes        | No                     |
-| Storage Auto Scale | Yes        | No                     | 
 
 For high-availability DB instances, if there are any changes to items that need to be restarted, it provides a restart capability using failover to increase stability and reduce disconnected time.
 
