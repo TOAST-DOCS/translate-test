@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ffcf287dccd2 -->
 
 <a id="database-rds-for-enginepascalcase-notification"></a>
@@ -101,7 +103,7 @@ Event refers to an important event that occurs either by RDS for {{engine.pascal
 | INSTC_43_04       | INSTANCE          | No           | RAM capacity limit                                                            |
 | INSTC_44_04       | INSTANCE          | No           | Individual volume limit                                                       |
 | INSTC_45_04       | INSTANCE          | No           | Total project volume limit                                                    |
-| INSTC_46_04       | INSTANCE          | No           | Read Replicas limit                                                        |
+| INSTC_46_04       | INSTANCE          | No           | Read Replica limit                                                        |
 | INSTC_47_00       | INSTANCE          | Yes          | DB instance backup and export started                                         |
 | INSTC_47_01       | INSTANCE          | Yes          | DB instance backed up and exported                                            |
 | INSTC_47_04       | INSTANCE          | Yes          | DB instance backup and export failed                                          |
@@ -175,7 +177,7 @@ Event refers to an important event that occurs either by RDS for {{engine.pascal
 | TENAT_02_04       | TENANT            | Yes          | RAM capacity limit	                                                           |
 | TENAT_03_04       | TENANT            | Yes          | Individual volume limit                                                       |
 | TENAT_04_04       | TENANT            | Yes          | Total project volume limit                                                    |
-| TENAT_05_04       | TENANT            | Yes          | Read Replicas limit                                                        |
+| TENAT_05_04       | TENANT            | Yes          | Read Replica limit                                                        |
 
 <a id="subscribe-to-event"></a>
 ## Subscribe to Event { #subscribe-to-event }
@@ -197,7 +199,7 @@ You can subscribe to events by event type, code, and source. When you subscribe 
 You can manage users as groups to receive notifications. Notification target must be registered as a project member. If the users in the user group are excluded from the project members, they will not be notified even if they belong to the user group.
 
 !!! danger "Caution"
-    If there is no mobile phone information for the reason of not performing real name authentication, you will not receive SMS notifications.
+    If there is no mobile phone information because a user did not complete real-name verification, the user will not receive SMS notifications.
 
 <a id="create-user-group"></a>
 ### Create User Group { #create-user-group }
