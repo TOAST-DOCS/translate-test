@@ -131,6 +131,7 @@ For how to write a **Manifest**, see the [Kubernetes documentation](https://kube
 
 ![stage-guide-07](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_pipeline/2024-09-15/pipeline-stage-guide/deploy-stage-normal.png)
 
+<a id="deployment---deploy-resource-version-management"></a>
 #### Resource Version Management
 
 When the Pipeline service deploys ConfigMap and Secret resources, it creates new resources with a version suffix appended to the name (-v000, -v001, …) by default. It also automatically updates references to those resources in workloads included in the same deployment (such as `volume`, `env`, and `envFrom`) to use the versioned names. This resource version management feature preserves the change history of configurations for each version, making it possible to roll back to previous configurations together with the workload.
