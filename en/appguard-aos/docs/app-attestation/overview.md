@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=dbacc26b661d -->
 
 # App Attestation Guide
@@ -43,14 +45,14 @@ Protect the APK/AAB file using `appguard-cli`.
 
 Register the app's signature information and configure app attestation options in the web console.
 
-→ [5.2 Console App Attestation Settings](console.md)
+→ [6.2 Console App Attestation Settings](console.md)
 
 <a id="step-3-use-app-attestation"></a>
 ### Step 3: Use App Attestation { #step-3-use-app-attestation }
 
 Use the SDK in the app code to obtain an app attestation token.
 
-→ [5.3 How to Use App Attestation](sdk.md)
+→ [6.3 How to Use App Attestation](sdk.md)
 
 <a id="step-4-verify-the-token-on-the-server"></a>
 ### Step 4: Verify the Token on the Server { #step-4-verify-the-token-on-the-server }

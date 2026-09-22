@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=dbacc26b661d -->
 
 # アプリ証明ガイド
@@ -43,14 +45,14 @@ sequenceDiagram
 
 Webコンソールでアプリの署名情報を登録し、アプリ証明オプションを設定します。
 
-→ [5.2 コンソールアプリ証明設定](console.md)
+→ [6.2 コンソールアプリ証明設定](console.md)
 
 <a id="step-3-use-app-attestation"></a>
 ### 3段階：アプリ証明の使用 { #step-3-use-app-attestation }
 
 アプリのコードでSDKを利用してアプリ証明トークンを取得します。
 
-→ [5.3 アプリ証明の使用方法](sdk.md)
+→ [6.3 アプリ証明の使用方法](sdk.md)
 
 <a id="step-4-verify-the-token-on-the-server"></a>
 ### 4段階：サーバーでトークン検証 { #step-4-verify-the-token-on-the-server }

@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=fe1bf114a926 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=a88c32c1d251 -->
 
 # Protection Using CLI
 
@@ -49,7 +51,10 @@ appguard-cli <platform> [options]
 |------|------|--------|
 | `--app-attestation` | Enable app attestation **(required when using app attestation)** | Disabled if omitted |
 | `--additional-sign` | Additional signature hash (1–10 SHA256 hashes) | `none` |
+| `--config` | Integration configuration file path | Disabled if omitted |
 | `--dry-run` | Verify parameters without actual execution | Disabled if omitted |
+
+- To use the integrated configuration file (`--config`), CLI 1.0.3 or later and Protector 1.14.0.0 or later are required. For more information, see [3. Integrated Configuration File](../configuration/overview.md).
 
 <a id="security-options"></a>
 ### Security Options { #security-options }
@@ -57,8 +62,10 @@ appguard-cli <platform> [options]
 | Option | Description | Default |
 |------|------|--------|
 | `--dex-obfuscate` | DEX obfuscation (enterprise/game only) | Disabled if omitted |
-| `--resource-obfuscate` | Resource obfuscation config file path **(required when using resource string obfuscation)** | Disabled if omitted |
+| `--resource-obfuscate` | Resource string obfuscation config file path (replaced by the integrated configuration file; support will be discontinued in the future) | Disabled if omitted |
 | `--google-pairip` | Google PairIP | Disabled if omitted |
+
+- The resource string obfuscation settings previously passed via `--resource-obfuscate` have been consolidated into the `resourceStringObfuscation` setting in the unified configuration file. For Protector 1.14.0.0 and later, we recommend that you use the `--config` option. Support for `--resource-obfuscate` will be discontinued in the future. If both options are specified, the unified configuration file passed via `--config` is used.
 
 <a id="other-options"></a>
 ### Other Options { #other-options }

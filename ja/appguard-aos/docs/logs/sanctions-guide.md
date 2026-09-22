@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=fbe508816555 -->
 
 # 制裁ガイド
@@ -19,7 +21,7 @@ NHN AppGuardによる検知ログと、アプリ独自の様々なログを総�
 - **ブロック時**: 検知されたデータをサーバーに送信し、サーバー側で接続を終了する方式を推奨します。
 - **非推奨**: クライアントで終了する場合、回避される可能性が高いため推奨しません。
 
-NHN AppGuardのBlock機能を通じてブロックした場合でも、コールバック関数は呼び出されます([5.2 コールバックデータ](callback-data.md)を参照)。
+NHN AppGuardのBlock機能を通じてブロックした場合でも、コールバック関数は呼び出されます([8.2 コールバックデータ](callback-data.md)を参照)。
 
 <a id="c-enable-nhn-appguard-blocking"></a>
 ## C. NHN AppGuardのブロック機能の使用 { #c-enable-nhn-appguard-blocking }

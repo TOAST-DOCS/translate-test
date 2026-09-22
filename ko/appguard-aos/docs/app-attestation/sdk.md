@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=fb5d29087d9e -->
+<!-- pre-align:aligned sig=d9789ac3a88a -->
 
 # 앱 증명 사용법
 

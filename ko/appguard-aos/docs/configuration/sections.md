@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=bb95c747cee7 -->
+
 # 기능별 설정
 
 통합 설정 파일의 `configs`에 작성할 수 있는 기능별 설정을 설명합니다.

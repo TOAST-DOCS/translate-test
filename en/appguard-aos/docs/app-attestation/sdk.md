@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=fb5d29087d9e -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=d9789ac3a88a -->
 
 # How to Use App Attestation
 
@@ -12,7 +14,7 @@ To use app attestation in an app, the Integrity SDK must be integrated. The SDK 
 <a id="add-dependency"></a>
 ## Add Dependency { #add-dependency }
 
-The app attestation SDK is included in the AppGuard AAR file. For instructions on adding the AAR file to your project and configuring dependencies, see [3.2 Java SDK Integration](../sdk/java.md#library-import).
+The app attestation SDK is included in the NHN AppGuard AAR file. For instructions on adding the AAR file to your project and configuring dependencies, see [4.2 Java SDK Integration](../sdk/java.md#라이브러리-가져오기).
 
 <a id="synchronous-authentication-sync"></a>
 ## Synchronous Authentication (Sync) { #synchronous-authentication-sync }

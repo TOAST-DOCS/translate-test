@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=2030b074147a -->
 
 # CLIでの保護作業
@@ -35,9 +37,13 @@ NHN AppGuard CLIのオプションは次のとおりです。必須オプショ�
 | `--google-pairip` | Google Play自動整合性保護</br>(PLAY_INTEGRITY)使用時の競合防止 | N |
 | `--app-attestation` | NHN AppGuardアプリ証明の有効化 | N |
 | `--obfuscate` | コード難読化の有効化 | N |
-| `--resource-obfuscate` | リソース文字列難読化設定ファイルパス | N |
+| `--resource-obfuscate` | リソース文字列難読化設定ファイルのパス</br>(統合設定ファイルに置き換えられ、今後サポート終了予定) | N |
+| `--config` | 統合設定ファイルのパス | N |
 
 - アプリ証明を使用するには、AppGuard SDK 0.5.0以上が必要です。
+
+- 統合設定ファイル（`--config`）を使用するには、NHN AppGuard 1.14.0.0 以上が必要です。詳細については、[3. 統合設定ファイル](../configuration/overview.md)を参照してください。
+- `--resource-obfuscate` で指定していたリソース文字列の難読化設定は、統合設定ファイルの `resourceStringObfuscation` 設定に統合されました。NHN AppGuard 1.14.0.0 以上では `--config` オプションの使用をお勧めします。`--resource-obfuscate` は今後サポートを終了する予定です。両方のオプションを同時に指定した場合は、`--config` で指定した統合設定ファイルが使用されます。
 
 <a id="build-cli-with-gradle"></a>
 ## Gradleを利用したCLIビルド { #build-cli-with-gradle }
