@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=fb5d29087d9e -->
 
 # アプリ証明の使用方法
@@ -12,7 +14,7 @@
 <a id="add-dependency"></a>
 ## 依存関係の追加 { #add-dependency }
 
-アプリ証明SDKは、AppGuard AARファイルに含まれています。AARファイルのプロジェクト追加及び依存関係の設定は、[3.2 Java SDK連携](../sdk/java.md#ライブラリのインポート)をご参照ください。
+アプリ証明SDKは、NHN AppGuard AARファイルに含まれています。AARファイルのプロジェクト追加及び依存関係の設定は、[4.2 Java SDK連携](../sdk/java.md#ライブラリのインポート)をご参照ください。
 
 <a id="synchronous-authentication-sync"></a>
 ## 同期証明 (Sync) { #synchronous-authentication-sync }
