@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=b91e3d4ff2a8 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=69b578c9d60d -->
 
 <a id="nhn-cloud-sdk-user-guide-log-crash-android-ndk"></a>
 ## NHN Cloud > SDK User Guide > Log & Crash > Android (NDK) { #nhn-cloud-sdk-user-guide-log-crash-android-ndk }
@@ -31,10 +33,10 @@ repositories {
 dependencies {
     // ...
     // Add the NHN Cloud Logger dependency
-    implementation 'com.nhncloud.android:nhncloud-logger:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-logger:1.13.0'
 
     // Add the NHN Cloud Crash Reporter for NDK dependency
-    implementation 'com.nhncloud.android:nhncloud-crash-reporter-ndk:1.12.0'
+    implementation 'com.nhncloud.android:nhncloud-crash-reporter-ndk:1.13.0'
 }
 ```
 

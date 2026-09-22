@@ -8,8 +8,8 @@
 <a id="prerequisites"></a>
 ## 事前準備 { #prerequisites }
 
-1. Android プロジェクトに [NHN Cloud Logger を追加](/nhncloud/ja/nhncloud-sdk/log-collector-android/)します。
-2. Android アプリにネイティブライブラリが含まれている場合は、[NHN Cloud Crash Reporter for NDK を追加](/nhncloud/ja/nhncloud-sdk/log-collector-ndk/)します。
+1. Android プロジェクトに [NHN Cloud Logger を追加](./log-collector-android/)します。
+2. Android アプリにネイティブライブラリが含まれている場合は、[NHN Cloud Crash Reporter for NDK を追加](./log-collector-ndk/)します。
 3. NHN Cloud コンソールで **User Access Key ID** と **Secret Access Key** を発行します。
 
 <a id="library-setting"></a>
