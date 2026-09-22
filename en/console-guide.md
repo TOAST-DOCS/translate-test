@@ -141,8 +141,8 @@ The privacy setting feature is available if you need to protect your privacy.
 You can mask personal information that is exposed on the service, or if you need to download personal information, you can make it available only in a separate network environment. 
 
 * Privacy Setting
-    * Organization/Project > Manage Member > IAM Account > Download List
-        * If not set, any member who can download the IAM account list can download the member list.
+    * Organization/Project > Manage Member > NHN Cloud Account / IAM Account > Download Member List
+        * If **Not Set** is selected, any member who can download the account list can download the member list.
         *  If set up, the feature to download member lists is disabled and only exceptionally allowed IPs or IP bands can download member lists.
 
     * Organization > CloudTrail > Privacy
