@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=74de1cda7688 -->
+<!-- pre-align:aligned sig=05f610b13df2 -->
 
 <a id="nhn-cloud-sdk-user-guide-getting-started-android"></a>
 ## NHN Cloud > SDK User Guide > Getting Started > Android { #nhn-cloud-sdk-user-guide-getting-started-android }
