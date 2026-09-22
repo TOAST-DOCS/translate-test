@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=8498e3e7e765 -->
+<!-- pre-align:aligned sig=e6088b8c4131 -->
 
 # NHN AppGuard Android Developer's Guide
 
