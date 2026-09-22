@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=fbe508816555 -->
 
 # Guide to Sanctions
@@ -19,7 +21,7 @@ When registering the callback function, you get the detection result of NHN AppG
 - **When blocked**: A method to transfer detected data to the server to end the connection on the server side is recommended.
 - **Not recommended**: If terminated on the client, it is not recommended because it is more likely to bypass.
 
-When blocked via the NHN AppGuard Block feature, the callback function is also called (see [5.2 Callback Data](callback-data.md)).
+When blocked via the NHN AppGuard Block feature, the callback function is also called (see [8.2 Callback Data](callback-data.md)).
 
 <a id="c-enable-nhn-appguard-blocking"></a>
 ## C. Enable NHN AppGuard Blocking { #c-enable-nhn-appguard-blocking }
