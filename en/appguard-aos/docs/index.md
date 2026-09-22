@@ -9,14 +9,17 @@
 
 <a id="document-information-2"></a>
 ### Document Information { #document-information-2 }
+
 This document is a Developer's Guide, including an SDK manual for using NHN AppGuard. 
 
 <a id="written-on"></a>
 ### Written on { #written-on }
-04-14-2026
+
+2026-09-15
 
 <a id="contact"></a>
 ### Contact { #contact }
+
 For assistance, use [Customer Support > Contact Us](https://www.nhncloud.com/kr/support/inquiry) on the NHN Cloud website.
 
 <a id="index"></a>
@@ -24,6 +27,7 @@ For assistance, use [Customer Support > Contact Us](https://www.nhncloud.com/kr/
 
 <a id="preparations-for-application"></a>
 ### 1. [Preparations for Application](preparation/environment.md) { #preparations-for-application }
+
 1.1 [Supported Environment](preparation/environment.md)
 1.2 [How to Apply NHN AppGuard](preparation/approach.md)
 {%- if variant == 'saas' %}
@@ -36,6 +40,7 @@ For assistance, use [Customer Support > Contact Us](https://www.nhncloud.com/kr/
 
 <a id="protection"></a>
 ### 2. [Protection](protection/console.md) { #protection }
+
 2.1 [Protection Using Web Console](protection/console.md)
 2.2 [Protection Using CLI](protection/cli-saas.md)
 2.3 [Protection Using Plugin](protection/plugin.md)
@@ -43,62 +48,77 @@ For assistance, use [Customer Support > Contact Us](https://www.nhncloud.com/kr/
 
 <a id="index-protection"></a>
 ### 2. [Protection](protection/cli-onprem.md) { #index-protection }
+
 2.1 [Protection Using CLI](protection/cli-onprem.md)
 {%- endif %}
 
+<a id="unified-configuration-file"></a>
+### 3. [Unified Configuration File](configuration/overview.md) { #unified-configuration-file }
+
+3.1 [Overview](configuration/overview.md)
+3.2 [Settings by Feature](configuration/sections.md)
 {%- if variant == 'saas' %}
 
 <a id="sdk-integration-guide"></a>
-### 3. [SDK Integration Guide](sdk/overview-saas.md) { #sdk-integration-guide }
-3.1 [SDK Integration](sdk/overview-saas.md)
-3.2 [Java SDK Integration](sdk/java.md)
-3.3 [Unreal SDK Integration](sdk/unreal.md)
+### 4. [SDK Integration Guide](sdk/overview-saas.md) { #sdk-integration-guide }
+
+4.1 [SDK Integration](sdk/overview-saas.md)
+4.2 [Java SDK Integration](sdk/java.md)
+4.3 [Unreal SDK Integration](sdk/unreal.md)
 {%- else %}
 
 <a id="index-sdk-integration-guide"></a>
-### 3. [SDK Integration Guide](sdk/overview-onprem.md) { #index-sdk-integration-guide }
-3.1 [SDK Integration](sdk/overview-onprem.md)
-3.2 [Java SDK Integration](sdk/java.md)
+### 4. [SDK Integration Guide](sdk/overview-onprem.md) { #index-sdk-integration-guide }
+
+4.1 [SDK Integration](sdk/overview-onprem.md)
+4.2 [Java SDK Integration](sdk/java.md)
 {%- endif %}
 
 <a id="encryption-api-application-guide"></a>
-### 4. [Encryption API Application Guide](encryption/overview.md) { #encryption-api-application-guide }
-4.1 [Encryption API](encryption/overview.md)
-4.2 [Private Key Encryption Structure](encryption/key-encryption.md)
-4.3 [Encryption Data Structure](encryption/data-structure.md)
-4.4 [Decryption Flow for Encryption Data](encryption/decryption-flow.md)
-4.5 [API Reference](encryption/api-reference.md)
+### 5. [Encryption API Application Guide](encryption/overview.md) { #encryption-api-application-guide }
+
+5.1 [Encryption API](encryption/overview.md)
+5.2 [Private Key Encryption Structure](encryption/key-encryption.md)
+5.3 [Encryption Data Structure](encryption/data-structure.md)
+5.4 [Encrypted Data Decryption Flow](encryption/decryption-flow.md)
+5.5 [API Reference](encryption/api-reference.md)
 
 <a id="integrity-verification-guide"></a>
-### 5. [App Attestation Guide](app-attestation/overview.md) { #integrity-verification-guide }
-5.1 [Overview](app-attestation/overview.md)
-5.2 [Console App Attestation Settings](app-attestation/console.md)
-5.3 [How to Use App Attestation](app-attestation/sdk.md)
+### 6. [App Attestation Guide](app-attestation/overview.md) { #integrity-verification-guide }
+
+6.1 [Overview](app-attestation/overview.md)
+6.2 [Console App Attestation Settings](app-attestation/console.md)
+6.3 [How to Use App Attestation](app-attestation/sdk.md)
 
 <a id="resource-string-obfuscation"></a>
-### 6. [Resource String Obfuscation](resource-string-obfuscation/overview.md) { #resource-string-obfuscation }
-6.1 [Overview](resource-string-obfuscation/overview.md)
-6.2 [Configuration File Format](resource-string-obfuscation/config.md)
+### 7. [Resource String Obfuscation](resource-string-obfuscation/overview.md) { #resource-string-obfuscation }
+
+7.1 [Overview](resource-string-obfuscation/overview.md)
+7.2 [Configuration File Format](resource-string-obfuscation/config.md)
 
 <a id="log-and-callback-information"></a>
-### 7. [Log and Callback Information](logs/overview.md) { #log-and-callback-information }
-7.1 [Log Details](logs/overview.md)
-7.2 [Callback Data](logs/callback-data.md)
-7.3 [Guide to Sanctions](logs/sanctions-guide.md)
+### 8. [Log and Callback Information](logs/overview.md) { #log-and-callback-information }
+
+8.1 [Log Details](logs/overview.md)
+8.2 [Callback Data](logs/callback-data.md)
+8.3 [Guide to Sanctions](logs/sanctions-guide.md)
 
 <a id="checks-and-cautions"></a>
-### 8. [Checks and Cautions](testing/integration.md) { #checks-and-cautions }
-8.1 [Integration Test](testing/integration.md)
-8.2 [Checks when Applying ProGuard](testing/proguard.md)
-8.3 [Integrity Verification for App Signature Key](testing/signature-verification.md)
+### 9. [Checks and Cautions](testing/integration.md) { #checks-and-cautions }
+
+9.1 [Integration Test](testing/integration.md)
+9.2 [Checks when Applying ProGuard](testing/proguard.md)
+9.3 [Integrity Verification for App Signature Key](testing/signature-verification.md)
 
 <a id="faq"></a>
-### 9. [FAQ](faq/general.md) { #faq }
-9.1 [Common Error](faq/general.md)
-9.2 [Cocos2D Game Error](faq/cocos2d.md)
+### 10. [FAQ](faq/general.md) { #faq }
+
+10.1 [Common Error](faq/general.md)
+10.2 [Cocos2D Game Error](faq/cocos2d.md)
 
 <a id="copyright"></a>
 ## Copyright { #copyright }
+
 ---
 
 !!! danger "Copyright"
