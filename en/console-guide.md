@@ -1,505 +1,748 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > Console Guide
+<!-- pre-align:aligned sig=817102849a61 -->
 
-<a id="create-instances"></a>
-## Create Instances
+<style>
+    .custom-table thead {
+        background-color: #FAFAFA;
+    }
+    
+    .custom-table tbody tr {
+        background-color: white;
+    }
+    
+    .custom-table td {
+        vertical-align: middle;
+    }
+</style>
 
-You can create instances either by using the settings below or by using instance templates. To create instances using instance templates, select **Use instance template** from the Create Instance page. To learn how to create instance templates, see [Instance Template Console Guide](/Compute/Instance%20Template/en/console-guide/).
+<a id="notification-sms-console-guide"></a>
+## Notification > SMS > Console Guide { #notification-sms-console-guide }
 
-<a id="os-settings"></a>
-### OS Settings
+> To enable SMS Service, you may first register sender numbers on [Console > SMS > Pre-register Sender Numbers > Register Sender Number and Verify Owner] (Telecommunications Business Law).
 
-Determine how the root block storage is created that will be used when an instance is created.
+<a id="identity-verification"></a>
+## Identity Verification { #identity-verification }
 
-- Select either **Create New and Set up** or **Use Existing Resource**.
-- If you select **Create New and Set up**, create root block storage using an image.
-- If you select **Use Existing Resource**, use a previously created block storage or snapshot.
+- In order to comply with the amendment of the Telecommunications Business Act, an enhanced sender number pre-registration system has been applied to the SMS service.
+    - Only for members who joined after March 2, 2022
+- Individual members are not eligible to use the service. (As of December 15, 2023, the individual member service usage policy has changed.)
+    - Only for members who joined after December 15, 2023
+- To use the SMS service, you must go through identity verification, which basically requires mobile phone identity verification and additional documentation depending on your membership type.
+    - If you don't verify your identity, all features other than the **Sender Number Pre-Registration** tab will be disabled.
+- The name and phone number you enter when you sign up must match the information you enter when you verify your identity to be approved.
+- NHN Cloud members invited to an organization/project created by a business member or IAM members invited to an organization created by a business member must authenticate themselves to use the service.
+- Proof of employment can only be <span style="color:red;font-weight:bold">documents with the date of issuance and a stamp.<span style="color:red;font-weight:bold"><br/>
+  Make sure you <span style="color:red;font-weight:bold">mask (hide) the last 6 digits of your resident registration number<span style="color:red;font-weight:bold"> in your employment certificate. Example) 000000-0\*\*\*\*\*\*
 
-<a id="image"></a>
-### Image
+<a id="required-documentation-by-member-type"></a>
+### Required Documentation by Member Type { #required-documentation-by-member-type }
 
-Select the image that contains the operating system you need. You can choose between public images provided by NHN Cloud, images you've previously created, or shared images.
+<table class="custom-table" style="text-align: center">
+  <thead>
+      <tr>
+          <th>Member Type</th>
+          <th>Category</th>
+          <th>Content</th>
+          <th>Verification Method</th>
+          <th>Required Document</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td rowspan=3>Business</td>
+          <td rowspan=2>NHN Cloud account</td>
+          <td>When by a business representative</td>
+          <td>Business representative’s own mobile phone identity verification</td>
+          <td>Business registration certificate, proof of employment</td>
+      </tr>
+      <tr>
+          <td>When verified by an executive or employee (employee in charge of business)</td>
+          <td>Mobile verification by employee</td>
+          <td>Business registration certificate, proof of employment</td>
+      </tr>
+      <tr>
+          <td>IAM account</td>
+          <td>When authenticated by an executive or employee (employee in charge) invited to the business organization</td>
+          <td>Personal verification by employee’s own mobile</td>
+          <td>Business registration certificate, proof of employment</td>
+      </tr>
+  </tbody>
+</table>
 
-The available instance flavors vary depending on the image you choose, so we recommended you choose an image first when creating an instance.
+<a id="identity-verification-process"></a>
+### Identity Verification Process { #identity-verification-process }
 
-| OS                         | Block Storage     | Memory   |
-| -------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB or more  | 1GB or more |
-| Windows                           | 50GB or more  | 2GB or more |
+![sms_01_20240104](https://static.toastoven.net/prod_sms/eng/SMS_01_20240104.png)
 
-<a id="root-block-storage"></a>
-### Root Block Storage
+1. Select the **Sender Number Pre-registration**tab.
+2. Click **Verify phone identity and attach required documents** to start the process.
+3. Confirm and agree to the Consent to collection and usage of personal information.
+4. Proceed to verify your identity with mobile verification or a quick identity verification.
+5. Attach and register any required documents if necessary.
+6. Wait for the operator review and approval process.
+7. Once the identity verification process is complete, the approval result will be sent to the email registered to your account.
 
-Set up root block storage according to the **OS settings**.
+<a id="description-of-identity-verification-status"></a>
+### Description of identity verification status { #description-of-identity-verification-status }
 
-- If you select **Create New and Set up**, create the root block store by specifying the **block storage type** and **block storage size**.
-- If you select **Use Existing Resource**, specify the **original resource** to use as root block storage.
+- Reviewing: The administrator is reviewing the authentication documents for registered identity verification.
+- Rejected: A state in which identity verification has been rejected and documents must be re-registered.
+- Approved: Identity verification approval completed
 
-#### Original Resource
+<a id="pre-register-sender-numbers"></a>
+## Pre-register Sender Numbers { #pre-register-sender-numbers }
 
-You can select either a previously created **block storage** or **snapshot**.
+<a id="enforce-pre-registration-of-sender-numbers"></a>
+### Enforce pre-registration of sender numbers { #enforce-pre-registration-of-sender-numbers }
 
-- When you select **block storage**, use the previously created block storage as the root block storage.
-- When you select **snapshot**, the root block storage is created using a previously created snapshot.
+- In accordance with the Telecommunications Business Act, the registration of a sender number requires the verification of the owner of the sender number.
+- The owner verification method and required documents are determined according to the sender number type.
 
-#### Block Storage Size
+<a id="owner-verification-method-by-calling-number"></a>
+### Owner verification method by calling number { #owner-verification-method-by-calling-number }
 
-Specify the root block storage size of an instance.
+<table class="custom-table" style="text-align: center">
+  <thead>
+      <tr>
+          <th>Member Type</th>
+          <th>Sender Number Type</th>
+          <th>Verification Method</th>
+          <th>Required Document</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td rowspan=4>Business</td>
+          <td>Business registration number</td>
+          <td>Document verification</td>
+          <td>Communication service use certificate</td>
+      </tr>
+      <tr>
+          <td>Representative number, Employee number</td>
+          <td>Document verification</td>
+          <td>Communication service use certificate, proof of employment</td>
+      </tr>
+      <tr>
+          <td>Third-party number</td>
+          <td>Document verification</td>
+          <td>Telecommunication service usage certificate, usage agreement, (third-party) business license, documents confirming the relationship between the business and the third party (contract, etc.)</td>
+      </tr>
+      <tr>
+          <td>Other’s number</td>
+          <td>Document verification</td>
+          <td>Telecommunication service usage certificate, usage agreement</td>
+      </tr>
+  </tbody>
+</table>
 
-- The block storage size must be at least the minimum size required by the image.
+!!! tip "Note"
+    - After verifying your identity, you can register your sender number.
+    - Usage agreement form can be downloaded from the console.
+    - Documents confirming the relationship between the business and the third party can be consignment agreements, proof of headquarters and branch offices, etc.
+    - There are no masked (hidden) parts of the communication service use certificate, and only documents issued within the last 3 months are accepted.
+    - Proof of employment can only be <span style="color:red;font-weight:bold">documents with the date of issuance and a stamp.<span style="color:red;font-weight:bold"><br/>Make sure you <span style="color:red;font-weight:bold">mask (hide) the last 6 digits of your resident registration number<span style="color:red;font-weight:bold"> in your employment certificate. Example: 000000-0\*\*\*\*\*\*
 
-The root block storage size varies depending on instance flavor.
+<a id="how-to-issue-documents-for-each-mobile-carrier"></a>
+### How to Issue Documents for Each Mobile Carrier { #how-to-issue-documents-for-each-mobile-carrier }
 
-| Flavors               | Supported Block Storage Size         |
-| -------------------| -------------------------- |
-| u2 flavors             | 20 ~ 100 GB (varies by flavor) |
-| t2, m2, c2, r2, and x1 flavors | 20 ~ 2000 GB               |
+- You can download the service usage certificate from your carrier's website.
+- Depending on the carrier, the service usage certificate may differ such as "subscription confirmation," "proof of subscription," or "proof of contract registration".
 
-> [Note]
-> Because you are charged by block storage size, it is inefficient to make the default block storage size large without consideration. We recommend that you add additional block storage as needed.
-> If you select **block storage** for **Use Existing Resource** in the **OS settings**, you can't change the block storage size.
-> If you select **snapshot** for **Use Existing Resource** in the **OS settings**, block storage size must be set equal to or larger than the original block storage size.
+- SKT [[Visit]](https://www.tworld.co.kr/web/home)
+    - How to issue: Sign in > My Account > Get Certificate of Use
+    - Mobile service customer center: 114, 080-011-6000, 1599-0011
+    - Wireline service customer center: 080-816-2000, 1600-2000
 
-#### Block Storage Type
+- KT [Visit](https://www.kt.com/)
+    - How to issue: Sign in > Membership Information > View/Change > Print Proof of Membership
+    - Mobile service customer center: 114, 1588-0010
+    - Wireline service customer center: 100
 
-Determines the default block storage type of an instance.
+- LGU+ [[Visit]](https://www.lguplus.com/)
+    - How to issue: Log in > Product Signup > Get Confirmation of Signup
+    - Mobile service customer center: 114, 1544-0010
+    - Wireline service customer center: 101
 
-- Choose either **HDD** or **SSD**. The choice of block storage type affects pricing and performance.
-- You cannot change the block storage type once the instance is created.
+- Budget carriers and others
+    - SK Broadband Customer Center: 106
+    - Sejong Telecom Customer Center: 1688-1000, 080-889-1000
+    - KCT Korea Cable Telecom Customer Center: 070-8188-0114
+    - Hello Mobile Customer Center: 1855-1144 (LGU+), 1855-1144 (KT), 1855-2114 (SKT)
 
-> [Note]
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the block storage type.
+<a id="registration-format-for-sender-numbers"></a>
+### Registration Format for Sender Numbers { #registration-format-for-sender-numbers }
 
-<a id="availability-zone"></a>
-### Availability Zone
-
-If an availability zone is not specified, a random zone is selected. An instance can use a block storage only if they both exist in the same availability zone. If the block storage you wish to use exists in a particular availability zone, then select that zone.
-
-> [Note]
-> Resources in a VPC can be used in any availability zone.
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the availability zone.
-
-For more details on availability zones, see [Availability Zone in Instance Overview](./overview/#availability-zone).
-
-<a id="flavor"></a>
-### Flavor
-
-You can select various flavors depending on virtual hardware performance specifications. However, the choice of some flavors may be limited depending on the virtual hardware performance that your image requires. For more details, see [Instance Overview](./overview).
-
-> [Note] 
-> 1 vCPU refers to one socket composed of one thread and one core, the number of threads and the number of cores per socket are constant, one each.
-
-Instance flavors can be changed in the NHN Cloud console even after instance creation, from higher to lower specs and vice versa. However, note that some flavors cannot be changed. See [Modify flavor](./console-guide/#modify-flavor) for details.
-
-> [Caution] An instance's root block storagecannot be changed by changing instance flavors.
-
-<a id="number-of-instances"></a>
-### Number of Instances
-
-You can specify the number of instances you want to create when creating multiple instances with the same image, availability zone, flavor, block storage size, key pair, and network settings. The instance names will be the name you specified, with numbers such as `-1` and `-2` appended to the end. For example, creating two instances named `my-instance` will result in `my-instance-1` and `my-instance-2`. The maximum number of instances you can create at once is 10.
-
-When you create multiple instances without specifying an availability zone, each instance will be created in a randomly selected availability zone. For example, if two instances are created without specifying an availability zone, they may be created in the same zone or they may be created in different zones. If all instances need to be created in the same availability zone, select a particular zone.
-
-> [Note]
-> If you select **block storage** for **Use Existing Resource** in the **OS settings** or **Use Existing Network Interface** in the **network settings**, the number of instances is limited to `1`.
-
-<a id="key-pair"></a>
-### Key Pair
-
-Use an existing key pair or create a new key pair. To register an existing key pair, see [Import Key Pair (Windows)](./console-guide/#import-key-pairs-windows) for Windows users, and [Import Key Pair (Mac and Linux)](./console-guide/#import-key-pairs-mac-and-linux) for Mac and Linux users.
-
-> [Note]
-> Key Pair is a resource assigned to the user account, so it's not deleted when you delete a project.
-
-<a id="network"></a>
-### Network
-
-Select a subnet defined in your VPC to connect to an instance. For each selected subnet, a network interface is created in the instance to connect to that subnet. You can change the order of selected subnets to change network interfaces, in which case the first network interface (`eth0`) will be set as the default gateway.
-
-For more details on creating and managing networks, refer to [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="floating-ip"></a>
-### Floating IP
-
-Select whether you will use a floating IP after instance creation. If you enable this option, a new floating IP is created and connected to the first network interface. Note that the first network interface must be connected to a subnet where an internet gateway is configured.
-
-Floating IP can be managed from Instance > Management, or Instance > Floating IP. For more details on floating IP, see [VPC Console Guide](/Network/VPC/en/console-guide/).
-
-<a id="security-group"></a>
-### Security Group
-
-Select security groups that the instance will be included in. One instance can be included in multiple security groups, in which case,
-
-- The instance can communicate over the network with all other instances included in each security group. When you are dealing with an instance with sensitive data that is not meant to be accessible by other instances, you must carefully select security groups.
-- The rules of each security group are aggregated and applied to the instance's external network communication.
-
-For more details on security groups, see [VPC Console Guide](/Network/VPC/en/console-guide/).
-
-<a id="additional-block-storage"></a>
-### Additional Block Storage
-
-Select whether you will attach an additional block storage after instance creation. If you enable this option, a new block storage separate from the root block storage is created and attached to the instance. As with the root block storage, you can specify the name, storage type, and size of the additional block storage you create.
-
-By using the root block storage only for the OS and storing your frequently used applications and data on the additional block storage, you can easily migrate or copy your applications and data using the block storage attach/detach and snapshot features. In addition, when an instance failure occurs, you can easily recover your services by simply detaching the additional block storage and attaching it to another instance.
-
-Block storage can also be managed from Instance > Block Storage. For more details on block storage, see [Block Storage Guide](/Storage/Block%20Storage/en/overview/).
-
-<a id="placement-policy"></a>
-### Placement Policy
-
-You can use placement policies to place instances on different hypervisors. When you set a placement policy at instance creation time, instances assigned to the same placement policy are created on different hypervisors.
- 
-> [Caution]
-> Instance creation may fail in situations where distributed deployment is not possible.
-
-<a id="user-script"></a>
-### User Script
-
-You can specify a script to be executed after instance creation. The user script is executed following the instance's initial boot and after the initialization process including network configuration has completed. User scripts in NHN Cloud are executed by automated tools such as cloud-init (Linux) and Cloudbase-init (Windows), which are embedded in the official images.
-
-> [Caution]
-> User scripts are executed with root (Linux)/Administrator (Windows) privileges.
-
-#### Linux
-The first line of a user script must begin with `#!`.
 ```
-#!/bin/bash
-...
-```
-
-For a user script to run successfully, log files in the instance must be checked. You can check output logs printed by standard output/error from the script in `/var/log/cloud-init-output.log`.
-
-#### Windows
-
-Windows images support both Batch and PowerShell formats for user scripts. The format is determined by an indicator specified in the first line.
-
-* Batch Script
-```
-rem cmd
-...
-```
-
-* PowerShell Script
-```
-#ps1_sysnative
-...
+* Fixed phone number: 02-YYY-YYYY (including area code)
+* Mobile phone number: 010-ABYY-YYYY
+* Official phone number: 15YY, 16YY, 18YY (area code prohibited ahead of the number)
+* Common service identification number: 0N0 (area code prohibited ahead of the number)
+* Sender numbers are available between 8 and 11 characters 
+* Unavailable to send messaged from invalid number bandwidth (e.g.: 070-0YYY, 070-1YYY, 010-0YYY, 010-1YYY)
 ```
 
-To use both Batch and PowerShell in your script, use the following format.
+!!! tip "Note"
+    Numbers that are subscribed to 'Blocking Sender Number Abuses' as part of additional telecom services, do not receive messages (web/system text delivery).
 
-* EC2 format
+<a id="register-sender-numbers"></a>
+### Register Sender Numbers { #register-sender-numbers }
+
+![sms_02_20240104](https://static.toastoven.net/prod_sms/eng/SMS_02_20240104.png)
+
+1. If you did not verify your identity before registering your sender number, proceed with identity verification.
+    * If you are a subscriber before March 2, 2022, you can use the console without identity verification.
+2. If you can register with identity authentication, click **Register Sender Number and Verify Mobile Phone**, otherwise select **Register Sender Number and Verify Documents** to start the registration process.
+3. Confirm and agree to the Consent to collection and usage of personal information.
+4. Select the type of sender number required for registration (personal number, representative number, employee number, etc.).
+5. Enter the sender number to register.
+6. Attach and register documents suitable for the number to be registered.
+7. Wait for the operator review and approval process.
+8. Once the sender number verification process is complete, the approval result will be sent to the email registered to your account.
+
+<a id="description-for-sender-number-registration-status"></a>
+### Description for Sender Number Registration Status { #description-for-sender-number-registration-status }
+
+- Reviewing: The administrator is reviewing the authentication documents for the registered sender number.
+- Rejected: Document authentication is rejected and document re-registration is required.
+- Approved: Sender number is available
+
+Sender numbers that are properly registered can be found on the **Retrieve Outgoing Numbers** page.
+
+![sms_03_20230818](https://static.toastoven.net/prod_sms/eng/SMS_03_20230818.png)
+
+<a id="sending-sms"></a>
+## Sending SMS { #sending-sms }
+
+- The maximum character count is based on storage. To avoid character truncation, write to a standard size, not a maximum character count.
+- Content standards
+    - Domestic SMS 90 bytes (45 Korean characters, 90 English characters), Domestic LMS 2,000 bytes (1,000 Korean characters, 2,000 English characters), Domestic MMS 2,000 bytes (1,000 Korean characters, 2,000 English characters including images) 
+    - International SMS UCS-2 335 characters, International SMS GSM-7bit 765 characters
+- For MMS, images must be uploaded as files that meet the image attachment specifications.
+    - MMS maximum size: Only files 1000\-1000 or smaller can be attached
+    - MMS supported specifications: 300 KB or less per image, 800 KB total for 3 images or less/ Only .jpg, .jpeg files can be attached
+- For international SMS, it is concatenated based on encoding and character count.
+    - Concatenated message is a service that makes a message appear to be connected as one long text on the device, like an LMS in Korea, to overcome the limitation of the number of characters that can be sent in international SMS sending.
+    - The Concatenated message feature is available depending on the number of characters in the body, encoding, and support from international mobile carriers. If concatenated message is not supported, the device may receive multiple short messages.
+    - When a concatenated message is created, certain headers take up a number of bytes (around 6) to concatenate the message, slightly reducing the number of characters you can send. Billing is based on the number of concatenated messages.
+
+- If you fail to send a text due to blocking the sender number, please check the 'Stolen Number Text Blocking Service'. [Go to the user guide](./sending-policy/#fraud-number)
+- If the sending is successful but you do not receive the text, please check ‘Mobile Carrier Spam Blocking Service’. [Shortcut to guide](./sending-policy/#spam-number)
+- The sending date and time for scheduled delivery can be set up to 60 days from now.
+
+
+<a id="general-delivery"></a>
+### General Delivery { #general-delivery }
+
+1. Enable Template: You can send messages on user-created templates.
+    - If you have pre-created templates, select **Use** from **Use Templates** and select a template from **Select Templates**.
+    - Templates can be registered in the **Manage Templates** tab.
+2. Send type: Set the message to send.
+    - Type: Select from **SMS/LMS/MMS** 
+3. Content to send: Set what to send.
+    - Type: Select **General/Advertising** 
+    - When sending for advertising purposes, the Information and Communications Network Act (Article 50) applies and the 080 Do Not Call service must be registered. Also, sending to numbers that have been opted out will automatically fail.
+    - You can see how to register for a 080 Deny-to-receive number in **Settings for 080 Deny-to-receive number**.
+4. Sender number: Select the number to which the message will be sent.
+    - If you don't have a registered sender number, click **+ Register Sender Number** to register a sender number.
+5.  Statistics event key: When a specific event occurs in the Email service, create POST request with the URL specified by the webhook settings.
+    - If you don't have a registered statistical event key, click **Manage Statistics Event Keys** to register an event key.
+6. Scheduled Delivery: Messages are sent on the send date you set.
+7. Attachments: Only visible if **MMS**is selected, click the **Upload attachment**to add attachments.
+8. Subject: Only visible if LMS or MMS is selected, enter a subject for the message.
+    - The title can be up to 40 bytes long.
+    - To avoid character truncation, use 40 bytes (20 Korean characters and 40 English characters).
+9. Content: Enter the content of the message.
+10. Recipient information: Enter the number to receive the message.
+    - Provides all numbers including domestic numbers or country code.<br/> Example: 01012345678, 821012345678
+11. Send: Click **Send** for delivery.
+
+<a id="mass-delivery"></a>
+### Mass Delivery { #mass-delivery }
+
+You can send SMS/MMS to many numbers via template files in Excel/CSV.
+
+<a id="mass-delivery-template-files"></a>
+#### Template Files
+
+To download template files, select **Mass Delivery** and click **Download Templates**.
+
+![sms_08_20230818](https://static.toastoven.net/prod_sms/eng/SMS_08_20230818.png)
+![sms_09_20230818](https://static.toastoven.net/prod_sms/eng/SMS_09_20230818.png)
+
+Template files are available either in CSV or Excel (xlx, xlsx).
+Rows are automatically created in files according to the replacement key in message.
+
+Fill out **recipient numbers** and **replacement data** in the downloaded template.
+
+![sms_10_20230818](https://static.toastoven.net/prod_sms/eng/SMS_10_20230818.png)
+
+!!! danger "Caution"
+    To enable template replacement, bind the replacement key with ##, like '##key##'.
+
+Recipient numbers can include '+', '-', or space characters.
+
+<a id="mass-delivery-validity-check-for-template-files"></a>
+#### Validity Check for Template Files
+
+When a template file includes data error while uploaded, such errors, including the total number and no more than 10 errors, are displayed.
+
+Type of Errors
+
+- When the recipient_no row does not exist: The recipient_no row, which is for recipient numbers, is a required row.
+- When there is no data input in file
+- When recipient numbers are entered in a wrong format
+- When recipient numbers or replacement data are missing
+
+<a id="mass-delivery-select-scheduled-delivery-deliver-after-checkimmediate-delivery"></a>
+#### Select Scheduled Delivery (Deliver after Check/Immediate Delivery)
+
+To send after delivery information and mass delivery files are uploaded, click **Schedule Delivery**. To schedule delivery, you may select either **Deliver after Check** or **Scheduled Delivery**.
+
+- Scheduled Delivery after Check: Check recipient numbers and message body to send, from the **Query Mass SMS Delivery** tab and then send. Otherwise, you cannot send messages.
+- Scheduled Delivery: Send immediately, without checking recipient numbers and text messages. Find delivery results on the **Query Mass SMS Delivery** tab.
+
+<a id="mass-delivery-split-send"></a>
+#### Split Send
+
+Split send allows you to split messages before sending by setting **Number of Splits** and **Send Interval**.
+
+<a id="send-tags"></a>
+### Send Tags { #send-tags }
+
+Send with UID according to tag conditions.
+
+![sms_11_20230818](https://static.toastoven.net/prod_sms/eng/SMS_11_20230818.png)
+![sms_12_20230818](https://static.toastoven.net/prod_sms/eng/SMS_12_20230818.png)
+![sms_13_20230818](https://static.toastoven.net/prod_sms/eng/SMS_13_20230818.png)
+
+Tags can be registered on **Tag Management**, while UID and phone numbers can be saved on the **UID Management** tab.
+
+<a id="setting-for-rejection-of-receiving-080-numbers"></a>
+## Setting for Rejection of Receiving 080 Numbers { #setting-for-rejection-of-receiving-080-numbers }
+
+The rejection of receiving 080 numbers service allows recipients to reject receiving of ad messages.
+Advertisement messages<span style="color:red"> must include how to Deny for free </span> for recipients to reject or withdraw consent of receiving.
+
+<a id="subscription"></a>
+### Subscription { #subscription }
+
+Go to **Setting for rejection of receiving 080 numbers** to find the subscription page.
+Click **Add 080 Numbers to Reject Receiving** to enter business names.
+
+- Business names refer to such businesses which are guided when you make calls via 080 numbers rejected of receiving.
+
+![sms_14_20230818](https://static.toastoven.net/prod_sms/eng/SMS_14_20230818.png)
+
+<a id="registration-scheduled"></a>
+### Registration Scheduled { #registration-scheduled }
+
+When subscription is fully applied, the status is changed to Registration Scheduled. It takes 3 to 4 business days to open the rejection of receiving 080-number service, and the service is enabled after opening.
+
+<a id="registration-completed"></a>
+### Registration Completed { #registration-completed }
+
+When the service is completely open, you can find the start date and status of service.**While the rejection of 080-number is scheduled for registration or in service, SMS Service cannot be closed.** Service can be closed only after it is canceled.To cancel the service, press **Cancel Service**.
+
+<a id="send-ad-messages"></a>
+### Send Ad Messages { #send-ad-messages }
+
+1. Ad messages can be sent only when the rejection 080-number service is enable.
+2. When the delivery type is changed into **For Advertisement**, you can find an option to select numbers to reject receiving.
+3. Click **Apply Option** to add the required statements for ads.
+4. To send ad messages, required statements for ads must be included and the statements are as follows.
+    - Opening statement: `(Ads)`
+    - Last statement: `Deny for free {080-unsubscribed-number}` or `Deny for free {080-unsubscribed-number}` (the phrase can include spaces).
+
+Example
+
 ```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
+(Ad)
+
+[Deny for free]080XXXXXXX
 ```
 
-Logs from user scripts can be found in `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`.
+```
+(Ad)
 
-For more details regarding user scripts, see the [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) or [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) guides.
+Deny for free 080XXXXXXX
+```
 
-<a id="additional-instance-features"></a>
-## Additional Instance Features
+![sms_15_20230818](https://static.toastoven.net/prod_sms/eng/SMS_15_20230818.png)
+![sms_16_20230818](https://static.toastoven.net/prod_sms/eng/SMS_16_20230818.png)
 
-<a id="change-instance-status"></a>
-### Change Instance Status
+<a id="query-target-of-rejection"></a>
+### Query Target of Rejection { #query-target-of-rejection }
 
-An instance’s status can be changed by stopping, terminating, deleting, and starting it.
+Rejection targets, requested with request date and time as optional, can be queried from the panel at the bottom.
 
-For more details on hypervisor resources and fees for stopping, terminating, and deleting instances, see the table below.
+<a id="query-of-sms"></a>
+## Query of SMS { #query-of-sms }
 
-| Classification | Stop instance | Terminate Instance | Delete Instance |
-| --- | -- | --- | --- |
-| Hypervisor resource | Resource remain allocated  | Resource returned and reallocated when an instance is started | Resource removed |
-| Pricing for instance | Price for stopping applied | Free | Free |
-| Pricing for other connected resources | Charged| Charged | Charged |
+<a id="query-by-sms-request"></a>
+### Query by SMS Request { #query-by-sms-request }
 
-> [Note] GPU Instances cannot be terminated and will incur normal (100%) rates when stopped.
+Each item can be queried by conditions.
+(request id or date and time of delivery are required).
 
-<a id="create-image"></a>
-### Create Image
+![sms_17_20230818](https://static.toastoven.net/prod_sms/eng/SMS_17_20230818.png)
 
-Create an image from an instance's root block storage. It is recommended to stop instances before creating an image in order to ensure data integrity.
+- Click **Request ID** or **Recipient Numbers** to show pop-up window for details.
+- Registration/sending/receiving date search is possible within a maximum of one month.
+- You can download the displayed data in full screen as an Excel file.
+- You can check the status of your send request through the request status.
+- You can check the success/failure of sending processing through the sending results.
 
-While it is possible to create an image from an instance that has no available free space in its root block storage, those images are unusable by other instances because they cannot be properly initialized. Before creating an image, ensure that your instance has at least 100KB of free space.
+<a id="query-scheduled-sms-delivery"></a>
+### Query Scheduled SMS Delivery { #query-scheduled-sms-delivery }
 
-Created images are registered as private images in **Compute > Image**. You can use the registered image to create an instance with a block storage identical to that of the original instance.
+You can query the list of scheduled delivery.
 
-> [Caution]
-> The size of the created image may be larger than the actual usage of the root block storage.
+![sms_18_20230818](https://static.toastoven.net/prod_sms/eng/SMS_18_20230818.png)
 
-<a id="associatedisassociate-floating-ip"></a>
-### Associate/Disassociate Floating IP
+- Click **Request ID** or **Recipient Numbers** to show pop-up window for details.
+- Registration/sending/receiving date search is possible within a maximum of one month.
+- You can check the status of your send request through the request status.
+- If your scheduled sending is waiting, you can cancel it by selecting it from the list.
 
-Floating IP can be associated with or disassociated from an instance, regardless of the instance's status. If you have no available floating IP or if the floating IP you want is not available, you can create one by clicking **Create**. Alternatively, floating IP can also be created from **Network > VPC > Floating IP**.
+<a id="query-mass-sms-delivery"></a>
+### Query Mass SMS Delivery { #query-mass-sms-delivery }
 
-For more details on floating IP, see [VPC Overview](/Network/VPC/en/overview/).
+You can search for mass delivery by sending type.
 
-<a id="modify-security-group"></a>
-### Modify Security Group
+![sms_19_20230818](https://static.toastoven.net/prod_sms/eng/SMS_19_20230818.png)
 
-An instance's security groups can be modified regardless of the instance's status. Modified security groups are applied immediately.
+- Query: You can search for bulk SMS sending reservations in the inquiry form at the top. When you select a row in the inquiry list, you can check the receiving number and sending information (sending details, sending results) in the inquiry form at the bottom.
+- Send/Cancel: When making a reservation for bulk upload sending, if you select the scheduled send after confirming the recipient, select the reservation with the status of ‘Ready to Send’ and cancel.
+- You can send or cancel by clicking the **Send/Cancel** button. In case of scheduled sending is automatically processed at the current time.
+- Check Failed Delivery: If delivery request fails while the progress status is 'Delivery Completed', the number of failure can be found. Click **Failure Cases** to check failed recipient numbers and messages.
 
-For more details on security groups, see [Security Group](./console-guide/#security-group) and [VPC Overview](/Network/VPC/en/overview/).
+<a id="query-mass-sms-delivery-delivery-status-of-mass-sms"></a>
+#### Delivery Status of Mass SMS
 
-<a id="change-network-subnet"></a>
-### Change Network Subnet
+- Waiting: Recipient file data are yet to be read.
+- Preparing to send: The recipient file is being read.
+- Converting file: The recipient file is being converted.
+- Ready: All recipient file data are loaded and SMS delivery is ready. Select a schedule (column on the list) and you can find recipient numbers and delivery information.
+- Waiting for Delivery: SMS delivery is yet to be processed.
+- Delivering: SMS delivery is currently underway. Select a schedule (column on the list) to check the delivery progress rate.
+- Delivery Completed: Request for SMS delivery has been properly completed.
+- Canceling: The delivery is in the process of being canceled.
+- Canceled: The delivery has been canceled.
+- Delivery Failed: Error occurred during delivery.
 
-An instance's network subnet can only be changed while the instance is stopped. When you add a subnet, a network interface that will be connected to that subnet is automatically created on your instance. If you add multiple subnets at once, the order of the newly created network interfaces on the instance is set randomly. Deleting a subnet from an instance automatically deletes the network interface that was created along with the subnet.
+<a id="query-mass-sms-delivery-query-sms-delivery-per-recipient"></a>
+#### Query SMS Delivery per Recipient
 
-<a id="modify-flavor"></a>
-### Modify Flavor
+Select mass delivery (column on the list) to check delivery information of each recipient number and the result.
 
-Instance flavors can be changed once an instance has been stopped. If an instance is running, click **Stop Instance** in **Additional Features** to stop the instance.
+![sms_20_20230818](https://static.toastoven.net/prod_sms/eng/SMS_20_20230818.png)
 
-You can only change an instance to another flavor that is compatible with its current flavor.
+To find more details of delivery, click **View Details**.
 
-* m2, c2, r2, t2, x1 flavor instances can be changed to m2, c2, r2, t2, x1 flavors.
-* m2, c2, r2, t2, x1 flavor instances cannot be changed to u2 flavors.
-* u2 flavor instances cannot be changed to other flavors once they have been created, not even to those of the same u2 flavor.
+![sms_21_20230818](https://static.toastoven.net/prod_sms/eng/SMS_21_20230818.png)
 
-When you modify flavors, instance resize and resize confirmation tasks proceed. When all tasks are completed, the VM changes its status to **Shutoff**. You can start the instance by clicking **Start Instance** in **Additional Features**.
+You can find successfully replaced data.
 
-> [Note] The instance's root block storage size cannot be modified. If an instance requires additional block storage space, attach a block storage. For details on how to attach block storage, see [Block Storage Overview](/Storage/Block%20Storage/en/overview/).
+<a id="query-tagged-sms-delivery"></a>
+### Query Tagged SMS Delivery { #query-tagged-sms-delivery }
 
-Instances will be charged using the new flavor from the moment the modification completes.
+<a id="query-tagged-sms-delivery-query-by-delivery-request"></a>
+#### Query by Delivery Request
 
-<a id="change-instance-os-details"></a>
-### Change Instance OS Details
+You can query requests for tag delivery. Click to query each recipient as below.
 
-You can change instance OS information regardless of the state of the instance. 
+![sms_22_20230818](https://static.toastoven.net/prod_sms/eng/SMS_22_20230818.png)
 
-On the **Compute > Instance** page, click the instance whose OS information you want to change. On the **Basic Information** tab of that instance's details screen, click **OS > Modify**.
+<a id="query-tagged-sms-delivery-query-sending-by-recipient"></a>
+#### Query Sending by Recipient
 
-> [Note] You can't change the OS type.
+You can query the list of recipients sent from one request.
 
-<a id="change-instance-description"></a>
-### Change Instance Description
- 
-You can change instance description regardless of the state of the instance. 
- 
-On the **Compute > Instance** page, click the instance whose information you want to change. On the **Basic Information** tab of that instance's details screen, click **Description > Change**.
+![sms_23_20230818](https://static.toastoven.net/prod_sms/eng/SMS_23_20230818.png)
 
-<a id="change-instance-key-pair"></a>
-### Change Instance Key Pair
+To find more details of delivery, click **View Details**.
 
-You can change the instance key pair only if the instance is active.
+![sms_24_20230818](https://static.toastoven.net/prod_sms/eng/SMS_24_20230818.png)
 
-On the **Compute > Instance** page, click the instance whose key pair information you want to change. On the **Basic Information** tab of that instance's details screen, click **Key Pair > Change**.
+<a id="template-management"></a>
+## Template Management { #template-management }
 
-Change the key pair of the instance default account to the selected key pair. The instance default account can be found on the **Connection Information** tab of the instance's bottom details screen.
+<a id="add-categories"></a>
+### Add Categories { #add-categories }
 
-> [Caution] Changing an instance key pair deletes all public key information in the instance except for the selected key pair.
+Click **Add Categories** to add categories.
 
-> [Note] Only project members with the ADMIN permissions for the basic infrastructure can change the instance key pair, which cannot be changed if it is a Windows OS instance.
+![sms_25,26_20230818](https://static.toastoven.net/prod_sms/eng/SMS_25,26_20230818.png)
 
-> [Note] If the image version used to create the instance is low, the feature to change key pairs may not be available.
+Make sure to click **Add Categories** while a category is selected.
 
-<a id="manage-placement-policies"></a>
-### Manage Placement Policies
+<a id="modify-categories"></a>
+### Modify Categories { #modify-categories }
 
-You can create and delete placement policies and view a list of instances assigned to placement policies.
+Click **Modify Categories** to modify categories.
 
-Only the `anti-affinity` placement policy type for distributed placement is provided.
+![sms_27_1_20230818](https://static.toastoven.net/prod_sms/eng/SMS_27_1_20230818.png)
 
-You can delete a placement policy even if instances are assigned to it, in which case the instances are not deleted.
+Make sure to click **Modify Categories** while a category is selected.
 
-<a id="key-pairs"></a>
-## Key Pairs
+<a id="add-templates"></a>
+### Add Templates { #add-templates }
 
-<a id="import-key-pairs-windows"></a>
-### Import Key Pairs (Windows)
+Click **Add Templates** to add templates.
 
-You can use puttygen, which is installed when you install the PuTTY SSH client, to create a key pair and register it with NHN Cloud.
+![sms_27_20230818](https://static.toastoven.net/prod_sms/eng/SMS_27_20230818.png)
 
-Make sure you have [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) installed.
+1. Click the **Add Template** button.
+2. Enter a **sending type and template information**.
+3. To replace authentication numbers, order numbers, coupon codes, points, etc., **enter replacement keys enclosed in ##, such as '##key##', in the title or content**.
+4. After entering all the information, make sure to select a category, click **Add Template**.
 
-Run puttygen.
+<a id="modify-templates"></a>
+### Modify Templates { #modify-templates }
 
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
+Select a template to modify.
 
-Select **RSA** (or SSH-2 RSA in older versions of puttygen) under **Parameters**. Click **Generate** under **Actions**. Continuously move your mouse in the empty space in order to generate the key.
+![sms_28_20230818](https://static.toastoven.net/prod_sms/eng/SMS_28_20230818.png)
 
-After the key is generated, the public key file contents will be visible as shown below. Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
+1. Select the template that needs to be modified.
+2. Modify the sending type, template information, and content.
+3. Make sure to click **Modify Templates** while a category is selected after modification is completed.
 
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
+<a id="uid-management"></a>
+## UID Management { #uid-management }
 
-Click **Save private key** under **Actions** to save the private key. If you save the private key leaving the **Key passphrase** field blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to use your converted private key more securely, set a passphrase before saving.
+You can register and delete UID and mobile phone number. Please refer to [the reference](./console-guide/#tag-uid)
 
-> [Caution]
-> If you wish to be able to automatically login to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
+![sms_29,30_20230818](https://static.toastoven.net/prod_sms/eng/SMS_29,30_20230818.png)
 
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
+Click **Register UID**.
+Mass UIDs can be added in the CSV template.
 
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
+![sms_31_20230818](https://static.toastoven.net/prod_sms/eng/SMS_31_20230818.png)
 
-<a id="import-key-pairs-mac-and-linux"></a>
-### Import Key Pairs (Mac and Linux)
+Enter in uid,phoneNumber format.<br/>
+Example: sms_uuid1,01012345678
 
-Key pairs created using `ssh-keygen` in Mac or Linux can be registered with NHN Cloud. Use the following command to create a key pair.
+![sms_32_20230818](https://static.toastoven.net/prod_sms/eng/SMS_32_20230818.png)
 
-	$ ssh-keygen -t rsa -f my_key.key
+Find the number counts while uploading a template which is created.
 
-You can choose to set a passphrase for the key pair, although it is not required. If you wish to use your key pair more securely, we recommend setting a passphrase. The file with `.pub` appended to the specified key pair name contains the public key.
+<a id="tag-management"></a>
+## Tag Management { #tag-management }
 
-	$ cat my_key.key.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-	
-Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
+This is a page where you can tag or delete registered UIDs. Please refer to the reference for the meaning of tags and UID terms.
 
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
+![sms_32_20230818](https://static.toastoven.net/prod_sms/eng/SMS_33_20230818.png)
 
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
+Click **Register Tag** to register the tag.
 
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## Appendix 1. Change Language Packs in Windows
+![sms_34_20230818](https://static.toastoven.net/prod_sms/eng/SMS_34_20230818.png)
 
-NHN Cloud provides Windows images with English as the primary language. You may change your language preferences with the following steps.
+Register UID in tag. (Register the UID registered in the UID tab.)
 
-1. Go to **START > Control Panel > Clock, Language, and Region > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows1.png)
+<a id="webhook-management"></a>
+## Webhook Management { #webhook-management }
 
-2. Select **Change your language preferences > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows2.png)
+You can receive a webhook event by specifying a URL when a specified event occurs.
 
-3. Choose a language in **Add a language** and click **Add**.
-![Image1](http://static.toastoven.net/prod_instance/windows3.png)
+![sms_35_20230818](https://static.toastoven.net/prod_sms/eng/SMS_35_20230818.png)
 
-4. Check the language pack just added.
-![Image1](http://static.toastoven.net/prod_instance/windows4.png)
+1. Select the event type to register.
+2. Enter the URL address where data to be sent via webhook can be received.
+3. Enter the webhook signature to register (not required).
+4. After verification, click **Add** to register the webhook.
 
-5. Download and install the language pack.
-![Image1](http://static.toastoven.net/prod_instance/windows5.png)
+Registered webhooks can be checked in the **webhook registration list**.
 
-6. Download and install updates.
-![Image1](http://static.toastoven.net/prod_instance/windows6.png)
+<a id="sending-settings"></a>
+## Sending Settings { #sending-settings }
 
-7. To change to the installed language pack, double-click the selected language or select **Options**.
-![Image1](http://static.toastoven.net/prod_instance/windows7.png)
+- Before using the international SMS sending feature, see [International Sending Policy](./international-sending-policy).
+- If you do not want to use the international SMS sending feature, you can prevent accidents due to international SMS volume pumping by setting it to unused.
+- Manage countries allowed to send
+    - Only the specified major countries are enabled for sending during the initial setup. You can manage whether to ship to each country through the **Set Country Allowed to Send > Select Country to Allow**.
+- Auto-block monthly limit and threshold notifications
+    - The **Auto-Block Monthly Limit** is 1,000 per month by default, with a maximum of 10,000.
+    - If you need an adjustment that exceeds the 10,000 **Auto-Block Monthly Limit**, please contact us via the **Request Exceed 10,000** button.
+    - The **Auto-Block Monthly Limit** is an auxiliary function, and detection is not reflected in real time. NHN Cloud is not responsible for any errors in the auxiliary function, so please use it with caution.
+    - If you **enable** **monthly limit threshold notifications**, notifications will be sent to all project members when 70%, 90%, and 100% of the value you set for the **Auto-Block Monthly Limit** is reached.
+- Block Sending by conversion rate and notifications
+    - If you **enable** the **Block Sending and Notification by Conversion Rate**, the block feature is enabled and notifications are sent to all project members when a block occurs.
+    - Country-specific blocking by conversion rate only applies to the countries that you set via the **Set Block Country from Sending by Conversion Rate > Select Country to Block**.
+    - The **Blocked** button is exposed next to the blocked country if a country is blocked by Conversion Rate. Click that button to unblock it. 
+    - Blocking Rules by Conversion Rate
+        - **Conversion Rate** is the threshold setting above which conversion rate-based blocking occurs.
+            - Blocked if the calculated conversion rate is below the conversion rate threshold.
+            - You can specify a conversion rate from 1% to 100%.
+        - **Minimum Count** is a threshold setting for the number of conversion rate collection requests sent for conversion rate-based blocking to occur.
+            - You must send a minimum number of conversion rate collection requests for conversion rate-based blocking to occur. 
+            - You can specify a minimum number of cases from 1 to 10,000.
+        - **Time Range** is the time range setting for calculating the conversion rate.
+            - The conversion rate is calculated based on the number of collection requests sent, the number of conversions, and the conversion rate within that time range from the time of the request to send.
+            - You can specify a time range from 1 hour to 168 hours (7 days).
+- Daily send limit by country settings management
+    - You can set the daily send limit per country, and configure each country to stop sending once the limit is exceeded.
+    - The daily send limit by country resets at midnight Korea Standard Time (KST).
+    - If sending is blocked by this feature, you can lift the block by setting a higher daily limit for the country.
+    - The daily send limit by country applies only to countries configured through the **Daily Send Limit by Country Settings > Select Countries to Restrict** button.
+    - The daily send limit by country is a supplementary feature and detection is not reflected in real time. NHN Cloud is not responsible for any errors in the supplementary feature, so please use it with caution.           
+!!! danger "Caution"
+    Cases of international SMS abuse are increasing globally.
+    It is recommended to set the monthly limit and the country of origin only as much as necessary.
+    NHN Cloud is not responsible for any international SMS sent due to abuse.
 
-8. Choose **Make this the primary language** for Windows display language.
-![Image1](http://static.toastoven.net/prod_instance/windows8.png)
+<a id="international-sms-sending-settings"></a>
+### International SMS Sending Settings { #international-sms-sending-settings }
 
-9. To apply the changes, click **Log off now**.
-![Image1](http://static.toastoven.net/prod_instance/windows9.png)
+<!-- TODO: translate body -->
 
-10. Log in again, and you can see Windows is displayed using the language pack of your choice.
-![Image1](http://static.toastoven.net/prod_instance/windows10.png)
+<a id="alternative-characters-settings"></a>
+### Alternative Characters Settings { #alternative-characters-settings }
 
-<a id="appendix-2-change-routing-in-windows"></a>
-## Appendix 2. Change Routing in Windows
+- If the body/subject of the delivery request contains unsendable text, you can set it to be converted to sendable text.
+- When the alternative characters setting is enabled, unsendable characters are converted to '?' and displayed.
 
-Routing in NHN Cloud Windows instances can be changed as follows.
+<a id="set-duplicate-delivery"></a>
+### Set Duplicate Delivery { #set-duplicate-delivery }
 
-* Press **Windows Key + R** to open an execution window, and enter `cmd` and execute to open a command prompt window. You can enter route commands here.
+- By setting, duplicate messages may not be sent.
+- When the duplicate delivery setting is blocked, delivery is processed as failure for same requests during specified period (unit:minute).
+- The maximum available block time is 1 hour.
+- A message is determined as duplicate by the following criteria:
+    - Message type (SMS/LMS/MMS/AUTH), delivery type (general/mass/tag), sender number, recipient number, title, body, and attached file
 
-Route commands
+<a id="limit-advertising-messages"></a>
+### Limit Advertising Messages { #limit-advertising-messages }
 
-* Print current configuration: route print
-* Add : route add "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Change : route change "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Delete : route delete "Destination" mask "Destination subnet" "gateway" metric "Metric value" if "Interface number"
-* Option : -p (specify as persistent route)
+- You can limit the sending time of advertising messages.
+- Advertising messages will not be sent during the set time.
+    - Ad limit start time can be set: 18:00~21:00
+    - Ad limit end time can be set: 08:00~12:00
+- Failure/re-delivery is possible depending on how the undelivered message is set up.
 
-  
-Description
+<a id="backup-settings"></a>
+### Backup Settings { #backup-settings }
 
-![Image1](http://static.toastoven.net/prod_instance/windows_route1.png)
+- Depending on the message retention period policy, you can back up sending history data that is older than 180 days.
+- If you enter information about whether to back up messages, the file extension, and the storage to upload the file to, a file containing the backup date will be created in that storage.
 
-* Metric Value: A lower value indicates higher priority
-* Interface Number: This value can be obtained from route print (red box above)
-* Persistent Route: Use the -p option to avoid the configured routes being reset across system reboots (blue box above)
+<a id="statistical-event-key-settings"></a>
+## Statistical Event Key Settings { #statistical-event-key-settings }
 
-Example 1 - Restricting external communication for particular interfaces
+When registering an event key and sending with that key, you can collect statistical data by statistical event key./
+Please refer to the [reference](./console-guide/#tag-uid) for the meaning of statistical event key terms.
 
-* You can restrict an interface from communicating externally by using the route change command to change its route metric or by leaving the default gateway field blank when configuring fixed IP settings.
-* How to Modify Metrics
-    * Increase interface metric value
+![sms_36_20230818](https://static.toastoven.net/prod_sms/eng/SMS_36_20230818.png)
 
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
+1. Click **Register Event Key** to set the data collection period.
+2. Enter a name and detailed description for the statistical event key.
+3. Click **Save** and the event key will be registered.
 
-![Image 1](http://static.toastoven.net/prod_instance/windows_route2.png)
+When the data collection period ends, it becomes inactive and no longer collects data.<br/>
+**The end point of the data collection period can be modified if activated.**
 
-* How to Set Fixed IP
-    1. Use the ipconfig /all command to view IP information.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. Enter the corresponding IP information, leaving the default gateway field blank, in the IP Properties window.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. Check the results using the route print command.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route5.png)
+<a id="statistics"></a>
+## Statistics { #statistics }
 
-Example 2 - Setting routes for a particular address range
+<a id="query-statistics"></a>
+### Query Statistics { #query-statistics }
 
-* Use the route add command to set routes for a particular address range.
+- You can view statistics by delivery request duration, statistics event keys, template, and delivery type.
+- You can view delivery requests, successes, and failures in graphs and tables.
 
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
+<a id="query-statistics-categorize-statistics"></a>
+#### Categorize Statistics
 
-![Image 1](http://static.toastoven.net/prod_instance/windows_route6.png)
+- Messages (request time): Statistics collected by request time to send.
+- Statistics are collected as of the following times
+    - Request: Send request time
+    - Send: As a send request time, increases when the send request is made to the carrier (vendor)
+    - Send Failure:  As a send request time, increases when the failure response occurs
+    - Receive:  As a send request time, increases when the request is actual received by the terminal
+    - Waiting for result: Increases upon sending, and decreases when received
+- Message (event time): Statistics collected based on the time the event occurred.
+- Statistics are collected as of the following times
+    - Request: Send request time
+    - Send: Time requested to send to a carrier (vendor)
+    - Send Failure: Time when the failed response occurred
+    - Receive: Actual terminal reception time
+- International Delivery: Statistics collected based on the time of event occurrence.
+- Statistics are collected as of the following times
+    - Request: Send request time
+    - Send: Time requested to send to a carrier (vendor)
+    - Send Failure: Time when the failed response occurred
+    - Received: Time when a sent message is received
+    - Number of Sends: Time when a message is sent via the single or concatenated message feature
+    - Waiting for Conversion: Time when a message is received from a conversion rate collection request
+    - Conversion Completed: Time when a conversion rate collection request is sent and converted
 
-Example 3 - Removing a particular route
+<a id="note"></a>
+## [Note] { #note }
 
-* Use the route delete command to remove specified routes.
+<a id="tags-and-uid"></a>
+### Tags and UID { #tags-and-uid }
 
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
+<a id="tags-and-uid-glossary"></a>
+#### Glossary
 
-![Image 1](http://static.toastoven.net/prod_instance/windows_route7.png)
+| Term           | Description                                       |
+| ------------ | ---------------------------------------- |
+| Tag      | A system for classifying UIDs. <br>By attaching multiple tags to UID, users can easily search and use UID information. |
+| UID          | An ID (identifier) that identifies the user. <br>Multiple contacts can be registered in one UID and used for sending. |
+| Contact | A place designated for contact. <br>In Notification, you can register contact information from three services: Push, Email, and SMS. <br>Push refers to a token, Email refers to an email address, and SMS refers to a phone number. |
 
-<a id="appendix-3-change-system-locale"></a>
-## Appendix 3. Change System Locale
+<a id="tags-and-uid-send-using-tags"></a>
+#### Send using tags
 
-System locale in NHN Cloud Windows instances can be changed as follows.
+This feature allows you to send a text message by selecting a tag instead of the phone number that is the recipient's information.
 
-1. Go to **Windows Key > Control Panel > Clock, Language, and Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale1.png)
+1. Register UID.
+    - Register UID and one or multiple phone numbers in the **UID management** tab.
+    - For more information, please refer to [UID Management](./console-guide/#uid-manage).
+2. Register a tag.
+    - Register tags in the **Manage Tags** tab.
+    - For more information, please refer to [Manage Tags](./console-guide/#tag-manage).
+3. Register UID in tag.
+    - Register the UID to the tag registered in the **Manage Tags** tab.
+4. Select a tag and send a text message.
+    - In the **General Send** tab, select **Send Tag** instead of phone number to register the tag.
+    - The text is sent to the phone number of the UID registered in the tag.
+    - For more information, please refer to [Sending messages using tags](./console-guide/#tag-send).
 
-2. Select **Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale2.png)
+<a id="tags-and-uid-relationship-with-tag-features-in-other-services"></a>
+#### Relationship with tag features in other services
 
-3. From the **Administrative** tab, click **Change system locale**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale3.png)
+- If you are using Push or SMS services in the same project, you can use the tag and UID information used in Email together without re-registering.
+- You can add additional contact information to the same UID through each service's console.
 
-4. Select a system locale to use.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale4.png)
+<a id="statistics-event-keys-and-statistics"></a>
+### Statistics Event Keys and Statistics { #statistics-event-keys-and-statistics }
+<a id="statistics-event-keys-and-statistics-glossary"></a>
+#### Glossary
 
-5. Restart the system to apply the changes.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale5.png)
+| Term           | Description                                       |
+| ------------ | ---------------------------------------- |
+| Statistical Event Key | This is an event key used when you want to view statistics grouped into specific units. |
+| statsId | Unique ID of the statistical event key. This value is mainly used when calling the API. |
 
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## Appendix 4. Restarting Instances for Hypervisor Maintenance
-NHN Cloud updates hypervisor software on a regular basis to enhance the security and stability of infrastructure services that we provide.
-Instances running on a hypervisor that requires maintenance must be restarted and migrated to a hypervisor which has completed maintenance.
+<a id="statistics-event-keys-and-statistics-if-you-want-to-extract-statistics-in-specific-units-when-sending-a-message"></a>
+#### If you want to extract statistics in specific units when sending a message
 
-To restart an instance, use the **! Restart** button that has been created next to the instance name in the console.
-`Using the "Restart Instances" button in the console or rebooting the operating system will not migrate an instance to another hypervisor.`
-Follow the guide below to use the restart feature in the console.
+1. Register statistical event keys in the **statistical event key management** tab. If sending using the API, you must obtain the statistics ID (statsId) from this screen.
+2. When sending a message from the console or to the API, you must also send the statistics event key.
 
-Go to the project where your instance requiring maintenance is located.
+    2-1. When sending from console
+    - When sending a text message in the **Deliver SMS** tab, select the statistical event key.
+    - After entering all message information, click the **Send** button.
+    - You can check statistical information after a certain period of time in the **Statistics** tab.
 
-**1. Check if your instance requires maintenance.**
+    2-2. When sending via API
+    - Enter the statsId obtained from the **statistics event key management** tab into the message transmission parameters.
+    - You can check statistical information after a certain period of time in the **Statistics** tab.
 
-Any instance that has the **! Restart** button before its name requires maintenance.
-Put the mouse cursor over the **! Restart** button to find maintenance schedule details.
-![Instance Maintenance Image 1](http://static.toastoven.net/prod_instance/instance_p_migration_en_1.png)    
+<a id="data-retention-period"></a>
+### Data retention period { #data-retention-period }
 
-**2. Deactivate or stop application programs running on an instance which requires maintenance.**
-
-Any application programs running on an instance which requires maintenance must be deactivated or stopped in order not to impact your service.
-If there is no way to do so without impacting your service, please contact NHN Cloud Customer Center and we will provide you with guidance on appropriate measures to take.
-
-**3. Click the [! Restart] button created next to the name of the target instance.**
-
-![Instance Maintenance Image 2](http://static.toastoven.net/prod_instance/instance_p_migration_en_2.png)
-
-**4. Click [Confirm] in the Restart Instances confirmation window.**
-
-![Instance Maintenance Image3](http://static.toastoven.net/prod_instance/instance_p_migration_en_3.png)
-
-**5. Wait until the instance status turns green and the [! Restart] button disappers.**
-
-If the status does not change or the **! Restart** button is not disabled, try refreshing the page.
-
-You cannot operate or modify the instance while a restart is underway.
-If an instance restart does not complete successfully, the administrator will automatically be notified and you'll also be contacted by NHN Cloud.
+* Retains the sending history for the last 180 days in accordance with the data retention policy. During this period, you can view message delivery history. Once the retention period expires, data will be deleted in accordance with applicable laws and regulations.
+* The attachments used in services are retained for 7 days. After 7 days, they are deleted and cannot be retrieved.
+* However, the attachments and evidential documents (communications service certificate) registered to a template are retained as long as the service is provided.
+* Statistical data stores information from the last 90 days.
