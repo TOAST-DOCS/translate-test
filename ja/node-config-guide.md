@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=1d41682f4f26 -->
 
 <a id="data-analytics-dataflow-node-type-guide"></a>
@@ -11,6 +13,7 @@
 
 <a id="notes-on-connecting-to-object-storage"></a>
 ### Object Storage接続時の注意事項 { #notes-on-connecting-to-object-storage }
+
 リージョンまたはプロジェクトが異なるObject Storageでありながら、バケット名が同じ場合、1つのフローで一緒に使用することはできません。
 
 !!! tip "不可能な接続設定の例"
@@ -116,31 +119,38 @@
 
 <a id="input-by-data-type"></a>
 ## データタイプ別の入力方法 { #input-by-data-type }
+
 <a id="string"></a>
 ### string { #string }
+
 文字列を入力します。
 
 <a id="number"></a>
 ### number { #number }
+
 * 0以上の数値を入力します。
 * 入力欄の右側にある矢印を使用して、値を1ずつ調整できます。
 
 <a id="boolean"></a>
 ### boolean { #boolean }
+
 プルダウンメニューから`TRUE`または`FALSE`を選択します。
 
 <a id="enum"></a>
 ### enum { #enum }
+
 プルダウンメニューから項目を選択します。
 
 <a id="array-of-strings"></a>
 ### array of strings { #array-of-strings }
+
 * 配列に入れる文字列を1つずつ入力します。
 * 文字列を入力した後、`+`ボタンをクリックすると配列に文字列が挿入されます。
 * 例: `["message" , "yyyy-MM-dd HH:mm:ssZ", "ISO8601"]`を入力するには、`message`、`yyyy-MM-dd HH:mm:ssZ`、`ISO8601`の順で配列に文字列を挿入します。
 
 <a id="hash"></a>
 ### hash { #hash }
+
 JSON形式の文字列を入力します。
 
 <a id="schema"></a>
@@ -225,6 +235,7 @@ JSON形式の文字列を入力します。
 
 <a id="source-nhn-cloud-log-crash-search-execution-mode"></a>
 ### 実行モード { #source-nhn-cloud-log-crash-search-execution-mode }
+
 * STREAMING: `照会開始時間`以降のデータを継続して処理します。
 * BATCH: `照会開始時間`、`照会終了時間`の間に該当するデータを全て処理し、フローを終了します。
 
@@ -297,6 +308,7 @@ JSON形式の文字列を入力します。
 
 <a id="source-nhn-cloud-object-storage-execution-mode"></a>
 ### 実行モード { #source-nhn-cloud-object-storage-execution-mode }
+
 * STREAMING: `リストの更新周期`ごとにオブジェクトのリストを更新し、新しく追加されたオブジェクトを読み込んでデータを処理します。
 * BATCH: フローの開始時点でオブジェクトのリストを一度読み込んだ後、オブジェクトを読み込んでデータを処理し、フローを終了します。
 
@@ -324,15 +336,18 @@ JSON形式の文字列を入力します。
 
 <a id="source-nhn-cloud-data-lake-storage-node-description"></a>
 ### ノードの説明 { #source-nhn-cloud-data-lake-storage-node-description }
+
 * NHN CloudのData Lake Storageからデータを入力するノードです。
 
 <a id="source-nhn-cloud-data-lake-storage-execution-mode"></a>
 ### 実行モード { #source-nhn-cloud-data-lake-storage-execution-mode }
+
 * STREAMING：`リスト更新サイクル`ごとにオブジェクトリストを更新し、新しく追加されたオブジェクトを読み込んでデータを処理します。
 * BATCH：フロー開始時点にオブジェクトリストを一度読み込んだ後、オブジェクトを読み込んでデータを処理し、フローを終了します。
 
 <a id="source-nhn-cloud-data-lake-storage-property-description"></a>
 ### プロパティの説明 { #source-nhn-cloud-data-lake-storage-property-description }
+
 | プロパティ名 | デフォルト値 | データ型 | 説明 | 備考 |
 | --- |---------| --- | --- | --- |
 | バケット | - | string | データを読み取るバケット名を入力します。 | |
@@ -344,6 +359,7 @@ JSON形式の文字列を入力します。
 
 <a id="message-ingestion-by-codec-type"></a>
 ### コーデック別のメッセージ入力 { #message-ingestion-by-codec-type }
+
 サポートコーデック
 * [plainコーデック](./codec-config-guide.md#plain-codec) - 元データ文字列の保存
 * [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データの解析
@@ -359,6 +375,7 @@ JSON形式の文字列を入力します。
 
 <a id="source-amazon-s3-execution-mode"></a>
 ### 実行モード { #source-amazon-s3-execution-mode }
+
 * STREAMING: `リストの更新周期`ごとにオブジェクトのリストを更新し、新しく追加されたオブジェクトを読み込んでデータを処理します。
 * BATCH: フローの開始時点でオブジェクトリストを一度更新した後、オブジェクトを読み込んでデータを処理し、フローを終了します。
 
@@ -392,14 +409,17 @@ JSON形式の文字列を入力します。
 
 <a id="node-decription"></a>
 ### ノードの説明 { #node-decription }
+
 NHN CloudのEasyQueueからデータを受信するノードです。
 
 <a id="source-nhn-cloud-easyqueue-execution-mode"></a>
 ### 実行モード { #source-nhn-cloud-easyqueue-execution-mode }
+
 STREAMING：キューに新しいメッセージが到着するたびにデータを処理します。
 
 <a id="source-nhn-cloud-easyqueue-property-description"></a>
 ### プロパティの説明 { #source-nhn-cloud-easyqueue-property-description }
+
 | プロパティ名 | デフォルト値 | データ型 | 説明 | 備考 |
 | --- | --- | --- | --- | --- |
 | アプリキー | - | string | EasyQueueのアプリキーを入力します。 | |
@@ -436,6 +456,7 @@ STREAMING：キューに新しいメッセージが到着するたびにデー�
 
 <a id="source-nhn-cloud-easyqueue-message-ingestion-by-codec-type"></a>
 ### コーデック別のメッセージ入力 { #source-nhn-cloud-easyqueue-message-ingestion-by-codec-type }
+
 サポートコーデック
 * [plainコーデック](./codec-config-guide.md#plain-codec) - 元データ文字列の保存
 * [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データの解析
@@ -450,6 +471,7 @@ Kafkaからデータを受信するノードです。
 
 <a id="source-apache-kafka-execution-mode"></a>
 ### 実行モード { #source-apache-kafka-execution-mode }
+
 STREAMING: トピックに新しいメッセージが届くたびにデータを処理します。
 
 !!! danger "注意"
@@ -601,6 +623,7 @@ STREAMING: トピックに新しいメッセージが届くたびにデータを
 
 <a id="filter-csv-node-description"></a>
 ### ノードの説明 { #filter-csv-node-description }
+
 CSV形式のメッセージをパースしてフィールドに保存するノードです。
 
 <a id="filter-csv-property-description"></a>
@@ -619,6 +642,7 @@ CSV形式のメッセージをパースしてフィールドに保存するノ�
 
 <a id="filter-csv-property-description-how-to-enter-a-schema"></a>
 #### スキーマ入力方法
+
 カラムタイプはサポートしておらず、全てのカラムとデータタイプをスキーマとして入力します。
 
 
@@ -704,6 +728,7 @@ JSON文字列をパースして指定されたフィールドに保存するノ�
 
 <a id="filter-json-property-description-how-to-enter-a-schema"></a>
 #### スキーマ入力方法
+
 カラムタイプはサポートしておらず、全てのカラムとデータタイプをスキーマとして入力します。
 
 <a id="filter-json-example-of-csv-parsing-without-data-type-conversion"></a>
@@ -926,6 +951,7 @@ null値をデフォルト値に置き換えるノードです。
 
 <a id="default-setting-example-condition"></a>
 #### 条件
+
 * 対象フィールド → `fieldname`
 * デフォルト値 → `default_value`
 
@@ -969,6 +995,7 @@ null値をデフォルト値に置き換えるノードです。
 
 <a id="example-condition"></a>
 #### 条件
+
 * 対象フィールド → `source_field`
 * 保存するフィールド → `dest_field`
 
@@ -1014,6 +1041,7 @@ null値をデフォルト値に置き換えるノードです。
 
 <a id="filter-rename-example-condition"></a>
 #### 条件
+
 * ソースフィールド → `fieldname`
 * 対象フィールド → `changed_fieldname`
 
@@ -1055,6 +1083,7 @@ null値をデフォルト値に置き換えるノードです。
 
 <a id="filter-strip-example-condition"></a>
 #### 条件
+
 対象フィールド → `["field1", "field2"]`
 
 <a id="filter-strip-example-input-message"></a>
@@ -1099,6 +1128,7 @@ null値をデフォルト値に置き換えるノードです。
 
 <a id="configuration-example-condition"></a>
 #### 条件
+
 削除するフィールド → `["field2", "field3"]`
 
 <a id="configuration-example-input-message"></a>
@@ -1148,6 +1178,7 @@ null値をデフォルト値に置き換えるノードです。
 
 <a id="separator-mode-example-conditions"></a>
 #### 条件
+
 * ソースフィールド → `src_field`
 * 保存するフィールド → `target_field`
 * 正規表現 → `,`
@@ -1177,6 +1208,7 @@ null値をデフォルト値に置き換えるノードです。
 
 <a id="match-mode-example-conditions"></a>
 #### 条件
+
 * ソースフィールド → `src_field`
 * 保存するフィールド → `target_field`
 * 正規表現 → `[^,]+`
@@ -1240,6 +1272,7 @@ null値をデフォルト値に置き換えるノードです。
 
 <a id="predefined-dictionaries"></a>
 ### 事前定義辞書 { #predefined-dictionaries }
+
 * 言語別の事前定義辞書は次のとおりです。
   * [ko](http://static.toastoven.net/prod_dataflow/ko/node-config-guide/stop_word_remover_dict_ko.txt)
   * [en](http://static.toastoven.net/prod_dataflow/ko/node-config-guide/stop_word_remover_dict_en.txt)
@@ -1249,6 +1282,7 @@ null値をデフォルト値に置き換えるノードです。
 
 <a id="filter-stop-words-remover-configuration-example-conditions"></a>
 #### 条件
+
 * ソースフィールド → `src_field`
 * 保存するフィールド → `target_field`
 * 辞書
@@ -1311,6 +1345,7 @@ a
 
 <a id="filter-pattern-extractor-grok-example-conditions"></a>
 #### 条件
+
 * ソースフィールド → `log_message`
 * 対象フィールド → `result`
 * カスタムパターン → `{"CUSTOM_PHONE_NUMBER": "01[016789]-\d{3,4}-\d{4}", "CUSTOM_EMPLOYEE_ID": "EMP-\d{6}", "CUSTOM_ORDER_ID": "ORD-[A-Z]{3}-\d{8}"}`
@@ -1357,6 +1392,253 @@ a
   }
 }
 ```
+
+<a id="filter-aggregate"></a>
+## Filter > Aggregate { #filter-aggregate }
+
+<a id="filter-aggregate-node-description"></a>
+### ノード説明 { #filter-aggregate-node-description }
+
+* メッセージを一定の長さの時間区間（ウィンドウ）に分割し、グループごとに集計するノードです。
+* ウィンドウは互いに重ならない同じ長さの区間に分割されます。1つのメッセージは1つのウィンドウにのみ属します。
+* ウィンドウの区間は、データ時刻フィールドの値を基準に分割されます。ノードがメッセージを処理した時刻は使用しません。
+* ウィンドウが閉じると、グループごとに集計結果メッセージを1件出力します。元のメッセージは出力しません。
+* Aggregateノードは入力接続を1つだけ持つことができます。入力接続が2つ以上ある場合、フローを保存できません。
+* 集計対象を絞り込むには、上位に [Branch > IF](#branch-if) ノードを接続して条件に合うメッセージのみを送信します。集計結果の一部のみを次のノードに送るには、下位に [Branch > IF](#branch-if) ノードを接続します。
+
+ノードを設定する前に、次の概念を確認してください。
+
+* **ウィンドウ**: 集計対象をまとめる時間区間です。区間に該当するメッセージがすべて到着したと判断するとウィンドウを閉じ、結果を出力します。閉じたウィンドウは再度開きません。
+* **順序が乱れた到着**: メッセージがデータ時刻フィールドの値の順序どおりに到着するという保証はありません。メッセージの送信遅延、複数パーティションのソース、並列処理など、さまざまな原因により、後から作成されたメッセージが先に到着する場合があります。
+* **ウォーターマーク遅延時間**: そのため、区間が終了した直後にウィンドウを閉じず、さらに待機します。どれだけ待機するかを定める値です。
+* **遅延許容時間**: ウィンドウが閉じた後に到着したメッセージも反映するには、この値を設定します。
+
+2つの遅延時間の違いについては、[ウォーターマーク遅延時間と遅延許容時間](#filter-aggregate-watermark)で説明します。
+
+<a id="filter-aggregate-property-description"></a>
+### プロパティの説明 { #filter-aggregate-property-description }
+
+| プロパティ名 | デフォルト値 | データ型 | 説明 | 備考 |
+|---|---|---|---|---|
+| グループキー | - | array of strings | グループとしてまとめるフィールド名を入力します。<br/>入力しない場合、すべてのメッセージを1つのグループとして集計します。 | スキーマ定義時にドロップダウンを提供 |
+| データ時間フィールド | - | string | ウィンドウ区間を分割する基準となる時間フィールド名を入力します。<br/>値を時刻として解釈できないメッセージは集計から除外します。 | スキマ定義時にドロップダウンを提供 |
+| ウィンドウサイズ | 60 | number | ウィンドウ1つの長さを秒単位で入力します。 |  |
+| ウォーターマーク遅延時間 | 0 | number | ウィンドウ区間が終了した後も遅れて到着するメッセージをさらに待つ時間を秒単位で入力します。<br/>値が大きいほど遅れたメッセージをより多く反映しますが、その分結果の出力も遅くなります。 |  |
+| 遅延許容時間 | 0 | number | ウィンドウが閉じた後も集計状態を維持する時間を秒単位で入力します。 |  |
+| 集計項目 | - | hash | ウィンドウごとに計算する集計リストを最低1行以上入力します。 | `集計項目の入力方法` 参照 |
+
+<a id="filter-aggregate-property-description-how-to-enter-aggregations"></a>
+#### 集計項目の入力方法
+
+* **[集計追加]** をクリックして行を追加し、行ごとに集計するフィールド、演算、出力フィールド名を入力します。
+* 集計項目は最低1行以上入力する必要があります。
+* 出力フィールド名は互いに重複することはできず、グループキーのフィールド名や `window_start`、`window_end` と同じにすることはできません。
+
+| 演算 | 集計するフィールド | 説明 |
+|---|---|---|
+| COUNT | 空白のままにします。 | ウィンドウに含まれる全メッセージ数をカウントします。1行のみ追加できます。 |
+| SUM | 必ず指定します。 | 集計するフィールド値の合計を計算します。 |
+| AVG | 必ず指定します。 | 集計するフィールド値の平均を計算します。 |
+
+* SUM、AVG は集計するフィールド値が数値のメッセージのみ集計します。値がない、または数値として解釈できないメッセージは計算から除外します。
+* ウィンドウ内に数値として解釈できる値が1つもない場合、SUM、AVG の結果は `null` になります。
+
+<a id="filter-aggregate-window-boundary"></a>
+### ウィンドウ区間 { #filter-aggregate-window-boundary }
+
+ウィンドウの境界は、フローの実行時刻や最初のメッセージの時刻ではなく、1970年1月1日00:00:00 UTCを起点としてウィンドウサイズの倍数となる時刻に合わせて区切られます。たとえば、ウィンドウサイズが60秒であれば毎分0秒、3600秒であれば毎時正刻が境界となります。
+
+時刻はUTC基準です。そのため、ウィンドウサイズを86400（1日）に設定した場合、1日の境界は韓国時間の午前9時となります。
+
+集計ウィンドウはUTC基準で整列されます。1日単位のウィンドウの境界はUTCの真夜中、すなわち韓国時間の午前9時であり、現時点では1日の境界を韓国時間の真夜中に合わせるオプションは提供していません。window_startとwindow_endはUTC基準のエポックミリ秒で出力されます。
+
+<a id="filter-aggregate-data-time-field"></a>
+### データ時間フィールド { #filter-aggregate-data-time-field }
+
+データ時間フィールドに指定したフィールドの値は、次の形式をサポートします。
+
+| 形式 | 例 |
+|---|---|
+| epoch ミリ秒（数値または文字列） | `1785730000000`, `"1785730000000"` |
+| ISO 8601 UTC 文字列 | `2026-08-19T09:30:00Z` |
+| オフセットを含む ISO 8601 文字列 | `2026-08-19T18:30:00+09:00` |
+
+* 数値は常にミリ秒単位として解釈します。秒単位の epoch 値を入力すると、1970 年に近い時刻として解釈され、意図したウィンドウに分割されません。
+* オフセットのない文字列は上記の形式に該当しないため、その値を持つメッセージは集計から除外されます。たとえば、`2026-08-19 18:30:00`、`2026-08-19T18:30:00` はいずれも使用できません。
+* 値をそのまま使用できない場合は、上位に [Date](#filter-date) ノードを接続して形式を変換してください。
+
+<a id="filter-aggregate-watermark"></a>
+### ウォーターマーク遅延時間と遅延許容時間 { #filter-aggregate-watermark }
+
+どちらの属性も遅れて到着するメッセージを扱いますが、動作するタイミングと結果が異なります。
+
+| 項目 | ウォーターマーク遅延時間 | 遅延許容時間 |
+|---|---|---|
+| 動作するタイミング | ウィンドウを閉じる前 | ウィンドウが閉じた後 |
+| 結果出力 | ウィンドウあたり1件 | 遅れたメッセージが届くたびに1件ずつ追加出力 |
+| 結果が出るタイミング | 設定した分だけ遅延する | 遅延しない |
+| メモリ | 影響なし | 閉じたウィンドウも保持するため増加する |
+
+結果を1回だけ受け取りたい場合は、遅延許容時間を0のままにして、ウォーターマーク遅延時間のみ調整してください。結果を早く受け取りつつ遅れて届いたデータも取りこぼしたくない場合で、重複した結果を下流で処理できるならば、遅延許容時間を使用してください。
+
+どちらの属性も実際の時刻ではなく、データ時刻フィールドの値を基準に時間を計測します。
+
+Aggregate ノードは、メッセージが到着した順序ではなく、データ時刻フィールドの値を基準にウィンドウを閉じます。ウィンドウを閉じるタイミングは次の順序で決まります。
+
+1. これまでに到着したメッセージのデータ時刻のうち、最大値を基準時刻とします。
+2. 基準時刻からウォーターマーク遅延時間を引きます。この値が「この時刻より前のメッセージはすべて到着済み」と判断する基準になります。
+3. この値がウィンドウの終了時刻に達すると、該当ウィンドウを閉じて結果を出力します。
+
+たとえば、ウィンドウサイズが10秒、ウォーターマーク遅延時間が5秒のとき、データ時刻が15秒のメッセージが到着すると、15秒 - 5秒 = 10秒となり、0秒以上10秒未満のウィンドウが閉じます。
+
+* ウォーターマーク遅延時間が大きいほど、順序が乱れて到着したメッセージをより多く反映できますが、その分だけ結果の出力も遅くなります。
+* (Apache) Kafkaや (NHN Cloud) EasyQueueは、データを複数のパーティションに分割して保存します。パーティションごとに読み取り速度が異なるため、後から生成されたメッセージが先に到着することがよく発生します。このようなソースを使用する場合は、ウォーターマーク遅延時間を余裕をもって設定してください。
+* ウィンドウが閉じた後に到着したメッセージは破棄されます。遅延許容時間を設定すると、その時間の間、集計状態を保持して遅れて到着したメッセージも反映します。
+* ただし、遅延許容時間を0より大きく設定すると、遅れて到着したメッセージごとに該当ウィンドウの結果を再出力します。そのため、同じ `window_start` 値を持つ結果メッセージが複数件出力され、そのうち最後に出力されたメッセージが最終的な集計値となります。
+    * 以前に出力した結果は更新されません。下流のノードや Sinkで結果を再集計したり、重複して保存したりしないよう注意してください。
+    * 重複出力を望まない場合は、遅延許容時間を0のままにして、ウォーターマーク遅延時間を増やすことで、遅れて到着するメッセージをウィンドウが閉じる前に反映してください。
+
+<a id="filter-aggregate-output-event"></a>
+### 出力メッセージの構成 { #filter-aggregate-output-event }
+
+出力メッセージは次のフィールドのみで構成されます。グループキーに指定していない入力フィールドはすべて削除されます。
+
+| フィールド | データ型 | 説明 |
+|---|---|---|
+| グループキーに指定したフィールド | 入力メッセージと同一 | グループキーの値をそのまま保持します。 |
+| window_start | Long | ウィンドウ開始時刻（epoch ミリ秒）。ウィンドウ区間に含まれます。 |
+| window_end | Long | ウィンドウ終了時刻（epoch ミリ秒）。ウィンドウ区間には含まれません。 |
+| 集計項目の出力フィールド名 | COUNT は Long、SUM と AVG は Double | 集計項目ごとに結果値を一つ格納します。 |
+
+<a id="filter-aggregate-example"></a>
+### 集計の例 { #filter-aggregate-example }
+
+<a id="filter-aggregate-example-condition"></a>
+#### 条件
+
+* グループキー → `device`
+* データ時間フィールド → `event_ts`
+* ウィンドウサイズ → `10`
+* ウォーターマーク遅延時間 → `5`
+* 遅延許容時間 → `0`
+* 集計項目
+
+| 演算 | 集計するフィールド | 出力フィールド名 |
+|---|---|---|
+| COUNT | 空白のまま | `message_count` |
+| SUM | `cnt` | `sum_cnt` |
+| AVG | `cnt` | `avg_cnt` |
+
+計算過程をわかりやすく示すために、`event_ts` には小さい epoch ミリ秒値を使用しています。実際のデータでは `1785730001000` のような 13 桁の値が入力され、`window_start` と `window_end` も同じ桁数で出力されます。
+
+<a id="filter-aggregate-example-input-message"></a>
+#### 入力メッセージ
+
+到着した順番に並べたメッセージです。
+
+``` js
+{"device": "sensor-1", "cnt": 1, "event_ts": 1000}
+{"device": "sensor-2", "cnt": 5, "event_ts": 3000}
+{"device": "sensor-1", "cnt": 1, "event_ts": 9000}
+{"device": "sensor-1", "cnt": 1, "event_ts": 5000}
+{"device": "sensor-1", "cnt": 1, "event_ts": 12000}
+{"device": "sensor-1", "cnt": 2, "event_ts": 15000}
+{"device": "sensor-1", "cnt": 9, "event_ts": 7000}
+```
+
+<a id="filter-aggregate-example-output-message"></a>
+#### 出力メッセージ
+
+`event_ts` が 5000 のメッセージは 9000 のメッセージより遅く到着しましたが、0 以上 10000 未満のウィンドウがまだ開いているため、集計に含まれます。ウォーターマークの遅延時間を 0 に設定した場合、このウィンドウは `event_ts` が 9000 のメッセージが到着した時点で既に閉じられており、5000 のメッセージを取りこぼしていたでしょう。
+
+`event_ts` が 15000 のメッセージが到着すると、15000 - 5000 = 10000 となり、0 以上 10000 未満のウィンドウが閉じられ、グループごとに 1 件ずつ、合計 2 件を出力します。
+
+``` js
+{
+    "device": "sensor-1",
+    "window_start": 0,
+    "window_end": 10000,
+    "message_count": 3,
+    "sum_cnt": 3.0,
+    "avg_cnt": 1.0
+}
+{
+    "device": "sensor-2",
+    "window_start": 0,
+    "window_end": 10000,
+    "message_count": 1,
+    "sum_cnt": 5.0,
+    "avg_cnt": 5.0
+}
+```
+
+最後に到着した `event_ts` が 7000 のメッセージは、既に閉じられたウィンドウに属するため破棄されます。遅延許容時間を 5 に設定した場合、このメッセージを反映した `window_start` が 0 の結果をもう一度出力します。
+
+`event_ts` が 12000、15000 のメッセージが属する 10000 以上 20000 未満のウィンドウはまだ閉じられていません。このウィンドウは `event_ts` が 25000 以上のメッセージが到着して初めて閉じられ、メッセージがそれ以上届かなければ結果を出力しません。
+
+<a id="filter-aggregate-notes"></a>
+### 注意事項 { #filter-aggregate-notes }
+
+<a id="filter-aggregate-notes-memory"></a>
+#### メモリ使用量
+
+Aggregate ノードのメモリ使用量は、グループキー値の種類数に比例します。ウィンドウサイズや処理するメッセージ量は、メモリ使用量に影響しません。
+
+* グループキー値の種類数は、インスタンスタイプに応じて以下の値以下を推奨します。グループキーを複数指定した場合、種類数は各キー値の組み合わせの数になります。例えば、地域が 10 種類、機器が 1 万種類の場合、種類数は 10 万個になります。
+
+| インスタンスタイプ | 推奨グループキー種類数 | 基本メモリ使用量 | メモリ点検基準 |
+|---|---|---|---|
+| c1m2 | 10 万個以下 | 450〜500MB | 600MB |
+| c2m4 | 40 万個以下 | 900〜950MB | 1.3GB |
+
+フローがメッセージを処理していない間も、基本メモリ使用量の分は継続して使用されます。これは正常な動作であり、グループキー値の種類数とは無関係です。
+
+インスタンスタイプが大きいほど、フローに割り当てられるメモリも増え、その分だけ使用済みメモリを解放するタイミングも遅くなります。そのため、基本メモリ使用量は集計に実際に使用されている量ではなく、まだ解放されていないメモリを含んだ値です。インスタンスタイプが大きいほど基本メモリ使用量も高くなる理由はこのためです。
+
+* メモリ使用量は、**Data & Analytics > DataFlow > モニタリング** の V2-TASK メモリ使用量で確認できます。
+* メモリ使用量が一時的に点検基準を超えることは正常です。30 分以上点検基準を超えた状態が続く場合は、グループキー値の種類数を確認してください。
+* グループキーの種類数が上限を超えると、メモリ不足によりフローがエラー状態に陥り、自動的に復旧されません。フローを終了した後、グループキーを調整して再度実行してください。
+* グループキーには、値の種類が限定されたフィールドを指定してください。ユーザー ID、セッション ID、リクエスト ID、IPアドレスのように、時間の経過とともに新しい値が増え続けるフィールドをグループキーに指定すると、種類数に上限がなくなり、最終的にメモリ不足になります。
+* より多くのグループキー種類数が必要な場合は、インスタンスタイプの上位変更を検討してください。
+* 遅延許容時間を 0 より大きく設定すると、クローズされたウィンドウの状態も遅延許容時間の間保持されるため、メモリ使用量が最大で (1 + 遅延許容時間 ÷ ウィンドウサイズ) 倍まで増加します。その倍数分だけグループキーの種類数を減らして使用してください。
+
+<a id="filter-aggregate-notes-behavior"></a>
+#### 既知の動作
+
+* ウィンドウが閉じて結果を出力すると、そのウィンドウが使用していたメモリは解放されます。メモリ使用量を決定するのは累積処理量ではなく、1 つのウィンドウ内に同時に存在するグループキーの種類数です。
+* フローを終了すると、進行中のウィンドウの集計状態は保持されません。再実行すると、該当ウィンドウは空の状態から再度集計します。
+* メッセージがないウィンドウは結果を出力しません。
+* フローが実行中の間、最後のウィンドウは次のウィンドウのメッセージが到着して初めて閉じます。メッセージがそれ以上入力されない場合、最後のウィンドウの結果は出力されません。
+* 遅延許容時間を 0 より大きく設定すると、同じウィンドウの結果を複数回出力します。Object Storageや Kafkaのように既に書き込んだデータを更新しない Sinkでは、同じウィンドウの結果が複数件蓄積されるため、参照する側で `window_start` の値が同じ結果のうち最後の 1 件のみを使用する必要があります。
+* ウィンドウが閉じた後に到着して集計できなかったメッセージと、データ時刻フィールドを解釈できないために除外されたメッセージは、別途出力されません。
+* SUM と AVG は浮動小数点演算で計算するため、桁数が大きい値を集計すると誤差が生じる可能性があります。
+
+<a id="filter-aggregate-notes-termination"></a>
+#### フロー終了時の最後のウィンドウ
+
+フローが終了するとき、まだ区間が終わっていないウィンドウは、終了方式によって異なる処理が行われます。
+
+| 終了方式 | 進行中のウィンドウ |
+|---|---|
+| フロー終了 | 結果を出力せずに破棄されます。 |
+| ドレイン後終了 | 区間が終わっていなくても、その時点までの集計結果を出力します。 |
+| BATCHモードでデータをすべて処理した後に自動終了 | 区間が終わっていなくても、その時点までの集計結果を出力します。 |
+
+このように出力された結果は、**区間全体を集計した結果と形式が同じであるため、区別することができません。** `window_start` と `window_end` にも元の区間の値がそのまま入るため、区間全体を集計した値と誤解する可能性があります。
+
+* 終了直後に出力された最後のウィンドウの結果は、部分集計である可能性があります。集計結果を比較または合算する際は、この点を考慮してください。
+* BATCHモードで指定した期間のデータを集計する場合、最後のウィンドウが常に部分集計になる可能性があります。処理するデータの時間範囲をウィンドウサイズの倍数に合わせることで、この問題を回避できます。
+
+<a id="filter-aggregate-notes-no-output"></a>
+#### 結果が出力されないとき
+
+次の順序で確認してください。
+
+1. データ時間フィールドの値の形式を確認します。サポートされていない形式の場合、該当メッセージは集計から除外され、別途エラーは出力されません。
+2. 秒単位の epoch 値を使用していないか確認します。秒単位の値は 1970 年に近い時刻として解釈され、意図したウィンドウに分割されません。
+3. ウィンドウがまだ閉じていない可能性があります。ウィンドウは、次のウィンドウに属するメッセージが到着した際に閉じられます。データがまれにしか入力されない場合は、ウィンドウサイズを小さくするか、データがさらに蓄積されるまで待ってください。
+4. ウォーターマークの遅延時間が大きすぎないか確認します。この値の分だけ結果の出力が遅くなります。
+5. 過去のデータを再投入していないか確認します。ウィンドウはデータ時間フィールドの値を基準に分割されるため、結果の `window_start` と `window_end` もその過去の時刻で出力されます。現在時刻付近で結果を探していないか確認してください。また、フローがすでにより新しい時刻のデータを処理済みの場合、過去のデータはすでに閉じられたウィンドウに属するため、集計されずに破棄されます。
 
 <a id="sink"></a>
 ## Sink { #sink }
@@ -1418,6 +1700,7 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="prefix-example---field-input-message"></a>
 #### 入力メッセージ
+
 ``` json
 {
     "deployment": "production",
@@ -1447,6 +1730,7 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="prefix-example---hour-input-message"></a>
 #### 入力メッセージ
+
 ``` json
 {
     "deployment": "production",
@@ -1477,6 +1761,7 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="prefix-example---when-failed-to-apply-time-input-message"></a>
 #### 入力メッセージ
+
 ``` json
 {
     "deployment": "production",
@@ -1497,6 +1782,7 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="sink-nhn-cloud-data-lake-storage-node-description"></a>
 ### ノードの説明 { #sink-nhn-cloud-data-lake-storage-node-description }
+
 * NHN CloudのData Lake Storageにデータをアップロードするノードです。
 * 他の設定を行わずにデフォルト設定のみで作成すると、オブジェクトは次のパスフォーマットに合わせて出力されます。
     * `/{bucket_name}/year={yyyy}/month={MM}/day={dd}/hour={HH}/part-{uuid}-{file_counter}`   
@@ -1504,6 +1790,7 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="sink-nhn-cloud-data-lake-storage-property-description"></a>
 ### プロパティの説明 { #sink-nhn-cloud-data-lake-storage-property-description }
+
 | プロパティ名 | デフォルト値 | データ型 | 説明 | 備考 |
 |-----------------------|----------------------------------------------------|--------|--------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | リージョン | - | enum | Data Lake Storage商品のリージョンを入力します。 | |
@@ -1521,6 +1808,7 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="sink-nhn-cloud-data-lake-storage-output-examples-by-codec-type"></a>
 ### コーデック別の出力例 { #sink-nhn-cloud-data-lake-storage-output-examples-by-codec-type }
+
 サポートコーデック
 * [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データの解析
 * [lineコーデック](./codec-config-guide.md#line-codec) - 行単位のメッセージ処理
@@ -1528,13 +1816,16 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="sink-nhn-cloud-data-lake-storage-prefix-example---field"></a>
 ### Prefixの例 - フィールド { #sink-nhn-cloud-data-lake-storage-prefix-example---field }
+
 <a id="sink-nhn-cloud-data-lake-storage-prefix-example---field-condition"></a>
 #### 条件
+
 * バケット → `dls-test-container`
 * Prefix → `/dataflow/%{deployment}`
 
 <a id="sink-nhn-cloud-data-lake-storage-prefix-example---field-input-message"></a>
 #### 入力メッセージ
+
 ``` json
 {
     "deployment": "production",
@@ -1545,14 +1836,17 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="sink-nhn-cloud-data-lake-storage-prefix-example---field-output-path"></a>
 #### 出力パス
+
 ```
 /dls-test-container/dataflow/production/part-378be4d8-2c59-4014-aaeb-a9bc75af2653-0
 ```
 
 <a id="prefix-example---time"></a>
 ### Prefixの例 - 時間 { #prefix-example---time }
+
 <a id="prefix-example---time-condition"></a>
 #### 条件
+
 * バケット → `dls-test-container`
 * Prefix → `/dataflow/year=%{+YYYY}/month=%{+MM}/day=%{+dd}/hour=%{+HH}`
 * Prefix時間フィールド → `logTime`
@@ -1561,6 +1855,7 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="prefix-example---time-input-message"></a>
 #### 入力メッセージ
+
 ``` json
 {
     "deployment": "production",
@@ -1571,14 +1866,17 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="prefix-example---time-output-path"></a>
 #### 出力パス
+
 ```
 /dls-test-container/dataflow/year=2022/month=11/day=21/hour=16/part-378be4d8-2c59-4014-aaeb-a9bc75af2653-0
 ```
 
 <a id="prefix-example---when-time-application-fails"></a>
 ### Prefixの例 - 時間の適用に失敗した場合 { #prefix-example---when-time-application-fails }
+
 <a id="prefix-example---when-time-application-fails-condition"></a>
 #### 条件
+
 * バケット → `dls-test-container`
 * Prefix → `/dataflow/year=%{+YYYY}/month=%{+MM}/day=%{+dd}/hour=%{+HH}`
 * Prefix時間フィールド → `logTime`
@@ -1588,6 +1886,7 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="prefix-example---when-time-application-fails-input-message"></a>
 #### 入力メッセージ
+
 ``` json
 {
     "deployment": "production",
@@ -1598,6 +1897,7 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="prefix-example---when-time-application-fails-output-path"></a>
 #### 出力パス
+
 ```
 /dls-test-container/_failure/part-378be4d8-2c59-4014-aaeb-a9bc75af2653-0
 ```
@@ -1613,6 +1913,7 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="sink-amazon-s3-property-description"></a>
 ### プロパティの説明 { #sink-amazon-s3-property-description }
+
 | プロパティ名 | デフォルト値 | データタイプ | 説明 | 備考 |
 | --- | --- | --- | --- | --- |
 | リージョン | - | enum | S3商品のリージョンを入力します。 | [s3 region](https://docs.aws.amazon.com/general/latest/gr/s3.html) |
@@ -1646,10 +1947,12 @@ Filter操作を終えたデータを書き込むエンドポイントを定義�
 
 <a id="sink-nhn-cloud-easyqueue-node-description"></a>
 ### ノードの説明 { #sink-nhn-cloud-easyqueue-node-description }
+
 NHN CloudのEasyQueueにデータを送信するノードです。
 
 <a id="sink-nhn-cloud-easyqueue-property-description"></a>
 ### プロパティの説明 { #sink-nhn-cloud-easyqueue-property-description }
+
 | プロパティ名 | デフォルト値 | データ型 | 説明 | 備考 |
 | --- | --- | --- | --- | --- |
 | アプリキー | - | string | EasyQueueのアプリキーを入力します。 | |
@@ -1677,6 +1980,7 @@ NHN CloudのEasyQueueにデータを送信するノードです。
 
 <a id="sink-nhn-cloud-easyqueue-output-examples-by-codec-type"></a>
 ### コーデック別の出力例 { #sink-nhn-cloud-easyqueue-output-examples-by-codec-type }
+
 サポートコーデック
 * [jsonコーデック](./codec-config-guide.md#json-codec) - JSON形式データの解析
 * [lineコーデック](./codec-config-guide.md#line-codec) - 行単位のメッセージ処理
@@ -1759,6 +2063,7 @@ Kafkaにデータを送信するノードです。
 
 <a id="branch-if-property-description-available-operators"></a>
 #### 使用可能な演算子
+
 * 比較: ==、!=、<、>、<=、>=
 * 正規表現: =~ (右辺で指定されたパターンで左辺の文字列を検査)
 * 包含: =~、!~、.contains()
@@ -1770,6 +2075,7 @@ Kafkaにデータを送信するノードです。
 
 <a id="filtering-example-exercise---first-depth-field-reference-condition"></a>
 #### 条件
+
 条件文 → `logLevel == "ERROR"`
 
 <a id="filtering-example-exercise---first-depth-field-reference-pass-message"></a>
