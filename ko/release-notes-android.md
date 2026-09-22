@@ -1,20 +1,25 @@
-<!-- pre-align:aligned sig=fd94f1629e00 -->
+<!-- pre-align:aligned sig=9f1247824a5a -->
 
 <a id="nhn-cloud-sdk-user-guide-release-notes-android"></a>
 ## NHN Cloud > SDK 사용 가이드 > 릴리스 노트 > Android { #nhn-cloud-sdk-user-guide-release-notes-android }
 
-## 1.13.0(2026. 09. 15.)
+<a id="130-september-15-2026"></a>
+## 1.13.0(2026. 09. 15.) { #130-september-15-2026 }
 
-### NHN Cloud Logger
+<a id="130-september-15-2026-nhn-cloud-logger"></a>
+### NHN Cloud Logger { #130-september-15-2026-nhn-cloud-logger }
 
+<a id="130-september-15-2026-nhn-cloud-logger-feature-updates"></a>
 #### 기능 개선/변경
 
 * Log & Crash Search API 도메인 변경
     * 로그 수집 API 도메인이 api-logncrash.cloud.toast.com에서 api-logncrash.nhncloudservice.com으로 변경되었습니다.
     * 설정 API 도메인이 setting-logncrash.cloud.toast.com에서 api-setting-logncrash.nhncloudservice.com으로 변경되었습니다.
 
-### NHN Cloud Push
+<a id="130-september-15-2026-nhn-cloud-push"></a>
+### NHN Cloud Push { #130-september-15-2026-nhn-cloud-push }
 
+<a id="130-september-15-2026-nhn-cloud-push-feature-updates"></a>
 #### 기능 개선/변경
 
 * Push API 도메인 변경
@@ -22,6 +27,7 @@
 * Notification Hub 지표 전송 방식 개선
     * 지표 전송이 재시도되더라도 동일한 지표가 중복 집계되지 않도록 개선하였습니다.
 
+<a id="130-september-15-2026-nhn-cloud-push-bug-fixes"></a>
 #### 버그 수정
 
 * 알림 클릭 액션이 반복 실행되는 문제 수정
@@ -29,15 +35,19 @@
 * Notification Hub 토큰 등록 실패 문제 수정
     * 사용자 ID를 변경한 뒤 토큰 등록이 항상 실패하던 문제를 수정하였습니다.
 
-### NHN Cloud OCR
+<a id="130-september-15-2026-nhn-cloud-ocr"></a>
+### NHN Cloud OCR { #130-september-15-2026-nhn-cloud-ocr }
 
+<a id="130-september-15-2026-nhn-cloud-ocr-feature-updates"></a>
 #### 기능 개선/변경
 
 * OCR API 도메인 변경
     * OCR API 도메인이 ocr.api.nhncloudservice.com에서 api-ocr.nhncloudservice.com으로 변경되었습니다.
 
-### TOAST Gradle Plugin(0.1.0)
+<a id="toast-gradle-plugin-010"></a>
+### TOAST Gradle Plugin(0.1.0) { #toast-gradle-plugin-010 }
 
+<a id="toast-gradle-plugin-010-added-features"></a>
 #### 신규 기능 추가
 
 * Log & Crash Search Symbol API v3를 이용한 매핑 파일(mapping.txt) 및 네이티브 심벌(native symbol) 업로드 지원
