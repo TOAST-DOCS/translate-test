@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=a0cd6b6bb2af -->
+<!-- pre-align:aligned sig=5213f6f0ca5c -->
 
 <a id="nhn-cloud-sdk-user-guide-log-crash-ios"></a>
 ## NHN Cloud > SDK User Guide > Log & Crash > iOS { #nhn-cloud-sdk-user-guide-log-crash-ios }
