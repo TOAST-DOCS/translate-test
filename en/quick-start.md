@@ -50,14 +50,16 @@ For a detailed description of each setting, see 'Create a data source' in the [C
     ![Create data source](../static/images/quick-start/데이터소스생성모달1.png){ height="70%" }
 
 2. Enter the data source name and table name in the basic settings.
-3. In the detailed settings, select a CSV file. If the first row of the file contains column names, check **First row is a header**. Enter the primary key field (e.g., `user_id`).
-4. Click the **Infer types** button to automatically populate the schema from the CSV sample. Correct any incorrectly inferred types manually.
+3. In the connection settings, verify that the data source type is **File Upload**.
+4. In the detailed settings, select the CSV file. If the first row of the file contains column names, check **First row is header**. Enter the primary key field (for example, `user_id`).
+
+5. Click the **Type Inference** button to automatically populate the schema from the CSV sample. Manually correct any types that were inferred incorrectly.
 
     ![Create data source - select file and infer types](../static/images/quick-start/데이터소스생성모달2.png){ height="70%" }
 
-5. Click the **Add** button to create the data source.
-6. Create the **user, item, and history** data sources in the same way.
-7. Wait until the status in the list changes to COMPLETED.
+6. Click the **Add** button to create the data source.
+7. Create the **user, item, and history** data sources in the same way.
+8. Wait until the status in the list changes to `COMPLETED`.
 
     ![Data source list](../static/images/quick-start/데이터소스목록.png){ height="70%" }
 
