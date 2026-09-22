@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ffcf287dccd2 -->
 
 <a id="database-rds-for-enginepascalcase-notification"></a>
@@ -14,9 +16,9 @@
 | BACUP_01_01 | BACKUP            | いいえ    | DBインスタンスのバックアップ完了                     |
 | BACUP_01_04 | BACKUP            | いいえ    | DBインスタンスのバックアップ失敗                     |
 | BACUP_02_01 | BACKUP            | はい     | バックアップの削除完了                           |
-| BACUP_04_00 | BACKUP            | はい     | オブジェクトストレージのアップロード開始                  |
-| BACUP_04_01 | BACKUP            | はい     | オブジェクトストレージのアップロード完了                  |
-| BACUP_04_04 | BACKUP            | はい     | オブジェクトストレージのアップロード失敗                  |
+| BACUP_04_00 | BACKUP            | はい     | Object Storageアップロード開始                  |
+| BACUP_04_01 | BACKUP            | はい     | Object Storageアップロード完了                  |
+| BACUP_04_04 | BACKUP            | はい     | Object Storageアップロード失敗                  |
 | BACUP_05_00 | BACKUP            | はい     | バックアップのエクスポート開始                       |
 | BACUP_05_01 | BACKUP            | はい     | バックアップのエクスポート完了                       |
 | BACUP_05_04 | BACKUP            | はい     | バックアップのエクスポート失敗                       |
@@ -105,9 +107,9 @@
 | INSTC_47_00 | INSTANCE          | はい     | DBインスタンスのバックアップおよびエクスポート開始            |
 | INSTC_47_01 | INSTANCE          | はい     | DBインスタンスのバックアップおよびエクスポート完了            |
 | INSTC_47_04 | INSTANCE          | はい     | DBインスタンスのバックアップおよびエクスポート失敗            |
-| INSTC_48_00 | INSTANCE          | はい     | オブジェクトストレージにあるバックアップでDBインスタンス復元開始     |
-| INSTC_48_01 | INSTANCE          | はい     | オブジェクトストレージにあるバックアップでDBインスタンス復元完了     |
-| INSTC_48_04 | INSTANCE          | はい     | オブジェクトストレージにあるバックアップでDBインスタンス復元失敗     |
+| INSTC_48_00 | INSTANCE          | はい     | Object Storageにあるバックアップで DBインスタンス復元開始     |
+| INSTC_48_01 | INSTANCE          | はい     | Object Storageにあるバックアップで DBインスタンス復元完了     |
+| INSTC_48_04 | INSTANCE          | はい     | Object Storageにあるバックアップで DBインスタンス復元失敗     |
 | INSTC_49_00 | INSTANCE          | はい     | DBインスタンスの強制再起動実行                      |
 | INSTC_50_00 | INSTANCE          | はい     | バックアップのエクスポート開始                       |
 | INSTC_50_01 | INSTANCE          | はい     | バックアップのエクスポート完了                       |

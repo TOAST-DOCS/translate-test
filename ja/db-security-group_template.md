@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=5f5b28f2bca5 -->
 
 <a id="database-rds-for-enginepascalcase-db-security-group"></a>
@@ -37,8 +39,8 @@ DBインスタンスを作成する時、適用するDBセキュリティグル�
 | 遠隔         | IPアドレス範囲を指定できます。ルールの方向が「送信」であれば目的地が遠隔で、「受信」であれば出発地が遠隔です。<br/>ルールの方向によってトラフィックの出発地と目的地が設定されたIPアドレスや 範囲かどうかを比較します。 |
 | 説明         | DBセキュリティグループルールの説明を追加できます。                                                                                       |
 
-> [注意]
-> DBポートは送信方向(アウトバウンド)には設定できません。
+!!! danger "注意"
+    DBポートは送信方向(アウトバウンド)には設定できません。
 
 <a id="change-db-security-rules"></a>
 ### DBセキュリティルールの変更 { #change-db-security-rules }

@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=aafe17e2e720 -->
 
 <a id="database-rds-for-enginepascalcase-api-guide"></a>
@@ -365,7 +367,7 @@ This API does not require a request body.
 | dbVersions                   | Body | Array   | DB engine list                                        |
 | dbVersions.dbVersion         | Body | String  | DB engine type                                        |
 | dbVersions.dbVersionName     | Body | String  | DB engine name                                        |
-| dbVersions.restorableFromObs | Body | Boolean | Restoring backup from object storage available or not |
+| dbVersions.restorableFromObs | Body | Boolean | Available for restoration from OBS |
 
 <details><summary>Example</summary>
 <p>
@@ -1186,10 +1188,10 @@ POST /v3.0/db-instances/{dbInstanceId}/backup-to-object-storage
 | Name            | Type | Format | Required | Description                                            |
 |-----------------|------|--------|----------|--------------------------------------------------------|
 | dbInstanceId    | URL  | UUID   | O        | DB instance identifier                                 |
-| tenantId        | Body | String | O        | Tenant ID of object storage to store backup            |
+| tenantId        | Body | String | O  | Tenant ID of the Object Storage where the backup will be stored   |
 | username        | Body | String | O        | NHN Cloud member or IAM member ID                      |
-| password        | Body | String | O        | API password for object storage where backup is stored |
-| targetContainer | Body | String | O        | Object storage container where backup is stored        |
+| password        | Body | String | O  | API password for the Object Storage where the backup will be stored |
+| targetContainer | Body | String | O  | Object storage container where backup is stored     |
 | objectPath      | Body | String | O        | Backup path to be stored in container                  |
 
 <details><summary>Example</summary>
@@ -2305,11 +2307,12 @@ POST /v3.0/db-instances/{dbInstanceId}/db-users
 | authenticationPlugin | Body | Enum   | X        | Authentication Plugin<br/>- Default: `NATIVE`(`CACHING_SHA2` if not supported)<br/>- NATIVE: `mysql_native_password`<br />- SHA256: `sha256_password`<br />- CACHING_SHA2: `caching_sha2_password`                                    |
 | tlsOption            | Body | Enum   | X        | TLS Option<br/>- NONE<br />- SSL<br />- X509                                                                                                                             |
 
-> [Caution]
-> Only DB instances whose `supportAuthenticationPlugin` value is true can set the values of `authenticationPlugin` and `tlsOption`.
+!!! danger "Caution"
+    Only DB instances whose `supportAuthenticationPlugin` value is `true` can set the values of `authenticationPlugin` and `tlsOption`.
+
 {{/if}}
 {{#if (eq engine.lowerCase "mariadb")}}
-| authenticationPlugin | Body | Enum   | X        | Authentication Plugin<br/>- Default: `NATIVE`(`ED25519` if not supported)<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519`                                                                                                                                                                                |
+| authenticationPlugin | Body | Enum    | X  | Authentication Plugin<br/>- Default: `NATIVE` (if not supported, `ED25519`)<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
 {{/if}}
 
 <details><summary>Example</summary>
@@ -2363,12 +2366,13 @@ PUT /v3.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
 | authenticationPlugin | Body | Enum   | X        | Authentication Plugin<br/>- NATIVE: `mysql_native_password`<br />- SHA256: `sha256_password`<br />- CACHING_SHA2: `caching_sha2_password`                                    |
 | tlsOption            | Body | Enum   | X        | TLS Option<br/>- NONE<br />- SSL<br />- X509                                                                                                                             |
 
-> [Caution]
-> Only DB instances whose `supportAuthenticationPlugin` value is true can modify the values of `authenticationPlugin` and `tlsOption`.
-> The value of`authenticationPlugin`must be modified at the same time `as dbPassword`.
+!!! danger "Caution"
+    Only DB instances whose `supportAuthenticationPlugin` value is `true` can modify the values of `authenticationPlugin` and `tlsOption`.
+    The value of `authenticationPlugin` must be modified at the same time as `dbPassword`.
+
 {{/if}}
 {{#if (eq engine.lowerCase "mariadb")}}
-| authenticationPlugin | Body | Enum    | X        | Authentication Plugin<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
+| authenticationPlugin | Body | Enum    | X  | Authentication Plugin<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
 {{/if}}
 
 <details><summary>Example</summary>
@@ -2590,10 +2594,10 @@ POST /v3.0/db-instances/{dbInstanceId}/log-files/export
 |-----------------|------|--------|----------|----------------------------------------------------------|
 | dbInstanceId    | URL  | UUID   | O        | DB instance identifier                                   |
 | logFileNames    | Body | Array  | O        | Log File name list<br/>- Minimum size: `1`               |
-| tenantId        | Body | String | O        | Tenant ID of object storage to store log file            |
+| tenantId        | Body | String | O  | Tenant ID of the Object Storage where the log file is stored  |
 | username        | Body | String | O        | NHN Cloud account or IAM member ID                       |
-| password        | Body | String | O        | API password for object storage where log file is stored |
-| targetContainer | Body | String | O        | Object storage container where log file is stored        |
+| password        | Body | String | O  | API password of the Object Storage where the log file is stored |
+| targetContainer | Body | String | O  | Object storage container where log file is stored              |
 | objectPath      | Body | String | O        | Log file path to be stored in container                  |
 
 <details><summary>Example</summary>
@@ -2724,10 +2728,10 @@ POST /v3.0/backups/{backupId}/export
 | Name            | Type | Format | Required | Description                                            |
 |-----------------|------|--------|----------|--------------------------------------------------------|
 | backupId        | URL  | UUID   | O        | Backup identifier                                      |
-| tenantId        | Body | String | O        | Tenant ID of object storage to store backup            |
+| tenantId        | Body | String | O  | Tenant ID of the Object Storage where the backup will be stored   |
 | username        | Body | String | O        | NHN Cloud account or IAM member ID                     |
-| password        | Body | String | O        | API password for object storage where backup is stored |
-| targetContainer | Body | String | O        | Object storage container where backup is stored        |
+| password        | Body | String | O  | API password for the Object Storage where the backup will be stored |
+| targetContainer | Body | String | O  | Object storage container where backup is stored     |
 | objectPath      | Body | String | O        | Backup path to be stored in container                  |
 
 <details><summary>Example</summary>
@@ -2753,8 +2757,8 @@ POST /v3.0/backups/{backupId}/export
 |-------|------|--------|------------------------------|
 | jobId | Body | UUID   | Identifier of requested task |
 
-> [Caution]
-> To export a manual backup, the DB instance from which the backup originated must exist.
+!!! danger "Caution"
+    For manual backups, if the DB instance on which the backup was performed does not exist, the backup cannot be exported to Object Storage.
 
 ---
 
@@ -3041,8 +3045,8 @@ POST /v3.0/db-security-groups
 | rules.port.minPort  | Body | Number | X        | Minimum port range<br/>- Minimum value: 1                                                                                                                                                                                        |
 | rules.port.maxPort  | Body | Number | X        | Maximum port range<br/>- Maximum value: 65535                                                                                                                                                                                    |
 
-> [Caution]
-> DB port cannot be set to transmit direction.
+!!! danger "Caution"
+    DB port cannot be set to transmit direction.
 
 <details><summary>Example</summary>
 <p>
@@ -3192,8 +3196,8 @@ POST /v3.0/db-security-groups/{dbSecurityGroupId}/rules
 | port.maxPort      | Body | Number | X        | Maximum port range<br/>- Maximum value: 65535                                                                                                                                                                                    |
 | cidr              | Body | String | O        | Remote source for traffic to allow<br/>- Example: `1.1.1.1/32`                                                                                                                                                                   |
 
-> [Caution]
-> DB port cannot be set to transmit direction.
+!!! danger "Caution"
+    DB port cannot be set to transmit direction.
 
 <details><summary>Example</summary>
 <p>
@@ -3246,8 +3250,8 @@ PUT /v3.0/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
 | port.maxPort      | Body | Number | X        | Maximum port range<br/>- Maximum value: 65535                                                                                                                                                                                    |
 | cidr              | Body | String | O        | Remote source for traffic to allow<br/>- Example: `1.1.1.1/32`                                                                                                                                                                   |
 
-> [Caution]
-> DB port cannot be set to transmit direction.
+!!! danger "Caution"
+    DB port cannot be set to transmit direction.
 
 <details><summary>Example</summary>
 <p>

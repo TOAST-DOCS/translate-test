@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=fc4a4521d735 -->
 
 <a id="database-rds-for-enginepascalcase-backup-and-restoration"></a>
@@ -218,7 +220,7 @@ The following items apply only to auto backups.
 <a id="backup-storage-and-pricing"></a>
 ### Backup Storage and Pricing { #backup-storage-and-pricing }
 
-All backup files are uploaded to the internal backup storage and stored. For manual backups, they are stored permanently until you delete them separately, and backup storage charges are incurred depending on the backup capacity. For auto backups, it is stored for the set retention period and charges for the full size of the auto backup file, which exceeds the storage size of the DB instance. If you do not have direct access to the internal backup storage where the backup file is stored, and when you need backup file, you can export the backup file to the object storage in NHN Cloud.
+All backup files are uploaded to the internal backup storage and stored. For manual backups, they are stored permanently until you delete them separately, and backup storage charges are incurred depending on the backup capacity. For auto backups, it is stored for the set retention period and charges for the full size of the auto backup file, which exceeds the storage size of the DB instance. If you do not have direct access to the internal backup storage where the backup file is stored, and when you need backup file, you can export the backup file to Object Storage in NHN Cloud.
 
 <a id="export"></a>
 ### Export Backup { #export }
@@ -226,23 +228,23 @@ All backup files are uploaded to the internal backup storage and stored. For man
 <a id="export-files-while-performing-backup"></a>
 #### Export Files While Performing Backup
 
-After a backup, you can export the backup file to object storage. This is not supported for incremental backups.
+After a backup, you can export the backup file to Object Storage. Incremental backups are not supported.
 
 ![db-instance-list-export-obs-en]({{url.cdn}}/24.03.12/db-instance-list-export-obs-en.png)
 
 ![db-instance-list-export-obs-modal-en]({{url.cdn}}/24.03.12/db-instance-list-export-obs-modal-en.png)
 
-❶ Select the DB instance to back up and click **Export backup files to object storage** after backup from the drop-down menu, and the settings pop-up screen will appear.
-❷ Enter the tenant ID of the object storage where the backup will be saved. You can find the tenant ID in the API endpoint settings.
-❸ Enter the NHN Cloud member or IAM member of the object storage where the backup will be saved.
-❹ Enter the API password of the object storage where the backup will be saved.
-❺ Enter the container of the object storage where the backup will be saved.
+❶ Select the DB instance to back up and click **Export backup files to Object Storage after backup** from the drop-down menu, and the settings pop-up screen will appear.
+❷ Enter the tenant ID of the Object Storage where the backup will be saved. You can find the tenant ID in the API endpoint settings.
+❸ Enter the NHN Cloud account or IAM account of the Object Storage where the backup will be saved.
+❹ Enter the API password of the Object Storage where the backup will be saved.
+❺ Enter the container of the Object Storage where the backup will be saved.
 ❻ Enter the path to the backup that will be stored in the container. The folder name can be up to 255 bytes, and the full path can be up to 1024 bytes. Certain forms (. or ..) are not allowed, and special characters (' " < > ;) and spaces are not allowed.
 
 <a id="export-backup-files"></a>
 #### Export Backup Files
 
-You can export backup files stored in internal backup storage to object storage. Not supported for incremental backups.
+You can export backup files stored in internal backup storage to Object Storage. Not supported for incremental backups.
 
 ![db-instance-detail-backup-export-en]({{url.cdn}}/24.03.12/db-instance-detail-backup-export-en.png)
 
@@ -250,7 +252,7 @@ You can export backup files stored in internal backup storage to object storage.
 
 ![backup-export-en]({{url.cdn}}/24.03.12/backup-export-en.png)
 
-❷ Select the backup file to export from the **Backup** tab and click **Export to Object Storage**.
+❷ Or, on the **Backup** tab, select the backup file to export and click **Export Backup to Object Storage**.
 
 !!! tip "Note"
     For manual backups, if the source DB instance that performed the backup was deleted, you cannot export the backup.
@@ -362,7 +364,7 @@ mariabackup --defaults-file={my.cnf path} --user {user} --password '{password}' 
 
 (2) Check that `completed OK!` is in the last line of the backup log file. If there is no `completed OK!`, the backup did not end successfully, so refer to the error message in the log file to proceed with the backup again.
 
-(3) Upload the completed backup file to the object storage.
+(3) Upload the completed backup file to Object Storage.
 
 * The maximum file size that can be uploaded at a time is 5GB.
 * If the backup file is larger than 5GB, you have to use a utility such as split to cut the backup file to less than 5GB and upload it in multi-part.
@@ -375,6 +377,7 @@ mariabackup --defaults-file={my.cnf path} --user {user} --password '{password}' 
     In the current version of 5.7.33, restoring DB instances using backup files on object storage is restricted.
     If use a version other than the recommended XtraBackup, it may not work properly.
     The backup file on the object storage has to be the same version of MySQL that you want to restore.
+
 {{/if}}
 
 <a id="restoration-by-using-rds-for-enginepascalcase-backup"></a>
@@ -389,7 +392,7 @@ You can use the backup file in RDS for MariaDB to restore the database in MariaD
 
 (1) Export backup of RDS for {{engine.pascalCase}} to object storage with reference to the [Export Backup](backup-and-restore/#export).
 
-(2) Download the backup of the object storage to the server on which you want to restore it.
+(2) Download the backup of the Object Storage to the server on which you want to restore it.
 
 (3) Stop the {{engine.pascalCase}} service.
 
