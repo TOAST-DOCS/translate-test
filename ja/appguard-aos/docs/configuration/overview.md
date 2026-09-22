@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=899d793daadd -->
+
 # 統合設定ファイル
 
 <a id="overview"></a>
