@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=d9433b334aa0 -->
+<!-- pre-align:aligned sig=75e7a1fb1650 -->
 
 <a id="database-rds-for-enginepascalcase-api-guide"></a>
 ## Database > RDS for MariaDB > API 가이드 { #database-rds-for-enginepascalcase-api-guide }
