@@ -9,14 +9,17 @@
 
 <a id="document-information-2"></a>
 ### 文書情報 { #document-information-2 }
+
 この文書は、NHN AppGuardを使用するためのSDKマニュアルを含むDeveloper's Guideです。 
 
 <a id="written-on"></a>
 ### 作成日 { #written-on }
-2026-04-14
+
+2026-09-15
 
 <a id="contact"></a>
 ### 連絡先 { #contact }
+
 NHN Cloud Webサイトの[カスタマーサポート > お問い合わせ](https://www.nhncloud.com/kr/support/inquiry)をご利用ください。
 
 <a id="index"></a>
@@ -24,6 +27,7 @@ NHN Cloud Webサイトの[カスタマーサポート > お問い合わせ](http
 
 <a id="preparations-for-application"></a>
 ### 1. [適用準備](preparation/environment.md) { #preparations-for-application }
+
 1.1 [サポート環境](preparation/environment.md)
 1.2 [NHN AppGuardの適用方式](preparation/approach.md)
 {%- if variant == 'saas' %}
@@ -36,6 +40,7 @@ NHN Cloud Webサイトの[カスタマーサポート > お問い合わせ](http
 
 <a id="protection"></a>
 ### 2. [保護作業](protection/console.md) { #protection }
+
 2.1 [コンソールでの保護作業](protection/console.md)
 2.2 [CLIでの保護作業](protection/cli-saas.md)
 2.3 [プラグインでの保護作業](protection/plugin.md)
@@ -43,62 +48,77 @@ NHN Cloud Webサイトの[カスタマーサポート > お問い合わせ](http
 
 <a id="index-protection"></a>
 ### 2. [保護作業](protection/cli-onprem.md) { #index-protection }
+
 2.1 [CLIを利用した保護作業](protection/cli-onprem.md)
 {%- endif %}
 
+<a id="unified-configuration-file"></a>
+### 3. [統合設定ファイル](configuration/overview.md) { #unified-configuration-file }
+
+3.1 [概要](configuration/overview.md)
+3.2 [機能別設定](configuration/sections.md)
 {%- if variant == 'saas' %}
 
 <a id="sdk-integration-guide"></a>
-### 3. [SDK連携ガイド](sdk/overview-saas.md) { #sdk-integration-guide }
-3.1 [SDK連携](sdk/overview-saas.md)
-3.2 [Java SDK連携](sdk/java.md)
-3.3 [Unreal SDK連携](sdk/unreal.md)
+### 4. [SDK連携ガイド](sdk/overview-saas.md) { #sdk-integration-guide }
+
+4.1 [SDK連携](sdk/overview-saas.md)
+4.2 [Java SDK連携](sdk/java.md)
+4.3 [Unreal SDK連携](sdk/unreal.md)
 {%- else %}
 
 <a id="index-sdk-integration-guide"></a>
-### 3. [SDK連携ガイド](sdk/overview-onprem.md) { #index-sdk-integration-guide }
-3.1 [SDK連携](sdk/overview-onprem.md)
-3.2 [Java SDK連携](sdk/java.md)
+### 4. [SDK連携ガイド](sdk/overview-onprem.md) { #index-sdk-integration-guide }
+
+4.1 [SDK連携](sdk/overview-onprem.md)
+4.2 [Java SDK連携](sdk/java.md)
 {%- endif %}
 
 <a id="encryption-api-application-guide"></a>
-### 4. [暗号化API適用ガイド](encryption/overview.md) { #encryption-api-application-guide }
-4.1 [暗号化API](encryption/overview.md)
-4.2 [秘密鍵の暗号化構造](encryption/key-encryption.md)
-4.3 [暗号化データの構造](encryption/data-structure.md)
-4.4 [暗号化データの復号フロー](encryption/decryption-flow.md)
-4.5 [API Reference](encryption/api-reference.md)
+### 5. [暗号化API適用ガイド](encryption/overview.md) { #encryption-api-application-guide }
+
+5.1 [暗号化API](encryption/overview.md)
+5.2 [秘密鍵の暗号化構造](encryption/key-encryption.md)
+5.3 [暗号化データの構造](encryption/data-structure.md)
+5.4 [暗号化データの復号フロー](encryption/decryption-flow.md)
+5.5 [API Reference](encryption/api-reference.md)
 
 <a id="integrity-verification-guide"></a>
-### 5. [アプリ証明ガイド](app-attestation/overview.md) { #integrity-verification-guide }
-5.1 [概要](app-attestation/overview.md)
-5.2 [コンソールアプリ証明設定](app-attestation/console.md)
-5.3 [アプリ証明の使用方法](app-attestation/sdk.md)
+### 6. [アプリ証明ガイド](app-attestation/overview.md) { #integrity-verification-guide }
+
+6.1 [概要](app-attestation/overview.md)
+6.2 [コンソールアプリ証明設定](app-attestation/console.md)
+6.3 [アプリ証明の使用方法](app-attestation/sdk.md)
 
 <a id="resource-string-obfuscation"></a>
-### 6. [リソース文字列難読化](resource-string-obfuscation/overview.md) { #resource-string-obfuscation }
-6.1 [概要](resource-string-obfuscation/overview.md)
-6.2 [設定ファイルの作成方法](resource-string-obfuscation/config.md)
+### 7. [リソース文字列難読化](resource-string-obfuscation/overview.md) { #resource-string-obfuscation }
+
+7.1 [概要](resource-string-obfuscation/overview.md)
+7.2 [設定ファイルの作成方法](resource-string-obfuscation/config.md)
 
 <a id="log-and-callback-information"></a>
-### 7. [ログ及びコールバック情報](logs/overview.md) { #log-and-callback-information }
-7.1 [ログ詳細情報](logs/overview.md)
-7.2 [コールバックデータ](logs/callback-data.md)
-7.3 [制裁ガイド](logs/sanctions-guide.md)
+### 8. [ログ及びコールバック情報](logs/overview.md) { #log-and-callback-information }
+
+8.1 [ログ詳細情報](logs/overview.md)
+8.2 [コールバックデータ](logs/callback-data.md)
+8.3 [制裁ガイド](logs/sanctions-guide.md)
 
 <a id="checks-and-cautions"></a>
-### 8. [適用確認及び注意事項](testing/integration.md) { #checks-and-cautions }
-8.1 [連携テスト](testing/integration.md)
-8.2 [ProGuard適用時の確認事項](testing/proguard.md)
-8.3 [アプリ署名キーの完全性検証](testing/signature-verification.md)
+### 9. [適用確認及び注意事項](testing/integration.md) { #checks-and-cautions }
+
+9.1 [連携テスト](testing/integration.md)
+9.2 [ProGuard適用時の確認事項](testing/proguard.md)
+9.3 [アプリ署名キーの完全性検証](testing/signature-verification.md)
 
 <a id="faq"></a>
-### 9. [FAQ](faq/general.md) { #faq }
-9.1 [一般的なエラー](faq/general.md)
-9.2 [Cocos2Dゲームのエラー](faq/cocos2d.md)
+### 10. [FAQ](faq/general.md) { #faq }
+
+10.1 [一般的なエラー](faq/general.md)
+10.2 [Cocos2Dゲームのエラー](faq/cocos2d.md)
 
 <a id="copyright"></a>
 ## 著作権 { #copyright }
+
 ---
 
 !!! danger "著作権"
