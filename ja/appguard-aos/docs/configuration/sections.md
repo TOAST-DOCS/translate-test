@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=bb95c747cee7 -->
+
 # 機能別設定
 
 統合設定ファイルの `configs` に記述できる機能別設定について説明します。
