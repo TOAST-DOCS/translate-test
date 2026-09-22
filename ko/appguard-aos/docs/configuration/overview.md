@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=899d793daadd -->
+
 # 통합 설정 파일
 
 <a id="overview"></a>
