@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=c01d6c6c712e -->
 
 <a id="database-rds-for-enginepascalcase-db-engine"></a>
@@ -84,7 +86,7 @@ Support for MySQL versions below 8.0.34 has ended under the MySQL LTS policy. We
 After creating the DB instance, you can change the DB engine version and modify the DB instance.
 
 !!! danger "Caution"
-    When attempting to change the DB version, only an upgrade is supported. A downgrade is not supported.
+    When changing the DB version, only an upgrade is supported. A downgrade is not supported.
 
 When upgrading the database engine version, a major version upgrade occurs if only the major version number is changed, and a minor version upgrade occurs if only the minor version number is changed.
 When attempting to upgrade the DB engine major version, you can upgrade to the next major version of the DB engine.
@@ -177,7 +179,7 @@ For more information, refer to the official documentation below:
 <a id="manage-db-engine-version-upgrading-the-db-engine-version-using-a-dummy-db-instance"></a>
 #### Upgrading the DB Engine Version Using a Dummy DB Instance 
 
-When trying to change the DB engine version in the Modify DB Instance window, you can select whether to use a dummy DB instance to ensure high availability during the version upgrade process. If you choose to use a dummy DB instance, a Standby for DB version upgrade is created. 
+When trying to change the DB engine version in the Modify DB Instance window, you can select whether to use a dummy DB instance to maintain high availability during the version upgrade process. If you choose to use a dummy DB instance, a Standby for DB version upgrade is created.
 
 !!! danger "Caution"
     For dummy DB instances, a temporary Standby is created during the upgrade process, so this option is only available for non-high-availability configurations.
