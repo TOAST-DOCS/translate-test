@@ -523,8 +523,7 @@ You can set up notifications for the item selected in the anomaly detection list
 
 !!! tip "Note"
     For all statuses other than Enabled - Normal, no anomaly detection data is generated, and therefore no notifications occur.
-
-
+    If a suspension occurs in a non-Enabled - Normal status (Enabled - Pending, Enabled - Insufficient Data), the process of acquiring data for training and inference may be reset. In this case, it may take at least 6 additional hours or more, depending on the status before the suspension.
 
 <a id="use-anomaly-detection"></a>
 ### Use Anomaly Detection { #use-anomaly-detection }
