@@ -1,13 +1,26 @@
-<!-- pre-align:aligned sig=128be9dd92f4 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=8aaf9aa29550 -->
 
 <a id="data-analytics-dataflow-release-notes"></a>
 ## Data & Analytics > DataFlow > リリースノート { #data-analytics-dataflow-release-notes }
 
-<a id="may-27-2026"></a>
-## 2026. 05. 27. { #may-27-2026 }
+<a id="october-27-2026"></a>
+## 2026. 10. 27. { #october-27-2026 }
 
 <a id="feature-updates"></a>
 ### 機能改善・変更 { #feature-updates }
+
+* 新規ノード追加
+    * Filter
+        * Aggregate
+
+<a id="may-27-2026"></a>
+## 2026. 05. 27. { #may-27-2026 }
+
+<a id="may-27-2026-feature-updates"></a>
+### 機能改善/変更 { #may-27-2026-feature-updates }
+
 * 新規ノード追加
     * Source
         * (NHN Cloud) EasyQueue
@@ -21,10 +34,12 @@
 
 <a id="added-features"></a>
 ### 機能追加 { #added-features }
+
 * フロー情報でSourceノードのスキーマを定義して使用できる機能を追加しました。
 
 <a id="april-28-2026-feature-updates"></a>
 ### 機能改善・変更 { #april-28-2026-feature-updates }
+
 * 新規ノードの追加
     * Filter
         * Tokenizer
@@ -37,8 +52,10 @@
 
 <a id="march-24-2026"></a>
 ## 2026. 03. 24. { #march-24-2026 }
+
 <a id="march-24-2026-feature-updates"></a>
 ### 機能改善・変更 { #march-24-2026-feature-updates }
+
 * V1エンジンタイプのサポート終了
     * V1エンジンタイプのサポートが終了し、既存のV1エンジンタイプのフローはこれ以上実行できません。
     * 全てのフローはV2エンジンタイプで作成されます。
@@ -56,12 +73,15 @@
 
 <a id="bug-fixes"></a>
 ### 不具合の修正 { #bug-fixes }
+
 * モニタリング画面の左側のツリー構造の折りたたみボタンが機能しない現象を修正しました。
 
 <a id="february-10-2026"></a>
 ## 2026. 02. 10. { #february-10-2026 }
+
 <a id="february-10-2026-feature-updates"></a>
 ### 機能改善・変更 { #february-10-2026-feature-updates }
+
 * V1エンジンでのCipherノードのサポート終了
     * 2026年2月10日をもって、V1エンジンタイプのCipherノード機能のサポートが中断されます。
     * 既存のV1エンジンタイプのフローにCipherノードが含まれている場合、フローを実行できません。
@@ -72,6 +92,7 @@
 
 <a id="december-23-2025-added-features"></a>
 ### 機能追加 { #december-23-2025-added-features }
+
 * エンジンタイプ追加
     * V1: 既存エンジンであり、全ての標準ノード及び既存テンプレートと完全互換されます。
     * V2: 最新アーキテクチャベースのエンジンで、V1に比べてより高速なパフォーマンスを提供します。
@@ -81,6 +102,7 @@
 
 <a id="october-28-2025-bug-fixes"></a>
 ### バグ修正 { #october-28-2025-bug-fixes }
+
 * モニタリングタブでCPU、Memory、Networkの指標が、直近に実行したフローに対してのみ表示される問題を修正しました。
 * 機密情報が含まれるテンプレートを利用して構成したフローまたはテンプレートを保存する場合に、保存に失敗する問題を修正しました。
 
@@ -89,6 +111,7 @@
 
 <a id="september-23-2025-feature-updates"></a>
 ### 機能改善・変更 { #september-23-2025-feature-updates }
+
 * ノードを設定する際に、機密情報をアスタリスクで表示するよう修正しました。
     * (NHN Cloud) Object Storage > シークレットキー
     * (NHN Cloud) CloudTrail > Appkey
@@ -99,6 +122,7 @@
 
 <a id="september-23-2025-bug-fixes"></a>
 ### 不具合の修正 { #september-23-2025-bug-fixes }
+
 * モニタリングタブで一度も実行されていないフローを選択すると、チャートが表示されない問題を修正しました。
 
 <a id="august-26-2025"></a>
@@ -106,6 +130,7 @@
 
 <a id="august-26-2025-feature-updates"></a>
 ### 機能改善・変更 { #august-26-2025-feature-updates }
+
 * 詳細情報画面で予約スケジュールを確認できる**スケジュール一覧**タブを新しく追加しました。
 * フロー予約のための**Cloud Schedulerコンソールへ移動**ボタンを、基本情報タブから**スケジュール一覧**タブに移動しました。
 
@@ -114,11 +139,13 @@
 
 <a id="july-29-2025-feature-updates"></a>
 ### 機能改善・変更 { #july-29-2025-feature-updates }
+
 * 実行モードをフローに設定するように変更しました。
 * CloudTrailイベント名をDataFlowコンソール用語と同一に修正しました。
 
 <a id="july-29-2025-bug-fixes"></a>
 ### 不具合の修正 { #july-29-2025-bug-fixes }
+
 * ドレイン後、フローが正常に終了しない問題を修正しました。
 * フローの最近のログ表示ウィンドウが開いている状態でフローが終了した場合、それ以上ログの取得リクエストを行わないように修正しました。
 
@@ -127,6 +154,7 @@
 
 <a id="june-24-2025-feature-updates"></a>
 ### 機能改善・変更 { #june-24-2025-feature-updates }
+
 * スケジューリング機能をCloud Schedulerサービスと連動する方式に変更しました。
 * Sourceノードに実行モード設定を追加しました。
     * STREAMING：フローを終了せず、リアルタイムでデータを処理します。
@@ -137,6 +165,7 @@
 
 <a id="may-27-2025-feature-updates"></a>
 ### 機能改善・変更 { #may-27-2025-feature-updates }
+
 * 新規ノード追加
     * Filter
         * Mutate：フィールドの名前を変更したり、フィールドの値を変形することができます。
@@ -145,6 +174,7 @@
 
 <a id="may-27-2025-bug-fixes"></a>
 ### 不具合の修正 { #may-27-2025-bug-fixes }
+
 * ログが非常に早く溜まる場合、ログ表示機能が正常に動作しない問題を修正しました。
 
 <a id="march-4-2025"></a>
@@ -152,6 +182,7 @@
 
 <a id="march-4-2025-bug-fixes"></a>
 ### 不具合の修正 { #march-4-2025-bug-fixes }
+
 * フローイベントIn/Outグラフが正常に表示されない問題を修正しました。
 
 <a id="december-24-2024"></a>
@@ -159,6 +190,7 @@
 
 <a id="december-24-2024-feature-updates"></a>
 ### 機能改善・変更 { #december-24-2024-feature-updates }
+
 * (Amazon) S3 Sinkノードと(Amazon) S3 - Parquet Sinkノードを統合しました。
 * (NHN Cloud) Object Storage Sinkノードと(NHN Cloud) Object Storage - Parquet Sinkノードを統合しました。
 
@@ -167,6 +199,7 @@
 
 <a id="september-25-2024-feature-updates"></a>
 ### 機能改善・変更 { #september-25-2024-feature-updates }
+
 * フロー開始プロセスを安定化させました。
 
 <a id="august-27-2024"></a>
@@ -174,6 +207,7 @@
 
 <a id="august-27-2024-feature-updates"></a>
 ### 機能改善・変更 { #august-27-2024-feature-updates }
+
 * フローの最近の実行時間の計算方法を改善しました。
 * ノード設定を表示する時、必須項目が先に表示されるように修正しました。
 
@@ -182,6 +216,7 @@
 
 <a id="july-23-2024-feature-updates"></a>
 ### 機能改善・変更 { #july-23-2024-feature-updates }
+
 * ノード設定画面で`array of strings`タイプのデータを入力する際にEnterキーを利用できるように改善しました。
 * Dateノードの**Match**設定を**ソースフィールド**と**フォーマット**設定に分離しました。
 * フローの重複開始または終了時のエラーコードを`ERROR`ではなく`FLOW_ALREADY_STARTED`/`FLOW_ALREADY_STOPPED`を表示するように修正しました。
@@ -192,12 +227,14 @@
 
 <a id="july-1-2024-feature-updates"></a>
 ### 機能改善・変更 { #july-1-2024-feature-updates }
+
 * フロー実行時にインスタンスタイプを設定できる機能を追加しました。
 * (Amazon) S3 Source, Sink及び(Amazon) S3 - Parquet Sinkノードのエンドポイント、リージョン設定を必須設定から任意設定に変更しました。
     * エンドポイント、リージョン設定のいずれかを入力してもノードが正常に動作するようになりました。
 
 <a id="july-1-2024-bug-fixes"></a>
 ### 不具合の修正 { #july-1-2024-bug-fixes }
+
 * フロードレイン後に終了、 Log & Crash Searchログ保存設定、有効性検査有効化、有効性検査を無効にするとCloudTrailログが残らない問題を修正しました。
 * スケジューリング機能が断続的に動作しない問題を修正しました。
 * Cipherノードが断続的に動作しない問題を修正しました。
@@ -211,6 +248,7 @@
 
 <a id="may-28-2024-feature-updates"></a>
 ### 機能改善・変更 { #may-28-2024-feature-updates }
+
 * 一部の設定を削除しました。
     * 共通 > 測定項目の有効化
     * Filterノード共通 > 定期的なFlush
@@ -222,6 +260,7 @@
 
 <a id="may-28-2024-bug-fixes"></a>
 ### 不具合の修正 { #may-28-2024-bug-fixes }
+
 * 退会したユーザーの修正履歴を空白ではなく"UNKNOWN USER"と表示するように修正しました。
 * Object Storage, S3ノードの有効性検査時に無効なバケット名が入力された場合、`ERROR`ではなく`S3_NO_SUCH_BUCKET`と表示するように修正しました。
 * フロー設定画面とモニタリング画面でのノード名称が異なる問題を修正しました。
@@ -232,10 +271,12 @@
 
 <a id="april-23-2024-added-features"></a>
 ### 機能追加 { #april-23-2024-added-features }
+
 * フロー状態変更通知メール機能を追加しました。
 
 <a id="april-23-2024-bug-fixes"></a>
 ### 不具合の修正 { #april-23-2024-bug-fixes }
+
 * ノードが多いフローモニタリングを照会する場合、照会に失敗する問題を修正しました。
 
 <a id="march-26-2024"></a>
@@ -243,6 +284,7 @@
 
 <a id="march-26-2024-added-features"></a>
 ### 機能追加 { #march-26-2024-added-features }
+
 * フロードレイン後に終了する機能を追加しました。
     * フローの残余イベントを全て処理するドレインを行った後、フローを終了する機能を追加しました。
     * ドレイン中のフローはフロー終了機能ですぐに終了できます。
@@ -253,12 +295,14 @@
 
 <a id="february-27-2024-feature-updates"></a>
 ### 機能改善・変更 { #february-27-2024-feature-updates }
+
 * S3、Object Storage Sinkノードの説明に使用される「ファイル」と「オブジェクト」という単語を「オブジェクト」に統一しました。
 * フローの保存、開始、停止、検査要求時にロードUIが表示されるように修正しました。
 * ノードの設定順序をより自然に修正しました。
 
 <a id="february-27-2024-bug-fixes"></a>
 ### 不具合の修正 { #february-27-2024-bug-fixes }
+
 * S3, OBS Sinkノードを含むフローを保存する際、検証の過程でテスト用の一時的なオブジェクトが断続的に残る問題を修正しました。
 * フローを削除する際、そのフローに保存されたスケジューリングが一緒に削除されない問題を修正しました。
 * プロジェクト有効化直後にフローを作成すると、そのフローが実行されない問題を修正しました。
@@ -270,6 +314,7 @@
 
 <a id="january-23-2024-feature-updates"></a>
 ### 機能改善・変更 { #january-23-2024-feature-updates }
+
 * 最初のフローを作成しないと有効性検査機能がオンにならないバグを修正しました。
 
 <a id="december-19-2023"></a>
@@ -277,6 +322,7 @@
 
 <a id="december-19-2023-added-features"></a>
 ### 機能追加 { #december-19-2023-added-features }
+
 * 新規ノード追加
     * Source
         * DBにクエリを実行してデータを取得する機能を追加しました。
@@ -286,6 +332,7 @@
 
 <a id="december-19-2023-bug-fixes"></a>
 ### 不具合の修正 { #december-19-2023-bug-fixes }
+
 * フローを作成しても有効性検査機能が正常に動作しないバグを修正しました。
 
 <a id="november-28-2023"></a>
@@ -293,6 +340,7 @@
 
 <a id="november-28-2023-feature-updates"></a>
 ### 機能改善・変更 { #november-28-2023-feature-updates }
+
 * フロー保存、有効性検査時にエラーコードを追加しました。
 * 有効性検査機能を使用するかどうかを選択できるように変更しました。
 
@@ -301,6 +349,7 @@
 
 <a id="october-31-2023-feature-updates"></a>
 ### 機能改善・変更 { #october-31-2023-feature-updates }
+
 * DataFlowサービス環境を初期化する過程で発生するエラーメッセージを改善し、ユーザーに分かりやすくしました。
 
 <a id="october-17-2023"></a>
@@ -308,6 +357,7 @@
 
 <a id="october-17-2023-feature-updates"></a>
 ### 機能改善・変更 { #october-17-2023-feature-updates }
+
 * Log & Crash Search SourceノードにSecretKeyプロパティを追加しました。
 
 <a id="september-26-2023"></a>
@@ -315,11 +365,13 @@
 
 <a id="september-26-2023-feature-updates"></a>
 ### 機能改善・変更 { #september-26-2023-feature-updates }
+
 * データを処理する時にAt Least Onceをサポートできるように修正しました。
 * S3、Object Storage SinkノードのPrefix設定に時間形式用の新規オプションが追加されました。
 
 <a id="september-26-2023-bug-fixes"></a>
 ### 不具合の修正 { #september-26-2023-bug-fixes }
+
 * Log & Crash Search Sourceノード終了中にエラーが発生すると、フローが終了しないバグを修正しました。
 * Cipher Filterノードを含むフローをコピーした後、すぐに実行するとフローが正常に動作しないバグを修正しました。
 * フロー終了中にエラーが発生した場合、再度終了をリクエストしても失敗するバグを修正しました。
@@ -337,10 +389,12 @@
 
 <a id="june-27-2023-added-features"></a>
 ### 機能追加 { #june-27-2023-added-features }
+
 * Log & Crash Search連動機能を追加しました。
     * フローのログをLog & Crash Searchに保存できる機能を追加しました。
 <a id="june-27-2023-bug-fixes"></a>
 ### 不具合の修正 { #june-27-2023-bug-fixes }
+
 * ログ表示ボタンの有効化タイミングを調整しました。
     * ログ表示ボタンの有効化タイミングをPREPARING段階に修正しました。
 
