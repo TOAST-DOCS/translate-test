@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=16de6192510c -->
+<!-- pre-align:aligned sig=c8f91552cdc2 -->
 
 {% include-markdown '../_object-storage-vars.md' %}
 
@@ -48,6 +48,50 @@ This document describes only the basic usage of API. To use advanced features, i
 
 Object Storage uses S3 API credentials for authentication/authorization when making Amazon S3-compatible API calls. S3 API credentials are authentication keys in AWS EC2 format required to use service APIs that support the Amazon S3-compatible API in NHN Cloud.
 {% if s3_credential_guide_url %}For more information about S3 API credentials, see [S3 API Credentials]($[ s3_credential_guide_url ]$).{% endif %}
+
+<a id="create-signature"></a>
+## Create a Signature { #create-signature }
+
+To use S3 API, you must create a signature use credentials. Regarding how to sign, see [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html).
+
+The following information is required to create a signature.
+
+| Name | Value |
+|---|---|
+| Algorithm | AWS4-HMAC-SHA256 |
+| Signature time | YYYYMMDDThhmmssZ format |
+| Service name | s3 |
+| Region name | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
+| Secret key | S3 API credentials secret key |
+
+{% if release_2026_05 %}
+When creating an AWS Signature V4 signature, the `x-amz-content-sha256` header is required. This header is included in the Canonical Request and is used in the signature calculation. The value of this header determines how the payload is processed. The available values are as follows:
+
+| x-amz-content-sha256 Value | Description |
+|---|---|
+| `<payload hash>` | Default method using the SHA-256 hash of the entire request payload |
+| `UNSIGNED-PAYLOAD` | Omits payload signing |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD` | AWS Chunked Upload method (includes a signature in each chunk) |
+| `STREAMING-UNSIGNED-PAYLOAD-TRAILER` | AWS Chunked Upload method (uses a trailer header without chunk signatures) |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload method (includes a signature in each chunk + uses a trailer header) |
+
+!!! tip "Note"
+    For more information, see the [Authenticating Requests: Using the Authorization Header(AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) documentation.
+
+If the `x-amz-content-sha256` value is `STREAMING-UNSIGNED-PAYLOAD-TRAILER` or `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER`, you must declare the checksum algorithm to be sent in the trailer using the `x-amz-trailer` request header. The supported algorithms are as follows:
+
+| x-amz-trailer Value | Algorithm |
+|---|---|
+| `x-amz-checksum-crc32` | CRC-32 |
+| `x-amz-checksum-crc32c` | CRC-32C |
+| `x-amz-checksum-crc64nvme` | CRC-64/NVME |
+| `x-amz-checksum-sha1` | SHA-1 |
+| `x-amz-checksum-sha256` | SHA-256 |
+
+!!! tip "Note"
+    For more information about how to calculate signatures using trailer headers, see the [Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) documentation.
+
+{% endif %}
 
 <a id="bucket"></a>
 ## Bucket { #bucket }
