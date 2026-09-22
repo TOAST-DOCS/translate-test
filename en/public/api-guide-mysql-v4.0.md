@@ -5412,7 +5412,7 @@ This API does not require a request body.
             "parameterGroupName": "parameterGroupName-example",
             "description": "description-example",
             "dbVersion": "MYSQL_V8411",
-            "dbEngineVersionFamily": "MYSQL_V80_FAMILY",
+            "dbEngineVersionFamily": "MYSQL_V84_FAMILY",
             "parameterGroupType": "USER",
             "parameterGroupStatus": "STABLE",
             "createdYmdt": "2023-12-31T15:00:00+09:00",
@@ -5467,8 +5467,7 @@ POST /v4.0/parameter-groups
 {
     "parameterGroupName": "parameterGroupName",
     "description": "description-example",
-    "dbVersion": "MYSQL_V8411",
-    "dbEngineVersionFamily": "MYSQL_V80_FAMILY"
+    "dbVersion": "MYSQL_V8411"
 }
 ```
 
@@ -5588,7 +5587,7 @@ This API does not require a request body.
     "parameterGroupName": "parameterGroupName-example",
     "description": "description-example",
     "dbVersion": "MYSQL_V8411",
-    "dbEngineVersionFamily": "MYSQL_V80_FAMILY",
+    "dbEngineVersionFamily": "MYSQL_V84_FAMILY",
     "parameterGroupStatus": "STABLE",
     "parameters": [
         {
