@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=fb5d29087d9e -->
+<!-- pre-align:aligned sig=d9789ac3a88a -->
 
 # アプリ証明の使用方法
 
