@@ -15,6 +15,12 @@ This document provides a comprehensive overview of NHN Cloud Public API usage, i
     * Since API behavior and response formats vary by service, please refer to the specific API guide for each service for more details.
     * Authentication methods vary across Framework APIs, Partner Management APIs, and individual services; some methods are only supported by specific services. You can check the supported authentication methods for each Public API in the [Supported Authentication Methods](/Support-Status/en/supported-authentication-methods/) section.
 
+!!! danger "Caution"
+    Connections that have remained idle for an extended period may be terminated by the server or a network segment. Reusing a connection from the connection pool that has already been terminated may cause requests to fail. We recommend the following:
+    * **Set the maximum idle time of the connection pool to 25 minutes or less**, which is shorter than the idle timeout of intermediate network segments (approximately 30 minutes).
+    * Validate connections before use to filter out any that have already been terminated.
+    * For requests that are safe to call repeatedly, such as GET requests, implement retry logic when a connection error occurs.
+
 <a id="getting-started-with-public-api"></a>
 ## Getting started with Public API { #getting-started-with-public-api }
 
