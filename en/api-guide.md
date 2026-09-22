@@ -9,7 +9,7 @@ Describes the APIs provided by NHN Cloud Foundry.
 
 | API | Description |
 | --- | --- |
-| Ingest API | Ingests data into an existing data source. Provides snapshot file upload. |
+| Ingest API | Ingests data into an existing data source. Provides snapshot file upload, event collection, and metric collection. |
 | Recommendation Query API | Requests recommendation results from a recommendation system app. |
 | Recommendation Event API | Collects user reaction events to recommendation results. |
 
@@ -68,10 +68,16 @@ All API responses consist of a `header` and a `body`.
 <a id="ingest.api"></a>
 ## Ingest API { #ingest.api }
 
-The Ingest API loads data into a data source that you have already created in the console. It provides a snapshot upload method that replaces all data in the data source with the uploaded file.
+The Ingest API loads data into a data source that you have already created in the console. It provides the following methods depending on the data source type.
+
+| Method | Target Data Source | Description |
+| --- | --- | --- |
+| Snapshot Upload | File | Replaces all data with the uploaded file |
+| Event Collection | File | Adds change events one by one while keeping existing data |
+| Metric Collection | Prometheus API | Sends metric (time-series) data in real time |
 
 !!! danger "Caution"
-    An API for creating new data sources is not provided. To use the Ingest API, you must first create a data source in the console, and only FILE type data sources can be used.
+    The API for creating a new data source is not provided. To use the Ingest API, you must first create a data source in the console.
 
 <a id="ingest.snapshot"></a>
 ### Snapshot Upload (File Upload) { #ingest.snapshot }
@@ -404,6 +410,201 @@ The job status (`status`) can have the following values:
 | COMPLETED | Job completed successfully |
 | FAILED | Job failed |
 
+<a id="event.ingest.api"></a>
+### Collect Events { #event.ingest.api }
+
+Sends change events while retaining existing data. Use this with data sources of the file type, and you must first enable the **Event API**. To enable it, use the Event Settings tab in the console or the Enable API described below.
+
+!!! danger "Caution"
+    Enabling the Event API blocks snapshot uploads. In addition, while the Event API is enabled, data source schema changes (adding catalog fields) are restricted. To add a field, you must first disable the Event API. For information on how to enable and disable the Event API, see "Event Settings" in the [Console User Guide](../console-user-guide/#datasource.detail.event).
+
+<a id="event.ingest.api.enable"></a>
+#### Enable/Disable Event API { #event.ingest.api.enable }
+
+| Method | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events/enable |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events/disable |
+
+curl example:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/events/enable" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}"
+```
+
+Response example:
+
+```json
+{
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 0,
+    "resultMessage": "SUCCESS"
+  },
+  "body": {
+    "enabled": false,
+    "status": "ENABLING"
+  }
+}
+```
+
+| Field | Description |
+| --- | --- |
+| body.enabled | Whether event collection is available |
+| body.status | Activation status. DISABLED, ENABLING, ENABLED, ENABLE_FAILED |
+
+- Activation is processed asynchronously. Immediately after the request, the response returns `enabled` as false and `status` as ENABLING. Events are collected after the status becomes ENABLED.
+- If an activation request is made while activation is already in progress, the request is rejected. You can check the progress on the Event Settings tab in the console.
+
+<a id="event.ingest.api.send"></a>
+#### Send a Single Event { #event.ingest.api.send }
+
+| Method | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events |
+
+curl example:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/events" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "operation": "INSERT",
+    "data": {
+      "userId": "user-12345",
+      "courseId": "course-java-101",
+      "action": "enroll",
+      "rating": 4.5
+    },
+    "eventTimestamp": "2026-08-25T10:30:00Z"
+  }'
+```
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| operation | String | O | Operation type. One of INSERT, UPDATE, or DELETE |
+| data | Object | O | Event data. Uses field names from the data source schema as keys |
+| eventTimestamp | String | X | Timestamp of the event. If omitted, the server reception time is used |
+
+Response example:
+
+```json
+{
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 0,
+    "resultMessage": "SUCCESS"
+  },
+  "body": {
+    "eventId": "evt-550e8400-e29b-41d4-a716-446655440000",
+    "success": true,
+    "errorMessage": null
+  }
+}
+```
+
+| Field | Description |
+| --- | --- |
+| body.eventId | Event ID |
+| body.success | Whether processing was successful |
+| body.errorMessage | Error message on failure |
+
+<a id="event.ingest.api.batch"></a>
+#### Send Multiple Events { #event.ingest.api.batch }
+
+| Method | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events/batch |
+
+Sends multiple change events at once. You can send up to 5,000 events per request.
+
+curl example:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/events/batch" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "events": [
+      {
+        "operation": "INSERT",
+        "data": { "hostname": "server-01", "portName": "eth0", "trafficIn": 1024.5 },
+        "eventTimestamp": "2026-08-25T10:30:00Z"
+      },
+      {
+        "operation": "UPDATE",
+        "data": { "hostname": "server-01", "portName": "eth1", "trafficIn": 2048.7 }
+      }
+    ]
+  }'
+```
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| events | Array | O | List of events. Up to 5,000 events per request. Each item has the same fields as the single event send. |
+
+The `body` of the response is an array of processing results for each event.
+
+<a id="metrics.ingest.api"></a>
+### Ingest Metrics { #metrics.ingest.api }
+
+Sends metric data to a data source of type Prometheus API. The ingested metrics are used as input for the univariate anomaly detection app.
+
+| Method | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/metrics |
+
+curl example:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/metrics" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "metrics": [
+      {
+        "timestamp": 1776149886528,
+        "value": 4.99,
+        "labels": [
+          { "name": "__name__", "value": "cpu_usage" },
+          { "name": "instance_id", "value": "instance-001" }
+        ],
+        "metadata": { "resourceType": "Instance" }
+      }
+    ]
+  }'
+```
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| metrics | Array | O | List of metrics. Cannot be empty; maximum of 5,000 entries per request |
+| metrics[].timestamp | Long | O | Metric timestamp. Millisecond epoch |
+| metrics[].value | Double | O | Measured value |
+| metrics[].labels | Array | O | List of labels. The combination of labels determines the time series, and the group label determines the group |
+| metrics[].labels[].name | String | O | Label name. Must start with a letter or underscore (_), and can only contain letters, numbers, and underscores |
+| metrics[].labels[].value | String | O | Label value. Commas and equals signs are not allowed |
+| metrics[].metadata | Object | X | Additional information. Stored and passed through as-is without interpretation. The key `identityKey` is reserved for system use and cannot be used |
+
+Returns HTTP `202 Accepted` on success.
+
+The ingestion rules are as follows:
+
+- A single request can contain metrics from multiple time series. Because time series are identified by their label combinations, you do not need to separate requests per time series.
+- `timestamp` must be a millisecond-epoch value. If sent in seconds, the timestamp will be stored incorrectly.
+- If a group label is defined for the data source, always include that label in every request. If the label is missing, the metric will not belong to the intended group.
+- Entries where `value` is NaN or Infinity are skipped and not stored. The remaining entries in the same request are processed normally.
+- A `202` response means the data has been received. Storage is applied shortly after, and resending the same request may result in duplicate data being stored.
+- Delayed data is stored but may be excluded from real-time inference.
+
+!!! tip "Note"
+    Ingestion is independent of the transmission interval. However, if this data source is connected to a univariate anomaly detection app, you must send data for the same time series continuously at intervals of one minute or less. Because the app evaluates metrics in one-minute buckets, sending data at longer intervals will create gaps and may prevent the precise mode from completing its readiness process.
+
 <a id="recommendation.api"></a>
 ## Recommendation API { #recommendation.api }
 
@@ -445,14 +646,69 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | context.availableItems | Array | X | List of item keys eligible for recommendation. If specified, only items in this list are recommended. |
 | context.pageType | String | X | Current page type (free-form; for example: home, item_detail) |
 | context.sessionId | String | X | Session ID |
+| context.impressions | Array | X | List of items exposed to the user as recommendation results |
+| context.interactions | Array | X | Information about actions performed by the user on items |
+| context.feedback | Array | X | Ratings left by the user on items |
 | userAttributes | Object | X | User attribute information (used for Cold Start inference) |
 | options.maxRecommendations | Integer | X | Maximum number of recommendations (from 1 to 100). Values exceeding 100 are adjusted to 100 without an error; if not specified, 100 is applied. If fewer items are available than this value, only the actual number of available items is returned. |
 | options.mode | String | X | Specifies the inference mode. One of: sequential (history-based), cold_start (attribute-based), popular (popularity-based). If not specified, the server determines this automatically. |
 | options.longtail | Boolean | X | Improves recommendation diversity by including less popular items. Applies only when sequential is used. |
 | options.excludeItemKeys | Array | X | List of item keys to exclude from recommendations. Excluded items are not counted toward the maximum number of recommendations. |
 
+<a id="recommendation.api.signal"></a>
+#### Behavior Signals { #recommendation.api.signal }
+
+`context.impressions` is used to reorder recommendation results based on recommendation information exposed to users.
+`context.interactions` and `context.feedback` are fields that convey actions taken by users on recommendation results, and reflect user behavior-based data in model inference.
+
+```json
+{
+  "userId": "user_12345",
+  "context": {
+    "impressions": [
+      {
+        "requestId": "req_xyz789",
+        "itemKeys": ["CONT0023", "CONT0045"],
+        "occurredAt": "2026-08-25T10:00:00+09:00"
+      }
+    ],
+    "interactions": [
+      {
+        "requestId": "req_xyz789",
+        "itemKey": "CONT0023",
+        "type": "CLICK",
+        "occurredAt": "2026-08-25T10:00:05+09:00"
+      }
+    ],
+    "feedback": [
+      {
+        "requestId": "req_xyz789",
+        "itemKey": "CONT0045",
+        "type": "NEGATIVE",
+        "occurredAt": "2026-08-25T10:00:10+09:00"
+      }
+    ]
+  }
+}
+```
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| requestId | String | O | The body.metadata.requestId from the recommendation response in which the behavior occurred |
+| itemKeys | Array | O | List of exposed item keys. Enter in exposure order; used in impressions |
+| itemKey | String | O | Target item key. Used in interactions and feedback |
+| type | String | O | For interactions: CLICK, CONVERSION. For feedback: POSITIVE, NEGATIVE |
+| occurredAt | String | O | The time at which the behavior occurred |
+
+- `occurredAt` must be sent in ISO 8601 format including a timezone offset. Requests without an offset are treated as errors.
+- All three fields require `requestId`, `occurredAt`, and an item key to be used as signals.
+- Each field must be provided in order from oldest to most recent.
+- `impressions` supports a maximum of 10 entries, with up to 100 `itemKeys` per entry. `interactions` and `feedback` each support a maximum of 10 entries per `type`. Requests exceeding these limits are rejected.
+- Behavior signals are used only as inference input for the current recommendation request and are not stored. If the `feedback` for the same item changes, only the most recent value is reflected, so you must resend the signals with each request to maintain the effect.
+- To store interaction events for analysis, use the [Recommendation Event API](#recommendation.event.api) together with this API.
+
 !!! tip "Note"
-    The `userAttributes` schema may change in terms of collection method or field types depending on the future implementation direction of Preference Elicitation.
+    The `userAttributes` schema may change in terms of how data is collected or what fields are included, depending on the future implementation direction of Preference Elicitation.
 
 Response example:
 
@@ -481,13 +737,13 @@ Response example:
 
 | Field | Description |
 | --- | --- |
-| body.userId | ID of the requesting user |
+| body.userId | The requested user ID |
 | body.recommendations[].itemKey | Recommended item key |
-| body.recommendations[].score | Recommendation score (from 0.0 to 1.0) |
+| body.recommendations[].score | Recommendation score (0.0–1.0) |
 | body.recommendations[].position | Recommendation rank |
 | body.metadata.modelVersion | Model version used |
-| body.metadata.requestId | Request tracking ID. Use this value when sending the recommendation event API. |
-| body.metadata.inferenceType | Inference type. One of: sequential (history-based), cold_start (attribute-based), popular (popularity-based) |
+| body.metadata.requestId | Request tracking ID. Use this value when sending to the Recommendation Event API |
+| body.metadata.inferenceType | Inference type: sequential (history-based), cold_start (attribute-based), popular (popularity-based) |
 | body.metadata.abTestGroup | A/B test group (currently returns an empty value) |
 
 <a id="recommendation.event.api"></a>
