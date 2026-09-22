@@ -1,0 +1,165 @@
+<!-- pre-align:aligned sig=6154a9778849 -->
+
+<a id="database-rds-for-enginepascalcase-parameter-group"></a>
+## Database > RDS for {{engine.pascalCase}} > 파라미터 그룹 { #database-rds-for-enginepascalcase-parameter-group }
+
+<a id="parameter-group"></a>
+## 파라미터 그룹 { #parameter-group }
+
+RDS for {{engine.pascalCase}}은 DB 인스턴스에 설치된 {{engine.pascalCase}}의 설정을 적용하기 위해 파라미터 그룹 기능을 제공합니다. 파라미터 그룹은 {{engine.pascalCase}}을 설정할 수 있는 파라미터의 집합입니다. 서비스 활성화 시 모든 DB 엔진의 버전별로 기본 파라미터 그룹을 제공합니다. 기본 파라미터 그룹은 `default.{DB 엔진 버전 이름}`으로 제공되며, 버전별 권장하는 기본 파라미터값으로 구성되어 있습니다. 기본 파라미터 그룹은 일반 파라미터 그룹과 동일하게 수정하거나 삭제할 수 있습니다.
+
+<a id="create-parameter-group"></a>
+### 파라미터 그룹 생성 { #create-parameter-group }
+
+필요에 따라 파라미터 콘솔에서 파라미터 그룹을 생성할 수 있습니다. 파라미터 그룹은 DB 엔진 버전별로 생성하며 이름을 부여할 수 있으며 아래와 같은 제약 사항이 있습니다.
+
+* 파라미터 그룹 이름은 리전별로 고유해야 합니다.
+* 파라미터 그룹 이름은 1~100 사이의 영문자, 숫자, 일부 기호(-, _, .)만 사용할 수 있으며, 첫 번째 글자는 영문자만 사용할 수 있습니다.
+
+파라미터 그룹 생성 시 파라미터는 항상 기본값으로 생성됩니다. 기존 파라미터 그룹을 기준으로 생성하려면 파라미터 복사 기능을 이용해서 파라미터 그룹을 생성해야 합니다.
+
+<a id="copy-parameter-group"></a>
+### 파라미터 그룹 복사 { #copy-parameter-group }
+
+기존 파라미터 그룹을 기준으로 신규 파라미터 그룹을 생성합니다. 복사한 신규 파라미터 그룹은 원본 파라미터 그룹의 파라미터 값으로 구성됩니다. 원본 파라미터 그룹과 복사한 파라미터 그룹 간에는 어떠한 연관 관계가 없으며, 원본 파라미터 그룹의 변경 및 삭제는 복사한 파라미터 그룹에 어떠한 영향도 끼치지 않습니다.
+
+<a id="reset-parameter-group"></a>
+### 파라미터 그룹 재설정 { #reset-parameter-group }
+
+파라미터를 그룹을 재설정하면 모든 파라미터의 값을 DB 엔진 버전의 기본값으로 변경합니다.
+
+<a id="apply"></a>
+### 파라미터 그룹 적용 { #apply }
+
+DB 인스턴스 생성 또는 수정 시 DB 인스턴스에 적용할 파라미터 그룹을 선택할 수 있습니다. 하나의 DB 인스턴스에 하나의 파라미터 그룹이 적용되며, 하나의 파라미터 그룹은 다수 DB 인스턴스에 적용할 수 있습니다. 파라미터 그룹의 파라미터가 변경되면 해당 변경 사항은 바로 DB 인스턴스에 적용되지 않습니다. 연결된 DB 인스턴스가 존재할 경우 파라미터 그룹은 `적용 필요` 상태로 변경됩니다. DB 인스턴스 목록 화면에서 파라미터 그룹과 연결된 DB 인스턴스를 선택한 뒤 **파라미터 그룹 변경 사항 적용**을 클릭하여 파라미터 변경 사항을 DB 인스턴스에 반영할 수 있습니다. 연결된 모든 DB 인스턴스에 파라미터 그룹의 변경 사항이 적용되면 파라미터 그룹은 `적용 완료` 상태로 변경됩니다.
+
+!!! danger "주의"
+    재시작이 필요한 파라미터가 변경된 경우 적용 과정에서 DB 인스턴스가 재시작됩니다.
+
+<a id="compare-parameter-group"></a>
+### 파라미터 그룹 비교 { #compare-parameter-group }
+
+콘솔에서 서로 다른 2개의 파라미터 그룹을 선택한 뒤 **비교**를 클릭하면 파라미터가 무엇이 다른지 확인할 수 있습니다. 동일한 DB 엔진뿐만 아니라 서로 다른 DB 엔진 버전의 파라미터 그룹도 비교할 수 있습니다.
+
+<a id="delete-parameter-group"></a>
+### 파라미터 그룹 삭제 { #delete-parameter-group }
+
+DB 인스턴스에 적용 중인 파라미터 그룹을 제외하면 자유롭게 삭제할 수 있습니다. DB 인스턴스에 적용 중인 파라미터 그룹을 삭제하려면 삭제하기 전 연결된 모든 DB 인스턴스의 파라미터 그룹을 먼저 변경해야 합니다.
+
+<a id="parameter"></a>
+## 파라미터 { #parameter }
+
+파라미터는 아래와 같은 정보를 담고 있습니다.
+
+| 항목     | 설명                                                                                                                                |
+|--------|-----------------------------------------------------------------------------------------------------------------------------------|
+| 그룹     | 옵션 파일(my.cnf)의 옵션 그룹입니다.                                                                                                          |
+| 이름     | 옵션 파일(my.cnf)의 옵션 이름입니다.<br/>옵션 이름과 시스템 변수(System Variables)가 다를 경우 (**_- Variable_**: `시스템 변수(System Variables)`) 형식으로 추가 노출합니다. |
+| 값      | 파라미터에 적용할 값입니다.                                                                                                                   |
+| 허용된 값  | 파라미터에 적용할 수 있는 값의 범위입니다.<br/>                                                                                                     |
+| 적용 유형  | `고정`과 `동적`으로 구분됩니다.<br/>`고정`인 경우 파라미터 변경 사항을 적용하려면 DB 인스턴스를 재시작해야 합니다.<br/>`동적`인 경우 DB 인스턴스의 재시작 없이 바로 파라미터가 적용됩니다.               |
+| 데이터 형식 | 파라미터값의 형식을 나타냅니다.                                                                                                                 | 
+| 수식 사용  | 수식 사용 가능 여부를 나타냅니다.                                                                                                               |
+
+<a id="parameter-variables-formulas-and-functions"></a>
+### 파라미터 변수, 수식 및 함수 { #parameter-variables-formulas-and-functions }
+
+특정 파라미터들은 고정된 값을 사용하기보다는 DB 인스턴스와 연관된 값들을 이용한 수식으로 표현하는 것이 더 좋을 수 있습니다. 이를 지원하기 위해 `NUMERIC`, `INTEGER` 데이터 형식에 대해서는 미리 정의된 변수, 수식 및 함수를 사용할 수 있습니다.
+
+* 수식
+    * `()`, `+`, `-`, `*`, `/`를 사용할 수 있습니다.
+    * 수식의 결과는 항상 숫자여야 합니다.
+    * 데이터 형식이 `INTEGER`인 경우 소수점은 버림 처리합니다.
+    * 데이터 형식이 `NUMERIC`인 경우 소수점 아홉째 자리에서 반올림 처리합니다.
+* 함수
+    * `max(a, b, ...)`: 여러 개의 값 중 가장 큰 값을 반환합니다.
+    * `min(a, b, ...)`: 여러 개의 값 중 가장 작은 값을 반환합니다.
+    * `sum([a, b, ...])`: 여러 개의 값의 합을 반환합니다.
+* 변수
+    * `ramSizeByte`: 현재 DB 인스턴스 타입의 메모리 크기의 바이트값을 나타냅니다.
+    * `vCPU`: 현재 DB 인스턴스 타입의 가상 CPU 코어 수를 나타냅니다.
+    * `dbPort`: 현재 DB 인스턴스의 DB 포트를 나타냅니다.
+    * `serverId`: 현재 DB 인스턴스에 부여한 서버 아이디를 나타냅니다.
+    * `readOnly`: 현재 DB 인스턴스가 읽기 전용일 경우 `1`, 아니면 `0`을 나타냅니다.
+
+아래 예제는 `innodb_buffer_pool_size` 파라미터의 기본값이며, DB 인스턴스 타입의 메모리 크기의 6/10 크기로 설정하는 것을 나타냅니다.
+
+```
+ramSizeByte * 6 / 10
+```
+
+<a id="change-parameter"></a>
+### 파라미터 변경 { #change-parameter }
+
+콘솔에서 파라미터 그룹을 선택한 뒤 **파라미터 편집**을 클릭해 파라미터를 변경할 수 있습니다. 변경할 수 없는 파라미터는 값이 일반 텍스트로 나타나며, 변경할 수 있는 파라미터는 값을 변경할 수 있는 INPUT이 나타납니다. 편집 화면에서 **변경 사항 미리 보기**를 클릭하면 변경된 파라미터를 확인할 수 있는 별도의 팝업 화면이 표시되며, **재설정**을 누르면 변경하기 전으로 되돌릴 수 있습니다. 편집 모드에서 변경한 모든 값은 **변경 사항 저장**을 클릭해야 파라미터 그룹에 반영됩니다. 변경된 파라미터 그룹의 DB 인스턴스 반영은 [파라미터 그룹 적용](parameter-group/#apply) 항목을 참고합니다.
+
+{{#if (eq engine.lowerCase "mysql")}}
+<a id="gtid-constraints"></a>
+## GTID 제약 조건 { #gtid-constraints }
+
+GTID(global transaction identifier) 모드에서는 enforce_gtid_consistency=ON으로 할 때 다음 제약들이 적용됩니다. 참고: [https://dev.mysql.com/doc/refman/8.4/en/replication-gtids-restrictions.html](https://dev.mysql.com/doc/refman/8.4/en/replication-gtids-restrictions.html)
+
+<a id="enforcegtidconsistency"></a>
+### ENFORCE_GTID_CONSISTENCY { #enforcegtidconsistency }
+
+* OFF: 제약 대상 쿼리 허용
+* WARN: 제약 대상 쿼리를 허용하지만 warning 발생
+* ON: 제약 대상 쿼리 허용 안 함
+
+<a id="customer-impact"></a>
+### 고객 영향도 { #customer-impact }
+
+> GTID를 이용한 복제의 아래 제한 사항에 해당하는 쿼리를 사용할 수 없게 됩니다(오류가 발생합니다).
+
+1. 비트랜잭션 저장 엔진과 관련된 업데이트
+    * MyISAM과 같은 비트랜잭션 저장 엔진과 관련된 업데이트를 INNODB와 같이 트랜잭션을 지원하는 저장 엔진을 사용하는 업데이트와 한 트랜잭션에서 수행할 수 없습니다.
+    * 소스와 복제본이 동일한 테이블이 다른 스토리지 엔진을 사용하는 경우에도 문제가 발생합니다.
+    * 비트랜잭션 테이블에서 작동하도록 정의된 트리거가 동일 유형의 문제를 일으킬 수 있습니다.
+2. CREATE TABLE ... SELECT 구문(8.0.21 이전 버전의 경우)
+3. binlog_format이 `STATEMENT`일 때 트랜잭션, 프로시저, 함수, 트리거 내부에서 임시 테이블을 생성/삭제할 수 없습니다.
+
+<a id="customer-recommended-precautions"></a>
+### 고객 권장 사전 조치 { #customer-recommended-precautions }
+
+1. 가능하면 MyISAM과 같은 비트랜잭션 저장 엔진을 사용하지 마세요. 사용한다면 INNODB과 같은 트랜잭션 저장 엔진과 한 트랜잭션에서 업데이트를 수행하지 마세요.
+2. 8.0.21 이전 버전의 경우 CREATE TABLE ... SELECT 구문을 사용하지 마세요.
+    ```
+    예시:  
+    create table tbl_backup as select * from tbl_ori; 
+    를 다음과 같이 변형해야 합니다.
+    create table tbl_backup like tbl_ori; insert tbl_backup select * from tbl_ori;
+    ```
+
+<a id="gtid-application-stage"></a>
+## GTID 적용 단계 { #gtid-application-stage }
+
+<a id="gtidmode"></a>
+### gtid_mode { #gtidmode }
+
+| 값              | Source에서 동작 | Replica에서 동작 |
+|:---------------|:------------|:-------------|
+| OFF            | GTID 미적용    | GTID 처리 불가   |
+| OFF_PERMISSIVE | GTID도 처리 가능 | GTID도 처리 가능  |
+| ON_PERMISSIVE  | GTID 적용     | GTID 적용      |
+| ON             | GTID만 처리    | GTID만 처리     |
+
+<a id="gtid-application-process-in-rds"></a>
+### RDS에서 GTID 적용 절차 { #gtid-application-process-in-rds }
+
+GTID를 원활하게 적용하기 위해 gtid_mode(gtid의 적용 단계)와 enforce_gtid_consistency(쿼리 적용 제한 단계)를 파라미터 그룹을 통해 다음 순서로 적용해야 합니다.
+- 참고: [https://dev.mysql.com/doc/refman/8.4/en/replication-mode-change-online-enable-gtids.html](https://dev.mysql.com/doc/refman/8.4/en/replication-mode-change-online-enable-gtids.html)
+
+| 단계 | 대상         | 파라미터 설정                         | 동작                                   | 비고                                                                                                    |
+|:---|:-----------|:--------------------------------|:-------------------------------------|:------------------------------------------------------------------------------------------------------|
+| 1  | 모든 DB 인스턴스 | enforce_gtid_consistency = WARN | GTID 적용 시 문제가 되는 SQL에 warning 발생 확인. | 파라미터 그룹 변경 후 적용.<br>문제가 예상되는 SQL을 warning에서 확인하고 <br>APP에서 수정합니다.<br>더 이상 warning이 발생하지 않을 때까지 지속합니다. |
+| 2  | 모든 DB 인스턴스 | enforce_gtid_consistency = ON   | 문제가 되는 SQL에 오류 발생                    | 파라미터 그룹 변경 후 적용.<br>더 이상 GTID에서 문제가 되는 쿼리가 수행되지 못합니다.                                                 |
+| 3  | 모든 DB 인스턴스 | gtid_mode = OFF_PERMISSIVE      | Replica가 GTID를 처리할 수 있도록 준비          | 파라미터 그룹 변경 후 적용.<br>모든 Replica가 먼저 OFF_PERMISSIVE가 되어야만 문제가 발생하지 않습니다.                                |
+| 4  | 모든 DB 인스턴스 | gtid_mode = ON_PERMISSIVE       | Source가 GTID를 생성                     | 파라미터 그룹 변경 후 적용.                                                                                      |
+| 5  | 모든 DB 인스턴스 | -                               | 잔여 ANONYMOUS 트랜잭션 확인                 | `SHOW STATUS LIKE 'ONGOING_ANONYMOUS_TRANSACTION_COUNT';`<br>모든 서버에서 결과 0이 최소 1번은 나와야 합니다.            |
+| 6  | 모든 DB 인스턴스 | gtid_mode = ON                  | 모든 트랜젝션은 GTID만 사용                    | 파라미터 그룹 변경 후 적용.                                                                                      |
+
+!!! danger "주의"
+    * 각 단계에서 파라미터 그룹 변경 후에는 반드시 [파라미터 그룹 변경 사항 적용](parameter-group/#apply)을 수행해야 합니다.
+    * gtid_mode와 enforce_gtid_consistency 파라미터 변경 시 DB 인스턴스 재시작이 필요할 수 있습니다.
+    * GTID 적용 해제는 적용의 역순으로 진행합니다.
+{{/if}}
