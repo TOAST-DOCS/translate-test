@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=fe1bf114a926 -->
 
 # CLIを利用した保護作業
@@ -49,7 +51,10 @@ appguard-cli <platform> [options]
 |------|------|--------|
 | `--app-attestation` | アプリ証明の有効化 **(アプリ証明使用時は必須)** | 省略時は無効 |
 | `--additional-sign` | 追加署名ハッシュ (SHA256ハッシュ1～10個) | `none` |
+| `--config` | 統合設定ファイルのパス | 省略時は無効 |
 | `--dry-run` | 実際の実行なしでパラメータを確認 | 省略時は無効 |
+
+- 統合設定ファイル (`--config`) を使用するには、CLI 1.0.3 以上、Protector 1.14.0.0 以上が必要です。詳細については、[3. 統合設定ファイル](../configuration/overview.md)を参照してください。
 
 <a id="security-options"></a>
 ### セキュリティオプション { #security-options }
@@ -57,8 +62,10 @@ appguard-cli <platform> [options]
 | オプション | 説明 | デフォルト値 |
 |------|------|--------|
 | `--dex-obfuscate` | DEX難読化 (enterprise/gameのみ) | 省略時は無効 |
-| `--resource-obfuscate` | リソース難読化configファイルパス **(リソース文字列難読化使用時は必須)** | 省略時は無効 |
+| `--resource-obfuscate` | リソース文字列難読化設定ファイルパス（統合設定ファイルへ移行、今後サポート終了予定） | 省略時は無効 |
 | `--google-pairip` | Google PairIP | 省略時は無効 |
+
+- `--resource-obfuscate` で指定していたリソース文字列の難読化設定は、統合設定ファイルの `resourceStringObfuscation` 設定に統合されました。Protector 1.14.0.0 以降では `--config` オプションの使用をお勧めします。`--resource-obfuscate` は今後サポート終了予定です。両方のオプションを同時に指定した場合は、`--config` で指定した統合設定ファイルが使用されます。
 
 <a id="other-options"></a>
 ### その他のオプション { #other-options }
