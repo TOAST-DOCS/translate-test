@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=bb95c747cee7 -->
+
 # Feature-Specific Settings
 
 This section describes the feature-specific settings that you can write under `configs` in the unified configuration file.
