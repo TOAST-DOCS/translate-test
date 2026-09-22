@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=c01d6c6c712e -->
 
 <a id="database-rds-for-enginepascalcase-db-engine"></a>
@@ -35,10 +37,10 @@ MySQL 8.0.34未満のバージョンは、MySQL LTSサポートポリシーに�
 | MySQL 8.0.40         |                                       |
 | MySQL 8.0.36         | 新規に作成したりRead Replicaを追加することはできません          |
 | MySQL 8.0.35         | 新規に作成したりRead Replicaを追加することはできません          |
-| MySQL 8.0.34         | 新規に作成したりRead Replicaを追加することはできません          | 
-| MySQL 8.0.33         | 新規に作成したりRead Replicaを追加することはできません          | 
-| MySQL 8.0.32         | 新規に作成したりRead Replicaを追加することはできません          | 
-| MySQL 8.0.28         | 新規に作成したりRead Replicaを追加することはできません          | 
+| MySQL 8.0.34         | 新規に作成したりRead Replicaを追加することはできません          |
+| MySQL 8.0.33         | 新規に作成したりRead Replicaを追加することはできません          |
+| MySQL 8.0.32         | 新規に作成したりRead Replicaを追加することはできません          |
+| MySQL 8.0.28         | 新規に作成したりRead Replicaを追加することはできません          |
 | MySQL 8.0.23         | 新規に作成したりRead Replicaを追加することはできません          |
 | MySQL 8.0.18         | 新規に作成したりRead Replicaを追加することはできません          |
 | <strong>5.7</strong> |                                       |
@@ -70,13 +72,13 @@ MySQL 8.0.34未満のバージョンは、MySQL LTSサポートポリシーに�
 | MariaDB 10.11.8        |                              |
 | MariaDB 10.11.7        |                              |
 | <strong>10.6</strong>  |                              |
-| MariaDB 10.6.25        | 新規に作成したりRead Replicaを追加することはできません |
-| MariaDB 10.6.22        | 新規に作成したりRead Replicaを追加することはできません |
-| MariaDB 10.6.16        | 新規に作成したりRead Replicaを追加することはできません |
-| MariaDB 10.6.12        | 新規に作成したりRead Replicaを追加することはできません |
-| MariaDB 10.6.11        | 新規に作成したりRead Replicaを追加することはできません |
+| MariaDB 10.6.25        | 新規に作成したりRead Replicaを追加することはできません。 |
+| MariaDB 10.6.22        | 新規に作成したりRead Replicaを追加することはできません。 |
+| MariaDB 10.6.16        | 新規に作成したりRead Replicaを追加することはできません。 |
+| MariaDB 10.6.12        | 新規に作成したりRead Replicaを追加することはできません。 |
+| MariaDB 10.6.11        | 新規に作成したりRead Replicaを追加することはできません。 |
 | <strong>10.3</strong>  |                              |
-| MariaDB 10.3.30        | 新規に作成したりRead Replicaを追加することはできません |
+| MariaDB 10.3.30        | 新規に作成したりRead Replicaを追加することはできません。 |
 {{/if}}
 
 <a id="manage-db-engine-version"></a>
@@ -84,7 +86,7 @@ MySQL 8.0.34未満のバージョンは、MySQL LTSサポートポリシーに�
 DBインスタンスの作成後、DBインスタンスの修正と一緒にDBエンジンのバージョンを変更できます。
 
 !!! danger "注意"
-    DBバージョン変更しようとする場合、アップグレードのみサポートし、ダウングレードはサポートしません。
+    DBバージョン変更時はアップグレードのみサポートし、ダウングレードはサポートしません。
 
 DBエンジンのバージョンアップグレードが行われる場合、メジャーバージョン番号のみ変更される場合はメジャーバージョンアップグレード、マイナーバージョン番号のみ変更される場合はマイナーバージョンアップグレードとみなします。
 DBエンジンのメジャーバージョンのアップグレードを試みる場合は、次のメジャーバージョンのDBエンジンのバージョンに対してアップグレードが可能です。
@@ -177,19 +179,19 @@ MariaDB 11.8にアップグレードするには、まずMariaDB 11.4にアッ�
 <a id="manage-db-engine-version-upgrading-the-db-engine-version-using-a-dummy-db-instance"></a>
 #### ダミーDBインスタンスを使用したDBエンジンバージョンアップグレード 
 
-DBインスタンスの修正ウィンドウでDBエンジンのバージョンを変更しようとする時、ダミーDBインスタンスの使用有無を選択してバージョンアップの過程で高可用性を得ることができます。ダミーDBインスタンスの使用を選択すると、DBバージョンアップグレードのためのStandbyが生成されます。
+DBインスタンスの修正画面でDBエンジンのバージョン変更を試みる時、ダミーDBインスタンスの使用有無を選択してバージョンアップグレード中でも高可用性を維持できます。ダミーDBインスタンスの使用を選択すると、DBバージョンアップグレードのためのStandbyが生成されます。
 
 !!! danger "注意"
-    ダミーDBインスタンスの場合、アップグレード過程で一時的なStandbyを生成するため、このオプションは高可用性構成でない場合にのみ使用できます。
+    ダミーDBインスタンスは、アップグレード過程中に一時的なStandbyを生成するため、このオプションは高可用性構成でない場合にのみ使用できます。
 
 <a id="manage-db-engine-version-manual-control-of-failover-when-upgrading-high-availability-db-instances"></a>
 #### 高可用性DBインスタンスをアップグレードする際にフェイルオーバー手動制御
 
 DBインスタンスが高可用性で構成されている場合、Standbyのエンジンバージョンを先にアップグレードした後、フェイルオーバーを使用してStandbyをPrimaryに切り替えます。フェイルオーバーは、Primaryのサービスを一時的に中断させるため、ユーザーが望むタイミングでフェイルオーバーを開始できます。
-バージョンアップ時にフェイルオーバーの手動制御設定を使用すると、ユーザーがコンソールから直接フェイルオーバーを開始できます。
+バージョンアップグレード時にフェイルオーバーの手動制御設定を使用すると、ユーザーがコンソールから直接フェイルオーバーを開始できます。
 
 !!! danger "注意"
-    フェイルオーバー手動制御は、60時間以上トリガーされない場合、自動的にアップグレード作業がキャンセルされます。
+    フェイルオーバー手動制御が60時間以上トリガーされない場合、アップグレード作業が自動的にキャンセルされます。
 
 <a id="when-using-an-outdated-operating-system"></a>
 ### 古いOSを使用する場合 { #when-using-an-outdated-operating-system }
@@ -209,7 +211,7 @@ DBインスタンスが高可用性で構成されている場合、Standbyの�
 - RDS for MySQLでは、MariaDB監査プラグインを使用してMySQL DBインスタンス用の監査プラグインを提供します。 
 
 !!! danger "注意"
-    一部のMySQLバージョンではサポートしない場合があり、サポートしないバージョンにバージョンアップする場合、該当プラグインを使用できません。
+    一部のMySQLバージョンではサポートしない場合があり、サポートしないバージョンにアップグレードすると、該当プラグインを使用できません。
 
 <a id="support-for-the-mariadb-server-audit-plugin-for-mysql-supported-versions"></a>
 #### サポートバージョン
