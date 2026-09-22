@@ -1272,6 +1272,7 @@ Select one of the following transmission modes:
 
 - The app groups metrics in 1-minute intervals and evaluates each time series individually. The data source connected to the app must continuously send one data point per minute for each time series without interruption. Sending at longer intervals creates gaps that may prevent preparation from completing in precise mode, and if multiple values are sent within a single minute, only the first value received is used for evaluation. Loading metrics into the data source itself is independent of the transmission interval.
 - For newly received metrics, it typically takes about 6 hours for enough data to accumulate for evaluation and for the threshold to be calibrated to the metric's distribution, and it may take longer depending on the pattern of incoming metrics.
+- If the data source contains only one time series, training will fail. You must have at least two time series, each continuously sending metrics for approximately 4 hours or more for training to complete normally.
 - If transmission is interrupted for more than a few minutes, the accumulated intervals are invalidated and the system returns to a preparation state. In precise mode, no results are output until the data is refilled.
 - When score scaling is enabled, scores are converted to a range from 0 to 100 before being output, and thresholds are also calculated using the same scale. Use this when aligning the scale with dashboards that use a percentage axis. When disabled, raw values are output as-is.
 - The same device applies to both inference and training. Training and inference work with the default CPU setting, and GPU may not be available depending on the resource availability in the service environment.
@@ -1576,13 +1577,15 @@ Inference Status:
 | Error | Inference failed or the preparation time has been exceeded. No results are produced during this time |
 | No verdict | Detection has not started yet, or the group is turned off |
 
+- A group contains multiple time series. If inference stops for even one of them, the entire group enters an error state, and the group returns to normal only when that time series recovers.
+- Errors are determined at two points in time. If no detection result is produced within 30 minutes after metrics first arrive in a group, it is considered a preparation timeout. For a group that was already running detection, if no result is produced for more than 10 minutes despite metrics continuing to arrive, it is considered an inference failure.
 - The inference status is determined independently of the Status column. A group that is turned off may still have error records, and a group with errors is displayed as Active if it is turned on.
-- If a metric is interrupted for more than 10 minutes, it is automatically recovered to Normal instead of Error.
+- The absence of incoming metrics is not itself considered an error. If metrics for a time series in an error state are interrupted for more than 10 minutes, that time series is excluded from evaluation and automatically recovers to a normal status.
 - Hovering over an inference status value displays the time of the verdict. If there is no verdict record, the time is displayed as unknown.
 
 - If you assign a Group Label to a data source, one group is created for each value. If you do not assign one, the entire data source becomes a single group.
 - If you do not assign a Group Label to the data source, one group is registered when the app is created. The list is empty while the app is being created, and the group appears once creation is complete.
-- If you assign a Group Label, groups are not registered automatically. You must register the target groups using "Start, Stop, or Delete Group Usage" in the [API Guide](./api-guide/#univariate.group.api) for them to appear in the list.
+- If you assign a Group Label, groups are not registered automatically. You must register the target groups using "Start, Stop, or Delete Group Usage" in the [API Guide](./api-guide/#univariate-group-api) for them to appear in the list.
 - Activation Pending typically takes about 6 hours in Accurate mode. In Instant mode, the group is activated immediately after it is enabled.
 - Errors are assessed at the group level. If inference stops for even one time series within a group, the entire group enters an Error state, and it returns to Normal only when that time series recovers.
 - You can narrow the list by filtering by Status or Inference Status, or by searching by Group Key or Group Hash. The two filters are independent of each other and can be applied at the same time.

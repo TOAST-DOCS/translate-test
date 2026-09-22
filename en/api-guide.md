@@ -82,7 +82,7 @@ Ingest API is an API for loading data into a data source that you have already c
     An API for creating new data sources is not provided. To use the Ingest API, you must first create a data source in the console.
 
 <a id="ingest-snapshot"></a>
-### Snapshot Upload (File Upload) { #ingest-snapshot }
+### Snapshot Upload (Upload File) { #ingest-snapshot }
 
 **Replaces all** data in the data source with the contents of the uploaded file. The upload process consists of three steps.
 
@@ -613,6 +613,7 @@ The collection rules are as follows:
 
 !!! tip "Tips"
     Loading is independent of the transmission interval. However, if this data source is connected to a univariate time-series anomaly detection app, you must send the same time series continuously, one per minute without interruption. Because the app groups metrics in 1-minute intervals for evaluation, sending at longer intervals will create gaps, which may prevent preparation from completing in precise mode.
+    There are also conditions for training. If the data source has only one time series, training will fail, so you must have at least two time series, and each time series must accumulate continuously for approximately 4 hours or more for training to complete successfully.
 
 <a id="univariate-api"></a>
 ## Univariate Time Series Anomaly Detection API { #univariate-api }
