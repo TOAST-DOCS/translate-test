@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=2030b074147a -->
 
 # Protection by CLI
@@ -35,9 +37,13 @@ You must set all required options to work CLI.
 | `--google-pairip` | Prevents conflicts when using Google Play Automatic Integrity Protection</br>(PLAY_INTEGRITY) | N |
 | `--app-attestation` | Enables NHN AppGuard app attestation authentication | N |
 | `--obfuscate` | Enables code obfuscation | N |
-| `--resource-obfuscate` | Path to the string resource obfuscation configuration file | N |
+| `--resource-obfuscate` | Resource string obfuscation configuration file path</br>(replaced by the unified configuration file; end of support planned) | N |
+| `--config` | Unified configuration file path | N |
 
 - AppGuard SDK 0.5.0 or later is required to use app-attestation.
+
+- NHN AppGuard 1.14.0.0 or later is required to use the unified configuration file (`--config`). For more information, see [3. Unified Configuration File](../configuration/overview.md).
+- The resource string obfuscation settings previously passed via `--resource-obfuscate` have been consolidated into the `resourceStringObfuscation` setting in the unified configuration file. We recommend that you use the `--config` option in NHN AppGuard 1.14.0.0 or later. Support for `--resource-obfuscate` will be discontinued in the future. If both options are specified together, the unified configuration file passed via `--config` is used.
 
 <a id="build-cli-with-gradle"></a>
 ## Build CLI with Gradle { #build-cli-with-gradle }
