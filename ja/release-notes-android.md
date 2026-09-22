@@ -4,18 +4,23 @@
 
 <a id="nhn-cloud-sdk-user-guide-release-notes-android"></a>
 ## NHN Cloud > SDK使用ガイド > リリースノート > Android { #nhn-cloud-sdk-user-guide-release-notes-android }
-## 1.13.0(2026. 09. 15.)
+<a id="130-september-15-2026"></a>
+## 1.13.0(2026. 09. 15.) { #130-september-15-2026 }
 
-### NHN Cloud Logger
+<a id="130-september-15-2026-nhn-cloud-logger"></a>
+### NHN Cloud Logger { #130-september-15-2026-nhn-cloud-logger }
 
+<a id="130-september-15-2026-nhn-cloud-logger-feature-updates"></a>
 #### 機能改善/変更
 
 * Log & Crash Search APIドメイン変更
     * ログ収集 APIドメインが api-logncrash.cloud.toast.com から api-logncrash.nhncloudservice.com に変更されました。
     * 設定 APIドメインが setting-logncrash.cloud.toast.com から api-setting-logncrash.nhncloudservice.com に変更されました。
 
-### NHN Cloud Push
+<a id="130-september-15-2026-nhn-cloud-push"></a>
+### NHN Cloud Push { #130-september-15-2026-nhn-cloud-push }
 
+<a id="130-september-15-2026-nhn-cloud-push-feature-updates"></a>
 #### 機能改善/変更
 
 * Push APIドメイン変更
@@ -23,6 +28,7 @@
 * Notification Hub メトリクス転送方式の改善
     * メトリクス転送がリトライされても、同一のメトリクスが重複集計されないように改善されました。
 
+<a id="130-september-15-2026-nhn-cloud-push-bug-fixes"></a>
 #### バグ修正
 
 * 通知クリックアクションが繰り返し実行される問題の修正
@@ -30,15 +36,19 @@
 * Notification Hub トークン登録失敗問題の修正
     * ユーザーIDを変更した後、トークン登録が常に失敗していた問題を修正しました。
 
-### NHN Cloud OCR
+<a id="130-september-15-2026-nhn-cloud-ocr"></a>
+### NHN Cloud OCR { #130-september-15-2026-nhn-cloud-ocr }
 
+<a id="130-september-15-2026-nhn-cloud-ocr-feature-updates"></a>
 #### 機能改善/変更
 
 * OCR APIドメイン変更
     * OCR APIドメインが ocr.api.nhncloudservice.com から api-ocr.nhncloudservice.com に変更されました。
 
-### TOAST Gradle Plugin(0.1.0)
+<a id="toast-gradle-plugin-010"></a>
+### TOAST Gradle Plugin(0.1.0) { #toast-gradle-plugin-010 }
 
+<a id="toast-gradle-plugin-010-added-features"></a>
 #### 新規機能追加
 
 * Log & Crash Search Symbol API v3 を利用したマッピングファイル (mapping.txt) およびネイティブシンボル (native symbol) のアップロードをサポート
