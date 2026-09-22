@@ -1,22 +1,53 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=c5f4c2c6cf1e -->
 
 <a id="easycache-release-notes"></a>
 
 ## EasyCache Release Notes
+
 **Database > EasyCache > Release Notes**
+### September 22, 2026
+
+#### Feature Updates
+
+- Added support for Valkey 8.1.8
+- Changed the base image of nodes to Ubuntu 24.04
+- Improved the sort order of the parameter list in parameter groups
+
+#### Bug Fixes
+
+- Fixed an issue where deleting a read replica node of a disabled cache failed
+- Fixed an issue where the DB security group in another region was not deleted after deleting a read replica in another region
+- Fixed an issue where DB security group rule changes were not reflected in read replicas in other regions
+- Fixed an issue where upgrading the OS version of a cache with a parameter group sync status of `UNSYNCED` failed
+- Fixed an issue where upgrading the OS version of a single node cache failed
+
+### July 28, 2026
+
+#### Feature Updates
+
+- Added support for Valkey 8.0.9, 8.1.7, and 9.0.4
+
+#### Bug Fixes
+
+- Fixed an issue where the cache status became abnormal when repeatedly adding and deleting read replica nodes in another region
+- Fixed an incorrect user guide link address on the Apply Parameter Group Changes screen
+- Fixed an issue where an error occurred when an alert was triggered by certain monitoring settings
 
 <a id="may-27-2026"></a>
-
 ### May 27, 2026
 
 <a id="feature-updates"></a>
 
 #### Feature Updates
+
 - Added support for Valkey 9.0.3.
 
 <a id="bug-fixes"></a>
 
 #### Bug Fixes
+
 - Removed the exposure of the unnecessary parameter `dynamic-hz` for Valkey 8.1.4 and later.
 
 <a id="march-24-2026"></a>
@@ -26,6 +57,7 @@
 <a id="feature-updates-2"></a>
 
 #### Feature Updates
+
 - Added support for Valkey 8.1.6.
 - Added a feature to check and synchronize differences in redis.conf settings between parameter groups and nodes in the console.
 
@@ -36,6 +68,7 @@
 <a id="feature-updates-3"></a>
 
 #### Feature Updates
+
 - Modified the console to display a button for updating the IP of the read-only domain after a failover is completed.
 - Made it possible to search the cache list by ID.
 - Updated some event lists included in the user guide to reflect the current status.
@@ -44,6 +77,7 @@
 <a id="bug-fixes-2"></a>
 
 #### Bug Fixes
+
 - Fixed an issue where an error occurred when the RDB filename used for data import contained a specific string.
 - Fixed the multilingual display of header items in the CSV file downloadable from the event screen.
 
@@ -76,6 +110,7 @@
 <a id="feature-updates-5"></a>
 
 #### Feature Updates
+
 - Fixed an issue where a "Could not find the tenant resource" error message was displayed for a short time immediately after service activation
 - Fixed an issue where emails were not sent when restarting EasyCache for hypervisor maintenance
 - Fixed an issue where restarting EasyCache for hypervisor maintenance failed under certain conditions
@@ -99,16 +134,19 @@
 <a id="added-features"></a>
 
 #### Added Features
+
 - Added support for Valkey 8.0.2
 
 <a id="features-updates"></a>
 
 #### Features Updates
+
 - Terminated the feature to create new replication groups in Redis versions
 
 <a id="bug-fixes-5"></a>
 
 #### Bug Fixes
+
 - Fixed non-replication group nodes being exposed in the target replication group on the Notification tab
 - Fixed intermittent abnormal error message exposure immediately after service activation
 - Fixed an issue that caused replication group creation to fail in regions other than KR1 for a period of time after service activation
@@ -120,11 +158,13 @@
 <a id="added-features-2"></a>
 
 #### Added Features
+
 - Added the Redis ACL feature
 
 <a id="bug-fixes-6"></a>
 
 #### Bug Fixes
+
 - Fixed incorrect button names on some screens
 
 <a id="january-21-2025"></a>
@@ -134,11 +174,13 @@
 <a id="added-features-3"></a>
 
 #### Added Features
+
 - Added support for Redis 7.2.6
 
 <a id="bug-fixes-7"></a>
 
 #### Bug Fixes
+
 - Fixed an issue where an incorrect OS version upgrade success message are displayed
 - Fixed an issue where the Modify button is not enabled when only changing the user group name
 
@@ -149,11 +191,13 @@
 <a id="feature-updates-6"></a>
 
 #### Feature Updates
+
 - Improved display string and sorting for user group creation and modification dates
 
 <a id="bug-fixes-8"></a>
 
 #### Bug Fixes
+
 - Fixed an issue where metric conditions are not modified
 
 <a id="october-15-2024"></a>
@@ -163,11 +207,13 @@
 <a id="feature-updates-7"></a>
 
 #### Feature Updates
+
 - Added a notification to remind users to select either email or SMS when creating notification groups
 
 <a id="bug-fixes-9"></a>
 
 #### Bug Fixes
+
 - Fixed a status phrase that appears when performing engine version upgrades
 - Fixed an announcement phrase that appears immediately after requesting engine version upgrades
 - Fixed an issue where some event phrases are not displayed in English and Japanese in the console
@@ -320,6 +366,7 @@
 <a id="bug-fixes-16"></a>
 
 #### Bug Fixes
+
 - Fixed an issue where alarms in some value ranges do not occur under system memory metrics conditions
 
 <a id="march-14-2023"></a>
@@ -329,6 +376,7 @@
 <a id="feature-updates-15"></a>
 
 #### Feature Updates
+
 - Improved internal performance
 
 <a id="january-10-2023"></a>
@@ -338,12 +386,14 @@
 <a id="feature-updates-16"></a>
 
 #### Feature Updates
+
 - Added support for Redis 7.0.7
 - Improved to display the protected-mode item in Profile
 
 <a id="bug-fixes-17"></a>
 
 #### Bug Fixes
+
 - Fixed an issue where version upgrade retry fails under certain conditions
 
 <a id="november-15-2022"></a>
@@ -353,6 +403,7 @@
 <a id="bug-fixes-18"></a>
 
 #### Bug Fixes
+
 - Fixed an issue where an error message occurs when registering connection information in bulk
 - Fixed an issue where HA restoration does not work properly when adding a node fails
 
@@ -375,6 +426,7 @@
 <a id="feature-updates-18"></a>
 
 #### Feature Updates
+
 - Changed the default value of maxmemory-policy from volatile-lru to allkeys-lru
 
 <a id="november-23-2021"></a>
@@ -384,6 +436,7 @@
 <a id="added-features-5"></a>
 
 #### Added Features
+
 - Added a feature to upgrade a replication group from Redis version 5 to Redis version 6
 
 <a id="october-26-2021"></a>
@@ -393,6 +446,7 @@
 <a id="bug-fixes-19"></a>
 
 #### Bug Fixes
+
 - Fixed an issue where configuration profiles could be modified while performing import, export, or manual backup of data.
 
 <a id="september-28-2021"></a>
@@ -402,12 +456,14 @@
 <a id="feature-updates-19"></a>
 
 #### Feature Updates
+
 - Improved alarm rule creation screen.
 - Improved service usage start processing.
 
 <a id="bug-fixes-20"></a>
 
 #### Bug Fixes
+
 - Fixed an issue where node creation fails when adding a node to a replication group with a large amount of data.
 - Fixed an issue where, when restoring a backup file with version 5 to a new replication group, the version is displayed in the first replication group window, but the version is not displayed when the window is closed and reopened.
 - Fixed an issue where the replication group status is not displayed as normal even when a replication was deleted in the replication unavailable status.
@@ -586,6 +642,7 @@
 <a id="bug-fixes-28"></a>
 
 #### Bug Fixes
+
 - Modified node name to reflect changes in group name when changing name of replication group
 - Modified error message in cases where a quarter of CPU and RAM is exceeded
 
@@ -744,6 +801,7 @@
 <a id="bug-fixes-35"></a>
 
 #### Bug Fixes
+
 - Fixed an issue where infinite loops of data synchronization occurs when replica node is added in presence of bulk data
 - Fixed an issue where node is displayed as creating on node alarm even after node creation failure within a replication group
 
@@ -760,6 +818,7 @@
 <a id="bug-fixes-36"></a>
 
 #### Bug Fixes
+
 - Fixed an issue where selection fails in cases of selecting VPC subnets of users that did not set up internet gateways when creating replication groups
 
 <a id="january-21-2020"></a>
