@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=fc4a4521d735 -->
 
 <a id="database-rds-for-enginepascalcase-backup-and-restoration"></a>
@@ -6,8 +8,7 @@
 <a id="overview"></a>
 ## Backup Overview { #overview }
 
-You can prepare in advance to recover the database of DB instance in case of failure. You can perform backups through the console whenever necessary, and you can configure to perform backups periodically. During backup, storage performance of the DB instance on which the backup is performed can be degraded. To avoid affecting service, it is better to perform back up at a time when the service is under low load. If you do not want the backup to degrade performance, you can use a
-high-availability configuration or back up only increments of data since the previous backup, or perform backups from Read Replica.
+You can prepare in advance to recover the DB instance's database in case of failure. You can perform backups through the console whenever necessary, and you can configure it to perform backups periodically. During backup, the storage performance of the DB instance on which the backup runs may degrade. To avoid affecting service, we recommend that you perform backups when the service is under low load. If you do not want the backup to degrade performance, you can use a high-availability configuration, back up only increments of data since the previous backup, or perform backups from Read Replica.
 
 !!! tip "Note"
     High availability DB instances perform backups on the Standby so that the storage performance of the Primary is not degraded.
@@ -226,7 +227,7 @@ All backup files are uploaded to the internal backup storage and stored. For man
 <a id="export-files-while-performing-backup"></a>
 #### Export Files While Performing Backup
 
-After a backup, you can export the backup file to user object storage. This is not supported for incremental backups.
+After a backup, you can export the backup file to object storage. This is not supported for incremental backups.
 
 ![db-instance-list-export-obs-en]({{url.cdn}}/24.03.12/db-instance-list-export-obs-en.png)
 
@@ -242,7 +243,7 @@ After a backup, you can export the backup file to user object storage. This is n
 <a id="export-backup-files"></a>
 #### Export Backup Files
 
-You can export backup files stored in internal backup storage to user object storage. Not supported for incremental backups.
+You can export backup files stored in internal backup storage to object storage. Not supported for incremental backups.
 
 ![db-instance-detail-backup-export-en]({{url.cdn}}/24.03.12/db-instance-detail-backup-export-en.png)
 
@@ -375,6 +376,7 @@ mariabackup --defaults-file={my.cnf path} --user {user} --password '{password}' 
     In the current version of 5.7.33, restoring DB instances using backup files on object storage is restricted.
     If use a version other than the recommended XtraBackup, it may not work properly.
     The backup file on the object storage has to be the same version of MySQL that you want to restore.
+
 {{/if}}
 
 <a id="restoration-by-using-rds-for-enginepascalcase-backup"></a>
