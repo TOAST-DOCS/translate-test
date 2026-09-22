@@ -1,7 +1,50 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=fd94f1629e00 -->
 
 <a id="nhn-cloud-sdk-user-guide-release-notes-android"></a>
 ## NHN Cloud > SDK使用ガイド > リリースノート > Android { #nhn-cloud-sdk-user-guide-release-notes-android }
+## 1.13.0(2026. 09. 15.)
+
+### NHN Cloud Logger
+
+#### 機能改善/変更
+
+* Log & Crash Search APIドメイン変更
+    * ログ収集 APIドメインが api-logncrash.cloud.toast.com から api-logncrash.nhncloudservice.com に変更されました。
+    * 設定 APIドメインが setting-logncrash.cloud.toast.com から api-setting-logncrash.nhncloudservice.com に変更されました。
+
+### NHN Cloud Push
+
+#### 機能改善/変更
+
+* Push APIドメイン変更
+    * トークン APIおよびユーザータグ APIのドメインが api-push.cloud.toast.com から push.api.nhncloudservice.com に変更されました。
+* Notification Hub メトリクス転送方式の改善
+    * メトリクス転送がリトライされても、同一のメトリクスが重複集計されないように改善されました。
+
+#### バグ修正
+
+* 通知クリックアクションが繰り返し実行される問題の修正
+    * Android 12 以降で、クリックアクションを URL に設定した通知をタップした後、最近使用したアプリ一覧からアプリを再度開いたとき、クリックアクションが繰り返し実行されてアプリに移動できなかった問題を修正しました。
+* Notification Hub トークン登録失敗問題の修正
+    * ユーザーIDを変更した後、トークン登録が常に失敗していた問題を修正しました。
+
+### NHN Cloud OCR
+
+#### 機能改善/変更
+
+* OCR APIドメイン変更
+    * OCR APIドメインが ocr.api.nhncloudservice.com から api-ocr.nhncloudservice.com に変更されました。
+
+### TOAST Gradle Plugin(0.1.0)
+
+#### 新規機能追加
+
+* Log & Crash Search Symbol API v3 を利用したマッピングファイル (mapping.txt) およびネイティブシンボル (native symbol) のアップロードをサポート
+    * 0.1.0 からシンボルのアップロードに User Access Token 認証が必要です。
+    * User Access Token を直接設定するか、User Access Key と Secret Access Key を使用して自動的に発行できます。
+    * 詳細については、[Android シンボルアップローダーガイド](https://docs.nhncloud.com/ja/nhncloud-sdk/ja/symbol-uploader-android/)を参照してください。
 
 <a id="121-october-28-2025"></a>
 ## 1.12.1 (2025. 10. 28.) { #121-october-28-2025 }
@@ -23,7 +66,7 @@
 ### NHN Cloud SDK { #nhn-cloud-sdk }
 
 <a id="nhn-cloud-sdk-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * 最小サポートバージョン引き上げ
     * Android最小サポートバージョンがAPI 16(Android 4.1)からAPI 22(Android 5.1)に引き上げられました。
@@ -64,7 +107,7 @@
 ### NHN Cloud Push { #110-april-29-2025-nhn-cloud-push }
 
 <a id="110-april-29-2025-nhn-cloud-push-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * Notification Hubサポート
     * NHN Cloud Push SDKでNotification Hubの使用をサポートします。
@@ -77,7 +120,7 @@
 ### NHN Cloud IAP { #nhn-cloud-iap }
 
 <a id="nhn-cloud-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * ONE storeバージョン統合
     * ONE store v17, v19, v21バージョンを1つに統合しました。
@@ -91,7 +134,7 @@
     * これにより、ONE storeでも定期決済の商品を提供できます。
 
 <a id="nhn-cloud-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * ONE store決済履歴ログをサポート
     * ONE store統合バージョン(nhncloud-iap-onestore2)からコンソールで決済履歴ログを確認できます。
@@ -103,7 +146,7 @@
 ### NHN Cloud IAP { #95-january-23-2025-nhn-cloud-iap }
 
 <a id="95-january-23-2025-nhn-cloud-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Google Play Billing Library(PBL)アップデート
     * Google Play Billing Library(PBL)が7.1.にアップデートされました。
@@ -114,7 +157,7 @@
 ### NHN Cloud Push { #95-january-23-2025-nhn-cloud-push }
 
 <a id="95-january-23-2025-nhn-cloud-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * 通知振動設定API追加
     * 通知受信時の振動有無を設定できる機能が追加されました。
@@ -127,7 +170,7 @@
 ### NHN Cloud Push { #94-november-15-2024-nhn-cloud-push }
 
 <a id="94-november-15-2024-nhn-cloud-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Device ID設定機能を追加
     * ユーザーのDevice IDをPushサービスで使用できるように設定するAPI(NhnCloudPush.setDeviceId)を追加しました。
@@ -170,7 +213,7 @@
 ### NHN Cloud IAP { #92-august-27-2024-nhn-cloud-iap }
 
 <a id="92-august-27-2024-nhn-cloud-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Amazon決済の再処理を改善
     * アプリを削除した後に再インストールしたり、アプリデータを削除すると、失敗した決済が再処理されるときに新規購入件として処理される問題を改善しました。
@@ -182,7 +225,7 @@
 ### NHN Cloud IAP { #91-july-23-2024-nhn-cloud-iap }
 
 <a id="91-july-23-2024-nhn-cloud-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Amazon決済再処理の改善
     * 購入進行中にアプリ終了またはネットワークブロックなどで決済に失敗した場合、その決済を再処理する際に新規購入案件として処理する問題を改善しました。
@@ -190,13 +233,13 @@
     * Android 14(API Level 34)以上をターゲットとするアプリは、iap_sdk-v19.01.00.aarを使用する必要があります。
 
 <a id="90-may-28-2024"></a>
-## 1.9.0 (2024. 05. 07) { #90-may-28-2024 }
+## 1.9.0 (2024. 05. 28.) { #90-may-28-2024 }
 
 <a id="90-may-28-2024-nhn-cloud-iap"></a>
 ### NHN Cloud IAP { #90-may-28-2024-nhn-cloud-iap }
 
 <a id="90-may-28-2024-nhn-cloud-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Google Play Billing Library(PBL) 6.2.1アップデート
     * Googleのポリシーにより、PBL 5.xを使用しているアプリは2024年11月1日からPBL 6.xにアップデートする必要があります。
@@ -215,7 +258,7 @@
 * ONEstoreの外部決済後、画面の向きを変更した時にステータスバーが正常に表示されない問題を修正しました。
 
 <a id="86-may-7-2024"></a>
-## 1.8.6 (2024. 05. 07) { #86-may-7-2024 }
+## 1.8.6 (2024. 05. 07.) { #86-may-7-2024 }
 
 <a id="86-may-7-2024-nhn-cloud-ocr"></a>
 ### NHN Cloud OCR { #86-may-7-2024-nhn-cloud-ocr }
@@ -243,7 +286,7 @@
 ### NHN Cloud SDK { #84-january-25-2024-nhn-cloud-sdk }
 
 <a id="84-january-25-2024-nhn-cloud-sdk-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * 安定性改善
     * ProGuard未適用時に異常終了する問題を修正しました。
@@ -255,7 +298,7 @@
 ### NHN Cloud IAP { #83-january-23-2024-nhn-cloud-iap }
 
 <a id="83-january-23-2024-nhn-cloud-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * MyCard SDKアップデート
     * Android 14対応
@@ -267,7 +310,7 @@
 ### NHN Cloud OCR { #82-december-19-2023-nhn-cloud-ocr }
 
 <a id="82-december-19-2023-nhn-cloud-ocr-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * 安定性改善
 
@@ -278,12 +321,14 @@
 ### NHN Cloud OCR { #81-october-31-2023-nhn-cloud-ocr }
 
 <a id="81-october-31-2023-nhn-cloud-ocr-improved"></a>
-#### 機能改善
+#### 機能改善/変更
+
 * Credit Card Recognizer UI改善
     * セキュリティが強化されたTextViewを適用します。
 
 <a id="81-october-31-2023-nhn-cloud-ocr-fixed"></a>
 #### バグ修正
+
 * Camera Focusの問題を修正
     * 一部の低仕様デバイスでAuto Focusが動作しない問題を修正します。
 
@@ -294,7 +339,7 @@
 ### NHN Cloud IAP { #80-september-26-2023-nhn-cloud-iap }
 
 <a id="80-september-26-2023-nhn-cloud-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Google Billing Client 5.2.1アップデート
     * Googleのポリシーにより、Android 14 以上をターゲットとするアプリは NHN Cloud IAP 1.8.0 以上にアップデートする必要があります。
@@ -303,7 +348,7 @@
 ### NHN Cloud OCR { #80-september-26-2023-nhn-cloud-ocr }
 
 <a id="80-september-26-2023-nhn-cloud-ocr-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Cameraの改善
     * Camera Preview画面がディスプレイを全て満たすように変更します。
@@ -316,7 +361,7 @@
 ### NHN Cloud IAP { #71-august-29-2023-nhn-cloud-iap }
 
 <a id="71-august-29-2023-nhn-cloud-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * MyCardテスト決済改善
 * MyCard の最小サポートバージョンが API 21 に引き上げられました。
@@ -328,7 +373,7 @@
 ### NHN Cloud OCR { #70-july-11-2023-nhn-cloud-ocr }
 
 <a id="70-july-11-2023-nhn-cloud-ocr-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * OCR(ID Card Recognizer)追加
 
@@ -339,7 +384,7 @@
 ### NHN Cloud IAP { #60-june-20-2023-nhn-cloud-iap }
 
 <a id="60-june-20-2023-nhn-cloud-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * ONE store v21追加
 
@@ -347,7 +392,7 @@
 ### NHN Cloud Logger { #60-june-20-2023-nhn-cloud-logger }
 
 <a id="60-june-20-2023-nhn-cloud-logger-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Android Gradle Plugin 8.0をサポート
 
@@ -358,7 +403,7 @@
 ### NHN Cloud IAP { #51-may-30-2023-nhn-cloud-iap }
 
 <a id="51-may-30-2023-nhn-cloud-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * 決済詳細情報送信機能を追加
     * IAPコンソールのTransactionタブで決済詳細情報を照会できます。
@@ -370,7 +415,7 @@
 ### NHN Cloud SDK { #50-april-5-2023-nhn-cloud-sdk }
 
 <a id="50-april-5-2023-nhn-cloud-sdk-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * 安定性改善
 
@@ -378,7 +423,7 @@
 ### NHN Cloud IAP { #50-april-5-2023-nhn-cloud-iap }
 
 <a id="50-april-5-2023-nhn-cloud-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * MyCard IAP追加
 
@@ -400,7 +445,7 @@
 ### NHN Cloud OCR { #42-february-28-2023-nhn-cloud-ocr }
 
 <a id="42-february-28-2023-nhn-cloud-ocr-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * 安定性改善
 
@@ -411,7 +456,7 @@
 ### NHN Cloud Push { #41-january-11-2023-nhn-cloud-push }
 
 <a id="41-january-11-2023-nhn-cloud-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * プッシュ指標送信およびイベント処理の改善
 
@@ -422,7 +467,7 @@
 ### NHN Cloud Logger { #40-november-29-2022-nhn-cloud-logger }
 
 <a id="40-november-29-2022-nhn-cloud-logger-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * 公共機関用Loggerをサポート
 
@@ -430,7 +475,7 @@
 ### NHN Cloud OCR { #40-november-29-2022-nhn-cloud-ocr }
 
 <a id="40-november-29-2022-nhn-cloud-ocr-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * UI改善
 
@@ -443,7 +488,7 @@
 ### NHN Cloud Push { #40-november-29-2022-nhn-cloud-push }
 
 <a id="40-november-29-2022-nhn-cloud-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * プッシュイベント転送の改善
 * Intentのflagsが変更される問題を修正
@@ -456,7 +501,7 @@
 ### NHN Cloud OCR { #30-october-25-2022-nhn-cloud-ocr }
 
 <a id="30-october-25-2022-nhn-cloud-ocr-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * OCR(Credit Card Recognizer)追加
 
@@ -464,7 +509,7 @@
 ### NHN Cloud IAP { #30-october-25-2022-nhn-cloud-iap }
 
 <a id="30-october-25-2022-nhn-cloud-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * [すべてのストア]有効購読照会および未消費決済履歴照会API追加
 
@@ -483,7 +528,7 @@
 ### NHN Cloud SDK { #20-october-4-2022-nhn-cloud-sdk }
 
 <a id="20-october-4-2022-nhn-cloud-sdk-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * AndroidXサポート
     * 最小サポートバージョンがAPI 16に変更されました。
@@ -492,7 +537,7 @@
 ### NHN Cloud Push { #20-october-4-2022-nhn-cloud-push }
 
 <a id="20-october-4-2022-nhn-cloud-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Android 13対応
     * POST_NOTIFICATION権限をリクエストできるAPIが追加されました。
@@ -505,12 +550,12 @@
 ### NHN Cloud IAP { #10-september-6-2022-nhn-cloud-iap }
 
 <a id="10-september-6-2022-nhn-cloud-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * ONEstore v19追加
 
 <a id="10-september-6-2022-nhn-cloud-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Google Billing Client 5.0.0アップデート
 
@@ -521,7 +566,7 @@
 ### NHN Cloud SDK { #00-july-12-2022-nhn-cloud-sdk }
 
 <a id="00-july-12-2022-nhn-cloud-sdk-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * モジュール名をNHN Cloud Android SDKに変更
 	* TOAST Android SDKはDeprecatedになりました。
@@ -533,7 +578,7 @@
 ### TOAST Logger { #toast-logger }
 
 <a id="toast-logger-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * TOAST Logger安定化
 
@@ -544,7 +589,7 @@
 ### TOAST IAP { #toast-iap }
 
 <a id="toast-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * ONEstore外部決済の追加
 
@@ -552,7 +597,7 @@
 ### TOAST Push { #toast-push }
 
 <a id="toast-push-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * 1つのFirebaseプロジェクトに登録された複数のAndroidアプリをサポート
 
@@ -563,7 +608,7 @@
 ### TOAST IAP { #301-may-3-2022-toast-iap }
 
 <a id="301-may-3-2022-toast-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * ONEstore v16アイテム照会ロジックの改善
 
@@ -574,7 +619,7 @@
 ### TOAST Push { #300-april-26-2022-toast-push }
 
 <a id="300-april-26-2022-toast-push-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 - ADM(Amazon Device Messaging) 追加
 
@@ -607,7 +652,7 @@
 ### TOAST IAP { #290-december-07-2021-toast-iap }
 
 <a id="290-december-07-2021-toast-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * ファーウェイストア(Huawei App Gallery)追加
 
@@ -618,7 +663,7 @@
 ### TOAST IAP { #280-november-23-2021-toast-iap }
 
 <a id="280-november-23-2021-toast-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * Amazon Appstore追加
 
@@ -626,7 +671,7 @@
 ### TOAST Push { #280-november-23-2021-toast-push }
 
 <a id="280-november-23-2021-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Android 12対応
     * Pending intents mutability.
@@ -654,7 +699,7 @@
 ### TOAST IAP { #273-september-28-2021-toast-iap }
 
 <a id="273-september-28-2021-toast-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * ONEstore v16テスト決済プロセスを改善
 
@@ -677,7 +722,7 @@
 ### TOAST IAP { #271-august-24-2021-toast-iap }
 
 <a id="271-august-24-2021-toast-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Google定期購入決済プロセスを改善
 * ONEstore v16決済プロセスを改善
@@ -689,7 +734,7 @@
 ### TOAST IAP { #270-august-03-2021-toast-iap }
 
 <a id="270-august-03-2021-toast-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * ONE store v16追加
 
@@ -700,7 +745,7 @@
 ### TOAST IAP { #260-july-06-2021-toast-iap }
 
 <a id="260-july-06-2021-toast-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * 月決済限度機能を追加
 
@@ -720,13 +765,13 @@
 ### TOAST IAP { #250-april-27-2021-toast-iap }
 
 <a id="250-april-27-2021-toast-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * Google定期購入状態照会APIを追加
     * Google定期購入の状態を照会できるquerySubscriptionsStatus APIを追加します。
 
 <a id="250-april-27-2021-toast-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Google 決済ライブラリアップデート
     * Google 決済ライブラリBillingClient 3.0.3が適用されました。
@@ -743,7 +788,7 @@
 ### TOAST Push { #244-january-12-2021-toast-push }
 
 <a id="244-january-12-2021-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * FCMトークン更新時のアップデートロジックの改善
 
@@ -751,7 +796,7 @@
 ### TOAST Gradle Plugin (0.0.1) { #toast-gradle-plugin-001 }
 
 <a id="toast-gradle-plugin-001-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * Symbol Uploader機能追加
 
@@ -762,7 +807,7 @@
 ### TOAST Push { #243-december-08-2020-toast-push }
 
 <a id="243-december-08-2020-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Tencent QQサービス終了後のモジュール削除
 
@@ -796,12 +841,12 @@
 ### TOAST IAP { #240-october-27-2020-toast-iap }
 
 <a id="240-october-27-2020-toast-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * Galaxy Store追加
 
 <a id="240-october-27-2020-toast-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Google決済ライブラリーのアップデート
     * Google決済ライブラリーBilling Client 3.0.1が適用されました。
@@ -815,7 +860,7 @@
 ### TOAST Push { #240-october-27-2020-toast-push }
 
 <a id="240-october-27-2020-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * 通知返信機能をサポートしていない端末では返信機能のボタンが表示されないよう修正
 
@@ -843,7 +888,7 @@
 ### TOAST Push { #231-september-11-2020-toast-push }
 
 <a id="231-september-11-2020-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * トークン登録ロジックの改善
 
@@ -854,7 +899,7 @@
 ### TOAST Push { #230-july-28-2020-toast-push }
 
 <a id="230-july-28-2020-toast-push-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * ユーザータグ機能サポート
 
@@ -865,7 +910,7 @@
 ### TOAST IAP { #220-june-23-2020-toast-iap }
 
 <a id="220-june-23-2020-toast-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 `TOAST IAP SDK 0.22.0以上でアップデートする際は、必ず強制アップデートを実行してください。`
 
@@ -875,7 +920,7 @@
 ### TOAST Push { #220-june-23-2020-toast-push }
 
 <a id="220-june-23-2020-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * ユーザータグ機能のサポート
 
@@ -886,7 +931,7 @@
 ### TOAST Push { #212-may-26-2020-toast-push }
 
 <a id="212-may-26-2020-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * トークン登録機能の改善
 
@@ -897,7 +942,7 @@
 ### TOAST Push { #211-april-28-2020-toast-push }
 
 <a id="211-april-28-2020-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * 安全性の改善
 
@@ -905,7 +950,7 @@
 ### TOAST Logger { #211-april-28-2020-toast-logger }
 
 <a id="211-april-28-2020-toast-logger-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Native Crash Reporting機能の改善
 
@@ -916,7 +961,7 @@
 ### TOAST Logger { #210-march-24-2020-toast-logger }
 
 <a id="210-march-24-2020-toast-logger-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * Native Crash Reporting (NDK)機能の追加
 
@@ -924,7 +969,7 @@
 ### TOAST Push { #210-march-24-2020-toast-push }
 
 <a id="210-march-24-2020-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * 基本通知オプションに設定可能な項目を追加
     * フォアグラウンド時に通知の表示の有無の選択設定が追加されました。
@@ -937,7 +982,7 @@
 ### TOAST Push { #203-february-25-2020-toast-push }
 
 <a id="203-february-25-2020-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * トークン登録機能の改善
     * 初回トークン登録時にユーザーIDが設定されていない場合は、デバイス識別子を使用して登録します。
@@ -950,7 +995,7 @@
 ### TOAST Push { #202-january-21-2020-toast-push }
 
 <a id="202-january-21-2020-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * 指標収集機能の改善
 * 基本通知チャンネル作成ロジックを改善
@@ -962,7 +1007,7 @@
 ### TOAST Push { #201-january-07-2020-toast-push }
 
 <a id="201-january-07-2020-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * Assetsリソースサポート
     * Assetsパスのイメージリソースをサポートします。
@@ -973,7 +1018,8 @@
 ### TOAST IAP { #201-january-07-2020-toast-iap }
 
 <a id="201-january-07-2020-toast-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
+
 * セキュリティ強化
     * 内部のセキュリティポリシーを強化しました。
 
@@ -990,7 +1036,7 @@
 ### TOAST Push { #194-november-26-2019-toast-push }
 
 <a id="194-november-26-2019-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * (旧) pushsdkデータマイグレーションをサポート。
     * (旧) pushsdkでアップデートした場合、すべてのデータをTOAST SDKにマイグレーションします。
@@ -1002,7 +1048,7 @@
 ### TOAST Push { #193-october-18-2019-toast-push }
 
 <a id="193-october-18-2019-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * トークン登録機能の改善。
 
@@ -1013,7 +1059,7 @@
 ### TOAST Push { #192-october-15-2019-toast-push }
 
 <a id="192-october-15-2019-toast-push-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * 通知をクリックすると通知する機能を追加。
     * ユーザーが通知をクリックし、アプリが実行された場合のリスナー登録が可能です。
@@ -1021,7 +1067,7 @@
     * 通知を受信すると、バッチアイコンとアプリのショートカット画面にバッチカウントが表示されます。
 
 <a id="192-october-15-2019-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * 通知の基本スタイルの指定。
     * メディアを含まない通知は、BigTextStyleに指定され、2行以上のメッセージも表示されます。
@@ -1033,7 +1079,7 @@
 ### TOAST IAP { #191-october-02-2019-toast-iap }
 
 <a id="191-october-02-2019-toast-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * Unity Android IAP Pluginに購入をリクエストすると、ユーザーデータを領収書に含めることができる機能が追加されました。
 
@@ -1044,7 +1090,8 @@
 ### TOAST IAP { #190-october-01-2019-toast-iap }
 
 <a id="190-october-01-2019-toast-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
+
 * Android IAPライブラリーに購入リクエストの際、ユーザーデータを領主書へ含めることができる機能が追加されました。
 
 
@@ -1052,7 +1099,7 @@
 ### TOAST Push { #190-october-01-2019-toast-push }
 
 <a id="190-october-01-2019-toast-push-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * ユーザー定義メッセージレシーバーの使用性を改善。
     * 通知の表示をリクエストすると、ユーザーのコンテンツインテントタイプが、PendingIntentに変更されます。
@@ -1064,7 +1111,7 @@
 ### TOAST IAP { #180-august-27-2019-toast-iap }
 
 <a id="180-august-27-2019-toast-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * 消費性定期購入商品を追加。
     * プロダクトタイプに消費可能な定期購入商品が追加されました。
@@ -1078,7 +1125,7 @@
 ### TOAST Push { #180-august-27-2019-toast-push }
 
 <a id="180-august-27-2019-toast-push-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * 基本通知オプション設定機能の追加
     * 小さいアイコン、振動、通知音等の基本オプションを選択できます。
@@ -1090,7 +1137,7 @@
 ### TOAST Push { #171-july-23-2019-toast-push }
 
 <a id="171-july-23-2019-toast-push-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * カスタムレシーバ使用時、メッセージオブジェクト内にFCM発信者ID情報追加。
 
@@ -1101,7 +1148,7 @@
 ### TOAST Push { #toast-pus }
 
 <a id="toast-pus-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * トークン情報アップデート機能追加。
     * 言語や国などの情報をアップデートすることができます。
@@ -1109,7 +1156,7 @@
 * リッチメッセージボタンのアクション("Open", "Dismiss", "Reply", etc)通知機能追加。
 
 <a id="toast-pus-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * 初期化を改善。
     * PushType ("FCM"、"TENCENT"、 etc)で初期化が可能です。
@@ -1126,7 +1173,7 @@
 ### TOAST IAP { #162-june-21-2019-toast-iap }
 
 <a id="162-june-21-2019-toast-iap-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * ユーザーIDが変更された場合の動作改善
 * (旧)IAP SDK v1.5.3以前の決済アイテムの再処理
@@ -1157,7 +1204,7 @@
 ### TOAST Push { #160-april-23-2019-toast-push }
 
 <a id="160-april-23-2019-toast-push-added"></a>
-#### 機能を追加
+#### 新規機能追加
 
 * Tencent Push追加します。
 * ユーザーメッセージ処理機能を追加。
@@ -1170,7 +1217,7 @@
 ### TOAST Log & Crash { #toast-log-crash }
 
 <a id="toast-log-crash-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * ProjectKeyがAppKeyに名称変更
     *既存のsetProjectKeyは引き続き使用可能
@@ -1179,7 +1226,7 @@
 ### TOAST IAP { #150-march-26-2019-toast-iap }
 
 <a id="150-march-26-2019-toast-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * 中国のマーケットを追加。
 
@@ -1187,7 +1234,7 @@
 ### TOAST Push { #150-march-26-2019-toast-push }
 
 <a id="150-march-26-2019-toast-push-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 *トークン解除APIを追加。
 * soundフィールドを追加する時に通知の音を設定することができる機能を追加。
@@ -1233,7 +1280,7 @@
 ### TOAST IAP { #140-january-08-2019-toast-iap }
 
 <a id="140-january-08-2019-toast-iap-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * TOAST IAP Unity Plugin追加。
 
@@ -1244,7 +1291,7 @@
 ### TOAST Core { #toast-core }
 
 <a id="toast-core-improved"></a>
-#### 機能改善
+#### 機能改善/変更
 
 * ToastSdk.initialize()メソッドdeprecated.
     * Application起動時に自動的に呼び出すように変更
@@ -1253,7 +1300,7 @@
 ### TOAST Push { #130-december-27-2018-toast-push }
 
 <a id="130-december-27-2018-toast-push-added"></a>
-#### 機能追加
+#### 新規機能追加
 
 * 新規機能追加
     * Firebase Cloud Messaging(FCM)
