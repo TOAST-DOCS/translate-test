@@ -1,0 +1,129 @@
+<!-- pre-align:aligned sig=a00742233e58 -->
+
+<a id="monitoring-cloud-monitoring-usage-scenarios"></a>
+## Monitoring > Cloud Monitoring > 使用シナリオ { #monitoring-cloud-monitoring-usage-scenarios }
+ダッシュボードの構成から通知の作成まで、全体的な使用シナリオを説明します。<br>
+Cloud Monitoringを使用する手順は次のとおりです。
+
+- サービス選択<br>
+  Cloud Monitoringはプロジェクト作成時に基本的に提供されるサービスです。<br>
+ したがって、別途の作業なしでプロジェクトを作成した後、サービスを使用できます。<br>
+ プロジェクトを作成する方法は[NHN Cloudコンソール使用ガイド](https://docs.nhncloud.com/ja/nhncloud/ja/console-guide/)を参照してください。
+- 指標収集設定<br>
+ サービスごとに指標収集を設定します。
+- ダッシュボード構成<br>
+ ダッシュボードにウィジェットを追加して自由に構成します。
+- 通知作成<br>
+ しきい値を設定し、イベント発生時に通知を受けることができます。
+
+<a id="enable-metric-collection"></a>
+## 指標収集設定 { #enable-metric-collection }
+ダッシュボードを構成するために、まず、サービスごとに指標の収集設定を行います。
+
+1. **Cloud Monitoring > 指標管理**を選択します。
+2. 指標管理ページでCloud Monitoringが提供する各サービスの指標を確認します。
+3. 指標を収集するサービスの**指標収集設定**トグルをクリックして有効にします。
+4. 「指標の収集を開始しますか？」モーダルが表示されたら**確認**をクリックします。
+5. 収集が開始されると、その指標を使用してウィジェットを追加できます。
+
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_01-1.png)
+
+- Instance、' GPU Instanceサービスは基本的に提供される指標です。
+- 有効なサービスのみ指標が収集されます。サービスが有効かどうかを確認してください。
+- **指標収集設定**トグルをクリックして無効にすると、その指標の収集が中断され、ダッシュボードに表示されません。
+
+<a id="configure-the-dashboard"></a>
+## ダッシュボード構成 { #configure-the-dashboard }
+これで、ダッシュボードを構成する準備が整いました。<br>
+ダッシュボードを作成し、ウィジェットを追加してみましょう。
+
+
+<a id="create-a-dashboard"></a>
+### ダッシュボードの作成 { #create-a-dashboard }
+1. **+ダッシュボードの作成**をクリックします。
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_02_01-1.png)
+2. **ダッシュボードの名前**と **説明**を入力した後、**確認**をクリックします。
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_02_01-2.png)
+3. 作成されたダッシュボードを確認します。
+
+
+<a id="add-widgets"></a>
+### ウィジェットの追加 { #add-widgets }
+1. **ウィジェットの追加**をクリックしてウィジェット追加ページに移動します。
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_02_02-1.png)
+2. **ウィジェット名**を入力し、**グラフタイプ**と**サービス**を選択します。
+   - **指標管理**で収集設定が有効になっているサービスのみ選択できます。
+3. 選択したサービスに該当する**リソースタイプ**と**指標項目**を選択します。
+   - 選択した指標項目ごとにフィルタと凡例を設定できるボックスが表示されます。
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_02_02-2.png)
+
+4. フィルタを設定して、必要な指標だけを選択的に確認できます。
+   - 例えば、韓国(パンギョ)リージョンにある特定のインスタンスのみをモニタリングするには次のように設定します。
+     - **+追加**をクリックしてフィルタを追加します。
+     - ラベル、演算子、条件順に`リージョン` `=`  `kr1`(韓国(パンギョ))フィルタを設定します。
+     - フィルタを追加してラベル、演算子、条件順に`インスタンス` `=` `{インスタンス名}`を選択します。
+     - こうすると、kr1(韓国(パンギョ))リージョンの特定インスタンス指標がグラフに表示されます。
+5. 必要に応じて凡例の名前、単位、Y軸の位置を設定できます。
+   - 各指標の単位が同じであれば、1つのY軸で表示されます。
+   - Y軸位置設定で自動は、指標別単位が異なる場合、左、右順にY軸を自動配置します。
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_02_02-3.png)
+
+6. **プレビュー**機能を使用して、希望の形のグラフが描かれたかどうかを確認します。
+7. 確認が完了したら、**追加**をクリックしてダッシュボードにウィジェットを追加します。
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_02_02-4.png)
+
+
+<a id="edit-dashboard"></a>
+### ダッシュボード編集 { #edit-dashboard }
+ダッシュボードに追加されたウィジェットを確認し、好きな形に編集します。
+
+1. ダッシュボード右上のトグルをクリックして**閲覧モード**から**編集モード**に変更します。
+2. ウィジェットをドラッグ＆ドロップして位置を変更したり、ウィジェットグループを追加してダッシュボードを整理します。
+   - **ウィジェットグループの追加**をクリックすると、下にグループが追加されます。ウィジェットをグループにドラッグアンドドロップして配置します。
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_02_03-1.png)
+
+<a id="notification-settings"></a>
+## 通知設定 { #notification-settings }
+より効率的なモニタリングのため、イベント発生時に通知を受信できるように設定します。
+
+<a id="create-a-notification"></a>
+### 通知の作成 { #create-a-notification }
+1. **Cloud Monitoring > 通知管理 > 通知設定**を選択します。
+2. **通知作成**をクリックして作成ページに移動します。
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_03_01-1.png)
+
+3. **基本情報**で通知の**名前**と**説明**を入力し、**サービス**を選択します。
+4. 選択したサービスに該当する**リソースタイプ**と**指標**を選択します。
+   - 選択した指標別のフィルタと通知条件を設定できるボックスが表示されます。
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_03_01-2.png)
+
+5. 目的の指標に通知を設定するためにフィルタを設定します。
+6. 通知を発生させる条件である**しきい値**と**継続時間**を入力します。
+   - 例えば、CPU使用率が30%以上であり、この状態が3分以上続くときに通知を受けたい場合は、次のように設定します。
+     - ** 指標**を**CPU使用率**に選択し、必要に応じてフィルタを設定します。
+     - **比較方法**は`>=`(以上)を選択します。
+     - **しきい値**は`30`を入力し、**継続時間**は`3`を入力します。
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_03_01-3.png)
+
+7. **通知受信対象**を選択します。
+   - プロジェクトで作成した通知受信グループを受信対象として選択できます。
+   - プロジェクト通知受信グループを先に作成してください。
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_03_01-4.png)
+
+ダッシュボードウィジェットでも通知を素早く設定できます。
+
+1. ウィジェット右上のさらに表示アイコンをクリックした後、ドロップダウンメニューから**通知の作成**をクリックします。
+2. **通知作成** ページに移動し、ウィジェット作成時に選択した指標別フィルタがそのまま適用されます。
+![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_03_01-5.png)
+
+これで設定したしきい値を達成すると通知が発生し、発生履歴は**通知管理 > 通知発生履歴**で確認できます。
+
+<a id="project-dashboard-visibility-settings"></a>
+## プロジェクトダッシュボードの表示設定 { #project-dashboard-visibility-settings }
+Cloud Monitoringサービスで作成したダッシュボードをプロジェクトメイン画面で確認できます。
+
+1. **Cloud Monitoring > ダッシュボード > ダッシュボード管理**をクリックします。
+2. プロジェクトメイン画面に表示するダッシュボードの**プロジェクトダッシュボード表示設定**トグルをクリックして有効にします。
+   ![image](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_ug_04-1.png)
+
+プロジェクトの**カスタムダッシュボード**でも設定したダッシュボードを確認し、迅速にモニタリングできます。
