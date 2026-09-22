@@ -25,7 +25,7 @@ On the Status tab, you can check the service activation status and tenant settin
 <a id="status-activate"></a>
 ### Request Service Activation { #status-activate }
 
-Service activation cannot be performed directly from the console. Contact us through [1:1 Inquiry](https://www.nhncloud.com/kr/support/inquiry) with your preferred resource size. Once the requested cluster is created, you can use the service starting from creating a data source.
+Service activation can only be requested through [1:1 Inquiry](https://www.nhncloud.com/kr/support/inquiry). Include your preferred resource size in the inquiry. Once the requested cluster is created, you can use the service starting from creating a data source.
 
 The features available for each resource size are as follows:
 
@@ -1093,7 +1093,7 @@ Click the **Create App** button to go to the app creation screen. App creation p
 | Detailed Settings | Model, data connection, and resource settings based on app type |
 | Final Review | Review input and create |
 
-The **Resource Check** results are displayed at the bottom of the app creation screen, regardless of the step you are on. The results are displayed regardless of the app type, and you can check whether the app can be created before you create it.
+The **Resource Check** results are displayed at the bottom of the app creation screen. The results are displayed regardless of the step and app type, and you can check whether the app can be created before you create it.
 
 | Note | Description |
 | --- | --- |
@@ -1226,7 +1226,7 @@ The univariate time-series anomaly detection app trains on each metric individua
 - The series identification label and group label specified for the selected data source serve as the criteria for dividing time series and groups.
 - You can create only one univariate time-series anomaly detection app per metric data source. Data sources already in use by another univariate time-series anomaly detection app are not displayed in the list.
 - If the selected data source has no data, "No data yet." appears below the item, and a **Check Data** box appears under the resource check at the bottom of the screen. If you did not specify a retraining interval, the training performed at creation is the only training, so you cannot proceed to the next step until data arrives. If you specified a retraining interval, a notice is displayed indicating that the first training will fail and will be retried at the next retraining cycle, and you can proceed.
-- If multiple different values have arrived for the same time series within one minute in the last 5 minutes, an information box is displayed. This does not prevent creation, but in this state, only the first value to arrive each minute is used for analysis, and the rest are discarded. Send each time series only once per minute; if you collect data at a shorter interval, aggregate the values into a 1-minute average before sending.
+- If multiple different values have arrived for the same time series within one minute in the last 5 minutes, an information box is displayed. In this case, you can still create the app, but only the first value to arrive each minute is used for analysis, and the rest are discarded. Send each time series only once per minute; if you collect data at a shorter interval, aggregate the values into a 1-minute average before sending.
 
 <a id="app-create-detail-univariate-resource"></a>
 ##### Model Resources { #app-create-detail-univariate-resource }
@@ -1306,9 +1306,9 @@ Click **Expand Additional Transmission Settings** to configure the following ite
 - If delivery to the destination URL fails, it is not displayed in the console. If the results are not visible in the receiving Prometheus, verify them by comparing with the results stored in the result data source.
 
 !!! tip "Note"
-    Inference results are always stored in the result data source, independently of Prometheus transmission. The result data source is automatically created when the app is created and can be viewed from the Analysis menu.
+    Inference results are always stored in the result data source, independently of Prometheus transmission. The result data source is automatically created when the app is created and can be viewed from the **Analysis** menu.
 
-The schema for the result data source is as follows. Use these columns to query or create charts in the Analysis menu.
+The schema for the result data source is as follows. Use these columns to query or create charts in the **Analysis** menu.
 
 | Field Name | Type | Description |
 | --- | --- | --- |
@@ -1536,7 +1536,7 @@ The header displays the app name, status, app type, app ID, creation date, modif
 - You can check the description by hovering the mouse over the question mark icon next to the item label.
 - Apps without a configured transmission address display 'Saves to the Result Data Source only without sending externally.'
 - Values entered in fixed headers and dynamic headers are not displayed on the screen.
-- Inference results are always saved to the Result Data Source regardless of Prometheus transmission, and you can view them in the Analysis menu.
+- Results saved to the Result Data Source can be viewed in the **Analysis** menu.
 - Below the card, the group status is displayed as five numbers: **Total**, **Active**, **Activation Pending**, **Inactive**, and **Error**. Clicking a number navigates to the Group List tab and filters by that status.
 - **Error** is the number of groups where inference has failed and results are not being produced. It is on a different axis from the first three values, so it is not added to the total, and error groups that are turned on are also counted in the Active count.
 - You can check the meaning of the three statuses by hovering the mouse over the question mark icon next to the group status title. Activation Pending typically takes around 6 hours in precise mode, while instant mode activates immediately after the group is turned on.
@@ -1591,7 +1591,7 @@ Inference Status:
 - The Group Key, Detection start time, Deactivation time, Created on, and Modified on columns can be sorted by clicking the column header. Sorting applies to all groups, and changing the sort order navigates to page 1. The Value, Group Hash, Status, and Inference Status columns cannot be sorted. Values are sorted via the Group Key column, and inference status is narrowed using filters.
 - You can adjust the number of items displayed per page (20, 50, or 100; default is 20).
 - If no groups have been registered, "No groups have been registered. Groups will appear here once data is received and groups are registered." is displayed. If no groups match the search or filter conditions, "No groups match the specified conditions." is displayed.
-- To start, stop, or delete usage for specific groups, refer to "Start, Stop, and Delete Group Usage" in the [API Guide](./api-guide/#univariate-group-api). This operation is not available in the console.
+- To start, stop, or delete usage for specific groups, this feature is only available via API. Refer to "Start, Stop, and Delete Group Usage" in the [API Guide](./api-guide/#univariate-group-api).
 
 <a id="app-detail-univariate-groups-hash"></a>
 ##### Hash Calculator { #app-detail-univariate-groups-hash }
