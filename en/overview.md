@@ -64,7 +64,7 @@ A feature for creating and managing apps by connecting AI models to data. Two ap
 
 The **Recommendation System** lets you select a recommendation model to use and connect user, item, and history data sources — training and deployment then proceed automatically. Once the app is active, you can request the recommendation API.
 You can check recommendation results by calling the API directly from the console or by sending API requests. When you collect user interactions through the recommendation event API, you can analyze the recommendation success rate using the loaded event data.
-You can also change the training cycle, stop or resume automatic retraining, run training manually, and view training artifact history from the console.
+The console also supports changing the training cycle, stopping or resuming automatic retraining, running training manually, and viewing training artifact history.
 
 **Univariate time-series anomaly detection** learns from the collected metrics for each time series and detects values that fall outside the normal range.
 The anomaly scores and threshold values from the detection results are sent to the specified Prometheus and are also stored in the result data source, where they can be used for analysis.
