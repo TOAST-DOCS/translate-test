@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=a0cd6b6bb2af -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=5213f6f0ca5c -->
 
 <a id="nhn-cloud-sdk-user-guide-log-crash-ios"></a>
 ## NHN Cloud > SDK使用ガイド > Log & Crash > iOS { #nhn-cloud-sdk-user-guide-log-crash-ios }
@@ -74,8 +76,32 @@ end
 <a id="apply-nhn-cloud-symbol-uploader"></a>
 ## NHN Cloud Symbol Uploader適用 { #apply-nhn-cloud-symbol-uploader }
 
+!!! tip "ヒント"
+    Log & Crash Search Symbol APIが v3 に移行されました。v3 以降は、アプリキーに加えて `User Access Token` 認証が必要です。
+
+<a id="symbol-uploader-preparation-for-auth"></a>
+### 認証の準備 { #symbol-uploader-preparation-for-auth }
+
+v3 API呼び出しには NHN Cloud User Access Token が必要で、次の2つの方法のいずれかで提供します。
+
+**方法 1. User Access Key ID / Secret Access Key で渡す（推奨）**
+
+- コンソール右上のアカウント > **[APIセキュリティ設定]** で User Access Key を作成します。（User Access Key ID、Secret Access Key）
+- SymbolUploader が受け取った Key でトークンを自動発行して使用します。
+- オプション: `--user-access-key-id`（`-uak`）、`--secret-access-key`（`-sak`）
+
+**方法 2. User Access Token を直接渡す**
+
+- すでに発行済みの User Access Token（Bearer）をそのまま使用します。
+- オプション: `--user-access-token`（`-uat`）
+
+!!! danger "注意"
+    方法 1（`-uak`/`-sak`）と方法 2（`-uat`）は同時に使用することはできません。どちらか一方のみを渡してください。
+    認証情報を渡さない場合、アップロードは実行されません。
+
 <a id="change-project-debug-settings"></a>
 ### プロジェクトのデバッグ設定を変更 { #change-project-debug-settings }
+
 * ビルド設定を変更してプロジェクトのデバッグ情報形式を変更する必要があります。
 * Xcode -> Project Target -> Build Settings -> Debug Information Format -> Debug -> DWARF with dSYM File
 
@@ -84,50 +110,94 @@ end
 
 * Xcode -> Project Target -> Build Phases -> + -> New Run Script Phase
 * 表示される新しいRun Scriptセクションを展開します。
-* Shell(シェル)フィールドの下にあるスクリプトフィールドで新しい実行スクリプトを追加します。
-```
+* Shell(シェル) フィールドの下にあるスクリプトフィールドで、新しい実行スクリプトを追加します。
+**方法 1（User Access Key）**
+
+```sh
 if [ "${CONFIGURATION}" = "Debug" ]; then
-    ${PODS_ROOT}/NHNCloudSymbolUploader/nhncloud.ios.sdk-*/run --app-key LOG_N_CRASH_SEARCH_DEV_APPKEY
+    ${PODS_ROOT}/NHNCloudSymbolUploader/nhncloud.ios.sdk-*/run \
+        --app-key LOG_N_CRASH_SEARCH_APPKEY \
+        --user-access-key-id USER_ACCESS_KEY_ID \
+        --secret-access-key SECRET_ACCESS_KEY
 fi
 ```
-* LOG_N_CRASH_SEARCH_APPKEYにはLog & Crash SearchのAppKeyを入力する必要があります。
-* Run Scriptセクションの下にあるInput FilesにdSYMの基本パスを設定します。
-    * ${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}
 
-![symbol_uploader_script_pods_path](https://static.toastoven.net/toastcloud/sdk/ios/symbol_uploader_guide_script_pods_path_202206.png)
+**方法2（User Access Token）**
+
+```sh
+if [ "${CONFIGURATION}" = "Debug" ]; then
+    ${PODS_ROOT}/NHNCloudSymbolUploader/nhncloud.ios.sdk-*/run \
+        --app-key LOG_N_CRASH_SEARCH_APPKEY \
+        --user-access-token USER_ACCESS_TOKEN
+fi
+```
+
+* `LOG_N_CRASH_SEARCH_APPKEY` には Log & Crash Searchのアプリキーを入力する必要があります。
+* 認証情報は上記の2つの方法のうち、使用する方の情報を入力する必要があります。
+    * 方法 1: `USER_ACCESS_KEY_ID`、`SECRET_ACCESS_KEY`
+    * 方法 2: `USER_ACCESS_TOKEN`
+    
+* Run Scriptセクションの下にあるInput FilesにdSYMの基本パスを設定します。
+    * `${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}`
+
+![](../static/images/ios/symbol-uploader/debug-symbol-uploader-settings.png){ height="100%" }
 
 <a id="upload-manually-using-symbol-uploader"></a>
 ### Symbol Uploaderを使用して直接アップロード { #upload-manually-using-symbol-uploader }
 
 * SymbolUploaderの使い方
 
-```
-USAGE: symbol-uploader -ak <ak> -pv <pv> [-sz <sz>] <path> [--verbose]
+```sh
+USAGE: symbol-uploader -ak <ak> -pv <pv> [-sz <sz>] [-uak <uak>] [-sak <sak>] [-uat <uat>] <path> [--verbose]
 
 ARGUMENTS:
-  <path>                  dSYM file path is must be entered. 
+  <path>                  dSYM file path is must be entered.
 
 OPTIONS:
-  -ak, --app-key <ak>     [Log&Crash Search]'s AppKey must be entered. 
+  -ak, --app-key <ak>     [Log&Crash Search]'s AppKey must be entered.
   -pv, --project-version <pv>
-                          Project version must be entered. 
+                          Project version must be entered.
   -sz, --service-zone <sz>
-                          You can choose between real, alpha, and demo. (default: real)
-  --verbose               Show more debugging information 
+                          You can choose between real, alpha, beta. (default: real)
+  -uak, --user-access-key-id <uak>
+                          User Access Key ID (use with -sak to issue a token).
+  -sak, --secret-access-key <sak>
+                          Secret Access Key (use with -uak to issue a token).
+  -uat, --user-access-token <uat>
+                          User Access Token (Bearer) to use directly.
+  --verbose               Show more debugging information
   -h, --help              Show help information.
-
 ```
 
 * XcodeのRun Scriptを使用せずにユーザーが任意の時点で、次のような方法でSymbolUploaderを使用して直接Symbolをアップロードできます。
 
-```
-./SymbolUploader --app-key {APP_KEY} --project-version {CFBundleShortVersionString || MARKETING_VERSION} {symbol path(~/Project.dSYM)}
+**方法 1 (User Access Key)**
+
+```sh
+./SymbolUploader \
+    --app-key {APP_KEY} \
+    --project-version {CFBundleShortVersionString || MARKETING_VERSION} \
+    --user-access-key-id {USER_ACCESS_KEY_ID} \
+    --secret-access-key {SECRET_ACCESS_KEY} \
+    {symbol path(~/Project.dSYM)}
 ```
 
-> `同じバージョンのSymbolがすでにアップロードされている場合、SymbolUploaderはアップロードされているSymbolを削除してアップロードを実行します。`
-> この時、2つのSymbolファイルの`ファイル名が異なる場合、アップロードされていたSymbolは削除されません。`
-> Log & Crash SearchコンソールからアップロードされているSymbolを削除する必要があります。
-> https://console.nhncloud.com/→組織選択→プロジェクト選択→ Anaytics → Log & Crash Search →設定→シンボルファイル
+**方法2（User Access Token）**
+
+```
+./SymbolUploader \
+    --app-key {APP_KEY} \
+    --project-version {CFBundleShortVersionString || MARKETING_VERSION} \
+    --user-access-token {USER_ACCESS_TOKEN} \
+    {symbol path(~/Project.dSYM)}
+```
+
+!!! tip "ヒント"
+    同じバージョンに同じファイル名の Symbolがすでにアップロードされている場合、サーバーはアップロードを拒否します。
+    (resultMessage: "A file with the same filename for this version has already been uploaded.")
+    SymbolUploader はこの場合、アップロードされている同じファイル名の Symbolを削除して再アップロードします。
+    2つの Symbolファイルのファイル名が異なる場合、アップロードされている Symbolは削除されないため、Log & Crash Searchコンソールで直接削除する必要があります。
+    https://console.nhncloud.com/ > 組織を選択 -> プロジェクトを選択 > Analytics > Log & Crash Search > 設定 > シンボルファイル
 
 <a id="precautions-when-using-crashreport"></a>
 ### CrashReport 使用時注意事項 { #precautions-when-using-crashreport }
@@ -214,6 +284,7 @@ NHNCloudLoggerConfiguration *configuration = [NHNCloudLoggerConfiguration config
 
 <a id="usage-example-of-user-defined-fields"></a>
 ### ユーザー定義フィールド使用例 { #usage-example-of-user-defined-fields }
+
 ```objc
 // ユーザー定義フィールド追加
 [NHNCloudLogger setUserFieldWithValue:@"USER_VALUE" forKey:@"USER_KEY"];
@@ -221,12 +292,14 @@ NHNCloudLoggerConfiguration *configuration = [NHNCloudLoggerConfiguration config
 
 <a id="collect-crash-logs"></a>
 ## クラッシュログの収集 { #collect-crash-logs }
+
 * NHN Cloud Loggerは、クラッシュ情報をログに送信する機能を提供します。
 * NHN Cloud Loggerを初期化する時、一緒に有効になり、使用するかを設定できます。
 * クラッシュログを送信するには、PLCrashReporterを使用します。
 
 <a id="set-whether-to-enable-crashreporter"></a>
 ### CrashReporter使用するかの設定 { #set-whether-to-enable-crashreporter }
+
 * CrashReporter機能は、基本的にNHN Cloud Loggerを初期化する時に一緒に有効になります。
 * NHN Cloud Loggerを初期化する時、使用するかを設定できます。
 * クラッシュログ送信機能を使用しない場合は、CrashReporter機能を無効にする必要があります。
@@ -236,6 +309,7 @@ NHNCloudLoggerConfiguration *configuration = [NHNCloudLoggerConfiguration config
 
 <a id="set-whether-to-enable-crashreporter-enable-crashreporter"></a>
 #### CrashReporter有効化
+
 ```objc
 // CrashReporter Enable Configuration
 NHNCloudLoggerConfiguration *configuration = [NHNCloudLoggerConfiguration configurationWithAppKey:@"YOUR_APP_KEY" enableCrashReporter:YES];
@@ -245,6 +319,7 @@ NHNCloudLoggerConfiguration *configuration = [NHNCloudLoggerConfiguration config
 
 <a id="set-whether-to-enable-crashreporter-disable-crashreporter"></a>
 #### CrashReporter無効化
+
 ```objc
 // CrashReporter Disable Configuration
 NHNCloudLoggerConfiguration *configuration = [NHNCloudLoggerConfiguration configurationWithAppKey:@"YOUR_APP_KEY" enableCrashReporter:NO];
@@ -260,6 +335,7 @@ NHNCloudLoggerConfiguration *configuration = [NHNCloudLoggerConfiguration config
 
 <a id="specification-for-data-adapter-api"></a>
 ### Data Adapter API仕様 { #specification-for-data-adapter-api }
+
 ```objc
 + (void)setShouldReportCrashHandler:(void (^)(void))handler;
 ```
@@ -284,6 +360,7 @@ NHNCloudLoggerConfiguration *configuration = [NHNCloudLoggerConfiguration config
 
 <a id="specification-for-set-delegate-api"></a>
 ### Delegate API仕様 { #specification-for-set-delegate-api }
+
 ```objc
 + (void)setDelegate:(id<NHNCloudLoggerDelegate>) delegate;
 ```
@@ -362,6 +439,7 @@ NHNCloudLoggerConfiguration *configuration = [NHNCloudLoggerConfiguration config
 
 <a id="network-insights"></a>
 ## Network Insights { #network-insights }
+
 * Network Insightsは、コンソールに登録したURLを呼び出して、遅延時間とレスポンス値を測定します。これを活用して複数の国(デバイスの国コード基準)からの遅延時間とレスポンス値を測定できます。
 
 > コンソールからNetwork Insights機能を有効にすると、NHN Cloud Loggerを初期化する時、コンソールに登録したURLで1回要請します。
@@ -389,6 +467,7 @@ NHNCloudLoggerConfiguration *configuration = [NHNCloudLoggerConfiguration config
 
 <a id="set-nhn-cloud-logger-for-government-agencies"></a>
 ### 公共機関用NHN Cloud Loggerを設定する { #set-nhn-cloud-logger-for-government-agencies }
+
 * NHNCloudLoggerConfigurationのcloudEnvironment propertyで公共機関用クラウド使用設定を行うことができます。
 
 ```objc

@@ -1,7 +1,67 @@
-<!-- pre-align:aligned sig=763014a10170 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=499fcf966eda -->
 
 <a id="nhn-cloud-sdk-user-guide-release-notes-ios"></a>
 ## NHN Cloud > SDK User Guide > Release Notes > iOS { #nhn-cloud-sdk-user-guide-release-notes-ios }
+
+<a id="100-2026-09-15"></a>
+## 1.10.0 (September 15, 2026) { #100-2026-09-15 }
+
+<a id="100-2026-09-15-nhn-cloud-logger"></a>
+### NHN Cloud Logger { #100-2026-09-15-nhn-cloud-logger }
+
+<a id="100-2026-09-15-nhn-cloud-logger-improved"></a>
+#### Feature Updates
+
+* Changed the Log & Crash Search API domain
+    * The log collection API domain has changed from api-logncrash.cloud.toast.com to api-logncrash.nhncloudservice.com.
+    * The settings API domain has changed from setting-logncrash.cloud.toast.com to api-setting-logncrash.nhncloudservice.com.
+
+<a id="100-2026-09-15-symboluploaderv005"></a>
+### SymbolUploader(v0.0.5) { #100-2026-09-15-symboluploaderv005 }
+
+<a id="100-2026-09-15-symboluploaderv005-added-features"></a>
+#### Added Features
+
+* Applied Log & Crash Search Symbol API v3
+    * Starting from v0.0.5, User Access Token authentication is required.
+      * Authentication using appKey alone is not supported; User Access Token authentication is required.
+      * You can either set the User Access Token directly or have it issued automatically by using a User Access Key and Secret Access Key.
+      * For more information, refer to [Apply NHN Cloud Symbol Uploader](https://docs.nhncloud.com/en/nhncloud-sdk/en/log-collector-ios/#apply-nhn-cloud-symbol-uploader).
+
+<a id="100-2026-09-15-nhn-cloud-push"></a>
+### NHN Cloud Push { #100-2026-09-15-nhn-cloud-push }
+
+<a id="100-2026-09-15-nhn-cloud-push-improved"></a>
+#### Feature Updates
+
+* Changed Push API domain
+    * The token API and user tag API domain has been changed from api-push.cloud.toast.com to push.api.nhncloudservice.com.
+* Improved Notification Hub metrics transmission
+    * Improved so that the same metrics are not counted more than once even when metrics transmission is retried.
+
+<a id="100-2026-09-15-nhn-cloud-push-bugfix"></a>
+#### Bug Fixes
+
+* Fixed an issue with Notification Hub token update failures
+    * Fixed an issue where token registration always failed after changing a user ID.
+
+<a id="100-2026-09-15-nhn-cloud-ocr"></a>
+### NHN Cloud OCR { #100-2026-09-15-nhn-cloud-ocr }
+
+<a id="100-2026-09-15-nhn-cloud-ocr-improved"></a>
+#### Feature Updates
+
+* Changed OCR API Domain
+    * The OCR API domain has been changed from ocr.api.nhncloudservice.com to api-ocr.nhncloudservice.com.
+* Improved error delivery for PublicKey acquisition failures
+    * Improved the system to deliver PublicKey acquisition failure errors that occurred before delegate registration after the delegate is registered.
+
+<a id="100-2026-09-15-nhn-cloud-ocr-bugfix"></a>
+#### Bug Fixes
+
+* Fixed an issue where the Default UI icon aspect ratio was distorted
 
 <a id="90-2025-04-29"></a>
 ## 1.9.0 (2025. 04. 29.) { #90-2025-04-29 }
@@ -11,9 +71,10 @@
 
 <a id="90-2025-04-29-nhn-cloud-push-added-features"></a>
 #### Added Features
-* Added Notification Hub 
-    * NHN Cloud Push SDK supports Notification Hub
-    * You can use it by setting the value NHNCloudPushServiceTypeNotificationHub in the serviceType property of NHNCloudPushConfiguration.
+
+* Added Notification Hub
+    * You can use Notification Hub with the NHNCloudPush SDK.
+    * Set the `NHNCloudPushServiceTypeNotificationHub` value in the `serviceType` property of `NHNCloudPushConfiguration` to enable it.
 
 <a id="86-2024-11-15"></a>
 ## 1.8.6 (2024. 11. 15.) { #86-2024-11-15 }
@@ -22,7 +83,8 @@
 ### NHN Cloud Push { #86-2024-11-15-nhn-cloud-push }
 
 <a id="86-2024-11-15-nhn-cloud-push-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Added API to set device ID 
 
 <a id="85-2024-10-08"></a>
@@ -32,8 +94,9 @@
 ### NHN Cloud IAP { #85-2024-10-08-nhn-cloud-iap }
 
 <a id="85-2024-10-08-nhn-cloud-iap-improved"></a>
-#### Improved
-* Improved the feature to send payment details
+#### Feature Updates
+
+* Improved the feature for sending payment details
 
 <a id="84-2024-09-11"></a>
 ## 1.8.4 (2024. 09. 11.) { #84-2024-09-11 }
@@ -42,7 +105,8 @@
 ### NHN Cloud Push { #84-2024-09-11-nhn-cloud-push }
 
 <a id="84-2024-09-11-nhn-cloud-push-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Fixed duplicate notification issue (iOS 18 Beta)
     * Improved so that duplicate notifications are not received when an application is in the foreground in iOS 18 (OS bugs).
 
@@ -53,8 +117,9 @@
 ### Common { #83-2024-07-23-common }
 
 <a id="83-2024-07-23-common-improved"></a>
-#### Improved
-* Improved stability
+#### Feature Updates
+
+* Stability improvements
 
 <a id="82-2024-06-25"></a>
 ## 1.8.2 (2024. 06. 25.) { #82-2024-06-25 }
@@ -63,7 +128,8 @@
 ### Common { #82-2024-06-25-common }
 
 <a id="82-2024-06-25-common-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Improved stability
 
 <a id="81-2024-02-27"></a>
@@ -73,14 +139,16 @@
 ### Common { #81-2024-02-27-common }
 
 <a id="81-2024-02-27-common-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Applied Privacy manifest
 
 <a id="81-2024-02-27-nhn-cloud-push"></a>
 ### NHN Cloud Push { #81-2024-02-27-nhn-cloud-push }
 
 <a id="81-2024-02-27-nhn-cloud-push-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Fixed an issue where message click actions do not work immediately in certain environments
 
 <a id="80-2024-01-23"></a>
@@ -90,7 +158,8 @@
 ### NHN Cloud IAP { #80-2024-01-23-nhn-cloud-iap }
 
 <a id="80-2024-01-23-nhn-cloud-iap-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Improved payment verification methods
     * Improved to enable (old) receipt verification in new SDKs
         * [(New) Receipt verification + Notification V2](/Mobile%20Service/IAP/en/console-apple-guide/#new-receipt-verification-notification-v2)
@@ -103,7 +172,8 @@
 ### Common { #71-2023-12-19-common }
 
 <a id="71-2023-12-19-common-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Signature applied
     * Applied the `NHN Cloud Corp.` signature to the binaries being distributed.
 
@@ -111,15 +181,17 @@
 ### Logger { #71-2023-12-19-logger }
 
 <a id="71-2023-12-19-logger-improved"></a>
-#### Improved
-* Improved NetworkInsight stability of Instance Logger
+#### Feature Updates
+
+* Improved stability of NetworkInsight in Instance Logger
 
 <a id="71-2023-12-19-symboluploaderv004"></a>
 ### SymbolUploader(v0.0.4) { #71-2023-12-19-symboluploaderv004 }
 
 <a id="71-2023-12-19-symboluploaderv004-improved"></a>
-#### Improved
-* Improved stability
+#### Feature Updates
+
+* Stability improvements
 
 <a id="70-2023-11-14"></a>
 ## 1.7.0 (2023. 11. 14.) { #70-2023-11-14 }
@@ -128,7 +200,8 @@
 ### Common { #70-2023-11-14-common }
 
 <a id="70-2023-11-14-common-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Raised the minimum supported version
     * 9.0 > 11.0
 * Ended support for architectures
@@ -138,7 +211,8 @@
 ### NHN Cloud IAP { #70-2023-11-14-nhn-cloud-iap }
 
 <a id="70-2023-11-14-nhn-cloud-iap-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Changed payment verification methods - [(New) Receipt verification + Notification V2](/Mobile%20Service/IAP/en/console-apple-guide/#new-receipt-verification-notification-v2)
 
 <a id="62-2023-08-29"></a>
@@ -148,7 +222,8 @@
 ### Common { #62-2023-08-29-common }
 
 <a id="62-2023-08-29-common-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Fixed an issue where CountryCode is not obtained
 
 <a id="62-2023-08-29-nhn-cloud-ocr"></a>
@@ -156,7 +231,8 @@
 
 <a id="62-2023-08-29-nhn-cloud-ocr-added-features"></a>
 #### Added Features
-* Added recognition area in the result of credit card/ID card recognition
+
+* Added recognition area data to credit card/ID card recognition results
 
 <a id="61-2023-07-25"></a>
 ## 1.6.1 (2023. 07. 25.) { #61-2023-07-25 }
@@ -165,7 +241,8 @@
 ### NHN Cloud IAP { #61-2023-07-25-nhn-cloud-iap }
 
 <a id="61-2023-07-25-nhn-cloud-iap-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Improved the feature to send payment details
 
 <a id="60-2023-07-11"></a>
@@ -176,6 +253,7 @@
 
 <a id="60-2023-07-11-nhn-cloud-ocr-added-features"></a>
 #### Added Features
+
 * Added OCR (ID Card Recognizer)
 
 <a id="50-2023-06-27"></a>
@@ -185,13 +263,15 @@
 ### NHN Cloud Push { #50-2023-06-27-nhn-cloud-push }
 
 <a id="50-2023-06-27-nhn-cloud-push-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Improved the token registration feature
     * Provided the option to register a token regardless of the app's notification permissions.
 
 <a id="50-2023-06-27-symboluploaderv003"></a>
 ### SymbolUploader(v0.0.3) { #50-2023-06-27-symboluploaderv003 }
-* Improved stability
+
+* Stability improvements
 
 <a id="40-2023-05-30"></a>
 ## 1.4.0 (2023. 05. 30.) { #40-2023-05-30 }
@@ -200,21 +280,24 @@
 ### Common { #40-2023-05-30-common }
 
 <a id="40-2023-05-30-common-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Added the SPM(swift package manager) deployment method
 
 <a id="40-2023-05-30-nhn-cloud-iap"></a>
 ### NHN Cloud IAP { #40-2023-05-30-nhn-cloud-iap }
 
 <a id="40-2023-05-30-nhn-cloud-iap-added-features"></a>
-#### Added Featrues
-* Added a feature to send payment details 
-    * You can view payment details on the Transaction tab in the IAP console.
+#### Added Features
+
+* Added the feature to send payment details
+    * You can view payment details on the Transaction tab of the IAP console.
 
 <a id="40-2023-05-30-symboluploaderv002"></a>
 ### SymbolUploader(v0.0.2) { #40-2023-05-30-symboluploaderv002 }
+
 * Improved run script
-    * Added support for Cocoapods, SPM
+    * Added support for Cocoapods and SPM
 
 <a id="31-2023-05-19---hotfix"></a>
 ## 1.3.1 (2023. 05. 19.) - Hotfix { #31-2023-05-19---hotfix }
@@ -223,7 +306,8 @@
 ### NHN Cloud Push { #31-2023-05-19---hotfix-nhn-cloud-push }
 
 <a id="31-2023-05-19---hotfix-nhn-cloud-push-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Improved the token registration feature
     * When registering a token, if the notification setting of the app is disabled, `NHNCloudPushErrorPermissionDenied` is returned again.
     
@@ -234,7 +318,8 @@
 ### Common { #30-2023-02-28-common }
 
 <a id="30-2023-02-28-common-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Improved stability
 
 <a id="21-2023-01-31"></a>
@@ -244,14 +329,16 @@
 ### NHN Cloud Push { #21-2023-01-31-nhn-cloud-push }
 
 <a id="21-2023-01-31-nhn-cloud-push-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Improved token registration function
 
 <a id="21-2023-01-31-nhn-cloud-ocr"></a>
 ### NHN Cloud OCR { #21-2023-01-31-nhn-cloud-ocr }
 
 <a id="21-2023-01-31-nhn-cloud-ocr-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Improved credit card recognition performance
 * Improved stability
 
@@ -263,20 +350,23 @@
 
 <a id="20-2022-11-29-nhn-cloud-logger-added-features"></a>
 #### Added Features
-* Added support for Logger for government agencies
+
+* Added support for Logger for public institutions
 
 <a id="20-2022-11-29-nhn-cloud-push"></a>
 ### NHN Cloud Push { #20-2022-11-29-nhn-cloud-push }
 
 <a id="20-2022-11-29-nhn-cloud-push-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Improved sending push events
 
 <a id="20-2022-11-29-nhn-cloud-ocr"></a>
 ### NHN Cloud OCR { #20-2022-11-29-nhn-cloud-ocr }
 
 <a id="20-2022-11-29-nhn-cloud-ocr-improved"></a>
-#### Improved
+#### Feature Updates
+
 * Improved UI
 
 <a id="10-2022-10-25"></a>
@@ -286,7 +376,8 @@
 ### Common { #10-2022-10-25-common }
 
 <a id="10-2022-10-25-common-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved stability
 
 <a id="10-2022-10-25-nhn-cloud-iap"></a>
@@ -294,6 +385,7 @@
 
 <a id="10-2022-10-25-nhn-cloud-iap-added-features"></a>
 #### Added Features
+
 * [All stores] Added APIs for activated subscription query and unconsumed purchase query
 
 <a id="10-2022-10-25-nhn-cloud-ocr"></a>
@@ -301,6 +393,7 @@
 
 <a id="10-2022-10-25-nhn-cloud-ocr-added-features"></a>
 #### Added Features
+
 * Added OCR(Credit Card Recognizer)
 
 <a id="00-2022-07-12"></a>
@@ -310,7 +403,8 @@
 ### Common { #00-2022-07-12-common }
 
 <a id="00-2022-07-12-common-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved stability
 * Changed the module name to NHN Cloud SDK
 	* TOAST SDK has been deprecated.
@@ -323,7 +417,8 @@
 
 <a id="300-2022-03-29-toast-iap-added-features"></a>
 #### Added Features
-* Added a property to check whether the payment is sandbox payment or not (sandboxPayment) to ToastPurchaseResult
+
+* Added sandbox payment status to ToastPurchaseResult (sandboxPayment)
 
 <a id="292-2021-11-23"></a>
 ## 0.29.2 (2021. 11. 23.) { #292-2021-11-23 }
@@ -332,8 +427,9 @@
 ### TOAST Push { #292-2021-11-23-toast-push }
 
 <a id="292-2021-11-23-toast-push-improvements"></a>
-#### Improvements
-* Improved stability
+#### Feature Updates
+
+* Stability improvements
 
 <a id="291-2021-10-26"></a>
 ## 0.29.1 (2021. 10. 26.) { #291-2021-10-26 }
@@ -342,7 +438,8 @@
 ### TOAST IAP { #291-2021-10-26-toast-iap }
 
 <a id="291-2021-10-26-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved stability
 
 <a id="290-2021-07-06"></a>
@@ -352,7 +449,8 @@
 ### Common { #290-2021-07-06-common }
 
 <a id="290-2021-07-06-common-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved stability
 
 <a id="290-2021-07-06-toast-iap"></a>
@@ -360,6 +458,7 @@
 
 <a id="290-2021-07-06-toast-iap-added-features"></a>
 #### Added Features
+
 * Added a monthly payment limit feature
 
 <a id="280-2021-05-25"></a>
@@ -369,7 +468,8 @@
 ### Common { #280-2021-05-25-common }
 
 <a id="280-2021-05-25-common-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Added xcframework
     * Added support for arm Simulator
 
@@ -378,6 +478,7 @@
 
 <a id="280-2021-05-25-toast-logger-crashreporter-buildinfo-20210525"></a>
 #### CrashReporter (BuildInfo 20210525)
+
 * Improved the way to classify architectures
     * Fixed an issue where iOS14 Core Library is not symbolicated
 
@@ -388,7 +489,8 @@
 ### Common { #272-2021-03-23-common }
 
 <a id="272-2021-03-23-common-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved stability
 
 <a id="272-2021-03-23-toast-logger"></a>
@@ -396,16 +498,18 @@
 
 <a id="272-2021-03-23-toast-logger-symboluploader-v001"></a>
 #### SymbolUploader (v0.0.1)
+
 * Added SymbolUploader
 
 <a id="271-2020-11-24"></a>
-## 0.27.1 (2020. 11. 24.) { #271-2020-11-24 }
+## 0.27.1 (November 24, 2020) { #271-2020-11-24 }
 
 <a id="271-2020-11-24-toast-iap"></a>
 ### TOAST IAP { #271-2020-11-24-toast-iap }
 
 <a id="271-2020-11-24-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Subscription product resubscription error revision (iOS 14 )
 - Changed ToastProductsResponse to return nil when failing to get product info from the Appstore
 
@@ -413,7 +517,8 @@
 ### TOAST Push { #271-2020-11-24-toast-push }
 
 <a id="271-2020-11-24-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved problem where callback did not occur upon a token disable request and there were no registered tokens
 
 <a id="270-2020-09-11"></a>
@@ -424,10 +529,12 @@
 
 <a id="270-2020-09-11-toast-iap-added-features"></a>
 #### Added Features
+
 * Add localized product information (localizedTitle, localizedDescription) to ToastProduct
 
 <a id="270-2020-09-11-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Handled iOS 14 beta changes
      * Fixed an issue where payment failure Delegate is not received
 
@@ -435,68 +542,76 @@
 ### TOAST Push { #270-2020-09-11-toast-push }
 
 <a id="270-2020-09-11-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved stability
 
 <a id="260-2020-07-28"></a>
-## 0.26.0 (2020. 07. 28.) { #260-2020-07-28 }
+## 0.26.0 (July 28, 2020) { #260-2020-07-28 }
 
 <a id="260-2020-07-28-toast-push"></a>
 ### TOAST Push { #260-2020-07-28-toast-push }
 
 <a id="260-2020-07-28-toast-push-added-features"></a>
 #### Added Features
+
 * User tag feature support
 
 <a id="251-2020-07-03"></a>
-## 0.25.1 (2020. 07. 03.) { #251-2020-07-03 }
+## 0.25.1 (July 3, 2020) { #251-2020-07-03 }
 
 <a id="251-2020-07-03-toast-logger"></a>
 ### TOAST Logger { #251-2020-07-03-toast-logger }
 
 <a id="251-2020-07-03-toast-logger-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved stability
 
 <a id="251-2020-07-03-toast-push"></a>
 ### TOAST Push { #251-2020-07-03-toast-push }
 
 <a id="251-2020-07-03-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved stability
 
 <a id="250-2020-06-23"></a>
-## 0.25.0 (2020. 06. 23.) { #250-2020-06-23 }
+## 0.25.0 (June 23, 2020) { #250-2020-06-23 }
 
 <a id="250-2020-06-23-common"></a>
 ### Common { #250-2020-06-23-common }
 
 <a id="250-2020-06-23-common-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved stability
 
 <a id="250-2020-06-23-toast-push"></a>
 ### TOAST Push { #250-2020-06-23-toast-push }
 
 <a id="250-2020-06-23-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Separate notification options setting interface
 
 <a id="241-2020-05-26"></a>
-## 0.24.1 (2020. 05. 26.) { #241-2020-05-26 }
+## 0.24.1 (May 26, 2020) { #241-2020-05-26 }
 
 <a id="241-2020-05-26-toast-push"></a>
 ### TOAST Push { #241-2020-05-26-toast-push }
 
 <a id="241-2020-05-26-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved token registration function
 
 <a id="240-2020-04-28"></a>
-## 0.24.0 (2020. 04. 28.) { #240-2020-04-28 }
+## 0.24.0 (April 28, 2020) { #240-2020-04-28 }
 
 <a id="240-2020-04-28-common"></a>
 ### Common { #240-2020-04-28-common }
+
 * Raised the minimum supported version for TOAST SDK (iOS 8.0 -> iOS 9.0)
 * Improved stability
 
@@ -505,13 +620,15 @@
 
 <a id="240-2020-04-28-toast-iap-added-features"></a>
 #### Added Features
+
 * Added Optional Delegate to allow you to choose whether to proceed with the promotional payment
 
 <a id="240-2020-04-28-toast-push"></a>
 ### TOAST Push { #240-2020-04-28-toast-push }
 
 <a id="240-2020-04-28-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved stability
 
 <a id="230-2020-03-24"></a>
@@ -521,7 +638,8 @@
 ### TOAST Logger { #230-2020-03-24-toast-logger }
 
 <a id="230-2020-03-24-toast-logger-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Fixed an issue where CrashReport CallStack could contain invalid strings
 
 <a id="230-2020-03-24-toast-push"></a>
@@ -529,6 +647,7 @@
 
 <a id="230-2020-03-24-toast-push-added-features"></a>
 #### Added Features
+
 * Added notification option setting function
      * At initialization, it is possible to set whether to expose foreground notifications, use badge icons, and use notification sounds.
 
@@ -539,19 +658,21 @@
 ### TOAST Push { #221-2020-02-25-toast-push }
 
 <a id="221-2020-02-25-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved token registration function
     * If a user ID is not set at the time of initial token registration, it is registered using the device identifier.
     * If you set or change the user ID after registering the token, the token information is updated.
 
 <a id="220-2020-02-11"></a>
-## 0.22.0 (2020. 02. 11.) { #220-2020-02-11 }
+## 0.22.0 (February 11, 2020) { #220-2020-02-11 }
 
 <a id="220-2020-02-11-toast-iap"></a>
 ### TOAST IAP { #220-2020-02-11-toast-iap }
 
 <a id="220-2020-02-11-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved stability
 
 <a id="210-2019-12-24"></a>
@@ -561,26 +682,28 @@
 ### TOAST Logger { #210-2019-12-24-toast-logger }
 
 <a id="210-2019-12-24-toast-logger-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Added data to improve the classification method of crash occurrence location
 
 <a id="210-2019-12-24-toast-iap"></a>
 ### TOAST IAP { #210-2019-12-24-toast-iap }
 
 <a id="210-2019-12-24-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Added API security function
 * Improved stability
 * Defined Swift interface additionally
 
 <a id="201-2019-12-04"></a>
-## 0.20.1 (2019. 12. 04.) { #201-2019-12-04 }
+## 0.20.1 (December 4, 2019) { #201-2019-12-04 }
 
 <a id="201-2019-12-04-common"></a>
 ### Common { #201-2019-12-04-common }
 
 <a id="201-2019-12-04-common-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Improved initialization logic
 
@@ -591,7 +714,7 @@
 ### TOAST Push { #200-2019-11-26-toast-push }
 
 <a id="200-2019-11-26-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Changed token registration/deletion result notification to callback structure, delete delegate
 * Added a feature to re-register tokens with previously registered agreement information
@@ -599,7 +722,7 @@
 * Defined Swift interface additionally
 
 <a id="193-2019-10-29"></a>
-## 0.19.3 (2019. 10. 29.) { #193-2019-10-29 }
+## 0.19.3 (October 29, 2019) { #193-2019-10-29 }
 
 <a id="193-2019-10-29-common"></a>
 ### Common { #193-2019-10-29-common }
@@ -616,7 +739,7 @@
 ### TOAST Push { #192-2019-10-25-toast-push }
 
 <a id="192-2019-10-25-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Supports migration of (old) TCPushSDK
 
@@ -627,7 +750,7 @@
 ### TOAST Push { #191-2019-10-18-toast-push }
 
 <a id="191-2019-10-18-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Improved token registration function
 
@@ -649,7 +772,7 @@
 ### Common { #180-2019-10-01-common }
 
 <a id="180-2019-10-01-common-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Handles iOS 13 / Xcode 11
 
@@ -662,7 +785,7 @@
 * Added user data setting function when requesting a purchase
 
 <a id="180-2019-10-01-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Changed to return only the restored payment after performing the restore function
 
@@ -670,7 +793,7 @@
 ### TOAST Push { #180-2019-10-01-toast-push }
 
 <a id="180-2019-10-01-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Changed the Nullability property of the ToastPushConfiguration object
 * Deleted the sourceType and extension properties of the ToastPushMedia object by improving the rich message generation logic
@@ -683,13 +806,14 @@
 * Fixed a bug where a device token could not be acquired in environments of iOS 13 or higher
 
 <a id="170-2019-08-27"></a>
-## 0.17.0 (2019. 08. 27.) { #170-2019-08-27 }
+## 0.17.0 (August 27, 2019) { #170-2019-08-27 }
 
 <a id="170-2019-08-27-common"></a>
 ### Common { #170-2019-08-27-common }
 
 <a id="170-2019-08-27-common-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved stability
 
 <a id="170-2019-08-27-toast-iap"></a>
@@ -701,7 +825,7 @@
 * Added auto-renewable consumable subscription products
 
 <a id="170-2019-08-27-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Fixed a problem that a valid product list was returned to invalidProducts when querying the product list
 
@@ -709,7 +833,7 @@
 ### TOAST Push { #170-2019-08-27-toast-push }
 
 <a id="170-2019-08-27-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Improved so that the default notification sound is set when sending push messages without setting a notification sounds
 
@@ -720,7 +844,8 @@
 ### Common { #161-2019-07-29-common }
 
 <a id="161-2019-07-29-common-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Fixed an issue where the country code cannot be obtained
 
 <a id="160-2019-07-23"></a>
@@ -730,7 +855,8 @@
 ### TOAST Logger { #160-2019-07-23-toast-logger }
 
 <a id="160-2019-07-23-toast-logger-improvements"></a>
-#### Improvements
+#### Feature Updates
+
 * Improved to include symbol string in CrashReport CallStack for binaries with symbols
 * Fixed an issue where CrashReport Reason is not displayed
 
@@ -738,7 +864,7 @@
 ### TOAST IAP { #160-2019-07-23-toast-iap }
 
 <a id="160-2019-07-23-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Fixed an issue where the status changes from successful payment status to previous payment status
 * Fixed an issue where payment was requested when in-app purchases were not allowed
@@ -748,7 +874,7 @@
 ### TOAST Push { #160-2019-07-23-toast-push }
 
 <a id="160-2019-07-23-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Changed message/action receiving delegate
 
@@ -759,7 +885,7 @@
 ### TOAST IAP { #150-2019-06-25-toast-iap }
 
 <a id="150-2019-06-25-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Added reprocessing logic for incomplete payment when requesting query for new payment, promotion payment, or unconsumed history
 
@@ -774,7 +900,7 @@
 * Added notification option setting function
 
 <a id="150-2019-06-25-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Changed the default settings of notification options
     * Changed to not display notifications while the app is running
@@ -787,7 +913,7 @@
 ### TOAST IAP { #141-2019-05-16-toast-iap }
 
 <a id="141-2019-05-16-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Improved an issue where the user purchases the same product as the reprocessing payment case being processed, it is processed as the product owned by the user
 
@@ -795,7 +921,7 @@
 ### TOAST Push { #141-2019-05-16-toast-push }
 
 <a id="141-2019-05-16-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Fixed a bug in which the event occurrence time was incorrectly collected according to the device's calendar setting
 
@@ -806,7 +932,7 @@
 ### Common { #140-2019-05-14-common }
 
 <a id="140-2019-05-14-common-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Integrated network-related error codes
 * Improved stability
@@ -815,7 +941,7 @@
 ### TOAST IAP { #140-2019-05-14-toast-iap }
 
 <a id="140-2019-05-14-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Improved purchase restore function
     * Added a function to restore missing payments based on AppStore purchase history
@@ -828,7 +954,7 @@
 ### TOAST Push { #140-2019-05-14-toast-push }
 
 <a id="140-2019-05-14-toast-push-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Improved stability
 * Added message ID information to payload information passed to the message-receiving delegate
@@ -841,7 +967,7 @@
 ### Common { #130-2019-03-26-common }
 
 <a id="130-2019-03-26-common-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Improved usability of Public Class
   * Add Description
@@ -851,7 +977,7 @@
 ### TOAST Core { #130-2019-03-26-toast-core }
 
 <a id="130-2019-03-26-toast-core-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Added internal exception handling
 
@@ -865,7 +991,7 @@
 * Changed PLCrashReporter Dependency
 
 <a id="130-2019-03-26-toast-logger-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Changed Configuration Interface
   * Deprecate
@@ -879,7 +1005,7 @@
 ### TOAST IAP { #130-2019-03-26-toast-iap }
 
 <a id="130-2019-03-26-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Added internal exception handling
 
@@ -898,60 +1024,60 @@
 ### TOAST Core { #124-2019-03-19-toast-core }
 
 <a id="124-2019-03-19-toast-core-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Added exception handling
 
 <a id="123-2019-02-26"></a>
-## 0.12.3 (2019. 02. 26.) { #123-2019-02-26 }
+## 0.12.3 (February 26, 2019) { #123-2019-02-26 }
 
 <a id="123-2019-02-26-toast-core-common"></a>
 ### TOAST Core, Common { #123-2019-02-26-toast-core-common }
 
 <a id="123-2019-02-26-toast-core-common-improvements"></a>
-#### Improvements
+#### Feature Updates
 
-* Added exception handling for utility function
+* Added exception handling for utility features
 
 <a id="123-2019-02-26-toast-iap"></a>
 ### TOAST IAP { #123-2019-02-26-toast-iap }
 
 <a id="123-2019-02-26-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Added product information caching
 * Added exception handling
 
 <a id="122-2019-02-08---hotfix"></a>
-## 0.12.2 (2019. 02. 08.) - Hotfix { #122-2019-02-08---hotfix }
+## 0.12.2 (February 8, 2019) - Hotfix { #122-2019-02-08---hotfix }
 
 <a id="122-2019-02-08---hotfix-toast-core"></a>
 ### TOAST Core { #122-2019-02-08---hotfix-toast-core }
 
 <a id="122-2019-02-08---hotfix-toast-core-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Added defense code to prevent intermittent crashes in ToastTransfer
 
 <a id="121-2019-01-08"></a>
-## 0.12.1 (2019. 01. 08.) { #121-2019-01-08 }
+## 0.12.1 (January 8, 2019) { #121-2019-01-08 }
 
 <a id="121-2019-01-08-toast-iap"></a>
 ### TOAST IAP { #121-2019-01-08-toast-iap }
 
 <a id="121-2019-01-08-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Fixed an issue where reprocessing of payments whose payment status is VerifyEnd did not work under certain circumstances
 
 <a id="120-2018-12-27"></a>
-## 0.12.0 (2018. 12. 27.) { #120-2018-12-27 }
+## 0.12.0 (December 27, 2018) { #120-2018-12-27 }
 
 <a id="120-2018-12-27-toast-core"></a>
 ### TOAST Core { #120-2018-12-27-toast-core }
 
 <a id="120-2018-12-27-toast-core-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Added defense code to prevent intermittent crashes in ToastTransfer
 
@@ -961,20 +1087,20 @@
 <a id="120-2018-12-27-toast-push-added-features"></a>
 #### Added Features
 
-* Added new features
+* Added Push support
 
 <a id="120-2018-12-27-toast-iap"></a>
 ### TOAST IAP { #120-2018-12-27-toast-iap }
 
 <a id="120-2018-12-27-toast-iap-improvements"></a>
-#### Improvements
+#### Feature Updates
 
 * Added exception handling of UserID Check logic to enable transaction processing reprocessed by Apple
 * Added defense code to prevent intermittent crashes in ToastOperation
 
 
 <a id="111-2018-12-04"></a>
-## 0.11.1 (2018. 12. 04.) { #111-2018-12-04 }
+## 0.11.1 (December 4, 2018) { #111-2018-12-04 }
 
 <a id="111-2018-12-04-toast-iap"></a>
 ### TOAST IAP { #111-2018-12-04-toast-iap }
@@ -982,7 +1108,7 @@
 <a id="111-2018-12-04-toast-iap-added-features"></a>
 #### Added Features
 
-* Added new features
+* Added IAP support
 
 
 <a id="110-2018-11-20"></a>
@@ -994,7 +1120,7 @@
 <a id="110-2018-11-20-toast-log-crash-added-features"></a>
 #### Added Features
 
-* Added Network Insights function
+* Added the Network Insights feature
 
 
 <a id="90-2018-09-04"></a>
@@ -1006,4 +1132,4 @@
 <a id="90-2018-09-04-toast-log-crash-added-features"></a>
 #### Added Features
 
-* Added new features
+* Added support for Log & Crash Search
