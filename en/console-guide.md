@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=817102849a61 -->
 
 <style>
@@ -648,6 +650,15 @@ When the data collection period ends, it becomes inactive and no longer collects
 
 - You can view statistics by delivery request duration, statistics event keys, template, and delivery type.
 - You can view delivery requests, successes, and failures in graphs and tables.
+
+!!! danger "Caution"
+    Difference Between Statistics Count and Billed Count
+
+    The count provided in the Statistics menu is a value aggregated in real time at the time of sending. Due to the nature of real-time aggregation, some items may not be reflected in the statistics.
+
+    The billed count is finalized each month through a separate verification process that covers the entire delivery history. Because of this, the count in the Statistics menu and the billed count may differ, and the billed count is the authoritative source for the exact number of items used.
+
+    Therefore, for the purpose of verifying billed amounts or reconciling charges, use the billing history instead of the count in the Statistics menu. Use the Statistics menu to review sending trends and result distributions.
 
 <a id="query-statistics-categorize-statistics"></a>
 #### Categorize Statistics
