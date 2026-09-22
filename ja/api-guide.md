@@ -388,7 +388,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 | --- | --- |
 | body.jobId | ジョブ ID |
 | body.dataSourceId | 対象データソース ID |
-| body.jobType | ジョブタイプ。SNAPSHOT（スナップショット取り込み）または EVENT（変更イベント） |
+| body.jobType | ジョブタイプ。SNAPSHOT（スナップショット適載）または EVENT（変更イベント） |
 | body.status | ジョブステータス。下記のステータス値を参照 |
 | body.obsFilePath | OBS ファイルパス |
 | body.statistics.totalRecords | 総レコード数 |
@@ -613,6 +613,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 
 !!! tip "ヒント"
     積載は転送周期とは無関係です。ただし、このデータソースを単変量時系列異常検知アプリに接続した場合は、同じ時系列を1分に1つずつ途切れなく送信する必要があります。アプリはメトリクスを1分単位でまとめて判定するため、それより長い間隔で送信すると空白の期間が生じ、精度モードで準備が完了しない場合があります。
+    学習にも条件があります。データソースに時系列が1つしかない場合は学習が失敗するため、時系列を2つ以上設定する必要があります。また、各時系列に約4時間以上途切れなくデータが蓄積されていないと、正常に学習できません。
 
 <a id="univariate-api"></a>
 ## 単変量時系列異常検出 API { #univariate-api }
