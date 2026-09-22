@@ -1,4 +1,15 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=50489d584d37 -->
+
+{% set inquiry_host =
+      "www.ngsc.go.kr"       if "ngsc"  in build_flags else
+      "www.ngovc.go.kr"      if "ngovc" in build_flags else
+      "www.ngoic.go.kr"      if "ngoic" in build_flags else
+      "www.ninc.go.kr"       if "ninc"  in build_flags else
+      "www.gov-nhncloud.com" if "gov"   in build_flags else
+      "www.gncloud.go.kr"    if "ncgn"  in build_flags else
+      "www.nhncloud.com" -%}
 
 <a id="network-private-dns-console-usage-guide"></a>
 ## Network > Private DNS > コンソール使用ガイド { #network-private-dns-console-usage-guide }
@@ -86,7 +97,7 @@
 
 5. レコードセットの作成数は制限されており、延長が必要な場合は別途お問い合わせください。
 
-    - お問い合わせ先：[1:1お問い合わせ](https://www.nhncloud.com/kr/support/inquiry)
+    - お問い合わせ先：[1:1お問い合わせ](https://$[ inquiry_host ]$/kr/support/inquiry)
 
 <a id="bulk-create-record-sets"></a>
 ### レコードセット大量作成 { #bulk-create-record-sets }
