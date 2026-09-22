@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=1272d3144247 -->
 
 <a id="database-rds-for-enginepascalcase-api-guide"></a>
@@ -2419,7 +2421,7 @@ This API does not require a request body.
 | Name | Format | Description |
 |-----|-----|-----|
 | useHighAvailability | Boolean | Whether to use high availability<br/>- Default: `false` |
-| haStatus | Enum | High availability status<br/>- `CREATED`: Created<br/>- `STABLE`: Normal<br/>- `PAUSING`: Pausing<br/>- `DISABLE`: Stopped<br/>- `DISABLE_MASTER_IN_REPLICATION`: High availability suspended due to detection of abnormal replication on the primary<br/>- `DISABLE_MHA_PROCESS`: High availability process suspended<br/>- `DISABLE_REPLICATION_STOP`: High availability suspended due to replication stop<br/>- `DISABLE_REPLICATION_DELAY`: High availability suspended due to replication delay<br/>- `FAILOVER_STARTED`: Failover started<br/>- `FAILOVER_FAILED`: Failover failed<br/>- `FAILOVER_COMPLETED`: Failover completed<br/>- `DELETED`: Deleted<br/>- `PAUSED`: Paused<br/>- `PAUSED_DUE_TO_TASK`: Paused due to a task<br/>- `PAUSED_DUE_TO_STOP`: Paused due to the DB instance being stopped<br/>- `MASTER_FAILURE_DETECTION`: Primary failure detected |
+| haStatus | Enum | High availability status<br/>- `CREATED`: Created<br/>- `STABLE`: Normal<br/>- `PAUSING`: Pausing<br/>- `DISABLE`: Stopped<br/>- `DISABLE_MASTER_IN_REPLICATION`: High availability suspended due to detection of abnormal replication on the primary<br/>- `DISABLE_MHA_PROCESS`: High availability process suspended<br/>- `DISABLE_REPLICATION_STOP`: High availability suspended due to replication stop<br/>- `DISABLE_REPLICATION_DELAY`: High availability suspended due to replication delay<br/>- `FAILOVER_STARTED`: Failover started<br/>- `FAILOVER_FAILED`: Failover failed<br/>- `FAILOVER_COMPLETED`: Failover completed<br/>- `FAILOVER_ABORTED`: Failover rolled back<br/>- `DELETED`: Deleted<br/>- `PAUSED`: Paused<br/>- `PAUSED_DUE_TO_TASK`: Paused due to a task<br/>- `PAUSED_DUE_TO_STOP`: Paused due to the DB instance being stopped<br/>- `MASTER_FAILURE_DETECTION`: Primary failure detected |
 | pingInterval | Number | Ping interval (seconds) |
 | pingType | Enum | Ping method<br/>- `CONNECTION`: CONNECTION method<br/>- `INSERT`: INSERT method<br/>- `SELECT`: SELECT method |
 
@@ -5394,7 +5396,7 @@ This API does not require a request body.
 #### Response
 
 <details>
-  <summary><strong>Example Code</strong></summary>
+  <summary><strong>Example code</strong></summary>
 
 ```json
 {
@@ -5410,6 +5412,7 @@ This API does not require a request body.
             "parameterGroupName": "parameterGroupName-example",
             "description": "description-example",
             "dbVersion": "MYSQL_V8411",
+            "dbEngineVersionFamily": "MYSQL_V80_FAMILY",
             "parameterGroupType": "USER",
             "parameterGroupStatus": "STABLE",
             "createdYmdt": "2023-12-31T15:00:00+09:00",
@@ -5428,8 +5431,9 @@ This API does not require a request body.
 | parameterGroups.parameterGroupId | UUID | Parameter group identifier |
 | parameterGroups.parameterGroupName | String | Name to identify parameter groups |
 | parameterGroups.description | String | Additional information of parameter group |
-| parameterGroups.dbVersion | Enum | DB engine version |
-| parameterGroups.parameterGroupType | Enum | Parameter group type<br/>- `USER`<br/>- `ADMIN`<br/>- `DEFAULT` |
+| parameterGroups.dbVersion | Enum | DB engine version (null for family parameter groups) |
+| parameterGroups.dbEngineVersionFamily | String | DB engine version family code (only family parameter groups have a value) |
+| parameterGroups.parameterGroupType | Enum | Parameter group type<br/>- `USER`<br/>- `ADMIN`<br/>- `FAMILY`<br/>- `DEFAULT` |
 | parameterGroups.parameterGroupStatus | Enum | Parameter group current status<br/>- `STABLE`: Applied<br/>- `NEED_TO_APPLY`: Need to apply<br/>- `DELETED`: Deleted |
 | parameterGroups.createdYmdt | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
 | parameterGroups.updatedYmdt | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
@@ -5457,13 +5461,14 @@ POST /v4.0/parameter-groups
 #### Request Body
 
 <details>
-  <summary><strong>Example Code</strong></summary>
+  <summary><strong>Example code</strong></summary>
 
 ```json
 {
     "parameterGroupName": "parameterGroupName",
     "description": "description-example",
-    "dbVersion": "MYSQL_V8411"
+    "dbVersion": "MYSQL_V8411",
+    "dbEngineVersionFamily": "MYSQL_V80_FAMILY"
 }
 ```
 
@@ -5473,7 +5478,8 @@ POST /v4.0/parameter-groups
 |-----|-----|-----|-----|
 | parameterGroupName | String | Y | Name to identify parameter groups<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
 | description | String | N | Additional information of parameter group<br/>- Maximum length: `100` |
-| dbVersion | Enum | Y | DB engine version |
+| dbVersion | Enum | N | DB engine version (required when creating a USER type; null when creating a FAMILY type) |
+| dbEngineVersionFamily | String | N | DB engine version family code (required when creating a FAMILY type: if specified, a family parameter group is created and can be shared and applied to all minor version DB instances in the same family) |
 
 <a id="create-parameter-group-response"></a>
 #### Response
@@ -5569,7 +5575,7 @@ This API does not require a request body.
 #### Response
 
 <details>
-  <summary><strong>Example Code</strong></summary>
+  <summary><strong>Example code</strong></summary>
 
 ```json
 {
@@ -5582,6 +5588,7 @@ This API does not require a request body.
     "parameterGroupName": "parameterGroupName-example",
     "description": "description-example",
     "dbVersion": "MYSQL_V8411",
+    "dbEngineVersionFamily": "MYSQL_V80_FAMILY",
     "parameterGroupStatus": "STABLE",
     "parameters": [
         {
@@ -5593,7 +5600,11 @@ This API does not require a request body.
             "defaultValue": "defaultValue-example",
             "allowedValue": "allowedValue-example",
             "updateType": "VARIABLE",
-            "applyType": "BOTH"
+            "applyType": "BOTH",
+            "templateRange": {
+                "coversAllVersions": false,
+                "label": "MySQL 8.0.18 ~ MySQL 8.0.27"
+            }
         }
     ],
     "createdYmdt": "2023-12-31T15:00:00+09:00",
@@ -5608,7 +5619,8 @@ This API does not require a request body.
 | parameterGroupId | UUID | Parameter group identifier |
 | parameterGroupName | String | Name to identify parameter groups |
 | description | String | Additional information of parameter group |
-| dbVersion | Enum | DB engine version |
+| dbVersion | Enum | DB Engine Version (null for family parameter groups) |
+| dbEngineVersionFamily | String | DB engine version family code (only family parameter groups have a value) |
 | parameterGroupStatus | Enum | Parameter group current status<br/>- `STABLE`: Applied<br/>- `NEED_TO_APPLY`: Need to apply<br/>- `DELETED`: Deleted |
 | parameters | Array | Parameter list |
 | parameters.parameterId | UUID | Parameter identifier |
@@ -5620,6 +5632,9 @@ This API does not require a request body.
 | parameters.allowedValue | String | Permitted values |
 | parameters.updateType | Enum | Modification type<br/>- `VARIABLE`<br/>- `CONSTANT`<br/>- `INIT_VARIABLE` |
 | parameters.applyType | Enum | Application type<br/>- `BOTH`<br/>- `SESSION`<br/>- `FILE` |
+| parameters.templateRange | Object | Parameter template range (only family parameter groups have a value) |
+| parameters.templateRange.coversAllVersions | Boolean | Whether the range covers all DB engine versions in the family |
+| parameters.templateRange.label | String | DB engine version range of the range |
 | createdYmdt | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
 | updatedYmdt | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
 
