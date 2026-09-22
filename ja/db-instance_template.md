@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=6567c272c6dd -->
 
 <a id="database-rds-for-enginepascalcase-db-instance"></a>
@@ -144,7 +146,7 @@ DBインスタンス作成時、データベースのワークロードに応じ
 * Read Replicaの再構築
 * Standbyの再構築
 * 特定の時点への復元
-* 単一のDBインスタンスでバックアップした後、オブジェクトストレージにバックアップファイルをエクスポート
+* 単一のDBインスタンスでバックアップした後、Object Storageにバックアップファイルをエクスポート
 
 <a id="high-availability"></a>
 ### 高可用性 { #high-availability }
@@ -177,7 +179,7 @@ DBセキュリティグループは、外部からの侵入に備えて接続を
 <a id="backup"></a>
 ### バックアップ { #backup }
 
-DBインスタンスのデータベースを定期的にバックアップするように設定したり、コンソールから好きなタイミングでバックアップを作成できます。バックアップが実行されている間、パフォーマンスの低下が発生する場合があります。サービスに影響を与えないように、サービスの負荷が少ない時間にバックアップすることを推奨します。バックアップによる性能低下を望まない場合は、高可用性構成を使用するか、以前バックアップ以降のデータの増分のみをバックアップすることができ、Read Replicaでバックアップを実行できます。バックアップファイルは内部バックアップストレージに保存され、バックアップ容量に応じて課金されます。必要に応じて、NHN Cloudのオブジェクトストレージにエクスポートできます。予期せぬ障害に備えるため、定期的にバックアップを行うように設定することを推奨します。バックアップの詳細については、[バックアップと復元](backup-and-restore/)を参照してください。
+DBインスタンスのデータベースを定期的にバックアップするように設定したり、コンソールから好きなタイミングでバックアップを作成できます。バックアップが実行されている間、パフォーマンスの低下が発生する場合があります。サービスに影響を与えないように、サービスの負荷が少ない時間にバックアップすることを推奨します。バックアップによる性能低下を望まない場合は、高可用性構成を使用するか、以前バックアップ以降のデータの増分のみをバックアップすることができ、Read Replicaでバックアップを実行できます。バックアップファイルは内部バックアップストレージに保存され、バックアップ容量に応じて課金されます。必要に応じて、NHN CloudのObject Storageにエクスポートできます。予期せぬ障害に備えるため、定期的にバックアップを行うように設定することを推奨します。バックアップの詳細については、[バックアップと復元](backup-and-restore/)を参照してください。
 
 <a id="maintenance"></a>
 ### メンテナンス { #maintenance }
@@ -721,14 +723,14 @@ DBインスタンスに適用されたパラメータと、関連付けられた
 フェイルオーバーを利用した再起動を使用しない場合は、PrimaryとStandbyに変更事項を順次適用した後、DBインスタンスを再起動します。詳細は高可用性DBインスタンスの[手動フェイルオーバー項目](db-instance/#manual-failover)を参照してください。
 
 <a id="recover-from-backup-in-object-storage"></a>
-## オブジェクトストレージにあるバックアップで復元 { #recover-from-backup-in-object-storage }
+## Object Storageにあるバックアップで復元 { #recover-from-backup-in-object-storage }
 
-外部{{engine.pascalCase}}のバックアップファイルをNHN Cloudのオブジェクトストレージにアップロードして、RDS for {{engine.pascalCase}}のDBインスタンスに復元することができます。詳細は、[外部{{engine.pascalCase}}バックアップを利用した復元](backup-and-restore/#restore-from-external)を参照してください。
+外部{{engine.pascalCase}}のバックアップファイルをNHN CloudのObject StorageにアップロードしてRDS for {{engine.pascalCase}}のDBインスタンスに復元することができます。詳細は、[外部{{engine.pascalCase}}バックアップを利用した復元](backup-and-restore/#restore-from-external)を参照してください。
 
 <a id="export-backup-files-to-the-object-storage-after-backup"></a>
-## バックアップ後、オブジェクトストレージにバックアップファイルをエクスポート { #export-backup-files-to-the-object-storage-after-backup }
+## バックアップ後、Object Storageにバックアップファイルをエクスポート { #export-backup-files-to-the-object-storage-after-backup }
 
-バックアップ後、バックアップファイルをオブジェクトストレージにエクスポートできます。詳細については、[バックアップエクスポート](backup-and-restore/#export)項目を参照してください。
+バックアップ後、バックアップファイルをObject Storageにエクスポートできます。詳細については、[バックアップエクスポート](backup-and-restore/#export)項目を参照してください。
 
 <a id="read-replica"></a>
 ## Read Replica { #read-replica }
