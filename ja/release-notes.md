@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=128be9dd92f4 -->
+<!-- pre-align:aligned sig=8aaf9aa29550 -->
 
 <a id="data-analytics-dataflow-release-notes"></a>
 ## Data & Analytics > DataFlow > リリースノート { #data-analytics-dataflow-release-notes }
