@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=fe1bf114a926 -->
+<!-- pre-align:aligned sig=a88c32c1d251 -->
 
 # CLIを利用した保護作業
 
