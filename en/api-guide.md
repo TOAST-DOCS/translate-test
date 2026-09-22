@@ -119,11 +119,9 @@ $[ ' ' * indent ]$  "10.0.1.0/24"
 $[ ' ' * indent ]$],
 $[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
 $[ ' ' * indent ]$"description": "NAS for Testing",
-{%- if encryption %}
 $[ ' ' * indent ]$"encryption": {
-$[ ' ' * indent ]$  "enabled": false
+$[ ' ' * indent ]$  "enabled": $[ 'true' if encryption else 'false' ]$
 $[ ' ' * indent ]$},
-{%- endif %}
 $[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
 $[ ' ' * indent ]$"interfaces": [
 $[ ' ' * indent ]$  {
@@ -759,14 +757,18 @@ This API does not require a request body.
 | header | Body | Object | Header objects |
 | usage | Body | Object | Volume usage object |
 | usage.snapshotReserveGb | Body | Integer | The amount of space reserved for snapshots on the volume |
+{%- if release_2026_05 %}
 | usage.snapshotUsedGb | Body | Integer | Snapshot usage |
-| usage.snapshotUsedGbInReservedSpace | Body | Integer | Snapshot usage within the reserved capacity |
-| usage.snapshotUsedGbInUserSpace | Body | Integer | Snapshot usage exceeding the reserved capacity |
+| usage.snapshotUsedGbInReservedSpace | Body | Integer | Snapshot usage within reserved capacity |
+| usage.snapshotUsedGbInUserSpace | Body | Integer | Snapshot usage exceeding reserved capacity |
+{%- endif %}
 | usage.usedGb | Body | Integer | Volume usage |
-| usage.userDataGb | Body | Integer | The size of data actually written by the user |
+{%- if release_2026_05 %}
+| usage.userDataGb | Body | Integer | Size of data actually written by the user |
+{%- endif %}
 
 <details>
-  <summary>Example response</summary>
+  <summary>Response Example</summary>
 
 ```json
 {
@@ -776,12 +778,17 @@ This API does not require a request body.
     "resultMessage": "Success"
   },
   "usage": {
+{%- if release_2026_05 %}
     "snapshotReserveGb": 20,
     "snapshotUsedGb": 11,
     "snapshotUsedGbInReservedSpace": 11,
     "snapshotUsedGbInUserSpace": 0,
     "usedGb": 152,
     "userDataGb": 152
+{%- else %}
+    "snapshotReserveGb": 30,
+    "usedGb": 2
+{%- endif %}
   }
 }
 ```
