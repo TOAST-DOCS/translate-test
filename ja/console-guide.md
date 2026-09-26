@@ -79,8 +79,8 @@ NHN Cloudサービスを安定的かつ効率的に利用するために必要�
 
 <a id="organization-governance-setting-ip-acl-setting"></a>
 #### IP ACL設定
-IP ACL設定に登録されたIPからのみNHN Cloudサービスを利用できます。
-コンソール接続及びUser Access Keyトークン認証方式のPublic API呼び出し時にIP ACLが適用されます。 [認証方式サポート状況の表示](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/supported-authentication-methods/)
+設IP ACL設定に登録されたIPからのみNHN Cloudサービスを利用できます。
+コンソール接続及びUser Access Keyトークン認証方式のPublic API呼び出し時にIP ACLが適用されます。 [認証方式サポート状況の表示](/Support-Status/ja/supported-authentication-methods/)
 Dooray!サービスは各サービスコンソール画面からIP ACLを設定できます。
 
 1. **コンソール**に移動した後、設定したい組織の**組織管理**ページに接続します。
@@ -556,17 +556,6 @@ NHN Cloud運営者が障害対応など運営上の目的で顧客のリソー�
 | Speech to Text | ADMIN | Speech to Textサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | AI EasyMaker | ADMIN | AI EasyMakerサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | NHN Cloud Foundry | ADMIN | NHN Cloud Foundry サービスの Create（作成）、Read（読み取り）、Update（更新）、Delete（削除）  |
-| IAP | ADMIN | IAPサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Mobile Device Info | ADMIN | Mobile Device Infoサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Log & Crash Search | ADMIN | Log & Crash Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| DataFlow | ADMIN | DataFlowサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| DataQuery | ADMIN | DataQueryサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Data Lake Storage | ADMIN | Data Lake StorageサービスCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
-| Data Lake Storage | OPERATOR | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)。バケット管理Create(作成)、Update(更新)、Delete(削除)  |
-| Data Lake Storage | VIEWER | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)  |
-| EasyQueue | ADMIN | EasyQueueサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)、メッセージの送受信  |
-| EasyQueue | CLIENT | EasyQueueサービスの参照(Read)、メッセージの送受信  |
-| EasyQueue | VIEWER | EasyQueueサービス Read(読み取り)  |
 | ROLE | ADMIN | ROLEサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | API Gateway | ADMIN | API Gatewayサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | RTCS | ADMIN | RTCSサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
