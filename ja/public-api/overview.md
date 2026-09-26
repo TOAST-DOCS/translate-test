@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=65978a09ad39 -->
 
 # Public API 概要
@@ -11,13 +13,13 @@ NHN CloudのPublic APIは、NHN Cloudのサービスとリソースを外部シ�
 
 !!! tip "参考"
     * サービスごとにAPIの動作方式やレスポンス形式が異なるため、詳細は各サービスのAPIガイドを参照してください。
-    * フレームワークAPI、パートナー管理API、各サービスごとにサポートするAPI認証方式が異なり、一部の認証方式は特定のサービスでのみサポートされます。各Public APIでサポートされる認証方式は[認証方式のサポート状況](https://docs.nhncloud.com/ja/nhncloud/ja/public-api/supported-authentication-methods)で確認できます。
+    * フレームワークAPI、パートナー管理API、各サービスごとにサポートするAPI認証方式が異なり、一部の認証方式は特定のサービスでのみサポートされます。各Public APIでサポートされる認証方式は[認証方式のサポート状況](/Support-Status/ja/supported-authentication-methods/)で確認できます。
 
 <a id="getting-started-with-public-api"></a>
 ## Public APIを始める { #getting-started-with-public-api }
 
 * [認証方式概要](https://docs.nhncloud.com/ja/nhncloud/ja/public-api/auth-method-overview)
-* [認証方式のサポート状況](https://docs.nhncloud.com/ja/nhncloud/ja/public-api/supported-authentication-methods)
+* [認証方式のサポート状況](/Support-Status/ja/supported-authentication-methods/)
 * [サービスAPI](https://docs.nhncloud.com/ja/nhncloud/ja/public-api/service-api)
 * [フレームワークAPI](https://docs.nhncloud.com/ja/nhncloud/ja/public-api/framework-api/)
 * [パートナー管理APIガイド](https://docs.nhncloud.com/ja/nhncloud/ja/public-api/partner-api/)
