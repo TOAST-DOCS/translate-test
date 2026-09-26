@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=13fa2e880aa4 -->
 
 <a id="ai.easymaker.console.guide"></a>
@@ -1071,7 +1073,7 @@ AI EasyMakerの学習結果のモデルまたは外部のモデルをアーテ�
     3. エンドポイント作成時に入力したAPI Gatewayリソースパス下位にリソースを追加しないようにします。追加したリソースはエンドポイントステージ追加/変更作業時に削除される場合があります。
     4. API Gatewayのステージ設定でAPI Gatewayリソースパスに設定された**バックエンドエンドポイントURL再定義**を無効にするか、URLを変更しないようにします。変更すると、エンドポイントの推論API呼び出しに失敗する可能性があります。
         上記の注意事項以外の設定は、必要に応じてAPI Gatewayで提供する機能を利用できます。
-        API Gatewayの詳細については[API Gatewayコンソールガイド](https://docs.nhncloud.com/ja/Application%20Service/API%20Gateway/ja/console-guide/)を参照してください。
+        詳細な API Gatewayの使用方法については[API Gatewayコンソールガイド](https://docs.{% if "gov" in build_flags %}gov-{% endif %}nhncloud.com/ja/Application%20Service/API%20Gateway/ja/console-guide{% if "gov" in build_flags %}-gov{% endif %}/)を参照してください。
 
 !!! tip "参考"
     一時的な問題でAI EasyMakerエンドポイントのステージ設定がAPI Gatewayステージに配布されていない場合、配布失敗状態と表示されます。
