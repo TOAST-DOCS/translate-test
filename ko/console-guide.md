@@ -1,25 +1,36 @@
-## Storage > Storage Gateway > 콘솔 사용 가이드
-## 게이트웨이(Gateway)
-### 게이트웨이 생성
+<a id="storage-storage-gateway-console-user-guide"></a>
+## Storage > Storage Gateway > 콘솔 사용 가이드 { #storage-storage-gateway-console-user-guide }
+
+이 문서는 NHN Cloud 콘솔에서 Storage Gateway의 게이트웨이와 공유를 관리하고 연결하는 방법을 설명합니다.
+
+<a id="gateway"></a>
+## 게이트웨이(Gateway) { #gateway }
+<a id="create-gateway"></a>
+### 게이트웨이 생성 { #create-gateway }
 새로운 스토리지 게이트웨이를 생성합니다. 게이트웨이는 사용자 프로젝트에 인스턴스를 생성해 구성합니다. 
 
+<a id="create-gateway-gateway-information"></a>
 #### 게이트웨이 정보
 스토리지 게이트웨이의 이름, 설명, 연결할 스토리지 유형을 설정합니다.
 
-> [참고]
-> 2025년 3월 현재 Object Storage를 연결할 수 있습니다.
+!!! tip "알아두기"
+    2025년 3월 현재 Object Storage를 연결할 수 있습니다.
 
+<a id="create-gateway-cache-storage"></a>
 #### 캐시 스토리지
 스토리지 게이트웨이의 디스크 캐시로 사용할 스토리지의 크기를 설정합니다. SSD 타입으로 제공되며 최소 50GB, 최대 2,048GB까지 설정할 수 있습니다.
 
+<a id="create-gateway-network"></a>
 #### 네트워크
 스토리지 게이트웨이에 사용할 VPC와 서브넷을 선택합니다. 
 게이트웨이를 구성하는 인스턴스에 선택한 VPC의 서브넷과 연결되는 네트워크 인터페이스가 만들어집니다. 네트워크 자원의 생성과 관리에 대한 자세한 내용은 [VPC 사용자 가이드](/Network/VPC/ko/overview/)를 참조하세요.
 서비스 게이트웨이는 Object Storage와 같이 사용자 VPC 외부의 스토리지를 인터넷 경유 없이 연결하기 위해 사용합니다. 서비스 게이트웨이에 대한 자세한 내용은 [Service Gateway 사용 가이드](/Network/Service%20Gateway/ko/overview/)를 참조하세요.
 
+<a id="create-gateway-floating-ip"></a>
 #### 플로팅 IP
 플로팅 IP 사용 여부를 설정합니다. 게이트웨이에 플로팅 IP를 사용하면 인터넷에서 게이트웨이에 접속할 수 있습니다. 자세한 내용은 [Floating IP 사용 가이드](/Network/Floating%20IP/ko/overview/)를 참조하세요.
 
+<a id="create-gateway-security-groups"></a>
 #### 보안 그룹
 스토리지 게이트웨이의 인스턴스가 속할 보안 그룹을 지정합니다. 선택한 VPC 네트워크 외부에서 게이트웨이를 통해 NHN Cloud 스토리지에 마운트하려면 보안 그룹에 다음과 같은 포트에 대한 규칙이 명시되어 있어야 합니다. 
 
@@ -31,55 +42,64 @@
 
 원격지 IP는 CIDR 형식의 대역으로 설정할 수 있습니다. 
 
-> [주의]
-> 원격지 IP를 `0.0.0.0/0`과 같이 넓은 대역으로 설정하면 보안에 취약해질 수 있습니다. 최소한의 범위로 설정해 주세요.
+!!! danger "주의"
+    원격지 IP를 `0.0.0.0/0`과 같이 넓은 대역으로 설정하면 보안에 취약해질 수 있습니다. 최소한의 범위로 설정해 주세요.
 
 자세한 내용은 [Security Groups 사용 가이드](/Network/Security%20Groups/ko/overview/)를 참조하세요.
 
+<a id="create-gateway-redundancy"></a>
 #### 이중화
 스토리지 게이트웨이 이중화 여부를 선택합니다. 
 이중화를 사용하면 2개의 인스턴스를 생성해 클러스터를 구성합니다. 클러스터를 구성하는 하나의 인스턴스에 장애가 발생하더라도 다른 인스턴스를 통해 중단 없이 게이트웨이를 사용할 수 있습니다. 장애가 발생하여 서비스에서 제외된 인스턴스는 오토 힐링 기능을 통해 자동으로 복구되어 클러스터에 투입됩니다.
 
-### 게이트웨이 시작
+<a id="start-gateway"></a>
+### 게이트웨이 시작 { #start-gateway }
 중지된 스토리지 게이트웨이를 시작합니다.
 
-### 게이트웨이 중지 
+<a id="stop-gateway"></a>
+### 게이트웨이 중지 { #stop-gateway }
 스토리지 게이트웨이를 중지합니다. 게이트웨이를 중지하면 클러스터를 구성하는 인스턴스가 중지되며 스토리지와 연결할 수 없습니다.
 
-> [주의]
-> 스토리지 게이트웨이를 중지하기 전, NHN Cloud 스토리지를 연결하여 사용 중인 시스템에서 언마운트해야 합니다. 마운트 상태에서 게이트웨이를 중지하면 사용자 시스템에 문제가 발생할 수 있습니다. 
+!!! danger "주의"
+    스토리지 게이트웨이를 중지하기 전, NHN Cloud 스토리지를 연결하여 사용 중인 시스템에서 언마운트해야 합니다. 마운트 상태에서 게이트웨이를 중지하면 사용자 시스템에 문제가 발생할 수 있습니다.
 
-### 게이트웨이 삭제
+<a id="delete-gateway"></a>
+### 게이트웨이 삭제 { #delete-gateway }
 스토리지 게이트웨이를 삭제합니다. 클러스터를 구성하는 모든 인스턴스와 자원이 삭제됩니다. 게이트웨이에 연결되어 있던 NHN Cloud 스토리지는 삭제되지 않습니다. 
 
-> [참고]
-> 게이트웨이를 삭제하려면 먼저 게이트웨이에 생성한 모든 공유를 삭제해야 합니다.
+!!! tip "알아두기"
+    게이트웨이를 삭제하려면 먼저 게이트웨이에 생성한 모든 공유를 삭제해야 합니다.
 
-## 공유(Share)
-### 공유 생성
+<a id="share"></a>
+## 공유(Share) { #share }
+<a id="create-share"></a>
+### 공유 생성 { #create-share }
 공유를 생성합니다. 공유는 NHN Cloud 스토리지를 연결할 설정입니다. 공유를 생성하면 마운트 연결 정보를 얻을 수 있고, 이 연결 정보를 이용해 사용자 시스템에 NHN Cloud 스토리지를 마운트하여 사용할 수 있습니다.
 
+<a id="create-share-share-information"></a>
 #### 공유 정보
 마운트 연결 정보의 경로에 사용할 공유 이름과 프로토콜을 설정합니다.
 
-> [참고]
-> 2025년 3월 현재 NFS 프로토콜을 사용할 수 있습니다.
+!!! tip "알아두기"
+    2025년 3월 현재 NFS 프로토콜을 사용할 수 있습니다.
 
+<a id="create-share-storage-information-for-connection"></a>
 #### 연결 스토리지 정보
 연결할 스토리지 정보를 설정합니다. 
 Object Storage는 연결할 컨테이너 이름과 S3 API 자격 증명의 Access Key가 필요합니다. 연결할 컨테이너의 이름은 Amazon S3의 버킷 명명 규칙을 따라야 합니다. S3 API 자격 증명은 Object Storage 콘솔 또는 API를 이용해 발급할 수 있습니다. 자세한 내용은 **Object Storage Amazon S3 호환 API 가이드**의 [버킷 생성](/Storage/Object%20Storage/ko/s3-api-guide/#bucket) 섹션과 [S3 API 자격 증명](/Storage/Object%20Storage/ko/s3-api-guide/#s3-api) 섹션을 참조하세요.
 
-> [참고]
-> Object Storage 컨테이너를 연결하는 공유를 생성하면 Object Storage에 `{컨테이너명}+segments` 컨테이너가 자동으로 생성됩니다. 게이트웨이를 통해 25MB를 초과하는 파일을 저장하면 연결된 컨테이너에 멀티 파트로 업로드되며, 멀티 파트 오브젝트의 세그먼트 오브젝트가 `{컨테이너명}+segments` 컨테이너에 저장됩니다. 
+!!! tip "알아두기"
+    Object Storage 컨테이너를 연결하는 공유를 생성하면 Object Storage에 `{컨테이너명}+segments` 컨테이너가 자동으로 생성됩니다. 게이트웨이를 통해 25MB를 초과하는 파일을 저장하면 연결된 컨테이너에 멀티 파트로 업로드되며, 멀티 파트 오브젝트의 세그먼트 오브젝트가 `{컨테이너명}+segments` 컨테이너에 저장됩니다.
 
 <!-- 개행을 위한 주석 -->
 
-> [주의]
-> 연결할 Object Storage의 컨테이너에 IP ACL을 설정하려면 반드시 Service Gateway에 대한 **read/write 허용**을 추가해야 합니다.
-> Object Storage의 S3 API 자격 증명을 발급하는 사용자는 연결할 컨테이너에 대한 **read/write** 권한이 필요합니다.
-> 스토리지 게이트웨이를 통해 Object Storage의 컨테이너를 연결해 사용하는 동안 컨테이너를 삭제하거나 S3 API 자격 증명을 삭제한다면 사용자 시스템에 문제가 생길 수 있습니다. 삭제하지 않도록 주의해야 합니다.
-> 스토리지 게이트웨이를 통해 Object Storage의 컨테이너를 연결해 사용하는 동안 `{컨테이너명}+segments` 컨테이너의 오브젝트를 삭제하면 저장한 파일에 접근할 수 없습니다. 삭제하지 않도록 주의해야 합니다.
+!!! danger "주의"
+    연결할 Object Storage의 컨테이너에 IP ACL을 설정하려면 반드시 Service Gateway에 대한 **read/write 허용**을 추가해야 합니다.
+    Object Storage의 S3 API 자격 증명을 발급하는 사용자는 연결할 컨테이너에 대한 **read/write** 권한이 필요합니다.
+    스토리지 게이트웨이를 통해 Object Storage의 컨테이너를 연결해 사용하는 동안 컨테이너를 삭제하거나 S3 API 자격 증명을 삭제한다면 사용자 시스템에 문제가 생길 수 있습니다. 삭제하지 않도록 주의해야 합니다.
+    스토리지 게이트웨이를 통해 Object Storage의 컨테이너를 연결해 사용하는 동안 `{컨테이너명}+segments` 컨테이너의 오브젝트를 삭제하면 저장한 파일에 접근할 수 없습니다. 삭제하지 않도록 주의해야 합니다.
 
+<a id="create-share-nfs-permissions-settings"></a>
 #### NFS 권한 설정
 NFS 프로토콜을 통해 연결할 클라이언트의 권한을 설정합니다. 
 
@@ -96,37 +116,46 @@ $ id
 uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu)
 ```
 
+<a id="create-share-access-control-acl"></a>
 #### 접근 제어(ACL)
 게이트웨이를 통해 NHN Cloud 스토리지에 접근할 수 있는 클라이언트의 IP 또는 IP 대역을 CIDR 형식으로 입력합니다.
 
+<a id="create-share-cache-settings"></a>
 #### 캐시 설정
 메모리 캐시 유효 시간을 설정합니다. 설정된 유효 시간 동안 캐시가 유지됩니다.
 
-### 공유 삭제
+<a id="delete-share"></a>
+### 공유 삭제 { #delete-share }
 공유를 삭제합니다. 
 
-> [주의]
-> 공유를 삭제하기 전에 NHN Cloud 스토리지를 마운트하여 사용 중인 시스템에서 언마운트해야 합니다. 마운트 상태에서 공유를 삭제하면 사용자 시스템에 문제가 생길 수 있습니다. 
+!!! danger "주의"
+    공유를 삭제하기 전에 NHN Cloud 스토리지를 마운트하여 사용 중인 시스템에서 언마운트해야 합니다. 마운트 상태에서 공유를 삭제하면 사용자 시스템에 문제가 생길 수 있습니다.
 
-### 캐시 즉시 비우기
+<a id="immediately-empty-cache"></a>
+### 캐시 즉시 비우기 { #immediately-empty-cache }
 디스크 캐시 영역에 저장된 데이터를 즉시 삭제합니다. 
 
-### Access Key 변경
+<a id="change-access-key"></a>
+### Access Key 변경 { #change-access-key }
 Object Storage 유형 게이트웨이의 공유 생성 시 설정한 Access Key를 변경합니다.
 
-> [주의]
-> Access Key를 변경하기 전에 NHN Cloud 스토리지를 마운트하여 사용 중인 시스템에서 언마운트해야 합니다. 마운트 상태에서 Access Key를 변경하면 사용자 시스템에 문제가 생길 수 있습니다. 
+!!! danger "주의"
+    Access Key를 변경하기 전에 NHN Cloud 스토리지를 마운트하여 사용 중인 시스템에서 언마운트해야 합니다. 마운트 상태에서 Access Key를 변경하면 사용자 시스템에 문제가 생길 수 있습니다.
 
-### NFS 권한 변경
+<a id="change-nfs-permissions"></a>
+### NFS 권한 변경 { #change-nfs-permissions }
 NFS 프로토콜을 통해 연결할 클라이언트의 권한을 변경합니다.
 
-### 접근 제어(ACL) 변경
+<a id="change-access-control-acl"></a>
+### 접근 제어(ACL) 변경 { #change-access-control-acl }
 게이트웨이를 통해 NHN Cloud 스토리지에 접근할 수 있는 클라이언트의 IP 또는 IP 대역을 변경합니다.
 
-## NFS 연결
+<a id="connect-nfs"></a>
+## NFS 연결 { #connect-nfs }
 NFS를 사용하려면 다음과 같이 NFS 패키지를 설치하고 rpcbind 서비스를 실행해야 합니다.
 
-### NFS 패키지 설치
+<a id="install-nfs-package"></a>
+### NFS 패키지 설치 { #install-nfs-package }
 * **Debian, Ubuntu**
 ```
 sudo apt-get install nfs-common rpcbind
@@ -137,12 +166,14 @@ sudo apt-get install nfs-common rpcbind
 sudo yum install nfs-utils rpcbind
 ```
 
-### rpcbind 서비스 실행
+<a id="run-rpcbind-service"></a>
+### rpcbind 서비스 실행 { #run-rpcbind-service }
 ```
 sudo service rpcbind start
 ```
 
-### 공유 마운트
+<a id="mount-share"></a>
+### 공유 마운트 { #mount-share }
 생성한 공유의 마운트 연결 정보와 mount 명령을 이용하여 다음과 같이 NHN Cloud 스토리지를 사용자 시스템에 마운트할 수 있습니다.
 
 ```
@@ -162,15 +193,17 @@ sudo mount -t nfs -o vers=3 {마운트 연결 정보} {마운트할 경로}
   예: /mnt/data
 
 
-## POSIX API
+<a id="posix-api"></a>
+## POSIX API { #posix-api }
 Object Storage 유형의 게이트웨이는 POSIX API 일부만 지원합니다.
 
-### 지원하는 API
+<a id="supported-apis"></a>
+### 지원하는 API { #supported-apis }
 ```
 read, write, readdir, truncate, fallocate, fsync
 ```
 
-> [주의]
-> rename, hardlink, symlink는 사용할 수 없습니다. 동작하지 않거나 Object Storage에 의도치 않은 오브젝트가 생성될 수 있습니다.
-> rsync, vi와 같은 임시 파일에 저장한 뒤 이름을 변경하는 도구는 사용하지 않는 것을 권장합니다.
+!!! danger "주의"
+    rename, hardlink, symlink는 사용할 수 없습니다. 동작하지 않거나 Object Storage에 의도치 않은 오브젝트가 생성될 수 있습니다.
+    rsync, vi와 같은 임시 파일에 저장한 뒤 이름을 변경하는 도구는 사용하지 않는 것을 권장합니다.
 
