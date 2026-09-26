@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <a id="friendtalkupgrade-api-guide"></a>
 
 ## Notification > KakaoTalk Bizmessage > ブランドメッセージ > API v1.0 Guide { #friendtalkupgrade-api-guide }
@@ -1983,12 +1985,7 @@ Content-Type: application/json;charset=UTF-8
 curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/brand-message/v1.0/appkeys/{appKey}/message-results?startUpdateDate=2026-06-01%2000:00&endUpdateDate=2026-06-30%2023:59"
 ```
 
-<a id="message-results"></a>
-
-## メッセージ送信取消 { #cancel-message-sending }
-
 <a id="requested-7"></a>
-
 #### リクエスト
 
 [URL]
@@ -2622,11 +2619,11 @@ Content-Type: application/json;charset=UTF-8
 * クーポンタイトルに置換値を適用する場合は、次の固定置換値を使用する必要があります。
 
 ```
-- #{할인금액}원 할인 쿠폰(#{할인금액} 범위는 1 ~ 99,999,999)
-- #{할인율}% 할인 쿠폰(#{할인율} 범위는 1 ~ 100)
-- 배송비 할인 쿠폰
-- #{상품명} 무료 쿠폰(#{상품명}은 최대 7자)
-- #{상품명} UP 쿠폰(#{상품명}은 최대 7자)
+- #{할인금액}ウォン割引クーポン(#{할인금액}の範囲は2〜99,999,999)
+- #{할인율}%割引クーポン(#{할인율}の範囲は2〜100)
+- 送料割引クーポン
+- #{상품명}無料クーポン(#{상품명}は最大8文字)
+- #{상품명} UPクーポン(#{상품명}は最大7文字)
 ```
 
 * コマースでは、商品タイトルを除く regularPrice、discountPrice、discountRate、discountFixed フィールドにはユーザーが置換値を指定できません。
