@@ -1,7 +1,9 @@
+<!-- machine_translated: true -->
+
 <a id="storage-storage-gateway-console-user-guide"></a>
 ## Storage > Storage Gateway > Console User Guide { #storage-storage-gateway-console-user-guide }
 
-This document describes how to manage and connect gateways and shares in Storage Gateway from the NHN Cloud console.
+This document describes how to manage and connect gateways and shares of Storage Gateway in the NHN Cloud console.
 
 <a id="gateway"></a>
 ## Gateway { #gateway }
@@ -65,7 +67,7 @@ Stop the storage gateway. When you stop the gateway, the instances that make up 
 
 <a id="delete-gateway"></a>
 ### Delete Gateway { #delete-gateway }
-Delete the storage gateway. All instances and resources that make up the cluster are deleted. NHN Cloud storage that was connected to the gateway is not deleted. 
+Delete the storage gateway. All instances and resources that make up the cluster are deleted. NHN Cloud storage that was connected to the gateway is not deleted.
 
 !!! tip "Note"
     To delete a gateway, you must first delete all shares you created on the gateway.
@@ -89,7 +91,7 @@ Set the information of storage to connect.
 Object Storage requires the name of the container to connect to and the Access Key from your S3 API credentials. The name of the container to connect to must follow Amazon S3's bucket naming conventions. S3 API credentials can be issued using the Object Storage console or API. For more information, see the [Create Bucket](/Storage/Object%20Storage/en/s3-api-guide/#bucket) section and the [S3 API Credentials](/Storage/Object%20Storage/en/s3-api-guide/#s3-api) section of **the Object Storage Amazon S3-compatible API guide**.
 
 !!! tip "Note"
-    When you create a share that connects Object Storage containers, the `{container name}+segments` container is automatically created in Object Storage. When you save a file that is larger than 25 MB through the gateway, it is uploaded as a multipart to the connected container, and the segment objects of the multipart object are stored in the `{containername}+segments` container.
+    When you create a share that connects Object Storage containers, the `{container name}+segments` container is automatically created in Object Storage. When you save a file that is larger than 25 MB through the gateway, it is uploaded as a multipart to the connected container, and the segment objects of the multipart object are stored in the `{container name}+segments` container.
 
 <!-- 개행을 위한 주석 -->
 
@@ -126,7 +128,7 @@ Set the memory cache validity time. The cache is retained for the set validity t
 
 <a id="delete-share"></a>
 ### Delete Share { #delete-share }
-Delete a share. 
+Deletes a share.
 
 !!! danger "Caution"
     Before deleting a share, you must mount the NHN Cloud storage and unmount it from your system. Deleting a share while it is mounted may cause problems on your system.
