@@ -1,0 +1,248 @@
+<!-- pre-align:aligned sig=c01d6c6c712e -->
+
+<a id="database-rds-for-enginepascalcase-db-engine"></a>
+## Database > RDS for {{engine.pascalCase}} > DBエンジン { #database-rds-for-enginepascalcase-db-engine }
+
+<a id="db-engine"></a>
+## DBエンジン { #db-engine }
+
+{{engine.pascalCase}}でバージョン番号はバージョン= `X.Y.Z`で構成されます。NHN CloudのRDS for {{engine.pascalCase}}では、`X.Y`の場合はメジャーバージョンを、`Z`はマイナーバージョンを表します。
+
+<a id="db-engine-version-provided-by-rds"></a>
+### RDSが提供するDBエンジンのバージョン { #db-engine-version-provided-by-rds }
+
+以下に記載されたバージョンを使用できます。新規DBインスタンスの作成及びRead Replicaの追加は、メジャーバージョンごとに上位7つのマイナーバージョンまでのみサポートします。
+{{#if (eq engine.lowerCase "mysql")}}
+MySQL 8.0.34未満のバージョンは、MySQL LTSサポートポリシーに従いサポートが終了しました。該当バージョンのDBインスタンスは最新バージョンにアップグレードすることを推奨します。
+
+- 参考: [https://blogs.oracle.com/mysql/introducing-mysql-innovation-and-longterm-support-lts-versions](https://blogs.oracle.com/mysql/introducing-mysql-innovation-and-longterm-support-lts-versions)
+
+| バージョン                | 備考                                    |
+|----------------------|---------------------------------------|
+| <strong>8.4</strong> |                                       |
+| MySQL 8.4.9          |                                       |
+| MySQL 8.4.8          |                                       |
+| MySQL 8.4.7          |                                       |
+| MySQL 8.4.6          |                                       |
+| MySQL 8.4.5          |                                       |
+| <strong>8.0</strong> |                                       |
+| MySQL 8.0.46         |                                       |
+| MySQL 8.0.45         |                                       |
+| MySQL 8.0.44         |                                       |
+| MySQL 8.0.43         |                                       |
+| MySQL 8.0.42         |                                       |
+| MySQL 8.0.41         |                                       |
+| MySQL 8.0.40         |                                       |
+| MySQL 8.0.36         | 新規に作成したりRead Replicaを追加することはできません          |
+| MySQL 8.0.35         | 新規に作成したりRead Replicaを追加することはできません          |
+| MySQL 8.0.34         | 新規に作成したりRead Replicaを追加することはできません          | 
+| MySQL 8.0.33         | 新規に作成したりRead Replicaを追加することはできません          | 
+| MySQL 8.0.32         | 新規に作成したりRead Replicaを追加することはできません          | 
+| MySQL 8.0.28         | 新規に作成したりRead Replicaを追加することはできません          | 
+| MySQL 8.0.23         | 新規に作成したりRead Replicaを追加することはできません          |
+| MySQL 8.0.18         | 新規に作成したりRead Replicaを追加することはできません          |
+| <strong>5.7</strong> |                                       |
+| MySQL 5.7.37         |                                       |
+| MySQL 5.7.33         | 外部のバックアップファイルからDBインスタンスを復元することはできません。 |
+{{#if (eq env "public")}}
+| MySQL 5.7.26         |                                       |
+| MySQL 5.7.19         |                                       |
+| MySQL 5.7.15         |                                       |
+| <strong>5.6</strong> |                                       |
+| MySQL 5.6.33         | サポートが終了したバージョンです。                     |
+{{/if}}
+{{/if}}
+{{#if (eq engine.lowerCase "mariadb")}}
+
+| バージョン                  | 備考                           |
+|------------------------|------------------------------|
+| <strong>11.8</strong>  |                              |
+| MariaDB 11.8.8         |                              |
+| MariaDB 11.8.6         |                              |
+| <strong>11.4</strong>  |                              |
+| MariaDB 11.4.14        |                              |
+| MariaDB 11.4.10        |                              |
+| MariaDB 11.4.7         |                              |
+| <strong>10.11</strong> |                              |
+| MariaDB 10.11.18       |                              |
+| MariaDB 10.11.16       |                              |
+| MariaDB 10.11.13       |                              |
+| MariaDB 10.11.8        |                              |
+| MariaDB 10.11.7        |                              |
+| <strong>10.6</strong>  |                              |
+| MariaDB 10.6.25        | 新規に作成したりRead Replicaを追加することはできません |
+| MariaDB 10.6.22        | 新規に作成したりRead Replicaを追加することはできません |
+| MariaDB 10.6.16        | 新規に作成したりRead Replicaを追加することはできません |
+| MariaDB 10.6.12        | 新規に作成したりRead Replicaを追加することはできません |
+| MariaDB 10.6.11        | 新規に作成したりRead Replicaを追加することはできません |
+| <strong>10.3</strong>  |                              |
+| MariaDB 10.3.30        | 新規に作成したりRead Replicaを追加することはできません |
+{{/if}}
+
+<a id="manage-db-engine-version"></a>
+### DBエンジンバージョン管理 { #manage-db-engine-version }
+DBインスタンスの作成後、DBインスタンスの修正と一緒にDBエンジンのバージョンを変更できます。
+
+!!! danger "注意"
+    DBバージョン変更しようとする場合、アップグレードのみサポートし、ダウングレードはサポートしません。
+
+DBエンジンのバージョンアップグレードが行われる場合、メジャーバージョン番号のみ変更される場合はメジャーバージョンアップグレード、マイナーバージョン番号のみ変更される場合はマイナーバージョンアップグレードとみなします。
+DBエンジンのメジャーバージョンのアップグレードを試みる場合は、次のメジャーバージョンのDBエンジンのバージョンに対してアップグレードが可能です。
+
+{{#if (eq engine.lowerCase "mysql")}}
+<a id="manage-db-engine-version-pre-inspection-for-upgrading-from-mysql-57-to-mysql-80"></a>
+#### MySQL 5.7からMySQL 8.0へのアップグレードのための事前点検
+
+MySQL 8.0とMySQL 5.7は相当数の非互換性要素が含まれています。したがって、`5.7`から`8.0`バージョンにメジャーバージョンDBエンジンのアップグレードを行う場合、問題が発生する可能性があります。このため、問題発生が予想される一部の項目に対する事前点検が必要です。以下は事前点検が必要な項目です。
+
+- `mysqlcheck`を通じてバージョンアップグレードの欠格事項がないこと。
+- `INFORMATION_SCHEMA.VIEWS`で確認した時、カラム名が64文字を超える内容がないこと。
+- データ辞書で使用されるテーブルと同じ名称のテーブルがないこと。
+- 長さが255文字または1020バイトを超える個別のENUM、SET列要素があるテーブル、ストアドプロシージャがないこと。
+- 外部キー制約の名前が64文字を超えるテーブルがないこと。
+- `lower_case_table_names`の設定を1に変更する場合は、スキーマ名が小文字であることを確認してください。
+- `lower_case_table_names`の設定を1に変更する場合、テーブル名が小文字であることを確認します。
+- 特定のパーティションチェックで抽出されるパーティションテーブルがないこと。
+- InnoDBシステムテーブルスペースと一般テーブルスペースを含む共有テーブルスペースに常駐するテーブルパーティションがないこと。
+
+DBバージョンアップグレードの事前点検については、次の方法で結果の確認が可能です。
+- `5.7から8.0にアップグレードするためのチェックリストの詳細`({{url.cdn}}/23.08.17/Check_5.7_to_8.0_ja.xlsx)を活用して直接確認
+- コンソールでDBバージョンをアップグレードする場合は、`DBエンジンアップグレード事前確認`ボタンを利用して結果を確認
+- DBバージョンアップグレードの試行による結果の確認
+
+コンソールで`DBエンジンアップグレード事前確認`による結果および、DBバージョンアップグレードの試行による結果は、個別DBインスタンスのログタブに作成された`db_version_upgrade_compatibility.log`を通じて詳細を確認できます。詳細項目はそれぞれ次の意味を持ちます。
+- `CHECK_BY_MYSQL_CHECK`: `mysqlcheck`を通じたバージョンアップグレードの欠格事項がないこと。
+- `COLUMN_LENGHT_LIMIT_CHECK`: `INFORMATION_SCHEMA.VIEWS`で確認した時、カラム名が64文字を超える内容がないこと。
+- `DUPLICATE_NAME_WITH_DATA_DICT` :データ辞書で使用されるテーブルと同じ名称のテーブルがないこと。
+- `ENUM_SET_SIZE_CHECK` :長さが255文字または1020バイトを超える個々のENUM、SET列要素があるテーブル、保存プロシージャがないこと。
+- `FOREIGN_KEY_LENGTH_LIMIT_CHECK` :外部キー制約条件名が64文字を超えるテーブルがないこと。
+- `LOWER_CASE_SCHEMAS_NAMES_CHECK`: `lower_case_table_names`設定を1に変更する場合、スキーマ名が小文字であることを確認する。
+- `LOWER_CASE_TABLE_NAMES_CHECK`: `lower_case_table_names`設定を1に変更する場合、テーブル名が小文字であることを確認する。
+- `PARTITION_TABLE_CHECK` :特定のパーティションチェックで抽出されるパーティションテーブルがないこと。
+- `PROPERTY_LENGTH_LIMIT_CHECK`: InnoDBシステムテーブルスペースと一般テーブルスペースを含む共有テーブルスペースに常駐するテーブルパーティションがないこと。
+
+また、5.7では使用されたが、8.0では削除または変更された事項について確認が必要です。
+- [SQL変更項目ガイド](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-sql-changes)
+- [8.0で削除された機能ガイド](https://dev.mysql.com/doc/refman/8.0/en/mysql-nutshell.html#mysql-nutshell-removals)
+
+
+<a id="manage-db-engine-version-pre-check-for-upgrading-mysql-80-to-mysql-84"></a>
+#### MySQL 8.0からMySQL 8.4へアップグレードするための事前チェック
+
+MySQL 8.4にアップグレードするためには、MySQL 8.0へのアップグレードが完了している必要があります。`8.0`から`8.4`バージョンへのメジャーバージョンDBエンジンのアップグレードを行う場合、問題の発生が予想される一部の項目について、事前のチェックが必要です。
+
+コンソールで`DBエンジンアップグレードの事前確認`を通じてアップグレードチェッカーで検出された項目を確認でき、エラーとして検出された項目は必ず対処する必要があります。詳細な説明はMySQLのWebサイトをご参照ください。
+- [アップグレードチェッカーガイド](https://dev.mysql.com/doc/mysql-shell/8.4/en/mysql-shell-utilities-upgrade.html#mysql-utilities-upgrade-checks)
+
+また、8.4で削除または変更された事項について確認が必要です。
+- [互換性のない変更項目ガイド](https://dev.mysql.com/doc/refman/8.4/en/upgrading-from-previous-series.html#upgrade-incompatible-changes)
+- [8.4で削除された機能ガイド](https://dev.mysql.com/doc/refman/8.4/en/mysql-nutshell.html#mysql-nutshell-removals)
+
+<a id="manage-db-engine-version-mysql-version-upgrade-constraints"></a>
+#### MySQLバージョンアップグレードの制約事項
+
+MySQL 8.0.18バージョンは、直接MySQL 8.4にアップグレードできません。
+8.0.18から8.4へのアップグレードを実行するには、次の条件を満たす必要があります。
+
+アップグレードパス
+1.	MySQL 8.0.23以上にまずアップグレード
+2.	その後、MySQL 8.4バージョンにアップグレード
+
+これはMySQL 8.4バージョンで要求される最小互換バージョンが8.0.23以上であるため、該当バージョンより低い環境ではメタデータ及び内部スキーマ構造の互換性が保証されないためです。
+{{/if}}
+
+{{#if (eq engine.lowerCase "mariadb")}}
+<a id="manage-db-engine-version-pre-check"></a>
+#### 事前確認
+
+DBエンジンのメジャーバージョンアップグレードを進める前に、以下の事項を事前に確認することを推奨します。
+
+- `mariadb-check --check-upgrade`を使用して、バージョンに依存するテーブルがないか確認します。バージョンに依存するテーブルが見つかった場合は、`--auto-repair`オプションで自動更新できます。
+- 公式のアップグレードドキュメントを参照し、対象バージョンの非互換の変更事項を確認します。
+
+コンソールでDBのバージョンアップグレードを試行する際、`DBエンジンアップグレード事前確認`ボタンを使用して事前チェックの結果を確認できます。個別のDBインスタンスのログタブに生成された`db_version_upgrade_compatibility.log`から、詳細データを確認できます。
+
+<a id="manage-db-engine-version-notes-on-upgrading-from-mariadb-114-to-mariadb-118"></a>
+#### MariaDB 11.4からMariaDB 11.8へのアップグレード時の確認事項
+
+MariaDB 11.8にアップグレードするには、まずMariaDB 11.4にアップグレードされている必要があります。`11.4`から`11.8`へメジャーバージョンアップグレードを進める場合、以下の事項を確認する必要があります。
+
+- **System-Versionedテーブル**: System-Versionedテーブルが存在する場合、アップグレードは可能ですが、拡張されたタイムスタンプ範囲へのアップデートが必要となるため、アップグレード時間が長くなる可能性があります。
+
+詳細については、以下の公式ドキュメントを参照してください。
+- [MariaDB 11.4から11.8へのアップグレードパス](https://mariadb.com/docs/server/server-management/install-and-upgrade-mariadb/upgrading/mariadb-community-server-upgrade-paths/upgrading-from-mariadb-11-4-to-mariadb-11-8)
+- [MariaDB 11.8 リリースノート](https://mariadb.com/docs/release-notes/community-server/11.8/what-is-mariadb-118#upgrading)
+{{/if}}
+
+<a id="manage-db-engine-version-upgrading-the-db-engine-version-using-a-dummy-db-instance"></a>
+#### ダミーDBインスタンスを使用したDBエンジンバージョンアップグレード 
+
+DBインスタンスの修正ウィンドウでDBエンジンのバージョンを変更しようとする時、ダミーDBインスタンスの使用有無を選択してバージョンアップの過程で高可用性を得ることができます。ダミーDBインスタンスの使用を選択すると、DBバージョンアップグレードのためのStandbyが生成されます。
+
+!!! danger "注意"
+    ダミーDBインスタンスの場合、アップグレード過程で一時的なStandbyを生成するため、このオプションは高可用性構成でない場合にのみ使用できます。
+
+<a id="manage-db-engine-version-manual-control-of-failover-when-upgrading-high-availability-db-instances"></a>
+#### 高可用性DBインスタンスをアップグレードする際にフェイルオーバー手動制御
+
+DBインスタンスが高可用性で構成されている場合、Standbyのエンジンバージョンを先にアップグレードした後、フェイルオーバーを使用してStandbyをPrimaryに切り替えます。フェイルオーバーは、Primaryのサービスを一時的に中断させるため、ユーザーが望むタイミングでフェイルオーバーを開始できます。
+バージョンアップ時にフェイルオーバーの手動制御設定を使用すると、ユーザーがコンソールから直接フェイルオーバーを開始できます。
+
+!!! danger "注意"
+    フェイルオーバー手動制御は、60時間以上トリガーされない場合、自動的にアップグレード作業がキャンセルされます。
+
+<a id="when-using-an-outdated-operating-system"></a>
+### 古いOSを使用する場合 { #when-using-an-outdated-operating-system }
+
+内部OSが古いDBインスタンスの場合、DBバージョンをアップグレードする前に、VMの交換を伴うOSバージョンのアップグレードが必要です。通知グループの監視対象インスタンス及びイベントサブスクリプションのイベントソースは、変更された識別子に自動で置き換えられます。単一DBインスタンスの場合、DBバージョンの変更時にダミーDBインスタンスの使用を推奨します。高可用性DBインスタンスの場合、DBインスタンスの交換プロセスにおいてフェイルオーバーを利用し、PrimaryとStandbyのロールが変更されます。Primaryの負荷が高い場合、フェイルオーバーに失敗する可能性があるため、DBバージョンの変更は負荷が低い時間帯に実行することを推奨します。
+
+!!! danger "注意"
+    IP ACLまたはセキュリティグループで既存DBインスタンスの内部IPを直接使用する場合、注意が必要です。
+
+{{#if (eq engine.lowerCase "mysql")}}
+<a id="options-for-mysql"></a>
+## MySQL用のオプション { #options-for-mysql }
+
+<a id="support-for-the-mariadb-server-audit-plugin-for-mysql"></a>
+### MySQL用のMariaDBサーバー監査プラグインをサポート { #support-for-the-mariadb-server-audit-plugin-for-mysql }
+
+- RDS for MySQLでは、MariaDB監査プラグインを使用してMySQL DBインスタンス用の監査プラグインを提供します。 
+
+!!! danger "注意"
+    一部のMySQLバージョンではサポートしない場合があり、サポートしないバージョンにバージョンアップする場合、該当プラグインを使用できません。
+
+<a id="support-for-the-mariadb-server-audit-plugin-for-mysql-supported-versions"></a>
+#### サポートバージョン
+| MySQLバージョン                 | サーバー監査プラグインサポートの有無 |
+|----------------------------|--------------------|
+| <strong>8.4</strong>       |                    |
+| MySQL 8.4.9                | O                  |
+| MySQL 8.4.8                | O                  |
+| MySQL 8.4.7                | O                  |
+| MySQL 8.4.6                | O                  |
+| MySQL 8.4.5                | O                  |
+| <strong>8.0</strong>       |                    |
+| MySQL 8.0.46               | O                  |
+| MySQL 8.0.45               | O                  |
+| MySQL 8.0.44               | O                  |
+| MySQL 8.0.43               | O                  |
+| MySQL 8.0.42               | O                  |
+| MySQL 8.0.41               | O                  |
+| MySQL 8.0.40               | O                  |
+| MySQL 8.0.36               | O                  |
+| MySQL 8.0.35               | O                  |
+| MySQL 8.0.34               | O                  | 
+| MySQL 8.0.33               | O                  | 
+| MySQL 8.0.32               | O                  | 
+| MySQL 8.0.28               | O                  | 
+| MySQL 8.0.23               | O                  |
+| MySQL 8.0.18               | X                  |
+| <strong>5.7</strong>       |                    |
+| MySQL 5.7.37               | X                  |
+| MySQL 5.7.33               | O                  |
+| MySQL 5.7.26               | O                  |
+| MySQL 5.7.19               | O                  |
+| MySQL 5.7.15               | X                  |
+| <strong>MySQL 5.6</strong> |                    |
+| MySQL 5.6.33               | O                  |
+{{/if}}
