@@ -142,7 +142,7 @@ DB 인스턴스 생성 시 데이터베이스 워크로드에 따라 알맞은 D
 * Read Replica 재구축
 * Standby 재구축
 * 특정 시점으로 복원
-* 단일 DB 인스턴스에서 백업 후 오브젝트 스토리지로 백업 파일 내보내기
+* 단일 DB 인스턴스에서 백업 후 Object Storage로 백업 파일 내보내기
 
 <a id="high-availability"></a>
 ### 고가용성 { #high-availability }
@@ -175,7 +175,7 @@ DB 보안 그룹은 외부 침입에 대비해 접속을 제한하는 데 사용
 <a id="backup"></a>
 ### 백업 { #backup }
 
-DB 인스턴스의 데이터베이스를 주기적으로 백업하도록 설정하거나, 콘솔에서 원하는 시기에 백업을 생성할 수 있습니다. 백업이 수행되는 동안 성능 저하가 발생할 수 있습니다. 서비스에 영향을 주지 않으려면 서비스 부하가 적은 시간에 백업하기를 권장합니다. 백업으로 인한 성능 저하를 원치 않으면 고가용성 구성을 사용하거나, 이전 백업 이후 데이터의 증분만 백업할 수 있으며, Read Replica에서 백업을 수행할 수 있습니다. 백업 파일은 내부 백업 스토리지에 저장되며, 백업 용량에 따라 과금됩니다. 필요한 경우 NHN Cloud의 오브젝트 스토리지로 내보낼 수 있습니다. 예상치 못한 장애에 대비해 주기적으로 백업을 수행하도록 설정하기를 권장합니다. 자세한 백업 내용은 [백업 및 복원](backup-and-restore/) 항목을 참고합니다.
+DB 인스턴스의 데이터베이스를 주기적으로 백업하도록 설정하거나, 콘솔에서 원하는 시기에 백업을 생성할 수 있습니다. 백업이 수행되는 동안 성능 저하가 발생할 수 있습니다. 서비스에 영향을 주지 않으려면 서비스 부하가 적은 시간에 백업하기를 권장합니다. 백업으로 인한 성능 저하를 원치 않으면 고가용성 구성을 사용하거나, 이전 백업 이후 데이터의 증분만 백업할 수 있으며, Read Replica에서 백업을 수행할 수 있습니다. 백업 파일은 내부 백업 스토리지에 저장되며, 백업 용량에 따라 과금됩니다. 필요한 경우 NHN Cloud의 Object Storage로 내보낼 수 있습니다. 예상치 못한 장애에 대비해 주기적으로 백업을 수행하도록 설정하기를 권장합니다. 자세한 백업 내용은 [백업 및 복원](backup-and-restore/) 항목을 참고합니다.
 
 <a id="maintenance"></a>
 ### 유지 관리 { #maintenance }
@@ -718,14 +718,14 @@ DB 인스턴스에 적용된 파라미터와 연결된 파라미터 그룹의 �
 장애 조치를 이용한 재시작을 사용하지 않으면 Primary와 Standby에 변경 사항을 순차적으로 적용한 후 DB 인스턴스를 재시작합니다. 자세한 사항은 고가용성 DB 인스턴스의 [수동 장애 조치 항목](db-instance/#manual-failover)을 참고합니다.
 
 <a id="recover-from-backup-in-object-storage"></a>
-## 오브젝트 스토리지에 있는 백업으로 복원 { #recover-from-backup-in-object-storage }
+## Object Storage에 있는 백업으로 복원 { #recover-from-backup-in-object-storage }
 
-외부 {{engine.pascalCase}} 백업 파일을 NHN Cloud의 오브젝트 스토리지에 업로드하여 RDS for {{engine.pascalCase}}의 DB 인스턴스로 복원할 수 있습니다. 자세한 사항은 [외부 {{engine.pascalCase}} 백업을 이용한 복원](backup-and-restore/#restore-from-external) 항목을 참고합니다.
+외부 {{engine.pascalCase}} 백업 파일을 NHN Cloud의 Object Storage에 업로드하여 RDS for {{engine.pascalCase}}의 DB 인스턴스로 복원할 수 있습니다. 자세한 사항은 [외부 {{engine.pascalCase}} 백업을 이용한 복원](backup-and-restore/#restore-from-external) 항목을 참고합니다.
 
 <a id="export-backup-files-to-the-object-storage-after-backup"></a>
-## 백업 후 오브젝트 스토리지로 백업 파일 내보내기 { #export-backup-files-to-the-object-storage-after-backup }
+## 백업 후 Object Storage로 백업 파일 내보내기 { #export-backup-files-to-the-object-storage-after-backup }
 
-백업 후 백업 파일을 오브젝트 스토리지로 내보낼 수 있습니다. 자세한 사항은 [백업 내보내기](backup-and-restore/#export) 항목을 참고합니다.
+백업 후 백업 파일을 Object Storage로 내보낼 수 있습니다. 자세한 사항은 [백업 내보내기](backup-and-restore/#export) 항목을 참고합니다.
 
 <a id="read-replica"></a>
 ## Read Replica { #read-replica }

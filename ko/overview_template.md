@@ -17,5 +17,5 @@ RDS for {{engine.pascalCase}}은 {{engine.pascalCase}} 데이터베이스를 클
 * 데이터베이스의 상태를 한눈에 파악할 수 있는 서버 대시보드를 제공합니다.
 * 서버 대시보드에서 인스턴스 및 데이터베이스의 각종 지표를 그래프로 확인할 수 있습니다.
 
-> [주의]
-> RDS for {{engine.pascalCase}}은 사용자의 Compute & Network 서비스를 활성화해야만 사용할 수 있습니다.
+!!! danger "주의"
+    RDS for {{engine.pascalCase}}은 사용자의 Compute & Network 서비스를 활성화해야만 사용할 수 있습니다.

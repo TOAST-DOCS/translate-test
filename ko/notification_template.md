@@ -14,9 +14,9 @@
 | BACUP_01_01 | BACKUP            | 아니오      | DB 인스턴스 백업 완료                        |
 | BACUP_01_04 | BACKUP            | 아니오      | DB 인스턴스 백업 실패                        |
 | BACUP_02_01 | BACKUP            | 예        | 백업 삭제 완료                             |
-| BACUP_04_00 | BACKUP            | 예        | 오브젝트 스토리지 업로드 시작                     |
-| BACUP_04_01 | BACKUP            | 예        | 오브젝트 스토리지 업로드 완료                     |
-| BACUP_04_04 | BACKUP            | 예        | 오브젝트 스토리지 업로드 실패                     |
+| BACUP_04_00 | BACKUP            | 예        | Object Storage 업로드 시작                     |
+| BACUP_04_01 | BACKUP            | 예        | Object Storage 업로드 완료                     |
+| BACUP_04_04 | BACKUP            | 예        | Object Storage 업로드 실패                     |
 | BACUP_05_00 | BACKUP            | 예        | 백업 내보내기 시작                           |
 | BACUP_05_01 | BACKUP            | 예        | 백업 내보내기 완료                           |
 | BACUP_05_04 | BACKUP            | 예        | 백업 내보내기 실패                           |
@@ -105,9 +105,9 @@
 | INSTC_47_00 | INSTANCE          | 예        | DB 인스턴스 백업 및 내보내기 시작                 |
 | INSTC_47_01 | INSTANCE          | 예        | DB 인스턴스 백업 및 내보내기 완료                 |
 | INSTC_47_04 | INSTANCE          | 예        | DB 인스턴스 백업 및 내보내기 실패                 |
-| INSTC_48_00 | INSTANCE          | 예        | 오브젝트 스토리지에 있는 백업으로 DB 인스턴스 복원 시작     |
-| INSTC_48_01 | INSTANCE          | 예        | 오브젝트 스토리지에 있는 백업으로 DB 인스턴스 복원 완료     |
-| INSTC_48_04 | INSTANCE          | 예        | 오브젝트 스토리지에 있는 백업으로 DB 인스턴스 복원 실패     |
+| INSTC_48_00 | INSTANCE          | 예        | Object Storage에 있는 백업으로 DB 인스턴스 복원 시작     |
+| INSTC_48_01 | INSTANCE          | 예        | Object Storage에 있는 백업으로 DB 인스턴스 복원 완료     |
+| INSTC_48_04 | INSTANCE          | 예        | Object Storage에 있는 백업으로 DB 인스턴스 복원 실패     |
 | INSTC_49_00 | INSTANCE          | 예        | DB 인스턴스 강제 재시작 실행                    |
 | INSTC_50_00 | INSTANCE          | 예        | 백업 내보내기 시작                           |
 | INSTC_50_01 | INSTANCE          | 예        | 백업 내보내기 완료                           |

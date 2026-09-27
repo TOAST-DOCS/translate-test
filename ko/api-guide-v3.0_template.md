@@ -364,7 +364,7 @@ GET /v3.0/db-versions
 | dbVersions                   | Body | Array   | DB 엔진 목록              |
 | dbVersions.dbVersion         | Body | String  | DB 엔진 유형              |
 | dbVersions.dbVersionName     | Body | String  | DB 엔진 이름              |
-| dbVersions.restorableFromObs | Body | Boolean | 오브젝트 스토리지로부터 복원 가능 여부 |
+| dbVersions.restorableFromObs | Body | Boolean | Object Storage로부터 복원 가능 여부 |
 
 <details><summary>예시</summary>
 <p>
@@ -1186,10 +1186,10 @@ POST /v3.0/db-instances/{dbInstanceId}/backup-to-object-storage
 | 이름              | 종류   | 형식     | 필수 | 설명                          |
 |-----------------|------|--------|----|-----------------------------|
 | dbInstanceId    | URL  | UUID   | O  | DB 인스턴스의 식별자                |
-| tenantId        | Body | String | O  | 백업이 저장될 오브젝트 스토리지의 테넌트 ID   |
+| tenantId        | Body | String | O  | 백업이 저장될 Object Storage의 테넌트 ID   |
 | username        | Body | String | O  | NHN Cloud 계정 또는 IAM 계정 ID   |
-| password        | Body | String | O  | 백업이 저장될 오브젝트 스토리지의 API 비밀번호 |
-| targetContainer | Body | String | O  | 백업이 저장될 오브젝트 스토리지의 컨테이너     |
+| password        | Body | String | O  | 백업이 저장될 Object Storage의 API 비밀번호 |
+| targetContainer | Body | String | O  | 백업이 저장될 Object Storage의 컨테이너     |
 | objectPath      | Body | String | O  | 컨테이너에 저장될 백업의 경로            |
 
 <details><summary>예시</summary>
@@ -1673,7 +1673,7 @@ POST /v3.0/db-instances/{dbInstanceId}/restore
 ---
 
 <a id="restore-from-object-storage"></a>
-### 오브젝트 스토리지로부터 복원 { #restore-from-object-storage }
+### Object Storage로부터 복원 { #restore-from-object-storage }
 
 ```http
 POST /v3.0/db-instances/restore-from-obs
@@ -1685,10 +1685,10 @@ POST /v3.0/db-instances/restore-from-obs
 | 이름                       | 종류   | 형식      | 필수 | 설명                                                                  |
 |--------------------------|------|---------|----|---------------------------------------------------------------------|
 | restore                  | Body | Object  | O  | 복원 정보 객체                                                            |
-| restore.tenantId         | Body | String  | O  | 백업이 저장된 오브젝트 스토리지의 테넌트 ID                                           |
+| restore.tenantId         | Body | String  | O  | 백업이 저장된 Object Storage의 테넌트 ID                                           |
 | restore.username         | Body | String  | O  | NHN Cloud 계정 또는 IAM 계정 ID                                           |
-| restore.password         | Body | String  | O  | 백업이 저장된 오브젝트 스토리지의 API 비밀번호                                         |
-| restore.targetContainer  | Body | String  | O  | 백업이 저장된 오브젝트 스토리지의 컨테이너                                             |
+| restore.password         | Body | String  | O  | 백업이 저장된 Object Storage의 API 비밀번호                                         |
+| restore.targetContainer  | Body | String  | O  | 백업이 저장된 Object Storage의 컨테이너                                             |
 | restore.objectPath       | Body | String  | O  | 컨테이너에 저장된 백업의 경로                                                    |
 | dbVersion                | Body | Enum    | O  | DB 엔진 유형                                                            |
 | dbInstanceName           | Body | String  | O  | DB 인스턴스를 식별할 수 있는 마스터 이름                                            |
@@ -2305,8 +2305,9 @@ POST /v3.0/db-instances/{dbInstanceId}/db-users
 | authenticationPlugin | Body | Enum   | X  | 인증 플러그인<br/>- 기본값: `NATIVE`(미지원 시 `CACHING_SHA2`)<br/>- NATIVE: `mysql_native_password`<br />- SHA256: `sha256_password`<br />- CACHING_SHA2: `caching_sha2_password` |
 | tlsOption            | Body | Enum   | X  | TLS Option<br/>- NONE<br />- SSL<br />- X509                                                                            |
 
-> [주의]
-> DB 인스턴스의 `supportAuthenticationPlugin` 값이 true인 DB 인스턴스만 `authenticationPlugin`, `tlsOption`의 값을 설정할 수 있습니다.
+!!! danger "주의"
+    DB 인스턴스의 `supportAuthenticationPlugin` 값이 `true`인 DB 인스턴스만 `authenticationPlugin`, `tlsOption`의 값을 설정할 수 있습니다.
+
 {{/if}}
 {{#if (eq engine.lowerCase "mariadb")}}
 | authenticationPlugin | Body | Enum    | X  | 인증 플러그인<br/>- 기본값: `NATIVE`(미지원 시 `ED25519`)<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
@@ -2363,9 +2364,10 @@ PUT /v3.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
 | authenticationPlugin | Body | Enum   | X  | 인증 플러그인<br/>- NATIVE: `mysql_native_password`<br />- SHA256: `sha256_password`<br />- CACHING_SHA2: `caching_sha2_password` |
 | tlsOption            | Body | Enum   | X  | TLS Option<br/>- NONE<br />- SSL<br />- X509                                                                            |
 
-> [주의]
-> DB 인스턴스의 `supportAuthenticationPlugin` 값이 true인 DB 인스턴스만 `authenticationPlugin`, `tlsOption`의 값을 수정할 수 있습니다.
-> `authenticationPlugin`의 값은 `dbPassword`와 동시에 수정을 해야 합니다.
+!!! danger "주의"
+    DB 인스턴스의 `supportAuthenticationPlugin` 값이 `true`인 DB 인스턴스만 `authenticationPlugin`, `tlsOption`의 값을 수정할 수 있습니다.
+    `authenticationPlugin`의 값은 `dbPassword`와 동시에 수정해야 합니다.
+
 {{/if}}
 {{#if (eq engine.lowerCase "mariadb")}}
 | authenticationPlugin | Body | Enum    | X  | 인증 플러그인<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
@@ -2590,10 +2592,10 @@ POST /v3.0/db-instances/{dbInstanceId}/log-files/export
 |-----------------|------|--------|----|--------------------------------|
 | dbInstanceId    | URL  | UUID   | O  | DB 인스턴스의 식별자                   |
 | logFileNames    | Body | Array  | O  | 로그 파일 이름 목록<br/>- 최소 크기: `1`   |
-| tenantId        | Body | String | O  | 로그 파일이 저장될 오브젝트 스토리지의 테넌트 ID   |
+| tenantId        | Body | String | O  | 로그 파일이 저장될 Object Storage의 테넌트 ID   |
 | username        | Body | String | O  | NHN Cloud 계정 또는 IAM 계정 ID      |
-| password        | Body | String | O  | 로그 파일이 저장될 오브젝트 스토리지의 API 비밀번호 |
-| targetContainer | Body | String | O  | 로그 파일이 저장될 오브젝트 스토리지의 컨테이너     |
+| password        | Body | String | O  | 로그 파일이 저장될 Object Storage의 API 비밀번호 |
+| targetContainer | Body | String | O  | 로그 파일이 저장될 Object Storage의 컨테이너     |
 | objectPath      | Body | String | O  | 컨테이너에 저장될 로그 파일의 경로            |
 
 <details><summary>예시</summary>
@@ -2724,10 +2726,10 @@ POST /v3.0/backups/{backupId}/export
 | 이름              | 종류   | 형식     | 필수 | 설명                          |
 |-----------------|------|--------|----|-----------------------------|
 | backupId        | URL  | UUID   | O  | 백업의 식별자                     |
-| tenantId        | Body | String | O  | 백업이 저장될 오브젝트 스토리지의 테넌트 ID   |
+| tenantId        | Body | String | O  | 백업이 저장될 Object Storage의 테넌트 ID   |
 | username        | Body | String | O  | NHN Cloud 계정 또는 IAM 계정 ID   |
-| password        | Body | String | O  | 백업이 저장될 오브젝트 스토리지의 API 비밀번호 |
-| targetContainer | Body | String | O  | 백업이 저장될 오브젝트 스토리지의 컨테이너     |
+| password        | Body | String | O  | 백업이 저장될 Object Storage의 API 비밀번호 |
+| targetContainer | Body | String | O  | 백업이 저장될 Object Storage의 컨테이너     |
 | objectPath      | Body | String | O  | 컨테이너에 저장될 백업의 경로            |
 
 <details><summary>예시</summary>
@@ -2753,8 +2755,8 @@ POST /v3.0/backups/{backupId}/export
 |-------|------|------|-------------|
 | jobId | Body | UUID | 요청한 작업의 식별자 |
 
-> [주의]
-> 수동 백업의 경우 백업이 수행된 DB 인스턴스가 존재하지 않으면, 백업을 오브젝트 스토리지로 내보낼 수 없습니다.
+!!! danger "주의"
+    수동 백업의 경우 백업이 수행된 DB 인스턴스가 존재하지 않으면, 백업을 Object Storage로 내보낼 수 없습니다.
 
 ---
 
@@ -3041,8 +3043,8 @@ POST /v3.0/db-security-groups
 | rules.port.minPort  | Body | Number | X  | 최소 포트 범위<br/>- 최솟값: 1                                                                                                                                                                    |
 | rules.port.maxPort  | Body | Number | X  | 최대 포트 범위<br/>- 최댓값: 65535                                                                                                                                                                |
 
-> [주의]
-> DB 포트는 송신 방향으로 설정할 수 없습니다.
+!!! danger "주의"
+    DB 포트는 송신 방향으로 설정할 수 없습니다.
 
 <details><summary>예시</summary>
 <p>
@@ -3192,8 +3194,8 @@ POST /v3.0/db-security-groups/{dbSecurityGroupId}/rules
 | port.maxPort      | Body | Number | X  | 최대 포트 범위<br/>- 최댓값: 65535                                                                                                                                                                |
 | cidr              | Body | String | O  | 허용할 트래픽의 원격 소스<br/>- 예시: `1.1.1.1/32`                                                                                                                                                    |
 
-> [주의]
-> DB 포트는 송신 방향으로 설정할 수 없습니다.
+!!! danger "주의"
+    DB 포트는 송신 방향으로 설정할 수 없습니다.
 
 <details><summary>예시</summary>
 <p>
@@ -3246,8 +3248,8 @@ PUT /v3.0/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
 | port.maxPort      | Body | Number | X  | 최대 포트 범위<br/>- 최댓값: 65535                                                                                                                                                                |
 | cidr              | Body | String | O  | 허용할 트래픽의 원격 소스<br/>- 예시: `1.1.1.1/32`                                                                                                                                                    |
 
-> [주의]
-> DB 포트는 송신 방향으로 설정할 수 없습니다.
+!!! danger "주의"
+    DB 포트는 송신 방향으로 설정할 수 없습니다.
 
 <details><summary>예시</summary>
 <p>
