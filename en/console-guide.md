@@ -1,7 +1,9 @@
+<!-- machine_translated: true -->
+
 <a id="storage-storage-gateway-console-user-guide"></a>
 ## Storage > Storage Gateway > Console User Guide { #storage-storage-gateway-console-user-guide }
 
-This document describes how to manage and connect gateways and shares in Storage Gateway from the NHN Cloud console.
+This document describes how to manage and connect gateways and shares of Storage Gateway in the NHN Cloud console.
 
 <a id="gateway"></a>
 ## Gateway { #gateway }
@@ -65,9 +67,9 @@ Stop the storage gateway. When you stop the gateway, the instances that make up 
 
 <a id="delete-gateway"></a>
 ### Delete Gateway { #delete-gateway }
-Delete the storage gateway. All instances and resources that make up the cluster are deleted. NHN Cloud storage that was connected to the gateway is not deleted. 
+Delete the storage gateway. All instances and resources that make up the cluster are deleted. NHN Cloud storage that was connected to the gateway is not deleted.
 
-!!! tip "Note"
+!!! tip "Good to know"
     To delete a gateway, you must first delete all shares you created on the gateway.
 
 <a id="share"></a>
@@ -126,7 +128,7 @@ Set the memory cache validity time. The cache is retained for the set validity t
 
 <a id="delete-share"></a>
 ### Delete Share { #delete-share }
-Delete a share. 
+Deletes a share.
 
 !!! danger "Caution"
     Before deleting a share, you must mount the NHN Cloud storage and unmount it from your system. Deleting a share while it is mounted may cause problems on your system.
