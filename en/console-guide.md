@@ -1,7 +1,9 @@
+<!-- machine_translated: true -->
+
 <a id="storage-storage-gateway-console-user-guide"></a>
 ## Storage > Storage Gateway > Console User Guide { #storage-storage-gateway-console-user-guide }
 
-This document describes how to manage and connect gateways and shares in Storage Gateway from the NHN Cloud console.
+This document describes how to manage and connect gateways and shares in Storage Gateway on NHN Cloud console.
 
 <a id="gateway"></a>
 ## Gateway { #gateway }
@@ -60,7 +62,7 @@ Start a stopped storage gateway.
 ### Stop Gateway { #stop-gateway }
 Stop the storage gateway. When you stop the gateway, the instances that make up the cluster stop and can't connect to storage.
 
-!!! danger "Caution"
+!!! danger "[Caution]"
     Before stopping the storage gateway, you must unmount the gateway from the system you are using by connecting the NHN Cloud storage. Stopping the gateway while it is mounted may cause problems on your system.
 
 <a id="delete-gateway"></a>
@@ -126,7 +128,7 @@ Set the memory cache validity time. The cache is retained for the set validity t
 
 <a id="delete-share"></a>
 ### Delete Share { #delete-share }
-Delete a share. 
+Delete a share.
 
 !!! danger "Caution"
     Before deleting a share, you must mount the NHN Cloud storage and unmount it from your system. Deleting a share while it is mounted may cause problems on your system.
@@ -203,7 +205,7 @@ Gateways of type Object Storage support only a subset of the POSIX APIs.
 read, write, readdir, truncate, fallocate, fsync
 ```
 
-!!! danger "Caution"
+!!! danger "[Caution]"
     Do not use rename, hardlink, or symlink; they may not work or may create unintended objects in Object Storage.
     We do not recommend using tools that save to temporary files and then rename them, such as rsync and vi.
 
