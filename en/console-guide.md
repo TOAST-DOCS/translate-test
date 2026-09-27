@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=13fa2e880aa4 -->
 
 <a id="ai.easymaker.console.guide"></a>
@@ -1064,11 +1066,11 @@ Stage list created under endpoint is displayed. Select stage in the list to chec
     Please note the following precautions when changing API Gateway services and stages created by AI EasyMaker directly from API Gateway service console.
 
     1. Avoid deleting API Gateway services and stages created by AI EasyMaker. Deletion may prevent the endpoint from displaying API Gateway information correctly, and changes made to endpoint may not be applied to API Gateway.
-    2. Avoid changing or deleting resources in API Gateway resource path that was entered when creating endpoints. Deletion may cause the endpoint's inference API call to fail
+    2. Avoid changing or deleting resources in API Gateway resource path that was entered when creating endpoints. Deletion may cause the endpoint's inference API call to fail.
     3. Avoid adding resources in API Gateway resource path that was entered when creating endpoints. The added resources may be deleted when adding or changing endpoint stages.
-    4. In the stage settings of API Gateway, do not disable **Backend Endpoint Url Redifinition** or change the URL set in API Gateway resource path. If you change the url, endpoint's inference API call might fail.
+    4. In the stage settings of API Gateway, do not disable **Backend Endpoint URL Redefinition** or change the URL set in API Gateway resource path. If you change the URL, endpoint's inference API call might fail.
         Other than above precautions, other settings are available with features provided by API Gateway as necessary.
-        For more information about how to use API Gateway, refer to [API Gateway Console Guide](https://docs.nhncloud.com/en/Application%20Service/API%20Gateway/en/console-guide/).
+        For more information about how to use API Gateway, refer to [API Gateway Console Guide](https://docs.{% if "gov" in build_flags %}gov-{% endif %}nhncloud.com/en/Application%20Service/API%20Gateway/en/console-guide{% if "gov" in build_flags %}-gov{% endif %}/).
 
 !!! tip "Note"
     If stage settings of AI EasyMaker endpoint are not deployed to the API Gateway stage due to a temporary issue, deployment status is displayed as failed.
