@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <a id="friendtalkupgrade-api-guide"></a>
 
 ## Notification > KakaoTalk Bizmessage > Brand Message > API v1.0 Guide { #friendtalkupgrade-api-guide }
@@ -1983,12 +1985,7 @@ Content-Type: application/json;charset=UTF-8
 curl -X GET -H "Content-Type: application/json;charset=UTF-8" -H "X-Secret-Key:{secretkey}" "https://kakaotalk-bizmessage.api.nhncloudservice.com/brand-message/v1.0/appkeys/{appKey}/message-results?startUpdateDate=2026-06-01%2000:00&endUpdateDate=2026-06-30%2023:59"
 ```
 
-<a id="message-results"></a>
-
-## Cancel Sending Messages { #cancel-message-sending }
-
 <a id="requested-7"></a>
-
 #### Request
 
 [URL]
@@ -2622,10 +2619,10 @@ Content-Type: application/json;charset=UTF-8
 * When applying replacement variables to a coupon title, you must use the following fixed replacement variables.
 
 ```
-- #{Discount amount} KRW off coupon (#{Discount amount} range: 1 to 99,999,999)
-- #{Discount rate}% off coupon (#{Discount rate} range: 1 to 100)
+- #{Discount amount} KRW off coupon (#{Discount amount} range: 2 to 99,999,999)
+- #{Discount rate}% off coupon (#{Discount rate} range: 2 to 100)
 - Shipping discount coupon
-- #{Product name} Free coupon (#{Product name} is up to 7 characters)
+- #{Product name} Free coupon (#{Product name} is up to 8 characters)
 - #{Product name} UP coupon (#{Product name} is up to 7 characters)
 ```
 
