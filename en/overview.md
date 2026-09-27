@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <a id="storage-storage-gateway-overview"></a>
 ## Storage > Storage Gateway > Overview { #storage-storage-gateway-overview }
 
