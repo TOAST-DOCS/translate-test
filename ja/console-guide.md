@@ -80,8 +80,8 @@ NHN Cloudサービスを安定的かつ効率的に利用するために必要�
 <a id="organization-governance-setting-ip-acl-setting"></a>
 #### IP ACL設定
 IP ACL設定に登録されたIPからのみNHN Cloudサービスを利用できます。
-コンソール接続及びUser Access Keyトークン認証方式のPublic API呼び出し時にIP ACLが適用されます。 [認証方式サポート状況の表示](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/supported-authentication-methods/)
-Dooray!サービスは各サービスコンソール画面からIP ACLを設定できます。
+コンソール接続及びUser Access Keyトークン認証方式のPublic API呼び出し時にIP ACLが適用されます。 [認証方式サポート状況の表示](/Support-Status/ja/supported-authentication-methods/)
+Dooray!サービスは当該サービスコンソール画面からIP ACLを設定できます。
 
 1. **コンソール**に移動した後、設定したい組織の**組織管理**ページに接続します。
 2. サブタブメニューから**ガバナンス設定**を選択します。
@@ -455,26 +455,26 @@ NHN Cloud運営者が障害対応など運営上の目的で顧客のリソー�
 | Cloud Functions | ADMIN | Cloud Functionsサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
 | NHN Container Registry (NCR) | ADMIN | NHN Container Registry (NCR)サービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
 | NHN Container Registry (NCR) | VIEWER | NHN Container Registry (NCR)サービスに対するRead(読み取り) |
-| NHN Container Registry (NCR) | IMAGE UPLOADER | NHN Container Registry (NCR) サービスに対するRead(読み取り) <br> イメージ アップロード、アーティファクト Create(作成)、タグ Create(作成) |
-| DNS Plus | ADMIN | DNS Plusサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| DNS Plus | VIEWER | DNS Plusサービスに対するRead(読み取り) |
-| Object Storage | ADMIN | Object Storageサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| NHN Container Registry (NCR) | IMAGE UPLOADER | NHN Container Registry (NCR) サービス Read(読み取り) <br> イメージ アップロード、アーティファクト Create(作成)、タグ Create(作成) |
+| DNS Plus | ADMIN | DNS Plus サービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
+| DNS Plus | VIEWER | DNS Plus サービス Read(読み取り) |
+| Object Storage | ADMIN | Object Storageサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
 | Object Storage | Container OPERATOR | Object Storageサービス内のコンテナリストおよび、すべての情報詳細を照会Read(読み取り)。コンテナ管理Create(作成)、Update(更新)、Delete(削除) |
 | Object Storage | Container VIEWER | Object Storageサービス内のコンテナリストを照会Read(読み取り)  |
 | Object Storage | Object READER | Object Storageサービス内のコンテナリストおよび、一部の情報詳細を照会Read(読み取り) <br> オブジェクトリストおよび詳細照会Read(読み取り) <br> オブジェクトダウンロードRead(読み取り)  |
 | Object Storage | Object WRITER | Object Storageサービス内のコンテナリストおよび、一部の情報詳細を照会Read(読み取り) <br> オブジェクト管理Create(作成)、Update(更新)、Delete(削除)  |
 | Object Storage | Object VIEWER | Object Storageサービス内のコンテナリストおよび、一部の情報詳細を照会Read(読み取り) <br> オブジェクトリストおよび詳細照会Read(読み取り)  |
-| Backup | ADMIN | Backupサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| RDS for MySQL | ADMIN | RDS for MySQLサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
-| RDS for MySQL | VIEWER | RDS for MySQLサービスに対するRead(読み取り) |
-| RDS for PostgreSQL | ADMIN | RDS for PostgreSQLサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
-| RDS for PostgreSQL | VIEWER | RDS for PostgreSQLサービスに対するRead(読み取り) |
-| RDS for MariaDB | ADMIN | RDS for MariaDBサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
-| RDS for MariaDB | VIEWER | RDS for MariaDBサービスに対するRead(読み取り) |
-| RDS for MS-SQL | ADMIN | RDS for MS-SQLサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
-| EasyCache | ADMIN | EasyCacheサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Backup | ADMIN | Backup サービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
+| RDS for MySQL | ADMIN | RDS for MySQLサービス Create(作成), Read(読み取り), Update(更新), Delete(削除) |
+| RDS for MySQL | VIEWER | RDS for MySQLサービス Read(読み取り) |
+| RDS for PostgreSQL | ADMIN | RDS for PostgreSQLサービス Create(作成), Read(読み取り), Update(更新), Delete(削除) |
+| RDS for PostgreSQL | VIEWER | RDS for PostgreSQLサービス Read(読み取り) |
+| RDS for MariaDB | ADMIN | RDS for MariaDBサービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| RDS for MariaDB | VIEWER | RDS for MariaDBサービス Read(読み取り) |
+| RDS for MS-SQL | ADMIN | RDS for MS-SQLサービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| EasyCache | ADMIN | EasyCacheサービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | EasyCache | VIEWER | EasyCacheサービスレプリケーショングループメニューRead(読込)、モニタリングメニューRead(読込) |
-| Cloud Monitoring | ADMIN | Cloud Monitoringサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
+| Cloud Monitoring | ADMIN | Cloud Monitoringサービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | Cloud Monitoring | VIEWER | Cloud Monitoring Read(読み取り) |
 | Gamebase | ADMIN | Gamebase サービス Create(作成), Read(読み取り), Update(更新), Delete(削除) |
 | Gamebase | ANALYTICS VIEWER - ALL | すべての指標 Read(読み取り) |
@@ -511,7 +511,7 @@ NHN Cloud運営者が障害対応など運営上の目的で顧客のリソー�
 | Smart Downloader | ADMIN | Smart Downloaderサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | NHN AppGuard | ADMIN | AppGuardサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | Server Security Check | ADMIN | Server Security Check サービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Server Security Check | VIEWER |Server Security Check サービスに対するRead(読み取り) |
+| Server Security Check | VIEWER | Server Security Check サービスに対するRead(読み取り) |
 | Security Monitoring | ADMIN | Security Monitoringサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | CAPTCHA | ADMIN | CAPTCHAサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | WEB Firewall | ADMIN | WEB Firewallサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
@@ -548,7 +548,7 @@ NHN Cloud運営者が障害対応など運営上の目的で顧客のリソー�
 | KakaoTalk Bizmessage | ADMIN | KakaoTalk Bizmessageサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | KakaoTalk Bizmessage | SEND ADMIN | KakaoTalk Bizmessageサービス(お知らせトーク)送信メニューCreate(作成), Read(読み取り)|
 | KakaoTalk Bizmessage | DELIVERY RESULT ADMIN | KakaoTalk Bizmessageサービス(お知らせトーク)送信結果照会 Read(読み取り)、照会履歴のダウンロードCreate(作成)<br> (お知らせトーク)大量送信照会 Read(読み取り)、照会結果ダウンロードCreate(作成)<br>(カカともへのメッセージ)送信結果照会 Read(読み取り)、照会結果ダウンロードCreate(作成)|
-| KakaoTalk Bizmessage | SETTING ADMIN | KakaoTalk Bizmessageサービス発信プロフィール管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> (お知らせトーク)テンプレート管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> (お知らせトーク)代替送信管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> (お知らせトーク)発信プロフィールグループ管理Create(作成), Read(読み取り), Update(更新), Delete(削除)<br> (カカともへのメッセージ)イメージ管理 Read(読み取り), Delete(削除) <br> (カカともへのメッセージ)代替送信管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除) <br> 送信設定メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> Webフック管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 統計イベントキー 設定メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| KakaoTalk Bizmessage | SETTING ADMIN | KakaoTalk Bizmessageサービス発信プロフィール管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> (お知らせトーク)テンプレート管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> (お知らせトーク)代替送信管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> (お知らせトーク)発信プロフィールグループ管理Create(作成), Read(読み取り), Update(更新), Delete(削除)<br> (カカともへのメッセージ)イメージ管理 Read(読み取り), Delete(削除) <br> (カカともへのメッセージ)代替送信管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除) <br> 送信設定メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> Webフック管理メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)<br> 統計イベントキー設定メニューCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | KakaoTalk Bizmessage | STATISTICS ADMIN | KakaoTalk Bizmessageサービス統計メニューRead(読み取り)、照会結果ダウンロードCreate(作成)  |
 | Face Recognition | ADMIN | Face Recognitionサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | OCR | ADMIN | OCRサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
@@ -556,17 +556,6 @@ NHN Cloud運営者が障害対応など運営上の目的で顧客のリソー�
 | Speech to Text | ADMIN | Speech to Textサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | AI EasyMaker | ADMIN | AI EasyMakerサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | NHN Cloud Foundry | ADMIN | NHN Cloud Foundry サービスの Create（作成）、Read（読み取り）、Update（更新）、Delete（削除）  |
-| IAP | ADMIN | IAPサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Mobile Device Info | ADMIN | Mobile Device Infoサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Log & Crash Search | ADMIN | Log & Crash Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| DataFlow | ADMIN | DataFlowサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| DataQuery | ADMIN | DataQueryサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Data Lake Storage | ADMIN | Data Lake StorageサービスCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
-| Data Lake Storage | OPERATOR | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)。バケット管理Create(作成)、Update(更新)、Delete(削除)  |
-| Data Lake Storage | VIEWER | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)  |
-| EasyQueue | ADMIN | EasyQueueサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)、メッセージの送受信  |
-| EasyQueue | CLIENT | EasyQueueサービスの参照(Read)、メッセージの送受信  |
-| EasyQueue | VIEWER | EasyQueueサービス Read(読み取り)  |
 | ROLE | ADMIN | ROLEサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | API Gateway | ADMIN | API Gatewayサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | RTCS | ADMIN | RTCSサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
@@ -576,26 +565,26 @@ NHN Cloud運営者が障害対応など運営上の目的で顧客のリソー�
 | IAP | ADMIN | IAPサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
 | Mobile Device Info | ADMIN | Mobile Device Infoサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | Cloud Search | ADMIN | Cloud Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Autocomplete | ADMIN | Autocompleteサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Corporation Search | ADMIN | Corporation Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Log & Crash Search | ADMIN | Log & Crash Searchサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| DataFlow | ADMIN | DataFlowサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| DataQuery | ADMIN | DataQueryサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Autocomplete | ADMIN | Autocompleteサービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Corporation Search | ADMIN | Corporation Searchサービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| Log & Crash Search | ADMIN | Log & Crash Searchサービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| DataFlow | ADMIN | DataFlowサービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
+| DataQuery | ADMIN | DataQueryサービス Create(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | DataQuery | CLUSTER ADMIN | DataQuery サービスクラスターの On（起動）、Off（停止）、Spec Configuration（スペック設定） |
 | DataQuery | DATASOURCE ADMIN | DataQuery サービスデータソースの Create（作成）、Update（修正）、Delete（削除）  |
 | Data Lake Storage | ADMIN | Data Lake StorageサービスCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
 | Data Lake Storage | OPERATOR | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)。バケット管理Create(作成)、Update(更新)、Delete(削除)  |
 | Data Lake Storage | VIEWER | Data Lake Storageサービス内のバケットリストおよび、すべての情報詳細を照会Read(読み取り)  |
 | EasyQueue | ADMIN | EasyQueueサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)、メッセージの送受信  |
-| EasyQueue | CLIENT | EasyQueueサービスの参照(Read)、メッセージの送受信  |
-| EasyQueue | VIEWER | EasyQueueサービス Read(読み取り)  |
-| Pipeline | ADMIN | Pipelineサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Deploy | ADMIN | Deployサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Deploy | VIEWER | Deployサービスに対するRead(読み取り)  |
-| Managed | ADMIN | Managedサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Service Monitoring | ADMIN | Service Monitoringサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Certificate Manager | ADMIN | Certificate Managerサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
-| Certificate Manager | VIEWER | Certificate Managerサービスに対するRead(読み取り)  |
+| EasyQueue | CLIENT | EasyQueueサービス Read(読み取り)、メッセージの送受信  |
+| EasyQueue | VIEWER | EasyQueueサービス Read(読み取り) |
+| Pipeline | ADMIN | Pipelineサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
+| Deploy | ADMIN | Deployサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
+| Deploy | VIEWER | Deployサービス Read(読み取り)|
+| Managed | ADMIN | Managedサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
+| Service Monitoring | ADMIN | Service Monitoringサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
+| Certificate Manager | ADMIN | Certificate Managerサービス Create(作成)、Read(読み取り)、Update(更新)、Delete(削除)  |
+| Certificate Manager | VIEWER | Certificate Managerサービス Read(読み取り)|
 | Private CA | ADMIN | Private CAサービスに対するCreate(作成), Read(読み取り), Update(更新), Delete(削除)  |
 | Private CA | VIEWER | Private CAサービスに対するRead(読み取り) |
 | eTax | ADMIN | eTax サービスCreate(作成), Read(読み取り), Update(更新), Delete(削除) |
