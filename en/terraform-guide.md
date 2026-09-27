@@ -45,10 +45,67 @@ resource "nhncloud_nas_storage_volume_interface_v1" "interface1" {
 ### Create a Volume { #terraform-resources-create-volume }
 
 !!! tip "Note: Using the CIFS protocol"
-    To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register CIFS credentials to allow to access each CIFS volume.
+    To use the CIFS protocol, you must create CIFS credentials. Credentials are managed on a per-project basis, and you must register CIFS credentials to allow access to each CIFS volume.
     You can create CIFS credentials through the **Storage > NAS > Manage CIFS Credentials** of the console.
-
+{%- if encryption %}
 <!-- -->
+
+!!! tip "Note: Encryption key store settings"
+    When you create encrypted volume, the symmetric key used for encryption is stored in a key store in the NHN Cloud Secure Key Manager service. Therefore, to create encrypted volume, you must first [create a key store](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service. [Check the key store ID](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption key store settings.
+    You can enter the key store ID from **Storage > NAS > Encryption Key Store Settings** in the console. When you create encrypted volume, the symmetric key is stored in the key store you set up. The symmetric key stored in the key store cannot be deleted while the encrypted volume is in use. When you delete encrypted volume, the symmetric key is also deleted.
+    When you change the key store ID, the symmetric key for encrypted volume you create in the future is stored in the changed key store. Symmetric keys stored in the existing key store are retained.
+{%- endif %}
+```hcl
+# Create an empty NAS volume with NFS protocol
+resource "nhncloud_nas_storage_volume_v1" "volume_01" {
+  name = "nas_volume_01"
+  size_gb = 300
+  mount_protocol {
+    protocol = "nfs"
+  }
+}
+
+# Create an empty NAS volume with CIFS protocol
+resource "nhncloud_nas_storage_volume_v1" "volume_02" {
+  name = "nas_volume_02"
+  size_gb = 300
+  mount_protocol {
+    protocol = "cifs"
+    cifs_auth_ids = ["auth_id"]
+  }
+}
+
+# Create a volume with ACL{% if encryption %}, encryption settings{% endif %}, and other settings
+resource "nhncloud_nas_storage_volume_v1" "volume_03" {
+  name = "nas_volume_03"
+  description = "Create NAS volume using Terraform"
+  size_gb = 300
+
+  acl = ["10.10.10.0/24"]
+
+{% if encryption %}
+  encryption {
+    enabled = true
+  }
+
+{% endif %}
+  mount_protocol {
+    protocol = "cifs"
+    cifs_auth_ids = ["auth_id"]
+  }
+
+  snapshot_policy {
+    max_scheduled_count = 3
+    reserve_percent = 10
+
+    schedule {
+      time = "00:00"
+      time_offset = "+09:00"
+      weekdays = [1, 3, 5]
+    }
+  }
+}
+```
 
 !!! tip "Note: Setting up encryption key storage"
     When an encrypted volume is created, the symmetric key used for encryption is stored in the NHN Cloud Secure Key Manager store. To create encrypted volume,[you must first create a keystore](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_1) in the Secure Key Manager service. After creating the keystore, [check its ID](https://docs.nhncloud.com/en/Security/Secure%20Key%20Manager/en/getting-started/#_2) and enter it in the encryption keystore settings.
@@ -112,19 +169,20 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | name | String | Y | - | Volume name |
 | description | String | N | O | Volume description |
 | size_gb | Integer | Y | O | Volume size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
-| acl | List | N | O | ACL list to set when creating a volume<br>Can be entered in IP or CIDR format. |
-| encryption | Object | N | - | Encryption setting object when creating a volume |
-| encryption.enabled | Boolean | N | - | Whether encryption is enabled<br>Encryption is enabled when this field is set to `true` after the encryption keystore is set. |
-| mount_protocol | Object | N | - | Protocol setting object when creating a volume |
-| mount_protocol.cifs_auth_ids | List(String) | N | O | List of CIFS authentication IDs<br>No input required when selecting the NFS protocol |
-| mount_protocol.protocol | String | Y | - | Protocol specification when mounting a volume<br>You can select either `nfs` or `cifs`. |
-| snapshot_policy | Object | N | - | Volume snapshot setting object |
-| snapshot_policy.max_scheduled_count | Integer | N | O | Maximum number of snapshots to store<br>You can set up to 30. When the maximum number of snapshots is reached, the oldest snapshot among the automatically created snapshots will be deleted. |
+{%- if encryption %}
+| encryption | Object | N | - | Encryption setting object for volume creation |
+| encryption.enabled | Boolean | N | - | Whether to enable encryption<br>After the encryption keystore is set up, setting its field to `true` enables encryption. |
+{%- endif %}
+| mount_protocol | Object | N | - | Protocol setting object for volume creation |
+| mount_protocol.cifs_auth_ids | List(String) | N | O | CIFS authentication ID list<br>No input required for NFS protocol selection |
+| mount_protocol.protocol | String | Y | - | Specify protocol for volume mounting<br>You can select one of `nfs` or `cifs`. |
+| snapshot_policy | Object | N | - | Snapshot setting object for volume |
+| snapshot_policy.max_scheduled_count | Integer | N | O | Maximum number of snapshots to store<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
 | snapshot_policy.reserve_percent | Integer | N | O | Snapshot capacity ratio |
-| snapshot_policy.schedule | Object | N | - | Snapshot auto-generation object<br>If `null`, automatic snapshot generation is not set. |
-| snapshot_policy.schedule.time | String | N | O | Automatic snapshot generation time |
-| snapshot_policy.schedule.time_offset | String | N | O | Automatic snapshot generation time zone |
-| snapshot_policy.schedule.weekdays | List | N | O | Automatic snapshot generation days<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
+| snapshot_policy.schedule | Object | N | - | Automatic snapshot generation object<br>If `null`, snapshot auto-creation will not be configured. |
+| snapshot_policy.schedule.time | String | N | O | Snapshot auto-creation time |
+| snapshot_policy.schedule.time_offset | String | N | O | Time zone for snapshot auto-create |
+| snapshot_policy.schedule.weekdays | List | N | O | Days for snapshot auto-creation<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
 
 <a id="terraform-resources-connect-interface"></a>
 ### Attach an Interface to a Volume { #terraform-resources-connect-interface }
@@ -149,8 +207,9 @@ resource "nhncloud_nas_storage_volume_interface_v1" "nas_interface_01" {
 <a id="terraform-resources-set-replication"></a>
 ### Set up Replication { #terraform-resources-set-replication }
 
-Creating a replication configuration resource automatically generates a destination volume.
-While you can update the destination volume by modifying the `dst_volume` parameters within the replication resource, the destination volume is not automatically deleted even if the replication configuration resource is removed.
+When you create a Replication Settings resource, the target volume is automatically created.
+
+You can update the target volume by changing the `dst_volume` setting value in the Replication Settings resource, but deleting the Replication Settings resource does not automatically delete the target volume.
 
 !!! danger "Caution"
     Modifying certain values in the replication configuration resource may cause the existing resource to be destroyed and recreated; however, the original destination volume will persist.
@@ -188,20 +247,24 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume | Object | Y | - | Replication target volume creation request object |
 | dst_volume.acl | List | N | O | ACL list to set when creating a volume<br>Can be entered in IP or CIDR format. |
 | dst_volume.description | String | N | O | Volume description |
-| dst_volume.encryption | Object | N | - | Encryption setting object when creating a volume |
-| dst_volume.encryption.enabled | Boolean | N | - | Whether to enable encryption setting<br>Encryption is enabled when this field is set to `true` after the encryption keystore is set. |
-| dst_volume.mount_protocol | Object | N | - | Protocol setting object when creating a volume |
-| dst_volume.mount_protocol.cifs_auth_ids | List(String) | N | O | List of CIFS authentication IDs<br>No input required when selecting an NFS protocol |
-| dst_volume.mount_protocol.protocol | String | Y | - | Specify protocol when mounting a volume<br>You can select either `nfs` or `cifs`. |
+
+{%- if encryption %}
+| dst_volume.encryption | Object | N | - | Encryption settings object for volume creation |
+| dst_volume.encryption.enabled | Boolean | N | - | Whether encryption settings are enabled<br>After the encryption key store is set up, setting its field to `true` enables encryption. |
+{%- endif %}
+| dst_volume.mount_protocol | Object | N | - | Protocol settings object for volume creation |
+| dst_volume.mount_protocol.cifs_auth_ids | List(String) | N | O | List of CIFS authentication IDs<br>No input required for NFS protocol selection |
+| dst_volume.mount_protocol.protocol | String | Y | - | Specify the protocol for mounting the volume<br>You can select one of `nfs` and `cifs`. |
 | dst_volume.name | String | Y | - | Volume name |
-| dst_volume.size_gb | Integer | Y | O | Volume Size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
-| dst_volume.snapshot_policy | Object | N | - | Volume Snapshot Setting Object |
-| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | Maximum Number of Snapshots to Store<br>You can set up to 30. When the maximum number of snapshots is reached, the oldest automatically created snapshot will be deleted. |
-| dst_volume.snapshot_policy.reserve_percent | Integer | N | O | Snapshot Capacity Ratio |
-| dst_volume.snapshot_policy.schedule | Object | N | O | Automatic Snapshot Creation Object<br>If `null`, automatic snapshot creation is not set. |
-| dst_volume.snapshot_policy.schedule.time | String | N | O | Automatic snapshot creation time |
-| dst_volume.snapshot_policy.schedule.time_offset | String | N | O | Automatic snapshot creation time zone |
-| dst_volume.snapshot_policy.schedule.weekdays | List | N | O | Automatic snapshot creation days<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday).
+| dst_volume.size_gb | Integer | Y | O | Volume size (GB)<br>Volumes can be set from a minimum of 300GB to a maximum of 10,000GB, in 100GB increments. |
+| dst_volume.snapshot_policy | Object | N | - | Volume snapshot settings object |
+| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | Maximum number of snapshots to store<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
+| dst_volume.snapshot_policy.reserve_percent | Integer | N | O | Snapshot capacity ratio |
+| dst_volume.snapshot_policy.schedule | Object | N | O | Automatic snapshot generation object<br>If `null`, snapshot auto-creation will not be configured. |
+| dst_volume.snapshot_policy.schedule.time | String | N | O | Automatic snapshot generation time |
+| dst_volume.snapshot_policy.schedule.time_offset | String | N | O | Time offset for automatic snapshot generation |
+| dst_volume.snapshot_policy.schedule.weekdays | List | N | O | Days of the week for automatic snapshot generation<br>An empty list means every day, and the days of the week are specified as a list of numbers from 0 (Sunday) to 6 (Saturday). |
+{%- endif %}
 
 <a id="reference"></a>
 ## References { #reference }
