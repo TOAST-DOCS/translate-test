@@ -1,506 +1,1004 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > 콘솔 사용 가이드
+<!-- pre-align:aligned sig=9deb1697d05f -->
 
-<a id="create-instances"></a>
-## 인스턴스 생성
+<a id="content-delivery-cdn-console-user-guide"></a>
+## Content Delivery > CDN > 콘솔 사용 가이드 { #content-delivery-cdn-console-user-guide }
 
-아래 설정들을 통하여 인스턴스를 생성하거나 인스턴스 템플릿(Instance Template)을 통해 인스턴스를 생성할 수 있습니다. 인스턴스 템플릿을 통해 인스턴스를 생성하려면 인스턴스 생성 화면에서 **인스턴스 템플릿 사용**을 선택합니다. 인스턴스 템플릿 생성 방법은 [인스턴스 템플릿 콘솔 가이드](/Compute/Instance%20Template/ko/console-guide/)를 참고합니다.
+이 문서는 NHN Cloud CDN 콘솔에서 CDN 서비스를 구성하고 이용하는 방법을 설명합니다.
 
-<a id="os-settings"></a>
-### OS 설정
+<a id="creating-cdn-service"></a>
+## CDN 서비스 생성 { #creating-cdn-service }
 
-인스턴스 생성 시 사용될 루트 블록 스토리지의 생성 방식을 결정합니다.
+**Contents Delivery > CDN**의 **CDN 서비스** 탭에서 **생성** 버튼을 클릭하면 **CDN 서비스 생성** 대화 상자가 나타납니다.
+CDN 서비스 도메인은 [서비스ID].toastcdn.net 형식으로 자동 생성됩니다. 만일 소유하고 있는 도메인을 서비스 도메인으로 이용하려면 **도메인 별칭**(domain alias) 기능을 이용할 수 있습니다.
+생성을 요청한 후 서비스 배포가 완료될 때까지 최대 2시간이 걸립니다. 배포가 완료된 후 서비스를 이용할 수 있습니다.
 
-- **신규 생성 및 설정** 또는 **기존 리소스 지정** 중 하나를 선택합니다.
-- **신규 생성 및 설정**을 선택한 경우 이미지를 이용하여 루트 블록 스토리지를 생성합니다.
-- **기존 리소스 지정**을 선택한 경우 기존에 생성된 블록 스토리지 또는 스냅숏을 이용합니다.
+> [참고] CDN 최초 생성 시 다운로드 최적화 소요 기간
+> CDN 최초 생성 후 최대 3일까지 다운로드 속도가 다소 느려질 수 있습니다.
 
-<a id="image"></a>
-### 이미지
+<a id="basic-information"></a>
+### 기본 정보 { #basic-information }
+기본 정보를 설정합니다.
+![CDN서비스생성-기본정보](https://static.toastoven.net/prod_cdn/v2/console-cdn-create-default2_202403.png)
 
-원하는 운영체제가 설치된 이미지를 선택합니다. 이미지는 NHN Cloud에서 제공하는 퍼블릭 이미지, 기존에 만들어 둔 사용자 이미지, 공유 이미지에서 선택할 수 있습니다.
+<a id="basic-information-description"></a>
+#### 설명
+CDN 서비스의 설명을 추가합니다.
 
-사용할 이미지에 따라 인스턴스 타입(flavor)이 달라지므로 인스턴스 생성 시에는 가장 먼저 이미지를 선택하고 진행하도록 합니다.
+<a id="basic-information-domain-alias"></a>
+#### 도메인 별칭
+TOAST CDN은 기본으로 [서비스ID].toastcdn.net 형식의 서비스 도메인 주소를 제공하고 있습니다.
+기본 서비스 도메인 주소가 아닌 소유한 도메인으로 CDN 서비스를 이용하려면 **도메인 별칭**에서 설정하면 됩니다.
+소유한 도메인으로 HTTPS 프로토콜 서비스를 이용하려면 먼저 **인증서 관리** 탭에서 인증서를 발급한 후 도메인 별칭을 설정해야 합니다.
+도메인 별칭 설정 후에는 도메인의 DNS 서비스 제공 업체에서 CNAME 레코드를 다음과 같이 등록해야 합니다. DNS 설정 관련해서는 DNS 서비스 제공 업체에 문의하세요.
+- 레코드 타입: `CNAME`
+- 레코드 이름: `[도메인 별칭에 등록한 도메인]`
+- 레코드 값(Rdata): `[서비스ID].toastcdn.net`
+- TTL: 임의의 값
 
-| 운영체제                         | 블록 스토리지     | 메모리   |
-| ------------------------------ | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB 이상  | 1GB 이상 |
-| Windows                         | 50GB 이상  | 2GB 이상 |
+<a id="basic-information-callback"></a>
+#### 콜백
+CDN 서비스 생성과 변경 작업(수정, 일시 정지/재시작, 삭제)은 몇 시간이 걸립니다.
+작업이 완료된 후 설정한 콜백 URL로 변경 상태와 CDN 설정 정보를 전달받으려면 콜백을 설정하세요. 콜백으로 전달되는 정보는 [API 가이드 문서](./api-guide-v2.0/#cdn-service)를 참고하세요.
+- **HTTP Method**와 **콜백 URL**을 입력합니다.
+- Query Parameter로 CDN 서비스 변경 작업 결과를 전달받으려면 **콜백 URL**에 다음의 경로(path) 변수를 포함해 입력하세요.
+  예: `http://callback.url?appKey={appKey}&status={status}&isSuccessful={isSuccessful})`
 
-<a id="root-block-storage"></a>
-### 루트 블록 스토리지
+| 경로(path) 변수 | 설명 | 예시 전달 값 |
+| ------------- | --- | ------- |
+| {appKey} | CDN 서비스 앱 키 | 콘솔에서 발급한 앱 키 |
+| {domain} | CDN 서비스 이름 | [서비스ID].toastcdn.net |
+| {status} | 현재 CDN 서비스 상태 | OPEN, SUSPEND, CLOSE, ERROR |
+| {isSuccessful} | 서비스 변경 작업 성공 여부(API v1.0은 지원하지 않습니다.) | "true" 또는 "false" |
 
-**OS 설정**에 따라 루트 블록 스토리지를 설정합니다.
+<a id="origin"></a>
+### 원본 서버 { #origin }
+CDN 서비스로 배포할 원본 파일을 제공하는 서버를 설정합니다.
+![CDN서비스생성-기본정보](https://static.toastoven.net/prod_cdn/v2/console-cdn-create-origin2_202403.png)
 
-- **신규 생성 및 설정**을 선택한 경우 **블록 스토리지 타입** 및 **블록 스토리지 크기**를 지정하여 루트 블록 스토리지를 생성합니다.
-- **기존 리소스 지정**을 선택한 경우 **원본 리소스**를 지정하여 루트 블록 스토리지로 사용합니다.
+<a id="origin-type"></a>
+#### 원본 타입
+- 오브젝트 스토리지: NHN Cloud Object Storage 서비스에서 생성한 컨테이너를 원본 서버로 설정합니다.
+    - 리전: 오브젝트 스토리지의 컨테이너 정보를 조회할 리전을 선택합니다.
+    - 이름: 원본 서버로 설정할 컨테이너의 이름을 입력합니다. 컨테이너 접근 정책이 `PUBLIC`인 컨테이너만을 원본 서버로 사용할 수 있습니다. 컨테이너가 원본 서버로 사용 가능할 경우, 원본 서버와 원본 경로에 컨테이너 정보가 자동으로 입력됩니다.
+- 인스턴스: NHN Cloud Instance 서비스에서 생성한 인스턴스를 원본 서버로 설정합니다.
+    - 리전: 인스턴스 목록을 조회할 리전을 선택합니다.
+    - 인스턴스: 리전을 선택하여 조회된 인스턴스 목록에서 원본 서버로 설정할 인스턴스를 선택합니다. 선택한 인스턴스의 IP가 원본 서버에 자동으로 입력되며, 사용할 원본 서버의 포트는 직접 입력해야 합니다. 플로팅 IP가 연결된 인스턴스만을 원본 서버로 사용할 수 있습니다.
+- 직접 입력: 별도로 운영 중인 원본 서버를 설정합니다.
 
-#### 원본 리소스
+<a id="origin-server"></a>
+#### 원본 서버
+원본 서버는 CDN 서비스로 배포할 원본 파일을 제공하는 서버입니다. 원본 서버는 IPv4 또는 전체 도메인 주소(FQDN, fully qualified domain name) 형식으로 입력할 수 있습니다. IP 주소는 변경될 가능성이 높기 때문에 도메인으로 설정하는 것을 권장합니다.
+운영 중인 원본 서버가 없다면, **원본 타입**의 **인스턴스** 옵션을 선택하여 NHN Cloud Instance 서비스의 인스턴스를 사용하거나 **오브젝트 스토리지** 옵션을 선택하여 NHN Cloud Object Storage 서비스의 컨테이너를 이용할 수 있습니다.
+CDN 서비스 도메인으로 보안 전송(HTTPS)을 지원하려면 원본 서버는 HTTPS 응답을 지원해야 합니다.
+이는 원본 서버에 NHN Cloud CDN이 신뢰하는 인증서가 설치돼 있어야 한다는 뜻입니다.
+신뢰하는 인증서는 다음 표를 참고하세요.
+만일, 원본 서버가 HTTPS 응답을 지원할 수 없다면 **원본 요청 HTTP 프로토콜 다운그레이드** 설정을 이용하세요.
+단, **원본 요청 HTTP 프로토콜 다운그레이드**는 제약 사항이 있으므로 원본 서버가 HTTPS 프로토콜을 지원하는 것을 권장합니다.
 
-기존에 생성된 **블록 스토리지** 또는 **스냅숏** 중 하나를 선택할 수 있습니다.
+[표 1] 신뢰하는 인증서 목록
 
-- **블록 스토리지**를 선택 시 기존에 생성된 블록 스토리지를 루트 블록 스토리지로 사용합니다.
-- **스냅숏**을 선택 시 기존에 생성된 스냅숏을 이용하여 루트 블록 스토리지를 생성합니다.
+| Common name| Expire Date |SHA-1 Fingerprint |
+|---|---|---|
+|SecureTrust CA|1.Jan.30|8782c6c304353bcfd29692d2593e7d44d934ff11|
+|Entrust.net Certification Authority (2048)|24.Jul.29|503006091d97d4f5ae39f7cbe7927d7d652d3431|
+|DigiCert Global Root CA|10.Nov.31|a8985d3a65e5e5c4b2d7d66d40c6dd2fb19c5436|
+||30.Sep.23|36b12b49f9819ed74c9ebc380fc6568f5dacb2f7|
+|QuoVadis Root CA 2 G3|13.Jan.42|093c61f38b8bdc7d55df7538020500e125f5c836|
+|thawte Primary Root CA|17.Jul.36|91c6d6ee3e8ac86384e548c299295c756c817b81|
+|Go Daddy Root Certificate Authority - G2|1.Jan.38|47beabc922eae80e78783462a79f45c254fde68b|
+|GeoTrust Primary Certification Authority|17.Jul.36|323c118e1bf7b8b65254e2e2100dd6029037f096|
+|VeriSign Class 3 Public Primary Certification Authority - G4|19.Jan.38|22d5d8df8f0231d18df79db7cf8a2d64c93f6c3a|
+|Entrust Root Certification Authority|28.Nov.26|b31eb1b740e36c8402dadc37d44df5d4674952f9|
+||29.May.29|5f3b8cf2f810b37d78b4ceec1919c37334b9c774|
+|AffirmTrust Commercial|31.Dec.30|f9b5b632455f9cbeec575f80dce96e2cc7b278b7|
+|Amazon Root CA 4|26.May.40|f6108407d6f8bb67980cc2e244c2ebae1cef63be|
+|Certum CA|11.Jun.27|6252dc40f71143a22fde9ef7348e064251b18118|
+|DST Root CA X3|30.Sep.21|dac9024f54d8f6df94935fb1732638ca6ad77c13|
+|TC TrustCenter Class 2 CA II|1.Jan.26|ae5083ed7cf45cbc8f61c621fe685d794221156e|
+|SwissSign Gold CA - G2|25.Oct.36|d8c5388ab7301b1b6ed47ae645253a6f9f1a2761|
+|USERTrust ECC Certification Authority|19.Jan.38|d1cbca5db2d52a7f693b674de5f05a1d0c957df0|
+|QuoVadis Root CA 2|25.Nov.31|ca3afbcf1240364b44b216208880483919937cf7|
+|COMODO ECC Certification Authority|19.Jan.38|9f744e9f2b4dbaec0f312c50b6563b8e2d93c311|
+|USERTrust RSA Certification Authority|19.Jan.38|2b8f1b57330dbba2d07a6c51f70ee90ddab9ad8e|
+|ISRG Root X1|4.Jun.35|cabd2a79a1076a31f21d253635cb039d4329a5e8|
+|DigiCert High Assurance EV Root CA|10.Nov.31|5fb7ee0633e259dbad0c4c9ae6d38f1a61c7dc25|
+|VeriSign Class 3 Public Primary Certification Authority - G5|17.Jul.36|4eb6d578499b1ccf5f581ead56be3d9b6744a5e5|
+|GlobalSign|15.Dec.21|75e0abb6138512271c04f85fddde38e4b7242efe|
+|QuoVadis Root CA 3|25.Nov.31|1f4914f7d874951dddae02c0befd3a2d82755185|
+|GlobalSign|18.Mar.29|d69b561148f01c77c54578c10926df5b856976ad|
+|Starfield Services Root Certificate Authority - G2|1.Jan.38|925a8f8d2c6d04e0665f596aff22d863e8256f3f|
+|Baltimore CyberTrust Root|13.May.25|d4de20d05e66fc53fe1a50882c78db2852cae474|
+|AAA Certificate Services|1.Jan.29|d1eb23a46d17d68fd92564c2f1f1601764d8e349|
+|Amazon Root CA 3|26.May.40|0d44dd8c3c8c1a1a58756481e90f2e2affb3d26e|
+|VeriSign Class 3 Public Primary Certification Authority - G3|17.Jul.36|132d0d45534b6997cdb2d5c339e25576609b5cc6|
+|GlobalSign Root CA|28.Jan.28|b1bc968bd4f49d622aa89a81f2150152a41d829c|
+|Actalis Authentication Root CA|22.Sep.30|f373b387065a28848af2f34ace192bddc78e9cac|
+|AffirmTrust Networking|31.Dec.30|293621028b20ed02f566c532d1d6ed909f45002f|
+|AffirmTrust Premium|31.Dec.40|d8a6332ce0036fb185f6634f7d6a066526322827|
+|QuoVadis Root Certification Authority|18.Mar.21|de3f40bd5093d39b6c60f6dabc076201008976c9|
+||6.Jun.37|feb8c432dcf9769aceae3dd8908ffd288665647d|
+|GeoTrust Primary Certification Authority - G3|2.Dec.37|039eedb80be7a03c6953893b20d2d9323a4c2afd|
+|thawte Primary Root CA - G2|19.Jan.38|aadbbc22238fc401a127bb38ddf41ddb089ef012|
+|VeriSign Universal Root Certification Authority|2.Dec.37|3679ca35668772304d30a5fb873b0fa77bb70d54|
+|Cybertrust Global Root|15.Dec.21|5f43e5b1bff8788cac1cc7ca4a9ac6222bcc34c6|
+|Global Chambersign Root|1.Oct.37|339b6b1450249b557a01877284d9e02fc3d2d8e9|
+|SwissSign Silver CA - G2|25.Oct.36|9baae59f56ee21cb435abe2593dfa7f040d11dcb|
+|Amazon Root CA 1|17.Jan.38|8da7f965ec5efc37910f1c6e59fdc1cc6a6ede16|
+|Entrust Root Certification Authority - G2|8.Dec.30|8cf427fd790c3ad166068de81e57efbb932272d4|
+|Amazon Root CA 2|26.May.40|5a8cef45d7a69859767a8c8b4496b578cf474b1a|
+|DigiCert Assured ID Root CA|10.Nov.31|0563b8630d62d75abbc8ab1e4bdfb5a899b24d43|
+||30.Jun.34|2796bae63f1801e277261ba0d77770028f20eee4|
+|COMODO Certification Authority|1.Jan.30|6631bf9ef74f9eb6c9d5a60cba6abed1f7bdef7b|
+|AddTrust External CA Root|30.May.20|02faf3e291435468607857694df5e45b68851868|
+|COMODO RSA Certification Authority|19.Jan.38|afe5d244a8d1194230ff479fe2f897bbcd7a8cb4|
+|thawte Primary Root CA - G3|2.Dec.37|f18b538d1be903b6a6f056435b171589caf36bf2|
+|DigiCert Global Root G3|15.Jan.38|7e04de896a3e666d00e687d33ffad93be83d349e|
+|GeoTrust Global CA|21.May.22|de28f4a4ffe5b92fa3c503d1a349a7f9962a8212|
+|DigiCert Global Root G2|15.Jan.38|df3c24f9bfd666761b268073fe06d1cc8d4f82a4|
 
-#### 블록 스토리지 크기
+<a id="origin-server-port"></a>
+#### 원본 서버 포트
+원본 서버는 웹 프로토콜을 지원하는 서비스로 운영해야 합니다. 운영 중인 HTTP/HTTPS 프로토콜의 서비스 포트 번호를 설정할 수 있습니다.  
+원본 서버 포트는 HTTP 또는 HTTPS 포트 중 하나를 반드시 입력해야 하며, 설정하지 않은 포트는 기본 포트 `HTTP:80`, `HTTPS:443`으로 설정됩니다.  
+원본 서버 포트는 제한된 포트만 설정할 수 있습니다. 설정 가능한 포트 번호는 다음 표를 참고하세요.
 
-인스턴스의 루트 블록 스토리지 크기를 결정합니다.
+[표 2] 사용 가능한 원본 서버 포트 번호
 
-- 블록 스토리지 크기는 이미지가 요구하는 최소 크기 이상으로 만들어야 합니다.
+|포트 번호|
+|---|
+|72, 488, 1080, 1443, 7070|
+|8000-9001|
+|11080-11110|
+|80-89|
+|591, 1088, 2080, 7612|
+|12900-12949|
+|443, 777, 1111, 7001, 7777|
+|9901-9908|
+|45002|
 
-인스턴스의 루트 블록 스토리지 크기는 인스턴스 타입에 따라 달라집니다.
+<a id="origin-server-original-path"></a>
+#### 원본 경로
+원본 파일의 경로 중 하위 경로를 설정합니다. 콘텐츠를 요청할 때 원본 경로를 생략하고 요청할 수 있습니다.
 
-| 타입               | 지원하는 블록 스토리지 크기         |
-| -------------------| -------------------------- |
-| u2 타입             | 20 ~ 100 GB (타입별로 고정) |
-| t2, m2, c2, r2, x1 타입 | 20 ~ 2000GB               |
+> [예시] 원본 경로를 /files/images로 설정한 경우
+>
+> - 원본 파일 URL: http://your.origin.com/files/images/logo.png
+> - CDN 서비스 URL: http://[서비스ID].toastcdn.net/logo.png
+> - CDN 서비스 URL에서 원본 경로(/files/images)를 생략하여 요청할 수 있습니다.
 
-> [참고]
-> 블록 스토리지 크기에 따라 과금되므로 기본 블록 스토리지의 크기를 무조건 크게 만드는 것은 비효율적입니다. 필요에 따라 블록 스토리지를 추가하여 사용하는 것이 좋습니다.
-> **OS 설정**에서 **기존 리소스 지정**을 **블록 스토리지**로 선택한 경우 블록 스토리지 크기 변경은 불가능합니다.
-> **OS 설정**에서 **기존 리소스 지정**을 **스냅숏**으로 선택한 경우 블록 스토리지 크기는 원본 블록 스토리지 크기보다 같거나 크게 설정되어야 합니다.
+<a id="origin-server-downgrading-http-protocols-requesting-originals"></a>
+#### 원본 요청 HTTP 프로토콜 다운그레이드
+CDN 에지(edge) 서버는 원본 서버에 원본 파일을 요청할 때 클라이언트의 원본 요청(request)의 서비스 프로토콜(HTTP/HTTPS)로 요청합니다.
+즉, 클라이언트가 HTTPS로 요청하고 원본 서버가 HTTPS 응답을 지원하지 않으면, CDN 에지 서버에서 원본 서버로 요청할 때 HTTPS 프로토콜로 요청하기 때문에 원본 파일을 응답받을 수 없습니다.
+원본 서버에서 HTTP 프로토콜만 운영한다면, **원본 서버 HTTP 프로토콜 다운그레이드** 설정을 사용해 CDN 에지 서버에서 원본 서버로 요청할 때 HTTPS 프로토콜을 HTTP 프로토콜로 다운그레이드해서 요청할 수 있습니다.
+즉, 클라이언트에서 CDN 에지 서버 구간은 보안 통신(HTTPS)으로 통신하고, CDN 에지 서버에서 원본 서버 구간은 비보안 통신(HTTP)으로 통신하게 됩니다.
+원본 요청 HTTP 프로토콜을 다운그레이드할 때는 다음과 같은 제약 사항이 있습니다.
+> [주의] 원본 요청 HTTP 프로토콜 다운그레이드 제약 사항
+> - 전체 사이트 주소는 프로토콜 다운그레이드를 할 수 없습니다. 예를 들어 원본 서버의 전체 사이트 주소인 www.nhn.com는 다운그레이드할 수 없습니다.
+> - `GET`, `HEAD` 및 `OPTIONS` 메서드 외 메서드는 지원되지 않습니다.
+> - CDN 서버에서 원본 서버로 다운그레이드를 요청할 때 다음의 헤더는 제외될 수 있습니다.
+    >    `Origin`, `Referer`, `Cookie`, `Cookie2`, `sec-\*`, `proxy-\*`
 
-#### 블록 스토리지 타입
+<a id="origin-server-forward-host-header"></a>
+#### Forward Host Header
+CDN 서버가 원본 서버에 원본 파일을 요청할 때 전달할 `Host` 헤더 값을 설정합니다.
+원본 서버가 Name-based virtual host로 운영 중이라면 **요청 호스트 헤더** 설정이 필요할 수 있습니다. 원본 서버의 운영 형태에 따라 적합한 설정 값을 선택하세요.
+- 원본 호스트 이름: 원본 서버의 호스트 이름을 `Host` 헤더로 설정합니다.
+- 요청 호스트 헤더: 클라이언트 요청의 `Host` 헤더로 설정합니다.
 
-인스턴스의 기본 블록 스토리지 타입을 결정합니다.
+> [주의] 보안 전송(HTTPS) 사용 시 Host 헤더와 원본 서버 인증서의 유효성 검사
+> 클라이언트가 보안 전송(HTTPS)으로 콘텐츠를 요청하면 CDN 서버는 원본 서버의 인증서 유효 여부를 확인합니다.
+> 원본 서버에는 `Host` 요청 헤더와 일치하는 CN(Common Name) 또는 SAN(Subject Alternate Name)의 인증서가 설치되어 있어야 합니다.
+> `Host` 요청 헤더와 일치하는 인증서가 원본 서버에 설치되어 있지 않은 경우 보안 전송 오류가 발생합니다.
+> `Host` 요청 헤더는 Forward Host Header 설정에 따라 요청 호스트 헤더 또는 원본 호스트 이름으로 설정되므로 유의하세요.
 
-- **HDD** 또는 **SSD** 중 하나를 선택합니다. 타입에 따라 요금과 성능이 달라집니다.
-- 한번 선택한 블록 스토리지 타입은 변경할 수 없습니다.
+<a id="controlling-the-access-of-root-path"></a>
+### 루트 경로 접근 관리 { #controlling-the-access-of-root-path }
+CDN 서비스의 루트 경로에 대한 접근 제어를 설정할 수 있습니다.
+![CDN서비스생성-루트경로](https://static.toastoven.net/prod_cdn/v2/console-cdn-create-origin2_202403.png)
 
-> [참고] 
-> **OS 설정**에서 **기존 리소스 지정**을 선택한 경우 블록 스토리지 타입 변경은 불가능합니다.
+<a id="controlling-the-access-of-root-path-set-root-path-access"></a>
+#### 루트 경로 접근 설정
+- 사용: 루트 경로 접근 관리 기능을 활성화하여 루트 경로에 대한 요청을 차단하거나, 다른 페이지로 리다이렉트하도록 설정합니다.
+- 미사용: 루트 경로 접근 관리 기능을 비활성화합니다.
+<a id="controlling-the-access-of-root-path-access-control-method"></a>
+#### 접근 제어 방식
+- Deny: 루트 경로에 대한 요청에 HTTP Response Code 403을 응답합니다.
+- Redirect: 루트 경로에 대한 요청을 사용자가 지정한 경로로 리다이렉트합니다.
+<a id="controlling-the-access-of-root-path-redirect-path"></a>
+#### Redirect 경로
+루트 경로에 대한 요청을 리다이렉트할 경로를 입력합니다. Redirect 경로는 '/'로 시작해야 하고, CDN 서비스의 하위에 존재하는 경로여야 합니다.
+<a id="controlling-the-access-of-root-path-redirect-http-response-code"></a>
+#### Redirect HTTP Response Code
+- 루트 경로에 대한 요청을 리다이렉트하고 전달할 HTTP Response Code를 설정합니다.
+- Redirect HTTP Response Code는 301, 302, 303, 307 중에서 선택할 수 있습니다.
 
-<a id="availability-zone"></a>
-### 가용성 영역(availability zone)
+<a id="method"></a>
+### 메서드 { #method }
+CDN에서 기본적으로 허용하는 메서드는 `GET`, `HEAD`, `OPTIONS`로, 이외의 메서드를 요청하면 거절 처리됩니다.
+해당 메서드 이외의 메서드를 허용하려면 원하는 메서드를 선택해 설정합니다.
+![CDN서비스생성-루트경로](https://static.toastoven.net/prod_cdn/v2/console-cdn-create-root-path_202403.png)
 
-가용성 영역을 명시적으로 설정하지 않는 경우, 임의의 영역으로 설정됩니다. 가용성 영역에 따라 이 인스턴스가 사용할 수 있는 블록 스토리지가 결정됩니다. 사용하려는 블록 스토리지가 특정 가용성 영역에 존재한다면 해당 가용성 영역으로 설정하여 사용합니다.
+<a id="method-allow-method-settings"></a>
+#### 메서드 허용 설정
+허용 설정한 메서드 요청은 캐싱되지 않고 원본 서버로 전달됩니다.
 
-> [참고] 
-> VPC의 자원들은 모든 가용성 영역에서 사용할 수 있습니다.
-> **OS 설정**에서 **기존 리소스 지정**을 선택한 경우 가용성 영역은 변경이 불가능합니다.
+<a id="cache"></a>
+### 캐시 { #cache }
 
-가용성 영역에 대한 자세한 설명은 [인스턴스 개요의 가용성 영역](./overview/#availability-zone)을 참고합니다.
+CDN 캐시 동작 설정과 만료 시간을 설정할 수 있습니다.
+![CDN서비스생성-캐시](https://static.toastoven.net/prod_cdn/v2/console-cdn-create-root-path_202403.png)
 
-<a id="flavor"></a>
-### 타입(flavor)
+<a id="cache-configuration-of-cache"></a>
+#### 캐시 설정
+CDN 서버가 원본 파일을 캐싱할 때 사용할 캐시 설정을 선택할 수 있습니다.
+- 원본 설정 사용: 원본 서버의 응답에서 제공한 캐시 제어 헤더(`Cache-Control`, `Expires`)를 우선 적용합니다. 만일 원본 서버의 응답에 캐시 제어 헤더(`Cache-Control`, `Expires`)가 유효하지 않거나 없는 경우, 캐시 만료 시간(초)에 지정한 시간 동안 캐시됩니다. **원본 설정 사용** 옵션이 기본값입니다.
+- 사용자 설정 사용: 캐시 만료 시간(초)에 지정한 시간 동안 캐시됩니다.
+- Bypass Cache: 해당 설정 이전에 생성된 캐시는 유지한 채 이후 콘텐츠 요청을 캐싱하지 않습니다.
+- No Store: 기존의 캐시를 모두 제거하고 CDN 캐시 기능을 비활성화합니다.
 
-가상 하드웨어의 성능에 따라 다양한 타입을 선택할 수 있습니다. 다만, 이미지에서 요구하는 가상 하드웨어의 성능에 따라 선택할 수 있는 타입이 제한될 수 있습니다. 보다 자세한 설명은 [인스턴스 개요](./overview)를 참고합니다.
+<a id="cache-expiration-time-seconds"></a>
+#### 캐시 만료 시간(초)
+캐시 만료 시간을 지정하려면 **사용자 설정 사용** 버튼을 클릭하고 **캐시 만료 시간(초)**에서 캐시 만료 시간을 변경합니다.
 
-> [참고]
-> 1 vCPU는 스레드 하나와 코어 하나로 구성된 소켓 한 개를 의미하며, 소켓 한 개당 스레드 수와 코어 수는 각각 한 개로 일정합니다.
+<a id="cache-set-inclusion-of-query-string-in-cache-key"></a>
+#### 캐시 키 쿼리 문자열 포함 설정
+URL 기반으로 생성되는 캐시 키에 요청 쿼리 문자열을 포함할지 설정할 수 있습니다.
+- 전체 포함: 요청에 포함된 전체 쿼리 문자열을 캐시 키에 포함합니다. 캐시 키에 요청 쿼리 문자열이 포함되므로, 동일한 콘텐츠 요청에 대해 쿼리 문자열이 변경될 때마다 새로운 캐시 키가 생성됩니다. 요청 쿼리 문자열을 변경하여 콘텐츠를 새로 캐싱하려는 경우 선택합니다. **전체 포함** 옵션이 기본값입니다.
+- 전체 제외: 요청에 포함된 쿼리 문자열을 모두 제외하고 URL만을 이용하여 캐시 키를 생성합니다. 요청 쿼리 문자열이 지속적으로 변경되어야 하는 경우, 해당 옵션을 설정해야 캐싱이 동작합니다.
 
-인스턴스의 타입은 생성 이후에도 NHN Cloud 콘솔에서 변경할 수 있습니다. 높은 타입에서 낮은 타입으로 변경할 수 있고, 낮은 타입에서 높은 타입으로도 변경할 수 있습니다. 일부 타입은 변경할 수 없는 경우도 있으니, 자세한 것은 [인스턴스 타입 변경](./console-guide/#modify-flavor)을 참고합니다.
+> [참고] 캐시 만료 시간 기본값과 유효 범위
+> 캐시 만료 시간 기본값은 0입니다. 기본값을 0으로 설정하면 캐시 만료 시간은 604,800(단위/초)=1주일입니다.
+> 캐시 만료 시간은 기본값인 0부터 2,147,483,647(단위/초)까지 입력할 수 있습니다.
 
-> [주의] 인스턴스의 루트 블록 스토리지는 타입 변경으로 바꿀 수 없습니다.
 
-<a id="number-of-instances"></a>
-### 인스턴스 수
+<a id="cache-large-file-optimization"></a>
+#### Large File Optimization
+100MB 이상의 대용량 파일을 서비스할 때 성능과 안정성을 높이기 위한 설정입니다. 설정하지 않을 경우 CDN에서 허용하는 파일의 최대 용량은 1.8GB 미만이며, 1.8GB 이상의 대용량 파일을 서비스하려면 본 설정을 반드시 사용해야 합니다.
 
-이미지, 가용성 영역, 타입, 블록 스토리지 크기, 키페어, 네트워크 설정이 모두 동일한 인스턴스를 여러 개 생성할 경우에 사용합니다. 인스턴스의 이름은 설정한 이름 뒤에 `-1`, `-2`와 같이 번호가 붙어 생성됩니다. 예를 들어, 인스턴스 이름을 `my-instance`로 인스턴스를 2개 만들면, `my-instance-1`, `my-instance-2`가 생성됩니다. 한 번에 생성할 수 있는 최대 인스턴스의 개수는 10개입니다.
+> [참고] NHN Cloud Object Storage 서비스에서 생성한 컨테이너를 원본 서버로 사용하는 경우
+> Large File Optimization 기능이 정상적으로 동작하기 위해서는 원본 서버에서 전달되는 `ETag` 응답 헤더가 큰따옴표로 묶인 형태여야 합니다.
+> NHN Cloud Object Storage 컨테이너에 `ETag` 응답 헤더 형식 설정에 대한 자세한 내용은 Object Storage 서비스의 API 가이드 내 [컨테이너 설정 변경 > RFC를 준수하는 ETag 형식 사용 설정](/ko/Storage/Object%20Storage/ko/api-guide/#change-container-settings/)을 참고하세요.
 
-임의의 가용성 영역에 인스턴스를 여러 개 생성한 경우, 각각 인스턴스는 임의의 가용성 영역에 만들어집니다. 예를 들어, 2개의 인스턴스를 임의의 가용성 영역으로 생성한 경우, 2개가 같은 가용성 영역에 만들어질 수도 있고 다른 가용성 영역에 만들어질 수도 있습니다. 모든 인스턴스가 같은 가용성 영역에 생성되어야 한다면, 특정 가용성 영역을 선택하여 생성합니다.
 
-> [참고]
-> **OS 설정**에서 **기존 리소스 지정**을 **블록 스토리지**로 선택하거나 **네트워크 설정**에서 **기존 네트워크 인터페이스 지정**을 선택한 경우 인스턴스 수는 `1`로 제한됩니다.
+<a id="access-management-for-referer-header"></a>
+### 리퍼러(referer) 헤더 접근 관리 { #access-management-for-referer-header }
+리퍼러 요청 헤더로 콘텐츠의 접근 관리를 설정합니다.
+![CDN서비스생성-캐시](https://static.toastoven.net/prod_cdn/v2/console-cdn-create-root-path_202403.png)
 
-<a id="key-pair"></a>
-### 키페어
+리퍼러 요청 헤더는 현재 요청된 페이지의 링크 이전의 웹 페이지 주소를 포함합니다. 리퍼러 요청 헤더로 어떤 경로에서 요청이 유입되었는지 알 수 있습니다. 리퍼러 헤더 접근 관리는 특정 리퍼러 요청 헤더만 사용자 콘텐츠에 접근할 수 있도록 설정할 수 있습니다.
+정규 표현식 형태로 입력할 수 있으며, 여러 개를 입력할 때는 줄바꿈을 한 뒤 입력합니다.
 
-기존 키페어를 사용하거나, 새로 키페어를 생성하여 사용합니다. 기존 키페어 등록은 Windows 사용자의 경우 [키페어 가져오기(Windows 사용자)](./console-guide/#import-key-pairs-windows), Mac과 Linux 사용자의 경우 [키페어 가져오기(Mac, Linux 사용자)](./console-guide/#import-key-pairs-mac-and-linux)를 참고합니다.
+<a id="access-management-for-referer-header-access-control-types"></a>
+#### 접근 제어 방식
+- 블랙리스트(blacklist) 타입
+    * 특정 리퍼러 요청 헤더만 접근을 제한할 때 적합합니다.
+    * 리퍼러 요청 헤더값이 설정한 정규 표현식에 매칭되는 문자열이면 콘텐츠 접근이 제한됩니다. 매칭되지 않는 문자열이면 콘텐츠 접근이 허용됩니다.
+- 화이트리스트(whitelist) 타입
+    * 특정 리퍼러 요청 헤더만 접근을 허용할 때 적합합니다.
+    * 리퍼러 요청 헤더값이 정규 표현식에 매칭되는 문자열이면 콘텐츠 접근이 허용됩니다. 매칭되지 않는 문자열이면 콘텐츠 접근이 제한됩니다.
 
-> [참고]
-> 키페어는 사용자 계정에 할당된 리소스이므로 프로젝트를 삭제해도 삭제되지 않고 유지됩니다.
+<a id="access-management-for-referer-header-content-access-if-referer-header-is-unavailable"></a>
+#### 리퍼러 헤더가 없는 경우 접근 허용
+리퍼러(referer) 요청 헤더가 없는 경우 콘텐츠 접근 허용 여부를 선택합니다.
+- 허용: 리퍼러 요청 헤더가 없는 경우 콘텐츠 접근을 허용하며 리퍼러 접근 제어가 동작하지 않습니다.
+- 거부: 리퍼러 요청 헤더가 없는 경우 콘텐츠 접근을 거부하고 등록된 리퍼러에 대해서만 접근을 허용합니다.
 
-<a id="network"></a>
-### 네트워크
+> [예시]
+> - 타입: 화이트리스트(whitelist)
+> - 정규 표현식: `^https://[a-zA-Z0-9._-]*\.nhn\.com/.*`
+    > 임의의 nhn.com 서브 도메인의 하위 경로에서 리소스를 요청한 경우에만 콘텐츠 접근을 허용합니다.
+>
+> [참고] 정규 표현식의 이스케이프 문자
+> - 일부 문자는 정규 표현식에서 특수 문자로 사용됩니다.
+> - 점(`.`)을 예로 들자면, 정규 표현식에서 점(`.`)은 모든 문자와 일치함을 나타내는 특수 문자입니다.
+> - 특수 문자로의 의미가 아닌 일반 문자 그대로 해석해야 한다면 이스케이프 문자 백슬래시(`\`)를 특수 문자 앞에 추가하면 됩니다(예: `\.`).
+> - 정규 표현식의 특수 문자에는 `^ . [ ] $ ( ) | * + ? { } \` 등이 있습니다.
+> - 여러 개의 리퍼러를 제어할 때는 다음 줄에 연속해 입력합니다.
+> - API를 이용해 여러 개의 리퍼러를 설정할 때는 `\n` 토큰으로 구분해 입력합니다.
 
-VPC에서 정의된 서브넷 중에서 인스턴스에 연결할 서브넷을 선택합니다. 서브넷을 하나 선택할 때마다 인스턴스에 해당 서브넷에 연결될 네트워크 인터페이스가 만들어집니다. 선택된 서브넷의 순서를 바꾸어서 네트워크 인터페이스를 변경할 수도 있습니다. 이 경우, 첫 번째 네트워크 인터페이스(`eth0`)가 기본 게이트웨이로 설정됩니다.
 
-네트워크 생성과 관리에 대한 자세한 설명은 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
+<a id="access-control-for-auth-token-authentication"></a>
+### Auth Token 인증 접근 관리 { #access-control-for-auth-token-authentication }
+Auth Token 인증 접근 관리는 콘텐츠 요청에 인증 토큰을 추가하여 CDN 에지 서버에서 검증된 토큰만 콘텐츠 접근을 허용하는 보안 기능입니다.
+일회성으로 콘텐츠 접근을 허용하거나 제한된 사용자만 콘텐츠에 접근하도록 제어할 수 있습니다.
+토큰이 없거나 유효하지 않은 토큰으로 콘텐츠를 요청한 경우, `403 Forbidden` 응답이 전송되며 콘텐츠에 접근할 수 없습니다.
 
-<a id="floating-ip"></a>
-### 플로팅 IP
-
-인스턴스 생성 후 플로팅 IP 사용 여부를 지정합니다. 플로팅 IP 사용을 선택하면, 플로팅 IP를 새로 생성하여 첫번째 네트워크 인터페이스에 연결합니다. 이 때 첫번째 네트워크 인터페이스는 반드시 인터넷 게이트웨이가 설정된 서브넷에 연결되어 있어야 합니다.
-
-플로팅 IP 관리는 인스턴스 > 관리 페이지 또는 인스턴스 > 플로팅 IP 페이지에서도 할 수 있습니다. 플로팅 IP에 대한 보다 자세한 설명은 [VPC 콘솔 사용 가이드](/Network/VPC/ko/console-guide/)를 참고합니다.
-
-<a id="security-group"></a>
-### 보안 그룹
-
-인스턴스가 속할 보안 그룹을 지정합니다. 인스턴스 하나는 여러 보안 그룹에 속할 수 있습니다. 인스턴스가 여러 보안 그룹에 속한 경우에는 다음을 참고합니다.
-
-- 각 보안 그룹에 속한 모든 인스턴스와 네트워크 통신이 가능합니다. 다른 인스턴스의 의도하지 않은 접근을 막아야할 민감한 데이터를 가진 인스턴스의 경우에는 신중하게 보안 그룹을 지정해야 합니다.
-- 각 보안 그룹의 모든 룰이 합쳐져서 해당 인스턴스의 외부 통신에 적용됩니다.
-
-보안 그룹에 대한 보다 자세한 설명은 [VPC 콘솔 사용 가이드](/Network/VPC/ko/console-guide/)를 참고합니다.
-
-<a id="additional-block-storage"></a>
-### 추가 블록 스토리지
-
-인스턴스 생성 후 추가 블록 스토리지 연결 여부를 지정합니다. 추가 블록 스토리지 사용을 선택하면 루트 블록 스토리지와 별개인 새로운 블록 스토리지를 생성하여 인스턴스에 연결합니다. 루트 블록 스토리지와 마찬가지로 추가 블록 스토리지를 생성할 때 이름, 스토리지 타입, 크기를 지정할 수 있습니다.
-
-루트 블록 스토리지는 OS 용도로만 사용하고 추가 블록 스토리지에 자주 사용하는 응용 프로그램이나 데이터를 보관하면 블록 스토리지 연결/해제 또는 스냅샷 기능을 통해 쉽게 이전하거나 복제할 수 있습니다. 또한 인스턴스 장애가 발생했을 때 추가 블록 스토리지만 해제한 뒤 다른 인스턴스에 연결하여 쉽게 서비스를 복구할 수 있습니다.
-
-블록 스토리지 관리는 인스턴스 > 블록 스토리지 페이지에서도 할 수 있습니다. 블록 스토리지에 대한 보다 자세한 설명은 [블록 스토리지 가이드](/Storage/Block%20Storage/ko/overview/)를 참고합니다.
-
-<a id="placement-policy"></a>
-### 배치 정책
-
-배치 정책을 사용하여 인스턴스들을 서로 다른 하이퍼바이저로 배치할 수 있습니다. 인스턴스 생성 시 배치 정책을 설정하면 동일 배치 정책에 할당된 인스턴스들은 서로 다른 하이퍼바이저에 생성됩니다.
+Auth Token 인증 접근을 CDN 서비스에 적용하려면 다음의 단계에 따라 작업이 필요합니다.
 
 > [주의]
-> 분산 배치가 불가능한 상황인 경우 인스턴스 생성에 실패할 수 있습니다.
+>
+> Auth Token 인증 접근 관리는 NHN Cloud CDN을 이용해 서비스 중인 애플리케이션에서도 다음의 구현이 필요합니다.
+> -  콘텐츠 접근에 필요한 토큰을 생성해야 합니다.
+> -  클라이언트(최종 콘텐츠 소비자)가 생성된 토큰을 포함하여 콘텐츠를 요청할 수 있도록 해야 합니다.
+     > 이 작업을 하지 않고 Auth Token 인증 접근 관리를 설정할 경우, 토큰 검증 실패로 인해 콘텐츠 요청이 실패할 수 있으므로 주의하세요.
 
-<a id="user-script"></a>
-### 사용자 스크립트
 
-인스턴스 생성 후 실행할 스크립트를 지정합니다. 사용자 스크립트는 인스턴스의 첫 번째 부팅이 완료된 후 네트워크 설정 등 초기화 과정이 끝나고 난 뒤 실행됩니다. NHN Cloud의 사용자 스크립트는 공식 이미지에 내장된 cloud-init (Linux), Cloudbase-init (Windows)과 같은 자동화 도구에 의해서 실행됩니다.
+<a id="access-control-for-auth-token-authentication-nhn-cloud-cdn-console-access-control-settings-for-auth-token-authentication"></a>
+#### 1. NHN Cloud CDN 콘솔 > Auth Token 인증 접근 관리 설정
 
-> [주의]
-> 사용자 스크립트는 root (Linux)/Administrator (Windows) 사용자 권한으로 실행됩니다.
+CDN 콘솔에서 다음의 내용을 참고하여 Auth Token 인증 접근 관리를 설정합니다.
 
-#### Linux
+![CDN서비스생성-Auth Token 인증 접근 관리](https://static.toastoven.net/prod_cdn/v2/console-cdn-create-auth-token_202403.png)
 
-사용자 스크립트의 첫 번째 줄은 반드시 `#!`으로 시작해야 합니다.
+##### 토큰 인증 사용 여부
+- 사용: Auth Token 인증 접근 관리 기능을 활성화하여 토큰 검증한 후 콘텐츠에 접근할 수 있도록 합니다.
+- 미사용: Auth Token 인증 접근 관리 기능을 비활성화합니다.
+- 토큰 위치: 콘텐츠 요청 시 토큰을 전달할 위치를 선택합니다.
+    - 쿠키(Cookie): 표준 쿠키로 토큰을 전달합니다. 쿠키 사용을 지원하지 않는 장치 및 브라우저는 토큰 인증이 정상적으로 동작하지 않을 수 있으므로 주의하세요.
+    - 요청 헤더(Request header): 요청 헤더에 토큰을 전달합니다.
+    - 쿼리 문자열(Query string): 쿼리 문자열에 토큰을 전달합니다.
+##### 토큰 이름
+- 토큰 값을 전달할 토큰의 이름입니다. `token`으로 고정된 값이며 콘솔 설정에서 변경이 불가합니다.
+##### 토큰 암호화 키
+- 토큰 생성에 필요한 암호화 키입니다. CDN 서비스를 생성 또는 수정하면 암호화 키는 자동으로 생성됩니다.
+- 암호화 키는 외부로 노출되지 않도록 주의하세요.
+##### 토큰 인증 대상 설정
+콘텐츠 접근 시 토큰을 인증할 파일 대상을 설정합니다.  
+토큰 인증 대상 파일인 경우에만 토큰을 검증하며, 인증 대상 파일이 아닌 경우에는 토큰 검증을 수행하지 않으므로 토큰 없이 콘텐츠 접근이 가능합니다.  
+지정된 요청 URL 경로 또는 파일 확장자만 토큰 검증을 하려면 요청 URL 경로와 확장자를 입력하세요. 입력하지 않은 경우 모든 파일에 대해 토큰을 검증합니다.
+- 인증 대상 설정: 설정된 요청 URL 경로와 파일 확장자의 파일만 토큰을 검증합니다.
+- 인증 예외 대상 설정: 설정된 요청 URL 경로와 파일 확장자를 제외한 파일의 토큰을 검증합니다.
+- 요청 URL 경로: 콘텐츠 URL이 요청 URL 경로와 일치되는 경우 토큰 인증 대상 또는 예외 대상으로 설정합니다.
+    - 요청 URL 경로는 '/'로 시작해야 하며 와일드카드 문자(여러 문자열: \*, 단일 문자: ?)를 사용할 수 있습니다(예: /nhn/\*).
+    - 요청 URL 경로는 쿼리 문자열은 포함하지 않습니다.
+    - 요청 URL 경로는 아스키(ascii) 코드 문자만 입력 가능합니다.
+    - 여러 개를 입력하려면 다음 줄에 입력하세요. 여러 개를 입력한 경우 하나만 일치해도 토큰 접근 제어가 동작합니다.
+    - 파일 확장자와 함께 입력한 경우에는 파일 확장자 조건이 일치해도 토큰 접근 제어가 동작합니다.
+- 파일 확장자: 콘텐츠 URL이 파일 확장자와 일치되는 경우 토큰 인증 대상 또는 예외 대상으로 설정합니다.
+    - '.'을 포함하지 않은 파일 확장자를 입력합니다(예: pdf, png).
+    - 여러 개를 입력하려면 다음 줄에 입력하세요. 여러 개를 입력한 경우 하나만 일치해도 토큰 접근 제어가 동작합니다.
+    - 요청 경로 URL과 함께 입력한 경우에는 요청 경로 URL 조건이 일치해도 토큰 접근 제어가 동작합니다.
+
+> [주의] 요청 URL 경로와 파일 확장자
+> 요청 URL 경로와 파일 확장자 모두 설정한 경우, 두 조건 중 하나만 일치해도 토큰 접근 제어가 동작합니다.
+> [예시] 요청 URL 경로 `/nhn/\*`, 파일 확장자 `png`가 설정된 경우: /nhn 하위의 모든 파일 또는 파일 확장자가 png인 콘텐츠에 대해 토큰을 검증합니다.
+
+<a id="access-control-for-auth-token-authentication-create-a-token"></a>
+#### 2. 토큰 생성
+최종 콘텐츠 사용자가 콘텐츠에 접근하려면 토큰과 함께 콘텐츠를 요청해야 합니다. 따라서, 토큰을 생성해 최종 콘텐츠 사용자에게 발급해야 합니다.
+토큰 생성은 NHN Cloud CDN을 이용해 서비스 중인 애플리케이션에서 구현되어야 합니다.
+토큰 생성 방법은 다음의 샘플 코드를 참고하여 토큰을 생성합니다.
+
+##### Java 샘플 코드
+- 이 샘플 코드는 아래와 같은 제약 사항이 있습니다.
+- JDK 7 이상, org.projectlombok:lombok, org.apache.commons:commons-lang3 라이브러리와 의존성이 있습니다.
+
+```java
+import org.apache.commons.lang3.StringUtils;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.net.URLEncoder;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class NhnCloudAuthTokenAccessControlExample {
+
+    // NHN Cloud 콘솔에서 확인한 인증 토큰 암호화 키
+    private static final String AUTH_TOKEN_ENCRYPT_KEY = "{NHN Cloud CDN 서비스의 토큰 암호화 키}";
+    // 토큰 유효 시간(seconds)
+    private static final Long TOKEN_DURATION_SECONDS = 3600L;
+
+
+    public static void main(String[] args) throws AuthTokenException {
+
+        String path = "/nhn/%EC%9D%B8%EC%A6%9D/%E1%84%91%E1%85%A1%E1%84%8B%E1%85%B5%E1%86%AF.png";
+        String singleWildcardPath = "/nhn/%EC%9D%B8%EC%A6%9D/*";
+        String[] multipleWildcardPath = {"/nhn/%EC%9D%B8%EC%A6%9D*", "/nhn/auth/*"};
+
+        System.out.println(" ----------------- ");
+        System.out.println(" 기본 토큰 발급 ");
+        System.out.println(" ----------------- ");
+
+        AuthToken authToken = new AuthToken(AUTH_TOKEN_ENCRYPT_KEY, TOKEN_DURATION_SECONDS);
+
+        System.out.println("단일 URL 토큰: token=" + authToken.generateURLToken(path));
+        System.out.println("와일드카드 토큰: token=" + authToken.generateWildcardPathToken(singleWildcardPath));
+        System.out.println("멀티 와일드카드 토큰: token=" + authToken.generateWildcardPathToken(multipleWildcardPath));
+
+        System.out.println(" ----------------- ");
+        System.out.println(" 세션 식별자를 포함한 토큰 발급 ");
+        System.out.println(" ----------------- ");
+
+        AuthToken authTokenWithSession = new AuthToken(AUTH_TOKEN_ENCRYPT_KEY, TOKEN_DURATION_SECONDS, "example-sessionId");
+        System.out.println("단일 URL 토큰: token=" + authTokenWithSession.generateURLToken(path));
+        System.out.println("와일드카드 토큰: token=" + authTokenWithSession.generateWildcardPathToken(singleWildcardPath));
+        System.out.println("복수 와일드카드 토큰: token=" + authTokenWithSession.generateWildcardPathToken(multipleWildcardPath));
+
+    }
+
+
+    public static class AuthToken {
+
+        /** 토큰 암호화 알고리즘(SHA256 고정) **/
+        private static final String HMAC_SHA_256 = "HmacSHA256";
+
+        /** 토큰 암호화 키 (NHN Cloud CDN 콘솔 > Auth Token 인증 접근 관리 > 암호화 키) **/
+        private String key;
+
+        /**  세션 식별자 */
+        private String sessionId;
+
+        /** 토큰의 유효 시간(단위: 초) */
+        private Long durationSeconds;
+
+        /** 토큰 생성 전 url encode 적용 여부 */
+        private Boolean escapeEarly;
+
+        /** 토큰 Body 필드의 구분자 */
+        private final String fieldDelimiter = "~";
+
+        /** wildcardPath 구분자 */
+        private final String aclDelimiter = "!";
+
+
+        public AuthToken(String key, Long durationSeconds) {
+            this.key = key;
+            this.sessionId = null;
+            this.durationSeconds = durationSeconds;
+            this.escapeEarly = true;
+
+        }
+
+
+        public AuthToken(String key, Long durationSeconds, String sessionId) {
+            this.key = key;
+            this.sessionId = sessionId;
+            this.durationSeconds = durationSeconds;
+            this.escapeEarly = true;
+        }
+
+
+        /**
+        * 단일 URL에 대한 토큰을 생성합니다.
+        * @param path : contents url (example: /auth/contents/example.png)
+        * @return created token
+        * @throws AuthTokenException
+        */
+        public String generateURLToken(String path) throws AuthTokenException {
+            return generateToken(createExpireTime(), this.sessionId, path, null);
+
+        }
+
+
+        /**
+        * 와일드카드 경로에 대한 토큰을 생성합니다.
+        * @param wildcardPath : "/auth/contents/*"
+        * @return 생성된 토큰값
+        * @throws AuthTokenException
+        */
+        public String generateWildcardPathToken(String wildcardPath) throws AuthTokenException {
+            return generateWildcardPathToken(new String[] {wildcardPath});
+        }
+
+        /**
+        * 복수 개의 와일드카드 경로에 대한 토큰을 생성합니다.
+        * @param wildcardPaths (example: ["/auth/contents/*", "/auth/*/images/*"])
+        * @return 생성된 토큰값
+        * @throws AuthTokenException
+        */
+        public String generateWildcardPathToken(String... wildcardPaths) throws AuthTokenException {
+            return generateToken(createExpireTime(), this.sessionId, null, wildcardPaths);
+
+        }
+
+
+        private String createExpireTime() {
+            Long nowSeconds = Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis() / 1000L;
+            Long exp = nowSeconds + this.durationSeconds;
+            return exp.toString();
+        }
+
+
+        private String generateToken(String exp, String sessionId, String path, String[] wildcardPaths) throws AuthTokenException {
+
+            try {
+
+                StringBuilder token = new StringBuilder();
+                token.append("exp=")
+                    .append(exp)
+                    .append(this.fieldDelimiter);
+
+                if (wildcardPaths != null && wildcardPaths.length > 0) {
+                    token.append("acl=")
+                        .append(escapeEarly(StringUtils.join(wildcardPaths, this.aclDelimiter)))
+                        .append(this.fieldDelimiter);
+                }
+
+                if (sessionId != null && sessionId.length() > 0) {
+                    token.append("id=")
+                        .append(escapeEarly(sessionId))
+                        .append(this.fieldDelimiter);
+                }
+
+                StringBuilder hashSource = new StringBuilder(token);
+                if (path != null && path.length() > 0) {
+                    hashSource.append("url=")
+                              .append(escapeEarly(path))
+                              .append(this.fieldDelimiter);
+
+                }
+
+                // remove last fieldDelimiter char
+                hashSource.deleteCharAt(hashSource.length() - 1);
+
+                Mac hmac = Mac.getInstance(HMAC_SHA_256);
+                byte[] keyBytes = DatatypeConverter.parseHexBinary(this.key);
+                SecretKeySpec secretKey = new SecretKeySpec(keyBytes, HMAC_SHA_256);
+                hmac.init(secretKey);
+
+                byte[] hmacBytes = hmac.doFinal(hashSource.toString().getBytes());
+                return token.toString() + "hmac=" + String.format("%0" + (2 * hmac.getMacLength()) + "x", new BigInteger(1, hmacBytes));
+
+            } catch (NoSuchAlgorithmException e) {
+                throw new AuthTokenException(e.getMessage());
+            } catch (InvalidKeyException e) {
+                throw new AuthTokenException(e.getMessage());
+            }
+
+        }
+
+
+        private String escapeEarly(final String text) throws AuthTokenException {
+            if (this.escapeEarly == true) {
+                try {
+                    StringBuilder newText = new StringBuilder(URLEncoder.encode(text, "UTF-8"));
+                    Pattern pattern = Pattern.compile("%..");
+                    Matcher matcher = pattern.matcher(newText);
+                    String tmpText;
+                    while (matcher.find()) {
+                        tmpText = newText.substring(matcher.start(), matcher.end()).toLowerCase();
+                        newText.replace(matcher.start(), matcher.end(), tmpText);
+                    }
+                    return newText.toString();
+                } catch (UnsupportedEncodingException e) {
+                    return text;
+                } catch (Exception e) {
+                    throw new AuthTokenException(e.getMessage());
+                }
+            } else {
+                return text;
+            }
+        }
+
+    }
+
+    public static class AuthTokenException extends Exception {
+        private static final long serialVersionUID = 1L;
+
+
+        public AuthTokenException(String msg) {
+            super(msg);
+        }
+    }
+
+}
 ```
-#!/bin/bash
-...
-```
-
-사용자 스크립트가 정상적으로 동작하기 위해서는 인스턴스 내부의 로그 파일을 확인해야 합니다. 스크립트에서 표준 출력/에러 장치로 출력한 로그는 `/var/log/cloud-init-output.log`에서 확인할 수 있습니다.
-
-#### Windows
-
-Windows 이미지에서는 사용자 스크립트 형식으로 Batch 스크립트 형식, Powershell 스크립트 형식을 모두 지원합니다. 각 형식들은 첫 번째 줄에 명시하는 지시자에 의해 구분됩니다.
-
-* Batch 스크립트
-```
-rem cmd
-...
-```
-
-* PowerShell 스크립트
-```
-#ps1_sysnative
-...
-```
-
-만약 Batch 스크립트와 PowerShell 스크립트를 같이 사용하고 싶다면 아래와 같이 기술합니다.
-
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
-
-사용자 스크립트의 로그는 `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`에서 확인할 수 있습니다.
-
-사용자 스크립트와 관련하여 보다 자세한 설명은 [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) 또는 [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) 가이드를 참고합니다.
-
-<a id="additional-instance-features"></a>
-## 인스턴스 추가 기능
-
-<a id="change-instance-status"></a>
-### 인스턴스 상태 변경
-
-인스턴스 중지, 종료, 삭제, 시작을 통해 인스턴스의 상태를 변경할 수 있습니다.
-
-인스턴스 중지, 종료, 삭제의 하이퍼바이저 리소스 및 요금 관련 정보는 아래 표를 참고합니다.
-
-| 구분 | 인스턴스 중지 | 인스턴스 종료 | 인스턴스 삭제 |
-| --- | -- | --- | --- |
-| 하이퍼바이저 리소스 | 리소스 할당 상태 유지 | 리소스 반납 및 인스턴스 시작 시 재할당 | 리소스 제거 |
-| 인스턴스 요금 | 중지 요금 정책 적용 | 무료 | 무료 |
-| 연결된 다른 리소스 요금 | 과금됨| 과금됨 | 과금됨 |
-
-> [참고] GPU Instance는 종료할 수 없으며 중지 시에도 정상(100%) 요금이 발생합니다.
-
-<a id="create-image"></a>
-### 이미지 생성
-
-인스턴스의 루트 블록 스토리지로부터 이미지를 생성합니다. 이미지 생성은 데이터 정합성을 보장하기 위해 인스턴스를 중지한 상태에서 진행하는 것을 권장합니다.
-
-인스턴스의 루트 블록 스토리지에 여유 공간이 전혀 없을 경우 이미지 생성은 가능하나, 이미지를 다른 인스턴스에서 사용하기 위한 초기화 작업은 불가하여 정상적으로 사용할 수 없습니다. 이미지를 생성하기 전에 인스턴스에서 최소 100KB의 여유 공간을 확보해야 합니다.
-
-생성된 이미지는 **Compute > Image**에 Private 이미지로 등록됩니다. 등록된 이미지를 이용하여 원본 인스턴스와 동일한 블록 스토리지를 가진 인스턴스를 생성할 수 있습니다.
-
-> [주의]
-> 생성된 이미지의 크기는 루트 블록 스토리지의 실제 사용량보다 더 클 수 있습니다.
-
-<a id="associatedisassociate-floating-ip"></a>
-### 플로팅 IP 연결과 해제
-
-인스턴스의 상태에 관계없이 플로팅 IP를 연결하고 해제할 수 있습니다. 사용 가능한 플로팅 IP가 없거나 원하는 플로팅 IP가 없는 경우, **생성** 버튼을 클릭해 플로팅 IP를 생성하여 연결할 수 있습니다. 또는 **Network > VPC > Floating IP**에서 플로팅 IP를 생성하여 사용해도 됩니다.
-
-플로팅 IP에 대한 자세한 설명은 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
-
-<a id="modify-security-group"></a>
-### 보안 그룹 수정
-
-인스턴스의 상태에 관계없이 인스턴스의 보안 그룹을 수정할 수 있습니다. 수정된 보안 그룹은 바로 적용됩니다.
-
-보안 그룹에 대한 자세한 설명은 [보안 그룹](./console-guide/#security-group)과 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
-
-<a id="change-network-subnet"></a>
-### 네트워크 서브넷 변경
-
-인스턴스의 네트워크 서브넷은 인스턴스가 중지된 상태에서만 변경할 수 있습니다. 서브넷을 추가하면 자동으로 인스턴스에 해당 서브넷에 연결될 네트워크 인터페이스가 만들어집니다. 이 때, 한 번에 여러 서브넷을 추가하면 인스턴스에 새로 생성되는 네트워크 인터페이스 순서는 임의로 지정됩니다. 서브넷을 인스턴스에서 삭제하면 생성되었던 네트워크 인터페이스도 자동으로 삭제됩니다.
-
-<a id="modify-flavor"></a>
-### 인스턴스 타입 변경
-
-인스턴스 타입은 인스턴스를 중지한 후 변경할 수 있습니다. 인스턴스가 실행 중이면 **추가 기능**의 **인스턴스 중지**를 클릭하여 인스턴스를 중지합니다.
-
-현재 타입에 따라 변경할 수 있는 인스턴스 타입이 다릅니다.
-
-* m2, c2, r2, t2, x1 타입의 인스턴스는 m2, c2, r2, t2, x1 타입의 인스턴스 타입으로 변경할 수 있습니다.
-* m2, c2, r2, t2, x1 타입의 인스턴스는 u2 타입의 인스턴스 타입으로 변경할 수 없습니다.
-* u2 타입은 생성 이후에 타입을 변경할 수 없습니다. 같은 u2 타입의 인스턴스 타입으로도 변경할 수 없습니다.
-
-인스턴스 타입을 변경하면, 변경 작업과 변경 확인 작업이 진행됩니다. 모든 작업이 완료되면 VM 상태가 **Shutoff** 상태가 되며, **추가 기능**의 **Start instance**를 클릭하여 인스턴스를 시작할 수 있습니다.
-
-> [참고] 인스턴스의 루트 블록 스토리지 크기는 변경할 수 없습니다. 인스턴스의 블록 스토리지 공간이 부족하다면 블록 스토리지를 추가하여 사용합니다. 자세한 블록 스토리지 추가 방법은 [블록 스토리지 개요](/Storage/Block%20Storage/ko/overview/)를 참고합니다.
-
-인스턴스는 변경 시점을 기준으로 변경된 타입으로 과금됩니다.
-
-<a id="change-instance-os-details"></a>
-### 인스턴스 OS 정보 변경
-
-인스턴스의 상태에 관계없이 인스턴스 OS 정보를 변경할 수 있습니다. 
-
-**Compute > Instance** 서비스 페이지에서 OS 정보를 변경할 인스턴스를 클릭합니다. 해당 인스턴스 상세 정보 화면의 **기본 정보** 탭에서 **OS > 변경**을 클릭합니다.
-
-> [참고] OS 구분은 변경할 수 없습니다.
-
-<a id="change-instance-description"></a>
-### 인스턴스 설명 변경
-
-인스턴스의 상태에 관계없이 인스턴스 설명을 변경할 수 있습니다. 
-
-**Compute > Instance** 서비스 페이지에서 설명을 변경할 인스턴스를 클릭합니다. 해당 인스턴스 상세 정보 화면의 **기본 정보** 탭에서 **설명 > 변경**을 클릭합니다.
-
-<a id="change-instance-key-pair"></a>
-### 인스턴스 키페어 변경
-
-인스턴스 키페어는 인스턴스가 활성 상태인 경우에만 변경할 수 있습니다.
-
-**Compute > Instance** 서비스 페이지에서 키페어 정보를 변경할 인스턴스를 클릭합니다. 해당 인스턴스 상세 정보 화면의 **기본 정보** 탭에서 **키페어 > 변경**을 클릭합니다.
-
-인스턴스 기본 계정의 키페어를 선택한 키페어로 변경합니다. 인스턴스 기본 계정은 인스턴스 하단 상세 정보 화면의 **접속 정보** 탭에서 확인할 수 있습니다.
-
-> [주의] 인스턴스 키페어 변경 시 선택한 키페어를 제외한 인스턴스 내 모든 공개 키 내용이 삭제됩니다.
-
-> [참고] 기본 인프라 서비스 ADMIN 권한이 있는 프로젝트 멤버만 인스턴스 키페어를 변경할 수 있으며, Windows OS 인스턴스인 경우 변경할 수 없습니다.
-
-> [참고] 인스턴스 생성에 사용한 이미지 버전이 낮은 경우 키페어 변경 기능을 지원하지 않을 수 있습니다.
-
-<a id="manage-placement-policies"></a>
-### 배치 정책 관리
-
-배치 정책을 생성 및 삭제할 수 있으며 배치 정책에 할당된 인스턴스 목록을 보여줍니다.
-
-분산 배치를 위한 `anti-affinity` 배치 정책 유형만 제공합니다.
-
-배치 정책에 인스턴스가 할당된 경우에도 배치 정책 삭제가 가능하며 이 경우 인스턴스는 삭제되지 않습니다.
-
-<a id="key-pairs"></a>
-## 키페어
-
-<a id="import-key-pairs-windows"></a>
-### 키페어 가져오기(Windows 사용자)
-
-PuTTY SSH 클라이언트를 설치하면 함께 설치되는 puttygen 프로그램으로 키페어를 생성하고 NHN Cloud에 등록하여 사용할 수 있습니다.
-
-[PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 또는 한글패치가 적용된 [iPuTTY](https://github.com/iPuTTY/iPuTTY/releases/tag/l0.70i)를 설치합니다.
-
-puttygen을 실행합니다.
-
-![이미지1](http://static.toastoven.net/prod_instance/putty-ssh-001.png)
-
-**매개변수**에서 **RSA**(또는 구 버전의 puttygen에서는 SSH-2 RSA)를 선택합니다. **작업**에 있는 **생성** 버튼을 클릭합니다. 키를 생성하기 위해서 빈 공간 안에서 마우스를 계속 움직입니다.
-
-키가 생성되면 아래 그림처럼 공개 키 파일 내용이 보입니다. 공개 키 내용 전체를 **키페어 가져오기**의 **공개 Key:** 입력란에 붙여 넣어서 키페어를 등록합니다.
-
-![이미지1](http://static.toastoven.net/prod_instance/putty-ssh-002.png)
-
-**작업**의 **개인 키 저장** 버튼을 클릭해 개인 키를 저장합니다. 키 암호어구를 빈 칸으로 두고 개인 키를 저장하면, **암호어구로 보호하지 않은 채 이 키를 저장하겠습니까?** 메시지가 나타납니다. 변환된 개인 키를 좀 더 안전하게 사용하려면 암호어구를 설정하여 저장합니다.
-
-> [주의]
-인스턴스에 자동으로 로그인하려면 암호어구를 사용하지 않아야 합니다. 암호어구를 사용하면 로그인할 때 개인 키에 대한 비밀번호를 직접 입력해야 합니다.
-
-등록한 키페어는 인스턴스를 생성할 때 사용할 수 있고, 인스턴스 접속 시에는 이 키페어의 개인 키로 접속하여야 합니다. 인스턴스 접속 방법은 [인스턴스 접속 방법](./overview/#how-to-access-instances)를 참고합니다.
-
-NHN Cloud에서 생성한 키페어와 마찬가지로 이렇게 만든 키페어의 개인 키도 외부 유출 시에 누구나 유출된 개인 키로 해당 인스턴스에 접근할 수 있게 되므로 신중하게 관리해야 합니다.
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### 키페어 가져오기(Mac, Linux 사용자)
-
-Mac이나 Linux의 `ssh-keygen`으로 만든 키페어를 NHN Cloud에 등록하여 사용할 수 있습니다. 키페어는 다음 명령으로 생성합니다.
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-키페어의 비밀번호는 설정해도 되지만 설정하지 않아도 사용하는 데에 문제는 없습니다. 보안 수준을 높이려면 비밀번호 설정을 추천합니다. 입력한 키페어의 이름에 `.pub` 확장자가 추가된 파일 안에 키페어 공개 키가 들어 있습니다.
-
-	$ cat my_key.key.pub
-	ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-
-이 내용 전체를 **키페어 가져오기**의 **공개 Key:** 입력란에 붙여 넣어서 키페어를 등록합니다.
-
-등록한 키페어는 인스턴스를 생성할 때 사용할 수 있고, 인스턴스 접속 시에는 이 키페어의 개인 키로 접속해야 합니다. 인스턴스 접속 방법은 [인스턴스 접속 방법](./overview/#how-to-access-instances)을 참고합니다.
-
-NHN Cloud에서 생성한 키페어와 마찬가지로 이렇게 만든 키페어의 개인 키도 외부 유출 시에 누구나 유출된 개인 키로 해당 인스턴스에 접근할 수 있게 되므로 신중하게 관리해야 합니다.
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## 부록 1. Windows 언어팩 변경
-
-NHN Cloud Windows 이미지는 영문판을 기본으로 제공하고 있습니다. 다른 언어를 기본으로 사용하기 원하는 사용자는 다음의 방법에 따라 사용이 가능합니다.
-
-1. START -> Control Panel -> Clock, Language, and Region -> Add a language
-![이미지1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. 언어 기본 설정 변경 -> 언어 추가
-![이미지1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. 언어 추가 -> 사용하려는 언어 선택 -> 추가
-![이미지1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. 추가된 언어팩 확인
-![이미지1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. 추가된 언어팩 다운로드 및 설치
-![이미지1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. 업데이트 다운로드 및 설치
-![이미지1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. 설치된 언어팩 변경을 위해 선택언어 더블클릭 또는 옵션 선택
-![이미지1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. 언어 옵션에서 기본 언어로 설정 선택
-![이미지1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. 기본 언어로 설정후 적용되기 위해서 로그오프
-![이미지1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. 다시 로그인 하시면 사용자가 선택한 언어팩으로 변경 되어있는것을 볼수있습니다.
-![이미지1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## 부록 2. Windows 라우팅 변경
-
-NHN Cloud Windows 에서 라우팅을 변경하는 방법은 다음과 같은 방법 등이 있습니다.
-
-* START -> Run -> cmd
-
-Route 커맨드
-
-* 현재 설정 출력 : route print
-* 추가 : route add "목적지" mask "subnet" "gateway" metric "Metric 값" if "Interface 번호"
-* 변경 : route change "목적지" mask "subnet" "gateway" metric "Metric 값" if "Interface 번호"
-* 삭제 : route delete "목적지" mask "목적지 subnet" "gateway" metric "Metric 값" if "Interface 번호"
-* 옵션 : -p (영구 경로 지정)
-
-설명
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* Metric 값 : 값이 낮을 수록 우선 순위 높음
-* Interface 번호 : route print에서 확인 가능 (빨간색 테두리)
-* 영구 경로 : -p 옵션을 사용하지 않는 경우 시스템 재시작 시에 설정한 경로가 초기화 되기 때문에 사용 (파란색 테두리)
-
-Case 1 - 특정 인터페이스만 외부 통신 설정
-
-* route change 커맨드를 통해 외부 통신을 원치 않는 인터페이스 경로의 metric을 수정하거나 고정 IP 설정에서 기본 게이트웨이 정보를 입력하지 않는 방법 등이 있습니다.
-* Metric 수정 방법
-    * 인터페이스의 metric 증가
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* 고정 IP 설정 방법
-    1. ipconfig /all을 통해 IP정보 확인
-![이미지1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. 확인된 IP정보를 이용하여 IP설정 창에서 기본 게이트웨이를 제외하고 입력
-![이미지1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. route print를 통해 확인
-![이미지1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Case 2 - 특정 대역에 대한 경로 설정
-
-* route add 커맨드를 통해 특정 대역에 대한 경로를 설정합니다.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Case 3 - 특정 경로 제거
-
-* route delete를 통해 지정된 경로를 제거합니다.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## 부록 3. 시스템 로캘 변경
-
-NHN Cloud Windows에서 시스템 로캘을 변경하는 방법은 다음과 같습니다.
-
-1. **Windows 키 > 제어판 > 시계 및 국가**를 선택합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. **국가 또는 지역**을 선택합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. **관리자 옵션** 탭에서 **시스템 로캘 변경**을 클릭합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. 변경할 시스템 로캘을 선택합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. 적용하려면 시스템을 재시작합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## 부록 4. 하이퍼바이저 점검을 위한 인스턴스 재시작 가이드
-
-NHN Cloud는 주기적으로 하이퍼바이저 소프트웨어를 업데이트하여 기본 인프라 서비스의 보안과 안정성을 향상시키고 있습니다.
-점검 대상 하이퍼바이저에서 구동 중인 인스턴스는 재시작을 통해 점검이 완료된 하이퍼바이저로 이동해야 합니다.
-
-인스턴스를 재시작하려면 콘솔을 통해 인스턴스 이름 옆에 생성된 **! 재시작** 버튼을 사용해야 합니다.
-`콘솔에 있는 인스턴스 재부팅 또는 운영체제의 재시작 기능으로는 인스턴스가 다른 하이퍼바이저로 이동하지 않습니다.`
-아래 가이드에 따라 콘솔에 있는 재시작 기능을 이용하시기 바랍니다.
-
-점검 대상으로 지정된 인스턴스가 있는 프로젝트로 이동합니다.
-
-**1. 점검 대상 인스턴스를 확인합니다.**
-
-인스턴스 이름 앞에 **! 재시작** 버튼이 있는 인스턴스가 점검 대상 인스턴스입니다.
-**! 재시작** 버튼 위에 마우스 커서를 올리면 자세한 점검 일정을 확인할 수 있습니다.
-![인스턴스 점검 이미지1](http://static.toastoven.net/prod_instance/instance_p_migration_ko_1.png)    
-
-**2. 점검 대상 인스턴스에서 구동 중인 응용 프로그램을 비활성화하거나 종료합니다.**
-
-점검 대상 인스턴스에서 구동 중인 응용 프로그램을 비활성화하거나 종료하여 서비스에 영향을 주지 않도록 조치해야 합니다. 
-서비스에 영향을 줄 수 밖에 없을 때는 NHN Cloud 고객 센터로 연락해 주시면 적합한 조치를 안내해 드리겠습니다.
-
-**3. 점검 대상 인스턴스 이름 옆에 생성된 [! 재시작] 버튼을 클릭합니다.**
-
-![인스턴스 점검 이미지2](http://static.toastoven.net/prod_instance/instance_p_migration_ko_2.png)
-
-**4. 인스턴스 재시작 여부를 묻는 창이 나타나면 [확인] 버튼을 클릭합니다.**
-
-![인스턴스 점검 이미지3](http://static.toastoven.net/prod_instance/instance_p_migration_ko_3.png)
-
-**5. 인스턴스 상태 표시등이 초록색으로 변하고, [! 재시작] 버튼이 사라질 때까지 대기합니다.**
-
-인스턴스 상태 표시등이 변하지 않거나 **! 재시작** 버튼이 비활성화되지 않는다면 '새로 고침'을 해보시기 바랍니다.
-
-인스턴스가 재부팅되는 동안에는 해당 인스턴스에 아무런 조작을 할 수 없습니다.
-인스턴스 재부팅이 정상적으로 완료되지 않으면 자동으로 관리자에게 보고되며, NHN Cloud에서 별도로 연락을 드립니다.
+##### AuthToken 클래스의 멤버 변수 설명
+- `key`: NHN Cloud CDN 콘솔에 표시된 Auth Token 인증 제어 관리 > 토큰 암호화 키를 입력합니다.
+- `sessionId`: 단일 접근 요청에 대한 고유 식별자를 포함하여 토큰을 생성하려면 sessionId를 입력합니다.
+    - 세션 ID별로 유효한 토큰을 생성하여 일회성 토큰을 생성하거나 다양한 사례에 활용할 수 있습니다.
+    - 세션 ID는 [출력 가능 아스키 문자표](https://ko.wikipedia.org/wiki/ASCII#%EC%B6%9C%EB%A0%A5_%EA%B0%80%EB%8A%A5_%EC%95%84%EC%8A%A4%ED%82%A4_%EB%AC%B8%EC%9E%90%ED%91%9C.)로 구성해야 합니다.
+    - 세션 ID의 길이는 최대 36바이트입니다.
+- `durationSeconds`: 생성된 토큰이 유효한 시간(초), 유효 시간이 지난 토큰은 토큰 인증에 실패합니다.
+    - 토큰 유효 시간을 너무 작게 설정하면 CDN 에지 서버에서 토큰 검증하기 전에 토큰이 만료될 수 있으니 유의하세요. 기대하는 토큰 유효 시간보다 10초 이상 크게 설정하기를 권장합니다.
+    - 토큰 생성 서버의 시간 동기화 설정 NTP(Network Time Protocol)가 유효한지 반드시 검증하세요. 동기화되지 않은 시간 정보로 인해 토큰 유효 시간 검증이 실패할 수 있습니다.
+##### AuthToken 클래스의 공개 메서드(Public Method)
+- `public String generateURLToken(String path)`
+    - 단일 경로에 대한 토큰을 생성합니다.
+        - [예시] path: authToken.generateURLToken("/auth/contents/example.png")
+    - [주의] 경로 또는 세션 ID는 URL 인코딩 문자열로 변경한 후에 토큰을 생성하세요(예: `/nhn/인증/파일.png` => `/nhn/%EC%9D%B8%EC%A6%9D/%E1%84%91%E1%85%A1%E1%84%8B%E1%85%B5%E1%86%AF.png`).
+    - [주의] `!`, `~` 문자는 예약된 문자로 사용되므로 경로 또는 세션 ID에 포함하지 않도록 합니다.
+- `public String generateWildcardPathToken(String wildcardPath)`, `public String generateWildcardPathToken(String... wildcardPaths)`
+    - 와일드카드 경로와 매핑되는 경로의 토큰을 생성합니다. 경로의 패턴이 일치하는 경우, 와일드카드 토큰 하나로 여러 콘텐츠 URL의 토큰을 인증할 수 있습니다.
+        - [예시1] wildcardPath: authToken.generateWildcardPathToken("/auth/contents/*") : /auth/contents 하위의 모든 파일에 대해 토큰을 발급합니다.
+        - [예시2] wildcardPath: authToken.generateWildcardPathToken("/auth/contents/*.png") : /auth/contents 경로의 png 파일에 대한 토큰을 발급합니다.
+        - [예시3] wildcardPath: authToken.generateWildcardPathToken("/auth/contents/example?.png") : /auth/contents 경로의 example과 단일 문자가 결합된 png 파일에 대한 토큰을 발급합니다.
+    - [주의] 경로 또는 세션 ID는 URL 인코딩 문자열로 변경한 후에 토큰을 생성하세요(예: `/nhn/인증/파일.png` => `/nhn/%EC%9D%B8%EC%A6%9D/%E1%84%91%E1%85%A1%E1%84%8B%E1%85%B5%E1%86%AF.png`).
+    - [주의] `!`, `~` 문자는 예약된 문자로 사용되므로 경로 또는 세션 ID에 포함하지 않도록 합니다.
+    - 생성된 토큰은 `exp={expirationTime}~acl={path!path!path}~id={sessionId}~hmac={HMAC}` 형식으로 생성됩니다.
+        - [예시] 생성된 토큰: `exp=1600331503~acl=%2fnhn%2f*.png~id=session-id1~hmac=2509123dcabe2fc199e3ac44793e4e135a09590ff4ebf6a902ea26469ead7f91`
+
+<a id="access-control-for-auth-token-authentication-include-created-token-to-the-request-of-content"></a>
+#### 3. 생성된 토큰을 콘텐츠 요청에 포함
+클라이언트(최종 콘텐츠 소비자)가 콘텐츠 요청 시 콘솔에서 설정한 토큰 위치에 생성된 토큰 값을 포함하여 요청하도록 합니다.
+
+- 토큰 위치: 쿠키
+  ```
+  curl --cookie "token={생성된 토큰값}" \
+  -X GET http://xxx.toastcdn.net/auth/contents/example.png
+  ```
+- 토큰 위치: 요청 헤더
+  ```
+  curl -H "token: {생성된 토큰값}" \
+  -X GET http://xxx.toastcdn.net/auth/contents/example.png
+  ```
+- 토큰 위치: 쿼리 문자열
+  ```
+  curl -d "token={생성된 토큰값}" \
+  -X GET http://xxx.toastcdn.net/auth/contents/example.png
+  ```
+
+
+<a id="http-response-header"></a>
+### HTTP 응답 헤더 { #http-response-header }
+CDN에서 사용자에게 응답 시 전달되는 헤더를 추가/변경/삭제하는 기능입니다.
+헤더는 중복되지 않은 헤더 이름으로 최대 10개까지 설정할 수 있습니다.
+![CDN서비스생성-응답헤더(이미지수정필요)](https://static.toastoven.net/prod_cdn/v2/console-cdn-create-http-response-header_202403.png)
+
+<a id="http-response-header-settings"></a>
+#### HTTP 응답 헤더 설정
+- 사용: HTTP 응답 헤더를 추가/변경/삭제하는 설정을 사용합니다.
+- 미사용: HTTP 응답 헤더를 설정하지 않습니다.
+- Action: HTTP 응답 헤더를 변경하는 방식을 선택합니다.
+    - Add: 설정된 헤더 이름을 추가하여 사용자에게 응답합니다.
+    - Modify: 설정된 헤더 이름이 콘텐츠에 존재할 경우 헤더 값을 변경하고, 존재하지 않을 경우 추가하여 사용자에게 응답합니다.
+    - Delete: 설정된 헤더 이름을 삭제하여 사용자에게 응답합니다.
+- 헤더 이름: `Access-Control-Allow-Origin`, `Cache-Control`, `Content-Type` 등의 헤더 이름을 목록에서 선택하거나 "직접 입력"을 선택하여 사용자가 정의한 커스텀 헤더 이름을 설정할 수 있습니다.
+- 커스텀 헤더 이름: 사용자가 정의한 헤더 이름을 입력합니다. 영문자와 숫자, '-', '_'만 입력 가능합니다.
+- 헤더 값: 헤더 이름의 값을 설정할 수 있으며 필수 입력값입니다.
+
+> [참고] CORS(교차 출처 리소스 공유) 설정
+> 아래와 같이 HTTP 응답 헤더를 설정하여 CORS를 허용할 수 있습니다.
+> - Action: Modify
+> - 헤더 이름: `Access-Control-Allow-Origin`
+> - 헤더 값: `*`(와일드카드) 또는 허용할 원본 URI
+
+
+
+<a id="settings"></a>
+## 설정 { #settings }
+
+<a id="modify-cdn-service-setting"></a>
+### CDN 서비스 설정 변경 { #modify-cdn-service-setting }
+서비스 도메인 이름을 제외한 CDN 서비스 설정을 변경할 수 있습니다.
+![CDN서비스수정활성화](https://static.toastoven.net/prod_cdn/v2/console-cdn-modify3_202403.png)
+
+1. 변경할 CDN 서비스를 CDN 서비스 목록에서 선택합니다.
+2. **수정** 버튼을 클릭합니다.
+
+다음과 같이 CDN 서비스 수정 페이지로 이동합니다.
+![CDN서비스수정확인-이미지수정필요](https://static.toastoven.net/prod_cdn/v2/console-cdn-modify2_202403.png)
+
+1. 변경할 설정 내용을 수정합니다.
+2. **확인** 버튼을 클릭해 변경을 완료합니다.
+
+설명과 콜백 설정을 제외한 다른 설정을 변경하려면 전체 CDN 서버에 반영해야 하므로 시간이 오래 걸릴 수 있습니다. 수정 작업은 몇 십분 내 완료되며, 도메인 별칭 설정이 변경된 경우에는 몇 시간이 걸릴 수 있습니다.
+
+> [참고] CDN 서비스 수정 중 배포 상태와 서비스 상태
+> 서비스 수정 작업이 진행 중이면 기존 CDN 서비스 설정으로 운영됩니다.
+> 만약 수정 작업에 실패하면 기존 설정 정보로 롤백되며, CDN 서비스 목록의 배포 상태가 빨간색 원으로 표시됩니다. 설정 정보에 오류가 있거나 내부적으로 오류가 발생했을 때 수정 작업에 실패합니다.
+
+<a id="suspend-and-resume-cdn"></a>
+### CDN 서비스 일시 정지와 재시작 { #suspend-and-resume-cdn }
+CDN 서비스를 일시적으로 정지하거나 재시작할 수 있습니다.
+
+
+1. 일시 정지할 CDN 서비스를 선택합니다.
+2. **일시 정지** 버튼을 클릭합니다.
+   ![CDN서비스-일시정지](https://static.toastoven.net/prod_cdn/v2/console-cdn-pause2_202403.png)
+3. 인증서가 연동된 CDN 서비스에는 인증서 만료 경고 안내가 표시됩니다. 인증서가 만료되지 않게 하려면 인증서 갱신 시작일 이전에 CDN 서비스를 재시작해야 합니다.
+   ![CDN서비스-일시정지](https://static.toastoven.net/prod_cdn/v2/console-cdn-restart2_202403.png)
+4. 일시 정지 상태의 CDN 서비스를 재시작하려면 재시작할 CDN 서비스를 선택합니다.
+5. **재시작** 버튼을 클릭합니다.
+
+
+
+
+> [참고] 일시 정지와 재시작 동작의 지연
+> CDN 서비스 일시 정지와 재시작은 CDN 서비스 도메인의 DNS 레코드를 변경하여 동작합니다.
+> 따라서 캐시 DNS 서버에서 TTL 동안 캐시되어 있거나 DNS 전파에 따라 일시 정지/재시작이 완료되어도 즉시 일시 정지/재시작이 동작하지 않을 수 있습니다.
+
+> [주의] 발급된 인증서가 연동된 CDN 서비스의 일시 정지
+> 인증서가 연동된 CDN 서비스를 일시 정지하는 경우, 인증서 갱신이 불가합니다.
+> **인증서 관리** > 인증서 목록의 **인증서 갱신 시작일** 이전에 CDN 서비스를 재시작하세요.
+> 인증서 갱신 시작일로부터 5일 동안은 인증서 갱신 기간이므로 해당 기간에 일시 정지하면 인증서가 만료될 수 있으므로 유의하세요.
+
+
+<a id="delete-cdn"></a>
+### CDN 서비스 삭제 { #delete-cdn }
+CDN 서비스를 삭제합니다. 삭제 작업은 복구할 수 없으므로 유의하세요.
+
+1. 삭제할 CDN 서비스를 선택합니다.
+2. **삭제** 버튼을 클릭합니다.
+   ![CDN서비스-삭제](https://static.toastoven.net/prod_cdn/v2/console-cdn-delete2_202403.png)
+3. 인증서가 연동된 CDN 서비스에는 인증서 만료 경고 안내가 표시됩니다. 인증서가 만료되지 않게 하려면 서비스 중인 다른 CDN 서비스에 인증서를 연동하세요.
+
+
+> [참고] CDN 서비스 삭제 소요 시간
+> CDN 서비스 삭제 작업은 몇 시간(최대 2~3시간)이 걸릴 수 있습니다.
+
+> [주의] 발급된 인증서가 연동된 CDN 서비스의 삭제
+> 인증서가 연동된 CDN 서비스를 삭제하면, 인증서를 갱신할 수 없습니다.
+> **인증서 관리**의 인증서 목록에서 **인증서 갱신 시작일** 이전에 서비스 중인 다른 CDN 서비스로 연동하세요.
+> 인증서 갱신 시작일로부터 5일 동안은 인증서 갱신 기간이므로 해당 기간에 삭제하면 인증서가 만료될 수 있으므로 유의하세요.
+
+
+<a id="purge"></a>
+## Purge { #purge }
+CDN 캐시 서버는 캐시 설정에 따라 지정된 만료 시간 동안 원본 서버의 파일을 캐시합니다. 파일을 캐시하면 원본 파일이 변경되어도 캐시가 만료되기 전까지는 변경 전 원본 파일을 유지합니다.
+변경된 원본 파일로 콘텐츠를 즉시 업데이트하려면 **Purge**를 요청해야 합니다.
+Purge를 하면 요청한 콘텐츠의 오래된 캐시 데이터를 삭제하고 원본 서버에서 새 원본 파일을 다시 캐시합니다.
+
+1. 변경하려는 서비스를 CDN 서비스 목록에서 선택합니다.
+2. **Purge** 탭을 클릭하고 **Purge** 버튼을 클릭합니다.
+   ![CDN캐시재배포](https://static.toastoven.net/prod_cdn/v2/console-cdn-purge2_202403.png)
+
+3. Purge 유형을 선택합니다.
+    - CDN 서비스 도메인에 따라 지원되는 캐시 재배포 타입과 요청 양식이 다르므로 유의하세요.
+    - Purge 유형과 요청 양식
+        * 특정 파일: 재배포할 콘텐츠의 URL을 입력합니다. 요청한 URL만 캐시가 재배포되므로 도메인 별칭으로 여러 서비스 도메인 주소가 있다면 각 URL 주소로 요청해야 합니다.
+            * 예) 기본 서비스 도메인 주소: http://[서비스ID].toastcdn.net/path/to/file1.jpg
+            * 예) 도메인 별칭 도메인 주소: http://customer.domain.com/path/to/file1.jpg
+        * 전체 파일: 캐시 파일을 모두 삭제합니다. 원본 서버에 과도한 트래픽이 유입될 수 있으므로 주의하세요.
+4. 선택한 Purge 유형에 맞게 재배포할 파일을 지정합니다.
+5. **확인** 버튼을 클릭해 Purge를 요청합니다.
+
+Purge는 사용량 제한이 있으므로 아래 표를 참고하시고 사용량이 초과되지 않도록 유의하세요.
+
+|분류 |[서비스ID].toastcdn.net |
+|---|---|
+| 제한 단위 | 프로젝트별(Appkey) |
+| 특정 파일 | 1초당 요청 가능: 1회, 요청당 URL 수 제한: 200 URL |
+| 전체 파일 타입 | 5분당 요청 가능: 1회 |
+
+> [주의] [서비스ID].toastcdn.net 서비스를 생성한 후 Purge 실패 오류
+> CDN 서비스를 생성한 후 약 1시간 이내에는 Purge 요청에 실패할 수 있습니다. 이후에도 계속 실패하면 [NHN Cloud 고객 센터](https://www.nhncloud.com/kr/support/inquiry)로 문의하세요.
+
+<a id="statistics"></a>
+## 통계 { #statistics }
+
+네트워크 전송량, HTTP 상태 코드별 통계 및 다운로드가 가장 많은 콘텐츠의 순위 통계를 확인할 수 있습니다.
+7일 이내 통계 데이터는 정확하지 않으므로 참고용으로만 이용하세요. 정확한 통계 데이터는 7일 이후에 확인하세요.
+
+1. 통계를 확인할 서비스를 CDN 서비스 목록에서 선택합니다.
+2. **통계** 탭을 클릭합니다.
+   ![cdn_08_201812](https://static.toastoven.net/prod_cdn/v2/console-statistics_202403.png)
+3. 검색 기간 또는 날짜를 선택합니다.
+4. 검색 기간 내 데이터 주기는 선택한 기간에 따라 자동으로 선택됩니다.
+
+>  [참고] 최대 검색 기간
+> 최근 90일간의 통계 데이터만 조회가 가능합니다.
+
+<a id="alias-domain"></a>
+## 도메인 별칭 { #alias-domain }
+도메인 별칭(Domain Alias)은 NHN Cloud CDN에서 기본 제공하는 [서비스ID].toastcdn.net 도메인 대신 고객이 소유한 도메인으로 CDN 서비스를 이용하는 기능입니다.
+도메인 별칭을 사용하려면 **도메인 별칭** 탭에서 도메인을 등록한 후 소유권 검증을 완료하고, CDN 서비스의 도메인 별칭 항목에 연동해야 합니다. 소유한 도메인으로 HTTPS 프로토콜 서비스를 이용하려면 **인증서 관리** 탭에서 인증서를 발급받으시기 바랍니다.
+
+> [참고] 도메인 별칭을 이용한 HTTPS 서비스 설정 흐름  
+> 소유한 도메인으로 HTTPS 프로토콜 서비스를 이용하려면 아래의 단계를 순서대로 진행해야 합니다.  
+> HTTP만 사용하는 경우 ② 인증서 발급 단계를 생략할 수 있습니다.
+> ```
+> ① 도메인 등록 및 소유권 검증(도메인 별칭 탭)
+>         ↓
+> ② 인증서 발급 및 도메인 검증(인증서 관리 탭, HTTPS 이용 시 필수)
+>         ↓
+> ③ CDN 서비스에 도메인 별칭 연동(CDN 서비스 탭)
+>         ↓
+> ④ CDN 서비스 도메인 DNS CNAME 레코드 설정(DNS 서비스 제공 업체)
+> ```
+
+<a id="register-a-domain"></a>
+### 도메인 등록 { #register-a-domain }
+**도메인 별칭** 탭에서 도메인을 등록할 수 있습니다.
+
+1. **도메인 별칭** 탭의 **도메인 추가** 버튼을 클릭합니다.
+2. 등록할 도메인을 전체 도메인 주소(FQDN, fully qualified domain name) 형식으로 입력합니다(예: cdn.example.com).
+3. **확인** 버튼을 클릭하면 도메인이 등록되고, 검증 대기 상태가 됩니다.
+
+> [주의] 도메인 등록 시 확인 사항
+> -  전체 도메인 주소(FQDN) 형식만 입력할 수 있습니다(예: cdn.example.com).
+> -  이미 등록된 도메인은 중복으로 등록할 수 없습니다.
+
+<a id="verify-a-domain"></a>
+### 도메인 검증 { #verify-a-domain }
+등록한 도메인의 소유권을 확인하기 위해 도메인 검증을 진행해야 합니다.  
+도메인 검증 방식에는 DNS TXT 레코드 추가, HTTP 파일 인증, HTTP 리다이렉트 인증 세 가지 방식이 있으며, 세 가지 방식 중 하나만 진행하면 됩니다.  
+**도메인 별칭** 탭에서 등록한 도메인을 선택하면 검증에 필요한 정보와 검증 방법을 확인할 수 있습니다.
+
+<a id="verify-a-domain-dns-txt-record-addition-method"></a>
+#### DNS TXT 레코드 추가 방식
+도메인의 DNS 제어 권한을 확인하여 도메인을 검증합니다.
+
+1. 도메인의 DNS 서비스 제공 업체의 DNS 관리 페이지에서 TXT 레코드를 추가합니다.
+   DNS 설정 방법은 DNS 서비스 제공 업체에 따라 다를 수 있습니다. 관련 설정은 해당 서비스 업체로 문의하세요.
+    - 레코드 타입: `TXT`
+    - TTL: `60`. 60으로 설정할 수 없다면 되도록 작게 설정하세요.
+    - 레코드 이름: 콘솔에 표시된 `레코드 이름` 값을 입력합니다.
+    - 레코드 값: 콘솔에 표시된 `레코드 값`을 입력합니다.
+2. TXT 레코드 설정 후 콘솔에서 **검증 실행** 버튼을 클릭합니다.
+
+<a id="verify-a-domain-http-file-authentication-method"></a>
+#### HTTP 파일 인증 방식
+도메인이 연결된 웹 서버에 HTTP 페이지를 추가하여 도메인을 검증합니다.
+
+1. 콘솔에 표시된 `HTTP 페이지 URL` 경로에 웹 서버에서 접근 가능한 페이지를 생성합니다.
+2. 생성한 페이지의 본문에 콘솔에 표시된 `페이지 콘텐츠(토큰)` 값을 설정합니다.
+3. 웹 브라우저에서 해당 URL로 접속하여 페이지 콘텐츠 값이 표시되는지 확인합니다.
+4. 확인 후 콘솔에서 **검증 실행** 버튼을 클릭합니다.
+
+<a id="verify-a-domain-http-redirect-authentication-method"></a>
+#### HTTP 리다이렉트 인증 방식
+도메인이 연결된 웹 서버에 리다이렉트를 설정하여 도메인을 검증합니다.
+
+1. 콘솔에 표시된 `리다이렉트 원본 URL`에 대해 `리다이렉트 대상 URL`로 HTTP 301 또는 302 리다이렉트를 설정합니다.
+2. 리다이렉트 설정 후 콘솔에서 **검증 실행** 버튼을 클릭합니다.
+
+> [주의] 도메인 검증 주의 사항
+> 1. HTTP 파일/리다이렉트 인증 방식은 HTTPS 기본 포트(443)로 운영 중인 웹 서버에서만 사용할 수 있습니다.
+> 2. 도메인 검증 토큰은 등록일로부터 14일 동안 유효합니다. 기간 내 검증을 완료하지 않으면 토큰이 만료되며, 토큰 재발급 후 다시 검증해야 합니다.
+> 3. 토큰이 만료된 경우 콘솔에서 **토큰 재발급** 버튼을 클릭하여 새 검증 토큰을 발급받을 수 있습니다. 토큰이 재발급되면 이전 검증 정보는 초기화되므로 새 토큰 정보로 다시 검증을 진행해야 합니다.
+> 4. 도메인 검증이 완료되면 상태가 **검증 완료**로 변경되며, CDN 서비스에 연동할 수 있습니다.
+
+[표] 도메인 별칭 검증 상태
+
+| 상태       | 설명                                                    |
+|----------| ----------------------------------------------------- |
+| 검증 대기    | 도메인이 등록되어 검증 대기 중인 상태                                 |
+| 검증 진행 중  | 도메인 소유권 검증이 진행 중인 상태                                  |
+| 검증 완료    | 도메인 소유권 검증이 완료되어 CDN 서비스에 연동 가능한 상태                   |
+| 검증 토큰 만료 | 검증 토큰이 만료된 상태(토큰 재발급 후 다시 검증 필요)                      |
+
+<a id="integrate-an-alias-domain-with-the-cdn-service"></a>
+### CDN 서비스에 도메인 별칭 연동 { #integrate-an-alias-domain-with-the-cdn-service }
+도메인 검증이 완료되면 CDN 서비스에 도메인 별칭을 연동할 수 있습니다.
+
+1. **CDN 서비스** 탭에서 연동할 CDN 서비스를 선택하고 **수정** 버튼을 클릭합니다.
+2. **기본 정보**의 **도메인 별칭** 항목에서 검증이 완료된 도메인을 선택합니다.
+    - 검증이 완료된 도메인만 선택할 수 있습니다. 설정하려는 도메인이 목록에 표시되지 않으면 **도메인 별칭** 탭에서 도메인을 먼저 등록하고 검증을 완료하세요.
+3. **확인** 버튼을 클릭하여 변경을 완료합니다.
+4. 도메인 별칭 설정 후에는 도메인의 DNS 서비스 제공 업체에서 CNAME 레코드를 다음과 같이 설정해야 합니다. DNS 설정 관련 문의는 DNS 서비스 제공 업체에 하세요.
+    - 레코드 타입: `CNAME`
+    - 레코드 이름: `[도메인 별칭에 등록한 도메인]`
+    - 레코드 값(Rdata): `[서비스ID].toastcdn.net`
+    - TTL: 임의의 값
+
+> [참고] 도메인 별칭 변경 시 소요 시간
+> 도메인 별칭이 변경된 경우 서비스 수정 작업이 1시간 이상 소요될 수 있습니다.
+
+> [주의] 도메인 별칭 변경 시 인증서 주의 사항  
+> 도메인 별칭에서 CDN 인증서의 도메인을 제거한 경우, 인증서가 만료될 수 있습니다.  
+> 인증서를 계속 유지하려면 도메인 별칭을 다시 추가하여 인증한 후, CDN 서비스에 다시 도메인 별칭으로 연동하세요.
+
+<a id="delete-a-domain"></a>
+### 도메인 삭제 { #delete-a-domain }
+등록한 도메인 별칭을 삭제할 수 있습니다.
+
+1. **도메인 별칭** 탭에서 삭제할 도메인을 선택합니다.
+2. **삭제** 버튼을 클릭합니다.
+
+> [주의] 도메인 삭제 시 확인 사항
+> CDN 서비스에 연동된 도메인은 삭제할 수 없습니다. 도메인을 삭제하려면 먼저 CDN 서비스에서 도메인 별칭 연동을 해제한 후 삭제하세요.
+
+
+<a id="certificate"></a>
+## 인증서 관리 { #certificate }
+소유한 도메인으로 콘텐츠를 보안 전송(HTTPS)하려면 CDN 서버에 소유한 도메인의 인증서를 배포해야 합니다. 인증서가 없으면 클라이언트(브라우저)와 CDN 에지 서버 간 보안 통신(HTTPS)을 할 수 없어 인증서 오류가 발생합니다.
+NHN Cloud CDN의 인증서 관리는 다음과 같은 기능을 제공합니다.
+
+- 단일 도메인 타입의 인증서 발급
+- 전 세계 거점의 CDN 서버에 인증서 배포(중국과 러시아 지역은 제외)
+- 인증서 만료 전 자동 갱신
+
+<a id="issue-new-certificates"></a>
+### 신규 인증서 발급 { #issue-new-certificates }
+**인증서 관리** 탭에서 인증서를 발급할 수 있습니다.
+![CDN신규인증서발급](https://static.toastoven.net/prod_cdn/v2/console-certificate-create_202403.png)
+
+1. **인증서 관리** 탭의 **신규 인증서 발급** 버튼을 클릭합니다.
+2. 발급할 인증서의 도메인을 전체 도메인 주소(FQDN, fully qualified domain name) 형식으로 입력합니다.
+3. 인증서 발급 안내 내용을 확인하고 **확인** 버튼을 클릭합니다.
+4. 신규 발급 인증서를 요청하면 **인증서 관리** 탭의 인증서 도메인이 표시됩니다. 인증서 상태가 **도메인 검증** 상태로 변경되면 이후 도메인 검증 작업을 진행하세요.
+
+> [주의] 인증서 발급 전 확인 사항
+> 1. 소유한 도메인만 인증서를 발급할 수 있으므로 먼저 도메인을 구매하신 후 진행하세요.
+> 2. 다른 인증 기관(CA, certificate authority)에서 발급한 인증서는 이용할 수 없습니다.
+> 3. 단일 도메인의 인증서 발급만 가능합니다. 와일드카드, 멀티 도메인 등의 인증서는 지원하지 않습니다.
+> 4. 인증서 발급은 프로젝트당 5개로 제한됩니다. 한도 조정이 필요한 경우 [NHN Cloud 고객 센터](https://www.nhncloud.com/kr/support/inquiry)로 문의하세요.
+> 5. 신규 인증서 발급 요청 후 도메인 검증 단계는 몇 십분(최대 1~2시간) 후 변경될 수 있습니다. 인증서 상태가 도메인 검증 상태로 변경되면 NHN Cloud 프로젝트 멤버를 대상으로 이메일이 발송됩니다. 만일 시스템 오류로 이메일이 발송되지 않는다면 콘솔에서 상태를 확인하세요.
+
+<a id="validate-domain"></a>
+### 도메인 검증 { #validate-domain }
+신규 인증서 발급을 요청한 후 인증서가 도메인 검증 상태가 되면 도메인을 검증하세요.
+도메인 검증 방법은 콘솔에서 도메인을 선택하여 확인하거나, 프로젝트 멤버에게 전송된 도메인 검증 가이드 메일의 내용을 참고하세요.
+
+![CDN도메인검증](https://static.toastoven.net/prod_cdn/v2/console-certificate-domain-validation_202403.png)
+
+도메인 검증은 발급 요청한 인증서 도메인의 실제 소유자인지 확인하는 단계입니다. 도메인 검증을 진행하지 않으면 인증서를 발급할 수 없습니다.
+도메인 소유자인지 확인하기 위해 도메인 검증 방식으로 도메인의 제어 권한을 확인합니다.
+도메인 검증 방식에는 DNS TXT 레코드 추가 또는 HTTP 페이지 추가 방식이 있으며 두 가지 방식 중 하나만 진행하면 됩니다.
+
+![CDN도메인검증](https://static.toastoven.net/prod_cdn/v2/console-certificate-domain-validation2_202403.png)
+
+<a id="validate-domain-adding-dns-txt-records"></a>
+#### DNS TXT 레코드 추가 방식
+도메인의 DNS 제어 권한을 확인해 도메인을 검증합니다.
+
+1. 도메인의 DNS 서비스 제공 업체의 DNS 관리 페이지에서 TXT 레코드를 추가합니다.
+   DNS 설정 방법은 DNS 서비스 제공 업체에 따라 다를 수 있습니다. 관련 설정은 해당 서비스 업체로 문의하세요.
+    - 레코드 타입: `TXT`
+    - TTL: `60`. 60으로 설정할 수 없다면 되도록 작게 설정하세요.
+    - 레코드 이름: `_acme-challenge.[발급 요청한 인증서 도메인].`  콘솔 또는 발송된 이메일 가이드의 `레코드 이름`을 작성합니다.
+    - 레코드 값: 임의의 문자열(콘솔 또는 발송된 이메일 가이드의 `레코드 값`을 작성합니다.)
+
+2. nslookup 명령어로 추가한 TXT 레코드가 질의되는지 확인합니다. DNS 전파 시간에 따라 질의되기까지 시간이 소요될 수 있습니다.
+   `nslookup -type=TXT _acme-challenge.[발급 요청한 인증서 도메인].`
+
+다음 화면은 NHN Cloud DNS+ 서비스에서 설정한 예시입니다. DNS 서비스 제공 업체에 따라 설정 방법은 다를 수 있습니다.
+![CDN도메인검증](https://static.toastoven.net/prod_cdn/v2/console-certificate-domain-validation-dns_202105.png)
+
+
+<a id="validate-domain-adding-http-pages"></a>
+#### HTTP 페이지 추가 방식
+도메인이 연결된 웹 서버에 HTTP 페이지를 추가해 도메인을 검증합니다.
+
+1. 웹 서버의 `http://[발급 요청한 인증서 도메인]/.well-known/acme-challenge/[임의의 문자열]` 경로에 HTTP 페이지를 추가합니다.
+2. HTTP 페이지의 본문에 콘솔 또는 발송된 이메일 가이드의 `페이지 콘텐츠(토큰)` 값으로 설정합니다.
+3. 웹 브라우저에서  `http://[발급 요청한 인증서 도메인]/.well-known/acme-challenge/[임의의 문자열]` URL로 접속하면 `페이지 콘텐츠(토큰)` 값이 화면에 표시되는지 확인합니다.
+
+> [주의] 도메인 검증 주의 사항
+> -  도메인 검증은 인증서 발급 요청일로부터 5일 이내에 진행해야 합니다. 기간 내 진행하지 않으면 인증서 발급은 자동으로 취소됩니다.
+> -  도메인 검증 작업 완료 후 검증에 성공하면 몇 시간 내 인증서 발급 및 배포 작업이 진행됩니다. 하루 이상 진행되지 않으면 도메인 검증 작업 내용이 올바른지 확인합니다. 문제가 없는데도 진행되지 않으면 [NHN Cloud 고객 센터](https://www.nhncloud.com/kr/support/inquiry)로 문의하세요.
+> -  도메인 검증 방식 중 HTTP 페이지 추가 방식은 HTTP 서버가 기본 포트(80)로 운영 중일 때만 가능합니다. 포트를 변경할 수 없다면 DNS TXT 레코드 추가 방식을 이용하세요.
+
+<a id="issue-and-deploy-certificates"></a>
+### 인증서 발급 및 배포 { #issue-and-deploy-certificates }
+도메인 검증을 통과하면 몇 시간 내 인증서 발급 및 배포 작업이 진행됩니다.
+콘솔의 인증서 상태가  **인증서 발급 및 배포** 단계로 표시되며, NHN Cloud 프로젝트 멤버 대상으로 알림 메일이 발송됩니다.
+이 단계에서는 별도로 작업할 내용은 없습니다.
+
+> [참고] 인증서 발급과 배포 단계의 작업 시간
+> 인증서 발급 및 배포 작업은 최대 9시간 이상 걸릴 수 있습니다.
+
+<a id="integrate-with-cdn-service"></a>
+### CDN 서비스 연동 { #integrate-with-cdn-service }
+발급된 인증서를 이용하려면 CDN 서비스와 연동해야 합니다.
+이 작업을 진행하지 않거나 작업 내용을 유지하지 않으면 발급된 인증서가 만료될 수 있으므로 주의하세요.
+
+1. CNAME 레코드 설정: 인증서 도메인의 DNS 서비스 제공 업체의 DNS 관리에서 다음의 CNAME 레코드를 추가합니다.
+    - 레코드 타입: `CNAME`
+    - TTL: 임의의 값. 자주 변경해야 한다면 작게 설정하기를 권장합니다. 레코드 변경 시 캐시 DNS 서버에 TTL 시간 동안 캐시될 수 있습니다.
+    - 레코드 이름: `[인증서 도메인].`(예: test.alias.com.com.)
+    - 레코드 값: `[연동할 CDN 서비스 도메인]` (예: xxxxxxxx.toastcdn.net)
+      다음 화면은 NHN Cloud DNS+ 서비스에서 설정한 예시입니다. DNS 서비스 제공 업체에 따라 설정 방법은 다를 수 있습니다.
+      ![CDN서비스연동-CNAME위임](https://static.toastoven.net/prod_cdn/v2/console-certificate-service-cname_202105.png)
+
+2. 도메인 별칭 설정: 인증서를 이용할 CDN 서비스에 도메인 별칭 설정을 추가합니다.
+    -  **CDN 서비스** 탭에서 연동할 CDN 서비스를 선택하고  **수정** 버튼을 클릭합니다. 도메인 별칭에 인증서 도메인을 추가한 후  **확인** 버튼을 클릭합니다.
+       ![CDN서비스연동-도메인별칭](https://static.toastoven.net/prod_cdn/v2/console-certificate-service-alias2_202403.png)
+
+> [참고] CNAME 레코드 전파 시간
+> CNAME 레코드 설정 시 다양한 요인에 따라 DNS 전파에 시간이 소요될 수 있습니다. 따라서 서비스 연동 과정을 올바르게 수행한 뒤에도 일정 시간 동안 인증서 발급 상태가 [CDN 서비스 연동 대기]로 표시될 수 있습니다.
+> 설정을 올바르게 했는데도 24시간 이상 [CDN 서비스 연동 대기] 상태가 지속될 경우 [NHN Cloud 고객 센터](https://www.nhncloud.com/kr/support/inquiry)로 문의하세요.
+
+> [주의] 인증서 만료 주의 사항
+> NHN Cloud CDN에서 제공하는 인증서는 인증서 만료 전 자동으로 인증서를 갱신합니다.
+> 인증서 갱신은 인증서 관리 목록에 표시된 갱신 시작일로부터 5일 이내에 진행됩니다.
+> 자동으로 인증서를 갱신하려면 아래의 조건들을 충족해야 합니다.
+> 충족되지 않을 경우, 인증서는 갱신 시점과 관계없이 만료될 수 있으니 주의하세요.
+>
+> -  인증서의 도메인을 CNAME 레코드를 통해 연동할 CDN 서비스 도메인 주소로 위임해야 합니다.
+> -  연동할 CDN 서비스의 도메인 별칭에 인증서 도메인이 설정되어 있어야 합니다.
+> -  인증서가 연동된 CDN 서비스를 일시 정지하면 인증서를 갱신할 수 없습니다.
+     >    - 인증서 갱신 시작일 이전에 재시작하거나 다른 운영 중인 CDN 서비스에 인증서를 연동하세요.
+> -  인증서가 연동된 CDN 서비스를 삭제하면 인증서를 갱신할 수 없습니다.
+     >    - 삭제하기 전에 운영 중인 다른 CDN 서비스에 인증서를 연동하세요.
+> -  인증서 도메인의 네임서버(NS)와 DNS 설정이 정상적으로 유지되어야 합니다.
+     >    - DNS 오류(잘못된 네임서버, CAA 응답 불가 등)가 발생하면 인증서 발급·갱신이 실패할 수 있으며, 오류가 지속되면 인증서가 자동 만료될 수 있습니다.
+
+CDN 서비스 연동 작업이 완료되면 인증서 상태가 '정상'으로 표시됩니다.
+![CDN인증서정상상태](https://static.toastoven.net/prod_cdn/v2/console-certificate-active_202403.png)
+
+> [참고] 발급된 인증서 오류 발생 시 조치 사항
+> NHN Cloud CDN에서 제공하는 인증서의 Root 인증서 중 하나인 IdenTrust DST Root CA x3가 2021년 9월 30일에 만료되어, 일부 오래된 단말 또는 구형 브라우저에서 문제가 발생할 수 있습니다.
+> 클라이언트에서 `ERR_CERT_DATE_INVALID` 오류로 문제가 발생하는 경우, 아래의 내용을 참고하여 OS 설정 변경 후 업데이트 또는 Root 인증서 수동 설치 등의 조치가 필요합니다.
+> -  ISRG x1 인증서 다운로드 링크: [다운로드 링크](https://letsencrypt.org/certs/isrgrootx1.pem)
+> -  Windows OS 설정 변경 참고 가이드: [링크](https://cert.crosscert.com/윈도우windows-운영체제-pc에서-루트인증서-설치방법/)
+> -  크롬 브라우저 참고 가이드: [링크](https://docs.vmware.com/en/VMware-Adapter-for-SAP-Landscape-Management/2.0.1/Installation-and-Administration-Guide-for-VLA-Administrators/GUID-D60F08AD-6E54-4959-A272-458D08B8B038.html)
