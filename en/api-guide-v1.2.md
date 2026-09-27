@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=aa5c9758414b -->
 
 <a id="security-secure-key-manager-api-v12-guide"></a>
@@ -85,6 +87,7 @@ X-TOAST-CLIENT-MAC-ADDR: {MAC Address}
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | resultCode | Number | Result code value of API call |
@@ -111,6 +114,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/c
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | clientIp | String | IP address of the client that called API |
@@ -138,6 +142,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/s
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | secret | String | Query result of confidential data |
@@ -156,6 +161,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/s
     "secretValue": "data"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | secretValue | String | Confidential data to be changed |
@@ -179,6 +185,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/s
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyId | String | Key ID |
@@ -207,6 +214,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "plaintext": "data"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | plaintext | String | Data to be encrypted with the symmetric key |
@@ -223,6 +231,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | ciphertext | String | Result of data encryption with the symmetric key |
@@ -241,6 +250,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "ciphertext": "AAAAABzGwQniNneKXmcOLhWnxEqC1rNY+UdVb3lyeX/4wSrP"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | ciphertext | String | Data to be decrypted with the symmetric key |
@@ -257,6 +267,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | plaintext | String | Result of data decryption with the symmetric key |
@@ -282,6 +293,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | localKeyPlaintext | String | Base64-encoded AES-256 symmetric key |
@@ -315,6 +327,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/s
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | symmetricKey | String | Symmetric key data (Hex string form) |
@@ -336,6 +349,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "plaintext": "data"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | plaintext | String | Data to sign with the asymmetric key |
@@ -352,6 +366,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | signature | String | Signature value of signing the data with the asymmetric key |
@@ -372,6 +387,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "signature": "AAAAAGI9zf831DX..."
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | plaintext | String | Data to be verified with the asymmetric key |
@@ -390,6 +406,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | result | Boolean | Result of verifying data and signature value with the asymmetric key |
@@ -426,6 +443,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyType | String | Asymmetric key form |
@@ -464,6 +482,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyType | String | Asymmetric key form |
@@ -494,6 +513,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "secretValue" : "data"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreName | String | Key store name where key is saved |
@@ -514,6 +534,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyId | String | Created key ID |
@@ -535,6 +556,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "autoRotationPeriod" : 0
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreName | String | Key store name where key is saved |
@@ -555,6 +577,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyId | String | Created key ID |
@@ -576,6 +599,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "autoRotationPeriod" : 0
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreName | String | Key store name where key is saved |
@@ -596,6 +620,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyId | String | Created key ID |
@@ -626,6 +651,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyId | String | Created key ID |
@@ -653,6 +679,7 @@ DELETE https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey
 }
 
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyId | String | Created key ID |
@@ -681,6 +708,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "description" : "Description #1"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreName | String | Name of the key store to store IPv4 addresses in |
@@ -700,6 +728,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | value | String | Created IPv4 address value |
@@ -720,6 +749,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "description" : "Description #1"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreName | String | Key store name to store MAC addresses |
@@ -739,6 +769,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | value | String | Created MAC address value |
@@ -761,6 +792,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "description" : "Description #1"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreName | String | Key store name where the certificate is stored |
@@ -782,6 +814,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | name | String | Created certificate name |
@@ -810,6 +843,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     "value" : "127.0.0.1"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreName | String | Key store name to request the deletion of IPv4 address |
@@ -828,6 +862,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | value | String | IPv4 address value that requested deletion |
@@ -847,6 +882,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     "value" : "aa:aa:aa:aa:aa:aa"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreName | String | Key store name to request the deletion of MAC address |
@@ -865,6 +901,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | value | String | MAC address value that requested deletion |
@@ -884,6 +921,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     "name" : "Certificate Name #1"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreName | String | Key store name to request the deletion of certificate |
@@ -902,6 +940,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | name | String | Certificate name that requested deletion |
@@ -926,6 +965,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "value" : "127.0.0.1"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreName | String | Key store name to immediately delete IPv4 address |
@@ -944,6 +984,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | value | String | Deleted IPv4 address value |
@@ -963,6 +1004,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "value" : "aa:aa:aa:aa:aa:aa"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreName | String | Key store name to immediately delete MAC address |
@@ -981,6 +1023,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | value | String | Deleted MAC address value |
@@ -1000,6 +1043,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "name" : "Certificate Name #1"
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreName | String | Key store name to immediately delete certificate |
@@ -1018,6 +1062,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | name | String | Deleted certificate name |
@@ -1048,6 +1093,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreIdList | List | List of key store IDs |
@@ -1090,6 +1136,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.0/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreList | List | Key store list details |
@@ -1131,6 +1178,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyStoreId | Number | Key store ID |
@@ -1169,6 +1217,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyIdList | List | Key ID list |
@@ -1219,6 +1268,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyList | List | Key list details |
@@ -1266,6 +1316,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | keyId | String | Key ID |
@@ -1306,6 +1357,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | ipv4List | List | IPv4 authentication information list |
@@ -1345,6 +1397,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | ipv4List | List | IPv4 authentication information list |
@@ -1379,6 +1432,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | macList | List | MAC authentication information list |
@@ -1418,6 +1472,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | macList | List | MAC authentication information list |
@@ -1452,6 +1507,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | certificateList | List | Certifacate authentication information list |
@@ -1493,6 +1549,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | Name | Type | Description |
 |---|---|---|
 | certificateList | List | Certificate authentication information list |
