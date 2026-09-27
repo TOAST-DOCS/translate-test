@@ -1,7 +1,9 @@
-<a id="storage-storage-gateway-console-user-guide"></a>
-## Storage > Storage Gateway > コンソール使用ガイド { #storage-storage-gateway-console-user-guide }
+<!-- machine_translated: true -->
 
-このドキュメントでは、NHN CloudコンソールでStorage Gatewayのゲートウェイと共有を管理および接続する方法について説明します。
+<a id="storage-storage-gateway-console-user-guide"></a>
+## Storage > Storage Gateway > コンソール ユーザーガイド { #storage-storage-gateway-console-user-guide }
+
+このドキュメントでは、NHN Cloudコンソールで Storage Gatewayのゲートウェイと共有を管理および接続する方法を説明します。
 
 <a id="gateway"></a>
 ## ゲートウェイ(Gateway) { #gateway }
@@ -58,17 +60,17 @@ Floating IPを使用するかどうかを設定します。ゲートウェイに
 
 <a id="stop-gateway"></a>
 ### ゲートウェイ停止 { #stop-gateway }
-ストレージゲートウェイを停止します。ゲートウェイを停止すると、クラスターを構成するインスタンスが停止し、ストレージと接続できません。
+ストレージゲートウェイを停止します。ゲートウェイを停止すると、クラスターを構成するインスタンスが停止され、ストレージに接続できません。
 
 !!! danger "注意"
     ストレージゲートウェイを停止する前に、NHN Cloudストレージを接続して使用中のシステムからアンマウントする必要があります。マウント状態でゲートウェイを停止すると、ユーザーシステムに問題が発生する可能性があります。
 
 <a id="delete-gateway"></a>
 ### ゲートウェイ削除 { #delete-gateway }
-ストレージゲートウェイを削除します。クラスターを構成する全てのインスタンスとリソースが削除されます。ゲートウェイに接続されていたNHN Cloudストレージは削除されません。
+ストレージゲートウェイを削除します。クラスターを構成するすべてのインスタンスとリソースが削除されます。ゲートウェイに接続されていた NHN Cloudストレージは削除されません。
 
 !!! tip "ヒント"
-    ゲートウェイを削除するには、まず、ゲートウェイに作成した全ての共有を削除する必要があります。
+    ゲートウェイを削除するには、まずゲートウェイで作成したすべての共有を削除する必要があります。
 
 <a id="share"></a>
 ## 共有(Share) { #share }
@@ -126,10 +128,10 @@ uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu)
 
 <a id="delete-share"></a>
 ### 共有削除 { #delete-share }
-共有を削除します。 
+共有を削除します。
 
 !!! danger "注意"
-    共有を削除する前に、NHN Cloudストレージをマウントして使用しているシステムからアンマウントする必要があります。マウントした状態で共有を削除すると、ユーザーシステムに問題が発生する可能性があります。
+    共有を削除する前に、NHN Cloudストレージをマウント中のシステムからアンマウントする必要があります。マウント状態で共有を削除すると、ユーザーシステムに問題が発生する可能性があります。
 
 <a id="immediately-empty-cache"></a>
 ### キャッシュをすぐに空にする { #immediately-empty-cache }
@@ -137,10 +139,10 @@ uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu)
 
 <a id="change-access-key"></a>
 ### Access Key変更 { #change-access-key }
-Object Storageタイプゲートウェイの共有作成時に設定したAccess Keyを変更します。
+Object Storageタイプのゲートウェイの共有を作成する際に設定した Access Keyを変更します。
 
 !!! danger "注意"
-    Access Keyを変更する前に、NHN Cloudストレージをマウントして使用中のシステムからアンマウントする必要があります。マウントした状態でAccess Keyを変更すると、ユーザーシステムに問題が発生する可能性があります。
+    Access Keyを変更する前に、NHN Cloudストレージをマウントして使用中のシステムからアンマウントする必要があります。マウント状態で Access Keyを変更すると、ユーザーシステムに問題が発生する可能性があります。
 
 <a id="change-nfs-permissions"></a>
 ### NFS権限変更 { #change-nfs-permissions }
@@ -198,11 +200,11 @@ sudo mount -t nfs -o vers=3 {マウント接続情報} {マウントするパス
 Object StorageタイプのゲートウェイはPOSIX APIの一部のみサポートします。
 
 <a id="supported-apis"></a>
-### サポートするAPI { #supported-apis }
+### サポートされている API { #supported-apis }
 ```
 read, write, readdir, truncate, fallocate, fsync
 ```
 
 !!! danger "注意"
-    rename、hardlink、symlinkは使用できません。動作しないか、Object Storageに意図しないオブジェクトが作成される可能性があります。
-    rsync, viのような一時ファイルに保存した後、名前を変更するツールは使用しないことを推奨します。
+    rename、hardlink、symlink は使用できません。動作しないか、Object Storageに意図しないオブジェクトが作成される可能性があります。
+    rsync、vi のような一時ファイルに保存した後に名前を変更するツールを使用しないことをお勧めします。
