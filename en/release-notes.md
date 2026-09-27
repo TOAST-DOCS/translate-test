@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=de02fda0b7df -->
 
 <a id="storage-storage-gateway-release-notes"></a>
