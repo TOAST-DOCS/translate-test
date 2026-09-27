@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <a id="storage-object-storage-console-guide"></a>
 ## Storage > Object Storage > Console Guide { #storage-object-storage-console-guide }
 
@@ -440,102 +442,6 @@ Suspends container replication. While replication is suspended, any deletions or
 
 <a id="object"></a>
 ## Object { #object }
-
-<a id="create-folder"></a>
-### Create Folder { #create-folder }
-Create folders. Folders are virtual units to bundle objects within a container into a group. Similar to folders in Windows or directories in Linux, they help users to manage objects hierarchically. Folder names are limited to 256 letters in English or 85 characters in Korean.
-
-!!! tip "Note"
-    Folder for object storage is different from the directory provided by the file system. It is a pseudo folder provided for user's convenience. When a folder is created, an empty object named `{folder-name}/` is created. Objects within the folder will have names in the form of `{folder-name}/{object-name}`. Objects in the form of `{folder-name}/{object-name}` can be created directly without generating empty objects in the form of `{folder-name}/` by using the Copy Object function to copy objects into a new folder. If this copied object is deleted, it will appear as if the folder is also deleted. If you copy the object to a folder that you created in advance, the folder remains even if the object is deleted.
-
-<a id="delete-folder"></a>
-### Delete Folder { #delete-folder }
-Deletes a folder. Deletes all objects in the folder and the folder object.
-For multipart objects inside a folder, only the manifest object is deleted; segment objects that are not included in the selection are not deleted.
-
-<a id="upload-object"></a>
-### Upload Object { #upload-object }
-All objects must be uploaded to containers. One object cannot be larger than 5GB.
-
-!!! tip "Note"
-    Files exceeding 5GB cannot be uploaded in a web console. If the size of the object to be uploaded exceeds 5GB, it must be split by using a command-line tool such as `split`, or the user application must be programmed to divide the object into segments less than 5GB before uploading. For more details, refer to [Multipart Upload](api-guide/#multipart-upload) of the API guide.
-
-<a id="download-object"></a>
-### Download Object { #download-object }
-Download selected objects. If you have set up the container access policy as **PRIVATE** at the time of creation, only permitted users can access the objects. If the access policy was set up as **PUBLIC**, click the `Copy URL` button on the list to check the public URL of the object. With this URL, it is possible to create a hyperlink of the object or directly download it.
-
-<details style="padding-top: 15px; padding-bottom: 10px;">
-<summary>Hyperlink Example</summary>
-<ul style="padding-left: 10px; padding-top: 10px;">
-<li>Write Web Page</li>
-
-```
-# cat > index.html
-<html>
-<body> hello world!
-<a href="https://kr1-api-object-storage.nhncloudservice.com/v1/{account}/{container}/{object}">Download</a>
-</body>
-</html>
-```
-
-<li>Run web server using http module of Python3</li>
-```
-# python -m http.server
-Serving HTTP on :: port 8000 (http://[::]:8000/) ...
-```
-
-<li>After accessing <b>http://localhost:8000</b> through a web browser click <b>Download</b> to confirm file is being downloaded properly</li>
-
-</details>
-
-<a id="copy-or-move-object"></a>
-### Copy/Move Object { #copy-or-move-object }
-Copy or move objects to the specified container. You can select multiple objects to copy or move to a different container or to a new path in the same container. 
-
-!!! tip "Note"
-    The maximum length of the path that can be entered depends on the length of the object name. The length of the path to copy plus the object name must be 1024 bytes or less.
-    `{Maximum length of the path} = 1024 - {Length of the object name} - 1`
-
-    For multipart objects, only manifest objects can be copied or moved.
-
-<a id="delete-object"></a>
-### Delete Object { #delete-object }
-Deletes the selected objects. You can select and delete multiple objects at the same time. 
-
-!!! tip "Note"
-    When you delete a multipart object, only the selected manifest object is deleted. Unselected segment objects are not deleted.
-
-<a id="create-signed-url"></a>
-### Create Signed URL { #create-signed-url }
-Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies.
-
-!!! tip "Note"
-    Only single objects can be selected, not folder objects.
-    The validity period can be set in minutes, up to 720 minutes.
-
-!!! danger "Caution"
-    Signed URLs should be used with caution because if they are exposed, anyone can access the selected object. It is recommended that you set an appropriate validity period for your situation and use it to reduce the damage if your signed URL is exposed.
-
-<a id="manage-object"></a>
-### Manage Object { #manage-object }
-Check the selected object information and manage the properties.
-
-!!! tip "Note"
-    If you set both an object expiration date and a lock expiration date, the object expiration date must always be set after the lock expiration date.
-
-<a id="set-object-expiration"></a>
-#### Change Object Expiration Date
-
-You can change the expiration date for selected objects.
-
-<a id="set-object-lock-expiration"></a>
-#### Change Object Lock Date
-
-You can change the lock expiration date for selected objects. It cannot be changed prior to the previously set expiration date.
-
-<a id="prefix-search"></a>
-## Prefix Search { #prefix-search }
-If you enter a prefix in the search bar and click the **Search** button, you can search for containers, folders, and objects that begin with the prefix you entered. You can search for containers in the container list, and search for folders and objects in the object list.
 
 <a id="s3-api-credentials"></a>
 ## S3 API Credentials { #s3-api-credentials }
