@@ -607,7 +607,7 @@ DBインスタンスに接続されたパラメータグループの設定が変
 
 ![db-instance-list-replica-create](../static/images/20260609/db-instance-list-replica-create-ja.png)
 
-❶ 元のDBインスタンスを選択した後、**[リードレプリカ作成]** をクリックすると、Read Replica を作成するためのページに移動します。
+❶ 元のDBインスタンスを選択した後、**Read Replica 作成** をクリックすると、Read Replica を作成するためのページに移動します。
 
 次の設定でRead Replicaを作成できます。
 
@@ -689,7 +689,7 @@ Primaryの状態に関係なく、Read Replicaの現時点のデータを基に�
 <a id="end-wait-for-replication-delay-during-read-replica-promotionforce-promotion"></a>
 ### リードレプリカ昇格/強制昇格中、複製遅延待機の終了 { #end-wait-for-replication-delay-during-read-replica-promotionforce-promotion }
 
-リードレプリカの昇格または強制昇格中に複製遅延が解消されるまで待機している場合、待機作業を終了するには、コンソールで
+Read Replica の昇格または強制昇格中に複製遅延が解消されるまで待機している場合、待機作業を終了するには、コンソールで
 
 ![db-instance-list-stop-wait-replication-lag](../static/images/20260609/db-instance-list-stop-wait-replication-lag-ja.png)
 
@@ -702,9 +702,9 @@ Primaryの状態に関係なく、Read Replicaの現時点のデータを基に�
 Read Replica は、さまざまな理由でレプリケーションが中断される可能性があります。Read Replica のステータスが `복제 중단` の場合、速やかに原因を確認し、正常化する必要があります。`복제 중단` 状態が長時間続く場合、レプリケーションの遅延が増加します。正常化に必要な WAL ログが存在しない場合は、Read Replica を再構築する必要があります。
 
 <a id="rebuild-read-replica"></a>
-### リードレプリカの再構築 { #rebuild-read-replica }
+### Read Replicaの再構築 { #rebuild-read-replica }
 
-Read Replica の複製の問題を解決できない場合、再構築により正常な状態に復元できます。このプロセスでは、Read Replica のすべてのデータベースを削除し、Primary データベースをベースに新たに再構築します。再構築中は、Read Replica を使用することはできません。Read Replica を再構築するには、複製グループに属する DB インスタンスから作成されたバックアップファイルが必要です。バックアップファイルがない場合の動作および注意事項については、「[リードレプリカ作成](#create-read-replica)」を参照してください。
+Read Replica の複製の問題を解決できない場合 再構築により正常な状態に復元できます。このプロセスでは、Read Replica のすべてのデータベースを削除し、Primary データベースをベースに新たに再構築します。再構築中は、Read Replica を使用することはできません。Read Replica を再構築するには、複製グループに属する DBインスタンスから作成されたバックアップファイルが必要です。バックアップファイルがない場合、動作および注意事項は[リードレプリカ作成](#create-read-replica)項目を参照してください。
 
 !!! tip "ヒント"
     再構築後も接続情報(ドメイン、IP)は変更されません。
@@ -773,52 +773,52 @@ StandbyがPrimaryの状態チェックに4回連続して失敗した場合、Pr
     高可用性機能はドメインを基盤としているため、接続を試みるクライアントがDNSサーバーに接続できないネットワーク環境の場合、ドメインでDBインスタンスに接続できず、フェイルオーバーが発生した際に正常な接続ができません。
     内部仮想IPがStandbyからPrimaryに変更される過程で、一時的に接続が中断される場合があります。
 
-<a id="failed-over-master"></a>
-### フェイルオーバーが行われたマスター { #failed-over-master }
+<a id="failed-over-primary"></a>
+### Failed Over Primary { #failed-over-primary }
 
-障害が発生してフェイルオーバーされた Primary を Failed Over Primary と呼びます。Failed Over Primary の自動バックアップは実行されず、Failed Over Primary の復旧、再構築、分離、削除を除くその他のすべての機能は実行することはできません。
+障害が発生してフェイルオーバーされたPrimaryをFailed Over Primaryと呼びます。Failed Over Primaryの自動バックアップは実行されず、Failed Over Primary復旧、再構築、分離、削除を除いた他のすべての機能は実行できません。
 
-<a id="restore-failed-over-master"></a>
-### フェイルオーバーが行われたマスターの復旧 { #restore-failed-over-master }
+<a id="restore-failed-over-primary"></a>
+### Failed Over Primary 復旧 { #restore-failed-over-primary }
 
-フェイルオーバーの過程でデータの整合性が損なわれておらず、障害が発生した時点から復旧を試みる時点まで保管されたトランザクションログ (Archived Write Ahead Log) が失われていない場合、Failed Over Primary と昇格した Primary を再び高可用性構成に復旧できます。Failed Over Primary のデータベースをそのまま使用して昇格した Primary とのレプリケーション関係を再設定するため、データの整合性が損なわれているか、復旧に必要な保管済みトランザクションログが失われている場合、復旧は失敗します。Failed Over Primary の復旧に失敗した場合、再構築によって高可用性機能を再度有効化できます。
+フェイルオーバープロセス中にデータの整合性が破損していず、障害発生時点から復旧を試みる時点まで保存されているトランザクションログ(Archived Write Ahead Log)が失われていない場合、Failed Over Primary と昇格されたプライマリを高可用性構成に戻して復旧できます。Failed Over Primary のデータベースのままで昇格されたプライマリとのレプリケーション関係を再度設定するため、データの整合性が破損したか、復旧に必要な保存されているトランザクションログが失われていれば、復旧は失敗します。Failed Over Primary 復旧に失敗した場合、再構築により高可用性機能を再度有効化できます。
 
 Failed Over Primary を復旧するには、コンソールで
 
 ![db-instance-ha-failover-repair](../static/images/20260609/db-instance-ha-failover-repair-ja.png)
 
-❶ 復旧したい Failed Over Primary を選択した後、ドロップダウンメニューで **[フェイルオーバーされたマスターの復旧]** を選択します。
+❶ 復旧する Failed Over Primary を選択した後、ドロップダウンメニューで **[Failed Over Primary 復旧]** メニューをクリックします。
 
-<a id="rebuild-failed-over-master"></a>
-### フェイルオーバーが行われたマスター再構築 { #rebuild-failed-over-master }
+<a id="rebuild-failed-over-primary"></a>
+### Failed Over Primary 再構築 { #rebuild-failed-over-primary }
 
-Failed Over Primaryの復旧に失敗した場合、再構築を使用して再度高可用性機能を有効化できます。再構築は復旧とは異なり、Failed Over Primaryのデータベースをすべて削除し、昇格したPrimaryのデータベースをもとに再構築します。Failed Over Primaryを再構築するには、レプリケーショングループに属するDBインスタンスのうち、バックアップファイルおよびアーカイブされたトランザクションログ（Archived Write Ahead Log）が必要です。バックアップファイルがない場合は、次の順序に従ってバックアップを実行するDBインスタンスを選択します。
+Failed Over Primary の復旧に失敗した場合、再構築を使用して高可用性機能を再度有効化することができます。再構築は復旧と異なり、Failed Over Primary のデータベースをすべて削除し、昇格された Primary のデータベースに基づいて再構築します。Failed Over Primary を再構築するには、レプリケーション グループに属する DBインスタンスの中から、バックアップ ファイルおよび保存されたトランザクション ログ (Archived Write Ahead Log) が必要です。バックアップ ファイルがない場合、次の順序に従ってバックアップを実行する DBインスタンスを選択します。
 
-❶ 自動バックアップを設定したRead Replica
-❷ 自動バックアップを設定したPrimary
+❶ 自動バックアップを設定した Read Replica
+❷ 自動バックアップを設定した Primary
 
-条件に一致するDBインスタンスが存在しない場合、Failed Over Primaryの再構築リクエストは失敗します。
+条件に合う DBインスタンスがない場合、Failed Over Primary 再構築要求は失敗します。
 
 !!! danger "注意"
-    Primaryのデータベースサイズに比例して、Failed Over Primaryの再構築時間が長くなる場合があります。
-    バックアップが実行されているDBインスタンスの場合、Failed Over Primaryの再構築過程でストレージI/Oのパフォーマンスが低下する場合があります。
+    Primary のデータベース サイズに比例して、Failed Over Primary 再構築の時間が増加する可能性があります。
+    バックアップが実行される DBインスタンスの場合、Failed Over Primary 再構築プロセス中にストレージ I/O パフォーマンスの低下がある可能性があります。
 
 Failed Over Primary を再構築するには、コンソールで
 
 ![db-instance-ha-failover-rebuild](../static/images/20260609/db-instance-ha-failover-rebuild-ja.png)
 
-❶ 再構築する Failed Over Primary を選択した後、ドロップダウンメニューで **[フェイルオーバーされたマスター再構築]** を選択します。
+❶ 再構築を希望する Failed Over Primary を選択してから、ドロップダウン メニューで **[Failed Over Primary 再構築]** メニューをクリックします。
 
-<a id="separate-failed-over-master"></a>
-### フェイルオーバーが行われたマスターの分離 { #separate-failed-over-master }
+<a id="separate-failed-over-primary"></a>
+### Failed Over Primary 分離 { #separate-failed-over-primary }
 
-Failed Over Primary の復旧に失敗し、データ修正が必要な場合は、Failed Over Primary を切り離して高可用性機能を無効にできます。切り離された Primary と昇格した Primary 間のレプリケーション関係が切断され、それぞれ通常の DB インスタンスとして動作します。切り離した後は、元の構成に戻すことはできません。
+Failed Over Primary の復旧に失敗してデータ修正が必要な場合、Failed Over Primary を分離することで高可用性機能を無効にできます。分離されたプライマリと昇格されたプライマリ間のレプリケーション関係が切断され、それぞれが通常の DBインスタンスとして動作します。分離後は、元の構成に復旧することはできません。
 
 Failed Over Primary を分離するには、コンソールで
 
 ![db-instance-ha-failover-split](../static/images/20260609/db-instance-ha-failover-split-ja.png)
 
-❶ 分離したい Failed Over Primary を選択し、ドロップダウンメニューで **[フェイルオーバーされたマスターの分離]** をクリックします。
+❶ 分離したい Failed Over Primary を選択し、ドロップダウンメニューから **Failed Over Primary 分離** メニューをクリックします。
 
 <a id="manual-failover"></a>
 ### 手動フェイルオーバー { #manual-failover }
@@ -870,10 +870,11 @@ Standby に変更を先に適用した後、その推移を観察したり、正
 
 一時的なジョブによる接続の中断や大量の負荷が予想される状況で、一時的に高可用性機能を停止できます。高可用性機能が一時停止されると、障害が検知されないため、フェイルオーバーを実行しません。高可用性機能が一時停止された状態で再起動が必要なジョブを実行しても、一時停止された高可用性機能は再開されません。高可用性機能が一時停止されてもデータレプリケーションは正常に行われますが、障害が検知されないため、長時間一時停止状態に維持することは推奨しません。
 
-<a id="rebuild-candidate-master"></a>
-### Standby 再構築 { #rebuild-candidate-master }
+<a id="rebuild-standby"></a>
+### Standby の再構築 { #rebuild-standby }
 
-ネットワークの切断、別のPrimaryからのレプリケーション設定など、さまざまな原因でStandbyのレプリケーションが中断される場合があります。レプリケーションが中断された状態のStandbyでは、自動フェイルオーバーは実行されません。Standbyのレプリケーション中断を解決するには、Standbyを再構築する必要があります。Standbyの再構築時には、Standbyのデータベースをすべて削除し、Primaryのデータベースをもとに再構築します。この過程で、再構築に必要なバックアップファイルがPrimaryデータベースに存在しない場合、Primaryでバックアップが実行され、バックアップによるパフォーマンスの低下が発生する可能性があります。
+ネットワークの断絶や別の Primary からのレプリケーション設定など、さまざまな原因により Standby レプリケーションが中断される可能性があります。レプリケーション中断状態の Standby では、自動フェイルオーバーが実行されません。Standby のレプリケーション中断を解決するには、Standby を再構築する必要があります。Standby 再構築時には、Standby のデータベースをすべて削除し、Primary のデータベースを基に再構築します。このプロセスで、再構築に必要なバックアップファイルが Primary のデータベースに存在しない場合、Primary でバックアップが実行され、バックアップによるパフォーマンス低下が発生する可能性があります。
+
 
 <a id="data-migration"></a>
 ## データマイグレーション { #data-migration }
