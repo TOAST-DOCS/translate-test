@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=1272d3144247 -->
+<!-- pre-align:aligned sig=d58a9ac7e400 -->
 
 <a id="database-rds-for-enginepascalcase-api-guide"></a>
 ## Database > RDS for MariaDB > API 가이드 { #database-rds-for-enginepascalcase-api-guide }
@@ -99,11 +99,15 @@ API 요청 시 인증에 실패하거나 권한이 없을 경우 다음과 같�
 | MARIADB_V101113 | Y | Y | ED25519, NATIVE |
 | MARIADB_V101116 | Y | Y | ED25519, NATIVE |
 | MARIADB_V101118 | Y | Y | ED25519, NATIVE |
+| MARIADB_V101119 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11407 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11410 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11412 | Y | Y | ED25519, NATIVE |
+| MARIADB_V11413 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11806 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11808 | Y | Y | ED25519, NATIVE |
+| MARIADB_V11809 | Y | Y | ED25519, NATIVE |
+| MARIADB_V12303 | Y | Y | ED25519, NATIVE |
 
 * Enum 유형인 dbVersion 필드에 위 값을 사용할 수 있습니다.
 * 버전에 따라 생성 또는 복원이 불가능할 수 있습니다.
@@ -145,8 +149,8 @@ GET /v4.0/db-versions
     },
     "dbVersions": [
         {
-            "dbVersion": "MARIADB_V11808",
-            "dbVersionName": "Maria DB 11.8.8",
+            "dbVersion": "MARIADB_V12303",
+            "dbVersionName": "Maria DB 12.3.3",
             "restorableFromObs": true
         }
     ]
@@ -769,7 +773,7 @@ GET /v4.0/db-instances
             "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
             "dbInstanceName": "dbInstanceName-example",
             "description": "description-example",
-            "dbVersion": "MARIADB_V11808",
+            "dbVersion": "MARIADB_V12303",
             "dbPort": 13306,
             "dbInstanceType": "MASTER",
             "dbInstanceStatus": "AVAILABLE",
@@ -828,7 +832,7 @@ POST /v4.0/db-instances
     "dbInstanceName": "dbInstanceName",
     "description": "description-example",
     "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "dbPort": 13306,
     "dbUserName": "dbUserName",
     "dbPassword": "dbPassword",
@@ -980,7 +984,7 @@ POST /v4.0/db-instances/restore-from-obs
     "description": "description-example",
     "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
     "dbPort": 13306,
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "useHighAvailability": false,
     "pingInterval": 3,
     "storage": {
@@ -1220,7 +1224,7 @@ GET /v4.0/db-instances/{dbInstanceId}
     "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
     "dbInstanceName": "dbInstanceName-example",
     "description": "description-example",
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "dbPort": 13306,
     "dbInstanceType": "MASTER",
     "dbInstanceStatus": "AVAILABLE",
@@ -1310,7 +1314,7 @@ PUT /v4.0/db-instances/{dbInstanceId}
     "dbPort": 13306,
     "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
     "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "useSlowQueryAnalysis": false,
     "useDummy": false,
     "dbSecurityGroupIds": [],
@@ -2405,7 +2409,7 @@ GET /v4.0/db-instances/{dbInstanceId}/high-availability
 | 이름 | 타입 | 설명 |
 |-----|-----|-----|
 | useHighAvailability | Boolean | 고가용성 사용 여부<br/>- 기본값: `false` |
-| haStatus | Enum | 고가용성 상태<br/>- `CREATED`: 생성됨<br/>- `STABLE`: 정상<br/>- `PAUSING`: 일시 중지 중<br/>- `DISABLE`: 정지<br/>- `DISABLE_MASTER_IN_REPLICATION`: Primary 비정상 복제 감지로 인한 고가용성 중단<br/>- `DISABLE_MHA_PROCESS`: 고가용성 프로세스 중단<br/>- `DISABLE_REPLICATION_STOP`: 복제 중단으로 인한 고가용성 중단<br/>- `DISABLE_REPLICATION_DELAY`: 복제 지연으로 인한 고가용성 중단<br/>- `FAILOVER_STARTED`: 장애 조치 시작<br/>- `FAILOVER_FAILED`: 장애 조치 실패<br/>- `FAILOVER_COMPLETED`: 장애 조치 완료<br/>- `DELETED`: 삭제됨<br/>- `PAUSED`: 일시 중지<br/>- `PAUSED_DUE_TO_TASK`: 작업으로 인한 일시 중지<br/>- `PAUSED_DUE_TO_STOP`: DB 인스턴스 정지로 인한 일시 중지<br/>- `MASTER_FAILURE_DETECTION`: Primary 장애 감지 |
+| haStatus | Enum | 고가용성 상태<br/>- `CREATED`: 생성됨<br/>- `STABLE`: 정상<br/>- `PAUSING`: 일시 중지 중<br/>- `DISABLE`: 정지<br/>- `DISABLE_MASTER_IN_REPLICATION`: Primary 비정상 복제 감지로 인한 고가용성 중단<br/>- `DISABLE_MHA_PROCESS`: 고가용성 프로세스 중단<br/>- `DISABLE_REPLICATION_STOP`: 복제 중단으로 인한 고가용성 중단<br/>- `DISABLE_REPLICATION_DELAY`: 복제 지연으로 인한 고가용성 중단<br/>- `FAILOVER_STARTED`: 장애 조치 시작<br/>- `FAILOVER_FAILED`: 장애 조치 실패<br/>- `FAILOVER_COMPLETED`: 장애 조치 완료<br/>- `FAILOVER_ABORTED`: 장애 조치 되돌림<br/>- `DELETED`: 삭제됨<br/>- `PAUSED`: 일시 중지<br/>- `PAUSED_DUE_TO_TASK`: 작업으로 인한 일시 중지<br/>- `PAUSED_DUE_TO_STOP`: DB 인스턴스 정지로 인한 일시 중지<br/>- `MASTER_FAILURE_DETECTION`: Primary 장애 감지 |
 | pingInterval | Number | Ping 간격(초) |
 | pingType | Enum | Ping 방식<br/>- `CONNECTION`: CONNECTION 방식<br/>- `INSERT`: INSERT 방식<br/>- `SELECT`: SELECT 방식 |
 
@@ -3673,7 +3677,7 @@ GET /v4.0/db-instances/{dbInstanceId}/restoration-info
                 "backupStatus": "BACKING_UP",
                 "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
                 "dbInstanceName": "dbInstanceName-example",
-                "dbVersion": "MARIADB_V11808",
+                "dbVersion": "MARIADB_V12303",
                 "backupType": "AUTO",
                 "backupSize": 1,
                 "useBackupLock": false,
@@ -4294,7 +4298,7 @@ GET /v4.0/backups
             "backupName": "backupName-example",
             "backupStatus": "BACKING_UP",
             "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
-            "dbVersion": "MARIADB_V11808",
+            "dbVersion": "MARIADB_V12303",
             "utilVersion": "utilVersion-example",
             "backupType": "AUTO",
             "backupSize": 1,
@@ -4510,7 +4514,7 @@ GET /v4.0/backups/{backupId}
         "backupStatus": "BACKING_UP",
         "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
         "dbInstanceName": "dbInstanceName-example",
-        "dbVersion": "MARIADB_V11808",
+        "dbVersion": "MARIADB_V12303",
         "utilVersion": "utilVersion-example",
         "backupType": "AUTO",
         "backupMethodType": "FULL",
@@ -5395,7 +5399,8 @@ GET /v4.0/parameter-groups
             "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
             "parameterGroupName": "parameterGroupName-example",
             "description": "description-example",
-            "dbVersion": "MARIADB_V11808",
+            "dbVersion": "MARIADB_V12303",
+            "dbEngineVersionFamily": "MYSQL_V80_FAMILY",
             "parameterGroupType": "USER",
             "parameterGroupStatus": "STABLE",
             "createdYmdt": "2023-12-31T15:00:00+09:00",
@@ -5414,8 +5419,9 @@ GET /v4.0/parameter-groups
 | parameterGroups.parameterGroupId | UUID | 파라미터 그룹의 식별자 |
 | parameterGroups.parameterGroupName | String | 파라미터 그룹을 식별할 수 있는 이름 |
 | parameterGroups.description | String | 파라미터 그룹 추가 정보 |
-| parameterGroups.dbVersion | Enum | DB 엔진 버전 |
-| parameterGroups.parameterGroupType | Enum | 파라미터 그룹 유형<br/>- `USER`<br/>- `ADMIN`<br/>- `DEFAULT` |
+| parameterGroups.dbVersion | Enum | DB 엔진 버전(패밀리 파라미터 그룹은 null) |
+| parameterGroups.dbEngineVersionFamily | String | DB 엔진 버전 패밀리 코드(패밀리 파라미터 그룹만 값을 가짐) |
+| parameterGroups.parameterGroupType | Enum | 파라미터 그룹 유형<br/>- `USER`<br/>- `ADMIN`<br/>- `FAMILY`<br/>- `DEFAULT` |
 | parameterGroups.parameterGroupStatus | Enum | 파라미터 그룹의 현재 상태<br/>- `STABLE`: 적용 완료<br/>- `NEED_TO_APPLY`: 적용 필요<br/>- `DELETED`: 삭제됨 |
 | parameterGroups.createdYmdt | DateTime | 생성 일시(YYYY-MM-DDThh:mm:ss.SSSTZD) |
 | parameterGroups.updatedYmdt | DateTime | 수정 일시(YYYY-MM-DDThh:mm:ss.SSSTZD) |
@@ -5449,7 +5455,8 @@ POST /v4.0/parameter-groups
 {
     "parameterGroupName": "parameterGroupName",
     "description": "description-example",
-    "dbVersion": "MARIADB_V11808"
+    "dbVersion": "MARIADB_V12303",
+    "dbEngineVersionFamily": "MYSQL_V80_FAMILY"
 }
 ```
 
@@ -5459,7 +5466,8 @@ POST /v4.0/parameter-groups
 |-----|-----|-----|-----|
 | parameterGroupName | String | Y | 파라미터 그룹을 식별할 수 있는 이름<br/>- 최소 길이: `1`<br/>- 최대 길이: `100` |
 | description | String | N | 파라미터 그룹 추가 정보<br/>- 최대 길이: `100` |
-| dbVersion | Enum | Y | DB 엔진 버전 |
+| dbVersion | Enum | N | DB 엔진 버전(USER 타입 생성 시 필수, FAMILY 타입 생성 시 null) |
+| dbEngineVersionFamily | String | N | DB 엔진 버전 패밀리 코드(FAMILY 타입 생성 시 필수: 지정하면 패밀리 파라미터 그룹이 생성되어 같은 패밀리의 모든 마이너 버전 DB 인스턴스에 공유 적용 가능) |
 
 <a id="create-parameter-group-response"></a>
 #### 응답
@@ -5567,7 +5575,8 @@ GET /v4.0/parameter-groups/{parameterGroupId}
     "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
     "parameterGroupName": "parameterGroupName-example",
     "description": "description-example",
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
+    "dbEngineVersionFamily": "MYSQL_V80_FAMILY",
     "parameterGroupStatus": "STABLE",
     "parameters": [
         {
@@ -5579,7 +5588,11 @@ GET /v4.0/parameter-groups/{parameterGroupId}
             "defaultValue": "defaultValue-example",
             "allowedValue": "allowedValue-example",
             "updateType": "VARIABLE",
-            "applyType": "BOTH"
+            "applyType": "BOTH",
+            "templateRange": {
+                "coversAllVersions": false,
+                "label": "MySQL 8.0.18 ~ MySQL 8.0.27"
+            }
         }
     ],
     "createdYmdt": "2023-12-31T15:00:00+09:00",
@@ -5594,7 +5607,8 @@ GET /v4.0/parameter-groups/{parameterGroupId}
 | parameterGroupId | UUID | 파라미터 그룹의 식별자 |
 | parameterGroupName | String | 파라미터 그룹을 식별할 수 있는 이름 |
 | description | String | 파라미터 그룹 추가 정보 |
-| dbVersion | Enum | DB 엔진 버전 |
+| dbVersion | Enum | DB 엔진 버전(패밀리 파라미터 그룹은 null) |
+| dbEngineVersionFamily | String | DB 엔진 버전 패밀리 코드(패밀리 파라미터 그룹만 값을 가짐) |
 | parameterGroupStatus | Enum | 파라미터 그룹의 현재 상태<br/>- `STABLE`: 적용 완료<br/>- `NEED_TO_APPLY`: 적용 필요<br/>- `DELETED`: 삭제됨 |
 | parameters | Array | 파라미터 목록 |
 | parameters.parameterId | UUID | 파라미터의 식별자 |
@@ -5606,6 +5620,9 @@ GET /v4.0/parameter-groups/{parameterGroupId}
 | parameters.allowedValue | String | 허용된 값 |
 | parameters.updateType | Enum | 수정 유형<br/>- `VARIABLE`<br/>- `CONSTANT`<br/>- `INIT_VARIABLE` |
 | parameters.applyType | Enum | 적용 유형<br/>- `BOTH`<br/>- `SESSION`<br/>- `FILE` |
+| parameters.templateRange | Object | 파라미터 템플릿 구간(패밀리 파라미터 그룹만 값을 가짐) |
+| parameters.templateRange.coversAllVersions | Boolean | 구간이 패밀리의 모든 DB 엔진 버전 포함 여부 |
+| parameters.templateRange.label | String | 구간의 DB 엔진 버전 범위 |
 | createdYmdt | DateTime | 생성 일시(YYYY-MM-DDThh:mm:ss.SSSTZD) |
 | updatedYmdt | DateTime | 수정 일시(YYYY-MM-DDThh:mm:ss.SSSTZD) |
 
