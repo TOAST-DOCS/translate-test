@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=aa5c9758414b -->
 
 <a id="security-secure-key-manager-api-v12-guide"></a>
@@ -85,6 +87,7 @@ X-TOAST-CLIENT-MAC-ADDR: {MACアドレス}
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | resultCode | Number | API呼び出し結果コード値 |
@@ -111,6 +114,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/c
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | clientIp | String | APIを呼び出したクライアントのIPアドレス |
@@ -138,6 +142,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/s
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | secret | String | 機密データ照会結果 |
@@ -156,6 +161,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/s
     "secretValue": "data"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | secretValue | String | 変更する機密データの内容 |
@@ -179,6 +185,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/s
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyId | String | キーID |
@@ -207,6 +214,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "plaintext": "data"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | plaintext | String | 対称鍵で暗号化するデータ |
@@ -223,6 +231,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | ciphertext | String | 対称鍵でデータを暗号化した結果 |
@@ -241,6 +250,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "ciphertext": "AAAAABzGwQniNneKXmcOLhWnxEqC1rNY+UdVb3lyeX/4wSrP"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | ciphertext | String | 対称鍵で復号するデータ |
@@ -257,6 +267,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | plaintext | String | 対称鍵でデータを復号した結果 |
@@ -282,6 +293,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | localKeyPlaintext | String | Base64エンコードしたAES-256対称鍵 |
@@ -315,6 +327,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/s
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | symmetricKey | String | 対称鍵データ(16進数文字列形式) |
@@ -336,6 +349,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "plaintext": "data"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | plaintext | String | 非対称鍵で署名するデータ |
@@ -352,6 +366,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | signature | String | 非対称鍵でデータを署名した署名値 |
@@ -372,6 +387,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "signature": "AAAAAGI9zf831DX..."
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | plaintext | String | 非対称鍵で検証するデータ |
@@ -390,6 +406,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | result | Boolean | 非対称鍵でデータと署名値を検証した結果 |
@@ -426,6 +443,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyType | String | 非対称鍵形式 |
@@ -465,6 +483,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyType | String | 非対称鍵形式 |
@@ -495,6 +514,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.0/appkey/{appkey}/
     "secretValue" : "data"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreName | String | キーを保存するキーストア名 |
@@ -515,6 +535,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.0/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyId | String | 作成されたキーID |
@@ -536,6 +557,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.0/appkey/{appkey}/
     "autoRotationPeriod" : 0
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreName | String | キーを保存するキーストア名 |
@@ -556,6 +578,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.0/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyId | String | 作成されたキーID |
@@ -577,6 +600,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.0/appkey/{appkey}/
     "autoRotationPeriod" : 0
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreName | String | キーを保存するキーストア名 |
@@ -597,6 +621,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.0/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyId | String | 作成されたキーID |
@@ -628,6 +653,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.0/appkey/{appkey}/k
 }
 
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyId | String | 作成されたキーID |
@@ -655,6 +681,7 @@ DELETE https://api-keymanager.nhncloudservice.com/keymanager/v1.0/appkey/{appkey
 }
 
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyId | String | 作成されたキーID |
@@ -683,6 +710,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "description" : "Description #1"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreName | String | IPv4アドレスを保存するキーストア名 |
@@ -702,6 +730,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | value | String | 作成されたIPv4アドレス値 |
@@ -722,6 +751,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "description" : "Description #1"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreName | String | MACアドレスを保存するキーストア名 |
@@ -741,6 +771,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | value | String | 作成されたMACアドレス値 |
@@ -763,6 +794,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "description" : "Description #1"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreName | String | 証明書を保存するキーストア名 |
@@ -784,6 +816,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | name | String | 作成された証明書の名前 |
@@ -812,6 +845,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     "value" : "127.0.0.1"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreName | String | IPv4アドレスを削除リクエストするキーストア名 |
@@ -830,6 +864,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | value | String | 削除をリクエストしたIPv4アドレス値 |
@@ -849,6 +884,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     "value" : "aa:aa:aa:aa:aa:aa"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreName | String | MACアドレスを削除リクエストするキーストアの名前 |
@@ -867,6 +903,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | value | String | 削除リクエストしたMACアドレス値 |
@@ -886,6 +923,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     "name" : "Certificate Name #1"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreName | String | 証明書を削除リクエストするキーストア名 |
@@ -904,6 +942,7 @@ PUT https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/a
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | name | String | 削除リクエストした証明書の名前 |
@@ -928,6 +967,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "value" : "127.0.0.1"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreName | String | IPv4アドレスを即時削除するキーストア名 |
@@ -946,6 +986,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | value | String | 削除したIPv4アドレス値 |
@@ -965,6 +1006,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "value" : "aa:aa:aa:aa:aa:aa"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreName | String | MACアドレスを即時削除するキーストア名 |
@@ -983,6 +1025,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | value | String | 削除したMACアドレス値 |
@@ -1002,6 +1045,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     "name" : "Certificate Name #1"
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreName | String | 証明書を即時削除するキーストア名 |
@@ -1020,6 +1064,7 @@ POST https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | name | String | 削除した証明書の名前 |
@@ -1050,6 +1095,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreIdList | List | キーストアIDリスト |
@@ -1092,6 +1138,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreList | List | キーストア詳細情報リスト |
@@ -1133,6 +1180,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyStoreId | Number | キーストアID |
@@ -1171,6 +1219,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyIdList | List | キーIDリスト |
@@ -1221,6 +1270,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyList | List | キー詳細情報リスト |
@@ -1268,6 +1318,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | keyId | String | キーID |
@@ -1308,6 +1359,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | ipv4List | List | IPv4認証情報リスト |
@@ -1347,6 +1399,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | ipv4List | List | IPv4認証情報リスト |
@@ -1381,6 +1434,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | macList | List | MAC認証情報リスト |
@@ -1420,6 +1474,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | macList | List | MAC認証情報リスト |
@@ -1454,6 +1509,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | certificateList | List | 証明書認証情報リスト |
@@ -1495,6 +1551,7 @@ GET https://api-keymanager.nhncloudservice.com/keymanager/v1.2/appkey/{appkey}/k
     }
 }
 ```
+
 | 名前 | タイプ | 説明 |
 |---|---|---|
 | certificateList | List | 証明書認証情報リスト |
