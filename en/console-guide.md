@@ -1,7 +1,9 @@
+<!-- machine_translated: true -->
+
 <a id="storage-storage-gateway-console-user-guide"></a>
 ## Storage > Storage Gateway > Console User Guide { #storage-storage-gateway-console-user-guide }
 
-This document describes how to manage and connect gateways and shares in Storage Gateway from the NHN Cloud console.
+This document describes how to manage and connect gateways and shares in the NHN Cloud Storage Gateway console.
 
 <a id="gateway"></a>
 ## Gateway { #gateway }
@@ -57,15 +59,15 @@ With redundancy enabled, you create two instances to form a cluster. If one inst
 Start a stopped storage gateway.
 
 <a id="stop-gateway"></a>
-### Stop Gateway { #stop-gateway }
+### Stop the gateway { #stop-gateway }
 Stop the storage gateway. When you stop the gateway, the instances that make up the cluster stop and can't connect to storage.
 
 !!! danger "Caution"
     Before stopping the storage gateway, you must unmount the gateway from the system you are using by connecting the NHN Cloud storage. Stopping the gateway while it is mounted may cause problems on your system.
 
 <a id="delete-gateway"></a>
-### Delete Gateway { #delete-gateway }
-Delete the storage gateway. All instances and resources that make up the cluster are deleted. NHN Cloud storage that was connected to the gateway is not deleted. 
+### Delete gateway { #delete-gateway }
+Delete the storage gateway. All instances and resources that make up the cluster are deleted. NHN Cloud storage that was connected to the gateway is not deleted.
 
 !!! tip "Note"
     To delete a gateway, you must first delete all shares you created on the gateway.
@@ -89,7 +91,7 @@ Set the information of storage to connect.
 Object Storage requires the name of the container to connect to and the Access Key from your S3 API credentials. The name of the container to connect to must follow Amazon S3's bucket naming conventions. S3 API credentials can be issued using the Object Storage console or API. For more information, see the [Create Bucket](/Storage/Object%20Storage/en/s3-api-guide/#bucket) section and the [S3 API Credentials](/Storage/Object%20Storage/en/s3-api-guide/#s3-api) section of **the Object Storage Amazon S3-compatible API guide**.
 
 !!! tip "Note"
-    When you create a share that connects Object Storage containers, the `{container name}+segments` container is automatically created in Object Storage. When you save a file that is larger than 25 MB through the gateway, it is uploaded as a multipart to the connected container, and the segment objects of the multipart object are stored in the `{containername}+segments` container.
+    When you create a share that connects Object Storage containers, the `{container name}+segments` container is automatically created in Object Storage. When you save a file that is larger than 25 MB through the gateway, it is uploaded as a multipart to the connected container, and the segment objects of the multipart object are stored in the `{container name}+segments` container.
 
 <!-- 개행을 위한 주석 -->
 
@@ -125,8 +127,8 @@ Enter the IP or IP band of the client that can access NHN Cloud storage through 
 Set the memory cache validity time. The cache is retained for the set validity time.
 
 <a id="delete-share"></a>
-### Delete Share { #delete-share }
-Delete a share. 
+### Delete share { #delete-share }
+Deletes a share.
 
 !!! danger "Caution"
     Before deleting a share, you must mount the NHN Cloud storage and unmount it from your system. Deleting a share while it is mounted may cause problems on your system.
@@ -137,10 +139,10 @@ Immediately deletes data stored in the disk cache area.
 
 <a id="change-access-key"></a>
 ### Change Access Key { #change-access-key }
-Change the Access Key that you set when creating the share for the Object Storage type gateway.
+Change the Access Key that you set when creating a share for an Object Storage type gateway.
 
 !!! danger "Caution"
-    Before you change the access key, you must mount your NHN Cloud storage and unmount it from your system. Changing the Access Key while mounted may cause problems on your system.
+    Before you change the Access Key, you must mount your NHN Cloud storage and unmount it from your system. Changing the Access Key while mounted may cause problems on your system.
 
 <a id="change-nfs-permissions"></a>
 ### Change NFS Permissions { #change-nfs-permissions }
