@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=56dd0b1a76a6 -->
 
 <a id="database-rds-for-postgresql-db-engine"></a>
@@ -26,9 +28,9 @@ You can use the following versions.
 | PostgreSQL 14.15    | Cannot be newly created or used to add a read replica. |
 | PostgreSQL 14.6     | Cannot be newly created or used to add a read replica. |
 
-- [Note] For PostgreSQL version 14.6, 14.15, and 17.2, upgrades to the latest version are [recommended](https://www.postgresql.org/support/security/CVE-2025-1094/).
-    
-    
+!!! warning "Caution"
+    For PostgreSQL version 14.6, 14.15, and 17.2, upgrades to the latest version are [recommended](https://www.postgresql.org/support/security/CVE-2025-1094/).
+
 <a id="perform-version-upgrades"></a>
 ### Perform Version Upgrades { #perform-version-upgrades }
 
@@ -48,9 +50,10 @@ In RDS for PostgreSQL, the major version upgrade can only be executed on the mas
 <a id="perform-version-upgrades-major-version-upgrade-order"></a>
 #### Major Version Upgrade Order
 
-You can proceed to upgrade the major version through master DB instance modifications. The order of execution is as follows:
+You can upgrade the major version by modifying the master DB instance.
+The order of execution is as follows:
 
-- Conduct the version upgrade pre-check on the Master DB instance. 
+- Conduct the version upgrade pre-check on the master DB instance.
     - If the pre-check results are not problematic, proceed to upgrade the version.
     - The pre-check results are provided in the form of log files and can be checked via the `pg_upgrade.log` file in the **Log** tab of the DB instance details.    
 - If the master exists alone within the DB instance group, the version upgrade for the master DB instance proceeds.
@@ -58,18 +61,17 @@ You can proceed to upgrade the major version through master DB instance modifica
     - Repair operation may proceed if the version upgrade fails, and if successful, DB instances will be reverted to a pre-version status.
     - If the repair operation also fails, you can attempt repair by rebuilding it.
 - Proceed by selecting one of the DB instances (including candidate master) in non-master replication relationship.
-    - Proceed the version upgrade for selected DB instances.
-        - If you have a candidate master, proceed with the version upgrade by prioritizing the read replica.
+    - Upgrade the version of the selected DB instance.
+        - If a candidate master exists, the version upgrade takes priority over read replicas.
         - If the version upgrade fails, the version upgrade will not proceed for other DB instances, and you can attempt to recover them with a rebuild operation.
-        - > [Note] During the stage of upgrading DB instances in a replication relationship other than the master, write load on the master is blocked, and only read load can be processed.
-    - Change the type to master for the upgraded DB instances, and reset the upgrade progress and replication relationship for the remaining DB instances in the group.
+    - Change the type to master for the upgraded DB instance, and upgrade the remaining DB instances in the group and reset the replication relationship.
         - The access address is unchanged and can be accessed via the existing access address.
-        - Downtime exists for the read copy during the version upgrade.
+        - During the version upgrade, Downtime occurs on read replicas.
         - If the version upgrade fails, the replication will remain discontinued, and you can attempt repairs through a rebuild operation.
 
-- [Caution] DB instances that have successfully upgraded their version within a DB instance group can coexist with DB instances that have failed. In the case of a failed DB instance, the replication relationship is broken, and you can attempt to recover by running a rebuild operation.
-
-
+!!! warning "Caution"
+    When upgrading DB instances in a non-master replication relationship, write workloads on the master are blocked, and only read workloads can be processed.
+    DB instances that have successfully upgraded their version within a DB instance group can coexist with DB instances that have failed. In the case of a failed DB instance, the replication relationship is broken, and you can attempt to recover by running a rebuild operation.
 
 <a id="perform-version-upgrades-miner-version-upgrade"></a>
 #### Miner Version Upgrade
