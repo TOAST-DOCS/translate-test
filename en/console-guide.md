@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <a id="storage-object-storage-console-guide"></a>
 ## Storage > Object Storage > Console Guide { #storage-object-storage-console-guide }
 
@@ -437,6 +439,122 @@ Suspends container replication. While replication is suspended, any deletions or
 !!! danger "Caution"
     Objects in the source container that are deleted during the replication suspend period might not be reflected in the target container.
 <br/>
+
+<a id="task-record"></a>
+#### Task History
+You can view the task history for batch processing of multiple objects. The task types for which history is provided are as follows:
+
+* [Empty a container](#empty-a-container)
+* [Delete an object](#delete-object)
+* [Copy an object](#copy-or-move-object)
+* [Move an object](#copy-or-move-object)
+* [Apply lifecycle rules in batch](#set-object-lifecycle-batch)
+
+!!! tip "Note"
+    Task history is retained for 90 days from the task completion date.
+
+<a id="task-record-list"></a>
+##### Task List
+You can view the list of stored tasks. You can download the list of completed tasks as a file by clicking the **Export History** button.
+
+<a id="task-record-detail"></a>
+##### Task Details
+You can view detailed information for each task. The information you can view is as follows:
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Item</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="10">Basic Information</td>
+    <td>Task ID</td>
+    <td>Indicates the unique ID of the task.</td>
+  </tr>
+  <tr>
+    <td>Container</td>
+    <td>Indicates the name of the container in which the task was executed.</td>
+  </tr>
+  <tr>
+    <td>Execution Path</td>
+    <td>Indicates the path where the task was executed in the container.<br>It is displayed as an empty value for tasks performed on all objects, such as emptying a container, or tasks executed from the top-level path of the container.</td>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>Indicates the type of the task.</td>
+  </tr>
+  <tr>
+    <td rowspan="6">Status</td>
+    <td><b>Waiting</b>: The state of waiting for execution immediately after task creation.</td>
+  </tr>
+  <tr>
+    <td><b>In Progress</b>: The state when the task is being executed.</td>
+  </tr>
+  <tr>
+    <td><b>Completed</b>: The state when the task is terminated after all object processing succeeds.</td>
+  </tr>
+  <tr>
+    <td><b>Failed</b>: The state when the task is terminated with some object processing failures.</td>
+  </tr>
+  <tr>
+    <td><b>Canceling</b>: The state of waiting for cancellation after receiving a user cancellation request.</td>
+  </tr>
+  <tr>
+    <td><b>Canceled</b>: The state when cancellation is complete and the task is terminated.</td>
+  </tr>
+  <tr>
+    <td rowspan="6">Progress / Result</td>
+    <td>User</td>
+    <td>Indicates the ID of the user who requested the task.</td>
+  </tr>
+  <tr>
+    <td>Task Request Time</td>
+    <td>Indicates the time when the user requested the task.</td>
+  </tr>
+  <tr>
+    <td>Task Start Time</td>
+    <td>Indicates the time when the requested task started being processed.</td>
+  </tr>
+  <tr>
+    <td>Task End Time</td>
+    <td>Indicates the time when the task was terminated.</td>
+  </tr>
+  <tr>
+    <td>Total Elapsed Time</td>
+    <td>Indicates the time taken from the start to the end of the task.</td>
+  </tr>
+  <tr>
+    <td>Progress Counter</td>
+    <td>Indicates the total number of objects attempted for processing and the number of successful and failed objects.</td>
+  </tr>
+  <tr>
+    <td>Failed Results</td>
+    <td>View Failed Results</td>
+    <td>You can view the list of failed objects and details such as the failure reason and request time for each object.</td>
+  </tr>
+</table>
+
+The following information is additionally displayed for copy/move object tasks.
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Item</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="2">Copy/Move Target Information</td>
+    <td>Destination Container</td>
+    <td>Indicates the name of the container to which objects are copied or moved.</td>
+  </tr>
+  <tr>
+    <td>Destination Path</td>
+    <td>Indicates the path in the destination container to which objects are copied or moved.</td>
+  </tr>
+</table>
+
+<br>
 
 <a id="object"></a>
 ## Object { #object }
