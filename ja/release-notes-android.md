@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=fd94f1629e00 -->
+<!-- pre-align:aligned sig=9f1247824a5a -->
 
 <a id="nhn-cloud-sdk-user-guide-release-notes-android"></a>
 ## NHN Cloud > SDK使用ガイド > リリースノート > Android { #nhn-cloud-sdk-user-guide-release-notes-android }
