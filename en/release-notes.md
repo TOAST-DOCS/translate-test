@@ -5,6 +5,21 @@
 <a id="foundry"></a>
 ## Machine Learning > NHN Cloud Foundry > Release Notes { #foundry }
 
+<a id="foundry.release.notes.2026.09.18.chart"></a>
+#### Analysis / Chart { #foundry.release.notes.2026.09.18.chart }
+
+- If the chart settings are incorrect, the reason is displayed on the screen, and the retrieval failure of one chart does not affect other charts.
+
+<a id="foundry.release.notes.2026.09.18.recommendation"></a>
+#### Recommendation App { #foundry.release.notes.2026.09.18.recommendation }
+
+- When you provide impressions, interactions, and feedback information in the recommendation API request, the recommendation results reflect the information.
+
+<a id="foundry.release.notes.2026.09.18.univariate"></a>
+#### Univariate Time Series Anomaly Detection App { #foundry.release.notes.2026.09.18.univariate }
+
+- Added the univariate time series anomaly detection app.
+
 <a id="foundry.release.notes.2026.08.25"></a>
 ### August 25, 2026 { #foundry.release.notes.2026.08.25 }
 
