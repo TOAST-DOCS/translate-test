@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=6154a9778849 -->
 
 <a id="database-rds-for-enginepascalcase-parameter-group"></a>
@@ -35,8 +37,8 @@ When you reset the parameter group, you change the values of all parameters to t
 When creating or modifying a DB instance, you can select the parameter groups to apply to the DB instance. One parameter group is applied to one DB instance, and one parameter group can be applied to multiple DB instances. If a parameter in a parameter group is changed, the change does not immediately apply to the DB instance. If an associated DB instance exists, the parameter group changes to `Need to Apply`. On the DB Instances list screen, select the DB instance associated with the parameter
 group, and then click **Apply Parameter Group Changes** to reflect the changes in the parameters to the DB instance. When changes to the parameter group are applied to all associated DB instances, the parameter group changes to `Applied`.
 
-> [Caution]
-> If the parameters that require restart have changed, the DB instance will be restarted during applying changes.
+!!! danger "Caution"
+    If the parameters that require restart have changed, the DB instance will be restarted during applying changes.
 
 <a id="compare-parameter-group"></a>
 ### Compare Parameter Group { #compare-parameter-group }
@@ -161,8 +163,8 @@ To apply GTID smoothly, gtid_mode (gtid application stage) and enforce_gtid_cons
 | 5     | Every DB instance | -                               | Check for Remaining ANONYMOUS Transactions                | `SHOW STATUS LIKE 'ONGOING_ANONYMOUS_TRANSACTION_COUNT';`<br>All servers must return a result of 0 at least once.                                                              |
 | 6     | Every DB instance | gtid_mode = ON                  | All transactions use only GTID                            | Change the parameter group and apply.                                                                                                                                           |
 
-> [Caution]
-> * After changing the parameter group at each step, you must always perform [Apply parameter group changes](parameter-group/#apply).
-> * Changing the gtid_mode and enforce_gtid_consistency parameters may require a DB instance restart.
-> * Disabling GTIDs is done in the reverse order of applying them.
+!!! danger "Caution"
+    * After changing the parameter group at each step, you must always perform [Apply parameter group changes](parameter-group/#apply).
+    * Changing the gtid_mode and enforce_gtid_consistency parameters may require a DB instance restart.
+    * Disabling GTIDs is done in the reverse order of applying them.
 {{/if}}
