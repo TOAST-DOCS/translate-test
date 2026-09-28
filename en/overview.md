@@ -1,4 +1,13 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=9be9447442b4 -->
+{% set ni_suffix = "-gov" if "gov" in build_flags
+    else "-ncgn" if "ncgn" in build_flags
+    else "-ngoic" if "ngoic" in build_flags
+    else "-ngovc" if "ngovc" in build_flags
+    else "-ngsc" if "ngsc" in build_flags
+    else "-ninc" if "ninc" in build_flags
+    else "" -%}
 
 <a id="network-load-balancer-dsr-overview"></a>
 ## Network > Load Balancer (DSR) > Overview { #network-load-balancer-dsr-overview }
@@ -30,9 +39,21 @@ The DSR load balancer uses a different traffic handling method than a standard l
 <a id="how-dsr-works"></a>
 ### How DSR works { #how-dsr-works }
 
-1. Client request: The client sends a request to the virtual (VIP IP) of the load balancer.
-2. Request distribution: The load balancer selects an appropriate member instance and forwards the request.
-3. Direct response delivery: The member instance sends the response directly to the client without passing through the load balancer.
+The VIP (Virtual IP) of Load Balancer (DSR) is a **private IP** assigned from the subnet to which the load balancer belongs. It is the address specified in the **VIP (Virtual IP)** field when creating Load Balancer (DSR), and it is displayed in the **IP Address** column of the list. This is a separate address from the Floating IP used for access from the internet.
+
+| Type | Address Example | Role | lo Interface and Additional Allowed Address Configuration on Member Server |
+|------|----------|------|------|
+| VIP (private IP) | `192.168.1.100` | Actual destination of traffic forwarded to Load Balancer and Member instances | Required |
+| Floating IP | `133.186.0.31` | Entry point for access from the internet | Not required |
+
+The traffic handling order is as follows.
+
+1. Client request: The client sends a request to the VIP (private IP) of the load balancer. When accessing from the internet, the request is sent to the Floating IP associated with the VIP, and the destination of the request is translated to the VIP before being forwarded to the load balancer.
+2. Request distribution: The load balancer selects an appropriate member instance and forwards the request while maintaining the destination IP as the VIP.
+3. Direct response delivery: The member instance sends the response directly to the client with the VIP as the source, without passing through the load balancer. For requests that came in via a Floating IP, the source of the response is translated back to the Floating IP before reaching the client.
+
+!!! danger "Caution"
+    The address that must be registered in the lo interface of the member server and in the additional allowed addresses of the network interface is the VIP (private IP). Registering a Floating IP will prevent traffic from being processed correctly.
 
 !!! tip "Note"
     The DSR method has the following advantages since the response traffic does not pass through the load balancer:
@@ -81,12 +102,12 @@ Load Balancer (DSR) supports the following health check protocols:
 
 - ICMP: A basic connectivity check method using ICMP Echo Request/Reply. Quickly verifies the network connectivity of an instance. Requests are sent to the actual IP of the member instance as the destination.
 
-- TCP: Checks connectivity by attempting a TCP connection on the specified port. Verifies whether a specific service port is operating normally. Requests are sent to the VIP of Load Balancer (DSR) as the destination.
+- TCP: Checks connectivity by attempting a TCP connection on the specified port. Verifies whether a specific service port is operating normally. Requests are sent to the VIP (private IP) of Load Balancer (DSR) as the destination.
 
-- HTTP: Sends an HTTP request to the specified path and checks the response code. Provides a more accurate check of the actual service status of a web application. Requests are sent to the VIP of Load Balancer (DSR) as the destination.
+- HTTP: Sends an HTTP request to the specified path and checks the response code. Provides a more accurate check of the actual service status of a web application. Requests are sent to the VIP (private IP) of Load Balancer (DSR) as the destination.
 
 !!! tip "Note"
-    Since TCP/HTTP health checks send requests to the DSR VIP as the destination, if the VIP is not configured on the lo interface of the member server, the packets cannot be received or processed, causing the health check to fail and the member to be marked as `INACTIVE`. This behavior is intended to detect missing VIP configuration on the server side at an early stage. ICMP health checks send requests to the actual IP of the member, so they only verify connectivity regardless of the VIP configuration.
+    The destination of TCP/HTTP health check packets is the VIP, not the Floating IP, and this is the expected behavior. Since TCP/HTTP health checks send requests to the DSR VIP as the destination, if the VIP is not configured on the lo interface of the member server, the packets cannot be received or processed, causing the health check to fail and the member to be marked as `INACTIVE`. This behavior is intended to detect missing VIP configuration on the server side at an early stage. ICMP health checks send requests to the actual IP of the member, so they only verify connectivity regardless of the VIP configuration.
 
 <a id="health-check-settings"></a>
 ### Health Check Settings { #health-check-settings }
@@ -110,15 +131,17 @@ The following items must be configured for health checks:
 <a id="create-load-balancer-dsr"></a>
 ## Create Load Balancer (DSR) { #create-load-balancer-dsr }
 
-Load Balancer (DSR) is created within the [VPC](/Network/VPC/ko/overview/#_2) in the [subnet](/Network/VPC/ko/overview/#_2).
+Load Balancer (DSR) is created within the [VPC](/Network/VPC/en/overview{% if "gov" in build_flags %}-gov{% endif %}/#glossary) in the [subnet](/Network/VPC/en/overview{% if "gov" in build_flags %}-gov{% endif %}/#glossary).
 
 <a id="assign-vip-address"></a>
 ### Assign VIP Address { #assign-vip-address }
 
-When creating the Load Balancer (DSR), the VIP address can be assigned in one of the following two ways:
+VIP (Virtual IP) is a private IP assigned from the subnet to which Load Balancer (DSR) belongs. When creating Load Balancer (DSR), the VIP can be assigned in one of the following two ways.
 
 - Auto assign: An available IP from the subnet is automatically assigned and used as the VIP.
 - Manual assign: A desired IP within the CIDR range of the subnet is specified and used as the VIP.
+
+If the load balancer needs to be accessible from the internet, associate a Floating IP with this VIP. For more information, see [Floating IP Association](#floating-ip-association).
 
 !!! danger "Caution"
     If the manually specified VIP address is not within the CIDR range of the subnet, creation will fail. Make sure to specify an IP within the IP range of the subnet.
@@ -143,7 +166,7 @@ Load Balancer (DSR) distributes incoming traffic by registering instances as mem
 <a id="member-server-configuration-guide"></a>
 ## Member Server Configuration Guide { #member-server-configuration-guide }
 
-Load Balancer (DSR) forwards client requests to member servers with the virtual IP (VIP) as the destination. For the member server to properly receive and respond to these packets, the following settings are required on the server side:
+Load Balancer (DSR) forwards client requests to member servers with the virtual IP (VIP) as the destination. For the member server to properly receive and respond to these packets, the following settings are required on the server side: The `<VIP>` used in the settings below all refer to this private IP.
 
 !!! danger "Caution"
     Configurations must be applied in the following order: Step 1 (kernel parameters) → Step 2 (VIP configuration). If the VIP is assigned before configuring the kernel parameters, an ARP conflict with the load balancer's VIP may occur, resulting in a network failure.
@@ -277,6 +300,16 @@ network:
 <a id="configuration-verification-and-testing"></a>
 ### 3. Configuration Verification and Testing { #configuration-verification-and-testing }
 
+If a member is in the `INACTIVE` state or is not receiving traffic, check the following items in order for each member instance. Missing configuration items may vary by member. The order below is for diagnosis, not for configuration. When configuring for the first time, you must apply the kernel parameters first.
+
+| Order | Check Item | How to Check | Normal State |
+|------|----------|----------|----------|
+| 1 | VIP on the lo interface | `ip addr show lo` | VIP (private IP) is registered with `/32` |
+| 2 | Kernel parameters | `sysctl net.ipv4.conf.{all,lo}.arp_ignore`, `sysctl net.ipv4.conf.{all,lo}.arp_announce` | `arp_ignore=1`, `arp_announce=2` |
+| 3 | Additional allowed addresses | **Additional allowed addresses** in the console **Network > Network Interface** | `<VIP>/32` or a subnet that includes the VIP is registered |
+| 4 | Security Groups | Security Groups rules for the Member instance | Both the service port and health check port are allowed (see [Security Groups Configuration](#security-groups-configuration) below) |
+| 5 | Application binding | `ss -ltnp` | Listening on `0.0.0.0` or the VIP |
+
 <a id="configuration-verification-and-testing-verify-ip-configuration"></a>
 #### Verify IP configuration
 
@@ -358,9 +391,9 @@ The Security Groups of member instances must allow service traffic and health ch
 !!! tip "Note"
     The default Security Group is associated with the ports corresponding to the VIP and dedicated health check IP of Load Balancer (DSR). However, Security Groups filtering (flow) is not applied to the DSR port itself.
 
-    Security Groups filtering is applied normally to the ports of member instances. Since DSR does not perform source IP translation (No SNAT), the source IP of service traffic is the client's original IP. Therefore, specifying only the default SG as the remote for service traffic is not sufficient; the client IP range or ANY (0.0.0.0/0) must be specified as the remote.
+    Security Groups filtering is applied normally to the ports of member instances. Since DSR does not perform source IP translation (No SNAT), the source IP of service traffic is the client's original IP. Therefore, the client IP range or ANY (`0.0.0.0/0`) must be specified as the remote for service traffic.
 
-    In contrast, health check traffic is sent from a dedicated health check IP assigned to the same subnet as the DSR, and since the port of that IP belongs to the default SG, specifying the default SG as the remote allows the traffic.
+    Since health check traffic is sent from a dedicated health check IP assigned to the same subnet as the DSR, specifying the CIDR of that subnet as the remote allows the traffic. The port of the dedicated health check IP also belongs to the default Security Group, so specifying the `default` SG as the remote is also allowed.
 
 <a id="security-groups-configuration-method-1-easy-configuration"></a>
 #### Method 1: Easy configuration
@@ -370,43 +403,46 @@ Since the DSR retains the client's source IP, both service traffic and status ch
 | Direction | IP protocol | Port Range | Remote | Description |
 |------|-----------|----------|------|------|
 | Receive | TCP or UDP | Service Port (e.g., 80) | 0.0.0.0/0 | Allow service traffic from clients (specified according to the service protocol) |
-| Receive | Random | - | default | Allow health check traffic (the port of the dedicated health check IP belongs to the default SG) |
+| Receive | Random | - | DSR subnet CIDR (e.g., `192.168.1.0/24`) | Allow health check traffic (the dedicated health check IP is assigned to the same subnet as the DSR) |
 
 !!! tip "Note"
     Since DSR does not perform source IP translation, the source IP of service traffic arriving at the member server is the client's original IP. If the client IP range is not specified, allow `0.0.0.0/0`. If the client range is confirmed, it can be restricted to the corresponding CIDR.
+
+!!! danger "Warning"
+    While you can specify the `default` Security Group as the remote for health check traffic, doing so allows all resources in the default SG to access that port. Since the default SG is applied when no Security Groups are specified at instance creation, the network boundary segmented by subnet or purpose (web, app, db, etc.) becomes loose at the Security Group level. We recommend using the `default` SG only for initial testing and verification, and specifying the DSR subnet CIDR in production environments.
 
 <a id="security-groups-configuration-method-2-individual-rules-fine-grained-control"></a>
 #### Method 2: Individual rules (fine-grained control)
 
 Add individual rules when applying the principle of least privilege for security policy or when only specific ports need to be allowed.
 
-| Usage | Protocol | Port | Remote | Note |
+| Usage | Protocol | Port | Remote (Recommended) | Note |
 |------|---------|------|------|------|
 | Service traffic (TCP) | TCP | Service port (e.g., 80, 443) | Client IP range or 0.0.0.0/0 | DSR does not perform SNAT, so the source IP is the client's original IP |
 | Service traffic (UDP) | UDP | Service port (e.g., 53, 514) | Client IP range or 0.0.0.0/0 | When using UDP protocol services |
-| TCP health check | TCP | `health_check_port` | DSR subnet CIDR or default security group | Sent from the dedicated health check IP |
-| ICMP health check | ICMP | - | DSR subnet CIDR or default security group | When using ICMP type |
-| HTTP health check | TCP | `health_check_port` | DSR subnet CIDR or default security group | When using HTTP type |
+| TCP health check | TCP | `health_check_port` | DSR subnet CIDR | The dedicated health check IP is assigned to the same subnet as the DSR |
+| ICMP health check | ICMP | - | DSR subnet CIDR | When using ICMP type |
+| HTTP health check | TCP | `health_check_port` | DSR subnet CIDR | When using HTTP type |
 
 ##### Example of adding rules in the console
 
-If the service port is 80 and the TCP health check port is also 80:
+If the service port is 80 and the TCP health check port is also 80, and the DSR subnet is `192.168.1.0/24`:
 
 | Direction | IP protocol | Port Range | Remote | Description |
 |------|-----------|----------|------|------|
 | Receive | TCP | 80 | 0.0.0.0/0 | Service traffic from clients |
-| Receive | TCP | 80 | default | Health check traffic |
+| Receive | TCP | 80 | 192.168.1.0/24 | Health check traffic |
 
 When using ICMP health checks, add the following:
 
 | Direction | IP protocol | Port Range | Remote | Description |
 |------|-----------|----------|------|------|
-| Receive | ICMP | - | default | ICMP health check |
+| Receive | ICMP | - | 192.168.1.0/24 | ICMP health check |
 
 !!! tip "Note"
     * If the health check port (`health_check_port`) is set differently from the service port, both ports must be allowed in the Security Groups.
     * If the client IP range is limited to a specific CIDR (e.g., `10.0.0.0/8`), the principle of least privilege can be applied by specifying that CIDR instead of `0.0.0.0/0`.
-    * In health check rules, the subnet CIDR (e.g., `192.168.1.0/24`) can be specified instead of the default Security Group. Since health check requests are sent from a dedicated health check IP automatically assigned to the same subnet as the DSR, allowing by subnet CIDR is sufficient.
+    * In production environments, we recommend creating dedicated Security Groups by purpose (web, app, db, etc.) and applying only the necessary rules, rather than using the default Security Group as-is. By specifying the DSR subnet CIDR instead of the `default` SG as the remote for health check rules, you can narrow the allowed range to that subnet.
 
 <a id="network-interface-security-settings-update"></a>
 ### 6. Network Interface Security Settings Update { #network-interface-security-settings-update }
@@ -434,8 +470,7 @@ Add the VIP of Load Balancer (DSR) to the additional allowed address section of 
 * If a single instance is a member of multiple Load Balancer (DSR) instances, all VIPs must be added to the additional allowed addresses.
 
 !!! tip "Note"
-    For the procedure to configure additional allowed addresses, see the [console user guide](/Network/Network%20Interface/ko/console-guide/).
-
+    For the procedure to configure additional allowed addresses, see the [console user guide](/Network/Network%20Interface/en/console-guide$[ ni_suffix ]$/).
 
 <a id="floating-ip-association"></a>
 ## Floating IP Association { #floating-ip-association }
@@ -445,6 +480,8 @@ A Floating IP can be associated with the VIP of Load Balancer (DSR) to enable ac
 - Associating a Floating IP allows traffic to be forwarded from the internet to Load Balancer (DSR).
 - Dissociating a Floating IP blocks external access, making the load balancer accessible only from the internal network.
 - Associating or dissociating a Floating IP is automatically reflected in the load balancer.
+
+Requests coming in via a floating IP have their destination translated to the VIP before being forwarded to the load balancer. For responses, the source is translated back to the floating IP. Therefore, you must register the VIP, not the floating IP, in both the lo interface of the member server and the additional allowed addresses of the network interface.
 
 !!! tip "Note"
     Dissociating a Floating IP does not affect access to the VIP from the internal network.
