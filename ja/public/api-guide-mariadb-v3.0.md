@@ -104,11 +104,15 @@ APIリクエスト時、認証に失敗したり権限がない場合、次の�
 | MARIADB_V101113 | Y | Y | ED25519, NATIVE |
 | MARIADB_V101116 | Y | Y | ED25519, NATIVE |
 | MARIADB_V101118 | Y | Y | ED25519, NATIVE |
+| MARIADB_V101119 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11407 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11410 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11412 | Y | Y | ED25519, NATIVE |
+| MARIADB_V11413 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11806 | Y | Y | ED25519, NATIVE |
 | MARIADB_V11808 | Y | Y | ED25519, NATIVE |
+| MARIADB_V11809 | Y | Y | ED25519, NATIVE |
+| MARIADB_V12303 | Y | Y | ED25519, NATIVE |
 
 * EnumタイプのdbVersionフィールドに上記の値を使用できます。
 * バージョンによっては作成または復元ができない場合があります。
@@ -143,8 +147,8 @@ GET /v3.0/db-versions
     },
     "dbVersions": [
         {
-            "dbVersion": "MARIADB_V11808",
-            "dbVersionName": "Maria DB 11.8.8",
+            "dbVersion": "MARIADB_V12303",
+            "dbVersionName": "Maria DB 12.3.3",
             "restorableFromObs": true
         }
     ]
@@ -747,7 +751,7 @@ GET /v3.0/db-instances
             "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
             "dbInstanceName": "dbInstanceName-example",
             "description": "description-example",
-            "dbVersion": "MARIADB_V11808",
+            "dbVersion": "MARIADB_V12303",
             "dbPort": 13306,
             "dbInstanceType": "MASTER",
             "dbInstanceStatus": "AVAILABLE",
@@ -800,7 +804,7 @@ POST /v3.0/db-instances
     "dbInstanceCandidateName": "dbInstanceCandidateName",
     "description": "description-example",
     "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "dbPort": 13306,
     "dbUserName": "dbUserName",
     "dbPassword": "dbPassword",
@@ -924,7 +928,7 @@ POST /v3.0/db-instances/restore-from-obs
     "description": "description-example",
     "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
     "dbPort": 13306,
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "useHighAvailability": false,
     "imageId": "550e8400-e29b-41d4-a716-446655440000",
     "pingInterval": 3,
@@ -1099,7 +1103,7 @@ GET /v3.0/db-instances/{dbInstanceId}
     "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
     "dbInstanceName": "dbInstanceName-example",
     "description": "description-example",
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "dbPort": 13306,
     "dbInstanceType": "MASTER",
     "dbInstanceStatus": "AVAILABLE",
@@ -1180,7 +1184,7 @@ PUT /v3.0/db-instances/{dbInstanceId}
     "dbPort": 13306,
     "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
     "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "useDummy": false,
     "dbSecurityGroupIds": [],
     "executeBackup": false,
@@ -3267,7 +3271,7 @@ GET /v3.0/backups
             "backupName": "backupName-example",
             "backupStatus": "BACKING_UP",
             "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
-            "dbVersion": "MARIADB_V11808",
+            "dbVersion": "MARIADB_V12303",
             "utilVersion": "utilVersion-example",
             "backupType": "AUTO",
             "backupSize": 1,
@@ -4078,7 +4082,7 @@ GET /v3.0/parameter-groups
             "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
             "parameterGroupName": "parameterGroupName-example",
             "description": "description-example",
-            "dbVersion": "MARIADB_V11808",
+            "dbVersion": "MARIADB_V12303",
             "parameterGroupStatus": "STABLE",
             "createdYmdt": "2023-12-31T15:00:00+09:00",
             "updatedYmdt": "2023-12-31T15:00:00+09:00"
@@ -4122,7 +4126,7 @@ POST /v3.0/parameter-groups
 {
     "parameterGroupName": "parameterGroupName",
     "description": "description-example",
-    "dbVersion": "MARIADB_V11808"
+    "dbVersion": "MARIADB_V12303"
 }
 ```
 
@@ -4226,7 +4230,7 @@ GET /v3.0/parameter-groups/{parameterGroupId}
     "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
     "parameterGroupName": "parameterGroupName-example",
     "description": "description-example",
-    "dbVersion": "MARIADB_V11808",
+    "dbVersion": "MARIADB_V12303",
     "parameterGroupStatus": "STABLE",
     "parameters": [
         {
