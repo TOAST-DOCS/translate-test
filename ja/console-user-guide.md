@@ -1142,7 +1142,6 @@ AIモデルを活用した推薦システムのサービングパイプライン
 単変量異常検出アプリは、指標をそれぞれ個別に学習して、正常範囲を超えた値を検出します。詳細設定は、データソース、モデルリソース、再学習、検出オプション、結果転送の順で構成されます。
 
 <a id="app.create.detail.univariate.source"></a>
-
 ##### データソース { #app.create.detail.univariate.source }
 
 | 項目 | 必須 | 説明 |
@@ -1156,7 +1155,6 @@ AIモデルを活用した推薦システムのサービングパイプライン
 - 最近 5 分以内に同じ時系列で 1 分に複数の異なる値が入力された場合、通知ボックスが表示されます。作成を阻止しませんが、この状態では毎分最初に到着した値のみが分析に使用され、残りは破棄されます。同じ時系列は 1 分に 1 回だけ送信し、より短い周期で収集する場合は、1 分平均に統合して送信します。
 
 <a id="app.create.detail.univariate.resource"></a>
-
 ##### モデルリソース { #app.create.detail.univariate.resource }
 
 | 項目 | 必須 | 説明 |
@@ -1167,7 +1165,6 @@ AIモデルを活用した推薦システムのサービングパイプライン
 モデルリソースは、アプリを作成した後は変更できません。
 
 <a id="app.create.detail.univariate.retrain"></a>
-
 ##### 再学習 { #app.create.detail.univariate.retrain }
 
 | 項目 | 必須 | 説明 |
@@ -1185,7 +1182,6 @@ AIモデルを活用した推薦システムのサービングパイプライン
 - 学習はリソースを多く使用するため、トラフィックが少ない時間帯を指定することをお勧めします。
 
 <a id="app.create.detail.univariate.option"></a>
-
 ##### 検出オプション { #app.create.detail.univariate.option }
 
 | 項目 | 必須 | 説明 |
@@ -1211,7 +1207,6 @@ AIモデルを活用した推薦システムのサービングパイプライン
     スコアスケールは、アプリを作成した後は変更できません。
 
 <a id="app.create.detail.univariate.sink"></a>
-
 ##### 結果転送 { #app.create.detail.univariate.sink }
 
 検出結果を Prometheus に転送する設定です。
