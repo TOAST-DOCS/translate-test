@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=207aa7fc4e38 -->
+<!-- pre-align:aligned sig=77106c928268 -->
 
 <a id="database-rds-for-postgresql-db-instances"></a>
 ## Database > RDS for PostgreSQL > DB Instances { #database-rds-for-postgresql-db-instances }
@@ -696,7 +696,7 @@ Force promotes to the current point-in-time data of the Read Replica, regardless
 <a id="end-wait-for-replication-delay-during-read-replica-promotionforce-promotion"></a>
 ### End Wait for Replication Delay During Read Replica Promotion/Force Promotion { #end-wait-for-replication-delay-during-read-replica-promotionforce-promotion }
 
-To end the wait operation, when you are waiting for replication delays to resolve during a Read Replica promotion or force promotion,
+To end the wait operation, when you are waiting for replication latency to resolve during a Read Replica promotion or force promotion, on the console
 
 ![db-instance-list-stop-wait-replication-lag](../static/images/20260609/db-instance-list-stop-wait-replication-lag-en.png)
 
@@ -781,52 +781,52 @@ You can restore a point in time from the time a new backup was taken on the prom
     Since the high availability feature is based on domains, if the network environment is such that the client attempting to connect cannot reach the DNS server, the DB instance cannot be accessed through the domain, and normal access is not possible in the event of a failover.
     Access may be temporarily interrupted while the internal virtual IP is changing from Standby to Primary.
 
-<a id="failed-over-master"></a>
-### Failed Over Master { #failed-over-master }
+<a id="failed-over-primary"></a>
+### Failed Over Primary { #failed-over-primary }
 
-A Primary that fails and becomes a failover is called a Failed Over Primary. Automatic backups of a Failed Over Primary are not performed, and all other functions except recovering, rebuilding, detaching, and deleting a Failed Over Primary cannot be performed.
+A primary that fails and becomes a failover is called a failed over primary. Automatic backups of a failed over primary are not performed, and all other functions except recovering, rebuilding, detaching, and deleting a failed over primary cannot be performed.
 
-<a id="restore-failed-over-master"></a>
-### Restore Failed Over Master { #restore-failed-over-master }
+<a id="restore-failed-over-primary"></a>
+### Restoring a Failed Over Primary { #restore-failed-over-primary }
 
-If data integrity was not compromised during the failover process, and the archived write-ahead transaction logs from the time of the failure to the time of the recovery attempt were not lost, you can restore the Failed Over Primary and the promoted Primary to a high availability configuration again. Because the replication relationship with the promoted Primary is re-established using the Failed Over Primary's database as-is, recovery will fail if data integrity is compromised or the archived write-ahead transaction logs required for recovery are lost. If recovery of the Failed Over Primary fails, you can use rebuild to enable high availability again.
+If the data integrity was not broken during the failover process, and the archived write-ahead transaction log has not been lost from the time of the failure to the time of the recovery attempt, you can restore the Failed Over Primary and the promoted Primary back to high availability configuration. This restores the replication relationship with the promoted Primary while retaining the Failed Over Primary's database as is, so if the data integrity is broken or the archived write-ahead transaction log required for recovery has been lost, the restoration will fail. If restoration of the Failed Over Primary fails, you can use rebuild to enable high availability again.
 
-To recover a Failed Over Primary in the console
+To restore a Failed Over Primary, in the console
 
 ![db-instance-ha-failover-repair](../static/images/20260609/db-instance-ha-failover-repair-en.png)
 
-❶ Select the Failed Over Primary you want to recover, and then click the **Restore Failed Over Master** menu from the drop-down menu.
+❶ Select the Failed Over Primary you want to restore, and then click the **Restore Failed Over Primary** menu from the drop-down menu.
 
-<a id="rebuild-failed-over-master"></a>
-### Rebuild Failed Over Master { #rebuild-failed-over-master }
+<a id="rebuild-failed-over-primary"></a>
+### Rebuild Failed Over Primary { #rebuild-failed-over-primary }
 
-If recovery of a Failed Over Primary fails, you can use rebuild to enable high availability again. Unlike recovery, rebuilding removes all of the Failed Over Primary's database and rebuilds it based on the promoted Primary's database. To rebuild a Failed Over Primary, you need a backup file and an archived write-ahead transaction log from one of the DB instances in the replication group. If you do not have a backup file, select the DB instance to perform the backup in the following order
+If recovery of a Failed Over Primary fails, you can use rebuild to enable high availability again. Unlike recovery, rebuilding removes all of the Failed Over Primary's database and rebuilds it based on the promoted Primary's database. To rebuild a Failed Over Primary, you need a backup file and an archived write-ahead transaction log from one of the DB instances in the replication group. If you do not have a backup file, select the DB instance to perform the backup in the following order.
 
-❶ Read Replicas with automatic backups enabled
-❷ Primaries with automatic backups enabled
+❶ Read Replica with automatic backup enabled
+❷ Primary with automatic backup enabled
 
 If no DB instance meets the criteria, the request to rebuild the Failed Over Primary fails.
 
 !!! danger "Caution"
-    The time to rebuild a Failed Over Primary may increase proportionally to the size of the database on the Primary.
+    The time to rebuild the Failed Over Primary may increase proportionally to the size of the database on the Primary.
     For DB instances that are backed up, there might be a drop in storage I/O performance during the rebuilding of the Failed Over Primary.
 
-To rebuild the Failed Over Primary in the console
+To rebuild the Failed Over Primary, in the console, run the
 
 ![db-instance-ha-failover-rebuild](../static/images/20260609/db-instance-ha-failover-rebuild-en.png)
 
-❶ Select the Failed Over Primary that you want to rebuild, and then click the **Rebuild Failed Over Master** menu from the drop-down menu.
+❶ Select the Failed Over Primary you want to rebuild, and then click the **Rebuild Failed Over Primary** menu from the drop-down menu.
 
-<a id="separate-failed-over-master"></a>
-### Separate Failed Over Master { #separate-failed-over-master }
+<a id="separate-failed-over-primary"></a>
+### Detach Failed Over Primary { #separate-failed-over-primary }
 
-If recovery of the Failed Over Primary fails and data correction is needed, you can detach the Failed Over Primary to disable the high availability feature. The replication relationship between the detached Primary and the promoted Primary is severed, and each operates as a regular DB instance. After detachment, the original configuration cannot be recovered.
+If Failed Over Primary recovery fails and data correction is required, you can detach the Failed Over Primary to disable the high availability feature. The replication relationship between the detached primary and the promoted primary is broken, and each operates as a general DB instance. After detachment, you cannot restore the original configuration.
 
-To detach a Failed Over Primary, use the
+To detach the Failed Over Primary, in the console
 
 ![db-instance-ha-failover-split](../static/images/20260609/db-instance-ha-failover-split-en.png)
 
-❶ Select the Failed Over Primary you want to detach, and then click the **Detach Failed Master** menu from the drop-down menu.
+❶ Select the Failed Over Primary you want to detach, and then click the **Detach Failed Over Primary** menu from the drop-down menu.
 
 <a id="manual-failover"></a>
 ### Manual Failover { #manual-failover }
@@ -878,10 +878,11 @@ You can additionally block write loads while resolving replication delays. Block
 
 You can temporarily pause a high availability feature in situations where you anticipate connection disruptions or large loads due to temporary operations. When a high-availability feature is paused, it does not detect a failure and therefore does not perform failover. Performing an operation that requires a restart while a high-availability feature is paused does not resume the paused high-availability feature. Because data replication occurs normally when a high-availability feature is paused, or because a failure is not detected, it is not recommended to leave it paused for extended periods of time.
 
-<a id="rebuild-candidate-master"></a>
-### Rebuild Standby { #rebuild-candidate-master }
+<a id="rebuild-standby"></a>
+### Rebuild Standby { #rebuild-standby }
 
-Replication on a Standby can be interrupted for various reasons, such as a network disconnection or the initiation of replication from another Primary. A Standby with a replication interruption does not perform automatic failover. To resolve a replication interruption on a Standby, you must rebuild the Standby. Rebuilding a Standby removes all data from the Standby and rebuilds it from the Primary's database. During this process, if the backup files required for the rebuild do not exist in the Primary database, a backup of the Primary is performed, which can cause performance degradation.
+Standby replication can be interrupted for various reasons, such as a network disconnection or the initiation of replication from another Primary. Automatic failover is not triggered for a Standby in a replication-interrupted state. To resolve a replication interruption on a Standby, you must rebuild the Standby. Rebuilding a Standby removes all data from the Standby and rebuilds it from the Primary's database. During this process, if the backup files required for the rebuild do not exist in the Primary database, a backup of the Primary is performed, which can cause performance degradation.
+
 
 <a id="data-migration"></a>
 ## Data Migration { #data-migration }
