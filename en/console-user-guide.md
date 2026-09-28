@@ -1142,7 +1142,6 @@ This is an optional setting for connecting skill and category data used to const
 A univariate anomaly detection app learns each metric individually to detect values that fall outside the normal range. Advanced settings are configured in the following order: Data Source, Model Resources, Retraining, Detection Options, and Result Transmission.
 
 <a id="app.create.detail.univariate.source"></a>
-
 ##### Data Source { #app.create.detail.univariate.source }
 
 | Field | Required | Description |
@@ -1156,7 +1155,6 @@ A univariate anomaly detection app learns each metric individually to detect val
 - If multiple different values for the same time series arrive within one minute in the past 5 minutes, a notice box is displayed. Creation is not prevented, but in this state, only the first value to arrive each minute is used in the analysis and the rest are discarded. Send the same time series only once per minute. If collected at shorter intervals, aggregate them by averaging over one minute before sending.
 
 <a id="app.create.detail.univariate.resource"></a>
-
 ##### Model Resources { #app.create.detail.univariate.resource }
 
 | Field | Required | Description |
@@ -1167,7 +1165,6 @@ A univariate anomaly detection app learns each metric individually to detect val
 Model Resources cannot be changed after the app is created.
 
 <a id="app.create.detail.univariate.retrain"></a>
-
 ##### Retraining { #app.create.detail.univariate.retrain }
 
 | Field | Required | Description |
@@ -1185,7 +1182,6 @@ Model Resources cannot be changed after the app is created.
 - We recommend that you specify a time period with light traffic, as training consumes many resources.
 
 <a id="app.create.detail.univariate.option"></a>
-
 ##### Detection Options { #app.create.detail.univariate.option }
 
 | Field | Required | Description |
@@ -1211,7 +1207,6 @@ Transmission Mode can be selected from the following:
     Score Scale cannot be changed after the app is created.
 
 <a id="app.create.detail.univariate.sink"></a>
-
 ##### Result Transmission { #app.create.detail.univariate.sink }
 
 Configuration for sending detection results to Prometheus.
