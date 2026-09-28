@@ -5,6 +5,21 @@
 <a id="foundry"></a>
 ## Machine Learning > NHN Cloud Foundry > リリースノート { #foundry }
 
+<a id="foundry.release.notes.2026.09.18.chart"></a>
+#### 分析 / チャート { #foundry.release.notes.2026.09.18.chart }
+
+- チャート設定が誤っている場合、画面に理由が表示され、あるチャートの照会失敗が他のチャートに影響を与えません。
+
+<a id="foundry.release.notes.2026.09.18.recommendation"></a>
+#### 推薦アプリ { #foundry.release.notes.2026.09.18.recommendation }
+
+- レコメンデーション API リクエストにインプレッション(impressions)、インタラクション(interactions)、フィードバック(feedback) 情報を送信すると、推薦結果に反映されます。
+
+<a id="foundry.release.notes.2026.09.18.univariate"></a>
+#### 単変量時系列異常検出 アプリ { #foundry.release.notes.2026.09.18.univariate }
+
+- 単変量時系列異常検出 アプリが追加されました。
+
 <a id="foundry.release.notes.2026.08.25"></a>
 ### 2026. 08. 25. { #foundry.release.notes.2026.08.25 }
 
