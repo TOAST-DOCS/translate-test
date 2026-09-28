@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ca8f6a430f7f -->
 
 <a id="database-rds-for-enginepascalcase-overview"></a>
@@ -17,5 +19,5 @@ RDS for {{engine.pascalCase}} enables you to use {{engine.pascalCase}} databases
 * Provides a server dashboard that provides a quick-to-check view of the health of the database.
 * Provides various metrics for instances and databases with graphs on the server dashboard.
 
-> [Caution]
-> RDS for {{engine.pascalCase}} is not available until you enable your Compute & Network services.
+!!! danger "Caution"
+    RDS for {{engine.pascalCase}} is not available until you enable your Compute & Network services.
