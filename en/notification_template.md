@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ffcf287dccd2 -->
 
 <a id="database-rds-for-enginepascalcase-notification"></a>
@@ -14,9 +16,9 @@ Event refers to an important event that occurs either by RDS for {{engine.pascal
 | BACUP_01_01       | BACKUP            | No           | Backup of DB instance completed                                               |
 | BACUP_01_04       | BACKUP            | No           | Backup of DB instance failed                                                  |
 | BACUP_02_01       | BACKUP            | Yes          | Backup deleted                                                                |
-| BACUP_04_00       | BACKUP            | Yes          | Object storage upload started                                                 |
-| BACUP_04_01       | BACKUP            | Yes          | Object storage upload completed                                               |
-| BACUP_04_04       | BACKUP            | Yes          | Object storage upload failed                                                  |
+| BACUP_04_00 | BACKUP            | Yes        | Object storage upload started                                                 |
+| BACUP_04_01 | BACKUP            | Yes        | Object storage upload completed                                               |
+| BACUP_04_04 | BACKUP            | Yes        | Object storage upload failed                                                  |
 | BACUP_05_00       | BACKUP            | Yes          | Backup export started                                                         |
 | BACUP_05_01       | BACKUP            | Yes          | Backup exported                                                               |
 | BACUP_05_04       | BACKUP            | Yes          | Backup export failed                                                          |
@@ -105,9 +107,9 @@ Event refers to an important event that occurs either by RDS for {{engine.pascal
 | INSTC_47_00       | INSTANCE          | Yes          | DB instance backup and export started                                         |
 | INSTC_47_01       | INSTANCE          | Yes          | DB instance backed up and exported                                            |
 | INSTC_47_04       | INSTANCE          | Yes          | DB instance backup and export failed                                          |
-| INSTC_48_00       | INSTANCE          | Yes          | DB instance restoration using backup from the object storage started          |
-| INSTC_48_01       | INSTANCE          | Yes          | DB instance using backup from the object storage restored                     |
-| INSTC_48_04       | INSTANCE          | Yes          | DB instance restoration using backup from the object storage failed           |
+| INSTC_48_00 | INSTANCE          | Yes        | DB instance restoration using backup from the object storage started          |
+| INSTC_48_01 | INSTANCE          | Yes        | DB instance using backup from the object storage restored                     |
+| INSTC_48_04 | INSTANCE          | Yes        | DB instance restoration using backup from the object storage failed           |
 | INSTC_49_00       | INSTANCE          | Yes          | DB instance force restart                                                     |
 | INSTC_50_00       | INSTANCE          | Yes          | Backup export started                                                         |
 | INSTC_50_01       | INSTANCE          | Yes          | Backup exported                                                               |
