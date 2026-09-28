@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=5f5b28f2bca5 -->
 
 <a id="database-rds-for-enginepascalcase-db-security-group"></a>
@@ -38,8 +40,8 @@ You can create multiple DB security rules in one DB security group. When you set
 | Remote      | You can set the IP address range. If the direction of the rule is 'outbound', the traffic destination is remote; if 'inbound', the traffic source is remote.<br/>Depending on the direction of the rule, compares whether the traffic source or destination is IP address or range. | 
 | Description | You can add a description for DB security group rules.                                                                                                                                                                                                                               |
 
-> [Caution]
-> DB port cannot be set to outbound direction.
+!!! danger "Caution"
+    DB port cannot be set to outbound direction.
 
 <a id="change-db-security-rules"></a>
 ### Change DB Security Rules { #change-db-security-rules }
