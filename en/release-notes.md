@@ -1,12 +1,36 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=c5f4c2c6cf1e -->
 
 <a id="easycache-release-notes"></a>
 
 ## EasyCache Release Notes
 **Database > EasyCache > Release Notes**
+### September 22, 2026
+
+#### Feature Updates
+- Added support for Valkey 8.1.8.
+- Changed the base image for nodes to Ubuntu 24.04.
+- Improved the sort order of the parameter list in parameter groups.
+
+#### Bug Fixes
+- Fixed an issue where deleting a read replica node on a disabled cache failed.
+- Fixed an issue where the DB security group in another region was not deleted after deleting a read replica in another region.
+- Fixed an issue where changes to DB security group rules were not reflected in read replicas in other regions.
+- Fixed an issue where OS version upgrade failed for caches with parameter group synchronization status of `UNSYNCED`.
+- Fixed an issue where OS version upgrade failed for single node caches.
+
+### July 28, 2026
+
+#### Feature Updates
+- Added support for Valkey 8.0.9, 8.1.7, and 9.0.4
+
+#### Bug Fixes
+- Fixed an issue where the cache status became abnormal when repeatedly adding or deleting read replica nodes in different regions
+- Fixed a link address error on the Apply Parameter Group Changes screen
+- Fixed an issue where an error occurred when notifications from some monitoring settings were triggered
 
 <a id="may-27-2026"></a>
-
 ### May 27, 2026
 
 <a id="feature-updates"></a>
