@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=877ccc77b25f -->
 
 <a id="security-nhn-appguard-release-notes"></a>
@@ -5,9 +7,40 @@
 
 | Platform | Version  | Release Date | Status |
 | -------- | -------- | -----------  | ------ |
-| Android  | 1.13.3.2 | 2026. 08. 19.  | latest |
+| Android  | 1.14.0.0 | September 15, 2026 | latest |
 | Android  | 1.12.4.18 | 2026. 03. 10.  | stable |
-| iOS      | 1.5.7    | 2026. 08. 11.  | latest |
+| iOS      | 1.6.0    | September 15, 2026 | latest |
+
+<a id="september-15-2026"></a>
+### September 15, 2026 { #september-15-2026 }
+* [Android] 1.14.0.0
+    * Added DEX encryption target specification feature
+        * Added a feature to specify DEX encryption targets at the package or class level.
+        * For more information, see **Android Developer's Guide > 3. Unified Configuration File > 3.2 Feature-Specific Settings > DEX Encryption Target Specification**.
+    * Added unified configuration file support
+        * Improved to allow you to manage resource string obfuscation rules and DEX encryption scope in a single unified configuration file.
+        * For more information, see **Android Developer's Guide > 3. Unified Configuration File**.
+    * Added Android ID-based blacklist feature
+        * Added a feature to register specific devices to the blacklist based on Android ID.
+    * Added emulator detection pattern
+        * Added UgPhone emulator detection pattern.
+    * Bug fixes
+        * Fixed an issue where the app terminated abnormally when paying with MyCard.
+        * Fixed false positives when detecting remote control apps.
+* [iOS] 1.6.0
+    * Raised minimum supported iOS version
+        * Raised the minimum supported version to iOS 13.
+    * Stability improvements
+* [Unity] 0.5.2
+    * Fixed an issue where SecureValue tampering blocking did not work properly in the iOS environment.
+    * Updated iOS SDK to 1.6.0
+* [Unreal] 0.2.11
+    * Updated iOS SDK to 1.6.0
+* [Console]
+    * Added unified configuration file upload feature for Android
+        * Added a feature to upload unified configuration files for Android App Protection.
+    * Added Android ID-based blacklist blocking feature
+        * Added a feature to block specific devices based on Android ID from the blacklist.
 
 <a id="august-19-2026"></a>
 ### August 19, 2026 { #august-19-2026 }
