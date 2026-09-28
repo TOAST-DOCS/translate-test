@@ -65,6 +65,8 @@ https://{gateway-public-host}/api/v1.0
 | header.resultMessage | String | 結果メッセージ。成功時は SUCCESS、失敗時はエラー詳細 |
 | body | Object/Array | API ごとのレスポンスデータ |
 
+リクエストが拒否されても、HTTP ステータスコードは `200` で返される場合があります。成功の可否は HTTP ステータスコードではなく、`header.isSuccessful` と `header.resultCode` で判定します。認証トークンがない場合または有効期限が切れている場合、HTTP `401` を返します。
+
 <a id="ingest.api"></a>
 ## Ingest API { #ingest.api }
 
@@ -404,6 +406,116 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 | RUNNING | データ取り込み中 |
 | COMPLETED | ジョブ正常完了 |
 | FAILED | ジョブ失敗 |
+
+<a id="metrics.ingest.api"></a>
+### 指標収集 { #metrics.ingest.api }
+
+タイプが Prometheus API であるデータソースに指標データを転送します。転送した指標は単変量異常検出アプリの入力として使用します。
+
+| メソッド | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/metrics |
+
+curl 例：
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/metrics" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "metrics": [
+      {
+        "timestamp": 1776149886528,
+        "value": 4.99,
+        "labels": [
+          { "name": "__name__", "value": "cpu_usage" },
+          { "name": "instance_id", "value": "instance-001" }
+        ],
+        "metadata": { "resourceType": "Instance" }
+      }
+    ]
+  }'
+```
+
+| フィールド | タイプ | 必須 | 説明 |
+| --- | --- | --- | --- |
+| metrics | Array | O | 指標リスト。空にすることはできず、1 回のリクエストあたり最大 5,000 件 |
+| metrics[].timestamp | Long | O | メトリクスの時刻。ミリ秒単位の epoch |
+| metrics[].value | Double | O | 測定値 |
+| metrics[].labels | Array | O | ラベルリスト。ラベルの組み合わせが時系列を、グループラベルがグループを決定 |
+| metrics[].labels[].name | String | O | ラベル名。英文字または _ で始まり、英文字、数字、_ のみを使用 |
+| metrics[].labels[].value | String | O | ラベル値。コンマと等号は使用不可 |
+| metrics[].metadata | Object | X | 付加情報。解釈せず、そのまま保存・転送。identityKey キーはシステムが使用するため使用不可 |
+
+成功した場合は HTTP `202 Accepted` を返します。リクエストが却下された場合は HTTP `200` で `header.isSuccessful` が `false` で返されるため、`header` で成功の有無を判定します。
+
+収集ルールは次のとおりです。
+
+- 必須フィールドの不足、ラベル名・値のルール違反、1 回のリクエストで 5,000 件を超過、必須ヘッダの不足は、リクエスト全体が却下され、どの項目も保存されません。
+- 1 つのリクエストに複数の時系列の指標を含めることができます。時系列はラベルの組み合わせで区分されるため、時系列ごとにリクエストを分ける必要はありません。
+- 同じ時系列は 1 分に 1 回だけ送信します。より短い周期で収集する場合は、1 分平均に合算して送信します。同じ分に複数の値が到着した場合、最初に到着した値のみが分析に使用され、残りは破棄されます。
+- `timestamp` はミリ秒単位の epoch です。秒単位で送信すると、誤った時刻として保存されます。
+- データソースにグループラベルを指定した場合は、常にそのラベルを含めて転送します。ラベルが不足した場合は、意図したグループに属しません。
+- `value` が NaN または Infinity の項目は保存されず、スキップされます。同じリクエストの残りの項目は正常に処理されます。
+- `202` レスポンスは受信完了を意味します。保存は少し後で反映され、同じリクエストを再度送信した場合、同じデータが重複保存される可能性があります。
+- 転送が遅延したデータは保存されますが、リアルタイム推論の対象から除外される可能性があります。
+
+!!! tip "ヒント"
+    取り込みは転送周期と無関係です。ただし、このデータソースを単変量異常検出アプリに接続した場合は、同じ時系列を 1 分に 1 つずつ途切れなく送信する必要があります。アプリが指標を 1 分単位で集約して判定するため、それより長い間隔で送信すると、空白の期間が生じ、精度モードで準備が終了しない可能性があります。
+
+<a id="univariate.api"></a>
+## 単変量異常検出 API { #univariate.api }
+
+<a id="univariate.group.api"></a>
+### グループの使用開始·停止·削除 { #univariate.group.api }
+
+単変量異常検出アプリのグループの使用を開始、停止、削除します。3つのAPIのリクエスト形式は同じで、パスのみが異なります。
+
+| メソッド | URI |
+| --- | --- |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/disable |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/delete |
+
+`servingPipelineId` はコンソールアプリの詳細に表示されるアプリ ID です。
+
+curl の例:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "groupKey": [
+      { "name": "region", "value": ["kr1", "jp1"] }
+    ]
+  }'
+```
+
+| フィールド | タイプ | 必須 | 説明 |
+| --- | --- | --- | --- |
+| groupKey | Array | 条件付き | 対象グループを指定するラベルリスト。データソースにグループラベルを指定した場合にのみ使用 |
+| groupKey[].name | String | O | グループラベル名。データソースに指定したグループラベルと名前が正確に一致する必要があります。 |
+| groupKey[].value | Array | O | そのラベルの値のリスト。値1つがグループ1つに対応します。 |
+
+成功すると、header.isSuccessful が true として返され、body は存在しません。
+
+リクエスト規則は次のとおりです。
+
+- データソースにグループラベルを指定していない場合、groupKey を送信しません。データソース全体が1つのグループであるため、そのグループが対象になります。groupKey を一緒に送信すると、リクエストが拒否されます。
+- データソースにグループラベルを指定した場合、groupKey は必須であり、送信されたラベル名のセットがデータソースのグループラベルと正確に一致する必要があります。同じラベル名を2回送信すると、拒否されます。
+- グループラベルが複数ある場合、値のリストを同じ順序でまとめてグループを作成します。たとえば、rule_id に ["a", "b"]、instance_id に ["q", "w"] を送信した場合、(a, q) と (b, w) の2つのグループが対象です。すべてのラベルの値の数が同じである必要があり、異なる場合は拒否されます。
+- 値のリストが空の場合、拒否されます。同じグループが複数回指定されている場合、1回だけ処理されます。
+- 登録されていないグループを停止または削除すると、エラーが返されます。
+
+!!! tip "ヒント"
+    指標が到着すると、グループは自動的に登録されて動作します。このAPIは特定のグループだけを選んで使用開始、停止、削除するときに使用され、コンソールにはこの操作はありません。登録されたグループと状態は、コンソールアプリの詳細の **グループ一覧** タブで確認します。
+
+!!! danger "注意"
+    グループを停止しても、検出結果の転送は停止しません。グループ一覧に表示される状態が無効に変わるだけです。
+    削除したグループは状態履歴とともに消え、復旧することはできません。
 
 <a id="recommendation.api"></a>
 ## レコメンデーション照会 API { #recommendation.api }
