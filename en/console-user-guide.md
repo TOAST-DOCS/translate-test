@@ -1408,7 +1408,6 @@ Status:
 - To start, stop, or delete specific groups, refer to 'Start, stop, and delete group usage' in the [API Guide](../api-guide/#univariate.group.api). This operation is not available in the console.
 
 <a id="app.detail.univariate.groups.hash"></a>
-
 ##### Hash Calculator { #app.detail.univariate.groups.hash }
 
 You can directly calculate the hash from the label by clicking the **Hash Calculator** button in the toolbar.
