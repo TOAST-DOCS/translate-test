@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=d1f02419975d -->
 
 <a id="content-delivery-cdn-api-v15-guide"></a>
@@ -19,10 +21,10 @@ This document describes Public API v1.5 provided by NHN Cloud CDN.
 ### Prerequisites { #prerequisites }
 
 AppKey and SecretKey are required to use the CDN API.
-An Appkey is a unique authentication key issued for each NHN Cloud service, used to identify the service and validate API requests. A SecretKey is a private key used to control access to the API. For more information on checking and using Appkeys, please refer to the [Appkey](/nhncloud/en/public-api/appkey/).
+An Appkey is a unique authentication key issued for each NHN Cloud service, used to identify the service and validate API requests. A SecretKey is a private key used to control access to the API. For more information on checking and using Appkeys, please refer to the [Appkey](/en/public-api/appkey/).
 
 Project Integrated Appkey can be used in place of the Appkey. Project Integrated Appkey is a common authentication key that can be shared across multiple services within a single NHN Cloud project.
-For more information on creating and using Project Integrated Appkeys, please refer to the [Project Integrated Appkey](/nhncloud/en/public-api/project-integrated-appkey/).
+For more information on creating and using Project Integrated Appkeys, please refer to the [Project Integrated Appkey](/en/public-api/project-integrated-appkey/).
 
 <a id="common-request-information"></a>
 ### Common Request Information { #common-request-information }
@@ -210,28 +212,27 @@ Below shows the status codes of CDN service, which are available at the query of
 
 | Field                                  | Type    | Description                                                  |
 | -------------------------------------- | ------- | ------------------------------------------------------------ |
-| header                                 | Object  | Header area                                                  |
-| header.isSuccessful                    | Boolean | Successful or not                                            |
-| header.resultCode                      | Integer | Result code                                                  |
-| header.resultMessage                   | String  | Result message                                               |
-| distributions                          | List    | List of created CDN objects                                  |
-| distributions[0].domain                | String  | Created domain (service) name                                |
-| distributions[0].domainAlias           | String  | List of domain alias (personal or company-owned domains)               |
-| distributions[0].region                | String  | Service region ("GLOBAL": Global service)            |
-| distributions[0].description           | String  | Description                                                  |
-| distributions[0].status                | String  | CDN status code (see CDN status codes in [Table])            |
-| distributions[0].createTime            | String  | Date and time of creation                                    |
-| distributions[0].useOrigin             | String  | Whether to set origin server <br />("Y": Origin server setting, "N": User-configured) |
-| distributions[0].maxAge                | String  | Cache expiration time (second)                               |
-| distributions[0].referrerType          | String  | Referrer access control ("BLACKLIST": Blacklist, "WHITELIST": Whitelist) |
-| distributions[0].referrers             | String  | List of referrers                                            |
-| distributions[0].origins               | List    | List of origin server objects                                |
-| distributions[0].origins[0].origin     | String  | Origin server (domain or IP)                                 |
-| distributions[0].origins[0].originPath | String  | Lower paths of origin server                                 |
-| distributions[0].origins[0].port       | Integer | Origin server port                                           |
-| distributions[0].callback              | Object  | Callback to receive service processing results               |
-| distributions[0].callback.httpMethod   | String  | HTTP method of callback                                      |
-| distributions[0].callback.url          | String  | Callback URL                                                 |
+| header | Object | Header area |
+| header.isSuccessful | Boolean | Success |
+| header.resultCode | Integer | Result code |
+| header.resultMessage | String | Result message |
+| distributions | List | List of created CDN objects |
+| distributions[0].domain | String | Created domain (service) name |
+| distributions[0].domainAlias | String | List of domain aliases (using domains owned by individuals or companies) |
+| distributions[0].region | String | Service region ("GLOBAL": Global service) |
+| distributions[0].description | String | Description |
+| distributions[0].status | String | CDN status code (see CDN status codes in [Table]) |
+| distributions[0].useOrigin | String | Whether to set origin server <br />("Y": Origin server setting, "N": User-configured) |
+| distributions[0].maxAge | String | Cache expiration time (second) |
+| distributions[0].referrerType | String | Referrer access control ("BLACKLIST": Blacklist, "WHITELIST": Whitelist) |
+| distributions[0].referrers | String | List of referrers |
+| distributions[0].origins | List | List of origin server objects |
+| distributions[0].origins[0].origin | String | Origin server (domain or IP) |
+| distributions[0].origins[0].originPath | String | Lower paths of origin server |
+| distributions[0].origins[0].port | Integer | Origin server port |
+| distributions[0].callback | Object | Callback to receive service creation result |
+| distributions[0].callback.httpMethod | String | HTTP method of callback |
+| distributions[0].callback.url | String | Callback URL |
 
 
 <a id="get"></a>
@@ -312,7 +313,6 @@ curl -X GET "https://kr1-cdn.api.nhncloudservice.com/v1.5/appKeys/{appKey}/distr
 | distributions[0].region                | String  | Service region ("GLOBAL": Global service)                                    |
 | distributions[0].description           | String  | Description                                                  |
 | distributions[0].status                | String  | CDN status code (see CDN status codes in [Table])            |
-| distributions[0].createTime            | String  | Date and time of creation                                    |
 | distributions[0].useOrigin             | String  | Whether to use origin server setting <br />("Y": Origin server setting, "N": User-configured) |
 | distributions[0].maxAge                | String  | Cache expiration time (second)                               |
 | distributions[0].referrerType          | String  | Referrer access management ("BLACKLIST": Blacklist, "WHITELIST": Whitelist) |
