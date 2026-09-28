@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=b50e36c2e34a -->
 
 <a id="content-delivery-cdn-api-v20-guide"></a>
@@ -20,10 +22,10 @@ NHN Cloud CDNで提供するPublic API v2.0について説明します。
 
 CDN APIを使用するには、AppkeyとSecretKeyが必要です。
 Appkeyは、NHN Cloudの各サービスごとに発行される固有の認証キーであり、APIリクエスト時のサービス識別と有効性検証に使用されます。SecretKeyは、APIへのアクセスを制御するシークレットキーです。
-Appkey及びSecretKeyの確認及び使用に関する詳細は、[Appkey](/nhncloud/ja/public-api/appkey/)を参照してください。
+Appkey及びSecretKeyの確認及び使用に関する詳細は、[Appkey](/ja/public-api/appkey/)を参照してください。
 
 Appkeyの代わりに、プロジェクト統合Appkeyを使用することも可能です。プロジェクト統合Appkeyは、NHN Cloudの1つのプロジェクト内の複数のサービスに対して共通で使用できる認証キーです。
-プロジェクト統合Appkeyの作成及び使用に関する詳細は、[プロジェクト統合Appkey](/nhncloud/ja/public-api/project-integrated-appkey/)を参照してください。
+プロジェクト統合Appkeyの作成及び使用に関する詳細は、[プロジェクト統合Appkey](/ja/public-api/project-integrated-appkey/)を参照してください。
 
 <a id="common-request-information"></a>
 ### リクエスト共通情報 { #common-request-information }
@@ -608,6 +610,7 @@ curl -X GET "https://cdn.api.nhncloudservice.com/v2.0/appKeys/{appKey}/distribut
 | origins[0].httpsPort  | Integer  | 任意    |        |[コンソール使用ガイド > オリジンサーバー](./console-guide/#origin-server-port)の「[表2]使用可能なオリジンサーバーポート番号」参照 | オリジンサーバーHTTPSプロトコルポート(origins[0].httpPortとorigins[0].httpsPortのいずれか1つは必ず入力する必要があります。) |
 | useOriginHttpProtocolDowngrade | Boolean  | 必須 | true/false       |          | オリジンサーバーがHTTPレスポンスのみ可能な場合、CDNサーバーからオリジンサーバーにリクエストする時、HTTPSリクエストからHTTPリクエストにダウングレードするための設定を使用するか |
 | forwardHostHeader     | String  | 必須 |        | ORIGIN_HOSTNAME<br/>REQUEST_HOST_HEADER   | CDNサーバーがオリジンサーバーにコンテンツをリクエストする時、伝達するホストヘッダ設定("ORIGIN_HOSTNAME"：オリジンサーバーのホスト名で設定、"REQUEST_HOST_HEADER"：クライアントリクエストのホストヘッダで設定 |
+| useOrigin             | String  | 必須      |        | Y/N                                                          | キャッシュ有効期限設定(Y:オリジン設定の使用、N:ユーザー設定の使用)      |
 | rootPathAccessControl  | Object  | 任意 |  |  | CDNサービスのルートパスに対するアクセス制御設定 | 
 | rootPathAccessControl.enable | Boolean | 必須 | false | true/false | ルートパスに対するアクセス制御使用(true)/未使用(false)          |
 | rootPathAccessControl.controlType  | String  | 任意 |  | DENY, REDIRECT | enableがtrueの場合は必須入力。ルートパスに対するアクセス制御方式("DENY"：アクセス拒否、"REDIRECT"：指定したパスにリダイレクト) | 
@@ -1703,7 +1706,7 @@ CDNサービスにコールバック機能が設定されている場合、作�
 | header.resultCode                      | Integer | 結果コード                                            |
 | header.resultMessage                   | String  | 結果メッセージ                                          |
 | distribution                          | Object    | 変更作業が完了したCDNオブジェクト                              |
-| distribution.appKey                   | String    | アプリケーションキー                             |
+| distribution.appKey                   | String    | アプリキー                             |
 | distribution.domain                | String  | ドメイン名(サービス名)                                     |
 | distribution.domainAlias           | List  | ドメインエイリアスリスト(個人または会社が所有しているドメインを使用)                                 |
 | distribution.region                | String  | サービス地域("GLOBAL"：グローバル)             |
@@ -1720,9 +1723,8 @@ CDNサービスにコールバック機能が設定されている場合、作�
 | distribution.origins[0].originPath | String  | オリジンサーバー下層パス                                     |
 | distribution.origins[0].httpPort   | Integer | オリジンサーバーHTTPプロトコルポート                                          |
 | distribution.origins[0].httpsPort  | Integer | オリジンサーバーHTTPSプロトコルポート                                          |
-| distribution.forwardHostHeader     | String  | サービス配布処理結果を受け取るコールバック                   |
 | distribution.useOriginHttpProtocolDowngrade | Boolean | オリジンサーバーがHTTPレスポンスのみ可能な場合、CDNサーバーからオリジンサーバーにリクエストする時、HTTPSリクエストからHTTPリクエストにダウングレードするための設定を使用するか |
-| distribution.forwardHostHeader     | String  | CDNサーバーがオリジンサーバーにコンテンツをリクエストする時に伝達するホストヘッダ設定("ORIGIN_HOSTNAME"：オリジンサーバーのホスト名で設定、"REQUEST_HOST_HEADER"：クライアントリクエストのホストヘッダで設定 |
+| distribution.forwardHostHeader     | String  | CDNサーバーがオリジンサーバーにコンテンツをリクエストする時に伝達するホストヘッダ設定("ORIGIN_HOSTNAME"：オリジンサーバーのホスト名で設定、"REQUEST_HOST_HEADER"：クライアントリクエストのホストヘッダで設定) |
 | distribution.rootPathAccessControl  | Object  | CDNサービスのルートパスに対するアクセス制御設定 | 
 | distribution.rootPathAccessControl.enable | Boolean | ルートパスに対するアクセス制御使用(true)/未使用(false)          |
 | distribution.rootPathAccessControl.controlType  | String  | enableがtrueの場合は必須入力。ルートパスに対するアクセス制御方式("DENY"：アクセス拒否、"REDIRECT"：指定したパスにリダイレクト) | 
