@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=7de1400fff9a -->
 
 <a id="database-rds-for-enginepascalcase-api-guide"></a>
@@ -1784,7 +1786,7 @@ POST /v4.0/db-instances/{dbInstanceId}/restore
 ---
 
 <a id="restore-from-object-storage"></a>
-### オブジェクトストレージから復元 { #restore-from-object-storage }
+### Object Storageから復元 { #restore-from-object-storage }
 
 ```http
 POST /v4.0/db-instances/restore-from-obs
@@ -1803,10 +1805,10 @@ POST /v4.0/db-instances/restore-from-obs
 | 名前                                                | 種類 | 形式    | 必須 | 説明                                                                                   |
 |-----------------------------------------------------|------|---------|----|----------------------------------------------------------------------------------------|
 | restore                                             | Body | Object  | O  | 復元情報オブジェクト                                                                             |
-| restore.tenantId                                    | Body | String  | O  | バックアップが保存されたオブジェクトストレージのテナントID                                                              |
+| restore.tenantId                                    | Body | String  | O  | バックアップが保存されたObject StorageのテナントID                                                              |
 | restore.username                                    | Body | String  | O  | NHN Cloud会員またはIAMメンバーID                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| restore.password                                    | Body | String  | O  | バックアップが保存されたオブジェクトストレージのAPIパスワード                                                          |
-| restore.targetContainer                             | Body | String  | O  | バックアップが保存されたオブジェクトストレージのコンテナ                                                              |
+| restore.password                                    | Body | String  | O  | バックアップが保存されたObject StorageのAPIパスワード                                                            |
+| restore.targetContainer                             | Body | String  | O  | バックアップが保存されたObject Storageのコンテナ                                                                |
 | restore.objectPath                                  | Body | String  | O  | コンテナに保存されたバックアップのパス                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | dbVersion                                           | Body | Enum    | O  | DBエンジンタイプ                                                                             |
 | dbInstanceName                                      | Body | String  | O  | DBインスタンスを識別できる マスター名                                                              |
@@ -2626,8 +2628,9 @@ POST /v4.0/db-instances/{dbInstanceId}/db-users
 | authenticationPlugin | Body | Enum   | X  | 認証プラグイン<br/>- デフォルト値: `NATIVE`(未対応の場合は`CACHING_SHA2`)<br/>- NATIVE: `mysql_native_password`<br />- SHA256: `sha256_password`<br />- CACHING_SHA2: `caching_sha2_password` |
 | tlsOption            | Body | Enum   | X  | TLS Option<br/>- NONE<br />- SSL<br />- X509                                                                                |
 
-> [注意]
-> DBインスタンスの`supportAuthenticationPlugin`値がtrueであるDBインスタンスのみ`authenticationPlugin`、`tlsOption`の値を設定できます。
+!!! danger "注意"
+    DBインスタンスの`supportAuthenticationPlugin`値が`true`であるDBインスタンスのみ`authenticationPlugin`、`tlsOption`の値を設定できます。
+
 {{/if}}
 {{#if (eq engine.lowerCase "mariadb")}}
 | authenticationPlugin | Body | Enum   | X  | 認証プラグイン<br/>- デフォルト値: `NATIVE`(未対応の場合は`ED25519`)<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
@@ -2691,9 +2694,10 @@ PUT /v4.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
 | authenticationPlugin | Body | Enum   | X  | 認証プラグイン<br/>- NATIVE: `mysql_native_password`<br />- SHA256: `sha256_password`<br />- CACHING_SHA2: `caching_sha2_password` |
 | tlsOption            | Body | Enum   | X  | TLS Option<br/>- NONE<br />- SSL<br />- X509                                                                                |
 
-> [注意]
-> DBインスタンスの`supportAuthenticationPlugin`値がtrueであるDBインスタンスのみ`authenticationPlugin`、`tlsOption`の値を修正できます。
-> `authenticationPlugin`の値は`dbPassword`と同時に修正する必要があります。
+!!! danger "注意"
+    DBインスタンスの`supportAuthenticationPlugin`値がtrueであるDBインスタンスのみ`authenticationPlugin`、`tlsOption`の値を修正できます。
+    `authenticationPlugin`の値は`dbPassword`と同時に修正する必要があります。
+
 {{/if}}
 {{#if (eq engine.lowerCase "mariadb")}}
 | authenticationPlugin | Body | Enum   | X  | 認証プラグイン<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
@@ -3577,10 +3581,10 @@ POST /v4.0/backups/{backupId}/export
 | 名前            | 種類 | 形式   | 必須 | 説明                        |
 |-----------------|------|--------|----|-----------------------------|
 | backupId        | URL  | UUID   | O  | バックアップの識別子                   |
-| tenantId        | Body | String | O  | バックアップが保存されるオブジェクトストレージのテナントID   |
+| tenantId        | Body | String | O  | バックアップが保存されるObject StorageのテナントID   |
 | username        | Body | String | O  | NHN Cloud会員またはIAMメンバーID          |
-| password        | Body | String | O  | バックアップが保存されるオブジェクトストレージのAPIパスワード |
-| targetContainer | Body | String | O  | バックアップが保存されるオブジェクトストレージのコンテナ   |
+| password        | Body | String | O  | バックアップが保存されるObject StorageのAPIパスワード |
+| targetContainer | Body | String | O  | バックアップが保存されるObject Storageのコンテナ   |
 | objectPath      | Body | String | O  | コンテナに保存されるバックアップのパス          |
 
 <details><summary>例</summary>
@@ -3606,8 +3610,8 @@ POST /v4.0/backups/{backupId}/export
 |-------|------|------|-------------|
 | jobId | Body | UUID | リクエストした作業の識別子 |
 
-> [注意]
-> 手動バックアップの場合、バックアップが行われたDBインスタンスが存在しない場合、バックアップをオブジェクトストレージにエクスポートすることができません。
+!!! danger "注意"
+    手動バックアップの場合、バックアップが行われたDBインスタンスが存在しない場合、バックアップをオブジェクトストレージにエクスポートすることができません。
 
 ---
 
@@ -3941,8 +3945,8 @@ POST /v4.0/db-security-groups
 | rules.port.minPort  | Body | Number | X  | 最小ポート範囲<br/>- 最小値: 1                                                                                                                                                                 |
 | rules.port.maxPort  | Body | Number | X  | 最大ポート範囲<br/>- 最大値: 65535                                                                                                                                                                |
 
-> [注意]
-> DBポートは送信方向(アウトバウンド)には設定できません。
+!!! danger "注意"
+    DBポートは送信方向(アウトバウンド)には設定できません。
 
 <details><summary>例</summary>
 <p>
@@ -4113,8 +4117,8 @@ POST /v4.0/db-security-groups/{dbSecurityGroupId}/rules
 | port.maxPort      | Body | Number | X  | 最大ポート範囲<br/>- 最大値: 65535                                                                                                                                                                |
 | cidr              | Body | String | O  | 許可するトラフィックの遠隔ソース<br/>- 例: `1.1.1.1/32`                                                                                                                                                    |
 
-> [注意]
-> DBポートは送信方向(アウトバウンド)には設定できません。
+!!! danger "注意"
+    DBポートは送信方向(アウトバウンド)には設定できません。
 
 <details><summary>例</summary>
 <p>
@@ -4174,8 +4178,8 @@ PUT /v4.0/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
 | port.maxPort      | Body | Number | X  | 最大ポート範囲<br/>- 最大値: 65535                                                                                                                                                                |
 | cidr              | Body | String | O  | 許可するトラフィックの遠隔ソース<br/>- 例: `1.1.1.1/32`                                                                                                                                                    |
 
-> [注意]
-> DBポートは送信方向(アウトバウンド)には設定できません。
+!!! danger "注意"
+    DBポートは送信方向(アウトバウンド)には設定できません。
 
 <details><summary>例</summary>
 <p>
