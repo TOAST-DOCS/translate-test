@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=c5f4c2c6cf1e -->
+<!-- pre-align:aligned sig=2fd33e6ea2c4 -->
 
 <a id="easycache-release-notes"></a>
 ## EasyCache 릴리스 노트 { #easycache-release-notes }
