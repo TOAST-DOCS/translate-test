@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=d1f02419975d -->
 
 <a id="content-delivery-cdn-api-v15-guide"></a>
@@ -20,10 +22,10 @@ NHN Cloud CDNで提供するPublic API v1.5について説明します。
 
 CDN APIを使用するには、AppkeyとSecretKeyが必要です。
 Appkeyは、NHN Cloudの各サービスごとに発行される固有の認証キーであり、APIリクエスト時のサービス識別と有効性検証に使用されます。SecretKeyは、APIへのアクセスを制御するシークレットキーです。
-Appkey及びSecretKeyの確認及び使用に関する詳細は、[Appkey](/nhncloud/ja/public-api/appkey/)を参照してください。
+Appkey及びSecretKeyの確認及び使用に関する詳細は、[Appkey](/ja/public-api/appkey/)を参照してください。
 
 Appkeyの代わりに、プロジェクト統合Appkeyを使用することも可能です。プロジェクト統合Appkeyは、NHN Cloudの1つのプロジェクト内の複数のサービスに対して共通で使用できる認証キーです。
-プロジェクト統合Appkeyの作成及び使用に関する詳細は、[プロジェクト統合Appkey](/nhncloud/ja/public-api/project-integrated-appkey/)を参照してください。
+プロジェクト統合Appkeyの作成及び使用に関する詳細は、[プロジェクト統合Appkey](/ja/public-api/project-integrated-appkey/)を参照してください。
 
 <a id="common-request-information"></a>
 ### リクエスト共通情報 { #common-request-information }
@@ -220,7 +222,6 @@ Appkeyの代わりに、プロジェクト統合Appkeyを使用することも�
 | distributions[0].region                | String  | サービス地域("GLOBAL"：グローバル)            |
 | distributions[0].description           | String  | 説明                                                    |
 | distributions[0].status                | String  | CDN状態コード([表] CDN状態コード参照)                                 |
-| distributions[0].createTime            | String  | 作成日時                                               |
 | distributions[0].useOrigin             | String  | 原本サーバー設定を使用するか("Y"：原本サーバー設定を使用、 "N"：ユーザー設定) |
 | distributions[0].maxAge                | String  | キャッシュ満了時間(秒)                                           |
 | distributions[0].referrerType          | String  | リファラーアクセス管理("BLACKLIST"：ブラックリスト、 "WHITELIST"：ホワイトリスト) |
@@ -312,7 +313,6 @@ curl -X GET "https://kr1-cdn.api.nhncloudservice.com/v1.5/appKeys/{appKey}/distr
 | distributions[0].region                | String  | サービス地域("GLOBAL":グローバル)                              |
 | distributions[0].description           | String  | 説明                                                    |
 | distributions[0].status                | String  | CDN状態コード([表] CDN状態コード参考)                                 |
-| distributions[0].createTime            | String  | 作成日時                                               |
 | distributions[0].useOrigin             | String  | 原本サーバー設定を使用するか("Y"：原本サーバー設定を使用、 "N"：ユーザーを設定) |
 | distributions[0].maxAge                | String  | キャッシュ満了時間(秒)                                           |
 | distributions[0].referrerType          | String  | リファラーアクセス管理("BLACKLIST"：ブラックリスト、 "WHITELIST"：ホワイトリスト) |
