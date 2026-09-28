@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=6567c272c6dd -->
 
 <a id="database-rds-for-enginepascalcase-db-instance"></a>
@@ -175,7 +177,7 @@ DB security groups are used to restrict access in case of external intrusion. Yo
 <a id="backup"></a>
 ### Backup { #backup }
 
-You can set up periodic backups of the databases in your DB instance, or you can create backups at any time through the console. Performance may degrade during backups. To avoid affecting service, it is better to perform back up at a time when the service is under low load. If you do not want the backup to degrade performance, you can use a high-availability configuration, back up only the incremental data since the previous backup, or perform backups from a Read Replica. Backup files are stored on internal backup storage and are charged based on the
+You can set up periodic backups of the databases in your DB instance, or you can create backups at any time through the console. Performance may degrade during backups. To avoid affecting service, we recommend that you perform backups when the service is under low load. If you do not want the backup to degrade performance, you can use a high-availability configuration, back up only the incremental data since the previous backup, or perform backups from a Read Replica. Backup files are stored on internal backup storage and are charged based on the
 size of backup storage. You can export to NHN Cloud object storage if necessary. To prepare for unexpected failures, we recommend that you set up backups to be conducted periodically. For more details on backup, see [Backup and Restore](backup-and-restore/).
 
 <a id="maintenance"></a>
@@ -724,12 +726,12 @@ If restart with failover is not enabled, the DB instance is restarted after the 
 <a id="recover-from-backup-in-object-storage"></a>
 ## Recover from backup in object storage { #recover-from-backup-in-object-storage }
 
-You can upload an external {{engine.pascalCase}} backup file to NHN Cloud object storage to restore it to DB instance in RDS for {{engine.pascalCase}}. For more information, refer to [Restore with External {{engine.pascalCase}} Backup](backup-and-restore/#restore-from-external).
+You can upload an external {{engine.pascalCase}} backup file to NHN Cloud Object Storage to restore it to DB instance in RDS for {{engine.pascalCase}}. For more information, refer to [Restore with External {{engine.pascalCase}} Backup](backup-and-restore/#restore-from-external).
 
 <a id="export-backup-files-to-the-object-storage-after-backup"></a>
 ## Export backup files to the object storage after backup { #export-backup-files-to-the-object-storage-after-backup }
 
-After backup, you can export backup files to object storage. Refer to [Export Backup](backup-and-restore/#export) for more information.
+After backup, you can export backup files to Object Storage. Refer to [Export Backup](backup-and-restore/#export) for more information.
 
 <a id="read-replica"></a>
 ## Read Replica { #read-replica }
