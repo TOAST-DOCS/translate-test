@@ -157,3 +157,96 @@ curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
 
 !!! tip "Note"
     After an event API request, it may take up to 10 minutes for the data to be loaded into the dataset.
+
+<a id="univariate.datasource"></a>
+### 1. Create a metric data source { #univariate.datasource }
+
+In the **Machine Learning > NHN Cloud Foundry > Data Source** tab, click the **Create a data source** button.
+
+1. In Basic Settings, enter the data source name and table name.
+2. In data connection settings, select **Prometheus API** as the data source type.
+3. In Detailed Settings, specify the Series Identification Label and Group Label.
+    - The schema is fixed, so you do not need to enter it directly.
+    - In **View example**, you can check how many series and groups are divided with the label you enter.
+4. Click the **add** button and wait until "Preparation is complete." appears in the completion window.
+    - The completion window also displays the collection method (endpoint, request header, request body example, rule).
+    - In the list, the status is displayed as `COMPLETED`.
+
+    ![Create a metric data source](../static/images/quick-start/지표데이터소스생성.png){ height="70%" }
+
+For detailed descriptions of each item, refer to 'Detailed Settings for Prometheus API' in the [Console User Guide](../console-user-guide/#datasource.create.detail.prometheus).
+
+<a id="univariate.ingest"></a>
+### 2. Send metrics { #univariate.ingest }
+
+In the **Data Collection Method** tab of the Data Source Creation Completed window or View Details, copy the endpoint, request header, and request body example using the **Copy** button to send metrics. Enter the issued token in the authentication token field in the request header.
+
+![Data collection method](../static/images/quick-start/수집방법.png){ height="70%" }
+
+```bash
+curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
+  -H "X-NC-APP-KEY: {APP_KEY}" \
+  -H "X-NHN-Authorization: {AUTH_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "metrics": [
+      {
+        "timestamp": 1776149886528,
+        "value": 4.99,
+        "labels": [
+          { "name": "__name__", "value": "cpu_usage" },
+          { "name": "instance_id", "value": "instance-001" }
+        ]
+      }
+    ]
+  }'
+```
+
+For a detailed description of the request format, see the "Collect metrics" section in [API Guide](../api-guide/#metrics.ingest.api).
+
+!!! tip "Note"
+    After you create an app, send metrics of the same time series one per minute without interruption. If you send at longer intervals, gaps appear and setup may not complete in accurate mode. If you send multiple values within one minute, only the first arrived value is used. If you collect at shorter intervals, aggregate them into one-minute averages and send.
+
+<a id="univariate.app"></a>
+### 3. Create an app { #univariate.app }
+
+In the **Machine Learning > NHN Cloud Foundry > App** tab, click the **Create app** button.
+
+1. In **Basic Settings**, enter the app name and description, and select **Univariate anomaly detection** for the app type.
+
+    ![Create an app - Basic Settings](../static/images/quick-start/이상탐지앱생성1.png){ height="70%" }
+
+2. In **Detailed Settings**, select the Metric Data Source you created earlier.
+    - Specify the Model Resources, Retraining Cycle, Detection Options, and Result Transmission.
+    - If you do not specify a Retraining Cycle, the app trains only once when created. In this case, you cannot create an app with a data source that has no data, so send metrics first.
+
+    ![Create an app - Detailed Settings](../static/images/quick-start/이상탐지앱생성2.png){ height="70%" }
+
+3. In **Final Review**, verify the entered information and click the **Save** button.
+    - A completion window will display the time required for training and deployment progress and results. Meanwhile, continue sending metrics.
+
+For detailed descriptions of each item, refer to Univariate Anomaly Detection Detailed Settings in the [Console User Guide](../console-user-guide/#app.create.detail.univariate).
+
+!!! tip "Note"
+    You can create only one univariate anomaly detection app for each Metric Data Source. For Result Transmission, we recommend using the default accurate mode. If you want to receive values immediately even before preparation is complete, select immediate mode.
+
+<a id="univariate.result"></a>
+### Check detection results { #univariate.result }
+
+Click the app you created in the App list and open the detail page.
+
+1. Check the training status and group status in the **App info** tab.
+
+    ![Univariate anomaly detection app info](../static/images/quick-start/이상탐지앱정보.png){ height="70%" }
+
+2. Check the group status in the **Group list** tab.
+    - Groups are registered after metrics arrive, so the list is empty immediately after creating the app.
+    - Activation Pending means the system is collecting data for determination. Once activated, detection results are sent.
+    - In the activation time column, you can see when the group started sending results.
+
+    ![Group list](../static/images/quick-start/이상탐지그룹목록.png){ height="70%" }
+
+3. The anomaly score and threshold, which are detection results, are sent to the designated Prometheus and also stored in the result data source.
+4. Retrieve the saved results by using queries or charts in the **Analysis** tab.
+
+For a detailed description of each item, see 'Univariate anomaly detection app details' in the [Console user guide](../console-user-guide/#app.detail.univariate).
