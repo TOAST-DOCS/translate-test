@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=6567c272c6dd -->
 
 <a id="database-rds-for-enginepascalcase-db-instance"></a>
@@ -144,7 +146,7 @@ DBインスタンス作成時、データベースのワークロードに応じ
 * Read Replicaの再構築
 * Standbyの再構築
 * 特定の時点への復元
-* 単一のDBインスタンスでバックアップした後、オブジェクトストレージにバックアップファイルをエクスポート
+* 単一のDBインスタンスでバックアップ後、オブジェクトストレージにバックアップファイルをエクスポート
 
 <a id="high-availability"></a>
 ### 高可用性 { #high-availability }
@@ -723,12 +725,12 @@ DBインスタンスに適用されたパラメータと、関連付けられた
 <a id="recover-from-backup-in-object-storage"></a>
 ## オブジェクトストレージにあるバックアップで復元 { #recover-from-backup-in-object-storage }
 
-外部{{engine.pascalCase}}のバックアップファイルをNHN Cloudのオブジェクトストレージにアップロードして、RDS for {{engine.pascalCase}}のDBインスタンスに復元することができます。詳細は、[外部{{engine.pascalCase}}バックアップを利用した復元](backup-and-restore/#restore-from-external)を参照してください。
+外部{{engine.pascalCase}}のバックアップファイルをNHN CloudのObject Storageにアップロードして、RDS for {{engine.pascalCase}}の DBインスタンスに復元することができます。詳細については、[外部{{engine.pascalCase}}バックアップを利用した復元](backup-and-restore/#restore-from-external)項目を参照してください。
 
 <a id="export-backup-files-to-the-object-storage-after-backup"></a>
 ## バックアップ後、オブジェクトストレージにバックアップファイルをエクスポート { #export-backup-files-to-the-object-storage-after-backup }
 
-バックアップ後、バックアップファイルをオブジェクトストレージにエクスポートできます。詳細については、[バックアップエクスポート](backup-and-restore/#export)項目を参照してください。
+バックアップ後、バックアップファイルをオブジェクトストレージにエクスポートできます。詳細については、[バックアップエクスポート](backup-and-restore/#export)項目を参照します。
 
 <a id="read-replica"></a>
 ## Read Replica { #read-replica }
