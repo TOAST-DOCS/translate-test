@@ -22,6 +22,7 @@ Support for MySQL versions below 8.0.34 has ended under the MySQL LTS policy. We
 | Version              | Note                                                      |
 |----------------------|-----------------------------------------------------------|
 | <strong>8.4</strong> |                                                           |
+| MySQL 8.4.11         |                                |
 | MySQL 8.4.9          |                                                           |
 | MySQL 8.4.8          |                                                           |
 | MySQL 8.4.7          |                                                           |
@@ -58,14 +59,19 @@ Support for MySQL versions below 8.0.34 has ended under the MySQL LTS policy. We
 
 | Version                | Note                                   |
 |------------------------|----------------------------------------|
+| <strong>12.3</strong>  |                               |
+| MariaDB 12.3.3         |                               |
 | <strong>11.8</strong>  |                                        |
+| MariaDB 11.8.9         |                               |
 | MariaDB 11.8.8         |                                        |
 | MariaDB 11.8.6         |                                        |
 | <strong>11.4</strong>  |                                        |
-| MariaDB 11.4.14        |                                        |
+| MariaDB 11.4.13        |                               |
+| MariaDB 11.4.12        |                               |
 | MariaDB 11.4.10        |                                        |
 | MariaDB 11.4.7         |                                        |
 | <strong>10.11</strong> |                                        |
+| MariaDB 10.11.19       |                               |
 | MariaDB 10.11.18       |                                        |
 | MariaDB 10.11.16       |                                        |
 | MariaDB 10.11.13       |                                        |
@@ -220,6 +226,7 @@ RDS for MySQL uses the MariaDB Audit plug-in to provide an auditing plug-in for 
 | MySQL version              | Whether to support server audit plugins |
 |----------------------------|-----------------------------------------|
 | <strong>8.4</strong>       |                                         |
+| MySQL 8.4.11         | O                |
 | MySQL 8.4.9                | O                                       |
 | MySQL 8.4.8                | O                                       |
 | MySQL 8.4.7                | O                                       |
