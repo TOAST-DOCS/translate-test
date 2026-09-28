@@ -61,6 +61,7 @@ A data source is the unit that stores data for analysis in NHN Cloud Foundry. Yo
 !!! danger "Caution"
     When using this service, make sure not to enter information that contains personal data.
     This service does not provide separate security measures for personal data entered by customers. Refrain from entering and storing information that contains personal data.
+    This notice is also displayed as a popup when you access the console. If you select **Don't show again**, it will not be displayed again in the same browser, but it will be displayed again in a different browser or a different project.
 
 <a id="datasource.list"></a>
 ### Data Source List { #datasource.list }
@@ -186,13 +187,55 @@ Supported field types:
 
 After completing the settings, click the **Add** button to create the data source.
 
+<a id="datasource.create.detail.prometheus"></a>
+#### Prometheus API Detailed Settings { #datasource.create.detail.prometheus }
+
+For Prometheus API type, since the record format sent by the collection API is predetermined, you don't enter a schema directly. In the Basic Settings schema field, the following fixed schema is displayed as a read-only table, and a table is created using this schema.
+
+| Field Name | Data Type | Description |
+| --- | --- | --- |
+| timestamp | timestamp | Metric timestamp. Millisecond epoch |
+| value | double | Measured value |
+| labels | array&lt;struct&gt; | All labels attached to the metric |
+| labelHash | string | Automatically calculated series identifier |
+| groupHash | string | Automatically calculated group identifier |
+| metadata | map | Additional information stored as sent |
+
+System columns `eventTimestamp` and `ingestTimestamp` are automatically added.
+
+In Detailed Settings, you specify the following two items:
+
+| Item | Required | Description |
+| --- | --- | --- |
+| Series Identification Label | O | Specify how to distinguish one time series by label combination. Select either **Use all labels** or **Directly specify**, with the default set to **Use all labels** |
+| Group Label | X | Unit for grouping and managing time series. Time series with the same specified label value form one group. If left empty, the entire data source becomes one group |
+
+- Series Identification Label: Each time series is trained and inferred separately. **Use all labels** treats different label combinations as different time series. **Directly specify** groups only data with the same specified label value into one time series and does not use the remaining labels for distinction.
+- Group Label: For example, if you specify a rule ID label, a group is created for each rule value. If left empty, the entire data source becomes one group. A group is registered only when metrics arrive.
+- Label names must start with a letter or `_` and can only contain letters, numbers, and `_`. Enter multiple labels separated by commas, and you cannot enter the same label twice.
+- If you **directly specify** the Series Identification Label and the Group Label is not included in that list, a warning appears. Since time series can be merged into the same series even when groups differ, it is recommended that you include it in the Series Identification Label.
+
+Below the Group Label, the **View example** row displays how the example metric is divided into series and groups based on the entered label settings in the format 'N series · M groups'. If the Group Label is left empty, it displays '1 group · The entire data source is one group'.
+
+- When you click **View example**, a table dividing series by group and an example request body are expanded. When you click a row in the table, the example request body changes to the labels of that series.
+- If you **directly specify** the Series Identification Label and multiple metrics are merged into one series, the number of merged items is also displayed.
+- When you change the input, the calculation is updated immediately.
+
+When you click the **Add** button, the completion window displays the data source preparation status and **Collection method** (endpoint, request headers, example request body, rules). When the status changes to 'Setup complete', you can send metrics according to the provided guidance.
+
+!!! tip "Note"
+    For how to send data to a Prometheus API data source, refer to the completion window, the **Collection method** tab in View Details, or 'Metrics collection' in the [API Guide](../api-guide/#metrics.ingest.api).
+
 <a id="datasource.delete"></a>
 ### Delete a Data Source { #datasource.delete }
 
 Select the data sources to delete using the checkboxes in the list, then click the **Delete** button.
 
 - Deleting a data source also deletes the table and all ingested data.
-- You cannot delete a data source while an ingestion job is in progress.
+- A data source cannot be deleted if a data ingestion task is in progress or if another task is in progress on the data source. Try again after the task completes.
+
+- A data source in use by an app or pipeline cannot be deleted. Delete the connected app or pipeline first.
+- Deleting an app does not delete the Result Data Source. If necessary, delete it separately from the Data Source List.
 
 <a id="datasource.detail"></a>
 ### View Details / Preview { #datasource.detail }
@@ -206,6 +249,30 @@ The Details view consists of the following tabs.
 | --- | --- |
 | Connection info | Data source ID, data source name, table name, type, description, and status |
 | Catalog | View the list of field names and data types, and **Add field** |
+
+| Event Settings | Displayed only for data sources of type File. Check and toggle the Event API activation status |
+| Collection Method | Displayed only for data sources of type Prometheus API. Instructions for sending metrics |
+
+For data sources of Prometheus API type, the **Series Identification Label** and **Group Label** are displayed together in the Connection Information tab. If no values are specified, they are displayed as "Use all labels" and "Single group (entire data source)", respectively. If multiple different values for the same time series are received within one minute during the last 5 minutes, that fact is also displayed in the Connection Information tab.
+
+<a id="datasource.detail.ingest"></a>
+#### Collection method { #datasource.detail.ingest }
+
+This section guides you on how to send metrics to a Prometheus API type data source. Each item can be copied using the **Copy** button.
+
+| Item | Description |
+| --- | --- |
+| Endpoint | API endpoint path where metrics are sent |
+| Request Header | The `X-NC-APP-KEY` header with this data source's App Key and the `X-NHN-Authorization` header for the authentication token |
+| Request Body Example | Request body example with this data source's Group Label applied |
+| Rules | Notes regarding authentication token, time unit, transmission interval, labels, additional information, values, and responses |
+
+The same information is also displayed in the completion window immediately after creating the data source.
+
+!!! danger "Caution"
+    You must enter the issued authentication token in the `X-NHN-Authorization` header. If you send only the App Key, the request will be rejected.
+
+For detailed request format, see 'Metric Collection' in the [API Guide](../api-guide/#metrics.ingest.api).
 
 <a id="datasource.edit"></a>
 ### Update Data { #datasource.edit }
@@ -399,7 +466,10 @@ Only operators available for the selected column type are displayed.
 | Date/Time | =, ≠, >, ≥, &lt;, ≤, IS NULL, IS NOT NULL |
 | Boolean | =, ≠, IS NULL, IS NOT NULL |
 
-The comparison value can be selected from **Direct input**, **Time (relative to now)**, or **Another column**.
+The comparison value can be selected from **Direct input**, **Time (relative to now)**, **Another column**, or **Function or Expression**.
+
+- **Functions and expressions**: Enter constant expressions. Use this to filter time columns stored in millisecond epoch based on the current time. Example: `CAST(UNIX_TIMESTAMP(NOW() - INTERVAL 7 DAY) * 1000 AS BIGINT)`
+- In Functions and expressions, only time calculation functions, type conversion functions, CAST target types, and INTERVAL units can be used. Column references, quotation marks, semicolons, comments, and more than 500 characters are rejected when saved.
 
 Logical operators `AND` and `OR` are supported. Use the **Add Group** button to nest conditions up to three levels deep.
 
@@ -806,6 +876,8 @@ After completing the configuration, click the **UPDATE CHART** button to preview
 
 - Verify that the chart is displayed correctly.
 - You can review the data in the table view at the bottom and toggle the table view on or off.
+- If the query fails, a **Chart Query Failed** panel is displayed in the chart area, and you can see the error message returned by the query engine. After modifying the query settings based on the error message, query again.
+- If a column has no aggregation function selected, a notice is displayed when you click **UPDATE CHART**. The chart may not display correctly without an aggregation function.
 
 <a id="chart.create.save"></a>
 #### Save a Chart { #chart.create.save }
@@ -1064,8 +1136,123 @@ This is an optional setting for connecting skill and category data used to const
 | Recommendation reason template data source | Table of recommendation reason phrase templates. If not selected, reasons are not included in recommendation results. |
 | Cold start data source | Only user IDs in this table are identified as cold starters. Both the data source and user ID column must be selected. |
 
+<a id="app.create.detail.univariate"></a>
+#### Univariate Anomaly Detection Detailed Settings { #app.create.detail.univariate }
+
+The univariate anomaly detection app trains each metric individually to detect values that fall outside the normal range. Detailed settings are organized in the following order: data source, model resources, retraining, detection options, and result transmission.
+
+<a id="app.create.detail.univariate.source"></a>
+##### Data Source { #app.create.detail.univariate.source }
+
+| Item | Required | Description |
+| --- | --- | --- |
+| Metric Data Source | O | Data source from which the metric to detect arrives. Only data sources of type Prometheus API can be selected. |
+
+- You must create a data source of type Prometheus API first for it to appear in the list.
+- The series identification label and group label specified in the selected data source become the criteria for dividing time series and groups.
+- Only one univariate anomaly detection app can be created per metric data source. Data sources already in use by other univariate anomaly detection apps do not appear in the list.
+- If the selected data source has no data, "No data available yet" appears below the item, and a **Data Check** box appears below Resource Check at the bottom of the screen. If no retraining period is specified, training at creation is the only training, so you cannot proceed to the next step until data arrives. If a retraining period is specified, the first training fails and only a notice stating "will retry at the next retraining" appears, allowing you to proceed.
+- If multiple different values for the same time series arrive within 1 minute over the last 5 minutes, a notice box appears. It does not prevent creation, but in this state, only the first arrived value each minute is used for analysis and the rest are discarded. Send the same time series only once per minute, and if collected at shorter intervals, aggregate them into a 1-minute average.
+
+<a id="app.create.detail.univariate.resource"></a>
+##### Model Resources { #app.create.detail.univariate.resource }
+
+| Item | Required | Description |
+| --- | --- | --- |
+| CPU Limit | O | CPU upper limit allocated to the inference server. Use Kubernetes notation. Example: 2, 500m. Minimum 2 vCPU, default 2. |
+| Memory Limit | O | Memory upper limit allocated to the inference server. Use Kubernetes notation. Example: 1Gi, 512Mi. Minimum 1Gi, default 1Gi. |
+
+Model resources cannot be changed after the app is created.
+
+<a id="app.create.detail.univariate.retrain"></a>
+##### Retraining { #app.create.detail.univariate.retrain }
+
+| Item | Required | Description |
+| --- | --- | --- |
+| Retraining Cycle | X | Toggle to enable or disable. Default is off. When enabled, specify the schedule below. |
+
+| Schedule | Configuration Items |
+| --- | --- |
+| Daily | Hour and minute. Hour is 0–23, minute is in 10-minute increments, default 03:00. |
+| Weekly | Day of week, hour, minute. |
+| Hourly Interval | Interval and minute. Choose from 1, 2, 3, 4, 6, 8, or 12 hours. |
+
+- The configured time is applied based on the time zone of the browser you are accessing.
+- If no schedule is specified, training occurs only once when the app is created and no automatic retraining occurs afterward. In this case, you cannot create an app with a data source that has no data.
+- Training consumes significant resources, so it is recommended to specify a time when traffic is low.
+
+<a id="app.create.detail.univariate.option"></a>
+##### Detection Options { #app.create.detail.univariate.option }
+
+| Item | Required | Description |
+| --- | --- | --- |
+| Transmission Mode | O | Choose when to export anomaly scores and thresholds. |
+| Score Scale | X | **Export on a 0–100(%) scale** toggle. Default off. |
+| Device | O | Compute device to use for inference and training. Choose between CPU or GPU, default is CPU. |
+
+Choose the transmission mode from the following:
+
+| Value | Description |
+| --- | --- |
+| Accurate Mode | Default. Sends only reliable values after the metric is prepared. |
+| Immediate Mode | Sends immediately after activation. Values before preparation is complete are for reference only. |
+
+- The app groups metrics in 1-minute intervals and determines judgment per time series. The data source connected to the app must send the same time series continuously, one per minute. If sent at longer intervals, gaps appear which may prevent preparation from completing in Accurate Mode. If multiple values arrive within a minute, only the first arrived value is used for judgment. Ingesting metrics into the data source itself is independent of the transmission interval.
+- It takes several hours for new metrics to accumulate enough data for judgment and for the threshold to be calibrated based on the metric's distribution.
+- If transmission stops for several minutes or more, the accumulated interval breaks and returns to preparation state. In Accurate Mode, no results are sent until it is refilled.
+- When Score Scale is enabled, scores are compressed to 0–1, multiplied by 100, and exported as 0–100, with thresholds calculated on the same scale. Use this to align with dashboards that use percentage axes. When disabled, original values are exported as-is.
+- The same device is used for both inference and training. Training and inference work with the default CPU, but GPU may not be available depending on the service environment's resources.
+
+!!! danger "Caution"
+    Score Scale cannot be changed after the app is created.
+
+<a id="app.create.detail.univariate.sink"></a>
+##### Result Transmission { #app.create.detail.univariate.sink }
+
+This is the setting for transmitting detection results to Prometheus.
+
+| Item | Required | Description |
+| --- | --- | --- |
+| Transmission URL | O | Address to which results are transmitted. |
+| API Path | O | Path appended after the transmission URL. Default /api/v1/write. |
+| Score Metric Name | O | Metric name where the anomaly score is stored. Default AD_SCORE. |
+| Threshold Metric Name | X | Metric name where the automatically calculated threshold is stored. Default AD_AUTO_THRESHOLD. |
+
+Click **Expand Additional Transmission Settings** to configure the following items.
+
+| Item | Required | Description |
+| --- | --- | --- |
+| Fixed Headers | X | HTTP headers always attached to transmission requests. Use when adding authentication tokens. |
+| Dynamic Headers | X | Send field values from result records as HTTP headers. Use only when required by the receiver. |
+| Metric Family Name | X | Name to group score and threshold metrics together. Leave empty to not group. |
+
+- Fixed headers are entered in `HeaderName:Value` format, with multiple entries separated by commas. Example: `Authorization:Bearer abc123`.
+- Dynamic headers are entered in `RecordField:HeaderName` format, with multiple entries separated by commas. Example: `tenant:x-monitoring-tenant-alias`.
+- You cannot enter the same header name or the same record field twice. If the format is incorrect, an error appears below the input field.
+- You cannot create an app if another app already sends the same score and threshold metric names to the same transmission address. Specify different metric names or transmission addresses to prevent result time series from mixing.
+- Transmission failures to the transmission URL do not appear in the console. If results do not appear in the receiving Prometheus, verify them against the results stored in the result data source.
+
+!!! tip "Note"
+    Inference results are always stored in the result data source separately from Prometheus transmission. The result data source is automatically created when the app is created and can be queried from the Analysis menu.
+
+The schema of the result data source is as follows. Query using these columns in queries or charts in the Analysis menu.
+
+| Field Name | Data Type | Description |
+| --- | --- | --- |
+| labelHash | string | Time series identifier. Same value as labelHash in the metric data source. |
+| identityLabels | string | Original label text of the time series. |
+| score_aggregate | double | Anomaly score. |
+| threshold | double | Anomaly detection threshold value. |
+| eventTimestamp | long | Time of the metric being evaluated. Millisecond epoch. |
+
+The system column `ingestTimestamp` is automatically added.
+
 <a id="app.create.review"></a>
 #### Final Review { #app.create.review }
+
+Display the content entered in the previous step, summarized according to the app type.
+
+Recommendation System:
 
 | Review Item | Description |
 | --- | --- |
@@ -1075,15 +1262,33 @@ This is an optional setting for connecting skill and category data used to const
 
 Click the **Save** button to create the app. On success, a completion modal is displayed and you are redirected to the list. On failure, an error message is displayed.
 
+| Review Item | Description |
+| --- | --- |
+| Basic Settings | App name, description, type |
+| Detailed Settings | Metric Data Source, Model Resources, Retraining Cycle, Detection Options, Result Transmission Settings |
+
+- If the retraining cycle is not specified, it is displayed as "Not specified (1 time training at creation)".
+- Fixed headers and dynamic headers are displayed as "Set", "None", or a hyphen instead of their input values.
+
+Click the **Save** button to create the app. On success, a completion modal is displayed and you return to the list. On failure, an error message is displayed.
+
+The completion modal of the univariate anomaly detection app provides guidance on upcoming operations.
+
+- Train and deploy the model. You can check the progress through the status in the app list.
+- In accuracy mode, even after activation, results don't start being produced until metrics for prediction accumulate, which usually takes several hours.
+- You must continue sending metrics during this time.
+
 <a id="app.delete"></a>
 ### Delete App { #app.delete }
 
-1. Select the checkbox of the app to delete.
+1. Select the checkbox of the app to delete. Only one app can be selected at a time. If you select a different app, the previous selection is cleared.
 2. Click the **Delete** button.
-3. Click **Confirm** in the confirmation modal.
+3. In the confirmation modal, verify the app name and click **Confirm**.
 
 !!! danger "Caution"
     Deleted apps cannot be recovered. The associated serving pipeline is also deleted.
+    Result Data Sources are not deleted and remain. If needed, delete them separately from the Data Source List.
+    Metric Data Sources in use by the app can be deleted after the app is deleted.
 
 <a id="app.detail"></a>
 ### App Details { #app.detail }
@@ -1121,3 +1326,95 @@ You can view the app ID, app name, status, app type, description, creation date,
 
 - Input data source: The data sources used for model training. For recommendation apps, data sources are displayed separately by model.
 - Output data source: The data source where recommendation results are stored.
+
+<a id="app.detail.univariate.info"></a>
+#### App Info { #app.detail.univariate.info }
+
+The header displays the app name, status, app type, app ID, creation date, modification date, and description. Below that, cards are displayed in the order **Input → Processing → Output**.
+
+**Input**: Metric Data Source
+
+| Item | Description |
+| --- | --- |
+| Name | Metric Data Source name |
+| Type | Data Source type |
+| Group Key field | The label that distinguishes groups. Group label settings for the Data Source are displayed; if not specified, it displays 'Not configured (Single group)' |
+| Series Identification Label | The label that distinguishes time series. If not specified, it displays 'Use all labels' |
+| Data Source ID, Data Source table name | Used for inquiries and log cross-reference |
+
+**Processing**: Univariate anomaly detection model
+
+| Item | Description |
+| --- | --- |
+| Model Resources | CPU and memory upper limit used for training and inference |
+| Device | CPU or GPU |
+| Training status | Training pending, Training in progress, Training completed, Retraining stopped, Training failed, Deleted |
+| Last training date | The time when training was last performed |
+| Retraining cycle | Format: 'Every day at 03:00', 'Every Monday at 03:00', 'Every 6 hours'. If not specified, it displays 'No automatic retraining (trained once at creation)' |
+| Transmission Mode | Accurate mode, Immediate mode |
+| Score Scale | Original value or 0–100 scale |
+
+**Output**: Result Transmission
+
+| Item | Description |
+| --- | --- |
+| Transmission address | The address where results are sent. The value combining the transmission URL and API path |
+| Score Metric Name | The metric name where the anomaly score is stored |
+| Threshold Metric Name | The metric name where the anomaly determination threshold is stored |
+| Result Data Source | The Data Source name where results are stored |
+| Data Source ID, Data Source table name | Used for inquiries and log cross-reference |
+
+- Hover over the question mark icon next to an item label to view the description.
+- If the transmission address is not configured, the message 'Results are stored only in the Result Data Source and not sent externally' is displayed.
+- Values entered in fixed and dynamic headers are not displayed on the screen.
+- Inference results are always stored in the Result Data Source separately from Prometheus transmission and can be viewed from the Analysis menu.
+- Below the card, group status is displayed as four numbers: **All**, **Active**, **Activation pending**, and **Inactive**. When you click a number, you are moved to the group list tab and filtered by that status.
+- Hover over the question mark icon next to the group status title to view the meaning of the three statuses. Activation pending typically takes a few hours in accurate mode, while in immediate mode it becomes active immediately after turning on the group.
+- If retraining fails, the training status is displayed as training failed. Results continue to be generated using the most recently trained model, and retraining occurs in the next retraining cycle. If initial training fails, the app enters a failed state and can be deleted.
+- Dates and times are displayed in the time zone of the browser you accessed.
+
+<a id="app.detail.univariate.groups"></a>
+#### Group List { #app.detail.univariate.groups }
+
+Anomaly detection occurs for each time series, and groups are units that bundle the time series together to check results and status.
+
+| Column | Description |
+| --- | --- |
+| Group Key | The label name that serves as the criterion for dividing groups. Apps without a group key field are indicated by a hyphen. |
+| Value | The value of the label. Apps without a group key field show 'single group'. |
+| Group Hash | A 16-character hash that identifies the group. Automatically calculated from the group key value. |
+| Status | The current status of the group. |
+| Activation time | The time when sufficient data has been collected for decision-making and results begin to be sent. Groups pending activation show a hyphen. |
+| Deactivation time | The last time the group was deactivated. This is not cleared even when turned on again, so previous history remains. Shows a hyphen if never deactivated. |
+| Created on | The date and time the group was registered. |
+| Modified on | The date and time when the group information was last changed. |
+
+Status:
+
+| Value | Description |
+| --- | --- |
+| Active | The detection results for this group are being sent. |
+| Activation Pending | The group is turned on but results are not being sent yet as data is still being collected. |
+| Inactive | A group that has been turned off from use. |
+
+- When you specify a group label in the data source, a group is created for each value. If you do not specify a group label, the entire data source becomes a single group.
+- Groups are registered when metrics arrive, not when the app is created. The list is empty immediately after creating an app.
+- Activation pending usually takes several hours in precision mode. In immediate mode, activation occurs immediately after turning on the group.
+- Errors are determined at the group level. If inference stops for even one time series within a group, the entire group becomes an error, and the time series must recover for the group to return to normal.
+- You can narrow down the list by filtering by status or searching by group key or group hash.
+- You can sort the Group Key, Activation time, Deactivation time, Created on, and Modified on columns by clicking the column header. Sorting is based on all groups, and changing the sort order moves you to page 1. The Value, Group Hash, and Status columns cannot be sorted, and values are sorted by the Group Key column.
+- You can adjust the number of items displayed per page (20, 50, 100 / default 20).
+- If there are no registered groups, 'No registered groups. When data arrives and groups are registered, they will be displayed here.' appears. If there are no groups that match the search or filter conditions, 'No groups match the conditions.' appears.
+- To start, stop, or delete specific groups, refer to 'Start, stop, and delete group usage' in the [API Guide](../api-guide/#univariate.group.api). This operation is not available in the console.
+
+<a id="app.detail.univariate.groups.hash"></a>
+
+##### Hash Calculator { #app.detail.univariate.groups.hash }
+
+You can directly calculate the hash from the label by clicking the **Hash Calculator** button in the toolbar.
+
+- Paste the label JSON as-is or enter `name=value` one per line.
+- The canonical form and 16-character hash are displayed, and you can copy them by clicking the **Copy** button.
+- For group hash, enter only the labels corresponding to the group key field. For series hash, enter only the labels that distinguish the time series.
+- You can also check the hash for groups that are not yet registered.
+- If the hash differs from your expectation, compare the canonical form first. The canonical form is the value in which labels are sorted by name and joined with commas.
