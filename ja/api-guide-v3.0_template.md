@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=aafe17e2e720 -->
 
 <a id="database-rds-for-enginepascalcase-api-guide"></a>
@@ -2296,11 +2298,12 @@ POST /v3.0/db-instances/{dbInstanceId}/db-users
 | authenticationPlugin | Body | Enum   | X  | 認証プラグイン<br/>- デフォルト値: `NATIVE`(未対応の場合は`CACHING_SHA2`)<br/>- NATIVE: `mysql_native_password`<br />- SHA256: `sha256_password`<br />- CACHING_SHA2: `caching_sha2_password` |
 | tlsOption            | Body | Enum   | X  | TLS Option<br/>- NONE<br />- SSL<br />- X509                                                                                |
 
-> [注意]
-> DBインスタンスの`supportAuthenticationPlugin`値がtrueであるDBインスタンスのみ`authenticationPlugin`、`tlsOption`の値を設定できます。
+!!! danger "注意"
+    DBインスタンスの `supportAuthenticationPlugin` 値が `true` であるDBインスタンスのみ、`authenticationPlugin`、`tlsOption` の値を設定できます。
+
 {{/if}}
 {{#if (eq engine.lowerCase "mariadb")}}
-| authenticationPlugin | Body | Enum   | X  | 認証プラグイン<br/>- デフォルト値: `NATIVE`(未対応の場合は`ED25519`)<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
+| authenticationPlugin | Body | Enum    | X  | 認証プラグイン<br/>- デフォルト値: `NATIVE`(未対応の場合 `ED25519`)<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
 {{/if}}
 
 <details><summary>例</summary>
@@ -2354,12 +2357,13 @@ PUT /v3.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
 | authenticationPlugin | Body | Enum   | X  | 認証プラグイン<br/>- NATIVE: `mysql_native_password`<br />- SHA256: `sha256_password`<br />- CACHING_SHA2: `caching_sha2_password` |
 | tlsOption            | Body | Enum   | X  | TLS Option<br/>- NONE<br />- SSL<br />- X509                                                                                |
 
-> [注意]
-> DBインスタンスの`supportAuthenticationPlugin`値がtrueであるDBインスタンスのみ`authenticationPlugin`、`tlsOption`の値を修正できます。
-> `authenticationPlugin`の値は`dbPassword`と同時に修正する必要があります。
+!!! danger "注意"
+    DBインスタンスの`supportAuthenticationPlugin`値が`true`であるDBインスタンスのみ`authenticationPlugin`、`tlsOption`の値を修正できます。
+    `authenticationPlugin`の値は`dbPassword`と同時に修正する必要があります。
+
 {{/if}}
 {{#if (eq engine.lowerCase "mariadb")}}
-| authenticationPlugin | Body | Enum   | X  | 認証プラグイン<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
+| authenticationPlugin | Body | Enum    | X  | 認証プラグイン<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
 {{/if}}
 
 <details><summary>例</summary>
@@ -2744,8 +2748,8 @@ POST /v3.0/backups/{backupId}/export
 |-------|------|------|---------------|
 | jobId | Body | UUID | リクエストした作業の識別子 |
 
-> [注意]
-> 手動バックアップの場合、バックアップが行われたDBインスタンスが存在しない場合、バックアップをオブジェクトストレージにエクスポートすることができません。
+!!! danger "注意"
+    手動バックアップの場合、バックアップが行われたDBインスタンスが存在しない場合、バックアップをオブジェクトストレージにエクスポートすることができません。
 
 ---
 
@@ -3031,8 +3035,8 @@ POST /v3.0/db-security-groups
 | rules.port.minPort  | Body | Number | X  | 最小ポート範囲<br/>- 最小値: 1                                                                                                                                                                 |
 | rules.port.maxPort  | Body | Number | X  | 最大ポート範囲<br/>- 最大値: 65535                                                                                                                                                             |
 
-> [注意]
-> DBポートは送信方向(アウトバウンド)には設定できません。
+!!! danger "注意"
+    DBポートは送信方向(アウトバウンド)には設定できません。
 
 <details><summary>例</summary>
 <p>
@@ -3182,8 +3186,8 @@ POST /v3.0/db-security-groups/{dbSecurityGroupId}/rules
 | port.maxPort      | Body | Number | X  | 最大ポート範囲<br/>- 最大値: 65535                                                                                                                                                             |
 | cidr              | Body | String | O  | 許可するトラフィックの遠隔ソース<br/>- 例: `1.1.1.1/32`                                                                                                                                               |
 
-> [注意]
-> DBポートは送信方向(アウトバウンド)には設定できません。
+!!! danger "注意"
+    DBポートは送信方向(アウトバウンド)には設定できません。
 
 <details><summary>例</summary>
 <p>
@@ -3236,8 +3240,8 @@ PUT /v3.0/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
 | port.maxPort      | Body | Number | X  | 最大ポート範囲<br/>- 最大値: 65535                                                                                                                                                             |
 | cidr              | Body | String | O  | 許可するトラフィックの遠隔ソース<br/>- 例: `1.1.1.1/32`                                                                                                                                               |
 
-> [注意]
-> DBポートは送信方向(アウトバウンド)には設定できません。
+!!! danger "注意"
+    DBポートは送信方向(アウトバウンド)には設定できません。
 
 <details><summary>例</summary>
 <p>
