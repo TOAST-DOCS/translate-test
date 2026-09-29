@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=f84534729b3d -->
 
 <a id='network-load-balancerdsr-console-user-guide'></a>
@@ -21,7 +23,7 @@ Configure the basic information for Load Balancer (DSR). The required items are 
 * Description: Enter the description of Load Balancer (DSR).
 * VPC: Select the VPC to which Load Balancer (DSR) will be connected.
 * Subnet: Select the subnet to which Load Balancer (DSR) will belong. Load Balancer (DSR) and member instances must be located in the same subnet.
-* Virtual IP (VIP): The VIP address to be assigned to Load Balancer (DSR). The assignment method can be selected from **Auto Assign** or **Manual Assign**.
+* Virtual IP (VIP): The VIP address to be used by Load Balancer (DSR), which is a private IP assigned from the selected subnet. The assignment method can be selected from **Auto Assign** or **Manual Assign**.
   * Auto assign: An available IP from the subnet is automatically assigned and used as the VIP.
   * Manual assign: A desired IP within the CIDR range of the subnet is entered directly and used as the VIP.
 
@@ -62,7 +64,7 @@ Configure the following additional items for each protocol:
     The delay must be greater than or equal to the timeout. If the timeout is greater than the delay, health checks may not function correctly.
 
 !!! tip "Note"
-    TCP/HTTP health checks send requests to the DSR VIP as the destination, if the VIP is not configured on the lo interface of the member server, the packets cannot be received or processed, causing the health check to fail and the member to be marked as `INACTIVE`. ICMP health checks send requests to the actual IP of the member, so they only verify connectivity regardless of the VIP configuration.
+    TCP/HTTP health checks send requests to the DSR VIP (private IP) as the destination, if the VIP is not configured on the lo interface of the member server, the packets cannot be received or processed, causing the health check to fail and the member to be marked as `INACTIVE`. ICMP health checks send requests to the actual IP of the member, so they only verify connectivity regardless of the VIP configuration.
 
 <a id='create-dsr-loadbalancers-member-settings'></a>
 #### 3. Member Settings
@@ -81,6 +83,8 @@ Specify the member instances to register when creating Load Balancer (DSR). Memb
     - Configure kernel parameters (`arp_ignore=1`, `arp_announce=2`)
     - Add the VIP to the `lo` interface with a `/32` subnet
     - Allow service port and health check traffic in Security Groups
+
+    The address registered on the lo interface and as an additional allowed address is the VIP (private IP), not the floating IP connected to Load Balancer (DSR).
 
     For detailed instructions, see the Member server configuration guide in [Load Balancer (DSR) Overview](/Network/Load%20Balancer(DSR)/en/overview/).
 
@@ -255,7 +259,7 @@ Click **Confirm** after completing the settings to apply the changes
     The delay must be greater than or equal to the timeout. If the timeout is greater than the delay, health checks may not function correctly.
 
 !!! tip "Note"
-    Health check requests are sent from a dedicated health check IP automatically assigned to the same subnet as Load Balancer (DSR). The Security Group of member instances must allow this traffic for health checks to function correctly. For more information, see the Security Groups configuration section in the [Load Balancer (DSR) Overview](/Network/Load%20Balancer(DSR)/ko/overview/).
+    Health check requests are sent from a dedicated health check IP automatically assigned to the same subnet as Load Balancer (DSR). The Security Groups of member instances must allow traffic by specifying the subnet CIDR as the remote for health checks to function correctly. For more information, see the Security Groups configuration section in the [Load Balancer (DSR) Overview](/Network/Load%20Balancer(DSR)/en/overview/).
 
 <a id='dsr-quota'></a>
 ## Quota and Limitations { #dsr-quota }
