@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=616384b95f3d -->
 
 <a id="database-rds-for-postgresql-parameter-group"></a>
@@ -95,7 +97,7 @@ You can change the parameters by selecting a parameter group from the console an
 <a id="change-parameters-change-the-maxconnections-parameter"></a>
 #### Change the `max_connections` Parameter
 
-When changing the `max_connections` value with read replicas added, there is an issue with the order of application. If you only change the value on the master, you cannot apply it to a value larger than the read replica, because the value on the master must be set to a smaller value than the read replica. For the same reason, if you only change the value on the read replica, you cannot apply it to a value smaller than the master. It is recommended to apply it globally on a DB instance group basis if necessary. 
+When changing the `max_connections` value with read replicas added, there is an issue with the order of application. If you only change the value on the primary, you cannot apply it to a value larger than the read replica, because the value on the primary must be set to a smaller value than the read replica. For the same reason, if you only change the value on the read replica, you cannot apply it to a value smaller than the primary. It is recommended to apply it globally on a DB instance group basis if necessary. 
 
 <a id="change-parameters-change-the-sharedbuffers-parameter"></a>
 #### Change the `shared_buffers` Parameter
@@ -105,4 +107,4 @@ For the `shared_buffers` parameter, using an excessively large value can cause p
 <a id="change-parameters-changing-the-archivemode-parameter"></a>
 #### Changing the `archive_mode` Parameter
 
-For the `archive_mode` parameter, you can now select the value `always` in addition to the existing value `on`. When set to `always`, archive logs are saved even if the instance is not the master.
+For the `archive_mode` parameter, you can now select the value `always` in addition to the existing value `on`. When set to `always`, archive logs are saved even if the instance is not the primary.
