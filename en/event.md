@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=a6332d48b331 -->
 
 <a id="database-rds-for-postgresql-event"></a>
@@ -126,9 +128,9 @@ Event refers to RDS for PostgreSQL or a significant event that is caused by a us
 | DB_INSTANCE_47_04       | DB_INSTANCE       | Changing DB instance with a completed failover to normal instance failed      |
 | DB_INSTANCE_48_01       | DB_INSTANCE       | High availability normalized                                                  |
 | DB_INSTANCE_49_01       | DB_INSTANCE       | High availability stopped                                                     |
-| DB_INSTANCE_50_00       | DB_INSTANCE       | Candidate master rebuilding started                                           |
-| DB_INSTANCE_50_01       | DB_INSTANCE       | Candidate master rebuilding completed                                         |
-| DB_INSTANCE_50_04       | DB_INSTANCE       | Candidate master rebuilding failed                                            |
+| DB_INSTANCE_50_00       | DB_INSTANCE       | Standby rebuilding started                                                    |
+| DB_INSTANCE_50_01       | DB_INSTANCE       | Standby rebuilding completed                                                  |
+| DB_INSTANCE_50_04       | DB_INSTANCE       | Standby rebuilding failed                                                     |
 | DB_INSTANCE_51_01       | DB_INSTANCE       | Backup of DB instance failed (Known cause)                                    |
 | DB_INSTANCE_52_00       | DB_INSTANCE       | Exporting backup file after backing up DB instance started                    |
 | DB_INSTANCE_52_01       | DB_INSTANCE       | Exporting backup file after backing up DB instance completed                  |
