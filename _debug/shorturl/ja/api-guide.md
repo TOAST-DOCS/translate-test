@@ -26,11 +26,13 @@ Content-Type: application/json
 #### リクエスト
 
 [Path Variables]
+
 | 名前 | タイプ | 必須かどうか | 説明 |
 |---|---|---|---|
 | appKey | String | O | サービスAppkey(**サービス管理**タブで確認可能) |
 
 [Request Body]
+
 | 名前 |	タイプ | 必須かどうか | 説明 |
 |---|---|---|---|
 | url | String | O | 元のURL |
@@ -107,6 +109,7 @@ Content-Type: application/json
 #### リクエスト
 
 [Path Variables]
+
 | 名前 |	タイプ | 必須かどうか | 説明 |
 |---|---|---|---|
 | appKey | String | O | サービスAppkey(**サービス管理**タブで確認可能) |
@@ -164,6 +167,7 @@ Content-Type: image/png
 #### リクエスト
 
 [Path Variables]
+
 | 名前 | タイプ | 必須かどうか | 説明 |
 |---|---|---|---|
 | appKey | String | O | サービスAppkey(**サービス管理**タブで確認可能) |
