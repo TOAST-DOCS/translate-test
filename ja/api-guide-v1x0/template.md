@@ -2410,7 +2410,8 @@ POST /template/v1.0/ALIMTALK/templates/{templateId}/kakao-templates/{kakaoTempla
 | X-NC-APP-KEY | Header | String | Y | アプリキー |
 | X-NHN-Authorization | Header | String | Y | アクセストークン |
 | templateId | Path | String | Y | テンプレートID |
-| kakaoTemplateCode | Path | String | Y | カカオテンプレートコード |
+| limit | Query | Number | X | limit を設定しない場合、デフォルト 50（最大 1000） |
+| offset | Query | Number | X | offset を設定しない場合、デフォルト 0 |
 
 
 
@@ -2426,10 +2427,6 @@ POST /template/v1.0/ALIMTALK/templates/{templateId}/kakao-templates/{kakaoTempla
 ```
 
 <!--リクエストボディのフィールドを説明します。-->
-
-| パス | タイプ | 必須 | 説明 |
-| - | - | - | - |
-| comment | String | Y | お問い合わせ内容 |
 
 
 
@@ -2448,13 +2445,6 @@ POST /template/v1.0/ALIMTALK/templates/{templateId}/kakao-templates/{kakaoTempla
 ```
 
 <!--レスポンスボディのフィールドを説明します。-->
-
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
 
 
 
@@ -2547,15 +2537,20 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
-| categories | Array |  |
-| categories[].name | String | 大分類カテゴリー名 |
-| categories[].subCategories | Array | サブカテゴリー |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| categories | Array | O |  |
+| categories[].name | String | O | 大分類カテゴリー名 |
+| categories[].subCategories | Array | X | サブカテゴリー |
+| categories[].subCategories[].code | String | O | カテゴリーコード |
+| categories[].subCategories[].name | String | O | 中分類カテゴリー名 |
+| categories[].subCategories[].groupName | String | O | 大分類カテゴリー名 |
+| categories[].subCategories[].inclusion | String | O | カテゴリー対象の説明 |
+| categories[].subCategories[].exclusion | String | O | カテゴリー除外の説明 |
 
 
 
@@ -2666,13 +2661,13 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
-| templateId | String | テンプレート登録時に発行されたテンプレートID |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| templateId | String | O | テンプレート登録時に発行されたテンプレートID |
 
 
 
@@ -2798,28 +2793,28 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
-| template | Object |  |
-| template.templateId | String | テンプレート登録時に発行されたテンプレートID |
-| template.templateName | String | テンプレート名 |
-| template.categoryId | String | カテゴリーID |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | X |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| template | Object | X |  |
+| template.templateId | String | O | テンプレート登録時に発行されたテンプレートID |
+| template.templateName | String | X | テンプレート名 |
+| template.categoryId | String | X | カテゴリーID |
 | template.messageChannel | String | X | メッセージチャネル<br>[SMS(SMS), ALIMTALK(お知らせトーク), BRANDMESSAGE(ブランドメッセージ), EMAIL(メール), RCS(RCS), PUSH(プッシュ)] |
-| template.messagePurpose | String | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL, AD, AUTH] |
-| template.messagePurposes | Array |  |
-| template.templateLanguage | String | テンプレート言語のタイプ<br>デフォルト値：PLAIN_TEXT<br>[PLAIN_TEXT(プレーンテキスト)、FREEMARKER(FreeMarkerテンプレート)] |
-| template.sender | Object |  |
-| template.sender.senderMailAddress | String | 発信メールアドレス |
-| template.content | Object |  |
-| template.content.title | String | テンプレートメール件名 |
-| template.content.body | String | テンプレートメール本文 |
-| template.content.attachmentIds | Array | テンプレート添付ファイルID |
-| template.createdDateTime | String | テンプレート作成日時 |
-| template.updatedDateTime | String | テンプレート修正日時 |
+| template.messagePurpose | String | X | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL(一般), AD(広告), AUTH(認証)] |
+| template.messagePurposes | Array | X |  |
+| template.templateLanguage | String | X | テンプレート言語のタイプ<br>デフォルト値：PLAIN_TEXT<br>[PLAIN_TEXT(プレーンテキスト)、FREEMARKER(FreeMarkerテンプレート)] |
+| template.sender | Object | X |  |
+| template.sender.senderMailAddress | String | O | 発信メールアドレス |
+| template.content | Object | X |  |
+| template.content.title | String | X | テンプレートメール件名 |
+| template.content.body | String | X | テンプレートメール本文 |
+| template.content.attachmentIds | Array | X | テンプレート添付ファイルID |
+| template.createdDateTime | String | X | テンプレート作成日時 |
+| template.updatedDateTime | String | X | テンプレート修正日時 |
 
 
 
@@ -2912,22 +2907,22 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
-| totalCount | Integer | 総件数 |
-| templates | Array |  |
-| templates[].templateId | String | テンプレート登録時に発行されたテンプレートID |
-| templates[].templateName | String | テンプレート名 |
-| templates[].categoryId | String | カテゴリーID |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| totalCount | Integer | O | 総件数 |
+| templates | Array | O |  |
+| templates[].templateId | String | O | テンプレート登録時に発行されたテンプレートID |
+| templates[].templateName | String | O | テンプレート名 |
+| templates[].categoryId | String | O | カテゴリーID |
 | templates[].messageChannel | String | O | メッセージチャンネル<br>[SMS(SMS), ALIMTALK(お知らせトーク), BRANDMESSAGE(ブランドメッセージ), EMAIL(メール), RCS(RCS), PUSH(プッシュ)] |
-| templates[].messagePurpose | String | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL, AD, AUTH] |
-| templates[].messagePurposes | Array |  |
-| templates[].createdDateTime | String | テンプレート作成日時 |
-| templates[].updatedDateTime | String | テンプレート修正日時 |
+| templates[].messagePurpose | String | X | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL(通常), AD(広告), AUTH(認証)] |
+| templates[].messagePurposes | Array | O |  |
+| templates[].createdDateTime | String | O | テンプレート作成日時 |
+| templates[].updatedDateTime | String | O | テンプレート修正日時 |
 
 
 
@@ -3036,12 +3031,12 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
 
 
 
@@ -3146,12 +3141,12 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
 
 
 
@@ -3285,41 +3280,40 @@ X-NHN-Authorization: Bearer {accessToken}
 | - | - | - | - |
 | templateName | String | O | テンプレート名 |
 | categoryId | String | X | カテゴリーID |
-| パス | タイプ | 必須 | 説明 |
-| - | - | - | - |
-| templateName | String | Y | テンプレート名 |
-| categoryId | String | N | カテゴリーID |
-| messagePurpose | String | N | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL, AD, AUTH] |
-| templateLanguage | String | N | テンプレート言語のタイプ<br>デフォルト値：PLAIN_TEXT<br>[PLAIN_TEXT(プレーンテキスト)、FREEMARKER(FreeMarkerテンプレート)] |
-| sender | Object | Y |  |
-| sender.brandId | String | Y | ブランドID |
-| sender.chatbotId | String | Y | トークルーム(チャットボット)ID |
-| content | Object | Y |  |
-| content.messageType | String | N | RCS送信メッセージのタイプ<br>[SMS(ショートメッセージ)、LMS(ロングメッセージ)、MMS(マルチメディアメッセージ)、RBC_TEMPLATE(RCS Biz Centerテンプレート)] |
-| content.title | String | N | メッセージ件名 |
-| content.body | String | N | メッセージ本文 |
+| messagePurpose | String | X | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL(通常)、AD(広告)、AUTH(認証)] |
+| templateLanguage | String | X | テンプレート言語のタイプ<br>デフォルト値：PLAIN_TEXT<br>[PLAIN_TEXT(プレーンテキスト)、FREEMARKER(FreeMarkerテンプレート)] |
+| sender | Object | O |  |
+| sender.brandId | String | O | ブランドID |
+| sender.chatbotId | String | O | トークルーム(チャットボット)ID |
+| content | Object | O |  |
+| content.messageType | String | X | RCS送信メッセージのタイプ<br>[SMS(ショートメッセージ)、LMS(ロングメッセージ)、MMS(マルチメディアメッセージ)、RBC_TEMPLATE(RCS Biz Centerテンプレート)] |
+| content.title | String | X | (Deprecated、content.cards[].titleを使用) メッセージ件名 |
+| content.body | String | X | (Deprecated、content.cards[].descriptionを使用) メッセージ本文 |
 | content.smsType | String | X | SMSのタイプ<br>[STANDALONE(スタンドアロン型)、UNIFIED_STANDALONE(統合スタンドアロン型)] |
 | content.lmsType | String | X | LMSのタイプ<br>[STANDALONE(スタンドアロン型)、FORMAT_BASIC(基本形式)、FORMAT_TITLE_HIGHLIGHT(タイトル強調形式)、FORMAT_PARAGRAPH(段落形式)、UNIFIED_STANDALONE(統合スタンドアロン型)] |
 | content.mmsType | String | X | MMSのタイプ(MMS送信の場合は必須)<br>[HORIZONTAL(横型)、VERTICAL(縦型)、CAROUSEL_MEDIUM(カルーセル中型)、CAROUSEL_SMALL(カルーセル小型)、UNIFIED_HORIZONTAL(統合横型)、UNIFIED_VERTICAL(統合縦型)] |
-| content.messagebaseId | String | N | RCS Biz CenterテンプレートID |
-| content.unsubscribePhoneNumber | String | N | 配信停止番号(広告送信の場合は必須) |
-| content.cards | Array | N | RCSカード |
-| content.cards[].title | String | N | タイトル |
-| content.cards[].description | String | N | 本文 |
-| content.cards[].attachmentId | String | N | 画像添付ファイルID |
-| content.cards[].mTitle | String | N | メインタイトル |
-| content.cards[].mTitleMedia | String | N | メインタイトルロゴファイルID |
-| content.cards[].title1 | String | N | タイトル1 |
-| content.cards[].title2 | String | N | タイトル2 |
-| content.cards[].title3 | String | N | タイトル3 |
-| content.cards[].description1 | String | N | 本文1 |
-| content.cards[].description2 | String | N | 本文2 |
+| content.messagebaseId | String | X | RCS Biz CenterテンプレートID |
+| content.unsubscribePhoneNumber | String | X | 配信停止番号(広告送信の場合は必須) |
+| content.cards | Array | X | RCSカード |
+| content.cards[].title | String | X | タイトル |
+| content.cards[].description | String | X | 本文 |
+| content.cards[].attachmentId | String | X | 画像添付ファイルID<br>※ 統合MMSカードでGIF画像を添付すると、iOSデバイスでは受信できません。 |
+| content.cards[].mTitle | String | X | メインタイトル |
+| content.cards[].mTitleMedia | String | X | メインタイトルロゴファイルID |
+| content.cards[].title1 | String | X | タイトル1 |
+| content.cards[].title2 | String | X | タイトル2 |
+| content.cards[].title3 | String | X | タイトル3 |
+| content.cards[].description1 | String | X | 本文1 |
+| content.cards[].description2 | String | X | 本文2 |
+| content.cards[].description3 | String | X | 本文3 |
+| content.cards[].buttons | Array | X | RCSボタンリスト |
+| content.cards[].buttons[].buttonType | String | X | COMPOSE(トークルームを開く)、CLIPBOARD(コピーする)、DIALER(電話をかける)、MAP_SHOW(地図を表示する)、MAP_QUERY(地図を検索する)、MAP_SHARE(現在地を共有する)、URL(URLに接続する)、CALENDAR(日程を登録する)<br>※ 統合メッセージタイプにCLIPBOARD(コピーする)ボタンを使用すると、iOSデバイスでは受信できません。<br><br>[COMPOSE, CLIPBOARD, DIALER, MAP_SHOW, MAP_QUERY, MAP_SHARE, URL, CALENDAR] |
 | content.cards[].buttons[].buttonJson | Object | X | ボタン内容JSONオブジェクト |
-| content.cards[].buttons | Array | N |  |
-| content.buttons | Array | N | RCSボタンリスト |
-| content.buttons[].buttonType | String | N | buttonType値と同じ名前を持つActionオブジェクトがbuttonJsonに含まれます。<br>ボタンタイプ トークルームを開く(COMPOSE)、コピーする(CLIPBOARD)、電話をかける(DIALER)、地図を表示する(MAP_SHOW)、地図を検索する(MAP_QUERY)、現在地を共有する(MAP_SHARE)、URLに接続する(URL)、日程を登録する(CALENDAR)<br><br>[COMPOSE, CLIPBOARD, DIALER, MAP_SHOW, MAP_QUERY, MAP_SHARE, URL, CALENDAR] |
+| content.cards[].buttons[].buttonJson.action | Object | X | ボタンアクション |
+| content.buttons | Array | X | (Deprecated、content.cards[].buttonsを使用) RCSボタンリスト |
+| content.buttons[].buttonType | String | X | COMPOSE(トークルームを開く)、CLIPBOARD(コピーする)、DIALER(電話をかける)、MAP_SHOW(地図を表示する)、MAP_QUERY(地図を検索する)、MAP_SHARE(現在地を共有する)、URL(URLに接続する)、CALENDAR(日程を登録する)<br>※ 統合メッセージタイプにCLIPBOARD(コピーする)ボタンを使用すると、iOSデバイスでは受信できません。<br><br>[COMPOSE, CLIPBOARD, DIALER, MAP_SHOW, MAP_QUERY, MAP_SHARE, URL, CALENDAR] |
 | content.buttons[].buttonJson | Object | X | ボタン内容の JSON オブジェクト |
-| content.buttons[].buttonJson.action | Object | N | ボタンアクション |
+| content.buttons[].buttonJson.action | Object | X | ボタンアクション |
 
 
 
@@ -3340,13 +3334,13 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
-| templateId | String | テンプレート登録時に発行されたテンプレートID |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| templateId | String | O | テンプレート登録時に発行されたテンプレートID |
 
 
 
@@ -3567,22 +3561,22 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
-| totalCount | Integer | 総件数 |
-| templates | Array |  |
-| templates[].templateId | String | テンプレート登録時に発行されたテンプレートID |
-| templates[].templateName | String | テンプレート名 |
-| templates[].categoryId | String | カテゴリーID |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| totalCount | Integer | O | 総件数 |
+| templates | Array | O |  |
+| templates[].templateId | String | O | テンプレート登録時に発行されたテンプレートID |
+| templates[].templateName | String | O | テンプレート名 |
+| templates[].categoryId | String | O | カテゴリーID |
 | templates[].messageChannel | String | O | メッセージチャンネル<br>[SMS(SMS), ALIMTALK(お知らせトーク), BRANDMESSAGE(ブランドメッセージ), EMAIL(メール), RCS(RCS), PUSH(プッシュ)] |
-| templates[].messagePurpose | String | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL, AD, AUTH] |
-| templates[].messagePurposes | Array |  |
-| templates[].createdDateTime | String | テンプレート作成日時 |
-| templates[].updatedDateTime | String | テンプレート修正日時 |
+| templates[].messagePurpose | String | X | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL(一般), AD(広告), AUTH(認証)] |
+| templates[].messagePurposes | Array | O |  |
+| templates[].createdDateTime | String | O | テンプレート作成日時 |
+| templates[].updatedDateTime | String | O | テンプレート修正日時 |
 
 
 
@@ -3737,55 +3731,58 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
-| template | Object |  |
-| template.templateId | String | テンプレート登録時に発行されたテンプレートID |
-| template.templateName | String | テンプレート名 |
-| template.categoryId | String | カテゴリーID |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | X |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| template | Object | X |  |
+| template.templateId | String | O | テンプレート登録時に発行されたテンプレートID |
+| template.templateName | String | X | テンプレート名 |
+| template.categoryId | String | X | カテゴリーID |
 | template.messageChannel | String | X | メッセージチャンネル<br>[SMS(SMS), ALIMTALK(お知らせトーク), BRANDMESSAGE(ブランドメッセージ), EMAIL(メール), RCS(RCS), PUSH(プッシュ)] |
-| template.messagePurpose | String | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL, AD, AUTH] |
-| template.messagePurposes | Array |  |
-| template.templateLanguage | String | テンプレート言語のタイプ<br>デフォルト値：PLAIN_TEXT<br>[PLAIN_TEXT(プレーンテキスト)、FREEMARKER(FreeMarkerテンプレート)] |
-| template.sender | Object |  |
-| template.sender.brandId | String | ブランドID |
-| template.sender.chatbotId | String | トークルーム(チャットボット)ID |
-| template.content | Object |  |
-| template.content.messageType | String | RCS送信メッセージのタイプ<br>[SMS(ショートメッセージ)、LMS(ロングメッセージ)、MMS(マルチメディアメッセージ)、RBC_TEMPLATE(RCS Biz Centerテンプレート)] |
-| template.content.title | String | メッセージ件名 |
-| template.content.body | String | メッセージ本文 |
+| template.messagePurpose | String | X | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL(一般)、AD(広告)、AUTH(認証)] |
+| template.messagePurposes | Array | X |  |
+| template.templateLanguage | String | X | テンプレート言語のタイプ<br>デフォルト値：PLAIN_TEXT<br>[PLAIN_TEXT(プレーンテキスト)、FREEMARKER(FreeMarkerテンプレート)] |
+| template.sender | Object | X |  |
+| template.sender.brandId | String | O | ブランドID |
+| template.sender.chatbotId | String | O | トークルーム(チャットボット)ID |
+| template.content | Object | X |  |
+| template.content.messageType | String | X | RCS送信メッセージのタイプ<br>[SMS(ショートメッセージ)、LMS(ロングメッセージ)、MMS(マルチメディアメッセージ)、RBC_TEMPLATE(RCS Biz Centerテンプレート)] |
+| template.content.title | String | X | メッセージ件名 |
+| template.content.body | String | X | メッセージ本文 |
 | template.content.smsType | String | X | SMSのタイプ<br>[STANDALONE(スタンドアロン型)、UNIFIED_STANDALONE(統合スタンドアロン型)] |
 | template.content.lmsType | String | X | LMSのタイプ<br>[STANDALONE(スタンドアロン型)、FORMAT_BASIC(基本形式)、FORMAT_TITLE_HIGHLIGHT(タイトル強調形式)、FORMAT_PARAGRAPH(段落形式)、UNIFIED_STANDALONE(統合スタンドアロン型)] |
 | template.content.mmsType | String | X | MMSのタイプ(MMS送信の場合は必須)<br>[HORIZONTAL(横型)、VERTICAL(縦型)、CAROUSEL_MEDIUM(カルーセル中型)、CAROUSEL_SMALL(カルーセル小型)、UNIFIED_HORIZONTAL(統合横型)、UNIFIED_VERTICAL(統合縦型)] |
-| template.content.messagebaseId | String | RCS Biz CenterテンプレートID |
-| template.content.messagebaseformId | String | RCS Biz Centerで指定したmessageBase様式<br><br>[SS000000(基本型)、SL000000(基本型)、OL00000001(LMS Format基本型)、OL00000002(LMS Formatタイトル強調型)、OL00000003(LMS Format段落型)、SMwThT00(MMS縦型)、SMwThM00(MMS横型)、CMwMhM0200(MMSスライド中型(2))、CMwMhM0300(MMSスライド中型(3))、CMwMhM0400(MMSスライド中型(4))、CMwMhM0500(MMSスライド中型(5))、CMwMhM0600(MMSスライド中型(6))、CMwShS0200(MMSスライド小型(2))、CMwShS0300(MMSスライド小型(3))、CMwShS0400(MMSスライド小型(4))、CMwShS0500(MMSスライド小型(5))、CMwShS0600(MMSスライド小型(6))、CLI00001(アイテム詳細型)、ITTBNV(サムネイル型(縦))、ITTBNH(サムネイル型(横))、ITHIMS(画像強調型(1:1))、ITHIMV(画像強調型(3:4))、ITSNSS(SNS型)、ITSNSH(SNS型(中間ボタン))、ITHITS(画像＆タイトル強調型(1:1))、ITHITV(画像＆タイトル強調型(3:4))、ITCRM2(スライド型(2))、ITCRM3(スライド型(3))、ITCRM4(スライド型(4))、ITCRM5(スライド型(5))、ITCRM6(スライド型(6))、CLT00001(アイテム強調型 DESC)、CLT00002(アイテム強調型 TABLE)、TATA001C(タイトル自由型 FREE)、TATA001D(タイトル自由型 CELL)、TATA001F(タイトル自由型 DESC)、FF005C(タイトル選択型 FREE)、FF005D(明細書 CELL)、FF004C(明細書 DESC)、FF004D(キャンセル CELL)、GG003C(キャンセル DESC)、GG003D(案内 CELL)、GG002C(案内 DESC)、GG002D(認証 CELL)、GG001C(認証 DESC)、GG001D(会員登録 CELL)、GG000F(会員登録 DESC)、EE001C(予約 CELL)、EE001D(予約 DESC)、CC003C(配送 CELL)、CC003D(配送 DESC)、FF002C(入金 CELL)、FF002D(入金 DESC)、FF001C(承認 CELL)、FF001D(承認 DESC)、CC002C(注文 CELL)、CC002D(注文 DESC)、CC001C(出庫 CELL)、CC001D(出庫 DESC)、FF003C(出金 CELL)、FF003D(出金 DESC)、CLL00001(LMS明細書 A)、CLL00002(LMS段落型)、CLL00003(LMSタイトル強調型)、CLL00004(LMS基本型)、CLL00005(LMS明細書 B)、CLL00006(LMS明細書 C)] |
-| template.content.unsubscribePhoneNumber | String | 配信停止番号(広告送信の場合は必須) |
-| template.content.cards | Array | RCSカード |
-| template.content.cards[].title | String | タイトル |
-| template.content.cards[].description | String | 本文 |
-| template.content.cards[].attachmentId | String | 画像添付ファイルID |
-| template.content.cards[].mTitle | String | メインタイトル |
-| template.content.cards[].mTitleMedia | String | メインタイトルロゴファイルID |
-| template.content.cards[].title1 | String | タイトル1 |
-| template.content.cards[].title2 | String | タイトル2 |
-| template.content.cards[].title3 | String | タイトル3 |
-| template.content.cards[].description1 | String | 本文1 |
-| template.content.cards[].description2 | String | 本文2 |
-| template.content.cards[].description3 | String | 本文3 |
-| template.content.cards[].buttons | Array |  |
-| template.content.buttons | Array | RCSボタンリスト |
+| template.content.messagebaseId | String | X | RCS Biz CenterテンプレートID |
+| template.content.messagebaseformId | String | X | RCS Biz Centerで指定したmessageBase様式<br>- SS000000(SMS基本型)<br>- SL000000(LMS基本型)<br>- OL00000001(LMS Format基本型)<br>- OL00000002(LMS Formatタイトル強調型)<br>- OL00000003(LMS Format段落型)<br>- SMwThT00(MMS縦型)<br>- SMwThM00(MMS横型)<br>- CMwMhM0200(MMSスライド中型(2))<br>- CMwMhM0300(MMSスライド中型(3))<br>- CMwMhM0400(MMSスライド中型(4))<br>- CMwMhM0500(MMSスライド中型(5))<br>- CMwMhM0600(MMSスライド中型(6))<br>- CMwShS0200(MMSスライド小型(2))<br>- CMwShS0300(MMSスライド小型(3))<br>- CMwShS0400(MMSスライド小型(4))<br>- CMwShS0500(MMSスライド小型(5))<br>- CMwShS0600(MMSスライド小型(6))<br>- CLI00001(アイテム詳細型)<br>- CLI00002(画像強調型 (1:1))<br>- CLI00003(画像強調型 (3:4))<br>- CLI00004(画像＆タイトル強調型 (1:1))<br>- CLI00005(画像＆タイトル強調型 (3:4))<br>- CLI00006(サムネイル型 (横))<br>- CLI00007(サムネイル型 (縦))<br>- CLI00008(SNS型 (下部ボタン))<br>- CLI00009(SNS型 (中間ボタン))<br>- ITTBNV(サムネイル型(縦))<br>- ITTBNH(サムネイル型(横))<br>- ITHIMS(画像強調型(1:1))<br>- ITHIMV(画像強調型(3:4))<br>- ITSNSS(SNS型)<br>- ITSNSH(SNS型(中間ボタン))<br>- ITHITS(画像＆タイトル強調型(1:1))<br>- ITHITV(画像＆タイトル強調型(3:4))<br>- ITCRM2(スライド型(2))<br>- ITCRM3(スライド型(3))<br>- ITCRM4(スライド型(4))<br>- ITCRM5(スライド型(5))<br>- ITCRM6(スライド型(6))<br>- CLT00001(アイテム強調型 DESC)<br>- CLT00002(アイテム強調型 TABLE)<br>- TATA001F(タイトル自由型 FREE)<br>- TATA001C(タイトル自由型 CELL)<br>- TATA001D(タイトル自由型 DESC)<br>- GG000F(タイトル選択型 FREE)<br>- FF005C(明細書 CELL)<br>- FF005D(明細書 DESC)<br>- FF004C(キャンセル CELL)<br>- FF004D(キャンセル DESC)<br>- GG003C(案内 CELL)<br>- GG003D(案内 DESC)<br>- GG002C(認証 CELL)<br>- GG002D(認証 DESC)<br>- GG001C(会員登録 CELL)<br>- GG001D(会員登録 DESC)<br>- EE001C(予約 CELL)<br>- EE001D(予約 DESC)<br>- CC003C(配送 CELL)<br>- CC003D(配送 DESC)<br>- FF002C(入金 CELL)<br>- FF002D(入金 DESC)<br>- FF001C(承認 CELL)<br>- FF001D(承認 DESC)<br>- CC002C(注文 CELL)<br>- CC002D(注文 DESC)<br>- CC001C(出庫 CELL)<br>- CC001D(出庫 DESC)<br>- FF003C(出金 CELL)<br>- FF003D(出金 DESC)<br>- CLL00001(LMS明細書 A)<br>- CLL00002(LMS段落型)<br>- CLL00003(LMSタイトル強調型)<br>- CLL00004(LMS基本型)<br>- CLL00005(LMS明細書 B)<br>- CLL00006(LMS明細書 C)<br>- RPSSAXX001(統合SMSカード)<br>- RPLSAXX001(統合LMSカード)<br>- RPMSMMX001(統合MMSカード M)<br>- RPMSMTX001(統合MMSカード T)<br>- RPISMMX001(統合イメージテンプレート M)<br>- RPISMTX001(統合イメージテンプレート T)<br>- RPTDXXX001(統合情報テンプレート)<br>- RPTFXXX001(統合フリーテンプレート)<br><br>[SS000000, SL000000, OL00000001, OL00000002, OL00000003, SMwThT00, SMwThM00, CMwMhM0200, CMwMhM0300, CMwMhM0400, CMwMhM0500, CMwMhM0600, CMwShS0200, CMwShS0300, CMwShS0400, CMwShS0500, CMwShS0600, CLI00001, CLI00002, CLI00003, CLI00004, CLI00005, CLI00006, CLI00007, CLI00008, CLI00009, ITTBNV, ITTBNH, ITHIMS, ITHIMV, ITSNSS, ITSNSH, ITHITS, ITHITV, ITCRM2, ITCRM3, ITCRM4, ITCRM5, ITCRM6, CLT00001, CLT00002, TATA001C, TATA001D, TATA001F, FF005C, FF005D, FF004C, FF004D, GG003C, GG003D, GG002C, GG002D, GG001C, GG001D, GG000F, EE001C, EE001D, CC003C, CC003D, FF002C, FF002D, FF001C, FF001D, CC002C, CC002D, CC001C, CC001D, FF003C, FF003D, CLL00001, CLL00002, CLL00003, CLL00004, CLL00005, CLL00006, RPSSAXX001, RPLSAXX001, RPMSMMX001, RPMSMTX001, RPISMMX001, RPISMTX001, RPTDXXX001, RPTFXXX001] |
+| template.content.unsubscribePhoneNumber | String | X | 配信停止番号(広告送信の場合は必須) |
+| template.content.cards | Array | X | RCSカード |
+| template.content.cards[].title | String | X | タイトル |
+| template.content.cards[].description | String | X | 本文 |
+| template.content.cards[].attachmentId | String | X | 画像添付ファイルID<br>※ 統合MMSカードにGIF画像を添付すると、iOS端末では受信できません。 |
+| template.content.cards[].mTitle | String | X | メインタイトル |
+| template.content.cards[].mTitleMedia | String | X | メインタイトルロゴファイルID |
+| template.content.cards[].title1 | String | X | タイトル1 |
+| template.content.cards[].title2 | String | X | タイトル2 |
+| template.content.cards[].title3 | String | X | タイトル3 |
+| template.content.cards[].description1 | String | X | 本文1 |
+| template.content.cards[].description2 | String | X | 本文2 |
+| template.content.cards[].description3 | String | X | 本文3 |
+| template.content.cards[].buttons | Array | X | RCSボタンリスト |
+| template.content.cards[].buttons[].buttonType | String | X | COMPOSE(トークルームを開く)、CLIPBOARD(コピーする)、DIALER(電話をかける)、MAP_SHOW(地図を表示する)、MAP_QUERY(地図を検索する)、MAP_SHARE(現在地を共有する)、URL(URLを連結する)、CALENDAR(スケジュールを登録する)<br>※ 統合メッセージタイプに CLIPBOARD(コピーする) ボタンを使用すると、iOS 端末では受信できません。<br><br>[COMPOSE, CLIPBOARD, DIALER, MAP_SHOW, MAP_QUERY, MAP_SHARE, URL, CALENDAR] |
 | template.content.cards[].buttons[].buttonJson | Object | X | ボタン内容 JSON オブジェクト |
-| template.content.buttons[].buttonJson | Object |  |
-| template.content.buttons[].buttonJson.action | Object | ボタンアクション |
-| template.additionalProperty | Object |  |
-| template.content.buttons[].buttonJson | Object | X | ボタン内容の JSON オブジェクト |
-| template.additionalProperty.approvedDateTime | String | テンプレート承認日時 |
-| template.createdDateTime | String | テンプレート作成日時 |
-| template.updatedDateTime | String | テンプレート修正日時 |
+| template.content.cards[].buttons[].buttonJson.action | Object | X | ボタンアクション |
+| template.content.buttons | Array | X | RCSボタンリスト |
+| template.content.buttons[].buttonType | String | X | COMPOSE(トークルームを開く)、CLIPBOARD(コピーする)、DIALER(電話をかける)、MAP_SHOW(地図を表示する)、MAP_QUERY(地図を検索する)、MAP_SHARE(現在地を共有する)、URL(URLを連結する)、CALENDAR(スケジュールを登録する)<br>※ 統合メッセージタイプに CLIPBOARD(コピーする) ボタンを使用すると、iOS 端末では受信できません。<br><br>[COMPOSE, CLIPBOARD, DIALER, MAP_SHOW, MAP_QUERY, MAP_SHARE, URL, CALENDAR] |
+| template.content.buttons[].buttonJson | Object | X | ボタン内容 JSON オブジェクト |
+| template.content.buttons[].buttonJson.action | Object | X | ボタンアクション |
+| template.additionalProperty | Object | X |  |
+| template.additionalProperty.status | String | X | テンプレートステータス<br>- SAVE: 保存<br>- APPROVE_WAIT: 承認待機<br>- INSPECTION_START: 審査開始<br>- INSPECTION_FINISH: 審査完了<br>- APPROVE: 承認<br>- REJECT: 拒否<br>- MODIFY_APPROVE_WAIT: 修正承認待機<br>- MODIFY_INSPECTION_START: 修正審査開始<br>- MODIFY_INSPECTION_FINISH: 修正審査完了<br>- MODIFY_REJECT: 修正拒否<br><br>[SAVE, APPROVE_WAIT, INSPECTION_START, INSPECTION_FINISH, APPROVE, REJECT, MODIFY_APPROVE_WAIT, MODIFY_INSPECTION_START, MODIFY_INSPECTION_FINISH, MODIFY_REJECT] |
+| template.additionalProperty.approvedDateTime | String | X | テンプレート承認日時 |
+| template.createdDateTime | String | X | テンプレート作成日時 |
+| template.updatedDateTime | String | X | テンプレート修正日時 |
 
 
 
@@ -3920,15 +3917,15 @@ X-NHN-Authorization: Bearer {accessToken}
 | パス | タイプ | 必須 | 説明 |
 | - | - | - | - |
 | templateName | String | Y | テンプレート名 |
-| messagePurpose | String | N | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL, AD, AUTH] |
+| messagePurpose | String | N | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL(一般)、AD(広告)、AUTH(認証)] |
 | templateLanguage | String | N | テンプレート言語のタイプ<br>デフォルト値：PLAIN_TEXT<br>[PLAIN_TEXT(プレーンテキスト)、FREEMARKER(FreeMarkerテンプレート)] |
 | sender | Object | N |  |
 | sender.brandId | String | Y | ブランドID |
 | sender.chatbotId | String | Y | トークルーム(チャットボット)ID |
 | content | Object | Y |  |
 | content.messageType | String | N | RCS送信メッセージのタイプ<br>[SMS(ショートメッセージ)、LMS(ロングメッセージ)、MMS(マルチメディアメッセージ)、RBC_TEMPLATE(RCS Biz Centerテンプレート)] |
-| content.title | String | N | メッセージ件名 |
-| content.body | String | N | メッセージ本文 |
+| content.title | String | N | (Deprecated、content.cards[].title を使用) メッセージ件名 |
+| content.body | String | N | (Deprecated、content.cards[].description を使用) メッセージ本文 |
 | content.smsType | String | X | SMSのタイプ<br>[STANDALONE(スタンドアロン型)、UNIFIED_STANDALONE(統合スタンドアロン型)] |
 | content.lmsType | String | X | LMSのタイプ<br>[STANDALONE(スタンドアロン型)、FORMAT_BASIC(基本形式)、FORMAT_TITLE_HIGHLIGHT(タイトル強調形式)、FORMAT_PARAGRAPH(段落形式)、UNIFIED_STANDALONE(統合スタンドアロン型)] |
 | content.mmsType | String | X | MMSのタイプ(MMS送信の場合は必須)<br>[HORIZONTAL(横型)、VERTICAL(縦型)、CAROUSEL_MEDIUM(カルーセル中型)、CAROUSEL_SMALL(カルーセル小型)、UNIFIED_HORIZONTAL(統合横型)、UNIFIED_VERTICAL(統合縦型)] |
@@ -3937,7 +3934,7 @@ X-NHN-Authorization: Bearer {accessToken}
 | content.cards | Array | N | RCSカード |
 | content.cards[].title | String | N | タイトル |
 | content.cards[].description | String | N | 本文 |
-| content.cards[].attachmentId | String | N | 画像添付ファイルID |
+| content.cards[].attachmentId | String | N | 添付ファイルID<br>※ 統合 MMS カードで GIF 画像を添付すると、iOS 端末では受信できません。 |
 | content.cards[].mTitle | String | N | メインタイトル |
 | content.cards[].mTitleMedia | String | N | メインタイトルロゴファイルID |
 | content.cards[].title1 | String | N | タイトル1 |
@@ -3946,10 +3943,13 @@ X-NHN-Authorization: Bearer {accessToken}
 | content.cards[].description1 | String | N | 本文1 |
 | content.cards[].description2 | String | N | 本文2 |
 | content.cards[].description3 | String | N | 本文3 |
-| content.cards[].buttons | Array | N |  |
-| content.buttons | Array | N | RCSボタンリスト |
+| content.cards[].buttons | Array | N | RCSボタンリスト |
+| content.cards[].buttons[].buttonType | String | X | COMPOSE(トークルームを開く)、CLIPBOARD(コピーする)、DIALER(電話をかける)、MAP_SHOW(地図を表示する)、MAP_QUERY(地図を検索する)、MAP_SHARE(現在地を共有する)、URL(URLに接続する)、CALENDAR(予定を登録する)<br>※ 統合メッセージタイプに CLIPBOARD(コピーする) ボタンを使用すると、iOS 端末では受信できません。<br><br>[COMPOSE, CLIPBOARD, DIALER, MAP_SHOW, MAP_QUERY, MAP_SHARE, URL, CALENDAR] |
 | content.cards[].buttons[].buttonJson | Object | X | ボタン内容のJSONオブジェクト |
-| content.buttons[].buttonJson | Object | N |  |
+| content.cards[].buttons[].buttonJson.action | Object | X | ボタンアクション |
+| content.buttons | Array | N | (Deprecated、content.cards[].buttons を使用) RCSボタンリスト |
+| content.buttons[].buttonType | String | X | COMPOSE(トークルームを開く)、CLIPBOARD(コピーする)、DIALER(電話をかける)、MAP_SHOW(地図を表示する)、MAP_QUERY(地図を検索する)、MAP_SHARE(現在地を共有する)、URL(URLに接続する)、CALENDAR(予定を登録する)<br>※ 統合メッセージタイプに CLIPBOARD(コピーする) ボタンを使用すると、iOS 端末では受信できません。<br><br>[COMPOSE, CLIPBOARD, DIALER, MAP_SHOW, MAP_QUERY, MAP_SHARE, URL, CALENDAR] |
+| content.buttons[].buttonJson | Object | N | ボタン内容のJSONオブジェクト |
 | content.buttons[].buttonJson.action | Object | N | ボタンアクション |
 
 
@@ -3973,12 +3973,12 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
 
 
 
@@ -4184,12 +4184,12 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
 
 
 
@@ -4335,13 +4335,13 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
-| templateId | String | テンプレート登録時に発行されたテンプレートID |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| templateId | String | O | テンプレート登録時に発行されたテンプレートID |
 
 
 
@@ -4541,22 +4541,22 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
-| totalCount | Integer | 総件数 |
-| templates | Array |  |
-| templates[].templateId | String | テンプレート登録時に発行されたテンプレートID |
-| templates[].templateName | String | テンプレート名 |
-| templates[].categoryId | String | カテゴリーID |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| totalCount | Integer | O | 総件数 |
+| templates | Array | O |  |
+| templates[].templateId | String | O | テンプレート登録時に発行されたテンプレートID |
+| templates[].templateName | String | O | テンプレート名 |
+| templates[].categoryId | String | O | カテゴリーID |
 | templates[].messageChannel | String | O | メッセージチャンネル<br>[SMS(SMS), ALIMTALK(お知らせトーク), BRANDMESSAGE(ブランドメッセージ), EMAIL(メール), RCS(RCS), PUSH(プッシュ)] |
-| templates[].messagePurpose | String | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL, AD, AUTH] |
-| templates[].messagePurposes | Array |  |
-| templates[].createdDateTime | String | テンプレート作成日時 |
-| templates[].updatedDateTime | String | テンプレート修正日時 |
+| templates[].messagePurpose | String | X | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL(通常), AD(広告), AUTH(認証)] |
+| templates[].messagePurposes | Array | O |  |
+| templates[].createdDateTime | String | O | テンプレート作成日時 |
+| templates[].updatedDateTime | String | O | テンプレート修正日時 |
 
 
 
@@ -4695,23 +4695,23 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
-| template | Object |  |
-| template.templateId | String | テンプレート登録時に発行されたテンプレートID |
-| template.templateName | String | テンプレート名 |
-| template.categoryId | String | カテゴリーID |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| template | Object | O |  |
+| template.templateId | String | O | テンプレート登録時に発行されたテンプレートID |
+| template.templateName | String | O | テンプレート名 |
+| template.categoryId | String | O | カテゴリーID |
 | template.messageChannel | String | O | メッセージチャンネル<br>[SMS(SMS), ALIMTALK(お知らせトーク), BRANDMESSAGE(ブランドメッセージ), EMAIL(メール), RCS(RCS), PUSH(プッシュ)] |
-| template.messagePurpose | String | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL, AD, AUTH] |
-| template.messagePurposes | Array |  |
-| template.templateLanguage | String | テンプレート言語のタイプ<br>デフォルト値：PLAIN_TEXT<br>[PLAIN_TEXT(プレーンテキスト)、FREEMARKER(FreeMarkerテンプレート)] |
-| template.content | Object | プッシュメッセージ内容 |
-| template.createdDateTime | String | テンプレート作成日時 |
-| template.updatedDateTime | String | テンプレート修正日時 |
+| template.messagePurpose | String | O | 送信内容タイプ<br>デフォルト値: NORMAL<br>[NORMAL(一般), AD(広告), AUTH(認証)] |
+| template.messagePurposes | Array | O |  |
+| template.templateLanguage | String | O | テンプレート言語のタイプ<br>デフォルト値：PLAIN_TEXT<br>[PLAIN_TEXT(プレーンテキスト)、FREEMARKER(FreeMarkerテンプレート)] |
+| template.content | Object | O | プッシュメッセージ内容 |
+| template.createdDateTime | String | O | テンプレート作成日時 |
+| template.updatedDateTime | String | O | テンプレート修正日時 |
 
 
 
@@ -4855,12 +4855,12 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
 
 
 
@@ -5045,12 +5045,12 @@ X-NHN-Authorization: Bearer {accessToken}
 
 <!--レスポンスボディのフィールドを説明します。-->
 
-| パス | タイプ | 説明 |
-| - | - | - |
-| header | Object |  |
-| header.isSuccessful | Boolean | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
-| header.resultCode | Integer | リクエストの結果コードです。<br>デフォルト値: 0 |
-| header.resultMessage | String | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
+| パス | タイプ | Not Null | 説明 |
+| - | - | - | - |
+| header | Object | O |  |
+| header.isSuccessful | Boolean | O | リクエストが成功したかどうかを示します。<br>デフォルト値: true |
+| header.resultCode | Integer | O | リクエストの結果コードです。<br>デフォルト値: 0 |
+| header.resultMessage | String | O | リクエストの結果メッセージです。<br>デフォルト値: SUCCESS |
 
 
 
