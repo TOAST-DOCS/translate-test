@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=616384b95f3d -->
 
 <a id="database-rds-for-postgresql-parameter-group"></a>
@@ -59,6 +61,7 @@ DBインスタンスに適用中のパラメータグループを除けば、自
 | 適用タイプ | `固定`と`動的`に分けられます。<br/>`固定`の場合、パラメータ変更事項を適用するにはDBインスタンスを再起動する必要があります。<br/>`動的`の場合、DBインスタンスを再起動することなくすぐにパラメータが適用されます。 |
 | データ形式 | パラメータ値の形式を表します。 `BOOLEAN`、`ENUMERATED`、`MULTI_ENUMERATED`、`NUMERIC`、`NUMERIC_WITH_BYTE_UNIT`、`NUMERIC_WITH_TIME_UNIT`、`STRING` があります。 |
 | カテゴリー   | パラメータのカテゴリーを表します。                                                                                                  |
+| 数式の使用 | 数式が使用可能かどうかを表します。                                                                                                 |
 
 <a id="parameter-variables-formulas-and-functions"></a>
 ### パラメータ変数、数式及び関数 { #parameter-variables-formulas-and-functions }
