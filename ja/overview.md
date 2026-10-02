@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=3543b2af3ddd -->
 
 <a id="network-flow-log-overview"></a>
@@ -130,6 +132,8 @@ Flow Logサービスがパケットを収集及び集計し、ユーザーに提
 <a id="important-notes-when-using-flow-log-on-peering-gateways-and-colocation-gateways"></a>
 ### ピアリングゲートウェイ及びコロケーションゲートウェイにフローログを指定して使用する際の注意事項 { #important-notes-when-using-flow-log-on-peering-gateways-and-colocation-gateways }
 
-* VPCピアリングゲートウェイは現在サポートしていません。
+* 同一プロジェクト内のVPCピアリングゲートウェイは、現在収集対象としてサポートされていません。収集対象をネットワークインターフェース単位で指定することはできません。また、`VPC` または `Subnet` 単位でフローログを作成した場合も、VPCピアリングゲートウェイのネットワークインターフェースは収集対象から除外されます。
+    * ただし、VPCピアリングを経由したトラフィックは、インスタンスのネットワークインターフェースで収集されます。
+* 異なるプロジェクト間のピアリング (inter_project_peering)、異なるリージョン間のピアリング (inter_region_peering) ゲートウェイ、およびコロケーションゲートウェイのネットワークインターフェースは、収集対象としてサポートされています。
 * ユーザーが明示的にDROPを設定できるサービスではないため、DROPはサポートしていません。
 * 該当のサービスに接続されたFlow Logは**接続確立パケットのみ収集(connection setup only)**オプションの影響を受けず、接続状態に関係なく全てのパケットを収集します。
