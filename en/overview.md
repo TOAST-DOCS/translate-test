@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=109ab9c97015 -->
 
 <a id="storage-storage-gateway-overview"></a>
@@ -11,7 +13,7 @@ Storage Gateway allows you to connect NHN Cloud storage from one or more cloud i
 <a id="characteristics"></a>
 ## Characteristics { #characteristics }
 <a id="sharable"></a>
-### Sharable { #sharable }
+### Shareability { #sharable }
 You can use NHN Cloud storage by mounting it on one or more instances or on-premises devices.
 The supported protocols are NFS v3, v4 (Linux).
 
@@ -29,7 +31,7 @@ With a redundant configuration, you'll have uninterrupted service in the event o
 
 <a id="accessible"></a>
 ### Accessible { #accessible }
-You can access NHN Cloud Storage from different environments by connecting a floating IP to the VPC network on the gateway or by setting up a network gateway.
+You can access NHN Cloud storage from different environments by connecting a floating IP to the VPC network on the gateway or by using a network gateway setting.
 
 <a id="secure"></a>
 ### Secure { #secure }
