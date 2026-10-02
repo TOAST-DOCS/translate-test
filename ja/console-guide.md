@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=d48e0cc2304b -->
 
 <a id="storage-nas-for-bigdata-console-user-guide"></a>
@@ -71,7 +73,7 @@ Network ACLサービスでアクセス制御リスト(ACL)を設定できます�
 <a id="connect_volume"></a>
 ## ボリュームの接続 { #connect_volume }
 
-作成されたボリュームの接続情報を利用してインスタンスにマウントできます。ただし、マウントするインスタンスはボリュームと同じサブネットに接続されている必要があります。
+作成されたボリュームの連結情報を利用してインスタンスにマウントできます。ただし、マウントするインスタンスはボリュームと同じサブネットに接続されている必要があります。
 
 <a id="connect_volume.nfs"></a>
 ### NFSパッケージのインストール { #connect_volume.nfs }
@@ -82,7 +84,7 @@ Network ACLサービスでアクセス制御リスト(ACL)を設定できます�
 ```
 sudo apt-get install nfs-common rpcbind
 ```
-<br/>
+<br>
 
 <a id="connect_volume.nfs-rocky"></a>
 #### Rocky
@@ -90,7 +92,7 @@ sudo apt-get install nfs-common rpcbind
 ```
 sudo dnf install nfs-utils rpcbind
 ```
-<br/>
+<br>
 
 <a id="connect_volume.rpcbind"></a>
 ### rpcbindサービスの実行 { #connect_volume.rpcbind }
@@ -98,16 +100,16 @@ sudo dnf install nfs-utils rpcbind
 ```
 sudo service rpcbind start
 ```
-<br/>
+<br>
 
 <a id="connect_volume.mount"></a>
 ### ボリュームのマウント { #connect_volume.mount }
 
 ```
-sudo mount -t nfs <nas source> <mount point>
+sudo mount -t nfs <nas-source> <mount-point>
 ```
 
 | 項目 | 説明 |
 | --- | --- |
-| &lt;nas source&gt; | ボリューム情報<br>例：192.168.0.11:/GJ\_SHARE\_FS8/bacb62d4-f271-44ad-a5d2-505d21037b45 |
-| &lt;mount point&gt; | ボリュームをマウントするディレクトリ<br>例：/mnt |
+| &lt;nas-source&gt; | ボリュームの接続パス（`NFSサーバーアドレス:エクスポートパス`）<br>例：192.168.0.11:/GJ\_SHARE\_FS8/bacb62d4-f271-44ad-a5d2-505d21037b45 |
+| &lt;mount-point&gt; | ボリュームをマウントするディレクトリ<br>例：/mnt |
