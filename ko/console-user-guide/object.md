@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=61dff5f1b687 -->
+<!-- pre-align:aligned sig=64d88869d71a -->
 
 <a id="object"></a>
 ## 객체 { #object }
