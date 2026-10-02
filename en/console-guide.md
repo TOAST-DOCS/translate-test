@@ -1,505 +1,504 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > Console Guide
+<!-- pre-align:aligned sig=087cd81ac2d8 -->
 
-<a id="create-instances"></a>
-## Create Instances
+# Console User Guide
+**Management > Private CA > Console User Guide**
 
-You can create instances either by using the settings below or by using instance templates. To create instances using instance templates, select **Use instance template** from the Create Instance page. To learn how to create instance templates, see [Instance Template Console Guide](/Compute/Instance%20Template/en/console-guide/).
+Private CA console is organized around a certificate authority (CA), and all resources (certificate templates, issuers, certificates, ACME tokens) belong to a specific repository. The console screen is tabbed, with a list of repositories on the left and details about the selected repository on the right.
 
-<a id="os-settings"></a>
-### OS Settings
+<a id="private-ca-usage-flow"></a>
+## Private CA usage flow { #private-ca-usage-flow }
 
-Determine how the root block storage is created that will be used when an instance is created.
+The process of getting a certificate from a private CA is as follows:
 
-- Select either **Create New and Set up** or **Use Existing Resource**.
-- If you select **Create New and Set up**, create root block storage using an image.
-- If you select **Use Existing Resource**, use a previously created block storage or snapshot.
+1. **Create a repository**: create a space to manage your certificates.
+2. **Create issuer**: create a certificate authority (CA) to sign the certificate.
+    - Root CA: top-level certificate authorities
+    - Intermediate CA: intermediate certificate authorities under the Root CA
+3. **Create a certificate template**: use to issue multiple certificates with the same configuration.
+4. **Issue a certificate**: issue the actual certificate using the certificate template.
 
-<a id="image"></a>
-### Image
+!!! tip "Notice"
+    - **certificate authority (CA)**: the entity that issues and signs certificates.
+    - **Root CA**: a self-signed top-level certificate. The starting point for all trust.
+    - **Intermediate CA**: an intermediate certificate signed by the Root CA. used to issue the actual server certificate.
 
-Select the image that contains the operating system you need. You can choose between public images provided by NHN Cloud, images you've previously created, or shared images.
+<a id="repository"></a>
+## Repository { #repository }
 
-The available instance flavors vary depending on the image you choose, so we recommended you choose an image first when creating an instance.
+A repository is the basic unit for managing a private CA. Once you create a repository, you can manage issuers, certificate templates, certificates, and more.
 
-| OS                         | Block Storage     | Memory   |
-| -------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB or more  | 1GB or more |
-| Windows                           | 50GB or more  | 2GB or more |
+<a id="add-repository"></a>
+### Add repository { #add-repository }
 
-<a id="root-block-storage"></a>
-### Root Block Storage
+1. Click **+ Add** in the top left corner of the console to add a repository.
+  ![ca_empty_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/ca_init.png)
 
-Set up root block storage according to the **OS settings**.
+2. In the Add Repository modal window, enter the following information:
+  ![ ca_create](https://static.toastoven.net/prod_privateca/2025-12-23_ko/ca_create.png)
+    - **Repository name** (required): Enter a name to identify the repository.
+    - **Repository description** (optional): enter a description for the repository.
+    - **Enable CRL**
+        - Select whether to enable a certificate revocation list (CRL).
+        - Provide a list of revoked certificates periodically so clients can check certificate validity.
+        - If you enable CRLs, you can set the renewal interval to every day.
+    - **Enable OCSP**
+        - Select whether to enable online certificate status protocol (OCSP).
+        - A protocol that allows you to quickly check the revocation status of individual certificates to their status at the time of the request.
+        - When OCSP is enabled, you can set the renewal interval in hours.
 
-- If you select **Create New and Set up**, create the root block store by specifying the **block storage type** and **block storage size**.
-- If you select **Use Existing Resource**, specify the **original resource** to use as root block storage.
+3. Click **Create** to create the repository.
 
-#### Original Resource
+<a id="modify-and-delete-repositories"></a>
+### Modify and delete repositories { #modify-and-delete-repositories }
 
-You can select either a previously created **block storage** or **snapshot**.
+In the repository list, you can click the menu button (⋮) to the right of each repository entry to perform the following actions:
+![overview\_3dot](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_3dot.png)
 
-- When you select **block storage**, use the previously created block storage as the root block storage.
-- When you select **snapshot**, the root block storage is created using a previously created snapshot.
+- **Modify**: you can change the repository's name, description, and CRL/OCSP settings.
+- **Delete**: delete the repository.
+    - When you delete a repository, all resources that belong to it (issuers, certificate templates, certificates, and ACME tokens) are deleted along with it.
 
-#### Block Storage Size
+!!! danger "Caution"
+    The delete operation is irreversible, so use caution.
 
-Specify the root block storage size of an instance.
+<a id="repository-details"></a>
+### Repository details { #repository-details }
 
-- The block storage size must be at least the minimum size required by the image.
+Click the target repository in the list of repositories on the left, and you'll see the details of the repository on the right. The repository details screen consists of the repository name, a description, a list of tabs, and other details.
 
-The root block storage size varies depending on instance flavor.
+<a id="repository-details-tab-list"></a>
+#### Tab list
 
-| Flavors               | Supported Block Storage Size         |
-| -------------------| -------------------------- |
-| u2 flavors             | 20 ~ 100 GB (varies by flavor) |
-| t2, m2, c2, r2, and x1 flavors | 20 ~ 2000 GB               |
+When you select a repository, you'll see the following tabs at the top of the screen on the right, each of which you can click to jump to the corresponding feature:
+![overview_tabs](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_tabs.png)
 
-> [Note]
-> Because you are charged by block storage size, it is inefficient to make the default block storage size large without consideration. We recommend that you add additional block storage as needed.
-> If you select **block storage** for **Use Existing Resource** in the **OS settings**, you can't change the block storage size.
-> If you select **snapshot** for **Use Existing Resource** in the **OS settings**, block storage size must be set equal to or larger than the original block storage size.
+- **Overview**: statistics and settings information for your repository
+- **Certificate template**: list and manage certificate templates
+- **Issuer**: list and manage certificate issuers
+- **Certificate**: list and manage issued certificates
+- **ACME management**: list and manage ACME tokens
+- **Certificate history**: check the certificate history of a repository
 
-#### Block Storage Type
+<a id="repository-details-resource-statistics-card"></a>
+#### Resource statistics card
 
-Determines the default block storage type of an instance.
+At the top of the screen, you'll see three cards that show the number of key resources in your repository.
+![overview_resource_card](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_resource_card.png)
 
-- Choose either **HDD** or **SSD**. The choice of block storage type affects pricing and performance.
-- You cannot change the block storage type once the instance is created.
+- **Certificate template**: Total number of certificate templates created
+- **Issuer**: Total number of created issuers (Root CA, Intermediate CA)
+- **Certificate**: Total number of issued certificates
+
+Clicking **View {card name} >** on each card will take you directly to the Manage tab for the resource.
+
+<a id="repository-details-acme-info"></a>
+#### ACME info
 
-> [Note]
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the block storage type.
+The bottom of the resource card displays ACME information:
+![overview_acme_info](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_acme_info.png)
 
-<a id="availability-zone"></a>
-### Availability Zone
+- **Full token**: Total number of ACME tokens created
+- **Active token**: Number of active ACME tokens
+- **Deleted tokens**: Number of ACME tokens deleted
+
+<a id="repository-details-2"></a>
+#### Repository details
+
+At the bottom of the ACME information, you'll see the repository details.
+![overview_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_detail.png)
+
+- **Repository ID**: ID of the repository
+- **CRL URL**: URL to view the certificate revocation list
+- **CRL renewal cycle**: how often the CRL is renewed (in days)
+- **OCSP URL**: online certificate status protocol (OCSP) responder URL
+- **OCSP renewal cycle**: how often OCSP information is updated (in hours)
+
+!!! tip "Notice"
+    CRLs and OCSPs are ways to verify a certificate's revocation status. The CRL provides a list of revoked certificates, and OCSPs can quickly look up the status of individual certificates to the status at the time of the request.
+
+<a id="issuer"></a>
+## Issuer { #issuer }
+
+Issuers are the certificate authorities that sign and issue certificates. In Private CA, you can create two types of issuers: Root CA and Intermediate CA.
+
+<a id="guide-to-selecting-an-issuer-type"></a>
+### Guide to selecting an issuer type { #guide-to-selecting-an-issuer-type }
+
+- **If you are using only the Root CA**: issue certificates for internal use in small organizations
+- **When using Root CA + Intermediate CA**
+    - When you want to keep the Root CA's private key secure
+    - When you want to run separate CAs for different departments/projects
+    - When you want to follow security best practices (recommended)
+
+<a id="issuer-list"></a>
+### Issuer list { #issuer-list }
+
+On the Issuer tab, you can see all of your created issuers in a table. The table displays the following information:
+![issuer\_list\_after](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_list_after.png)
+
+- **Name**: Issuer's name
+- **Status**: Issuer's current status
+    - **active**: Normally available (blue)
+    - **revoked**: Revoked (red)
+- **Type**: Root or Intermediate
+- **Serial number**: The certificate's unique serial number
+- **Common name**: common name of the certificate
+
+Each issuer entry has **Revoke** button so that you can revoke the issuer when needed.
+
+<a id="add-an-issuer"></a>
+### Add an issuer { #add-an-issuer }
+
+1. On the Issuer tab, click **+ Add**.
+![issuer\_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_list.png)
+
+
+2. On the Create Issuer page, enter the following information:
+![issuer_create](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_create.png)
+    - Basic Info
+        - **Issuer type**: select Root or Intermediate as the issuer's type
+            - **Root**: a top-level certificate authority, which is a self-signed certificate.
+            - **Intermediate**: an intermediate certificate authority, signed by the Root CA.
+                - **Parent certificate ID**: if you selected the Intermediate type, select a parent issuer.
+                  ![issuer_create_intermediate](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_create_intermediate.png)
+        - **Issuer name** (required): A name to identify the issuer
+        - **Issuer description** (optional): Description of the issuer
+        - **Common name** (required): Certificate common name
+        - **Expiration setting** (required): Enter an expiration date, choose TTL or specific date
+            - **TTL**: Valid for a specified period of time from the time of issuance (for example: 365d, 8760h, 60m, 30s)
+            - **Specific date**: Specify a specific expiration date (not after)
+        - **Backdate Validity**: This period allows the certificate's validity start time to be set earlier than the current time. Used to prevent time synchronization issues (default: 30s / e.g. 1d, 24h, 60m, and 30s)
+        - **Maximum path length**: specify the maximum number of intermediate CAs allowed under this issuer in the certificate chain. A value of 0 means that no more subordinate CAs can be created (e.g: 0)
+
+    - Key Info
+        - **Key algorithm**: Choose among RSA, EC, and ED25519
+        - **Key bit**: algorithmic key bit selection
+
+    - Subject alternative name (SAN) configuration
+        - **Exclude common names from SANs**: select whether to automatically exclude common names (CNs) from the SAN list.
+        - **Subject serial number**: enter the subject's unique serial number.
+        - **Subject alternate names (SAN**): Additional distinguished name in domain format (e.g., example.com, sub.example.com)
+        - **IP subject alternate names (IP SANs**): an additional identifying name in the form of an IP address (e.g. 192.168.1.1, 10.0.0.1)
+        - **URI subject alternate names (URI SANs**): additional identifying name in URI format (e.g., https://example.com, spiffe://example.org)
+        - **Other SANs**: other types of SANs (e.g: 1.2.3.4;UTF8:test@example.com
+
+    - Subject information (Subject)
+        - **Country (C)**: country code
+        - **State/Town (ST)**: state or province
+        - **State, county, or district (L)**: city name
+        - **Road name address**: road name address
+        - **Postal code**: postal code
+        - **Organization (O)**: Organization name
+        - **Department (organizational unit) (OU**): department name
+
+3. Click **Add** to add the issuer.
+
+<a id="issuer-details"></a>
+### Issuer details { #issuer-details }
+
+Click the issuer's name in the issuer list to go to the details page. The details page displays the following information, and you can download the certificate PEM file via the Download button at the top.
+![issuer\_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_detail.png)
+
+<a id="issuer-details-certificate-information"></a>
+#### Certificate information
+- Status, type, serial number
+- Subject information (subject DN)
+- Issuer information (issuer DN)
+- Key usage and extended key usage
+- Algorithms and key sizes
+- Validity period (not before, not after)
+- Certificate PEM contents
+
+<a id="issuer-details-issuer-url"></a>
+#### Issuer URL
+- **Issued certificate URL**: list of certificates issued by this issuer
+- **CRL distribution point**: URL to verify the CRL
+- **OCSP server**: OCSP responder URL
+
+
+<a id="issuer-modification-revocation"></a>
+### Issuer modification, revocation { #issuer-modification-revocation }
+
+<a id="issuer-modification-revocation-modify-issuer"></a>
+#### Modify issuer
+You can modify the name and description directly on the issuer details page. After making your edits, click **Save** to save your changes.
+
+- Editable fields
+    - **Name**: you can modify the issuer name.
+    - **Description**: you can modify the issuer description.
+
+<a id="issuer-modification-revocation-issuer-revocation"></a>
+#### Issuer revocation
+1. In the Issuers list, click **Revoke** for the issuer you want to revoke.
+2. In the confirmation dialog box, click **Revoke**to confirm the revoke.
+
+!!! danger "Caution"
+    - Revoking an issuer affects the trustworthiness of all certificates issued by that issuer. A revoked issuer can no longer issue certificates, and already issued certificates can be checked for revocation status via CRL or OCSP.
+    - Root certificates cannot be revoked.
+
+<a id="certificate-template"></a>
+## Certificate template { #certificate-template }
+
+A certificate template is a collection of settings for issuing certificates quickly and consistently. Certificate templates make it easy to issue multiple certificates with the same configuration.
+
+<a id="list-of-certificate-templates"></a>
+### List of certificate templates { #list-of-certificate-templates }
+
+On the Certificate Template tab, you can see all the certificate templates that have been created in a table. The table displays the following information:
+![template_list_after](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_list_after.png)
+
+- **Name**: Click the certificate template name to go to the details.
+- **Description**: Description of certificate templates
+
+Each certificate template entry has **Modify** and **Delete** buttons to help you manage your certificate templates.
+
+<a id="add-a-certificate-template"></a>
+### Add a certificate template { #add-a-certificate-template }
+
+1. On the Certificate Template tab, click **+ Add**.
+![template_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_list.png)
+
+2. On the Create Certificate Template page, enter the following information:
+![template_create](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_create.png)
+
+    - Basic Info
+        - **Certificate template name** (required): a name to identify the certificate template
+        - **Description** (optional): description of certificate templates
+        - **Select issuer**: Select an issuer to sign the certificate created with this certificate template.
+
+    - Limit settings
+        - **Expiration settings** (required)
+            - **TTL**: set a maximum validity period (e.g: 365d, 8760h, 60m, 30s)
+            - **Specific date**: specify a fixed expiration date (not after)
+        - **Backdate Validity**: This period allows the certificate's validity start time to be set earlier than the current time. Used to prevent time synchronization issues (default: 30s / e.g. 1d, 24h, 60m, and 30s)
+
+    - SAN option
+        - **Allow IP SANs**: allow IP addresses to be included in the SAN.
+        - **URI subject alternate names (URI SANs**): enter the SAN in URI format (e.g. https://example.com, spiffe://example.org).
+        - **Other SANs**: enter other types of SANs (e.g. 1.2.3.4;UTF8:test@example.com
 
-If an availability zone is not specified, a random zone is selected. An instance can use a block storage only if they both exist in the same availability zone. If the block storage you wish to use exists in a particular availability zone, then select that zone.
+    - Common applied settings
+        - Settings
+            - **Server-side storage option**: select whether you want to store the created certificate on the server.
+            - **Enable basic constraints for non-CA**: Select whether to specify in the certificate that you are not a CA.
+
+        - Key parameters
+            - **Key algorithm**: Choose among RSA, EC, and ED25519
+            - **Key bit**: algorithmic key bit selection
+            - **Signature bit**: Select the number of bits in the hash algorithm to use for signing the certificate
 
-> [Note]
-> Resources in a VPC can be used in any availability zone.
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the availability zone.
+            !!! danger "Caution"
+                Signature bits can only be set when using the RSA algorithm. Otherwise, it is ignored by the algorithm.
 
-For more details on availability zones, see [Availability Zone in Instance Overview](./overview/#availability-zone).
+        - Key usage
+            - Select the purpose of the certificate: `digitalSignature`, `keyEncipherment`, `keyCertSign`, or certificate signing.
 
-<a id="flavor"></a>
-### Flavor
+        - Extended key usage
+            - Select what you want to use the extended key for: `serverAuth`(TLS server authentication), `clientAuth`(TLS client authentication), `codeSigning, or codeSigning`.
+            - **Extended key usage OIDs**: you can manually enter an OID for additional extended key purposes (e.g. 1.3.6.1.5.5.7.3.1, 1.3.6.1.5.5.7.3.2)
+
+        - Certificate policies
+            - **List of policies**: enter an OID that represents the policy the certificate complies with. you can enter multiple OIDs.
+                - Example: 2.5.29.32.0 (anyPolicy), 1.2.3.4.5 (organization-specific policies)
+            - The Certificate Policy field specifies under which policy the certificate was issued, and is used to verify compliance with the policy during certificate validation.
+
+    - Additional subject fields
+        - **Use the CSR common name**: Select whether to use the CN from the CSR as is for the certificate.
+        - **Use CSR SANs**: select whether to include the SAN of the CSR in the certificate.
+        - **Country (C)**: country code
+        - **State/Town (ST)**: state or province
+        - **State, county, or district (L)**: city name
+        - **Road name address**: road name address
+        - **Postal code**: postal code
+        - **Organization (O)**: Organization name
+        - **Department (organizational unit) (OU**): department name
+
+        !!! danger "Caution"
+            Even if you set a value for the Subject DN in the CSR, it will be overwritten by the value you set in the certificate template.
+
+3. Click **Add** to add a certificate template.
 
-You can select various flavors depending on virtual hardware performance specifications. However, the choice of some flavors may be limited depending on the virtual hardware performance that your image requires. For more details, see [Instance Overview](./overview).
+<a id="certificate-template-details"></a>
+### Certificate template details { #certificate-template-details }
 
-> [Note] 
-> 1 vCPU refers to one socket composed of one thread and one core, the number of threads and the number of cores per socket are constant, one each.
+Click the certificate template name in the list of certificate templates to go to the details page. The detail page is organized into collapsible sections, where you can see the information entered by the user.
+![template_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_detail.png)
 
-Instance flavors can be changed in the NHN Cloud console even after instance creation, from higher to lower specs and vice versa. However, note that some flavors cannot be changed. See [Modify flavor](./console-guide/#modify-flavor) for details.
+At the top of the details page are the **+ Create New Certificate**, Modify**, and **Delete** ** Certificate** buttons.
 
-> [Caution] An instance's root block storagecannot be changed by changing instance flavors.
+<a id="modify-delete-certificate-template"></a>
+### Modify, delete certificate template { #modify-delete-certificate-template }
 
-<a id="number-of-instances"></a>
-### Number of Instances
+<a id="modify-delete-certificate-template-modify-certificate-template"></a>
+#### Modify certificate template
+1. In the certificate template list, click **Modify**, or on the details page, click **Modify**.
+2. On the Modify Certificate Template page, make the necessary changes.
+3. Click **Modify** to save your changes.
 
-You can specify the number of instances you want to create when creating multiple instances with the same image, availability zone, flavor, block storage size, key pair, and network settings. The instance names will be the name you specified, with numbers such as `-1` and `-2` appended to the end. For example, creating two instances named `my-instance` will result in `my-instance-1` and `my-instance-2`. The maximum number of instances you can create at once is 10.
+<a id="modify-delete-certificate-template-delete-a-certificate-template"></a>
+#### Delete a certificate template
+1. In the list of certificate templates, click **Delete** for the certificate template you want to delete, or on the details page, click **Delete**.
+2. In the confirmation dialog box, click **Delete** to confirm the deletion.
 
-When you create multiple instances without specifying an availability zone, each instance will be created in a randomly selected availability zone. For example, if two instances are created without specifying an availability zone, they may be created in the same zone or they may be created in different zones. If all instances need to be created in the same availability zone, select a particular zone.
+!!! tip "Notice"
+    Deleting a certificate template does not affect certificates that have already been generated with that certificate template.
 
-> [Note]
-> If you select **block storage** for **Use Existing Resource** in the **OS settings** or **Use Existing Network Interface** in the **network settings**, the number of instances is limited to `1`.
+<a id="create-certificates-with-certificate-templates"></a>
+### Create certificates with certificate templates { #create-certificates-with-certificate-templates }
 
-<a id="key-pair"></a>
-### Key Pair
+To create a certificate using a certificate template, follow these steps:
 
-Use an existing key pair or create a new key pair. To register an existing key pair, see [Import Key Pair (Windows)](./console-guide/#import-key-pairs-windows) for Windows users, and [Import Key Pair (Mac and Linux)](./console-guide/#import-key-pairs-mac-and-linux) for Mac and Linux users.
+1. At the top of the certificate template detail page, click **+ Create New Certificate**.
+  ![template\_detail\_generate](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_detail_generate.png)
 
-> [Note]
-> Key Pair is a resource assigned to the user account, so it's not deleted when you delete a project.
+2. Select the type of certificate generation.
+  ![template\_generate](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_generate.png)
+    - If you select **Certificate CSR signature**, a different form of input appears, as follows:
+  ![template\_generate\_csr](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_generate_csr.png)
 
-<a id="network"></a>
-### Network
+3. On the Create a Certificate page, enter the following information:
+    - **Common name** (required): subject name of the certificate
+    - **Expiration setting** (required): set within the maximum range of the certificate template
+    - **SAN information**: additional SAN information
 
-Select a subnet defined in your VPC to connect to an instance. For each selected subnet, a network interface is created in the instance to connect to that subnet. You can change the order of selected subnets to change network interfaces, in which case the first network interface (`eth0`) will be set as the default gateway.
+4. Click **OK** to create the certificate.
 
-For more details on creating and managing networks, refer to [VPC Overview](/Network/VPC/en/overview/).
+The generated certificate can be saved to the Private CA at your option, and if so, you can view it on the Certificate tab.
 
-<a id="floating-ip"></a>
-### Floating IP
+<a id="certificate"></a>
+## Certificate { #certificate }
 
-Select whether you will use a floating IP after instance creation. If you enable this option, a new floating IP is created and connected to the first network interface. Note that the first network interface must be connected to a subnet where an internet gateway is configured.
+The Certificate tab allows you to view and manage all certificates issued in your repository.
 
-Floating IP can be managed from Instance > Management, or Instance > Floating IP. For more details on floating IP, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+<a id="list-of-certificates"></a>
+### List of certificates { #list-of-certificates }
 
-<a id="security-group"></a>
-### Security Group
+The Certificate tab shows all issued certificates in a table. The table displays the following information:
+![certificate\_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/certificate_list.png)
 
-Select security groups that the instance will be included in. One instance can be included in multiple security groups, in which case,
+- **Common name**: Click the common name of the certificate to go to the details.
+- **Status**: Current status of the certificate
+    - **active**: Normally available (blue)
+    - **revoked**: Revoked (red)
+- **Serial number**: The certificate's unique serial number
+- **Not before**: when the certificate became valid
 
-- The instance can communicate over the network with all other instances included in each security group. When you are dealing with an instance with sensitive data that is not meant to be accessible by other instances, you must carefully select security groups.
-- The rules of each security group are aggregated and applied to the instance's external network communication.
+Each certificate entry has **Download** and **Revoke** buttons to help you manage your certificates.
 
-For more details on security groups, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+<a id="certificate-details"></a>
+### Certificate details { #certificate-details }
 
-<a id="additional-block-storage"></a>
-### Additional Block Storage
+Click the common name in the certificate list to go to the details page. The detail page displays the following information, and you can download the certificate PEM file via the Download button at the top.
+![certificate\_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/certificate_detail.png)
 
-Select whether you will attach an additional block storage after instance creation. If you enable this option, a new block storage separate from the root block storage is created and attached to the instance. As with the root block storage, you can specify the name, storage type, and size of the additional block storage you create.
+<a id="certificate-details-certificate-information"></a>
+#### Certificate information
+- **Common name**: common name of the certificate
+- **Serial number**: unique serial number
+- **Certificate**: certificate PEM Information
+- **CA chain**: chain certificate PEM information
+- **Valid period**
+    - **Not before**: when the certificate becomes valid
+    - **Not after**: when certificates expire
+- **Algorithm and key size**: signing algorithms and key lengths
+- **Key usage**: digitalSignature, keyEncipherment, etc.
+- **Extended key usage**: serverAuth, clientAuth, etc.
 
-By using the root block storage only for the OS and storing your frequently used applications and data on the additional block storage, you can easily migrate or copy your applications and data using the block storage attach/detach and snapshot features. In addition, when an instance failure occurs, you can easily recover your services by simply detaching the additional block storage and attaching it to another instance.
+<a id="revoke-certificate"></a>
+### Revoke certificate { #revoke-certificate }
 
-Block storage can also be managed from Instance > Block Storage. For more details on block storage, see [Block Storage Guide](/Storage/Block%20Storage/en/overview/).
+To revoke a certificate, proceed as follows
 
-<a id="placement-policy"></a>
-### Placement Policy
+1. In the list of certificates, click **Revoke**for the certificate template you want to revoke, or on the details page, click **Revoke**.
+2. In the confirmation dialog box, click **Revoke**to confirm the revoke.
 
-You can use placement policies to place instances on different hypervisors. When you set a placement policy at instance creation time, instances assigned to the same placement policy are created on different hypervisors.
- 
-> [Caution]
-> Instance creation may fail in situations where distributed deployment is not possible.
+Revoked certificates are considered no longer trusted, and you can check their revocation status in the following ways:
 
-<a id="user-script"></a>
-### User Script
+- **Certificate revocation list (CRL)**: you can see a list of revoked certificates via the CRL URL of the repository.
+- **Online certificate status protocol (OCSP)**: you can look up the status of individual certificates via the OCSP URL of the repository.
 
-You can specify a script to be executed after instance creation. The user script is executed following the instance's initial boot and after the initialization process including network configuration has completed. User scripts in NHN Cloud are executed by automated tools such as cloud-init (Linux) and Cloudbase-init (Windows), which are embedded in the official images.
+!!! danger "Caution"
+    Certificate revocation is an irreversible action. You can't reactivate a revoked certificate, so you'll need to issue a new one.
 
-> [Caution]
-> User scripts are executed with root (Linux)/Administrator (Windows) privileges.
+<a id="acme-management"></a>
+## ACME management { #acme-management }
 
-#### Linux
-The first line of a user script must begin with `#!`.
-```
-#!/bin/bash
-...
-```
+An automated certificate management environment (ACME) is a protocol that automates certificate issuance and renewal. The ACME management feature of Private CA allows you to automatically issue certificates through an ACME client, such as the Let's Encrypt client (e.g., certbot).
 
-For a user script to run successfully, log files in the instance must be checked. You can check output logs printed by standard output/error from the script in `/var/log/cloud-init-output.log`.
+<a id="acme-token-list"></a>
+### ACME token list { #acme-token-list }
 
-#### Windows
+On the ACME Management tab, you can view all generated ACME tokens in a table. The table displays the following information:
+![acme\_list\_after](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_list_after.png)
 
-Windows images support both Batch and PowerShell formats for user scripts. The format is determined by an indicator specified in the first line.
+- **Name**: Click the name of an ACME token to go to its details.
+- **ID**: ACME token ID
+- **Description**: description of the ACME token
 
-* Batch Script
-```
-rem cmd
-...
-```
+Each token entry has **Delete** button, so you can delete tokens that you no longer use.
 
-* PowerShell Script
-```
-#ps1_sysnative
-...
-```
+<a id="add-an-acme-token"></a>
+### Add an ACME token { #add-an-acme-token }
 
-To use both Batch and PowerShell in your script, use the following format.
+1. On the ACME Management tab, click **+ Add ACME Token**.
+![acme\_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_list.png)
 
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
+2. In the Create ACME token modal window, enter the following information:
+![acme\_create](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_create.png)
+    - **Name** (required): a name to identify the ACME token
+    - **Description** (optional): description of the ACME token
 
-Logs from user scripts can be found in `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`.
+3. Click **create** to create the token.
 
-For more details regarding user scripts, see the [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) or [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) guides.
+<a id="add-an-acme-token-verify-information-after-acme-token-is-created"></a>
+#### Verify information after ACME token is created
+![acme\_once](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_once.png)
+When the token is created, the following information is displayed:
 
-<a id="additional-instance-features"></a>
-## Additional Instance Features
+- **Token ID**: identifiers used for ACME client setup
+- **HMAC key**: secret key used for ACME client authentication
 
-<a id="change-instance-status"></a>
-### Change Instance Status
+!!! danger "Caution"
+    The HMAC key is only displayed once at token generation. Be sure to copy and store it somewhere safe, or you won't be able to see it again. If you lose your HMAC key, you'll need to generate a new token.
 
-An instance’s status can be changed by stopping, terminating, deleting, and starting it.
+<a id="acme-token-details"></a>
+### ACME token details { #acme-token-details }
 
-For more details on hypervisor resources and fees for stopping, terminating, and deleting instances, see the table below.
+![acme\_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_detail.png)
+Click the token name in the token list to go to the details page. The details page displays the following information:
 
-| Classification | Stop instance | Terminate Instance | Delete Instance |
-| --- | -- | --- | --- |
-| Hypervisor resource | Resource remain allocated  | Resource returned and reallocated when an instance is started | Resource removed |
-| Pricing for instance | Price for stopping applied | Free | Free |
-| Pricing for other connected resources | Charged| Charged | Charged |
+<a id="acme-token-details-issued-certificate"></a>
+#### Issued certificate
+A list of certificates issued using the token is displayed. Each certificate contains the following information:
 
-> [Note] GPU Instances cannot be terminated and will incur normal (100%) rates when stopped.
+- **Common name**: Certificate common name
+- **Status**: certificate status
+- **Serial number**: Certificate serial number
+- **Effective date**: Validity start date
 
-<a id="create-image"></a>
-### Create Image
+<a id="example-of-acme-client-setup"></a>
+### Example of ACME client setup { #example-of-acme-client-setup }
 
-Create an image from an instance's root block storage. It is recommended to stop instances before creating an image in order to ensure data integrity.
+Use the [ACME Certificate Renewal Guide (Certbot, acme.sh)](./client-guide.md) page as a guide to complete it.
 
-While it is possible to create an image from an instance that has no available free space in its root block storage, those images are unusable by other instances because they cannot be properly initialized. Before creating an image, ensure that your instance has at least 100KB of free space.
+<a id="delete-an-acme-token"></a>
+### Delete an ACME token { #delete-an-acme-token }
 
-Created images are registered as private images in **Compute > Image**. You can use the registered image to create an instance with a block storage identical to that of the original instance.
+1. On the ACME Management tab, click **Delete** for the token you want to delete.
+  ![acme\_detail\_delete](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_detail_delete.png)
 
-> [Caution]
-> The size of the created image may be larger than the actual usage of the root block storage.
+2. In the confirmation dialog box, click **Delete** to confirm the deletion.
 
-<a id="associatedisassociate-floating-ip"></a>
-### Associate/Disassociate Floating IP
+!!! tip "Notice"
+    Deleting an ACME token does not affect certificates already issued with that token. However, automatic renewal using that token will no longer work, so you'll need to update your ACME client settings to generate a new token.
 
-Floating IP can be associated with or disassociated from an instance, regardless of the instance's status. If you have no available floating IP or if the floating IP you want is not available, you can create one by clicking **Create**. Alternatively, floating IP can also be created from **Network > VPC > Floating IP**.
+<a id="certificate-history"></a>
+## Certificate history { #certificate-history }
 
-For more details on floating IP, see [VPC Overview](/Network/VPC/en/overview/).
+![history](https://static.toastoven.net/prod_privateca/2025-12-23_ko/history.png)
+The Certificate History tab provides a chronological view of certificate-related activity that has occurred in the repository. The history includes the following information:
 
-<a id="modify-security-group"></a>
-### Modify Security Group
+- Issuer, certificate generation history
+- Certificate revocation history
 
-An instance's security groups can be modified regardless of the instance's status. Modified security groups are applied immediately.
-
-For more details on security groups, see [Security Group](./console-guide/#security-group) and [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="change-network-subnet"></a>
-### Change Network Subnet
-
-An instance's network subnet can only be changed while the instance is stopped. When you add a subnet, a network interface that will be connected to that subnet is automatically created on your instance. If you add multiple subnets at once, the order of the newly created network interfaces on the instance is set randomly. Deleting a subnet from an instance automatically deletes the network interface that was created along with the subnet.
-
-<a id="modify-flavor"></a>
-### Modify Flavor
-
-Instance flavors can be changed once an instance has been stopped. If an instance is running, click **Stop Instance** in **Additional Features** to stop the instance.
-
-You can only change an instance to another flavor that is compatible with its current flavor.
-
-* m2, c2, r2, t2, x1 flavor instances can be changed to m2, c2, r2, t2, x1 flavors.
-* m2, c2, r2, t2, x1 flavor instances cannot be changed to u2 flavors.
-* u2 flavor instances cannot be changed to other flavors once they have been created, not even to those of the same u2 flavor.
-
-When you modify flavors, instance resize and resize confirmation tasks proceed. When all tasks are completed, the VM changes its status to **Shutoff**. You can start the instance by clicking **Start Instance** in **Additional Features**.
-
-> [Note] The instance's root block storage size cannot be modified. If an instance requires additional block storage space, attach a block storage. For details on how to attach block storage, see [Block Storage Overview](/Storage/Block%20Storage/en/overview/).
-
-Instances will be charged using the new flavor from the moment the modification completes.
-
-<a id="change-instance-os-details"></a>
-### Change Instance OS Details
-
-You can change instance OS information regardless of the state of the instance. 
-
-On the **Compute > Instance** page, click the instance whose OS information you want to change. On the **Basic Information** tab of that instance's details screen, click **OS > Modify**.
-
-> [Note] You can't change the OS type.
-
-<a id="change-instance-description"></a>
-### Change Instance Description
- 
-You can change instance description regardless of the state of the instance. 
- 
-On the **Compute > Instance** page, click the instance whose information you want to change. On the **Basic Information** tab of that instance's details screen, click **Description > Change**.
-
-<a id="change-instance-key-pair"></a>
-### Change Instance Key Pair
-
-You can change the instance key pair only if the instance is active.
-
-On the **Compute > Instance** page, click the instance whose key pair information you want to change. On the **Basic Information** tab of that instance's details screen, click **Key Pair > Change**.
-
-Change the key pair of the instance default account to the selected key pair. The instance default account can be found on the **Connection Information** tab of the instance's bottom details screen.
-
-> [Caution] Changing an instance key pair deletes all public key information in the instance except for the selected key pair.
-
-> [Note] Only project members with the ADMIN permissions for the basic infrastructure can change the instance key pair, which cannot be changed if it is a Windows OS instance.
-
-> [Note] If the image version used to create the instance is low, the feature to change key pairs may not be available.
-
-<a id="manage-placement-policies"></a>
-### Manage Placement Policies
-
-You can create and delete placement policies and view a list of instances assigned to placement policies.
-
-Only the `anti-affinity` placement policy type for distributed placement is provided.
-
-You can delete a placement policy even if instances are assigned to it, in which case the instances are not deleted.
-
-<a id="key-pairs"></a>
-## Key Pairs
-
-<a id="import-key-pairs-windows"></a>
-### Import Key Pairs (Windows)
-
-You can use puttygen, which is installed when you install the PuTTY SSH client, to create a key pair and register it with NHN Cloud.
-
-Make sure you have [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) installed.
-
-Run puttygen.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
-
-Select **RSA** (or SSH-2 RSA in older versions of puttygen) under **Parameters**. Click **Generate** under **Actions**. Continuously move your mouse in the empty space in order to generate the key.
-
-After the key is generated, the public key file contents will be visible as shown below. Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
-
-Click **Save private key** under **Actions** to save the private key. If you save the private key leaving the **Key passphrase** field blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to use your converted private key more securely, set a passphrase before saving.
-
-> [Caution]
-> If you wish to be able to automatically login to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### Import Key Pairs (Mac and Linux)
-
-Key pairs created using `ssh-keygen` in Mac or Linux can be registered with NHN Cloud. Use the following command to create a key pair.
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-You can choose to set a passphrase for the key pair, although it is not required. If you wish to use your key pair more securely, we recommend setting a passphrase. The file with `.pub` appended to the specified key pair name contains the public key.
-
-	$ cat my_key.key.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-	
-Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## Appendix 1. Change Language Packs in Windows
-
-NHN Cloud provides Windows images with English as the primary language. You may change your language preferences with the following steps.
-
-1. Go to **START > Control Panel > Clock, Language, and Region > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. Select **Change your language preferences > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. Choose a language in **Add a language** and click **Add**.
-![Image1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. Check the language pack just added.
-![Image1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. Download and install the language pack.
-![Image1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. Download and install updates.
-![Image1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. To change to the installed language pack, double-click the selected language or select **Options**.
-![Image1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. Choose **Make this the primary language** for Windows display language.
-![Image1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. To apply the changes, click **Log off now**.
-![Image1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. Log in again, and you can see Windows is displayed using the language pack of your choice.
-![Image1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## Appendix 2. Change Routing in Windows
-
-Routing in NHN Cloud Windows instances can be changed as follows.
-
-* Press **Windows Key + R** to open an execution window, and enter `cmd` and execute to open a command prompt window. You can enter route commands here.
-
-Route commands
-
-* Print current configuration: route print
-* Add : route add "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Change : route change "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Delete : route delete "Destination" mask "Destination subnet" "gateway" metric "Metric value" if "Interface number"
-* Option : -p (specify as persistent route)
-
-  
-Description
-
-![Image1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* Metric Value: A lower value indicates higher priority
-* Interface Number: This value can be obtained from route print (red box above)
-* Persistent Route: Use the -p option to avoid the configured routes being reset across system reboots (blue box above)
-
-Example 1 - Restricting external communication for particular interfaces
-
-* You can restrict an interface from communicating externally by using the route change command to change its route metric or by leaving the default gateway field blank when configuring fixed IP settings.
-* How to Modify Metrics
-    * Increase interface metric value
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* How to Set Fixed IP
-    1. Use the ipconfig /all command to view IP information.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. Enter the corresponding IP information, leaving the default gateway field blank, in the IP Properties window.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. Check the results using the route print command.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Example 2 - Setting routes for a particular address range
-
-* Use the route add command to set routes for a particular address range.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Example 3 - Removing a particular route
-
-* Use the route delete command to remove specified routes.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## Appendix 3. Change System Locale
-
-System locale in NHN Cloud Windows instances can be changed as follows.
-
-1. Go to **Windows Key > Control Panel > Clock, Language, and Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. Select **Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. From the **Administrative** tab, click **Change system locale**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. Select a system locale to use.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. Restart the system to apply the changes.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## Appendix 4. Restarting Instances for Hypervisor Maintenance
-NHN Cloud updates hypervisor software on a regular basis to enhance the security and stability of infrastructure services that we provide.
-Instances running on a hypervisor that requires maintenance must be restarted and migrated to a hypervisor which has completed maintenance.
-
-To restart an instance, use the **! Restart** button that has been created next to the instance name in the console.
-`Using the "Restart Instances" button in the console or rebooting the operating system will not migrate an instance to another hypervisor.`
-Follow the guide below to use the restart feature in the console.
-
-Go to the project where your instance requiring maintenance is located.
-
-**1. Check if your instance requires maintenance.**
-
-Any instance that has the **! Restart** button before its name requires maintenance.
-Put the mouse cursor over the **! Restart** button to find maintenance schedule details.
-![Instance Maintenance Image 1](http://static.toastoven.net/prod_instance/instance_p_migration_en_1.png)    
-
-**2. Deactivate or stop application programs running on an instance which requires maintenance.**
-
-Any application programs running on an instance which requires maintenance must be deactivated or stopped in order not to impact your service.
-If there is no way to do so without impacting your service, please contact NHN Cloud Customer Center and we will provide you with guidance on appropriate measures to take.
-
-**3. Click the [! Restart] button created next to the name of the target instance.**
-
-![Instance Maintenance Image 2](http://static.toastoven.net/prod_instance/instance_p_migration_en_2.png)
-
-**4. Click [Confirm] in the Restart Instances confirmation window.**
-
-![Instance Maintenance Image3](http://static.toastoven.net/prod_instance/instance_p_migration_en_3.png)
-
-**5. Wait until the instance status turns green and the [! Restart] button disappers.**
-
-If the status does not change or the **! Restart** button is not disabled, try refreshing the page.
-
-You cannot operate or modify the instance while a restart is underway.
-If an instance restart does not complete successfully, the administrator will automatically be notified and you'll also be contacted by NHN Cloud.
+Historical information helps you track and audit certificate management activity in your repository.
