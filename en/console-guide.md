@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=df549469ae0a -->
 
 <a id="storage-storage-gateway-console-user-guide"></a>
@@ -88,7 +90,7 @@ Set the share name and protocol to use for the path to the mount connection info
 <a id="create-share-storage-information-for-connection"></a>
 #### Storage Information for Connection
 Set the information of storage to connect.
-Object Storage requires the name of the container to connect to and the Access Key from your S3 API credentials. The name of the container to connect to must follow Amazon S3's bucket naming conventions. S3 API credentials can be issued using the Object Storage console or API. For more information, see the [Create Bucket](/Storage/Object%20Storage/en/s3-api-guide/#bucket) section and the [S3 API Credentials](/Storage/Object%20Storage/en/s3-api-guide/#s3-api) section of **the Object Storage Amazon S3-compatible API guide**.
+Object Storage requires the name of the container to connect to and the Access Key from your S3 API credentials. The name of the container to connect to must follow Amazon S3's bucket naming conventions. S3 API credentials can be issued using the Object Storage console or API. For more information, see the [Create Bucket](/Storage/Object%20Storage/en/s3-api-guide/#bucket) section and the [S3 API Credentials](/Storage/Object%20Storage/en/s3-api-guide/#s3-api-credential) section of **the Object Storage Amazon S3-compatible API guide**.
 
 !!! tip "Note"
     When you create a share that connects Object Storage containers, the `{container name}+segments` container is automatically created in Object Storage. When you save a file that is larger than 25 MB through the gateway, it is uploaded as a multipart to the connected container, and the segment objects of the multipart object are stored in the `{containername}+segments` container.
@@ -97,21 +99,24 @@ Object Storage requires the name of the container to connect to and the Access K
 
 !!! danger "Caution"
     To set IP ACLs on containers in Object Storage that you want to connect to, you must add **read/write permissions** for Service Gateway.
+
     The user who issues Object Storage's S3 API credentials needs **read/write** permissions on the container to connect to.
+
     If you delete the container or delete the S3 API credentials while connecting to and using a container in Object Storage through a storage gateway, it can cause problems on your system. You should be careful not to delete them.
+
     If you delete objects in the `{container name}+segments` container while connecting to and using a container in Object Storage through a storage gateway, you will not be able to access the files you have stored. Be careful not to delete them.
 
 <a id="create-share-nfs-permissions-settings"></a>
 #### NFS Permissions Settings
-Set permissions for clients to connect over the NFS protocol. 
+Set permissions for clients to connect over the NFS protocol.
 
 | Squash Option | Description |
 | --- | --- |
-| no_root_squash | Map the root of the client to the root of the NFS server. |
-| root_squash | Map the root of the client to nobody or the UID/GID you specify. |
-| all_squash | Map all users on the client to nobody or the UID/GID you specify. |
+| `no_root_squash` | Map the root of the client to the root of the NFS server. |
+| `root_squash` | Map the root of the client to nobody or the UID/GID you specify. |
+| `all_squash` | Maps all users on the client to nobody or the UID/GID you specify. |
 
-If you do not enter a user ID and group ID, they are set to **root(0** ) or **nobody(65534)**, depending on your Squash options. To map to other users and groups, enter the Linux user ID and group ID. The Linux user ID and group ID can be found with the id command in the Linux **shell**.
+If you do not enter a user ID and group ID, they are set to **root(0)** or **nobody(65534)**, depending on your Squash options. To map to other users and groups, enter the Linux user ID and group ID. The Linux user ID and group ID can be found with the `id` command in the Linux **shell**.
 
 ```
 $ id
