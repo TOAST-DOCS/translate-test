@@ -1,5 +1,8 @@
+<!-- machine_translated: true -->
+
 {%- set api_host = "dnsplus.api.gov-nhncloudservice.com" if "gov" in build_flags else "dnsplus.api.nhncloudservice.com" -%}
 {%- set example_host = "gov-nhncloud.com" if "gov" in build_flags else "nhncloud.com" -%}
+{%- set inquiry_url = "https://www.gov-nhncloud.com/kr/support/inquiry" if "gov" in build_flags else "https://www.nhncloud.com/kr/support/inquiry" -%}
 <!-- pre-align:aligned sig=e20c06ac5822 -->
 
 <a id="network-dns-plus-api-v20-guide"></a>
@@ -419,7 +422,7 @@ curl -X GET 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/zones/{zoneId}
 - The maximum length of the record list within a record set is 512 bytes.
   - TXT record sets support up to 4,096 bytes.
 - Up to 5,000 record sets can be created per DNS zone.
-- The number of record sets that can be created is limited. Contact us if you need to increase the limit. [Contact Us](https://www.nhncloud.com/en/support/inquiry)
+- There is a limit to the maximum number of record sets that can be created. If you want to raise the limit, please contact us. [Contact Us]($[ inquiry_url ]$)
 
 <a id="create-record-set-request"></a>
 #### Request
@@ -634,7 +637,7 @@ curl -X POST 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/zones/{zoneId
 - The maximum length of the record list within the record set is 512 bytes.
   - TXT record sets support up to 4,096 bytes.
 - Up to 5,000 record sets can be created per DNS zone.
-- The number of record sets to be created is limited, please contact us if you need an extension. [Contact us](https://www.nhncloud.com/en/support/inquiry)
+- There is a limit to the maximum number of record sets that can be created. If you want to raise the limit, please contact us. [Contact Us]($[ inquiry_url ]$)
 
 <a id="bulk-create-record-sets-request"></a>
 #### Request
@@ -927,7 +930,7 @@ curl -X GET 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/gslbs?showHeal
     - RANDOM: Routes by randomly selecting an available pool from the connected pools.
     - GEOLOCATION: Routes traffic from the configured region to the corresponding connected pool. If no region is configured, routing is based on priority.
 - The lower the **priority** of a **connected pool**, the higher the routing order. Duplicate priorities are not allowed.
-- There are limits to the maximum number of GSLBs that can be created and to the maximum number of pools that can be connected. If you want to raise the limits, please contact us. [Contact us](https://www.nhncloud.com/en/support/inquiry)
+- There are limits to the maximum number of GSLBs that can be created and to the maximum number of pools that can be connected. If you want to raise the limits, please contact us. [Contact us]($[ inquiry_url ]$)
 
 <a id="create-gslb-request"></a>
 #### Request
@@ -1139,7 +1142,7 @@ gslbIdList=91de0c6f-aeaa-44ec-b361-822acfcd5921,269eff10-f3c0-4b11-b072-ec53e7c6
 
 - Connects a pool to a GSLB.
 - The lower the **priority** of a **connected pool**, the higher the routing order. If the same priority as an existing connected pool is entered, the routing order of the existing pool is lowered.
-- There is a limit to the maximum number of pools that can be connected. If you want to raise the limit, contact us. [Contact Us](https://www.nhncloud.com/en/support/inquiry)
+- There is a limit to the maximum number of pools that can be connected. If you want to raise the limit, contact us. [Contact Us]($[ inquiry_url ]$)
 
 <a id="connect-pool-request"></a>
 #### Request
@@ -1470,7 +1473,7 @@ curl -X GET 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/pools?showHeal
     - [Reserved IP addresses](https://en.wikipedia.org/wiki/Reserved_IP_addresses) cannot be entered.
     - Duplicate addresses are not allowed within the pool.
 - The **weight** of an endpoint operates relative to the weights of other endpoints in the pool. Endpoints with the same weight have equal priority within the pool.
-- The number of pools that can be created, the number of endpoints within a pool, and the total number of endpoints are limited. Contact us if you need to increase the limit. [Contact Us](https://www.nhncloud.com/en/support/inquiry)
+- There are limits to the maximum number of pools that can be created, the maximum number of endpoints in a pool, and the maximum total number of endpoints. If you want to raise the limits, please contact us. [Contact Us]($[ inquiry_url ]$)
 
 <a id="create-pool-request"></a>
 #### Request
@@ -1769,7 +1772,7 @@ curl -X GET 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/health-checks'
     - TCP input items: Port, health check interval, maximum response wait time, and maximum retry count
 - Enabling **Skip certificate verification** allows the health check to ignore invalid TLS/SSL certificates on endpoints.
 - Redirected pages from endpoints are not supported when evaluating **expected status codes** and **expected response bodies**.
-- The number of health checks that can be created is limited. Contact us if you need to increase the limit. [Contact Us](https://www.nhncloud.com/en/support/inquiry)
+- There is a limit to the maximum number of health checks that can be created. If you want to raise the limit, please contact us. [Contact Us]($[ inquiry_url ]$)
 
 <a id="create-health-check-request"></a>
 #### Request
@@ -1838,7 +1841,6 @@ curl -X POST 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/health-checks
     }
 }
 ```
-
 
 <a id="modify-health-check"></a>
 ### Modify Health Check { #modify-health-check }
@@ -1914,7 +1916,6 @@ curl -X PUT 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/health-checks/
     }
 }
 ```
-
 
 <a id="delete-health-checks"></a>
 ### Delete Health Checks { #delete-health-checks }
