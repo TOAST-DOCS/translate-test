@@ -1,7 +1,15 @@
-<!-- pre-align:aligned sig=d29522461c5f -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=a64bf08e342e -->
 
 <a id="container-nhn-container-servicencs-release-notes"></a>
 ## Container > NHN Container Service(NCS) > Release Notes { #container-nhn-container-servicencs-release-notes }
+<a id="august-25-2026"></a>
+### August 25, 2026 { #august-25-2026 }
+<a id="august-25-2026-added-features"></a>
+#### Added Features
+* Added the feature to set the shared memory size of a container.
+
 <a id="october-28-2025"></a>
 ### October 28, 2025 { #october-28-2025 }
 <a id="october-28-2025-added-features"></a>
