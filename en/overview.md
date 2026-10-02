@@ -1,234 +1,137 @@
-<a id="compute-instance-overview"></a>
-## Compute > Instance > Overview
+<!-- pre-align:aligned sig=3543b2af3ddd -->
 
-An instance is a virtual server composed of virtual CPUs, memory, and root block storage. You can install your services and applications on this server and use it in combination with the various services provided by NHN Cloud.
+<a id="network-flow-log-overview"></a>
+## Network > Flow Log > Overview { #network-flow-log-overview }
+The Flow Log service provides statistics by analyzing packets entering and leaving the network interfaces. This service can be used to view various statistics, such as the number and size of packets allowed or denied by the **Security Groups** rules set on the network interface. With the Flow Log service, you can see if the network interfaces are sending and receiving traffic correctly, who they are communicating with, and if there have been any intrusion attempts from the outside.
 
-<a id="components"></a>
-## Components
 
-An instance consists of the following components:
 
-- **Image**: Virtual disk that contains the operating system of an instance
-- **Flavor**: Virtual hardware performance specifications of an instance
-- **Availability Zone** (AZ): Physical location where an instance will be created
-- **Key Pair**: Key used to access an instance
-- **Security Groups**: Network security settings for an instance
-- **Network**: Virtual network where an instance will be connected
+<a id="main-features"></a>
+### Main Features { #main-features }
 
-Instance properties and usage change depending on these components. While settings for these components, with the exception of image and availability zone, can be modified after the creation of an instance, some flavors cannot be modified after an instance has been created. For more details on modifying instance flavors, see [Modify Flavor in the Console Guide](./console-guide/#modify-flavor).
+* The Flow Log service examines the headers of all packets going to and from a network interface. Currently, it only provides functionality for an instance's network interface and transit hub attachments.
 
-<a id="image"></a>
-### Image
+* However, headers are inspected and statistics are provided only if the L2 type is Ethernet, L3 type is IPv4, and L4 type is TCP/UDP/ICMP. Inspected packets are aggregated based on 5-tuples.
 
-An image is a virtual disk that contains an operating system. NHN Cloud currently supports Debian, Ubuntu, Rocky, and Windows.
+* Currently, the Flow Log service utilizes **Object Storage** as its storage. At each collection interval you set, a file is created in **Object Storage**, which you can download to see the actual statistics.
 
-All images are configured to run optimally on an instance's virtual hardware and are safe to use as they have undergone security inspection by NHN Cloud. For more details on images, see [Image Overview](/Compute/Image/en/overview/).
+* You can check the statistics to see if **Security Groups** are set up correctly, detect external intrusion attempts, and more.
 
-<a id="flavor"></a>
-### Flavor
 
-NHN Cloud provides various instance flavors to support a wide range of use cases. Instances can be created with flavors that best match the requirements of your services or applications. Flavors can be easily modified from the web console, even after an instance has been created.
+<a id="service-targets"></a>
+### Service Targets { #service-targets }
 
-| Type    | Description                                                                                                                                               |
-| ------- |--------------------------------------------------------------------------------------------------------------------------------------------------|
-| m2 | A flavor with a balanced setting between CPU and memory. Recommended when performance requirements of a service or an application are not clear.                                                                               |
-| c2 | A flavor optimized for high CPU performance. Recommended for web application servers or analytics systems that require high-performance computations.                                                                           |
-| r2 | A flavor optimized for high memory utilization. Recommended for in-memory databases or cache servers.                                                                               |
-| t2 | A low-cost instance. Recommended for servers with low workloads.                                                                                                          |
-| u2 | The cheapest instance. Recommended for servers with low workloads.<br>This flavor utilizes local block storage, which makes it a less stable but more affordable option compared to other flavors.<br>Instances of this flavor do not guarantee I/O performance. |
-| x1 | A flavor that supports high-end CPU and memory. Recommended for services or applications that require high performance.                                                                                        |
+* To collect/view connection information, statistics, etc. of packets coming in and out of ports on your instance
 
-<a id="availability-zone"></a>
-### Availability Zone
+* If you want to collect/view connection information, statistics, etc. of packets flowing to a network service you're using
 
-NHN Cloud has divided the entire system into multiple availability zones to prepare for potential failures caused by physical hardware issues. Each availability zone has its own storage system, network switch, data center space, and power supply units. A failure that occurs within one availability zone does not affect other zones, thereby increasing the availability of the whole service. You can ensure increased service availability by creating instances across multiple availability zones.
+* To collect/view connection information, statistics of packets allowed or blocked by **Security Groups** settings
 
-The following properties hold across different availability zones.
+* To enhance the security of your instance by viewing the history of packets coming into your instance and blocking suspicious addresses
 
-- Instances dispersed across different availability zones can communicate with each other over the network without incurring additional network usage costs.
-- Block storage can be shared between instances created within the same availability zone, but not between instances in different availability zones.
-- Floating IP can be shared across different availability zones. If one availability zone experiences a failure, floating IP can quickly be relocated to another availability zone in order to minimize downtime.
 
-<a id="key-pair"></a>
-### Key Pair
+<a id="terminology"></a>
+### Terminology { #terminology }
 
-A key pair is a pair of [PKI](https://en.wikipedia.org/wiki/Public_key_infrastructure)-based public and private SSH keys. To access an instance created in NHN Cloud, a key pair is required instead of keyboard-inputted ID/PW authentication which is vulnerable to security attacks. You can safely access an instance once you have been authenticated after sending the instance your login information encoded by your key pair's private key. For more details on how to access instances using key pairs, see [How to Access Instances](#how-to-access-instances).
+Describes the resources and terminology used by the Flow Log service.
 
-Key pairs can be newly generated from the NHN Cloud console during instance creation, or you can register your own existing key pairs. For more details on how to register key pairs, see [Import Key Pairs in the Console Guide](./console-guide/#key-pairs).
+* flowlog logger: A user-created flow log logger. You can set collection intervals, filters, and more.
+* flowlog logging port: The network interface on which collection is actually performed by the user-created flowlog logger.
+* 5-tuple: A tuple consisting of the following in a typical L4 packet header: protocol, source address, destination address, source port number, and destination port number. If the 5-tuple is the same, it is considered to be the same flow. Since ICMP does not have L4, it considers both the source port number and the destination port number to be zero.
 
-> [Caution]
-When a key pair is newly generated, its private key is downloaded. As private keys cannot be reissued, be sure to store them in a safe disk or USB drive. If a private key is exposed, anyone can access the instance using the exposed private key, so it must be managed carefully.
 
-> [Note]
-> Key pair is a resource assigned to the user account, so it's not deleted when you delete a project.
 
-<a id="security-groups"></a>
-### Security Groups
+<a id="statistics-information-items"></a>
+## Statistics Information Items { #statistics-information-items }
+The Flow Log service collects and aggregates packets and presents them to you in the following ways:
 
-A security group is a virtual firewall that determines network traffic delivered to an instance. For more details on security groups, see [VPC Overview](/Network/VPC/en/overview/).
 
-> [Note]
-The default security group is configured to ignore all inbound network traffic. Before accessing an instance using SSH, configure the instance's security group to allow access to the SSH port.
+| Number | Field | Description | Unit | Note |
+| --- | --- | --- | --- | --- |
+| 1| timestamp_start | When the 5-tuple was first inspected | UNIX TIMESTAMP |  |
+| 2| timestamp_end | The last time the 5-tuple was inspected | UNIX TIMESTAMP | |
+| 3| interface_id | Network Interface ID | UUID |  |
+| 4| owner_type | Type of the equipment that owns network interfaces | `instance`, `transithub_attachment`, `inter_project_peering`, `inter_region_peering`, `colocation_gateway` or `loadbalancer` | |
+| 5| owner_id | ID of the equipment that owns network interfaces | UUID | |
+| 6| subnet_id | ID of the subnet that owns the network interface | UUID | |
+| 7| vpc_id | ID of the VPC that owns the network interface | UUID | |
+| 8| region | Region information | `KR1`, `KR2`, and `KR3` | \* KR1: Korea (Pangyo) Region <br> \* KR2: Korea (Pyeongchon) region <br> \* KR3: Korea (Gwangju) region |
+| 9| protocol | Protocol number from the 5-tuple | Represents the protocol number assigned by IANA. <br> \* Each number corresponds to a different protocol: 1: ICMP, 6: TCP, 17: UDP <br> \* Anything else is not collected.|
+| 10 | src_addr | Source address | IPv4 address | |
+| 11 | dst_addr | Destination address | IPv4 address | |
+| 12 | src_port | Source port number| Integer | ICMP is assumed to be 0. |
+| 13 | dst_port | Destination port number | Integer | ICMP is assumed to be 0. |
+| 14 | tcp_flag | TCP flag | Integer | The TCP flag is a `bitwise OR` of the packets captured within the collection interval. <br>For more information, see TCP flags at the bottom of the table. |
+| 15 | packets | Number of packets seen during the collection interval | Integer | |
+| 16 | bytes | The total packet size seen during the collection interval. | Byte | |
+| 17 | direction | Packet flow direction of collected 5-tuples | `ingress`, `egress` or `unknown` | |
+| 18 | filter | Security Groups results for the collected 5-tuple | `ACCEPT` or `DROP` |
+| 19 | transithub_drop_no_route_packets | Number of packets dropped by the Transit Hub router due to lack of a routing path | Integer | This is specific to transit hubs; non-transit hub interfaces are denoted by -1. |
+| 20 | transithub_drop_no_route_bytes | The total size of packets dropped by the transit hub router due to lack of a routing path | Byte | This is specific to transit hubs; non-transit hub interfaces are denoted by -1. |
+| 21 | transithub_drop_black_hole_packets | Number of packets dropped because they were determined to be black hole routing on the transit hub router | Integer | This is specific to transit hubs; non-transit hub interfaces are denoted by -1. |
+| 22 | transithub_drop_black_hole_bytes | The sum of the packet sizes dropped by the transit hub router because it was determined to be black hole routing | Byte | This is specific to transit hubs; non-transit hub interfaces are denoted by -1. |
+| 23 | status | Log status | `OK` or `SKIPDATA` or `NODATA`                                                                              | \* OK: 5-tuple logged successfully. <br> \* SKIPDATA: There are packets that were not collected during that collection interval because they exceeded the internal capacity provided by the flow log. <br> \* NODATA: No data was collected within that collection interval. |
+| 24 | traffic_path | Traffic path of the collected 5-tuple | Integer | Indicates the network path that the packet flowed through with integer values from 1 to 7. <br> \* 1: VPC Local (communication between resources within the same VPC) <br> \* 2: Internet Gateway (outbound internet traffic, including floating IPs) <br> \* 3: VPN Gateway (on-premises connectivity via Site-to-Site VPN) <br> \* 4: VPC Peering (VPC peering within the same project) <br> \* 5: Region Peering (VPC peering between different regions) <br> \* 6: Project Peering (VPC peering between different projects in the same region) <br> \* 7: Service Gateway (Access to internal NHN Cloud services, e.g., Object Storage) |
 
-<a id="network"></a>
-### Network
 
-An instance must be connected to at least one network defined in the VPC in order to communicate externally. An instance that is not connected to a network cannot be accessed. To create or modify networks, see [VPC Overview](/Network/VPC/en/overview/).
+<a id="tcp-flag"></a>
+### TCP Flag { #tcp-flag }
+* If a TCP connection is short-lived, the side initiating the TCP Active Open may send both SYN and FIN within a single collection interval. In this case, SYN | FIN (2 | 1 = 3) is recorded.
 
-<a id="pricing"></a>
-## Pricing
 
-Instances are charged using the following criteria.
+* Conversely, on the receiving side, SYN | ACK and FIN may be received within the same collection interval. In this case, SYN | ACK | FIN (16 | 2 | 1 = 19) is recorded.
 
-* Instances are charged from the moment they are created.
-* Instance root block storage are charged separately according to the block storage pricing policy.
-* When an instance is stopped, a 90% discount based on the website rate is applied for 90 days. If your suspension exceeds 90 days, you will revert to normal rates while maintaining your suspension.
-* Terminated instances are not billed.
+* The values assigned to SYN, ACK, RST, and FIN follow the TCP header tcp flag bit field (RFC 793, Section 3.1. Header Format).
 
-For more details on pricing, see [Pricing](https://www.toast.com/kr/service/compute/instance#price).
+    * FIN: 1
+    * SYN: 2
+    * RST: 4
+    * ACK: 16
 
-<a id="how-to-access-instances"></a>
-## How to Access Instances
+* Packets containing only the PSH flag, packets containing only the ACK flag, and the PSH | ACK flag commonly used for general data transmission are excluded from collection. In other words, only SYN, SYN | ACK, FIN | ACK, RST, and FIN are recorded.
+* URG (urgent), ECE (ECN-echo), and CWR (congestion window reduced) are not supported.
 
-<a id="how-to-access-linux-instances"></a>
-### How to Access Linux Instances
+<a id="caution"></a>
+## Caution { #caution }
 
-You can access your Linux instances using an SSH client. An instance cannot be accessed if its security group does not have SSH ports (22 by default) allowed. See [VPC Overview](/Network/VPC/en/overview/) for more details on how to allow SSH access. If a floating IP is not assigned to an instance, the instance cannot be accessed from outside NHN Cloud. See [VPC Overview](/Network/VPC/en/overview/) for more details on how to assign floating IP.
+<a id="collection-interval"></a>
+### Collection Interval { #collection-interval }
+* If the collection interval is set too long, traffic from different connections may be collected under the same 5-tuple.
 
-#### How to Access Linux Instances from Mac or Linux Using an SSH Client
+    * If connection establishment and termination are repeated multiple times with the same 5-tuple within a collection interval, these connections will be aggregated under the same 5-tuple even if they are logically distinct connections.
 
-Generally, Mac and Linux have SSH clients installed by default. Use a key pair's private key to access an instance from an SSH client as shown below.
+    * Therefore, it is recommended to configure an appropriate collection interval based on your requirements.
 
-Ubuntu instances
+<a id="traffic-not-captured-by-flow-log"></a>
+### Traffic not captured by Flow Log { #traffic-not-captured-by-flow-log }
 
-	$ ssh -i my_private_key.pem ubuntu@<instance IP>
+* IPv6 traffic is not recorded.
+* Multicast traffic to and from the instance is not recorded.
+* Traffic communicating with 169.254.169.0/24 for monitoring the instance status is not recorded.
+* Traffic mirroring is not recorded.
+* ARP packets are not recorded.
+* `DROP` events caused by temporary network congestion in the physical equipment containing the instance or in the physical equipment of network services are not subject to collection.
 
-Debian instances
+<a id="important-notes-for-using-flow-log-designated-for-a-transit-hub-connection"></a>
+### Important notes for using Flow Log designated for a transit hub connection { #important-notes-for-using-flow-log-designated-for-a-transit-hub-connection }
 
-	$ ssh -i my_private_key.pem debian@<instance IP>
+* Multicast traffic in a transit hub records only packets ingressing into the transit hub based on the transit hub itself. Multicast traffic egressing through one or more connections is not recorded.
+* All packets flowing through a transit hub are recorded once under ACCEPT regardless of whether they are dropped by the transit hub router. Packets actually dropped by the transit hub router are recorded on a separate line with DROP.
+* The transit hub is not affected by the **Connection Setup only** option and collects all packets regardless of the connection state.
 
-Rocky instances
+<a id="important-notes-when-using-flow-log-designated-for-load-balancers"></a>
+### Important notes when using Flow Log designated for load balancers { #important-notes-when-using-flow-log-designated-for-load-balancers }
 
-	$ ssh -i my_private_key.pem rocky@<instance IP>
+* The load balancer currently collects only ACCEPT packets. The collection of packets that are dropped by the IPACL set on the load balancer is expected to be supported in the future.
 
-#### How to Access Linux Instances from Windows Using PuTTY SSH Client
+* In addition to packets attempting to access the load balancer and packets between the load balancer and members, we also collect status check packets.
+* Flow Logs associated with the service are not affected by the **Connection Setup only** option and will collect all packets regardless of the connection state.
 
-PuTTY SSH client is a widely used SSH client program for Windows. Install [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) before proceeding to the next steps.
+<a id="important-notes-when-using-flow-log-on-peering-gateways-and-colocation-gateways"></a>
+### Important notes when using Flow Log on peering gateways and colocation gateways { #important-notes-when-using-flow-log-on-peering-gateways-and-colocation-gateways }
 
-Follow these three steps in order to access Linux instances from Windows using the PuTTY SSH client.
+* VPC peering gateway is currently not supported.
+* DROP is not supported because this is not a service that allows users to explicitly set DROP.
+* Flow Logs associated with the service are not affected by the **Connection Setup only** option and will collect all packets regardless of the connection state.
 
-* Convert your key pair's private key to a PuTTY-compatible private key
-* Register your PuTTY-compatible private key with PuTTY
-* Access instances with PuTTY
 
-##### 1. Convert Your Key Pair’s Private Key to a PuTTY-Compatible Private Key
-
-In order to use PuTTY, you must convert your private key into a PuTTY-compatible private key format. To convert your key, use puttygen which is installed along with PuTTY.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
-
-At the bottom of the **PuTTY Key Generator** window under **Parameters**, select **RSA** for the **Type of key to generate**, and enter the default value '2048' bits for the **Number of bits in a generated key**. Under **Actions**, click **Load** next to **Load an existing private key file** to import your key pair's private key file.
-
-![Image2](http://static.toastoven.net/prod_instance/putty002-en.png)
-
-Under **Actions**, click **Save private key** next to **Save the generated key** to save the converted PuTTY-compatible private key. If you save the private key leaving the **Key passphrase** blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to save your converted private key more securely, set a passphrase before saving.
-
-> [Caution]
-If you wish to be able to automatically log in to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
-
-##### 2. Register Your PuTTY-Compatible Private Key With Putty
-
-Your PuTTY-compatible private key generated in the previous step can be registered by the following two methods.
-
-* By registering a private key file for authentication in PuTTY
-* By registering a private key file for authentication in pageant (PuTTY's authentication agent)
-
-**A. Registering a Private Key File for Authentication in PuTTY**
-
-Run PuTTY and select **Connection > SSH > Auth** from the **Category** on the left. Under **Authentication parameters** on the right, register your PuTTY-compatible private key in **Private key file for authentication**.
-
-![Image3](http://static.toastoven.net/prod_instance/putty005-en.png)
-
-Once you register your private key, you do not have to re-register your private key file each time you access your instance if you save your access information. For details on how to save your access information, see the section below on accessing instances.
-
-**B. Registering a Private Key File for Authentication in pageant (PuTTY's Authentication Agent)**
-
-When you run pageant, which is installed along with PuTTY, the icon shown below appears in the Windows tray. Right-click the pageant icon and select **Add Key** to add your PuTTY-compatible private key.
-
-![Image4](http://static.toastoven.net/prod_instance/putty006.png)
-
-To confirm that your private key has been added, select **View Keys**. If successful, the added key is displayed as below.
-
-![Image5](http://static.toastoven.net/prod_instance/putty008-en.png)
-
-Once you run pageant, it remains running in the Windows tray, so there is no need for you to rerun it every time you access an instance. However, you must run pageant again when you restart Windows.
-
-##### 3. Access Instances With PuTTY
-
-Now that the PuTTY-compatible private key has been successfully registered, run PuTTY.
-
-![Image6](http://static.toastoven.net/prod_instance/putty009-en.png)
-
-Set the **Host Name** as the following.
-
-Ubuntu
-
-	ubuntu@<Instance IP>
-
-Debian
-
-	debian@<Instance IP>
-
-Rocky
-
-	rocky@<Instance IP>
-
-Select 22, the default SSH port, for the **Port**, and **SSH** for the **Connection type**.
-
-If all of the information is correct, save the session. Under **Load, save or delete a stored session**, enter the name of the session to save in **Saved Sessions** and click **Save** to save the session. If you do not save the session, your private key settings registered in 2-A are also not preserved.
-
-Now click **Open** to access your instance.
-
-<a id="how-to-access-windows-instances"></a>
-### How to Access Windows Instances
-
-To access your Windows server, select a Windows instance to access from the NHN Cloud console. In the instance details page under the **Access Information** tab, click **Confirm Password** to check the password set in the Windows server.
-
-Your key pair's private key that you input in **Confirm Password** is not sent to the server, but is instead only used in your browser to decrypt the password.
-
-Click **Connect** next to **Confirm Password** to receive the rdp file configured for remote desktop access and run it to access your Windows server. Use `Administrator` for your Windows server ID, and use the password that you checked from the NHN Cloud console.
-
-### How to Connect Serial Console
-
-You can connect to your instance via the serial console in situations where the SSH client is unavailable, such as a boot failure or network configuration issue.
-
-The serial console feature has the following limitations:
-
-* Only one serial console connection is allowed per instance, and multiple connection attempts may not connect properly.
-* Serial console access is not guaranteed for instances created with personally uploaded images or instances created with personal images.
-* Serial console connections last up to 10 minutes.
-* Windows instances do not support the serial console feature.
-* Instances created before the January 27, 2026 release require **Stop the instance** and **Start the instance**. **Reboot the instance** feature does not apply.
-
-> [Caution]
-> Changing the boot method while accessing an instance via the serial console may result in a boot failure, and users are responsible for any resulting consequences.
-> Under normal circumstances, we recommend using an SSH client connection.
-
-#### Change GRUB Bootloader Settings
-
-GRUB configuration is required to manipulate the bootloader on instances created before the November 26, 2024 deployment.
-
-Edit the GRUB configuration file.
-
-```
-$ sudo vi /etc/default/grub.d/50-cloudimg-settings.cfg
-GRUB_TIMEOUT=3
-GRUB_TERMINAL="console serial"
-GRUB_SERIAL_COMMAND="serial --speed=9600 --unit=0 --word=8 --parity=no --stop=1"
-```
-
-Apply the changed setting. The command to apply GRUB settings may vary depending on the OS.
-
-```
-$ sudo update-grub
-```
