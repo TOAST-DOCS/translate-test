@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=16934d7f8cc5 -->
 
 # Cloud Accessリリースノート
