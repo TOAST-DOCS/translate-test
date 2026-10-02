@@ -97,7 +97,6 @@
 ### 2019. 12. 24. { #december-24-2019 }
 
 <a id="december-24-2019-added-features"></a>
-
 #### 新規機能追加
 
 * エンドポイントサーバーのトラフィックを安定的にロードバランシングすることができるGSLB(Global Server Load Balancing)機能が追加されました。
