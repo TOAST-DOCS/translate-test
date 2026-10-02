@@ -1,234 +1,510 @@
-<a id="compute-instance-overview"></a>
-## Compute > Instance > Overview
+<!-- pre-align:aligned sig=9be9447442b4 -->
 
-An instance is a virtual server composed of virtual CPUs, memory, and root block storage. You can install your services and applications on this server and use it in combination with the various services provided by NHN Cloud.
+<a id="network-load-balancer-dsr-overview"></a>
+## Network > Load Balancer (DSR) > Overview { #network-load-balancer-dsr-overview }
 
-<a id="components"></a>
-## Components
+NHN Cloud provides a load balancer that supports direct server return (DSR). With the DSR load balancer:
 
-An instance consists of the following components:
+- Distribute workloads that a single instance cannot handle across multiple instances to increase throughput.
+- Improve availability by automatically removing instances that have failed or are under maintenance from the service.
+- Achieve high performance, as server response traffic is sent directly to the client without passing through the load balancer.
 
-- **Image**: Virtual disk that contains the operating system of an instance
-- **Flavor**: Virtual hardware performance specifications of an instance
-- **Availability Zone** (AZ): Physical location where an instance will be created
-- **Key Pair**: Key used to access an instance
-- **Security Groups**: Network security settings for an instance
-- **Network**: Virtual network where an instance will be connected
 
-Instance properties and usage change depending on these components. While settings for these components, with the exception of image and availability zone, can be modified after the creation of an instance, some flavors cannot be modified after an instance has been created. For more details on modifying instance flavors, see [Modify Flavor in the Console Guide](./console-guide/#modify-flavor).
+<a id="dsr-method"></a>
+## DSR Method { #dsr-method }
 
-<a id="image"></a>
-### Image
+The DSR load balancer uses a different traffic handling method than a standard load balancer.
 
-An image is a virtual disk that contains an operating system. NHN Cloud currently supports Debian, Ubuntu, Rocky, and Windows.
+<a id="differences-from-a-standard-load-balancer-proxy-mode"></a>
+### Differences from a standard load balancer (proxy mode) { #differences-from-a-standard-load-balancer-proxy-mode }
 
-All images are configured to run optimally on an instance's virtual hardware and are safe to use as they have undergone security inspection by NHN Cloud. For more details on images, see [Image Overview](/Compute/Image/en/overview/).
+| Category | Standard load balancer (proxy mode) | Load balancer (DSR) |
+|------|------|------|
+| Client → Server | Via load balancer | Via load balancer |
+| Server → Client | Via load balancer | Sent directly, bypassing the load balancer |
+| Original IP verification | `X-Forwarded-For` header or Proxy Protocol required | Client IP directly verifiable |
+| Load balancer burden | Processes both requests and responses | Processes requests only |
+| Throughput | Neutral | Very high |
+| Protocol support | HTTP, HTTPS, TERMINATED_HTTPS, TCP | TCP, UDP |
 
-<a id="flavor"></a>
-### Flavor
+<a id="how-dsr-works"></a>
+### How DSR works { #how-dsr-works }
 
-NHN Cloud provides various instance flavors to support a wide range of use cases. Instances can be created with flavors that best match the requirements of your services or applications. Flavors can be easily modified from the web console, even after an instance has been created.
+1. Client request: The client sends a request to the virtual (VIP IP) of the load balancer.
+2. Request distribution: The load balancer selects an appropriate member instance and forwards the request.
+3. Direct response delivery: The member instance sends the response directly to the client without passing through the load balancer.
 
-| Type    | Description                                                                                                                                               |
-| ------- |--------------------------------------------------------------------------------------------------------------------------------------------------|
-| m2 | A flavor with a balanced setting between CPU and memory. Recommended when performance requirements of a service or an application are not clear.                                                                               |
-| c2 | A flavor optimized for high CPU performance. Recommended for web application servers or analytics systems that require high-performance computations.                                                                           |
-| r2 | A flavor optimized for high memory utilization. Recommended for in-memory databases or cache servers.                                                                               |
-| t2 | A low-cost instance. Recommended for servers with low workloads.                                                                                                          |
-| u2 | The cheapest instance. Recommended for servers with low workloads.<br>This flavor utilizes local block storage, which makes it a less stable but more affordable option compared to other flavors.<br>Instances of this flavor do not guarantee I/O performance. |
-| x1 | A flavor that supports high-end CPU and memory. Recommended for services or applications that require high performance.                                                                                        |
+!!! tip "Note"
+    The DSR method has the following advantages since the response traffic does not pass through the load balancer:
 
-<a id="availability-zone"></a>
-### Availability Zone
+    - The load on the load balancer is significantly reduced, allowing more concurrent connections to be handled.
+    - It is particularly beneficial for services with large response data, such as video streaming and large file downloads.
+    - Network latency is reduced, improving response speed.
+    - The client's source IP can be directly identified on the server.
 
-NHN Cloud has divided the entire system into multiple availability zones to prepare for potential failures caused by physical hardware issues. Each availability zone has its own storage system, network switch, data center space, and power supply units. A failure that occurs within one availability zone does not affect other zones, thereby increasing the availability of the whole service. You can ensure increased service availability by creating instances across multiple availability zones.
 
-The following properties hold across different availability zones.
+<a id="session-affinity"></a>
+## Session Affinity { #session-affinity }
 
-- Instances dispersed across different availability zones can communicate with each other over the network without incurring additional network usage costs.
-- Block storage can be shared between instances created within the same availability zone, but not between instances in different availability zones.
-- Floating IP can be shared across different availability zones. If one availability zone experiences a failure, floating IP can quickly be relocated to another availability zone in order to minimize downtime.
+Load balancer (DSR) provides a session affinity feature. When enabled, requests from the same client are consistently forwarded to the same member instance.
 
-<a id="key-pair"></a>
-### Key Pair
+- Session affinity disabled: Members are selected based on the 5-tuple (source IP, source port, destination IP, destination port, protocol), and traffic is distributed accordingly. Even if the source IP is the same, requests may be routed to different members if the source port differs.
+- Session affinity enabled: Requests from the same client are always forwarded to the same member based on the source IP. Even if the source port changes, the same member is selected as long as the source IP remains the same.
 
-A key pair is a pair of [PKI](https://en.wikipedia.org/wiki/Public_key_infrastructure)-based public and private SSH keys. To access an instance created in NHN Cloud, a key pair is required instead of keyboard-inputted ID/PW authentication which is vulnerable to security attacks. You can safely access an instance once you have been authenticated after sending the instance your login information encoded by your key pair's private key. For more details on how to access instances using key pairs, see [How to Access Instances](#how-to-access-instances).
+Members are selected using consistent hash-based mapping (Consistent Hashing) without a separate sticky table. When session affinity is disabled, the 5-tuple is used as the hash input; when enabled, the source IP is used. If the member configuration remains the same, the same input key always maps to the same member. Additionally, while an established session remains valid, all packets in that session are forwarded to the same member, ensuring per-session member affinity.
 
-Key pairs can be newly generated from the NHN Cloud console during instance creation, or you can register your own existing key pairs. For more details on how to register key pairs, see [Import Key Pairs in the Console Guide](./console-guide/#key-pairs).
+The session persistence method varies by protocol:
 
-> [Caution]
-When a key pair is newly generated, its private key is downloaded. As private keys cannot be reissued, be sure to store them in a safe disk or USB drive. If a private key is exposed, anyone can access the instance using the exposed private key, so it must be managed carefully.
+- TCP: Connection termination is detected by observing TCP flags (FIN/RST). Once a termination signal is confirmed, the session is quickly reclaimed with a short expiration time. The session is maintained as long as other traffic continues.
+- UDP: Since there is no connection termination signal, the session expires if no additional traffic is received for a certain period. Until expiration, the same flow continues to be forwarded to the same member.
 
-> [Note]
-> Key pair is a resource assigned to the user account, so it's not deleted when you delete a project.
+!!! tip "Note"
+    Session affinity is useful in the following cases:
 
-<a id="security-groups"></a>
-### Security Groups
+    - When user login sessions are managed on individual servers
+    - When session synchronization between instances is not implemented
+    - When there is a requirement to process a specific user's requests on the same server
 
-A security group is a virtual firewall that determines network traffic delivered to an instance. For more details on security groups, see [VPC Overview](/Network/VPC/en/overview/).
+!!! tip "Note"
+    Session affinity settings can be changed during operation. Changes do not affect existing TCP connections or ongoing UDP flows, and the updated settings are applied to new connections and flows.
 
-> [Note]
-The default security group is configured to ignore all inbound network traffic. Before accessing an instance using SSH, configure the instance's security group to allow access to the SSH port.
 
-<a id="network"></a>
-### Network
+<a id="instance-health-check"></a>
+## Instance health check { #instance-health-check }
 
-An instance must be connected to at least one network defined in the VPC in order to communicate externally. An instance that is not connected to a network cannot be accessed. To create or modify networks, see [VPC Overview](/Network/VPC/en/overview/).
+Load Balancer (DSR) periodically performs health checks to verify that member instances are operating normally. A health check confirms whether the expected response is received according to the specified protocol. If a normal response is not received within the specified number of attempts or time limit, the instance is considered unhealthy and excluded from load balancing. This feature ensures uninterrupted service even in the event of unexpected failures or maintenance.
 
-<a id="pricing"></a>
-## Pricing
+<a id="supported-protocols"></a>
+### Supported Protocols { #supported-protocols }
 
-Instances are charged using the following criteria.
+Load Balancer (DSR) supports the following health check protocols:
 
-* Instances are charged from the moment they are created.
-* Instance root block storage are charged separately according to the block storage pricing policy.
-* When an instance is stopped, a 90% discount based on the website rate is applied for 90 days. If your suspension exceeds 90 days, you will revert to normal rates while maintaining your suspension.
-* Terminated instances are not billed.
+- ICMP: A basic connectivity check method using ICMP Echo Request/Reply. Quickly verifies the network connectivity of an instance. Requests are sent to the actual IP of the member instance as the destination.
 
-For more details on pricing, see [Pricing](https://www.toast.com/kr/service/compute/instance#price).
+- TCP: Checks connectivity by attempting a TCP connection on the specified port. Verifies whether a specific service port is operating normally. Requests are sent to the VIP of Load Balancer (DSR) as the destination.
 
-<a id="how-to-access-instances"></a>
-## How to Access Instances
+- HTTP: Sends an HTTP request to the specified path and checks the response code. Provides a more accurate check of the actual service status of a web application. Requests are sent to the VIP of Load Balancer (DSR) as the destination.
 
-<a id="how-to-access-linux-instances"></a>
-### How to Access Linux Instances
+!!! tip "Note"
+    Since TCP/HTTP health checks send requests to the DSR VIP as the destination, if the VIP is not configured on the lo interface of the member server, the packets cannot be received or processed, causing the health check to fail and the member to be marked as `INACTIVE`. This behavior is intended to detect missing VIP configuration on the server side at an early stage. ICMP health checks send requests to the actual IP of the member, so they only verify connectivity regardless of the VIP configuration.
 
-You can access your Linux instances using an SSH client. An instance cannot be accessed if its security group does not have SSH ports (22 by default) allowed. See [VPC Overview](/Network/VPC/en/overview/) for more details on how to allow SSH access. If a floating IP is not assigned to an instance, the instance cannot be accessed from outside NHN Cloud. See [VPC Overview](/Network/VPC/en/overview/) for more details on how to assign floating IP.
+<a id="health-check-settings"></a>
+### Health Check Settings { #health-check-settings }
 
-#### How to Access Linux Instances from Mac or Linux Using an SSH Client
+The following items must be configured for health checks:
 
-Generally, Mac and Linux have SSH clients installed by default. Use a key pair's private key to access an instance from an SSH client as shown below.
+| Item | Description | Note |
+|------|------|------|
+| Delay | The interval (in seconds) at which health check requests are sent. | - |
+| Maximum retries (max_retries) | The maximum number of retries before an instance is considered unhealthy. | 1-10 |
+| Timeout (timeout) | The timeout period (in seconds) for each health check request. If no response is received within this time, the request is considered failed. | - |
+| Protocol (type) | The protocol to use for health checks. | ICMP, TCP, HTTP |
+| Port (health_check_port) | The port number on which health checks are performed. | Required when using TCP or HTTP |
+| HTTP Path (http_path) | The URL path to which requests are sent during HTTP health checks. | Configurable when using HTTP (default: `/`) |
+| Expected HTTP response code (expected_http_code) | The response code considered normal during HTTP health checks. | Configurable when using HTTP (default: `200`) |
 
-Ubuntu instances
+!!! danger "Caution"
+    The delay must be greater than or equal to the timeout. If the timeout is greater than the delay, health checks may not function correctly.
 
-	$ ssh -i my_private_key.pem ubuntu@<instance IP>
 
-Debian instances
+<a id="create-load-balancer-dsr"></a>
+## Create Load Balancer (DSR) { #create-load-balancer-dsr }
 
-	$ ssh -i my_private_key.pem debian@<instance IP>
+Load Balancer (DSR) is created within the [VPC](/Network/VPC/ko/overview/#_2) in the [subnet](/Network/VPC/ko/overview/#_2).
 
-Rocky instances
+<a id="assign-vip-address"></a>
+### Assign VIP Address { #assign-vip-address }
 
-	$ ssh -i my_private_key.pem rocky@<instance IP>
+When creating the Load Balancer (DSR), the VIP address can be assigned in one of the following two ways:
 
-#### How to Access Linux Instances from Windows Using PuTTY SSH Client
+- Auto assign: An available IP from the subnet is automatically assigned and used as the VIP.
+- Manual assign: A desired IP within the CIDR range of the subnet is specified and used as the VIP.
 
-PuTTY SSH client is a widely used SSH client program for Windows. Install [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) before proceeding to the next steps.
+!!! danger "Caution"
+    If the manually specified VIP address is not within the CIDR range of the subnet, creation will fail. Make sure to specify an IP within the IP range of the subnet.
 
-Follow these three steps in order to access Linux instances from Windows using the PuTTY SSH client.
+<a id="register-member"></a>
+### Register Member { #register-member }
 
-* Convert your key pair's private key to a PuTTY-compatible private key
-* Register your PuTTY-compatible private key with PuTTY
-* Access instances with PuTTY
+Load Balancer (DSR) distributes incoming traffic by registering instances as members. The following requirements must be met when registering members:
 
-##### 1. Convert Your Key Pair’s Private Key to a PuTTY-Compatible Private Key
+- Subnet match: The port of the member instance must belong to the same subnet as Load Balancer (DSR).
+- Compute instance: Members must be compute instances. (`device_owner` starts with the `compute:` prefix)
+- SDN support: The member port must operate in an SDN (software defined network) environment.
 
-In order to use PuTTY, you must convert your private key into a PuTTY-compatible private key format. To convert your key, use puttygen which is installed along with PuTTY.
+!!! danger "Caution"
+    By default, up to 30 members can be registered per Load Balancer (DSR). If more members are needed, contact us separately.
 
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
+!!! tip "Note"
+    * The initial status of a newly registered member is `INACTIVE`. Once the health check passes, the status automatically transitions to `ACTIVE` and the member begins receiving traffic.
+    * The same instance port cannot be registered more than once in the same Load Balancer (DSR).
+    * For a member instance to properly receive and respond to traffic, ARP and VIP settings must be configured within the server. For more information, see the Member server configuration guide section below.
 
-At the bottom of the **PuTTY Key Generator** window under **Parameters**, select **RSA** for the **Type of key to generate**, and enter the default value '2048' bits for the **Number of bits in a generated key**. Under **Actions**, click **Load** next to **Load an existing private key file** to import your key pair's private key file.
+<a id="member-server-configuration-guide"></a>
+## Member Server Configuration Guide { #member-server-configuration-guide }
 
-![Image2](http://static.toastoven.net/prod_instance/putty002-en.png)
+Load Balancer (DSR) forwards client requests to member servers with the virtual IP (VIP) as the destination. For the member server to properly receive and respond to these packets, the following settings are required on the server side:
 
-Under **Actions**, click **Save private key** next to **Save the generated key** to save the converted PuTTY-compatible private key. If you save the private key leaving the **Key passphrase** blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to save your converted private key more securely, set a passphrase before saving.
+!!! danger "Caution"
+    Configurations must be applied in the following order: Step 1 (kernel parameters) → Step 2 (VIP configuration). If the VIP is assigned before configuring the kernel parameters, an ARP conflict with the load balancer's VIP may occur, resulting in a network failure.
 
-> [Caution]
-If you wish to be able to automatically log in to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
+<a id="kernel-parameter-configuration-arp-ignoreannounce"></a>
+### 1. Kernel Parameter Configuration (ARP Ignore/Announce) { #kernel-parameter-configuration-arp-ignoreannounce }
 
-##### 2. Register Your PuTTY-Compatible Private Key With Putty
+Before configuring the VIP on a network interface, the kernel must first be configured to prevent the server from responding to ARP requests for the VIP. If the VIP is assigned without this configuration, an ARP conflict with the load balancer's VIP may occur, resulting in a network failure.
 
-Your PuTTY-compatible private key generated in the previous step can be registered by the following two methods.
+<a id="kernel-parameter-configuration-arp-ignoreannounce-parameter-value-definitions"></a>
+#### Parameter value definitions
 
-* By registering a private key file for authentication in PuTTY
-* By registering a private key file for authentication in pageant (PuTTY's authentication agent)
+| Parameter | Value | Description |
+|---------|---|------|
+| `arp_ignore` | `1` | Responds to ARP requests only when the requested IP is configured on the interface from which the request was received. (Prevents responses to ARP requests for the VIP configured on lo) |
+| `arp_announce` | `2` | When sending ARP packets externally, fixes the source IP to the address of the outgoing interface to prevent the VIP address from being exposed. |
 
-**A. Registering a Private Key File for Authentication in PuTTY**
+<a id="kernel-parameter-configuration-arp-ignoreannounce-real-time-application"></a>
+#### Real-time application
 
-Run PuTTY and select **Connection > SSH > Auth** from the **Category** on the left. Under **Authentication parameters** on the right, register your PuTTY-compatible private key in **Private key file for authentication**.
-
-![Image3](http://static.toastoven.net/prod_instance/putty005-en.png)
-
-Once you register your private key, you do not have to re-register your private key file each time you access your instance if you save your access information. For details on how to save your access information, see the section below on accessing instances.
-
-**B. Registering a Private Key File for Authentication in pageant (PuTTY's Authentication Agent)**
-
-When you run pageant, which is installed along with PuTTY, the icon shown below appears in the Windows tray. Right-click the pageant icon and select **Add Key** to add your PuTTY-compatible private key.
-
-![Image4](http://static.toastoven.net/prod_instance/putty006.png)
-
-To confirm that your private key has been added, select **View Keys**. If successful, the added key is displayed as below.
-
-![Image5](http://static.toastoven.net/prod_instance/putty008-en.png)
-
-Once you run pageant, it remains running in the Windows tray, so there is no need for you to rerun it every time you access an instance. However, you must run pageant again when you restart Windows.
-
-##### 3. Access Instances With PuTTY
-
-Now that the PuTTY-compatible private key has been successfully registered, run PuTTY.
-
-![Image6](http://static.toastoven.net/prod_instance/putty009-en.png)
-
-Set the **Host Name** as the following.
-
-Ubuntu
-
-	ubuntu@<Instance IP>
-
-Debian
-
-	debian@<Instance IP>
-
-Rocky
-
-	rocky@<Instance IP>
-
-Select 22, the default SSH port, for the **Port**, and **SSH** for the **Connection type**.
-
-If all of the information is correct, save the session. Under **Load, save or delete a stored session**, enter the name of the session to save in **Saved Sessions** and click **Save** to save the session. If you do not save the session, your private key settings registered in 2-A are also not preserved.
-
-Now click **Open** to access your instance.
-
-<a id="how-to-access-windows-instances"></a>
-### How to Access Windows Instances
-
-To access your Windows server, select a Windows instance to access from the NHN Cloud console. In the instance details page under the **Access Information** tab, click **Confirm Password** to check the password set in the Windows server.
-
-Your key pair's private key that you input in **Confirm Password** is not sent to the server, but is instead only used in your browser to decrypt the password.
-
-Click **Connect** next to **Confirm Password** to receive the rdp file configured for remote desktop access and run it to access your Windows server. Use `Administrator` for your Windows server ID, and use the password that you checked from the NHN Cloud console.
-
-### How to Connect Serial Console
-
-You can connect to your instance via the serial console in situations where the SSH client is unavailable, such as a boot failure or network configuration issue.
-
-The serial console feature has the following limitations:
-
-* Only one serial console connection is allowed per instance, and multiple connection attempts may not connect properly.
-* Serial console access is not guaranteed for instances created with personally uploaded images or instances created with personal images.
-* Serial console connections last up to 10 minutes.
-* Windows instances do not support the serial console feature.
-* Instances created before the January 27, 2026 release require **Stop the instance** and **Start the instance**. **Reboot the instance** feature does not apply.
-
-> [Caution]
-> Changing the boot method while accessing an instance via the serial console may result in a boot failure, and users are responsible for any resulting consequences.
-> Under normal circumstances, we recommend using an SSH client connection.
-
-#### Change GRUB Bootloader Settings
-
-GRUB configuration is required to manipulate the bootloader on instances created before the November 26, 2024 deployment.
-
-Edit the GRUB configuration file.
-
-```
-$ sudo vi /etc/default/grub.d/50-cloudimg-settings.cfg
-GRUB_TIMEOUT=3
-GRUB_TERMINAL="console serial"
-GRUB_SERIAL_COMMAND="serial --speed=9600 --unit=0 --word=8 --parity=no --stop=1"
+```bash
+sudo sysctl -w net.ipv4.conf.all.arp_ignore=1
+sudo sysctl -w net.ipv4.conf.all.arp_announce=2
+sudo sysctl -w net.ipv4.conf.lo.arp_ignore=1
+sudo sysctl -w net.ipv4.conf.lo.arp_announce=2
 ```
 
-Apply the changed setting. The command to apply GRUB settings may vary depending on the OS.
+<a id="kernel-parameter-configuration-arp-ignoreannounce-permanent-application-etcsysctlconf"></a>
+#### Permanent application (/etc/sysctl.conf)
+
+Add the following content to the end of the file:
+
+```bash
+sudo tee -a /etc/sysctl.conf <<EOF
+net.ipv4.conf.all.arp_ignore = 1
+net.ipv4.conf.all.arp_announce = 2
+net.ipv4.conf.lo.arp_ignore = 1
+net.ipv4.conf.lo.arp_announce = 2
+EOF
+
+# Apply Settings
+sudo sysctl -p
+```
+
+!!! tip "Note"
+    You can check if the value has been configured to `1` by using the command `sysctl net.ipv4.conf.all.arp_ignore` after applying it.
+
+<a id="vip-configuration-on-loopback-interface"></a>
+### 2. VIP Configuration on Loopback Interface { #vip-configuration-on-loopback-interface }
+
+The VIP is assigned to the lo interface so that the server can recognize packets forwarded from the load balancer (packets with the VIP as the destination) as its own.
+
+<a id="vip-configuration-on-loopback-interface-temporary-configuration-deleted-on-reboot"></a>
+#### Temporary configuration (deleted on reboot)
+
+```bash
+# Replace <VIP> with the actual load balancer VIP address.
+sudo ip addr add <VIP>/32 dev lo
+```
+
+<a id="vip-configuration-on-loopback-interface-permanent-configuration"></a>
+#### Permanent configuration
+
+##### Ubuntu 18.04 and later (Netplan)
+
+Modify the configuration file in the `/etc/netplan/` directory (e.g., `01-netcfg.yaml`).
+
+!!! danger "Caution"
+    The existing interface configuration must be preserved. Add or merge only the lo section.
+
+```yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    lo:
+      addresses:
+        - 127.0.0.1/8
+        - <VIP>/32  # Add load balancer VIP
+```
+
+Apply the configuration:
+
+```bash
+sudo netplan apply
+```
+
+##### CentOS / RHEL 7 and later
+
+Create the file `/etc/sysconfig/network-scripts/ifcfg-lo:0`.
+
+```bash
+sudo tee /etc/sysconfig/network-scripts/ifcfg-lo:0 <<EOF
+DEVICE=lo:0
+IPADDR=<VIP>
+NETMASK=255.255.255.255
+ONBOOT=yes
+EOF
+```
+
+Apply the configuration:
+
+```bash
+sudo ifup lo:0
+```
+
+<a id="vip-configuration-on-loopback-interface-when-a-member-of-multiple-dsr-instances"></a>
+#### When a member of multiple DSR instances
+
+If a single instance is registered as a member of multiple Load Balancer (DSR) instances, all VIPs must be added to the lo interface, and each VIP must also be registered in the additional allowed addresses of the network interface.
+
+```bash
+sudo ip addr add <VIP_1>/32 dev lo
+sudo ip addr add <VIP_2>/32 dev lo
+```
+
+Example of permanent Netplan configuration:
+
+```yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    lo:
+      addresses:
+        - 127.0.0.1/8
+        - <VIP_1>/32
+        - <VIP_2>/32
+```
+
+<a id="configuration-verification-and-testing"></a>
+### 3. Configuration Verification and Testing { #configuration-verification-and-testing }
+
+<a id="configuration-verification-and-testing-verify-ip-configuration"></a>
+#### Verify IP configuration
+
+Verifies that the VIP has been correctly registered on the `/32`.
+
+```bash
+ip addr show lo
+```
+
+Example output:
 
 ```
-$ sudo update-grub
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536
+    inet 127.0.0.1/8 scope host lo
+    inet 192.168.1.100/32 scope host lo
 ```
+
+<a id="configuration-verification-and-testing-verify-arp-response"></a>
+#### Verify ARP response
+
+When an ARP request is sent to the VIP from an external server (another server on the same subnet), the MAC address of the member server should not respond. (Only the MAC of the load balancer should respond for it to be normal)
+
+```bash
+# Run from another instance on the same subnet
+arping -c 3 <VIP>
+```
+
+Verifies that the MAC address returned is the load balancer's MAC. If the member server's MAC is returned, the ARP configuration is incorrect.
+
+<a id="configuration-verification-and-testing-verify-kernel-parameter"></a>
+#### Verify kernel parameter
+
+```bash
+sysctl net.ipv4.conf.all.arp_ignore
+sysctl net.ipv4.conf.all.arp_announce
+sysctl net.ipv4.conf.lo.arp_ignore
+sysctl net.ipv4.conf.lo.arp_announce
+```
+
+Each should output `1`, `2`, `1`, and `2`.
+
+<a id="service-configuration"></a>
+### 4. Service Configuration { #service-configuration }
+
+<a id="service-configuration-application-binding"></a>
+#### Application Binding
+
+The application (Nginx, Apache, Tomcat, etc.) must be configured so that the socket is listening on `0.0.0.0` (Any) or the VIP to receive packets.
+
+| Binding | Description | Example |
+|------------|------|------|
+| `0.0.0.0:port` | Listen on all IPs (recommended) | `listen 80;` (Nginx default) |
+| `<VIP>:port` | Listen only on VIP | `listen 192.168.1.100:80;` |
+| `<Server IP>:Port` | Only receive from the server's own IP — **VIP traffic cannot be received** | `listen 10.0.0.5:80;` |
+
+!!! danger "Caution"
+If the application is bound only to the server's actual interface IP (e.g., the IP of `eth0`), it cannot receive packets arriving at the VIP. The application must be bound to `0.0.0.0`, or the VIP address must be explicitly added as an additional binding.
+
+<a id="service-configuration-response-to-health-check"></a>
+#### Response to health check
+
+Load Balancer (DSR) periodically sends health check requests to the member servers. The server must respond normally to the status check to maintain `ACTIVE` status.
+
+| Health check type | Server requirements |
+|---------------|-------------|
+| ICMP | Must respond to ICMP Echo requests. If ICMP is blocked by the internal firewall of the server, it needs to be allowed. |
+| TCP | Must accept TCP connections on the specified port. The service on the port must be running. |
+| HTTP | Must return the expected HTTP response code (default 200) on the specified port/path. |
+
+!!! tip "Note"
+    * Health check requests are sent from a dedicated health check IP, not from the load balancer's VIP. Traffic from this IP must be allowed in the Security Group and the server's internal firewall. The dedicated health check IP is automatically assigned to the same subnet as the DSR.
+    * If an internal firewall is configured on the server, ensure that the service port and health check port (including ICMP) are not blocked.
+
+<a id="security-groups-configuration"></a>
+### 5. Security Groups Configuration { #security-groups-configuration }
+
+The Security Groups of member instances must allow service traffic and health check traffic from the DSR.
+
+!!! tip "Note"
+    The default Security Group is associated with the ports corresponding to the VIP and dedicated health check IP of Load Balancer (DSR). However, Security Groups filtering (flow) is not applied to the DSR port itself.
+
+    Security Groups filtering is applied normally to the ports of member instances. Since DSR does not perform source IP translation (No SNAT), the source IP of service traffic is the client's original IP. Therefore, specifying only the default SG as the remote for service traffic is not sufficient; the client IP range or ANY (0.0.0.0/0) must be specified as the remote.
+
+    In contrast, health check traffic is sent from a dedicated health check IP assigned to the same subnet as the DSR, and since the port of that IP belongs to the default SG, specifying the default SG as the remote allows the traffic.
+
+<a id="security-groups-configuration-method-1-easy-configuration"></a>
+#### Method 1: Easy configuration
+
+Since the DSR retains the client's source IP, both service traffic and status check traffic must be allowed separately.
+
+| Direction | IP protocol | Port Range | Remote | Description |
+|------|-----------|----------|------|------|
+| Receive | TCP or UDP | Service Port (e.g., 80) | 0.0.0.0/0 | Allow service traffic from clients (specified according to the service protocol) |
+| Receive | Random | - | default | Allow health check traffic (the port of the dedicated health check IP belongs to the default SG) |
+
+!!! tip "Note"
+    Since DSR does not perform source IP translation, the source IP of service traffic arriving at the member server is the client's original IP. If the client IP range is not specified, allow `0.0.0.0/0`. If the client range is confirmed, it can be restricted to the corresponding CIDR.
+
+<a id="security-groups-configuration-method-2-individual-rules-fine-grained-control"></a>
+#### Method 2: Individual rules (fine-grained control)
+
+Add individual rules when applying the principle of least privilege for security policy or when only specific ports need to be allowed.
+
+| Usage | Protocol | Port | Remote | Note |
+|------|---------|------|------|------|
+| Service traffic (TCP) | TCP | Service port (e.g., 80, 443) | Client IP range or 0.0.0.0/0 | DSR does not perform SNAT, so the source IP is the client's original IP |
+| Service traffic (UDP) | UDP | Service port (e.g., 53, 514) | Client IP range or 0.0.0.0/0 | When using UDP protocol services |
+| TCP health check | TCP | `health_check_port` | DSR subnet CIDR or default security group | Sent from the dedicated health check IP |
+| ICMP health check | ICMP | - | DSR subnet CIDR or default security group | When using ICMP type |
+| HTTP health check | TCP | `health_check_port` | DSR subnet CIDR or default security group | When using HTTP type |
+
+##### Example of adding rules in the console
+
+If the service port is 80 and the TCP health check port is also 80:
+
+| Direction | IP protocol | Port Range | Remote | Description |
+|------|-----------|----------|------|------|
+| Receive | TCP | 80 | 0.0.0.0/0 | Service traffic from clients |
+| Receive | TCP | 80 | default | Health check traffic |
+
+When using ICMP health checks, add the following:
+
+| Direction | IP protocol | Port Range | Remote | Description |
+|------|-----------|----------|------|------|
+| Receive | ICMP | - | default | ICMP health check |
+
+!!! tip "Note"
+    * If the health check port (`health_check_port`) is set differently from the service port, both ports must be allowed in the Security Groups.
+    * If the client IP range is limited to a specific CIDR (e.g., `10.0.0.0/8`), the principle of least privilege can be applied by specifying that CIDR instead of `0.0.0.0/0`.
+    * In health check rules, the subnet CIDR (e.g., `192.168.1.0/24`) can be specified instead of the default Security Group. Since health check requests are sent from a dedicated health check IP automatically assigned to the same subnet as the DSR, allowing by subnet CIDR is sufficient.
+
+<a id="network-interface-security-settings-update"></a>
+### 6. Network Interface Security Settings Update { #network-interface-security-settings-update }
+
+In the DSR method, the load balancer forwards packets to the member server while keeping the destination IP as the VIP. In the NHN Cloud network environment, packets whose source or destination is an IP other than the IP assigned to the instance are blocked by default for security purposes.
+
+Therefore, the VIP must be added as an additional allowed address on the network interface so that the member instance can receive packets destined for the VIP and respond with the VIP as the source.
+
+<a id="network-interface-security-settings-update-reason-for-the-settings"></a>
+#### Reason for the Settings
+
+```
+[Client] → dst: VIP → [Load Balancer (DSR)] → dst: VIP → [Member Server]
+                                                         ↑
+                                         The assigned port IP differs from the destination (VIP) → Packet dropped if VIP is not registered as an additional allowed address
+```
+
+<a id="network-interface-security-settings-update-main-configuration-method"></a>
+#### Main configuration method
+
+Add the VIP of Load Balancer (DSR) to the additional allowed address section of the network interface (port) of the member server.
+
+* Registering the VIP as an additional allowed address allows packets with that IP as the source or destination to pass through the port. This adheres to the principle of least privilege by selectively allowing only the necessary VIPs without disabling port security entirely.
+* Configuration location: In the console, select the corresponding interface from the **Network > Network Interface** menu, then add the VIP address (`<VIP>/32`) to the **additional allowed addresses** section.
+* If a single instance is a member of multiple Load Balancer (DSR) instances, all VIPs must be added to the additional allowed addresses.
+
+!!! tip "Note"
+    For the procedure to configure additional allowed addresses, see the [console user guide](/Network/Network%20Interface/ko/console-guide/).
+
+
+<a id="floating-ip-association"></a>
+## Floating IP Association { #floating-ip-association }
+
+A Floating IP can be associated with the VIP of Load Balancer (DSR) to enable access from external networks.
+
+- Associating a Floating IP allows traffic to be forwarded from the internet to Load Balancer (DSR).
+- Dissociating a Floating IP blocks external access, making the load balancer accessible only from the internal network.
+- Associating or dissociating a Floating IP is automatically reflected in the load balancer.
+
+!!! tip "Note"
+    Dissociating a Floating IP does not affect access to the VIP from the internal network.
+
+
+<a id="quota-and-limitations"></a>
+## Quota and Limitations { #quota-and-limitations }
+
+The following quotas and limitations apply when using Load Balancer (DSR):
+
+| Item | Default Limit | Description |
+|------|----------|------|
+| Number of Load Balancers (DSR) per project | 10 | Number of Load Balancers (DSR) that can be created per project |
+| Number of members per Load Balancer (DSR) | 30 | Number of members that can be registered to a single Load Balancer (DSR) |
+| Number of members per project | No limit | |
+
+!!! tip "Note"
+    If you need to exceed the default quota, contact customer support.
+
+
+<a id="load-balancer-dsr-monitoring"></a>
+## Load Balancer (DSR) Monitoring { #load-balancer-dsr-monitoring }
+
+The status of Load Balancer (DSR) and the health check results of member instances can be monitored in real time.
+
+<a id="status-information"></a>
+### Status Information { #status-information }
+
+Load Balancer (DSR) status
+
+| Status | Description |
+|------|------|
+| `ACTIVE` | Operating normally |
+| `BUILD` | Being created |
+| `ERROR` | Error occurred |
+
+Member Status
+
+| Status | Description |
+|------|------|
+| `ACTIVE` | Health check passed; included in traffic distribution |
+| `INACTIVE` | Health check failed or immediately after registration; excluded from traffic distribution |
+| `ONLINE` | Member is manually disabled (`admin_state_up=false`) |
+
+!!! tip "Note"
+    The member status is automatically changed to `ACTIVE` or `INACTIVE` based on the health check result. A member that becomes `INACTIVE` due to a health check failure is automatically excluded from traffic distribution, and if the health check subsequently passes, the member transitions back to `ACTIVE` and resumes receiving traffic. A manually deactivated member is displayed as `ONLINE` and excluded from traffic distribution.
+
+!!! tip "Note"
+    Newly registered members start in the `INACTIVE` state. They automatically transition to `ACTIVE` after passing the health check.
+
+
+<a id="caution"></a>
+## Caution { #caution }
+
+Note the following when using Load Balancer (DSR).
+
+- Same subnet requirement: Load Balancer (DSR) and all member instances must be located in the same subnet.
+- Protocol limitations: Load Balancer (DSR) operates at the L4 level and does not provide L7 features (such as HTTP header-based routing and SSL offloading), unlike a standard load balancer.
+- Fragmented packet handling: Fragmented IP packets are dropped because the L4 header (port/flags) cannot be inspected, making consistent member mapping impossible. Configure the MTU of the client and member instances appropriately, or ensure Path MTU Discovery is functioning correctly to prevent fragmentation from occurring.
+- Instance deletion: If an instance registered as a load balancer member is deleted, the member is automatically removed from the load balancer.
+- VM live migration: When VM live migration is performed on a member instance, the network information is automatically updated internally. A temporary traffic interruption may occur during migration, but it is automatically restored upon completion.
+- Routing method change: Changing the routing method (DVR ↔ CVR) of the router in use may cause a temporary communication interruption (within 1 minute).
+- Resource cleanup on load balancer deletion: Deleting Load Balancer (DSR) releases all member registration information registered in that DSR (the instances themselves are not deleted). If a Floating IP is associated, it is automatically released.
