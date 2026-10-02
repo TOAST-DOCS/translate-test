@@ -426,7 +426,8 @@ kubectl -n kube-system set image deployment/calico-kube-controllers \
   calico-kube-controllers=calico/kube-controllers:v3.24.1
 ```
 
-### > GPU flavor ワーカーノードの GPU 関連モニタリング情報が表示されません。
+<a id="gpu-related-monitoring-information-on-gpu-flavor-worker-nodes-is-not-displayed"></a>
+### > GPU flavor ワーカーノードの GPU 関連モニタリング情報が表示されません。 { #gpu-related-monitoring-information-on-gpu-flavor-worker-nodes-is-not-displayed }
 dcgm-exporter が参照するライブラリリンクに問題があるために発生します。dcgm-exporter が `libdcgm.so.4` ライブラリを見つけられず実行に失敗し、その結果 GPU 関連のモニタリング指標が収集されません。
 
 この問題は、以下のインスタンスイメージを使用する GPU ワーカーノードで発生します。
@@ -435,6 +436,7 @@ dcgm-exporter が参照するライブラリリンクに問題があるために
 * Ubuntu Server 22.04.5 LTS - Container (2026.03.10)
 * Ubuntu Server 24.04.4 LTS - Container (2026.03.10)
 
+<a id="gpu-related-monitoring-information-on-gpu-flavor-worker-nodes-is-not-displayed-how-to-check-if-the-symptom-occurs"></a>
 #### 症状発生時の確認方法
 GPU ワーカーノードで dcgm-exporter を実行すると、次のようなエラーログが出力されます。
 ```
@@ -443,6 +445,7 @@ time=2026-08-06T00:13:18.786+09:00 level=INFO msg="Starting dcgm-exporter" Versi
 time=2026-08-06T00:13:18.792+09:00 level=ERROR msg="the libdcgm.so.4 library was not found. Install Data Center GPU Manager (DCGM)."
 ```
 
+<a id="gpu-related-monitoring-information-on-gpu-flavor-worker-nodes-is-not-displayed-workaround"></a>
 #### 解決策
 この問題は、2026年8月の定期メンテナンス時に対処される予定です。定期メンテナンスまでの間は、各 GPU ワーカーノードで以下のコマンドを実行することで、暫定的に対処できます。
 ```
