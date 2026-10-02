@@ -1,506 +1,509 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > 콘솔 사용 가이드
+<!-- pre-align:aligned sig=087cd81ac2d8 -->
 
-<a id="create-instances"></a>
-## 인스턴스 생성
+# 콘솔 사용 가이드
+**Management > Private CA > 콘솔 사용 가이드**
 
-아래 설정들을 통하여 인스턴스를 생성하거나 인스턴스 템플릿(Instance Template)을 통해 인스턴스를 생성할 수 있습니다. 인스턴스 템플릿을 통해 인스턴스를 생성하려면 인스턴스 생성 화면에서 **인스턴스 템플릿 사용**을 선택합니다. 인스턴스 템플릿 생성 방법은 [인스턴스 템플릿 콘솔 가이드](/Compute/Instance%20Template/ko/console-guide/)를 참고합니다.
+Private CA 콘솔은 인증 기관(certificate authority, CA)을 중심으로 구성되어 있으며, 모든 리소스(인증서 템플릿, 발급자, 인증서, ACME 토큰)는 특정 저장소에 속합니다. 콘솔 화면은 왼쪽에 저장소 목록, 오른쪽에 선택한 저장소의 상세 정보를 표시하는 탭 구조로 되어 있습니다.
 
-<a id="os-settings"></a>
-### OS 설정
+<a id="private-ca-usage-flow"></a>
+## Private CA 사용 흐름 { #private-ca-usage-flow }
 
-인스턴스 생성 시 사용될 루트 블록 스토리지의 생성 방식을 결정합니다.
+Private CA에서 인증서를 발급 받기까지의 과정은 다음과 같습니다.
 
-- **신규 생성 및 설정** 또는 **기존 리소스 지정** 중 하나를 선택합니다.
-- **신규 생성 및 설정**을 선택한 경우 이미지를 이용하여 루트 블록 스토리지를 생성합니다.
-- **기존 리소스 지정**을 선택한 경우 기존에 생성된 블록 스토리지 또는 스냅숏을 이용합니다.
+1. **저장소 생성**: 인증서를 관리할 공간을 만듭니다.
+2. **발급자 생성**: 인증서에 서명할 인증 기관(CA)을 만듭니다.
+    - Root CA: 최상위 인증 기관
+    - Intermediate CA: Root CA 아래의 중간 인증 기관
+3. **인증서 템플릿 생성**: 동일한 설정으로 여러 인증서를 발급할 때 사용합니다.
+4. **인증서 발급**: 인증서 템플릿을 통해 실제 사용할 인증서를 발급 받습니다.
 
-<a id="image"></a>
-### 이미지
+!!! tip "알아두기"
+    - **CA(certificate authority, 인증 기관)**: 인증서를 발급하고 서명하는 주체입니다.
+    - **Root CA**: 자체 서명한 최상위 인증서입니다. 모든 신뢰의 출발점입니다.
+    - **Intermediate CA**: Root CA에 의해 서명된 중간 인증서입니다. 실제 서버 인증서 발급에 사용됩니다.
 
-원하는 운영체제가 설치된 이미지를 선택합니다. 이미지는 NHN Cloud에서 제공하는 퍼블릭 이미지, 기존에 만들어 둔 사용자 이미지, 공유 이미지에서 선택할 수 있습니다.
+<a id="repository"></a>
+## 저장소 { #repository }
 
-사용할 이미지에 따라 인스턴스 타입(flavor)이 달라지므로 인스턴스 생성 시에는 가장 먼저 이미지를 선택하고 진행하도록 합니다.
+저장소는 Private CA를 관리하는 기본 단위입니다. 저장소를 생성하면 발급자, 인증서 템플릿, 인증서 등을 관리할 수 있습니다.
 
-| 운영체제                         | 블록 스토리지     | 메모리   |
-| ------------------------------ | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB 이상  | 1GB 이상 |
-| Windows                         | 50GB 이상  | 2GB 이상 |
+<a id="add-repository"></a>
+### 저장소 추가 { #add-repository }
 
-<a id="root-block-storage"></a>
-### 루트 블록 스토리지
+1. 콘솔 왼쪽 상단의 **+ 추가**를 클릭해서 저장소를 추가합니다.
+  ![ca_empty_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/ca_init.png)
 
-**OS 설정**에 따라 루트 블록 스토리지를 설정합니다.
+2. 저장소 추가 모달 창에서 다음 정보를 입력합니다.
+  ![ca_create](https://static.toastoven.net/prod_privateca/2025-12-23_ko/ca_create.png)
+    - **저장소 이름**(필수): 저장소를 식별할 이름을 입력합니다.
+    - **저장소 설명**(선택): 저장소에 대한 설명을 입력합니다.
+    - **CRL 활성화**
+        - CRL(certificate revocation list, 인증서 폐기 목록) 활성화 여부를 선택합니다.
+        - 폐기된 인증서 목록을 주기적으로 제공하여 클라이언트가 인증서 유효성을 확인할 수 있습니다.
+        - CRL을 활성화하면 갱신 주기를 일 단위로 설정할 수 있습니다.
+    - **OCSP 활성화**
+        - OCSP(online certificate status protocol) 활성화 여부를 선택합니다.
+        - 개별 인증서의 폐기 상태를 요청 시점의 상태로 빠르게 확인할 수 있는 프로토콜입니다.
+        - OCSP를 활성화하면 갱신 주기를 시간 단위로 설정할 수 있습니다.
 
-- **신규 생성 및 설정**을 선택한 경우 **블록 스토리지 타입** 및 **블록 스토리지 크기**를 지정하여 루트 블록 스토리지를 생성합니다.
-- **기존 리소스 지정**을 선택한 경우 **원본 리소스**를 지정하여 루트 블록 스토리지로 사용합니다.
+3. **생성**을 클릭하여 저장소를 생성합니다.
 
-#### 원본 리소스
+<a id="modify-and-delete-repositories"></a>
+### 저장소 수정, 삭제 { #modify-and-delete-repositories }
 
-기존에 생성된 **블록 스토리지** 또는 **스냅숏** 중 하나를 선택할 수 있습니다.
+저장소 목록에서 각 저장소 항목의 오른쪽에 있는 메뉴 버튼(⋮)을 클릭하면 다음 작업을 수행할 수 있습니다.
+![overview_3dot](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_3dot.png)
 
-- **블록 스토리지**를 선택 시 기존에 생성된 블록 스토리지를 루트 블록 스토리지로 사용합니다.
-- **스냅숏**을 선택 시 기존에 생성된 스냅숏을 이용하여 루트 블록 스토리지를 생성합니다.
+- **수정**: 저장소의 이름, 설명, CRL/OCSP 설정을 변경할 수 있습니다.
+- **삭제**: 저장소를 삭제합니다.
+    - 저장소를 삭제하면 해당 저장소에 속한 모든 리소스(발급자, 인증서 템플릿, 인증서, ACME 토큰)가 함께 삭제됩니다.
 
-#### 블록 스토리지 크기
+!!! danger "주의"
+    삭제 작업은 되돌릴 수 없으므로 주의가 필요합니다.
 
-인스턴스의 루트 블록 스토리지 크기를 결정합니다.
+<a id="repository-details"></a>
+### 저장소 상세 정보 { #repository-details }
 
-- 블록 스토리지 크기는 이미지가 요구하는 최소 크기 이상으로 만들어야 합니다.
+왼쪽 저장소 목록에서 원하는 저장소를 클릭하면 오른쪽 화면에 저장소의 상세 정보가 표시됩니다. 저장소 상세 정보 화면은 저장소 이름, 설명과 탭 목록 그리고 여러 상세 정보들으로 구성되어 있습니다.
 
-인스턴스의 루트 블록 스토리지 크기는 인스턴스 타입에 따라 달라집니다.
+<a id="repository-details-tab-list"></a>
+#### 탭 목록
 
-| 타입               | 지원하는 블록 스토리지 크기         |
-| -------------------| -------------------------- |
-| u2 타입             | 20 ~ 100 GB (타입별로 고정) |
-| t2, m2, c2, r2, x1 타입 | 20 ~ 2000GB               |
+저장소를 선택하면 우측 화면 상단에는 다음과 같은 탭이 있으며, 각 탭을 클릭하여 해당 기능으로 이동할 수 있습니다.
+![overview_tabs](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_tabs.png)
 
-> [참고]
-> 블록 스토리지 크기에 따라 과금되므로 기본 블록 스토리지의 크기를 무조건 크게 만드는 것은 비효율적입니다. 필요에 따라 블록 스토리지를 추가하여 사용하는 것이 좋습니다.
-> **OS 설정**에서 **기존 리소스 지정**을 **블록 스토리지**로 선택한 경우 블록 스토리지 크기 변경은 불가능합니다.
-> **OS 설정**에서 **기존 리소스 지정**을 **스냅숏**으로 선택한 경우 블록 스토리지 크기는 원본 블록 스토리지 크기보다 같거나 크게 설정되어야 합니다.
+- **개요**: 저장소의 통계 정보와 설정 정보
+- **인증서 템플릿**: 인증서 템플릿 목록 및 관리
+- **발급자**: 인증서 발급자 목록 및 관리
+- **인증서**: 발급된 인증서 목록 및 관리
+- **ACME 관리**: ACME 토큰 목록 및 관리
+- **인증서 이력**: 저장소의 인증서 이력 확인
 
-#### 블록 스토리지 타입
+<a id="repository-details-resource-statistics-card"></a>
+#### 리소스 통계 카드
 
-인스턴스의 기본 블록 스토리지 타입을 결정합니다.
+화면 상단에는 저장소의 주요 리소스 수를 표시하는 카드가 3개 나타납니다.
+![overview_resource_card](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_resource_card.png)
 
-- **HDD** 또는 **SSD** 중 하나를 선택합니다. 타입에 따라 요금과 성능이 달라집니다.
-- 한번 선택한 블록 스토리지 타입은 변경할 수 없습니다.
+- **인증서 템플릿**: 생성된 인증서 템플릿 총 개수
+- **발급자**: 생성된 발급자(Root CA, Intermediate CA) 총 개수
+- **인증서**: 발급된 인증서 총 개수
+
+각 카드의 **{카드명} 보기 >**를 클릭하면 해당 리소스의 관리 탭으로 바로 이동할 수 있습니다.
+
+<a id="repository-details-acme-info"></a>
+#### ACME 정보
+
+리소스 카드 하단에는 ACME 정보가 표시됩니다.
+![overview_acme_info](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_acme_info.png)
+
+- **전체 토큰**: 생성된 ACME 토큰 총 개수
+- **활성 토큰**: 활성 상태의 ACME 토큰 개수
+- **삭제된 토큰**: 삭제된 ACME 토큰 개수
+
+<a id="repository-details-2"></a>
+#### 저장소 상세 정보
+
+ACME 정보 하단에는 저장소 상세 정보가 표시됩니다.
+![overview_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_detail.png)
+
+- **저장소 ID**: 저장소의 ID
+- **CRL URL**: 인증서 폐기 목록(certificate revocation list)을 확인할 수 있는 URL
+- **CRL 갱신 주기**: CRL이 갱신되는 주기(일 단위)
+- **OCSP URL**: OCSP(online certificate status protocol) 응답자 URL
+- **OCSP 갱신 주기**: OCSP 정보가 갱신되는 주기(시간 단위)
+
+!!! tip "알아두기"
+    CRL과 OCSP는 인증서의 폐기 상태를 확인하는 방법입니다. CRL은 폐기된 인증서 목록을 제공하며, OCSP는 개별 인증서의 상태를 요청 시점의 상태로 빠르게 조회할 수 있습니다.
+
+<a id="issuer"></a>
+## 발급자 { #issuer }
+
+발급자는 인증서를 서명하고 발급하는 인증 기관입니다. Private CA에서는 Root CA와 Intermediate CA 두 가지 유형의 발급자를 생성할 수 있습니다.
+
+<a id="guide-to-selecting-an-issuer-type"></a>
+### 발급자 유형 선택 가이드 { #guide-to-selecting-an-issuer-type }
+
+- **Root CA만 사용하는 경우**: 소규모 조직 내부용 인증서 발급
+- **Root CA + Intermediate CA 사용하는 경우**
+    - Root CA의 개인 키를 안전하게 보관하고 싶을 때
+    - 여러 부서/프로젝트별로 별도의 CA를 운영하고 싶을 때
+    - 보안 모범 사례를 따르고 싶을 때(권장)
+
+<a id="issuer-list"></a>
+### 발급자 목록 { #issuer-list }
+
+발급자 탭에서는 생성된 모든 발급자를 테이블 형태로 확인할 수 있습니다. 테이블에는 다음 정보가 표시됩니다.
+![issuer_list_after](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_list_after.png)
+
+- **이름**: 발급자의 이름
+- **상태**: 발급자의 현재 상태
+    - **active**: 정상적으로 사용 가능한 상태(파란색)
+    - **revoked**: 폐기된 상태(빨간색)
+- **유형**: Root 또는 Intermediate
+- **시리얼 번호**: 인증서의 고유 시리얼 번호
+- **일반 이름**: 인증서의 일반 이름
+
+각 발급자 항목에는 **폐기** 버튼이 있어 필요시 발급자를 폐기할 수 있습니다.
+
+<a id="add-an-issuer"></a>
+### 발급자 추가 { #add-an-issuer }
+
+1. 발급자 탭에서 **+ 추가**를 클릭합니다.
+  ![issuer_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_list.png)
+
+
+2. 발급자 생성 페이지에서 다음 정보를 입력합니다.
+  ![issuer_create](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_create.png)
+    - 기본 정보
+        - **발급자 유형**: 발급자의 유형으로 Root 또는 Intermediate 선택
+            - **Root**: 최상위 인증 기관으로, 자체 서명된 인증서입니다.
+            - **Intermediate**: 중간 인증 기관으로, Root CA에 의해 서명됩니다.
+                - **상위 인증서 ID**: Intermediate 유형을 선택한 경우, 상위 발급자를 선택합니다.
+                  ![issuer_create_intermediate](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_create_intermediate.png)
+        - **발급자 이름**(필수): 발급자를 식별할 이름
+        - **발급자 설명**(선택): 발급자에 대한 설명
+        - **일반 이름**(필수): 인증서 일반 이름
+        - **만료 설정**(필수): 유효 기간을 입력하며, TTL 또는 특정 날짜 중 선택
+            - **TTL**: 발급 시점부터 지정한 기간 동안 유효(예: 365d, 8760h, 60m, 30s)
+            - **특정 날짜**: 특정 만료 날짜(유효 종료 시각)를 지정
+        - **백데이트 유효성**: 인증서 유효 시작 시점을 현재 시간보다 이전으로 설정하는 기간입니다. 시간 동기화 문제를 방지하기 위해 사용됩니다.(기본값: 30s / 예: 1d, 24h, 60m, 30s)
+        - **최대 경로 길이**: 인증서 체인에서 이 발급자 아래에 허용되는 중간 CA의 최대 수를 지정합니다. 0은 더 이상 하위 CA를 생성할 수 없음을 의미합니다(예: 0).
+
+    - 키 정보
+        - **키 알고리즘**: RSA, EC, ED25519 중 선택
+        - **키 비트**: 알고리즘에 따른 키 비트 선택
+
+    - SAN(subject alternative name) 설정
+        - **SAN에서 일반 이름 제외**: SAN 목록에서 일반 이름(CN)을 자동으로 제외할지 여부를 선택합니다.
+        - **주체 시리얼 번호**: 주체의 고유 시리얼 번호를 입력합니다.
+        - **주체 대체 이름(SANs)**: 도메인 형식의 추가 식별 이름(예: example.com, sub.example.com). 언더스코어(_)가 포함되거나 IP 주소 형태인 값은 입력할 수 없습니다.
+        - **IP 주체 대체 이름(IP SANs)**: IP 주소 형식의 추가 식별 이름(예: 192.168.1.1, 10.0.0.1)
+        - **URI 주체 대체 이름(URI SANs)**: URI 형식의 추가 식별 이름(예: https://example.com, spiffe://example.org)
+        - **기타 SANs**: 기타 형식의 SAN(예: 1.2.3.4;UTF8String:test@example.com). TYPE은 UTF8String, IA5String, PrintableString, BMPString, UniversalString 중 하나를 입력합니다.
+
+    - 주체 정보(Subject)
+        - **국가(C)**: 국가 코드
+        - **시/도(ST)**: 주 또는 도
+        - **시/군/구(L)**: 도시명
+        - **도로명 주소**: 도로명 주소
+        - **우편번호**: 우편번호
+        - **기관(조직)(O)**: 조직명
+        - **부서(조직 단위)(OU)**: 부서명
+
+3. **추가**를 클릭하여 발급자를 추가합니다.
+    - 입력 값이 올바르지 않으면 오류가 발생한 필드가 속한 섹션이 자동으로 펼쳐지고, 첫 번째 오류 섹션으로 이동합니다.
+
+<a id="issuer-details"></a>
+### 발급자 상세 정보 { #issuer-details }
+
+발급자 목록에서 발급자 이름을 클릭하면 상세 정보 페이지로 이동합니다. 상세 페이지에는 다음 정보가 표시되며, 상단의 다운로드 버튼을 통해서 인증서 PEM 파일을 다운로드할 수 있습니다.
+![issuer_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_detail.png)
+
+<a id="issuer-details-certificate-information"></a>
+#### 인증서 정보
+- 상태, 유형, 시리얼 번호
+- 주체 정보(Subject DN)
+- 발급자 정보(Issuer DN)
+- 키 용도 및 확장 키 용도
+- 알고리즘 및 키 크기
+- 유효 기간(유효 시작 시각, 유효 종료 시각)
+- 인증서 PEM 내용
+
+<a id="issuer-details-issuer-url"></a>
+#### 발급자 URL
+- **발급 인증서 URL**: 이 발급자가 발급한 인증서 목록
+- **CRL 배포 지점**: CRL을 확인할 수 있는 URL
+- **OCSP 서버**: OCSP 응답자 URL
+
+
+<a id="issuer-modification-revocation"></a>
+### 발급자 수정, 폐기 { #issuer-modification-revocation }
+
+<a id="issuer-modification-revocation-modify-issuer"></a>
+#### 발급자 수정
+발급자 상세 페이지에서 이름과 설명을 직접 수정할 수 있습니다. 수정 후 **저장**을 클릭하여 변경 사항을 저장합니다.
+
+- 편집 가능 필드
+    - **이름**: 발급자 이름을 수정할 수 있습니다.
+    - **설명**: 발급자 설명을 수정할 수 있습니다.
+
+<a id="issuer-modification-revocation-issuer-revocation"></a>
+#### 발급자 폐기
+1. 발급자 목록에서 폐기할 발급자의 **폐기**를 클릭합니다.
+2. 확인 대화상자에서 **폐기**를 클릭하여 폐기를 확정합니다.
+
+!!! danger "주의"
+    - 발급자를 폐기하면 해당 발급자가 발급한 모든 인증서의 신뢰성에 영향을 미칩니다. 폐기된 발급자는 더 이상 인증서를 발급할 수 없으며, 이미 발급된 인증서는 CRL 또는 OCSP를 통해 폐기 상태를 확인할 수 있습니다.
+    - 루트 인증서는 폐기할 수 없습니다.
+
+<a id="certificate-template"></a>
+## 인증서 템플릿 { #certificate-template }
+
+인증서 템플릿은 인증서를 빠르고 일관성 있게 발급하기 위한 설정의 모음입니다. 인증서 템플릿을 사용하면 동일한 설정으로 여러 인증서를 쉽게 발급할 수 있습니다.
+
+<a id="list-of-certificate-templates"></a>
+### 인증서 템플릿 목록 { #list-of-certificate-templates }
+
+인증서 템플릿 탭에서는 생성된 모든 인증서 템플릿을 테이블 형태로 확인할 수 있습니다. 테이블에는 다음 정보가 표시됩니다.
+![template_list_after](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_list_after.png)
+
+- **이름**: 인증서 템플릿 이름을 클릭하면 상세 정보로 이동합니다.
+- **설명**: 인증서 템플릿에 대한 설명
+
+각 인증서 템플릿 항목에는 **수정** 및 **삭제** 버튼이 있어 인증서 템플릿을 관리할 수 있습니다.
+
+<a id="add-a-certificate-template"></a>
+### 인증서 템플릿 추가 { #add-a-certificate-template }
+
+1. 인증서 템플릿 탭에서 **+ 추가**를 클릭합니다.
+  ![template_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_list.png)
+
+2. 인증서 템플릿 생성 페이지에서 다음 정보를 입력합니다.
+  ![template_create](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_create.png)
+
+    - 기본 정보
+        - **인증서 템플릿 이름**(필수): 인증서 템플릿을 식별할 이름
+        - **설명**(선택): 인증서 템플릿에 대한 설명
+        - **발급자 선택**: 이 인증서 템플릿으로 생성된 인증서에 서명할 발급자를 선택합니다.
+
+    - 제한 설정
+        - **만료 설정**(필수)
+            - **TTL**: 최대 유효 기간 설정(예: 365d, 8760h, 60m, 30s)
+            - **특정 날짜**: 고정된 만료 날짜(유효 종료 시각)를 지정
+        - **백데이트 유효성**: 인증서 유효 시작 시점을 현재 시간보다 이전으로 설정하는 기간입니다. 시간 동기화 문제를 방지하기 위해 사용됩니다.(기본값: 30s / 예: 1d, 24h, 60m, 30s)
+
+    - SAN 옵션
+        - **IP SANs 허용**: IP 주소를 SAN에 포함할 수 있도록 허용합니다.
+        - **URI 주체 대체 이름(URI SANs)**: URI 형식의 SAN을 입력합니다(예: https://example.com, spiffe://example.org).
+        - **기타 SANs**: 기타 형식의 SAN을 입력합니다(예: 1.2.3.4;UTF8String:test@example.com). TYPE은 UTF8String, IA5String, PrintableString, BMPString, UniversalString 중 하나를 입력합니다.
+
+    - 공통 반영 설정
+        - 설정
+            - **서버 저장 여부 결정**: 생성된 인증서를 서버에 저장할지 여부를 선택합니다.
+            - **비CA에 대한 기본 제약 조건 유효화**: CA가 아님을 인증서에 명시할지에 대한 여부를 선택합니다.
+
+        - 키 파라미터
+            - **키 알고리즘**: RSA, EC, ED25519 중 선택
+            - **키 비트**: 알고리즘에 따른 키 비트 선택
+            - **시그니처 비트**: 인증서 서명에 사용할 해시 알고리즘의 비트 수 선택
+
+            !!! danger "주의"
+                시그니처 비트는 RSA 알고리즘일 때만 설정이 가능합니다. 그 외의 알고리즘에서는 무시됩니다.
+
+        - 키 용도(Key Usage)
+            - `digitalSignature`(디지털 서명), `keyEncipherment`(키 암호화), `keyCertSign`(인증서 서명) 등 인증서 용도를 선택합니다.
+
+        - 확장 키 용도(Extended Key Usage)
+            - `serverAuth`(TLS 서버 인증), `clientAuth`(TLS 클라이언트 인증), `codeSigning`(코드 서명) 등 확장 키 사용 용도를 선택합니다.
+            - **확장 키 용도 OIDs**: 추가 확장 키 용도 OID를 직접 입력할 수 있습니다(예: 1.3.6.1.5.5.7.3.1, 1.3.6.1.5.5.7.3.2).
+
+        - 정책(Certificate Policies)
+            - **정책 목록**: 인증서가 준수하는 정책을 나타내는 OID를 입력합니다. 여러 개의 OID를 입력할 수 있습니다.
+                - 예: 2.5.29.32.0(anyPolicy), 1.2.3.4.5(조직 고유 정책)
+            - 인증서 정책 필드는 인증서가 어떤 정책하에 발급되었는지를 명시하며, 인증서 검증 시 정책 준수 여부를 확인하는 데 사용됩니다.
+
+    - 추가 주체 필드
+        - **CSR 일반 이름 사용**: CSR의 CN을 인증서에 그대로 사용할지 여부를 선택합니다.
+        - **CSR SANs 사용**: CSR의 SAN을 인증서에 포함할지 여부를 선택합니다.
+        - **국가(C)**: 국가 코드
+        - **시/도(ST)**: 주 또는 도
+        - **시/군/구(L)**: 도시명
+        - **도로명 주소**: 도로명 주소
+        - **우편번호**: 우편번호
+        - **기관(조직)(O)**: 조직명
+        - **부서(조직 단위)(OU)**: 부서명
+
+        !!! danger "주의"
+            CSR의 Subject DN에 대한 값을 설정하더라도 인증서 템플릿에서 설정한 값으로 덮어씁니다.
+
+3. **추가**를 클릭하여 인증서 템플릿을 추가합니다.
+    - 입력 값이 올바르지 않으면 오류가 발생한 필드가 속한 섹션이 자동으로 펼쳐지고, 첫 번째 오류 섹션으로 이동합니다.
+
+<a id="certificate-template-details"></a>
+### 인증서 템플릿 상세 정보 { #certificate-template-details }
+
+인증서 템플릿 목록에서 인증서 템플릿 이름을 클릭하면 상세 정보 페이지로 이동합니다. 상세 페이지는 접을 수 있는 섹션으로 구성되어 있으며, 사용자가 입력한 정보들을 확인할 수 있습니다.
+![template_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_detail.png)
+
+상세 페이지 상단에는 **+ 인증서 신규 생성** 및 **수정**, **삭제** 버튼이 있습니다.
+
+<a id="modify-delete-certificate-template"></a>
+### 인증서 템플릿 수정, 삭제 { #modify-delete-certificate-template }
 
-> [참고] 
-> **OS 설정**에서 **기존 리소스 지정**을 선택한 경우 블록 스토리지 타입 변경은 불가능합니다.
+<a id="modify-delete-certificate-template-modify-certificate-template"></a>
+#### 인증서 템플릿 수정
+1. 인증서 템플릿 목록에서 **수정**을 클릭하거나, 상세 페이지에서 **수정**을 클릭합니다.
+2. 인증서 템플릿 수정 페이지에서 필요한 내용을 변경합니다.
+3. **수정**을 클릭하여 변경 사항을 저장합니다.
+    - 입력 값이 올바르지 않으면 오류가 발생한 필드가 속한 섹션이 자동으로 펼쳐지고, 첫 번째 오류 섹션으로 이동합니다.
+    - 기존에 저장된 값 중 형식이 올바르지 않은 값(예: 잘못된 OID)이 있으면 저장되지 않습니다. 해당 값을 올바르게 수정한 후 저장하세요.
 
-<a id="availability-zone"></a>
-### 가용성 영역(availability zone)
+<a id="modify-delete-certificate-template-delete-a-certificate-template"></a>
+#### 인증서 템플릿 삭제
+1. 인증서 템플릿 목록에서 삭제할 인증서 템플릿의 **삭제**를 클릭하거나, 상세 페이지에서 **삭제**를 클릭합니다.
+2. 확인 대화상자에서 **삭제**를 클릭하여 삭제를 확정합니다.
 
-가용성 영역을 명시적으로 설정하지 않는 경우, 임의의 영역으로 설정됩니다. 가용성 영역에 따라 이 인스턴스가 사용할 수 있는 블록 스토리지가 결정됩니다. 사용하려는 블록 스토리지가 특정 가용성 영역에 존재한다면 해당 가용성 영역으로 설정하여 사용합니다.
+!!! tip "알아두기"
+    인증서 템플릿을 삭제해도 해당 인증서 템플릿으로 이미 생성된 인증서에는 영향을 미치지 않습니다.
 
-> [참고] 
-> VPC의 자원들은 모든 가용성 영역에서 사용할 수 있습니다.
-> **OS 설정**에서 **기존 리소스 지정**을 선택한 경우 가용성 영역은 변경이 불가능합니다.
+<a id="create-certificates-with-certificate-templates"></a>
+### 인증서 템플릿을 통한 인증서 생성 { #create-certificates-with-certificate-templates }
 
-가용성 영역에 대한 자세한 설명은 [인스턴스 개요의 가용성 영역](./overview/#availability-zone)을 참고합니다.
+인증서 템플릿을 사용하여 인증서를 생성하는 방법은 다음과 같습니다.
 
-<a id="flavor"></a>
-### 타입(flavor)
+1. 인증서 템플릿 상세 페이지 상단의 **+ 인증서 신규 생성**을 클릭합니다.
+  ![template_detail_generate](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_detail_generate.png)
 
-가상 하드웨어의 성능에 따라 다양한 타입을 선택할 수 있습니다. 다만, 이미지에서 요구하는 가상 하드웨어의 성능에 따라 선택할 수 있는 타입이 제한될 수 있습니다. 보다 자세한 설명은 [인스턴스 개요](./overview)를 참고합니다.
+2. 인증서 생성 형태를 선택합니다.
+  ![template_generate](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_generate.png)
+    - **인증서 CSR 서명**을 선택할 경우 다음과 같이 다른 형태의 입력 폼이 나타납니다.
+  ![template_generate_csr](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_generate_csr.png)
 
-> [참고]
-> 1 vCPU는 스레드 하나와 코어 하나로 구성된 소켓 한 개를 의미하며, 소켓 한 개당 스레드 수와 코어 수는 각각 한 개로 일정합니다.
+3. 인증서 생성 페이지에서 다음 정보를 입력합니다.
+    - **일반 이름**(필수): 인증서의 주체 이름
+    - **만료 설정**(필수): 인증서 템플릿의 최대 설정 범위 내에서 설정
+    - **SAN 정보**: 추가 SAN 정보
 
-인스턴스의 타입은 생성 이후에도 NHN Cloud 콘솔에서 변경할 수 있습니다. 높은 타입에서 낮은 타입으로 변경할 수 있고, 낮은 타입에서 높은 타입으로도 변경할 수 있습니다. 일부 타입은 변경할 수 없는 경우도 있으니, 자세한 것은 [인스턴스 타입 변경](./console-guide/#modify-flavor)을 참고합니다.
+4. **확인**을 클릭하여 인증서를 생성합니다.
+    - 입력 값이 올바르지 않으면 오류가 발생한 필드가 속한 섹션이 자동으로 펼쳐지고, 첫 번째 오류 섹션으로 이동합니다.
 
-> [주의] 인스턴스의 루트 블록 스토리지는 타입 변경으로 바꿀 수 없습니다.
+생성된 인증서는 사용자의 선택에 따라 Private CA에 저장할 수 있고, 저장한 경우 인증서 탭에서 확인할 수 있습니다.
 
-<a id="number-of-instances"></a>
-### 인스턴스 수
+<a id="certificate"></a>
+## 인증서 { #certificate }
 
-이미지, 가용성 영역, 타입, 블록 스토리지 크기, 키페어, 네트워크 설정이 모두 동일한 인스턴스를 여러 개 생성할 경우에 사용합니다. 인스턴스의 이름은 설정한 이름 뒤에 `-1`, `-2`와 같이 번호가 붙어 생성됩니다. 예를 들어, 인스턴스 이름을 `my-instance`로 인스턴스를 2개 만들면, `my-instance-1`, `my-instance-2`가 생성됩니다. 한 번에 생성할 수 있는 최대 인스턴스의 개수는 10개입니다.
+인증서 탭에서는 저장소에서 발급된 모든 인증서를 조회하고 관리할 수 있습니다.
 
-임의의 가용성 영역에 인스턴스를 여러 개 생성한 경우, 각각 인스턴스는 임의의 가용성 영역에 만들어집니다. 예를 들어, 2개의 인스턴스를 임의의 가용성 영역으로 생성한 경우, 2개가 같은 가용성 영역에 만들어질 수도 있고 다른 가용성 영역에 만들어질 수도 있습니다. 모든 인스턴스가 같은 가용성 영역에 생성되어야 한다면, 특정 가용성 영역을 선택하여 생성합니다.
+<a id="list-of-certificates"></a>
+### 인증서 목록 { #list-of-certificates }
 
-> [참고]
-> **OS 설정**에서 **기존 리소스 지정**을 **블록 스토리지**로 선택하거나 **네트워크 설정**에서 **기존 네트워크 인터페이스 지정**을 선택한 경우 인스턴스 수는 `1`로 제한됩니다.
+인증서 탭에서는 발급된 모든 인증서를 테이블 형태로 확인할 수 있습니다. 테이블에는 다음 정보가 표시됩니다.
+![certificate_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/certificate_list.png)
 
-<a id="key-pair"></a>
-### 키페어
+- **일반 이름**: 인증서의 일반 이름을 클릭하면 상세 정보로 이동합니다.
+- **상태**: 인증서의 현재 상태
+    - **active**: 정상적으로 사용 가능한 상태(파란색)
+    - **revoked**: 폐기된 상태(빨간색)
+- **시리얼 번호**: 인증서의 고유 시리얼 번호
+- **유효 시작 시각**: 인증서가 유효하게 된 시점
 
-기존 키페어를 사용하거나, 새로 키페어를 생성하여 사용합니다. 기존 키페어 등록은 Windows 사용자의 경우 [키페어 가져오기(Windows 사용자)](./console-guide/#import-key-pairs-windows), Mac과 Linux 사용자의 경우 [키페어 가져오기(Mac, Linux 사용자)](./console-guide/#import-key-pairs-mac-and-linux)를 참고합니다.
+각 인증서 항목에는 **다운로드** 및 **폐기** 버튼이 있어 인증서를 관리할 수 있습니다.
 
-> [참고]
-> 키페어는 사용자 계정에 할당된 리소스이므로 프로젝트를 삭제해도 삭제되지 않고 유지됩니다.
+<a id="certificate-details"></a>
+### 인증서 상세 정보 { #certificate-details }
 
-<a id="network"></a>
-### 네트워크
+인증서 목록에서 일반 이름을 클릭하면 상세 정보 페이지로 이동합니다. 상세 페이지에는 다음 정보가 표시되며, 상단의 다운로드 버튼을 통해서 인증서 PEM 파일을 다운로드할 수 있습니다.
+![certificate_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/certificate_detail.png)
 
-VPC에서 정의된 서브넷 중에서 인스턴스에 연결할 서브넷을 선택합니다. 서브넷을 하나 선택할 때마다 인스턴스에 해당 서브넷에 연결될 네트워크 인터페이스가 만들어집니다. 선택된 서브넷의 순서를 바꾸어서 네트워크 인터페이스를 변경할 수도 있습니다. 이 경우, 첫 번째 네트워크 인터페이스(`eth0`)가 기본 게이트웨이로 설정됩니다.
+<a id="certificate-details-certificate-information"></a>
+#### 인증서 정보
+- **일반 이름**: 인증서의 일반 이름
+- **시리얼 번호**: 고유 시리얼 번호
+- **인증서**: 인증서 PEM 정보
+- **CA 체인**: 체인 인증서 PEM 정보
+- **유효 기간**
+    - **유효 시작 시각**: 인증서가 유효하게 되는 시작 시점
+    - **유효 종료 시각**: 인증서가 만료되는 시점
+- **알고리즘 및 키 크기**: 서명 알고리즘과 키 길이
+- **키 용도**: digitalSignature, keyEncipherment 등
+- **확장 키 용도**: serverAuth, clientAuth 등
 
-네트워크 생성과 관리에 대한 자세한 설명은 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
+<a id="revoke-certificate"></a>
+### 인증서 폐기 { #revoke-certificate }
 
-<a id="floating-ip"></a>
-### 플로팅 IP
+인증서를 폐기하려면 다음과 같이 진행합니다.
 
-인스턴스 생성 후 플로팅 IP 사용 여부를 지정합니다. 플로팅 IP 사용을 선택하면, 플로팅 IP를 새로 생성하여 첫번째 네트워크 인터페이스에 연결합니다. 이 때 첫번째 네트워크 인터페이스는 반드시 인터넷 게이트웨이가 설정된 서브넷에 연결되어 있어야 합니다.
+1. 인증서 목록에서 폐기할 인증서 템플릿의 **폐기**를 클릭하거나, 상세 페이지에서 **폐기**를 클릭합니다.
+2. 확인 대화상자에서 **폐기**를 클릭하여 폐기를 확정합니다.
 
-플로팅 IP 관리는 인스턴스 > 관리 페이지 또는 인스턴스 > 플로팅 IP 페이지에서도 할 수 있습니다. 플로팅 IP에 대한 보다 자세한 설명은 [VPC 콘솔 사용 가이드](/Network/VPC/ko/console-guide/)를 참고합니다.
+폐기된 인증서는 더 이상 신뢰할 수 없는 것으로 간주되며, 다음과 같은 방법으로 폐기 상태를 확인할 수 있습니다.
 
-<a id="security-group"></a>
-### 보안 그룹
+- **CRL(certificate revocation list)**: 저장소의 CRL URL을 통해 폐기된 인증서 목록을 확인할 수 있습니다.
+- **OCSP(online certificate status protocol)**: 저장소의 OCSP URL을 통해 개별 인증서의 상태를 조회할 수 있습니다.
 
-인스턴스가 속할 보안 그룹을 지정합니다. 인스턴스 하나는 여러 보안 그룹에 속할 수 있습니다. 인스턴스가 여러 보안 그룹에 속한 경우에는 다음을 참고합니다.
+!!! danger "주의"
+    인증서 폐기는 되돌릴 수 없는 작업입니다. 폐기된 인증서는 다시 활성화할 수 없으므로, 새로운 인증서를 발급해야 합니다.
 
-- 각 보안 그룹에 속한 모든 인스턴스와 네트워크 통신이 가능합니다. 다른 인스턴스의 의도하지 않은 접근을 막아야할 민감한 데이터를 가진 인스턴스의 경우에는 신중하게 보안 그룹을 지정해야 합니다.
-- 각 보안 그룹의 모든 룰이 합쳐져서 해당 인스턴스의 외부 통신에 적용됩니다.
+<a id="acme-management"></a>
+## ACME 관리 { #acme-management }
 
-보안 그룹에 대한 보다 자세한 설명은 [VPC 콘솔 사용 가이드](/Network/VPC/ko/console-guide/)를 참고합니다.
+ACME(automated certificate management environment)는 인증서 발급 및 갱신을 자동화하는 프로토콜입니다. Private CA의 ACME 관리 기능을 사용하면 Let's Encrypt 클라이언트(예: certbot)와 같은 ACME 클라이언트를 통해 자동으로 인증서를 발급 받을 수 있습니다.
 
-<a id="additional-block-storage"></a>
-### 추가 블록 스토리지
+<a id="acme-token-list"></a>
+### ACME 토큰 목록 { #acme-token-list }
 
-인스턴스 생성 후 추가 블록 스토리지 연결 여부를 지정합니다. 추가 블록 스토리지 사용을 선택하면 루트 블록 스토리지와 별개인 새로운 블록 스토리지를 생성하여 인스턴스에 연결합니다. 루트 블록 스토리지와 마찬가지로 추가 블록 스토리지를 생성할 때 이름, 스토리지 타입, 크기를 지정할 수 있습니다.
+ACME 관리 탭에서는 생성된 모든 ACME 토큰을 테이블 형태로 확인할 수 있습니다. 테이블에는 다음 정보가 표시됩니다.
+![acme_list_after](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_list_after.png)
 
-루트 블록 스토리지는 OS 용도로만 사용하고 추가 블록 스토리지에 자주 사용하는 응용 프로그램이나 데이터를 보관하면 블록 스토리지 연결/해제 또는 스냅샷 기능을 통해 쉽게 이전하거나 복제할 수 있습니다. 또한 인스턴스 장애가 발생했을 때 추가 블록 스토리지만 해제한 뒤 다른 인스턴스에 연결하여 쉽게 서비스를 복구할 수 있습니다.
+- **이름**: ACME 토큰의 이름을 클릭하면 상세 정보로 이동합니다.
+- **ID**: ACME 토큰 ID
+- **설명**: ACME 토큰에 대한 설명
 
-블록 스토리지 관리는 인스턴스 > 블록 스토리지 페이지에서도 할 수 있습니다. 블록 스토리지에 대한 보다 자세한 설명은 [블록 스토리지 가이드](/Storage/Block%20Storage/ko/overview/)를 참고합니다.
+각 토큰 항목에는 **삭제** 버튼이 있어 더 이상 사용하지 않는 토큰을 삭제할 수 있습니다.
 
-<a id="placement-policy"></a>
-### 배치 정책
+<a id="add-an-acme-token"></a>
+### ACME 토큰 추가 { #add-an-acme-token }
 
-배치 정책을 사용하여 인스턴스들을 서로 다른 하이퍼바이저로 배치할 수 있습니다. 인스턴스 생성 시 배치 정책을 설정하면 동일 배치 정책에 할당된 인스턴스들은 서로 다른 하이퍼바이저에 생성됩니다.
+1. ACME 관리 탭에서 **+ ACME 토큰 추가**를 클릭합니다.
+  ![acme_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_list.png)
 
-> [주의]
-> 분산 배치가 불가능한 상황인 경우 인스턴스 생성에 실패할 수 있습니다.
+2. ACME 토큰 생성 모달 창에서 다음 정보를 입력합니다.
+  ![acme_create](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_create.png)
+    - **이름**(필수): ACME 토큰을 식별할 이름
+    - **설명**(선택): ACME 토큰에 대한 설명
 
-<a id="user-script"></a>
-### 사용자 스크립트
+3. **생성**을 클릭하여 토큰을 생성합니다.
 
-인스턴스 생성 후 실행할 스크립트를 지정합니다. 사용자 스크립트는 인스턴스의 첫 번째 부팅이 완료된 후 네트워크 설정 등 초기화 과정이 끝나고 난 뒤 실행됩니다. NHN Cloud의 사용자 스크립트는 공식 이미지에 내장된 cloud-init (Linux), Cloudbase-init (Windows)과 같은 자동화 도구에 의해서 실행됩니다.
+<a id="add-an-acme-token-verify-information-after-acme-token-is-created"></a>
+#### ACME 토큰 생성 완료 후 정보 확인
+![acme_once](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_once.png)
+토큰이 생성되면 다음 정보가 표시됩니다.
 
-> [주의]
-> 사용자 스크립트는 root (Linux)/Administrator (Windows) 사용자 권한으로 실행됩니다.
+- **토큰 ID**: ACME 클라이언트 설정에 사용되는 식별자
+- **HMAC 키**: ACME 클라이언트 인증에 사용되는 비밀 키
 
-#### Linux
+!!! danger "주의"
+    HMAC 키는 토큰 생성 시 한 번만 표시됩니다. 반드시 안전한 곳에 복사하여 보관해야 하며, 이후에는 다시 확인할 수 없습니다. HMAC 키를 분실한 경우 새로운 토큰을 생성해야 합니다.
 
-사용자 스크립트의 첫 번째 줄은 반드시 `#!`으로 시작해야 합니다.
-```
-#!/bin/bash
-...
-```
+<a id="acme-token-details"></a>
+### ACME 토큰 상세 정보 { #acme-token-details }
 
-사용자 스크립트가 정상적으로 동작하기 위해서는 인스턴스 내부의 로그 파일을 확인해야 합니다. 스크립트에서 표준 출력/에러 장치로 출력한 로그는 `/var/log/cloud-init-output.log`에서 확인할 수 있습니다.
+![acme_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_detail.png)
+토큰 목록에서 토큰 이름을 클릭하면 상세 정보 페이지로 이동합니다. 상세 페이지에는 다음 정보가 표시됩니다.
 
-#### Windows
+<a id="acme-token-details-issued-certificate"></a>
+#### 발급된 인증서
+토큰을 사용하여 발급된 인증서 목록이 표시됩니다. 각 인증서는 다음 정보를 포함합니다.
 
-Windows 이미지에서는 사용자 스크립트 형식으로 Batch 스크립트 형식, Powershell 스크립트 형식을 모두 지원합니다. 각 형식들은 첫 번째 줄에 명시하는 지시자에 의해 구분됩니다.
+- **일반 이름**: 인증서 일반 이름
+- **상태**: 인증서 상태
+- **시리얼 번호**: 인증서 시리얼 번호
+- **유효 시작일**: 인증서 유효 시작 날짜
 
-* Batch 스크립트
-```
-rem cmd
-...
-```
+<a id="example-of-acme-client-setup"></a>
+### ACME 클라이언트 설정 예시 { #example-of-acme-client-setup }
 
-* PowerShell 스크립트
-```
-#ps1_sysnative
-...
-```
+[ACME 인증서 갱신 가이드(Certbot, acme.sh)](./client-guide.md) 페이지를 참고하여 작성합니다.
 
-만약 Batch 스크립트와 PowerShell 스크립트를 같이 사용하고 싶다면 아래와 같이 기술합니다.
+<a id="delete-an-acme-token"></a>
+### ACME 토큰 삭제 { #delete-an-acme-token }
 
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
+1. ACME 관리 탭에서 삭제할 토큰의 **삭제**를 클릭합니다.
+  ![acme_detail_delete](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_detail_delete.png)
 
-사용자 스크립트의 로그는 `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`에서 확인할 수 있습니다.
+2. 확인 대화상자에서 **삭제**를 클릭하여 삭제를 확정합니다.
 
-사용자 스크립트와 관련하여 보다 자세한 설명은 [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) 또는 [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) 가이드를 참고합니다.
+!!! tip "알아두기"
+    ACME 토큰을 삭제해도 해당 토큰으로 이미 발급된 인증서에는 영향을 미치지 않습니다. 다만, 해당 토큰을 사용한 자동 갱신은 더 이상 작동하지 않으므로 새로운 토큰을 생성하여 ACME 클라이언트 설정을 업데이트해야 합니다.
 
-<a id="additional-instance-features"></a>
-## 인스턴스 추가 기능
+<a id="certificate-history"></a>
+## 인증서 이력 { #certificate-history }
 
-<a id="change-instance-status"></a>
-### 인스턴스 상태 변경
+![history](https://static.toastoven.net/prod_privateca/2025-12-23_ko/history.png)
+인증서 이력 탭에서는 저장소에서 발생한 인증서 관련 활동을 시간순으로 확인할 수 있습니다. 이력에는 다음과 같은 정보가 포함됩니다.
 
-인스턴스 중지, 종료, 삭제, 시작을 통해 인스턴스의 상태를 변경할 수 있습니다.
+- 발급자, 인증서 생성 이력
+- 인증서 폐기 이력
 
-인스턴스 중지, 종료, 삭제의 하이퍼바이저 리소스 및 요금 관련 정보는 아래 표를 참고합니다.
-
-| 구분 | 인스턴스 중지 | 인스턴스 종료 | 인스턴스 삭제 |
-| --- | -- | --- | --- |
-| 하이퍼바이저 리소스 | 리소스 할당 상태 유지 | 리소스 반납 및 인스턴스 시작 시 재할당 | 리소스 제거 |
-| 인스턴스 요금 | 중지 요금 정책 적용 | 무료 | 무료 |
-| 연결된 다른 리소스 요금 | 과금됨| 과금됨 | 과금됨 |
-
-> [참고] GPU Instance는 종료할 수 없으며 중지 시에도 정상(100%) 요금이 발생합니다.
-
-<a id="create-image"></a>
-### 이미지 생성
-
-인스턴스의 루트 블록 스토리지로부터 이미지를 생성합니다. 이미지 생성은 데이터 정합성을 보장하기 위해 인스턴스를 중지한 상태에서 진행하는 것을 권장합니다.
-
-인스턴스의 루트 블록 스토리지에 여유 공간이 전혀 없을 경우 이미지 생성은 가능하나, 이미지를 다른 인스턴스에서 사용하기 위한 초기화 작업은 불가하여 정상적으로 사용할 수 없습니다. 이미지를 생성하기 전에 인스턴스에서 최소 100KB의 여유 공간을 확보해야 합니다.
-
-생성된 이미지는 **Compute > Image**에 Private 이미지로 등록됩니다. 등록된 이미지를 이용하여 원본 인스턴스와 동일한 블록 스토리지를 가진 인스턴스를 생성할 수 있습니다.
-
-> [주의]
-> 생성된 이미지의 크기는 루트 블록 스토리지의 실제 사용량보다 더 클 수 있습니다.
-
-<a id="associatedisassociate-floating-ip"></a>
-### 플로팅 IP 연결과 해제
-
-인스턴스의 상태에 관계없이 플로팅 IP를 연결하고 해제할 수 있습니다. 사용 가능한 플로팅 IP가 없거나 원하는 플로팅 IP가 없는 경우, **생성** 버튼을 클릭해 플로팅 IP를 생성하여 연결할 수 있습니다. 또는 **Network > VPC > Floating IP**에서 플로팅 IP를 생성하여 사용해도 됩니다.
-
-플로팅 IP에 대한 자세한 설명은 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
-
-<a id="modify-security-group"></a>
-### 보안 그룹 수정
-
-인스턴스의 상태에 관계없이 인스턴스의 보안 그룹을 수정할 수 있습니다. 수정된 보안 그룹은 바로 적용됩니다.
-
-보안 그룹에 대한 자세한 설명은 [보안 그룹](./console-guide/#security-group)과 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
-
-<a id="change-network-subnet"></a>
-### 네트워크 서브넷 변경
-
-인스턴스의 네트워크 서브넷은 인스턴스가 중지된 상태에서만 변경할 수 있습니다. 서브넷을 추가하면 자동으로 인스턴스에 해당 서브넷에 연결될 네트워크 인터페이스가 만들어집니다. 이 때, 한 번에 여러 서브넷을 추가하면 인스턴스에 새로 생성되는 네트워크 인터페이스 순서는 임의로 지정됩니다. 서브넷을 인스턴스에서 삭제하면 생성되었던 네트워크 인터페이스도 자동으로 삭제됩니다.
-
-<a id="modify-flavor"></a>
-### 인스턴스 타입 변경
-
-인스턴스 타입은 인스턴스를 중지한 후 변경할 수 있습니다. 인스턴스가 실행 중이면 **추가 기능**의 **인스턴스 중지**를 클릭하여 인스턴스를 중지합니다.
-
-현재 타입에 따라 변경할 수 있는 인스턴스 타입이 다릅니다.
-
-* m2, c2, r2, t2, x1 타입의 인스턴스는 m2, c2, r2, t2, x1 타입의 인스턴스 타입으로 변경할 수 있습니다.
-* m2, c2, r2, t2, x1 타입의 인스턴스는 u2 타입의 인스턴스 타입으로 변경할 수 없습니다.
-* u2 타입은 생성 이후에 타입을 변경할 수 없습니다. 같은 u2 타입의 인스턴스 타입으로도 변경할 수 없습니다.
-
-인스턴스 타입을 변경하면, 변경 작업과 변경 확인 작업이 진행됩니다. 모든 작업이 완료되면 VM 상태가 **Shutoff** 상태가 되며, **추가 기능**의 **Start instance**를 클릭하여 인스턴스를 시작할 수 있습니다.
-
-> [참고] 인스턴스의 루트 블록 스토리지 크기는 변경할 수 없습니다. 인스턴스의 블록 스토리지 공간이 부족하다면 블록 스토리지를 추가하여 사용합니다. 자세한 블록 스토리지 추가 방법은 [블록 스토리지 개요](/Storage/Block%20Storage/ko/overview/)를 참고합니다.
-
-인스턴스는 변경 시점을 기준으로 변경된 타입으로 과금됩니다.
-
-<a id="change-instance-os-details"></a>
-### 인스턴스 OS 정보 변경
-
-인스턴스의 상태에 관계없이 인스턴스 OS 정보를 변경할 수 있습니다. 
-
-**Compute > Instance** 서비스 페이지에서 OS 정보를 변경할 인스턴스를 클릭합니다. 해당 인스턴스 상세 정보 화면의 **기본 정보** 탭에서 **OS > 변경**을 클릭합니다.
-
-> [참고] OS 구분은 변경할 수 없습니다.
-
-<a id="change-instance-description"></a>
-### 인스턴스 설명 변경
-
-인스턴스의 상태에 관계없이 인스턴스 설명을 변경할 수 있습니다. 
-
-**Compute > Instance** 서비스 페이지에서 설명을 변경할 인스턴스를 클릭합니다. 해당 인스턴스 상세 정보 화면의 **기본 정보** 탭에서 **설명 > 변경**을 클릭합니다.
-
-<a id="change-instance-key-pair"></a>
-### 인스턴스 키페어 변경
-
-인스턴스 키페어는 인스턴스가 활성 상태인 경우에만 변경할 수 있습니다.
-
-**Compute > Instance** 서비스 페이지에서 키페어 정보를 변경할 인스턴스를 클릭합니다. 해당 인스턴스 상세 정보 화면의 **기본 정보** 탭에서 **키페어 > 변경**을 클릭합니다.
-
-인스턴스 기본 계정의 키페어를 선택한 키페어로 변경합니다. 인스턴스 기본 계정은 인스턴스 하단 상세 정보 화면의 **접속 정보** 탭에서 확인할 수 있습니다.
-
-> [주의] 인스턴스 키페어 변경 시 선택한 키페어를 제외한 인스턴스 내 모든 공개 키 내용이 삭제됩니다.
-
-> [참고] 기본 인프라 서비스 ADMIN 권한이 있는 프로젝트 멤버만 인스턴스 키페어를 변경할 수 있으며, Windows OS 인스턴스인 경우 변경할 수 없습니다.
-
-> [참고] 인스턴스 생성에 사용한 이미지 버전이 낮은 경우 키페어 변경 기능을 지원하지 않을 수 있습니다.
-
-<a id="manage-placement-policies"></a>
-### 배치 정책 관리
-
-배치 정책을 생성 및 삭제할 수 있으며 배치 정책에 할당된 인스턴스 목록을 보여줍니다.
-
-분산 배치를 위한 `anti-affinity` 배치 정책 유형만 제공합니다.
-
-배치 정책에 인스턴스가 할당된 경우에도 배치 정책 삭제가 가능하며 이 경우 인스턴스는 삭제되지 않습니다.
-
-<a id="key-pairs"></a>
-## 키페어
-
-<a id="import-key-pairs-windows"></a>
-### 키페어 가져오기(Windows 사용자)
-
-PuTTY SSH 클라이언트를 설치하면 함께 설치되는 puttygen 프로그램으로 키페어를 생성하고 NHN Cloud에 등록하여 사용할 수 있습니다.
-
-[PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 또는 한글패치가 적용된 [iPuTTY](https://github.com/iPuTTY/iPuTTY/releases/tag/l0.70i)를 설치합니다.
-
-puttygen을 실행합니다.
-
-![이미지1](http://static.toastoven.net/prod_instance/putty-ssh-001.png)
-
-**매개변수**에서 **RSA**(또는 구 버전의 puttygen에서는 SSH-2 RSA)를 선택합니다. **작업**에 있는 **생성** 버튼을 클릭합니다. 키를 생성하기 위해서 빈 공간 안에서 마우스를 계속 움직입니다.
-
-키가 생성되면 아래 그림처럼 공개 키 파일 내용이 보입니다. 공개 키 내용 전체를 **키페어 가져오기**의 **공개 Key:** 입력란에 붙여 넣어서 키페어를 등록합니다.
-
-![이미지1](http://static.toastoven.net/prod_instance/putty-ssh-002.png)
-
-**작업**의 **개인 키 저장** 버튼을 클릭해 개인 키를 저장합니다. 키 암호어구를 빈 칸으로 두고 개인 키를 저장하면, **암호어구로 보호하지 않은 채 이 키를 저장하겠습니까?** 메시지가 나타납니다. 변환된 개인 키를 좀 더 안전하게 사용하려면 암호어구를 설정하여 저장합니다.
-
-> [주의]
-인스턴스에 자동으로 로그인하려면 암호어구를 사용하지 않아야 합니다. 암호어구를 사용하면 로그인할 때 개인 키에 대한 비밀번호를 직접 입력해야 합니다.
-
-등록한 키페어는 인스턴스를 생성할 때 사용할 수 있고, 인스턴스 접속 시에는 이 키페어의 개인 키로 접속하여야 합니다. 인스턴스 접속 방법은 [인스턴스 접속 방법](./overview/#how-to-access-instances)를 참고합니다.
-
-NHN Cloud에서 생성한 키페어와 마찬가지로 이렇게 만든 키페어의 개인 키도 외부 유출 시에 누구나 유출된 개인 키로 해당 인스턴스에 접근할 수 있게 되므로 신중하게 관리해야 합니다.
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### 키페어 가져오기(Mac, Linux 사용자)
-
-Mac이나 Linux의 `ssh-keygen`으로 만든 키페어를 NHN Cloud에 등록하여 사용할 수 있습니다. 키페어는 다음 명령으로 생성합니다.
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-키페어의 비밀번호는 설정해도 되지만 설정하지 않아도 사용하는 데에 문제는 없습니다. 보안 수준을 높이려면 비밀번호 설정을 추천합니다. 입력한 키페어의 이름에 `.pub` 확장자가 추가된 파일 안에 키페어 공개 키가 들어 있습니다.
-
-	$ cat my_key.key.pub
-	ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-
-이 내용 전체를 **키페어 가져오기**의 **공개 Key:** 입력란에 붙여 넣어서 키페어를 등록합니다.
-
-등록한 키페어는 인스턴스를 생성할 때 사용할 수 있고, 인스턴스 접속 시에는 이 키페어의 개인 키로 접속해야 합니다. 인스턴스 접속 방법은 [인스턴스 접속 방법](./overview/#how-to-access-instances)을 참고합니다.
-
-NHN Cloud에서 생성한 키페어와 마찬가지로 이렇게 만든 키페어의 개인 키도 외부 유출 시에 누구나 유출된 개인 키로 해당 인스턴스에 접근할 수 있게 되므로 신중하게 관리해야 합니다.
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## 부록 1. Windows 언어팩 변경
-
-NHN Cloud Windows 이미지는 영문판을 기본으로 제공하고 있습니다. 다른 언어를 기본으로 사용하기 원하는 사용자는 다음의 방법에 따라 사용이 가능합니다.
-
-1. START -> Control Panel -> Clock, Language, and Region -> Add a language
-![이미지1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. 언어 기본 설정 변경 -> 언어 추가
-![이미지1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. 언어 추가 -> 사용하려는 언어 선택 -> 추가
-![이미지1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. 추가된 언어팩 확인
-![이미지1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. 추가된 언어팩 다운로드 및 설치
-![이미지1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. 업데이트 다운로드 및 설치
-![이미지1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. 설치된 언어팩 변경을 위해 선택언어 더블클릭 또는 옵션 선택
-![이미지1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. 언어 옵션에서 기본 언어로 설정 선택
-![이미지1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. 기본 언어로 설정후 적용되기 위해서 로그오프
-![이미지1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. 다시 로그인 하시면 사용자가 선택한 언어팩으로 변경 되어있는것을 볼수있습니다.
-![이미지1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## 부록 2. Windows 라우팅 변경
-
-NHN Cloud Windows 에서 라우팅을 변경하는 방법은 다음과 같은 방법 등이 있습니다.
-
-* START -> Run -> cmd
-
-Route 커맨드
-
-* 현재 설정 출력 : route print
-* 추가 : route add "목적지" mask "subnet" "gateway" metric "Metric 값" if "Interface 번호"
-* 변경 : route change "목적지" mask "subnet" "gateway" metric "Metric 값" if "Interface 번호"
-* 삭제 : route delete "목적지" mask "목적지 subnet" "gateway" metric "Metric 값" if "Interface 번호"
-* 옵션 : -p (영구 경로 지정)
-
-설명
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* Metric 값 : 값이 낮을 수록 우선 순위 높음
-* Interface 번호 : route print에서 확인 가능 (빨간색 테두리)
-* 영구 경로 : -p 옵션을 사용하지 않는 경우 시스템 재시작 시에 설정한 경로가 초기화 되기 때문에 사용 (파란색 테두리)
-
-Case 1 - 특정 인터페이스만 외부 통신 설정
-
-* route change 커맨드를 통해 외부 통신을 원치 않는 인터페이스 경로의 metric을 수정하거나 고정 IP 설정에서 기본 게이트웨이 정보를 입력하지 않는 방법 등이 있습니다.
-* Metric 수정 방법
-    * 인터페이스의 metric 증가
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* 고정 IP 설정 방법
-    1. ipconfig /all을 통해 IP정보 확인
-![이미지1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. 확인된 IP정보를 이용하여 IP설정 창에서 기본 게이트웨이를 제외하고 입력
-![이미지1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. route print를 통해 확인
-![이미지1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Case 2 - 특정 대역에 대한 경로 설정
-
-* route add 커맨드를 통해 특정 대역에 대한 경로를 설정합니다.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Case 3 - 특정 경로 제거
-
-* route delete를 통해 지정된 경로를 제거합니다.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![이미지1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## 부록 3. 시스템 로캘 변경
-
-NHN Cloud Windows에서 시스템 로캘을 변경하는 방법은 다음과 같습니다.
-
-1. **Windows 키 > 제어판 > 시계 및 국가**를 선택합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. **국가 또는 지역**을 선택합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. **관리자 옵션** 탭에서 **시스템 로캘 변경**을 클릭합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. 변경할 시스템 로캘을 선택합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. 적용하려면 시스템을 재시작합니다.
-![이미지1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## 부록 4. 하이퍼바이저 점검을 위한 인스턴스 재시작 가이드
-
-NHN Cloud는 주기적으로 하이퍼바이저 소프트웨어를 업데이트하여 기본 인프라 서비스의 보안과 안정성을 향상시키고 있습니다.
-점검 대상 하이퍼바이저에서 구동 중인 인스턴스는 재시작을 통해 점검이 완료된 하이퍼바이저로 이동해야 합니다.
-
-인스턴스를 재시작하려면 콘솔을 통해 인스턴스 이름 옆에 생성된 **! 재시작** 버튼을 사용해야 합니다.
-`콘솔에 있는 인스턴스 재부팅 또는 운영체제의 재시작 기능으로는 인스턴스가 다른 하이퍼바이저로 이동하지 않습니다.`
-아래 가이드에 따라 콘솔에 있는 재시작 기능을 이용하시기 바랍니다.
-
-점검 대상으로 지정된 인스턴스가 있는 프로젝트로 이동합니다.
-
-**1. 점검 대상 인스턴스를 확인합니다.**
-
-인스턴스 이름 앞에 **! 재시작** 버튼이 있는 인스턴스가 점검 대상 인스턴스입니다.
-**! 재시작** 버튼 위에 마우스 커서를 올리면 자세한 점검 일정을 확인할 수 있습니다.
-![인스턴스 점검 이미지1](http://static.toastoven.net/prod_instance/instance_p_migration_ko_1.png)    
-
-**2. 점검 대상 인스턴스에서 구동 중인 응용 프로그램을 비활성화하거나 종료합니다.**
-
-점검 대상 인스턴스에서 구동 중인 응용 프로그램을 비활성화하거나 종료하여 서비스에 영향을 주지 않도록 조치해야 합니다. 
-서비스에 영향을 줄 수 밖에 없을 때는 NHN Cloud 고객 센터로 연락해 주시면 적합한 조치를 안내해 드리겠습니다.
-
-**3. 점검 대상 인스턴스 이름 옆에 생성된 [! 재시작] 버튼을 클릭합니다.**
-
-![인스턴스 점검 이미지2](http://static.toastoven.net/prod_instance/instance_p_migration_ko_2.png)
-
-**4. 인스턴스 재시작 여부를 묻는 창이 나타나면 [확인] 버튼을 클릭합니다.**
-
-![인스턴스 점검 이미지3](http://static.toastoven.net/prod_instance/instance_p_migration_ko_3.png)
-
-**5. 인스턴스 상태 표시등이 초록색으로 변하고, [! 재시작] 버튼이 사라질 때까지 대기합니다.**
-
-인스턴스 상태 표시등이 변하지 않거나 **! 재시작** 버튼이 비활성화되지 않는다면 '새로 고침'을 해보시기 바랍니다.
-
-인스턴스가 재부팅되는 동안에는 해당 인스턴스에 아무런 조작을 할 수 없습니다.
-인스턴스 재부팅이 정상적으로 완료되지 않으면 자동으로 관리자에게 보고되며, NHN Cloud에서 별도로 연락을 드립니다.
+이력 정보를 통해 저장소의 인증서 관리 활동을 추적하고 감사할 수 있습니다.
