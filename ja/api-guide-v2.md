@@ -1,5 +1,8 @@
+<!-- machine_translated: true -->
+
 {%- set api_host = "dnsplus.api.gov-nhncloudservice.com" if "gov" in build_flags else "dnsplus.api.nhncloudservice.com" -%}
 {%- set example_host = "gov-nhncloud.com" if "gov" in build_flags else "nhncloud.com" -%}
+{%- set inquiry_url = "https://www.gov-nhncloud.com/kr/support/inquiry" if "gov" in build_flags else "https://www.nhncloud.com/kr/support/inquiry" -%}
 <!-- pre-align:aligned sig=e20c06ac5822 -->
 
 <a id="network-dns-plus-api-v20-guide"></a>
@@ -418,7 +421,7 @@ curl -X GET 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/zones/{zoneId}
 - レコードセット内のレコード一覧の長さは最大512バイトです。
 - TXTレコードセットは最大4096バイトです。
 - DNS Zoneごとに最大5,000個のレコードセットを作成できます。
-- レコードセットの作成数には上限があります。上限の引き上げをご希望の場合は、別途お問い合わせください。[お問い合わせ](https://www.nhncloud.com/jp/support/inquiry)
+- レコードセットの作成数には上限があります。上限の引き上げをご希望の場合は、別途お問い合わせください。[お問い合わせ]($[ inquiry_url ]$)
 
 <a id="create-record-set-request"></a>
 #### リクエスト
@@ -633,7 +636,7 @@ curl -X POST 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/zones/{zoneId
 - レコードセット内のレコード一覧の長さは最大512バイトです。
 - TXTレコードセットは最大4096バイトです。
 - DNS Zoneごとに最大5,000個のレコードセットを作成できます。
-- レコードセットの作成数には上限があります。上限の引き上げをご希望の場合は、別途お問い合わせください。[お問い合わせ](https://www.nhncloud.com/jp/support/inquiry)
+- レコードセットの作成数には上限があります。上限の引き上げをご希望の場合は、別途お問い合わせください。[お問い合わせ]($[ inquiry_url ]$)
 
 <a id="bulk-create-record-sets-request"></a>
 #### リクエスト
@@ -926,7 +929,7 @@ curl -X GET 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/gslbs?showHeal
     - RANDOM: 接続されたPoolの中から、使用可能なPoolを無作為に選択してルーティングします。
     - GEOLOCATION: 設定された地域のトラフィックを、該当する接続されたPoolへルーティングします。地域設定がない場合は、優先順位に従ってルーティングします。
 - **接続されたPool**の**優先順位**は、値が小さいほどルーティングの順序が高くなります。なお、値を重複させることはできません。
-- GSLBの作成数とPoolの接続数には上限があります。上限の引き上げが必要な場合は、別途お問い合わせください。[お問い合わせ](https://www.nhncloud.com/jp/support/inquiry)
+- GSLBの作成数とPoolの接続数には上限があります。上限の引き上げが必要な場合は、別途お問い合わせください。[お問い合わせ]($[ inquiry_url ]$)
 
 <a id="create-gslb-request"></a>
 #### リクエスト
@@ -1138,7 +1141,7 @@ gslbIdList=91de0c6f-aeaa-44ec-b361-822acfcd5921,269eff10-f3c0-4b11-b072-ec53e7c6
 
 - GSLBにPoolを接続します。
 - **接続されたPool**の**優先順位**は、値が小さいほどルーティングの順序が高くなります。既存のPoolと同じ優先順位を入力した場合、既存のPoolのルーティング順序は下がります。
-- Poolの接続数には上限があります。上限の引き上げが必要な場合は、別途お問い合わせください。[お問い合わせ](https://www.nhncloud.com/jp/support/inquiry)
+- Poolの接続数には上限があります。上限の引き上げが必要な場合は、別途お問い合わせください。[お問い合わせ]($[ inquiry_url ]$)
 
 <a id="connect-pool-request"></a>
 #### リクエスト
@@ -1469,7 +1472,7 @@ curl -X GET 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/pools?showHeal
     - [予約済みIPアドレス](https://en.wikipedia.org/wiki/Reserved_IP_addresses)は入力できません。
     - Pool内で値を重複させることはできません。
 - エンドポイントの**重み付け**は、Pool内の他のエンドポイントの重み付けに対して相対的に機能します。同一の重み付けを設定した場合、Pool内で均等な比重を持ちます。
-- Poolの作成数、Pool内のエンドポイント数、及び全体のエンドポイント数には上限があります。上限の引き上げが必要な場合は、別途お問い合わせください。[お問い合わせ](https://www.nhncloud.com/jp/support/inquiry)
+- Poolの作成数、Pool内のエンドポイント数、及び全体のエンドポイント数には上限があります。上限の引き上げが必要な場合は、別途お問い合わせください。[お問い合わせ]($[ inquiry_url ]$)
 
 <a id="create-pool-request"></a>
 #### リクエスト
@@ -1768,7 +1771,7 @@ curl -X GET 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/health-checks'
     - TCPで入力可能な項目: ポート、ヘルスチェック周期、最大応答待機時間、最大再試行回数
 - **証明書の検証なし**を有効にすると、ヘルスチェック実行時にエンドポイントのTLS/SSL証明書が無効であっても無視できます。
 - **予想ステータスコード**及び**予想レスポンス本文**の判定において、エンドポイントからリダイレクトされたページはサポートされません。
-- ヘルスチェックの作成数には上限があります。上限の引き上げが必要な場合は、別途お問い合わせください。[お問い合わせ](https://www.nhncloud.com/jp/support/inquiry)
+- ヘルスチェックの作成数には上限があります。上限の引き上げが必要な場合は、別途お問い合わせください。[お問い合わせ]($[ inquiry_url ]$)
 
 <a id="create-health-check-request"></a>
 #### リクエスト
@@ -1837,7 +1840,6 @@ curl -X POST 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/health-checks
     }
 }
 ```
-
 
 <a id="modify-health-check"></a>
 ### ヘルスチェック修正 { #modify-health-check }
@@ -1913,7 +1915,6 @@ curl -X PUT 'https://$[ api_host ]$/dnsplus/v2.0/appkeys/{appkey}/health-checks/
     }
 }
 ```
-
 
 <a id="delete-health-checks"></a>
 ### ヘルスチェック削除 { #delete-health-checks }
