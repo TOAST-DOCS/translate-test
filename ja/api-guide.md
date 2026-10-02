@@ -17,11 +17,11 @@
 | $[ prefix ]$status | Body | String | 複製設定ステータス<br>- `INITIALIZED`: 設定完了<br>- `UPDATING`: 設定変更中<br>- `DELETING`: 設定削除中<br>- `PENDING`: 設定作成中 |
 | $[ prefix ]$direction | Body | String | 複製方向<br>- `FORWARD`: ソースボリューム → ターゲットボリューム<br>- `REVERSE`: ターゲットボリューム → ソースボリューム |
 | $[ prefix ]$directionChangedAt | Body | String | 複製方向変更日時 |
-| $[ prefix ]$dstProjectId | Body | String | ターゲットボリュームのプロジェクト ID |
-| $[ prefix ]$dstRegion | Body | String | ターゲットボリュームのリージョン |
-| $[ prefix ]$dstTenantId | Body | String | ターゲットボリュームのテナント ID |
-| $[ prefix ]$dstVolumeId | Body | String | ターゲットボリューム ID |
-| $[ prefix ]$dstVolumeName | Body | String | ターゲットボリューム名 |
+| $[ prefix ]$dstProjectId | Body | String | 複製対象ボリュームのプロジェクト ID |
+| $[ prefix ]$dstRegion | Body | String | 複製対象ボリュームのリージョン |
+| $[ prefix ]$dstTenantId | Body | String | 複製対象ボリュームのテナント ID |
+| $[ prefix ]$dstVolumeId | Body | String | 複製対象ボリューム ID |
+| $[ prefix ]$dstVolumeName | Body | String | 複製対象ボリューム名 |
 | $[ prefix ]$srcProjectId | Body | String | ソースボリュームのプロジェクト ID |
 | $[ prefix ]$srcRegion | Body | String | ソースボリュームのリージョン |
 | $[ prefix ]$srcTenantId | Body | String | ソースボリュームのテナント ID |
@@ -88,7 +88,7 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {%- endif %}
 | $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | ボリュームサイズ (GB)<br>ボリュームは最小 300 GB から最大 10,000 GB まで、100 GB 単位で設定できます。 |
 | $[ prefix ]$snapshotPolicy | Body | Object | N | ボリュームスナップショット設定オブジェクト |
-| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショット最大保存数<br>30 個まで設定可能で、最大保存数に達すると、自動生成されたスナップショットのうち最も先に生成されたスナップショットが削除されます。 |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショット最大保存数<br>20 個まで設定可能で、最大保存数に達すると、自動生成されたスナップショットのうち最も先に生成されたスナップショットが削除されます。 |
 | $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | スナップショット容量割合 |
 | $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | スナップショット自動作成オブジェクト<br>`null` の場合、スナップショット自動作成は設定されません。 |
 | $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | スナップショット自動作成時間 |
@@ -186,6 +186,7 @@ $[ ' ' * indent ]$"preserved": false,
 $[ ' ' * indent ]$"size": 3112960,
 $[ ' ' * indent ]$"type": "NORMAL"{% endmacro %}
 {# end macro #}
+
 <a id="storage-nas-api-guide"></a>
 ## Storage > NAS > API ガイド { #storage-nas-api-guide }
 
