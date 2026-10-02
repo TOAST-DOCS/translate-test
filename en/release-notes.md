@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=79f355249cbd -->
 
 <a id="storage-object-storage-release-notes"></a>
@@ -14,6 +16,11 @@
 
 <a id="august-25-2026-feature-updates"></a>
 ### Feature Updates { #august-25-2026-feature-updates }
+* [Console][API] Added limits on the number of container configuration entries
+    * Access policy (ACL) can be configured with up to 100 entries for each of the read, write, and view permissions.
+    * IP ACL can be configured with up to 100 entries each in the allowed IP list and the blocked IP list.
+    * CORS allowed origins and response headers to expose can each be configured with up to 100 entries.
+    * Lifecycle rules can be configured with up to 30 condition rules.
 * [API] Improved Amazon S3 API compatibility
     * Added support for creating and configuring lock containers.
 
