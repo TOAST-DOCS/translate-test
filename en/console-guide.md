@@ -1,505 +1,411 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > Console Guide
+<!-- pre-align:aligned sig=781e4ded30b6 -->
 
-<a id="create-instances"></a>
-## Create Instances
+<a id="monitoring-cloud-monitoring-console-user-guide"></a>
+## Monitoring > Cloud Monitoring > Console User Guide { #monitoring-cloud-monitoring-console-user-guide }
 
-You can create instances either by using the settings below or by using instance templates. To create instances using instance templates, select **Use instance template** from the Create Instance page. To learn how to create instance templates, see [Instance Template Console Guide](/Compute/Instance%20Template/en/console-guide/).
+This document explains the basics of using the Cloud Monitoring service.
 
-<a id="os-settings"></a>
-### OS Settings
+<a id="dashboard"></a>
+## Dashboard { #dashboard }
 
-Determine how the root block storage is created that will be used when an instance is created.
+In **Monitoring > Cloud Monitoring > Dashboard**, you can create chart widgets and configure dashboards to view various metrics collected from resources created by NHN Cloud services.
 
-- Select either **Create New and Set up** or **Use Existing Resource**.
-- If you select **Create New and Set up**, create root block storage using an image.
-- If you select **Use Existing Resource**, use a previously created block storage or snapshot.
+![Auto-refresh view periods](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01-1.png)
 
-<a id="image"></a>
-### Image
+The metric data view period for user dashboards defaults to retrieving data up to five minutes prior to the current time. The default auto-refresh interval is 1 minute.
 
-Select the image that contains the operating system you need. You can choose between public images provided by NHN Cloud, images you've previously created, or shared images.
+![Customize the view period](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01-2.png)
 
-The available instance flavors vary depending on the image you choose, so we recommended you choose an image first when creating an instance.
+If you set a custom duration, auto-refresh is disabled.
 
-| OS                         | Block Storage     | Memory   |
-| -------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB or more  | 1GB or more |
-| Windows                           | 50GB or more  | 2GB or more |
+<a id="view-modeedit-mode"></a>
+### View Mode/Edit Mode { #view-modeedit-mode }
 
-<a id="root-block-storage"></a>
-### Root Block Storage
+![Dashboard view mode](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_01-1.png)
 
-Set up root block storage according to the **OS settings**.
+![Dashboard edit mode](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_01-2.png)
 
-- If you select **Create New and Set up**, create the root block store by specifying the **block storage type** and **block storage size**.
-- If you select **Use Existing Resource**, specify the **original resource** to use as root block storage.
+The dashboard has two modes: view mode and edit mode.
 
-#### Original Resource
+![View Mode Header](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_01-3.png)
 
-You can select either a previously created **block storage** or **snapshot**.
+Dashboard appears in the view mode by default, and to modify a dashboard or widget, you must click the Edit mode toggle to switch to the edit mode.
 
-- When you select **block storage**, use the previously created block storage as the root block storage.
-- When you select **snapshot**, the root block storage is created using a previously created snapshot.
+![Edit Mode Header](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_01-4.png)
 
-#### Block Storage Size
+In the edit mode, you can edit the name or description of a dashboard, or clone or delete a dashboard. You can also edit each widget, or reposition and clone widgets.
 
-Specify the root block storage size of an instance.
+![Full save notification modal](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_01-5.png)
 
-- The block storage size must be at least the minimum size required by the image.
+Any changes you make to the widget, such as adding a widget or modifying its location and size, don't take effect until you click **Save All**. If you don't, you'll see a save notification modal, and any unsaved changes will disappear.
 
-The root block storage size varies depending on instance flavor.
+<a id="create-a-dashboard"></a>
+### Create a Dashboard { #create-a-dashboard }
 
-| Flavors               | Supported Block Storage Size         |
-| -------------------| -------------------------- |
-| u2 flavors             | 20 ~ 100 GB (varies by flavor) |
-| t2, m2, c2, r2, and x1 flavors | 20 ~ 2000 GB               |
+![Add Dashboard Modal](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_02-1.png)
 
-> [Note]
-> Because you are charged by block storage size, it is inefficient to make the default block storage size large without consideration. We recommend that you add additional block storage as needed.
-> If you select **block storage** for **Use Existing Resource** in the **OS settings**, you can't change the block storage size.
-> If you select **snapshot** for **Use Existing Resource** in the **OS settings**, block storage size must be set equal to or larger than the original block storage size.
+In the view mode, click **+** to the right of the **Dashboard** tab to open the Add dashboard modal.
 
-#### Block Storage Type
+![Blank dashboard](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_02-2.png)
 
-Determines the default block storage type of an instance.
+If no dashboards have been created, you'll see **+ Create Dashboard**.
 
-- Choose either **HDD** or **SSD**. The choice of block storage type affects pricing and performance.
-- You cannot change the block storage type once the instance is created.
+![After creating a dashboard](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_02-3.png)
 
-> [Note]
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the block storage type.
+Enter a **dashboard name** and **dashboard description**. The **dashboard name** is a required value, and can be set to a duplicate name, but we recommend using a unique name whenever possible.
+**Dashboard description** is an optional value and you can enter something descriptive of the dashboard.
 
-<a id="availability-zone"></a>
-### Availability Zone
+<a id="create-a-dashboard-dashboard-template"></a>
+#### Dashboard Template
 
-If an availability zone is not specified, a random zone is selected. An instance can use a block storage only if they both exist in the same availability zone. If the block storage you wish to use exists in a particular availability zone, then select that zone.
+Configure a dashboard manually or start with a preconfigured template. Select whether to use the **Dashboard Template** option.
 
-> [Note]
-> Resources in a VPC can be used in any availability zone.
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the availability zone.
+- **Enable**: The template selection area is displayed. Selecting a service displays the list of templates for the service.
+- **Disable** (default): An empty dashboard is created without a template.
 
-For more details on availability zones, see [Availability Zone in Instance Overview](./overview/#availability-zone).
+If you select to use a template, select a service and a template respectively. When a template is selected, the template name is automatically entered in the dashboard name field, and the name can be modified even after it has been automatically entered.
 
-<a id="flavor"></a>
-### Flavor
+Click the **Preview** button in the template list to open the template preview modal.
 
-You can select various flavors depending on virtual hardware performance specifications. However, the choice of some flavors may be limited depending on the virtual hardware performance that your image requires. For more details, see [Instance Overview](./overview).
+In the preview modal, you can preview the widget configuration and layout included in the template. Sample data is displayed in the preview screen, and you can view the actual data after the dashboard is created.
 
-> [Note] 
-> 1 vCPU refers to one socket composed of one thread and one core, the number of threads and the number of cores per socket are constant, one each.
+<a id="set-up-a-dashboard"></a>
+### Set up a Dashboard { #set-up-a-dashboard }
 
-Instance flavors can be changed in the NHN Cloud console even after instance creation, from higher to lower specs and vice versa. However, note that some flavors cannot be changed. See [Modify flavor](./console-guide/#modify-flavor) for details.
+![Dashboard example](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03-1.png)
 
-> [Caution] An instance's root block storagecannot be changed by changing instance flavors.
+You can add widgets and groups of widgets to a dashboard. You can add up to 12 widgets per dashboard, and they are added to the bottom of the dashboard when you add them.
 
-<a id="number-of-instances"></a>
-### Number of Instances
+![Widget examples](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03-2.png)
 
-You can specify the number of instances you want to create when creating multiple instances with the same image, availability zone, flavor, block storage size, key pair, and network settings. The instance names will be the name you specified, with numbers such as `-1` and `-2` appended to the end. For example, creating two instances named `my-instance` will result in `my-instance-1` and `my-instance-2`. The maximum number of instances you can create at once is 10.
+Widgets are the smallest unit of organization for a dashboard. They can be created by clicking **+ Add Widget** or by selecting **Add Widget**, **Add Widget Template** from the drop-down list of the corresponding button. The size and position of widgets can be freely changed in dashboard edit mode.
 
-When you create multiple instances without specifying an availability zone, each instance will be created in a randomly selected availability zone. For example, if two instances are created without specifying an availability zone, they may be created in the same zone or they may be created in different zones. If all instances need to be created in the same availability zone, select a particular zone.
+![Widget group example](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03-3.png)
 
-> [Note]
-> If you select **block storage** for **Use Existing Resource** in the **OS settings** or **Use Existing Network Interface** in the **network settings**, the number of instances is limited to `1`.
+Widget groups allow you to manage multiple widgets by grouping them together. Widget groups can be collapsed or expanded to hide and show multiple widgets, and the height and width of the widget group automatically adjusts to the size of the widgets within the group.
 
-<a id="key-pair"></a>
-### Key Pair
+<a id="set-up-a-dashboard-addedit-a-widget-and-widget-group"></a>
+#### Add/Edit a Widget and Widget Group
 
-Use an existing key pair or create a new key pair. To register an existing key pair, see [Import Key Pair (Windows)](./console-guide/#import-key-pairs-windows) for Windows users, and [Import Key Pair (Mac and Linux)](./console-guide/#import-key-pairs-mac-and-linux) for Mac and Linux users.
+![Add Widget button area](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03_a-1.png)
 
-> [Note]
-> Key Pair is a resource assigned to the user account, so it's not deleted when you delete a project.
+Widgets and widget groups can be added in both view mode and edit modes. However, to modify widgets and widget groups, you must switch to the edit mode.
 
-<a id="network"></a>
-### Network
+##### Add a Widget
 
-Select a subnet defined in your VPC to connect to an instance. For each selected subnet, a network interface is created in the instance to connect to that subnet. You can change the order of selected subnets to change network interfaces, in which case the first network interface (`eth0`) will be set as the default gateway.
+![About the Add Widget screen](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03_a_01-1.png)
 
-For more details on creating and managing networks, refer to [VPC Overview](/Network/VPC/en/overview/).
+Adding widget allows you to create your own chart widget with the metrics and filters you want.
+The widget name, graph type, service, and Metrics settings > Metrics are required values and must be filled in.
+A single widget can only represent a single service. However, you can select multiple metric items.
 
-<a id="floating-ip"></a>
-### Floating IP
+![Select the Add Widget screen metrics item and click](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03_a_01-2.png)
 
-Select whether you will use a floating IP after instance creation. If you enable this option, a new floating IP is created and connected to the first network interface. Note that the first network interface must be connected to a subnet where an internet gateway is configured.
+Each time you select a metric item, elements are added at the bottom of the screen that allow you to set filters and a legend for the metric item.
+You can only label one metric filter per type, and all filters are finally applied in the form of an `&` operation. Therefore, when applying multiple filters, the search results for a condition value will only show search results that meet all of the previously set filter criteria. Depending on the operator and condition values of the filters you added earlier, there may be no more condition values to choose from.
 
-Floating IP can be managed from Instance > Management, or Instance > Floating IP. For more details on floating IP, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+The legend is a name to distinguish the metric data viewed by each metric item. When you add a metric item, it automatically populates a suggested name by default.You can add any text before or after the placeholder wrapped in double curly braces syntax `{{ }}`. If you don't enter any text, it will concatenate and expose any label properties the indicator item has.
+Select Units to specify the y-axis title and units to be exposed in the chart. The actual value of the metric item is exposed to 15 decimal places (rounded to the 16th place, except when `Percent (0.0-1.0`) is selected, in which case the value is converted to 0-100 and exposed), without support for separate formatting based on units. The Y-axis position setting allows you to choose between **Auto**, **Left**, and **Right** for the Y-axis position of the metric item. When adding a metric item, the Auto value is selected by default. If all metric items are selected Auto, they will be sequentially positioned on the Y-axis as either Left or Right. If a metric exists with a left or right y-axis position, it will be placed in the same y-axis direction. If any metric items have the same unit and y-axis position, they are represented on the same y-axis.
 
-<a id="security-group"></a>
-### Security Group
+###### Query Settings Block
 
-Select security groups that the instance will be included in. One instance can be included in multiple security groups, in which case,
+When a metric item is selected, a metric settings block for that metric is added, and one query settings block is included in the metric settings block by default.
 
-- The instance can communicate over the network with all other instances included in each security group. When you are dealing with an instance with sensitive data that is not meant to be accessible by other instances, you must carefully select security groups.
-- The rules of each security group are aggregated and applied to the instance's external network communication.
+A query settings block is a unit for configuring filters, legends, aggregation, and more for each individual query. Multiple query settings blocks can be added within a single metric settings block, and each query is automatically numbered in alphabetical order (A, B, C, ...).
 
-For more details on security groups, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+- **Add**: Click the **+** icon in the metric settings block to add a query settings block at the bottom.
+- **Copy**: Click the copy icon in the query settings block to add a query with all filter, legend, and aggregation settings duplicated.
+- **Delete**: The delete icon is activated when there are two or more query settings blocks.
+- **Collapse/Expand**: When a query settings block is collapsed, key summary information such as filters and aggregation is displayed in the title area.
 
-<a id="additional-block-storage"></a>
-### Additional Block Storage
+Filter, aggregation, and other settings values can be duplicated across query settings blocks. Each is treated as an independent query, so even if the settings values are identical, all queries are displayed in the widget.
 
-Select whether you will attach an additional block storage after instance creation. If you enable this option, a new block storage separate from the root block storage is created and attached to the instance. As with the root block storage, you can specify the name, storage type, and size of the additional block storage you create.
+###### Aggregation Settings
 
-By using the root block storage only for the OS and storing your frequently used applications and data on the additional block storage, you can easily migrate or copy your applications and data using the block storage attach/detach and snapshot features. In addition, when an instance failure occurs, you can easily recover your services by simply detaching the additional block storage and attaching it to another instance.
+When the query period is extended, the data interval displayed in the chart is automatically adjusted. In this case, individual data points within the data interval may not be reflected in the chart.
+Using the aggregation feature allows all data within the data interval to be calculated using aggregation functions such as average, minimum, and maximum, and displayed in the chart.
+The aggregation settings area is displayed only for metrics that support aggregation.
 
-Block storage can also be managed from Instance > Block Storage. For more details on block storage, see [Block Storage Guide](/Storage/Block%20Storage/en/overview/).
+- **Disable** (default): Displays the actual data value at each point without processing. Depending on the query period, some data within the data interval may not be reflected in the chart.
+- **Enable**: Allows you to select an aggregation item (average, minimum, maximum). Since all data that occurred within the data interval is aggregated and reflected, it is easier to identify the overall flow and trend.
 
-<a id="placement-policy"></a>
-### Placement Policy
+The data intervals by query period are as follows:
 
-You can use placement policies to place instances on different hypervisors. When you set a placement policy at instance creation time, instances assigned to the same placement policy are created on different hypervisors.
- 
-> [Caution]
-> Instance creation may fail in situations where distributed deployment is not possible.
+| Query period | Data interval |
+|---------|----------|
+| ~ 5 min     | 15 sec     |
+| ~ 30 min    | 30 sec     |
+| ~ 1 hr   | 1 min      |
+| ~ 6 hr   | 5 min      |
+| ~ 12 hr  | 10 min     |
+| ~ 24 hr  | 20 min     |
+| ~ 2 days    | 30 min     |
+| ~ 7 days    | 2 hr    |
+| ~ 14 days   | 3 hr    |
+| ~ 27 days   | 6 hr    |
+| ~ 366 days  | 24 hr   |
 
-<a id="user-script"></a>
-### User Script
+For example, if the query period is set to 24 hours, the data interval becomes 20 minutes, and data between intervals is not directly displayed in the chart. Using aggregation allows all data within the 20-minute interval to be reflected.
 
-You can specify a script to be executed after instance creation. The user script is executed following the instance's initial boot and after the initialization process including network configuration has completed. User scripts in NHN Cloud are executed by automated tools such as cloud-init (Linux) and Cloudbase-init (Windows), which are embedded in the official images.
+The following is an example of aggregation applied with a 5-minute data interval. Gray dots represent the original collected data, and red dots represent the values actually displayed in the chart.
 
-> [Caution]
-> User scripts are executed with root (Linux)/Administrator (Windows) privileges.
+![Aggregation comparison](https://static.toastoven.net/prod_cloud_monitoring/20260407_aggregation_compare_en.png)
 
-#### Linux
-The first line of a user script must begin with `#!`.
-```
-#!/bin/bash
-...
-```
+Aggregation Off is the case where aggregation is not used. Only the data at 12:05 and 12:10 are displayed in the chart, and the data collected in between (0.8, 5.0, 1.0) cannot be confirmed in the chart.
+Aggregation On is the case where average aggregation is used. Since the average of all data within each interval is calculated and displayed in the chart, data collected between intervals is also reflected in the results.
 
-For a user script to run successfully, log files in the instance must be checked. You can check output logs printed by standard output/error from the script in `/var/log/cloud-init-output.log`.
+###### Apply Dynamic Filter
 
-#### Windows
+The **Apply Dynamic Filter** toggle allows you to configure whether to apply the dynamic filter conditions selected at the top of the dashboard to the widget. The default value is **Enable**. When dynamic filters are applied, the conditions selected in the dashboard top filter are always applied.
 
-Windows images support both Batch and PowerShell formats for user scripts. The format is determined by an indicator specified in the first line.
+![Widget Add Screen Preview Layer](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03_a_01-3.png)
 
-* Batch Script
-```
-rem cmd
-...
-```
+After you change the graph type or modify the metric item filters, you can preview how the chart widget will look with your changes. Click the **Preview** toggle in the top-right corner of the screen to open or close the preview layer, where you can see the chart widget in real time with your filters and legend values applied. The preview layer is adjustable for left and right width.
 
-* PowerShell Script
-```
-#ps1_sysnative
-...
-```
+##### Add a Widget Template
 
-To use both Batch and PowerShell in your script, use the following format.
+![Add Widget Template Modal](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03_a_02-1.png)
 
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
+Widget templates are a quick and easy way to create widgets using pre-configured widget metric items. After adding the widget, you can edit the widget to add filters to the metric items or change the metric items and names.
+Note that some widgets added with widget templates can only be deleted and not edited.
 
-Logs from user scripts can be found in `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`.
+##### Add a Widget Group
 
-For more details regarding user scripts, see the [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) or [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) guides.
+![Add Widget Group Modal](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03_a_03-1.png)
 
-<a id="additional-instance-features"></a>
-## Additional Instance Features
+You can add a group of widgets to your dashboard. To add a widget to a widget group, simply drag the title area at the top of the widget in edit mode and move it inside the widget group.
 
-<a id="change-instance-status"></a>
-### Change Instance Status
+Widget groups can be edited just like widgets, and to edit a widget group, you need to enter edit mode.
 
-An instance’s status can be changed by stopping, terminating, deleting, and starting it.
+![Widget group context menu](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03_a_03-2.png)
 
-For more details on hypervisor resources and fees for stopping, terminating, and deleting instances, see the table below.
+- Click **Edit** to expand the **Edit Widget Group** modal.
+- Click **Delete Group** to remove only the group, leaving the widget's location and size information intact.
+- Click **Delete Groups and Child Widgets** to delete all widgets within the group.
 
-| Classification | Stop instance | Terminate Instance | Delete Instance |
-| --- | -- | --- | --- |
-| Hypervisor resource | Resource remain allocated  | Resource returned and reallocated when an instance is started | Resource removed |
-| Pricing for instance | Price for stopping applied | Free | Free |
-| Pricing for other connected resources | Charged| Charged | Charged |
+<a id="set-up-a-dashboard-moveclonedelete-a-widget"></a>
+#### Move/Clone/Delete a Widget
 
-> [Note] GPU Instances cannot be terminated and will incur normal (100%) rates when stopped.
+![Resizing widgets](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03_b_01-1.gif)
 
-<a id="create-image"></a>
-### Create Image
+Once you're in Edit mode, you can resize the widget by dragging the bottom right corner, or reposition it by dragging the top area of the widget.
 
-Create an image from an instance's root block storage. It is recommended to stop instances before creating an image in order to ensure data integrity.
+![Widget context menu](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03_b_01-3.png)
 
-While it is possible to create an image from an instance that has no available free space in its root block storage, those images are unusable by other instances because they cannot be properly initialized. Before creating an image, ensure that your instance has at least 100KB of free space.
+- You can delete the widget by clicking **Delete**.
+- You can duplicate a widget in a dashboard by clicking **Clone Widget to Other Dashboard**. The cloned widget is added at the bottom.
+- You can clone a widget on another dashboard by clicking **Clone Widget to Other Dashboard**. This opens a modal where you can select the dashboard to which you want to add the widget.
 
-Created images are registered as private images in **Compute > Image**. You can use the registered image to create an instance with a block storage identical to that of the original instance.
+![Clone widget to another dashboard modal](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03_b_01-2.png)
 
-> [Caution]
-> The size of the created image may be larger than the actual usage of the root block storage.
+<a id="set-up-a-dashboard-create-a-notification"></a>
+#### Create a Notification
 
-<a id="associatedisassociate-floating-ip"></a>
-### Associate/Disassociate Floating IP
+![Widget context menu](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03_b_01-3.png)
 
-Floating IP can be associated with or disassociated from an instance, regardless of the instance's status. If you have no available floating IP or if the floating IP you want is not available, you can create one by clicking **Create**. Alternatively, floating IP can also be created from **Network > VPC > Floating IP**.
+Clicking **Create Notification** takes you to the **Manage Notifications** > **Create Notification**. You can easily create an notification with the widget's information filled in, including the widget name, service, metric item, and metric item filter information.
+You can easily create a notification entering only the notification condition and the recipient of the notification.
 
-For more details on floating IP, see [VPC Overview](/Network/VPC/en/overview/).
+![If you accessed the Create widget notification](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_03_c-1.png)
 
-<a id="modify-security-group"></a>
-### Modify Security Group
+<a id="dynamic-filter"></a>
+### Dynamic filter { #dynamic-filter }
 
-An instance's security groups can be modified regardless of the instance's status. Modified security groups are applied immediately.
+The dynamic filter is a feature that filters data across all widgets at once from the common filter area at the top of the dashboard, without modifying individual widgets one by one.
 
-For more details on security groups, see [Security Group](./console-guide/#security-group) and [VPC Overview](/Network/VPC/en/overview/).
+Dynamic filters are grouped and arranged by service. They are automatically arranged from left to right according to internally defined priorities based on the dependencies between filter items.
 
-<a id="change-network-subnet"></a>
-### Change Network Subnet
+When a dynamic filter item is changed, it is immediately reflected in the widgets on the dashboard. When the selected value of a left filter is changed, the items in the right filter are updated to match the changed conditions, and the selection state of the right filter is reset.
 
-An instance's network subnet can only be changed while the instance is stopped. When you add a subnet, a network interface that will be connected to that subnet is automatically created on your instance. If you add multiple subnets at once, the order of the newly created network interfaces on the instance is set randomly. Deleting a subnet from an instance automatically deletes the network interface that was created along with the subnet.
+The dynamic filter is displayed as follows depending on the selection state:
 
-<a id="modify-flavor"></a>
-### Modify Flavor
+| Selection state | Display format | Example |
+|---------|---------|------|
+| All selected (default) | `All` | All |
+| 1 item selected | Selected filter value | Korea (Pangyo) |
+| 2 or more items selected | `{filter value} and N more` | Korea (Pangyo) and 2 more |
+| No items selected | `No items selected` | No items selected |
+| No items available | `No items available` | No items available |
 
-Instance flavors can be changed once an instance has been stopped. If an instance is running, click **Stop Instance** in **Additional Features** to stop the instance.
+> Note: Dynamic filters are applied only to widgets with the **Apply Dynamic Filter** toggle enabled in the widget add/edit screen.
 
-You can only change an instance to another flavor that is compatible with its current flavor.
+<a id="dynamic-filter-management"></a>
+#### Dynamic Filter Management
 
-* m2, c2, r2, t2, x1 flavor instances can be changed to m2, c2, r2, t2, x1 flavors.
-* m2, c2, r2, t2, x1 flavor instances cannot be changed to u2 flavors.
-* u2 flavor instances cannot be changed to other flavors once they have been created, not even to those of the same u2 flavor.
+Click the **Dynamic Filter Management** button in view mode to open the dynamic filter management modal. The Dynamic Filter Management button is not displayed in edit mode.
 
-When you modify flavors, instance resize and resize confirmation tasks proceed. When all tasks are completed, the VM changes its status to **Shutoff**. You can start the instance by clicking **Start Instance** in **Additional Features**.
+Dynamic filters are managed independently for each dashboard. The name of the dashboard to which the dynamic filter currently being configured applies is displayed at the top of the modal.
 
-> [Note] The instance's root block storage size cannot be modified. If an instance requires additional block storage space, attach a block storage. For details on how to attach block storage, see [Block Storage Overview](/Storage/Block%20Storage/en/overview/).
+- **Add**: Click the **Add** button to add a new row at the bottom of the dynamic filter list. Enter the following items:
+  - **Filter name**: Enter the name of the filter to be displayed at the top of the dashboard.
+  - **Service**: Select the service to apply the dynamic filter to. (e.g., Instance, Load Balancer)
+  - **Label**: Select the label available for the selected service. (e.g., when Instance service is selected, region, instance, etc.)
+- **Edit**: Click the **Edit** button of an existing dynamic filter to modify the filter name, service, and label.
+- **Delete**: Click the **Delete** button to delete the dynamic filter.
 
-Instances will be charged using the new flavor from the moment the modification completes.
+The same combination of service and label cannot be added as a duplicate.
 
-<a id="change-instance-os-details"></a>
-### Change Instance OS Details
+!!! tip "Note"
+    When selecting an instance in the dynamic filter for the Instance service, both instances with existing agents and instances with new agents installed are displayed.
+    Since the supported metrics differ depending on the agent type, metrics that do not correspond to the agent type of the selected instance may not display data.
+    For metrics supported by the new agent, refer to the [New Agent Installation Guide](new-instance-metric.md).
 
-You can change instance OS information regardless of the state of the instance. 
+<a id="manage-a-dashboard"></a>
+### Manage a Dashboard { #manage-a-dashboard }
 
-On the **Compute > Instance** page, click the instance whose OS information you want to change. On the **Basic Information** tab of that instance's details screen, click **OS > Modify**.
+![View Mode Header](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_04-1.png)
 
-> [Note] You can't change the OS type.
+![Dashboard Management Modal](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_04-2.png)
 
-<a id="change-instance-description"></a>
-### Change Instance Description
- 
-You can change instance description regardless of the state of the instance. 
- 
-On the **Compute > Instance** page, click the instance whose information you want to change. On the **Basic Information** tab of that instance's details screen, click **Description > Change**.
+Click **Manage Dashboards** to display the Manage dashboards modal. You can view or edit the dashboard's name, description, creation date, and whether the project dashboard is visible or not.
 
-<a id="change-instance-key-pair"></a>
-### Change Instance Key Pair
+![Manage Dashboards Modal > Edit Mode](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_04-3.png)
 
-You can change the instance key pair only if the instance is active.
+You can click the **Edit** or Delete icon in each dashboard's **Edit** column to edit the name and description of that dashboard or delete the dashboard.
+You can click the**Project Dashboard Visibility Settings** toggle to set the visibility of that dashboard on the Project custom dashboards screen. Even if you turn off the visibility setting, it is always visible in the Cloud Monitoring service.
 
-On the **Compute > Instance** page, click the instance whose key pair information you want to change. On the **Basic Information** tab of that instance's details screen, click **Key Pair > Change**.
+<a id="download-widget-data"></a>
+### Download Widget Data { #download-widget-data }
 
-Change the key pair of the instance default account to the selected key pair. The instance default account can be found on the **Connection Information** tab of the instance's bottom details screen.
+![Download Widget Data menu](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_01_05-1.png)
 
-> [Caution] Changing an instance key pair deletes all public key information in the instance except for the selected key pair.
+You can download all the widget data for a dashboard as a .png, .csv, or .xlsx file. The files are saved with the dashboard name, and in the case of .csv files, they are downloaded as a .zip file compressed with the dashboard name. Inside it contains individual .csv files with the name of each widget.
+For .csv and .xlsx files, you can only download up to 3 months of data based on the start date. If the view period is less than one month, data is provided in 5-minute intervals, and if it is more than one month, data is provided in 1-day intervals.
+The longer the view period you specify or the more metric data the widget and the widget contains, the longer the download might take.
 
-> [Note] Only project members with the ADMIN permissions for the basic infrastructure can change the instance key pair, which cannot be changed if it is a Windows OS instance.
+<a id="manage-notifications"></a>
+## Manage Notifications { #manage-notifications }
 
-> [Note] If the image version used to create the instance is low, the feature to change key pairs may not be available.
+In **Monitoring > Cloud Monitoring > Notification Settings**, you can add notifications to your NHN Cloud resources and check the history of notification occurrences.
 
-<a id="manage-placement-policies"></a>
-### Manage Placement Policies
+![Notification settings list screen](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_02_01-1.png)
 
-You can create and delete placement policies and view a list of instances assigned to placement policies.
+<a id="notification-settings"></a>
+### Notification Settings { #notification-settings }
 
-Only the `anti-affinity` placement policy type for distributed placement is provided.
+![Notification Settings List Screen - Created](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_02_01_a-4.png)
 
-You can delete a placement policy even if instances are assigned to it, in which case the instances are not deleted.
+The Notification settings screen displays a table where you can view information about the notifications you've created, and you can sort the table by notification name, whether the notification is enabled, and when it was created.
+- You can enable or disable notifications by clicking the **Enable Notifications** toggle.
+- Click **View** in the **View Notification Details** column to display the **Notification Details** modal.
+- Click **Edit** in the **Edit** column to go to the **Edit Notification** screen.
+- Clicking on each row of notifications takes you to the **Notification Occurred History** tab, where the notifications are automatically looked up and displayed.
 
-<a id="key-pairs"></a>
-## Key Pairs
+<a id="notification-settings-createedit-notifications"></a>
+#### Create/Edit Notifications
 
-<a id="import-key-pairs-windows"></a>
-### Import Key Pairs (Windows)
+![Create/Edit Notifications Screen](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_02_01_a-1.png)
 
-You can use puttygen, which is installed when you install the PuTTY SSH client, to create a key pair and register it with NHN Cloud.
+The name of the notification's basic information, the service and metric items in the service and notification settings, the notification conditions, and the recipients of the notification are required values and must be entered.
+You can only select a single service for the notification, but you can select multiple metric items.
 
-Make sure you have [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) installed.
+![Create/Edit Notification Screen - Metrics Selected](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_02_01_a-2.png)
 
-Run puttygen.
+When a metric item is selected, a metric settings block for that metric is added, and one query settings block is included in the metric settings block by default. A query settings block is a unit for configuring filters, aggregation, conditions, and more for each individual query, and multiple query settings blocks can be added within a single metric settings block.
+For metrics that support aggregation, the aggregation settings area is displayed within the query settings block. Selecting **Enable** allows you to select an aggregation item (average, minimum, maximum), and selecting **Disable** (default) evaluates alerts based on the original data.
 
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
+You don't need to enter a filter for the metric entry, but you must enter at least one condition. Set the conditions you want to be notified on with a combination of comparison method, threshold, and duration.
 
-Select **RSA** (or SSH-2 RSA in older versions of puttygen) under **Parameters**. Click **Generate** under **Actions**. Continuously move your mouse in the empty space in order to generate the key.
+![Notification Settings List Screen - Notification Recipients](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_02_01_a-3.png)
 
-After the key is generated, the public key file contents will be visible as shown below. Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
+You must select at least one notification recipient. Only notification recipient types are supported for notification recipient groups, which can be managed on the **Project Management > Notification Receiver Group Management** screen. [[Go to User Guide]](/nhncloud/en/console-guide/#notification-receiver-group-management)
 
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
+You can receive notifications as custom webhooks in the Notification Receiver Group.
 
-Click **Save private key** under **Actions** to save the private key. If you save the private key leaving the **Key passphrase** field blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to use your converted private key more securely, set a passphrase before saving.
+- List of parameters to provide as custom webhook request data
+  
+| Value | Description | Type | Remarks |
+| --- | --- | --- | --- |
+| orgName | Organization name | String |  |
+| projectName | Project name | String |  |
+| tenantType | Service type | String | `organization`(custom dashboard)<br>`project`(Cloud Monitoring) |
+| referenceKey | Organization or project ID | String |  |
+| serviceName | Service name | String |  |
+| alertName | Notification name | String |  |
+| alertId | Notification ID | String |  |
+| eventsCount | Number of events occurring | Integer |  |
+| events | Notification event | List<Object\> | See the events parameter list |
 
-> [Caution]
-> If you wish to be able to automatically login to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
+- events parameter list
 
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
+| Value | Description | Type | Remarks |
+| --- | --- | --- | --- |
+| events[].resourceTypeName | Resource type name (En) | String | |
+| events[].enMetricName | Metric name (En) | String | |
+| events[].threshold | Threshold | String | String as Double |
+| events[].operator | Comparison Method | String | Enum`(EQUAL`, `NOT_EQUAL`, `GREATER_THAN`, `LESS_THAN`, `GREATER_THAN_OR_EQUAL`, `LESS_THAN_OR_EQUAL`) |
+| events[].duration | Duration | String | The value set in the condition |
+| events[].result | Detected value | String | String as Double |
+| events[].startAt | Event Occurred at | String | ex) `2024-10-29T08:44:22Z` |
+| events[].endAt | Event Ended at | String | ex) `2024-10-29T08:44:22Z` |
+| events[].contMinutes | Event duration (minutes) | Integer | The difference between the time the event occurred and the current time (minutes) |
+| events[].labels | Where event occurred | Map<String, String\> | |
 
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
 
-<a id="import-key-pairs-mac-and-linux"></a>
-### Import Key Pairs (Mac and Linux)
+<a id="notification-settings-view-notification-details-modal"></a>
+#### View Notification Details Modal
 
-Key pairs created using `ssh-keygen` in Mac or Linux can be registered with NHN Cloud. Use the following command to create a key pair.
+![View Notification Details Modal](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_02_01_b-1.png)
 
-	$ ssh-keygen -t rsa -f my_key.key
+In the alert details modal, you can view the detailed information of the configured alert. You can view the alert name, description, service, metric item filters and alert conditions, aggregation settings, and alert recipients. For metrics that support aggregation, the configured aggregation value (disable/average/maximum/minimum) is displayed, and for metrics that do not support aggregation, - is displayed.
 
-You can choose to set a passphrase for the key pair, although it is not required. If you wish to use your key pair more securely, we recommend setting a passphrase. The file with `.pub` appended to the specified key pair name contains the public key.
+<a id="notification-history"></a>
+### Notification History { #notification-history }
 
-	$ cat my_key.key.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-	
-Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
+![Notification occurrence history view screen](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_02_02-1.png)
 
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
+You can use search filters and tables to view the history of notifications that have occurred, and tables to view the information of notifications that have occurred.
+You can view the alert name, occurrence time, end time, service, resource, metric item, aggregation, result value, and duration. For metrics that support aggregation, the configured aggregation value is displayed, and for metrics that do not support aggregation, - is displayed. You can change the table sort order by occurrence time or end time.
 
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
+> Notes: Duration refers to the time from when the notification occurs to when the notification ends.
+If you disable a notification before it ends while it is still occurring, the duration can continue to increase because the notification was not explicitly ended.
 
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## Appendix 1. Change Language Packs in Windows
+<a id="notification-history-view-the-history-of-notification-occurrences"></a>
+#### View the history of notification occurrences
 
-NHN Cloud provides Windows images with English as the primary language. You may change your language preferences with the following steps.
+![Notification history search filters](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_02_02_a-1.png)
 
-1. Go to **START > Control Panel > Clock, Language, and Region > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows1.png)
+You can use the notification name, notification status, Metric item, and Occurrence time filters to view the history of notification occurrences. Click **Initialize** to initialize the search filters.
 
-2. Select **Change your language preferences > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows2.png)
+<a id="notification-history-view-notification-send-history-modal"></a>
+#### View Notification Send History Modal
 
-3. Choose a language in **Add a language** and click **Add**.
-![Image1](http://static.toastoven.net/prod_instance/windows3.png)
+![View notification sending history screen](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_02_02-1.png)
+For each notification, click **View** in the **View Notification Send History** column to open the **View Notification Send History** modal.
 
-4. Check the language pack just added.
-![Image1](http://static.toastoven.net/prod_instance/windows4.png)
+![View Notification Send History Modal](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_02_02_b-1.png)
 
-5. Download and install the language pack.
-![Image1](http://static.toastoven.net/prod_instance/windows5.png)
+In the history modal, you can view detailed information on notification settings such as **Occurred Date**, ** Duration**, **Metric Item**, **집계**, **Result**, **Notification Conditions**, and **Occurred Location**.
 
-6. Download and install updates.
-![Image1](http://static.toastoven.net/prod_instance/windows6.png)
+The actual history of sending notifications is also provided in a table. You can see the notification sending date, notification method, recipient, and notification result for each notification sending history.
+You can change the table sorting by notification date, notification method, and notification time.
 
-7. To change to the installed language pack, double-click the selected language or select **Options**.
-![Image1](http://static.toastoven.net/prod_instance/windows7.png)
+<a id="manage-metrics"></a>
+## Manage Metrics { #manage-metrics }
 
-8. Choose **Make this the primary language** for Windows display language.
-![Image1](http://static.toastoven.net/prod_instance/windows8.png)
+In **Monitoring > Cloud Monitoring > Manage Metrics**, you can set whether to collect service-specific metrics for NHN Cloud resources.
 
-9. To apply the changes, click **Log off now**.
-![Image1](http://static.toastoven.net/prod_instance/windows9.png)
+<a id="set-up-metric-collection"></a>
+### Set up Metric Collection { #set-up-metric-collection }
 
-10. Log in again, and you can see Windows is displayed using the language pack of your choice.
-![Image1](http://static.toastoven.net/prod_instance/windows10.png)
+![Manage metrics screen](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_03_01-1.png)
 
-<a id="appendix-2-change-routing-in-windows"></a>
-## Appendix 2. Change Routing in Windows
+A table displays where you can set up metric collection by service.
+For each service, you can see the **category**, **service**, **whether the service is enabled**, and **metric collection settings**, and you can click the **Metric Collection Settings** toggle to set whether metrics are collected.
 
-Routing in NHN Cloud Windows instances can be changed as follows.
+![Confirmation to start collecting metrics modal](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_03_01-2.png)
 
-* Press **Windows Key + R** to open an execution window, and enter `cmd` and execute to open a command prompt window. You can enter route commands here.
+![Metric collection stop confirmation modal](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_03_01-3.png)
 
-Route commands
+When you start/stop collecting metrics, a confirmation modal opens.
 
-* Print current configuration: route print
-* Add : route add "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Change : route change "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Delete : route delete "Destination" mask "Destination subnet" "gateway" metric "Metric value" if "Interface number"
-* Option : -p (specify as persistent route)
+![Example of a broken metric widget](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_03_01-4.png)
 
-  
-Description
+![Example of the widget when metrics are being collected](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_03_01-5.png)
 
-![Image1](http://static.toastoven.net/prod_instance/windows_route1.png)
+If you stop collecting metrics, the metrics are no longer displayed in widgets that you've created using metrics from that service, and the metrics' legends are disabled.
 
-* Metric Value: A lower value indicates higher priority
-* Interface Number: This value can be obtained from route print (red box above)
-* Persistent Route: Use the -p option to avoid the configured routes being reset across system reboots (blue box above)
+<a id="example-screen"></a>
+## Example Screen { #example-screen }
 
-Example 1 - Restricting external communication for particular interfaces
-
-* You can restrict an interface from communicating externally by using the route change command to change its route metric or by leaving the default gateway field blank when configuring fixed IP settings.
-* How to Modify Metrics
-    * Increase interface metric value
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* How to Set Fixed IP
-    1. Use the ipconfig /all command to view IP information.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. Enter the corresponding IP information, leaving the default gateway field blank, in the IP Properties window.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. Check the results using the route print command.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Example 2 - Setting routes for a particular address range
-
-* Use the route add command to set routes for a particular address range.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Example 3 - Removing a particular route
-
-* Use the route delete command to remove specified routes.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## Appendix 3. Change System Locale
-
-System locale in NHN Cloud Windows instances can be changed as follows.
-
-1. Go to **Windows Key > Control Panel > Clock, Language, and Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. Select **Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. From the **Administrative** tab, click **Change system locale**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. Select a system locale to use.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. Restart the system to apply the changes.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## Appendix 4. Restarting Instances for Hypervisor Maintenance
-NHN Cloud updates hypervisor software on a regular basis to enhance the security and stability of infrastructure services that we provide.
-Instances running on a hypervisor that requires maintenance must be restarted and migrated to a hypervisor which has completed maintenance.
-
-To restart an instance, use the **! Restart** button that has been created next to the instance name in the console.
-`Using the "Restart Instances" button in the console or rebooting the operating system will not migrate an instance to another hypervisor.`
-Follow the guide below to use the restart feature in the console.
-
-Go to the project where your instance requiring maintenance is located.
-
-**1. Check if your instance requires maintenance.**
-
-Any instance that has the **! Restart** button before its name requires maintenance.
-Put the mouse cursor over the **! Restart** button to find maintenance schedule details.
-![Instance Maintenance Image 1](http://static.toastoven.net/prod_instance/instance_p_migration_en_1.png)    
-
-**2. Deactivate or stop application programs running on an instance which requires maintenance.**
-
-Any application programs running on an instance which requires maintenance must be deactivated or stopped in order not to impact your service.
-If there is no way to do so without impacting your service, please contact NHN Cloud Customer Center and we will provide you with guidance on appropriate measures to take.
-
-**3. Click the [! Restart] button created next to the name of the target instance.**
-
-![Instance Maintenance Image 2](http://static.toastoven.net/prod_instance/instance_p_migration_en_2.png)
-
-**4. Click [Confirm] in the Restart Instances confirmation window.**
-
-![Instance Maintenance Image3](http://static.toastoven.net/prod_instance/instance_p_migration_en_3.png)
-
-**5. Wait until the instance status turns green and the [! Restart] button disappers.**
-
-If the status does not change or the **! Restart** button is not disabled, try refreshing the page.
-
-You cannot operate or modify the instance while a restart is underway.
-If an instance restart does not complete successfully, the administrator will automatically be notified and you'll also be contacted by NHN Cloud.
+![Dashboard example](https://static.toastoven.net/prod_cloud_monitoring/Overview.png)
