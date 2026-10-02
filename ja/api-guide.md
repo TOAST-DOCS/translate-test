@@ -88,7 +88,7 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {%- endif %}
 | $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | ボリュームサイズ (GB)<br>ボリュームは最小 300 GB から最大 10,000 GB まで、100 GB 単位で設定できます。 |
 | $[ prefix ]$snapshotPolicy | Body | Object | N | ボリュームスナップショット設定オブジェクト |
-| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショット最大保存数<br>30 個まで設定可能で、最大保存数に達すると、自動生成されたスナップショットのうち最も先に生成されたスナップショットが削除されます。 |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | スナップショット最大保存数<br>20 個まで設定可能で、最大保存数に達すると、自動生成されたスナップショットのうち最も先に生成されたスナップショットが削除されます。 |
 | $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | スナップショット容量割合 |
 | $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | スナップショット自動作成オブジェクト<br>`null` の場合、スナップショット自動作成は設定されません。 |
 | $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | スナップショット自動作成時間 |
@@ -186,6 +186,7 @@ $[ ' ' * indent ]$"preserved": false,
 $[ ' ' * indent ]$"size": 3112960,
 $[ ' ' * indent ]$"type": "NORMAL"{% endmacro %}
 {# end macro #}
+
 <a id="storage-nas-api-guide"></a>
 ## Storage > NAS > API ガイド { #storage-nas-api-guide }
 
