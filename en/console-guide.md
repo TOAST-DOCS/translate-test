@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=d48e0cc2304b -->
 
 <a id="storage-nas-for-bigdata-console-user-guide"></a>
@@ -82,7 +84,7 @@ The created volume can be mounted on an instance using the connection informatio
 ```
 sudo apt-get install nfs-common rpcbind
 ```
-<br/>
+<br>
 
 <a id="connect_volume.nfs-rocky"></a>
 #### Rocky
@@ -90,7 +92,7 @@ sudo apt-get install nfs-common rpcbind
 ```
 sudo dnf install nfs-utils rpcbind
 ```
-<br/>
+<br>
 
 <a id="connect_volume.rpcbind"></a>
 ### Run rpcbind Service { #connect_volume.rpcbind }
@@ -98,16 +100,16 @@ sudo dnf install nfs-utils rpcbind
 ```
 sudo service rpcbind start
 ```
-<br/>
+<br>
 
 <a id="connect_volume.mount"></a>
 ### Volume Mount { #connect_volume.mount }
 
 ```
-sudo mount -t nfs <nas source> <mount point>
+sudo mount -t nfs <nas-source> <mount-point>
 ```
 
 | Item | Description |
 | --- | --- |
-| &lt;nas source&gt; | Volume information<br>Example: 192.168.0.11:/GJ\_SHARE\_FS8/bacb62d4-f271-44ad-a5d2-505d21037b45 |
-| &lt;mount point&gt; | Directory to mount the volume<br>Example: /mnt |
+| &lt;nas-source&gt; | Volume connection path (`NFS server address:export path`)<br>Example: 192.168.0.11:/GJ\_SHARE\_FS8/bacb62d4-f271-44ad-a5d2-505d21037b45 |
+| &lt;mount-point&gt; | Directory to mount the volume<br>Example: /mnt |
