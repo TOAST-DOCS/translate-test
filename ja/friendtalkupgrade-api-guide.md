@@ -1883,6 +1883,7 @@ Content-Type: application/json;charset=UTF-8
 | 名前     | タイプ     | 説明     |
 |--------|--------|--------|
 | appKey | String | 固有のアプリキー |
+
 [Header]
 
 ```
@@ -1894,6 +1895,7 @@ Content-Type: application/json;charset=UTF-8
 | 名前           | タイプ     | 必須 | 説明               |
 |--------------|--------|----|------------------|
 | X-Secret-Key | String | O  | コンソールで生成できます。 |
+
 [Query parameter]
 
 | 名前              | タイプ      | 必須 | 説明                                                                  |
@@ -1903,6 +1905,7 @@ Content-Type: application/json;charset=UTF-8
 | targeting       | String  | X  | メッセージ対象のタイプ（M: マーケティング受信同意ユーザー、N: 友だちではないマーケティング受信同意ユーザーのみ、I: 友だちであるユーザー） |
 | pageNum         | Integer | X  | ページ番号（デフォルト: 1）                                                       |
 | pageSize        | Integer | X  | 照会件数（デフォルト: 15）                                                       |
+
 !!! tip "ヒント"
     照会可能な期間は直近90日以内であり、1回の照会範囲は最大31日です。
 
@@ -1963,6 +1966,7 @@ Content-Type: application/json;charset=UTF-8
 | -- senderGroupingKey        | String  | X        | 発信グループキー                                                             |
 | -- recipientGroupingKey     | String  | X        | 受信者グルーピングキー                                                            |
 | - totalCount                | Integer | X        | 総件数                                                                  |
+
 [例]
 
 ```
@@ -4683,6 +4687,7 @@ Content-Type: application/json;charset=UTF-8
 |-------------------|---------|-----|------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | unsubscribeNo     | String  | O   | 080 無料受信拒否電話番号(未入力の場合、発信プロフィールに登録された受信拒否情報で送信されます)<br>- 080-xxx-xxxx <br>- 080-xxxx-xxxx <br>- 080xxxxxxx <br>- 080xxxxxxxx                              |
 | unsubscribeAuthNo | 	String | 	X  | 080無料受信拒否認証番号（最大10文字。すべて未入力の場合、発信プロフィールに登録された無料受信拒否情報で送信されます）<br>unsubscribeNoなしにunsubscribeAuthNoのみ入力不可<br>例: 1234 |
+
 <a id="response-22"></a>
 #### レスポンス
 

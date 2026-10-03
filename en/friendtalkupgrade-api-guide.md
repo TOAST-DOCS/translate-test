@@ -1883,6 +1883,7 @@ Content-Type: application/json;charset=UTF-8
 | Name | Type | Description |
 |--------|--------|--------|
 | appKey | String | Unique appkey |
+
 [Header]
 
 ```
@@ -1894,6 +1895,7 @@ Content-Type: application/json;charset=UTF-8
 | Name           | Type     | Required | Description               |
 |--------------|--------|----|------------------|
 | X-Secret-Key | String | O  | Can be created in the console. |
+
 [Query parameter]
 
 | Name              | Type      | Required | Description                                                                  |
@@ -1903,6 +1905,7 @@ Content-Type: application/json;charset=UTF-8
 | targeting       | String  | X  | Type of message target (M: users who have consented to marketing messages, N: users who have consented to marketing messages but are not friends, I: users who are friends) |
 | pageNum         | Integer | X  | Page number (default: 1)                                                       |
 | pageSize        | Integer | X  | Number of queries (default: 15)                                                       |
+
 !!! tip "Note"
     The search period is within the last 90 days, and the range for a single search is up to 31 days.
 
@@ -1963,6 +1966,7 @@ Content-Type: application/json;charset=UTF-8
 | -- senderGroupingKey        | String  | X        | Sender's grouping key                                                             |
 | -- recipientGroupingKey     | String  | X        | Recipient's grouping key                                                            |
 | - totalCount                | Integer | X        | Total count                                                                  |
+
 [Example]
 
 ```
@@ -4684,6 +4688,7 @@ Content-Type: application/json;charset=UTF-8
 |-------------------|--------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | unsubscribeNo     | String | O        | 080 toll-free opt-out phone number (if neither field is entered, the message is sent using the opt-out information registered in the sender profile)<br>- 080-xxx-xxxx <br>- 080-xxxx-xxxx <br>- 080xxxxxxx <br>- 080xxxxxxxx |
 | unsubscribeAuthNo | 	String | 	X  | 080 opt-out authentication number (up to 10 characters; if all fields are left blank, the message is sent using the opt-out information registered in the sender's profile)<br>Cannot enter unsubscribeAuthNo without unsubscribeNo<br>Example: 1234 |
+
 <a id="response-22"></a>
 #### Response
 
