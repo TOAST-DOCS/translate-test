@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=dd9e6b083dbb -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=5d760a615f63 -->
 
 <a id="network-load-balancer-overview"></a>
 ## Network > Load Balancer > Overview { #network-load-balancer-overview }
@@ -208,6 +210,23 @@ Load Balancer operates in a `proxy mode`. The client connects to a load balancer
 
     If you are using the TCP or HTTPS protocol, you can set up a proxy protocol on the load balancer to check the client IP address. In this case, the server must also have the capability to recognize the proxy protocol like the ones shown above.
 
+<a id="proxy-protocol-and-health-check"></a>
+### Proxy Protocol and Health Check { #proxy-protocol-and-health-check }
+
+When you set the proxy protocol on a listener, the proxy protocol is always sent for service traffic. However, whether it is sent for health check traffic depends on the health check port setting. If the health check port is set to `Member port`, the proxy protocol is also sent for health check connections. If a separate port is specified using `Custom`, it is not sent.
+
+| Listener proxy protocol | Health check port | Proxy protocol during health check | Proxy protocol for service traffic |
+|--|--|--|--|
+| ON | Member port | Sent | Sent |
+| ON | Custom | Not sent | Sent |
+| OFF | Member port | Not sent | Not sent |
+| OFF | Custom | Not sent | Not sent |
+
+Therefore, if you use HTTP or HTTPS as the health check protocol and the proxy protocol is sent, the member instance must be able to recognize the proxy protocol to return a normal response and become ACTIVE. If the member instance does not support the proxy protocol, set the health check port to `Custom` so that the proxy protocol is not sent.
+
+!!! tip "Note"
+    When the health check protocol is TCP, only the success of the TCP handshake with the member instance is checked. Therefore, regardless of whether the proxy protocol is sent or whether the member instance supports the proxy protocol, if the port is open, the instance is considered ACTIVE.
+
 
 <a id="session-connection-limits"></a>
 ## Session Connection Limits { #session-connection-limits }
@@ -280,6 +299,8 @@ NHN Cloud Load Balancer periodically tries checking the status of the instances 
 
 The load balancer supports TCP, HTTP, and HTTPS as health check protocols. For precise health check, various health check methods can be set when using each protocol.
 
+
+When you set the proxy protocol on a listener, the health check behavior varies depending on the health check port setting. For more information, see "Proxy Protocol and Health Check" in "Load Balancer Proxy Mode".
 
 <a id="statistics-function-of-load-balancer"></a>
 ## Statistics Function of Load Balancer { #statistics-function-of-load-balancer }
