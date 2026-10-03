@@ -1,505 +1,271 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > Console Guide
+<!-- pre-align:aligned sig=f84534729b3d -->
 
-<a id="create-instances"></a>
-## Create Instances
+<a id='network-load-balancerdsr-console-user-guide'></a>
+## Network > Load Balancer(DSR) > Console User Guide { #network-load-balancerdsr-console-user-guide }
 
-You can create instances either by using the settings below or by using instance templates. To create instances using instance templates, select **Use instance template** from the Create Instance page. To learn how to create instance templates, see [Instance Template Console Guide](/Compute/Instance%20Template/en/console-guide/).
+<a id='manage-dsr-loadbalancers'></a>
+## Load Balancer (DSR) Management { #manage-dsr-loadbalancers }
 
-<a id="os-settings"></a>
-### OS Settings
+<a id='create-dsr-loadbalancers'></a>
+### Create Load Balancer (DSR) { #create-dsr-loadbalancers }
+You can easily create a DSR-type load balancer by simply entering the settings in the NHN Cloud console. Load Balancer (DSR) operates in direct server return (DSR) mode, allowing server response traffic to be sent directly to the client without passing through the load balancer, providing high throughput.
 
-Determine how the root block storage is created that will be used when an instance is created.
+The Load Balancer (DSR) creation screen consists of the following three sections:
 
-- Select either **Create New and Set up** or **Use Existing Resource**.
-- If you select **Create New and Set up**, create root block storage using an image.
-- If you select **Use Existing Resource**, use a previously created block storage or snapshot.
+<a id='create-dsr-loadbalancers-load-balancer-dsr-basic-information-settings'></a>
+#### 1. Load Balancer (DSR) Basic Information Settings
 
-<a id="image"></a>
-### Image
+Configure the basic information for Load Balancer (DSR). The required items are as follows:
 
-Select the image that contains the operating system you need. You can choose between public images provided by NHN Cloud, images you've previously created, or shared images.
+* Name: Enter the name of Load Balancer (DSR).
+* Description: Enter the description of Load Balancer (DSR).
+* VPC: Select the VPC to which Load Balancer (DSR) will be connected.
+* Subnet: Select the subnet to which Load Balancer (DSR) will belong. Load Balancer (DSR) and member instances must be located in the same subnet.
+* Virtual IP (VIP): The VIP address to be assigned to Load Balancer (DSR). The assignment method can be selected from **Auto Assign** or **Manual Assign**.
+  * Auto assign: An available IP from the subnet is automatically assigned and used as the VIP.
+  * Manual assign: A desired IP within the CIDR range of the subnet is entered directly and used as the VIP.
 
-The available instance flavors vary depending on the image you choose, so we recommended you choose an image first when creating an instance.
+!!! danger "Caution"
+    If the manually specified VIP address is not within the CIDR range of the subnet, creation will fail. Make sure to specify an IP within the IP range of the subnet.
 
-| OS                         | Block Storage     | Memory   |
-| -------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB or more  | 1GB or more |
-| Windows                           | 50GB or more  | 2GB or more |
+!!! tip "Note"
+    Load Balancer (DSR) operates at the TCP/UDP L4 level, and server response traffic does not pass through the load balancer. Therefore, unlike a standard load balancer, L7 features such as HTTP header-based routing, SSL offloading, and the listener/member group concept are not provided.
 
-<a id="root-block-storage"></a>
-### Root Block Storage
+<a id='create-dsr-loadbalancers-health-check-settings'></a>
+#### 2. Health Check Settings
 
-Set up root block storage according to the **OS settings**.
+Configure health checks to periodically verify that member instances are operating normally.
 
-- If you select **Create New and Set up**, create the root block store by specifying the **block storage type** and **block storage size**.
-- If you select **Use Existing Resource**, specify the **original resource** to use as root block storage.
+* Health check protocol: Select the protocol to use for health checks. Select one of the following: **TCP, ICMP, or HTTP**.
 
-#### Original Resource
+* Delay: The interval (in seconds) at which health check requests are sent.
+* Maximum response wait time (timeout): The timeout period (in seconds) for each health check request. If no response is received within this time, the request is considered failed.
+* Max retries: The maximum number of retries before an instance is considered unhealthy. (1–10)
 
-You can select either a previously created **block storage** or **snapshot**.
+Configure the following additional items for each protocol:
 
-- When you select **block storage**, use the previously created block storage as the root block storage.
-- When you select **snapshot**, the root block storage is created using a previously created snapshot.
+**TCP**
 
-#### Block Storage Size
+* Health check port: Specify the port number on which TCP connections are attempted.
 
-Specify the root block storage size of an instance.
+**ICMP**
 
-- The block storage size must be at least the minimum size required by the image.
+* No separate port configuration is required. Connectivity is verified using ICMP Echo Request/Reply.
 
-The root block storage size varies depending on instance flavor.
+**HTTP**
 
-| Flavors               | Supported Block Storage Size         |
-| -------------------| -------------------------- |
-| u2 flavors             | 20 ~ 100 GB (varies by flavor) |
-| t2, m2, c2, r2, and x1 flavors | 20 ~ 2000 GB               |
+* Health check port: Specify the port number to which HTTP requests are sent.
+* HTTP path (URL): Enter the URL path on which health checks are performed. The default value is `/`.
+* Expected HTTP response code: Enter the HTTP response code to be considered a normal response. The default value is `200`.
 
-> [Note]
-> Because you are charged by block storage size, it is inefficient to make the default block storage size large without consideration. We recommend that you add additional block storage as needed.
-> If you select **block storage** for **Use Existing Resource** in the **OS settings**, you can't change the block storage size.
-> If you select **snapshot** for **Use Existing Resource** in the **OS settings**, block storage size must be set equal to or larger than the original block storage size.
+!!! danger "Caution"
+    The delay must be greater than or equal to the timeout. If the timeout is greater than the delay, health checks may not function correctly.
 
-#### Block Storage Type
+!!! tip "Note"
+    TCP/HTTP health checks send requests to the DSR VIP as the destination, if the VIP is not configured on the lo interface of the member server, the packets cannot be received or processed, causing the health check to fail and the member to be marked as `INACTIVE`. ICMP health checks send requests to the actual IP of the member, so they only verify connectivity regardless of the VIP configuration.
 
-Determines the default block storage type of an instance.
+<a id='create-dsr-loadbalancers-member-settings'></a>
+#### 3. Member Settings
 
-- Choose either **HDD** or **SSD**. The choice of block storage type affects pricing and performance.
-- You cannot change the block storage type once the instance is created.
+Specify the member instances to register when creating Load Balancer (DSR). Members can also be registered after Load Balancer (DSR) is created.
 
-> [Note]
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the block storage type.
+* Select instance: Select the instance (network interface) that belongs to the same subnet as Load Balancer (DSR). One or more instances can be selected simultaneously and registered as members.
 
-<a id="availability-zone"></a>
-### Availability Zone
+!!! tip "Note"
+    Load Balancer (DSR) forwards client requests to member instances while preserving the destination port of the client request (VIP port). Therefore, unlike a standard load balancer, the service port is not specified per member when registering members; only the network interface of the member instance is selected. The application on the member server must be bound to `0.0.0.0` or the VIP and listen on the same port that the client sends requests to.
 
-If an availability zone is not specified, a random zone is selected. An instance can use a block storage only if they both exist in the same availability zone. If the block storage you wish to use exists in a particular availability zone, then select that zone.
+!!! danger "Caution"
+    For a member instance to properly receive and respond to traffic arriving at the VIP, the following configurations are required within the server.
 
-> [Note]
-> Resources in a VPC can be used in any availability zone.
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the availability zone.
+    - Add the VIP as an additional allowed address on the network interface (console Network Interface menu)
+    - Configure kernel parameters (`arp_ignore=1`, `arp_announce=2`)
+    - Add the VIP to the `lo` interface with a `/32` subnet
+    - Allow service port and health check traffic in Security Groups
 
-For more details on availability zones, see [Availability Zone in Instance Overview](./overview/#availability-zone).
+    For detailed instructions, see the Member server configuration guide in [Load Balancer (DSR) Overview](/Network/Load%20Balancer(DSR)/en/overview/).
 
-<a id="flavor"></a>
-### Flavor
+!!! tip "Note"
+    The initial status of a newly registered member is `INACTIVE`. Once the health check passes, the status automatically transitions to `ACTIVE` and the member begins receiving traffic.
 
-You can select various flavors depending on virtual hardware performance specifications. However, the choice of some flavors may be limited depending on the virtual hardware performance that your image requires. For more details, see [Instance Overview](./overview).
+After entering all items, click **Create Load Balancer** to create Load Balancer (DSR).
 
-> [Note] 
-> 1 vCPU refers to one socket composed of one thread and one core, the number of threads and the number of cores per socket are constant, one each.
+<a id='view-dsr-loadbalancers'></a>
+### Load Balancer (DSR) Details and Modification { #view-dsr-loadbalancers }
 
-Instance flavors can be changed in the NHN Cloud console even after instance creation, from higher to lower specs and vice versa. However, note that some flavors cannot be changed. See [Modify flavor](./console-guide/#modify-flavor) for details.
+<a id='view-dsr-loadbalancers-load-balancer-dsr-list'></a>
+#### Load Balancer (DSR) List
 
-> [Caution] An instance's root block storagecannot be changed by changing instance flavors.
+Once Load Balancer (DSR) creation is complete, the basic information of the created Load Balancer (DSR) instances can be viewed on the list screen. The items displayed on the list screen are as follows:
 
-<a id="number-of-instances"></a>
-### Number of Instances
+* Name: The name specified when creating Load Balancer (DSR).
+* VIP address: The private IP assigned to Load Balancer (DSR). This IP can be used for access within the VPC.
+* Floating IP: The Floating IP connected for external access.
+* Network: The name of the VPC and subnet CIDR to which Load Balancer (DSR) belongs.
+* Number of members: The number of member instances registered in Load Balancer (DSR).
+* Status: The creation/operation status of Load Balancer (DSR).
 
-You can specify the number of instances you want to create when creating multiple instances with the same image, availability zone, flavor, block storage size, key pair, and network settings. The instance names will be the name you specified, with numbers such as `-1` and `-2` appended to the end. For example, creating two instances named `my-instance` will result in `my-instance-1` and `my-instance-2`. The maximum number of instances you can create at once is 10.
+!!! tip "Note"
+    The status of Load Balancer (DSR) is determined by one of the following:
 
-When you create multiple instances without specifying an availability zone, each instance will be created in a randomly selected availability zone. For example, if two instances are created without specifying an availability zone, they may be created in the same zone or they may be created in different zones. If all instances need to be created in the same availability zone, select a particular zone.
+    | Status | Description |
+    |--|--|
+    | `ACTIVE` | Operating normally |
+    | `BUILD` | Load Balancer (DSR) being created |
+    | `ERROR` | Error occurred. Contact the administrator. |
 
-> [Note]
-> If you select **block storage** for **Use Existing Resource** in the **OS settings** or **Use Existing Network Interface** in the **network settings**, the number of instances is limited to `1`.
+Additional Load Balancer (DSR) instances can be created using **+ Create DSR** button at the top. To delete, select Load Balancer (DSR) instances using the checkboxes in the list, then click **Delete** button.
 
-<a id="key-pair"></a>
-### Key Pair
+<a id='view-dsr-loadbalancers-load-balancer-dsr-details'></a>
+#### Load Balancer (DSR) Details
 
-Use an existing key pair or create a new key pair. To register an existing key pair, see [Import Key Pair (Windows)](./console-guide/#import-key-pairs-windows) for Windows users, and [Import Key Pair (Mac and Linux)](./console-guide/#import-key-pairs-mac-and-linux) for Mac and Linux users.
+Selecting a Load Balancer (DSR) from the list displays its details at the bottom of the screen. The details screen is divided into three tabs: **Basic information**, **Members**, and **Health Check**.
 
-> [Note]
-> Key Pair is a resource assigned to the user account, so it's not deleted when you delete a project.
+The **Basic Information** tab displays the following:
 
-<a id="network"></a>
-### Network
+* Name, Description
+* Subnet, VIP address
+* Floating IP connection information
+* Whether to set delete protection
+* Status
 
-Select a subnet defined in your VPC to connect to an instance. For each selected subnet, a network interface is created in the instance to connect to that subnet. You can change the order of selected subnets to change network interfaces, in which case the first network interface (`eth0`) will be set as the default gateway.
+<a id='view-dsr-loadbalancers-rename'></a>
+#### Rename
+To modify the name of Load Balancer (DSR), click **Modify Name** icon in the details, enter the new name, and click **Confirm**.
 
-For more details on creating and managing networks, refer to [VPC Overview](/Network/VPC/en/overview/).
+<a id='view-dsr-loadbalancers-change-floating-ip'></a>
+#### Change Floating IP
+A Floating IP can be connected or disconnected to enable access to Load Balancer (DSR) from an external network.
 
-<a id="floating-ip"></a>
-### Floating IP
+1. Click **Change Floating IP** button in the Load Balancer (DSR) details.
+2. Select the Floating IP to associate. To disassociate a Floating IP, select **Disabled**.
+3. Click **Confirm** to apply the settings.
 
-Select whether you will use a floating IP after instance creation. If you enable this option, a new floating IP is created and connected to the first network interface. Note that the first network interface must be connected to a subnet where an internet gateway is configured.
+!!! tip "Note"
+    Disassociating a Floating IP does not affect access to the VIP from within the VPC.
 
-Floating IP can be managed from Instance > Management, or Instance > Floating IP. For more details on floating IP, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+!!! tip "Note"
+    The VPC, subnet, and VIP address connected to Load Balancer (DSR) cannot be changed after creation. If a change is needed, delete Load Balancer (DSR) and recreate it.
 
-<a id="security-group"></a>
-### Security Group
+<a id='view-dsr-loadbalancers-delete-protection'></a>
+#### Deletion Protection
+If you activate deletion protection, you can protect load balancers (DSR) from accidental deletion. The load balancer (DSR) cannot be deleted until deletion protection is deactivated. You can change the deletion protection setting at any time after creating a load balancer (DSR).
 
-Select security groups that the instance will be included in. One instance can be included in multiple security groups, in which case,
+<a id='delete-dsr-loadbalancers'></a>
+### Delete Load Balancer (DSR) { #delete-dsr-loadbalancers }
+On the Load Balancer (DSR) list screen, select the Load Balancer (DSR) to delete, click **Delete** button, and then click **Confirm** button in the confirmation window to delete the selected Load Balancer (DSR).
 
-- The instance can communicate over the network with all other instances included in each security group. When you are dealing with an instance with sensitive data that is not meant to be accessible by other instances, you must carefully select security groups.
-- The rules of each security group are aggregated and applied to the instance's external network communication.
+!!! danger "Warning"
+    Deleting Load Balancer (DSR) will also delete all members registered in the DSR. If a Floating IP is associated, it will be automatically released.
 
-For more details on security groups, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+!!! tip "Note"
+    You cannot delete a Load Balancer (DSR) with deletion protection enabled. To delete it, you must first disable [deletion protection](#view-dsr-loadbalancers-delete-protection) for the Load Balancer (DSR).
 
-<a id="additional-block-storage"></a>
-### Additional Block Storage
+<a id='manage-dsr-members'></a>
+## Member Management { #manage-dsr-members }
 
-Select whether you will attach an additional block storage after instance creation. If you enable this option, a new block storage separate from the root block storage is created and attached to the instance. As with the root block storage, you can specify the name, storage type, and size of the additional block storage you create.
+Select the desired load balancer (DSR) from the load balancer (DSR) list, then click **Members** tab to display the member instance management screen.
 
-By using the root block storage only for the OS and storing your frequently used applications and data on the additional block storage, you can easily migrate or copy your applications and data using the block storage attach/detach and snapshot features. In addition, when an instance failure occurs, you can easily recover your services by simply detaching the additional block storage and attaching it to another instance.
+<a id='member-list'></a>
+### Member List { #member-list }
 
-Block storage can also be managed from Instance > Block Storage. For more details on block storage, see [Block Storage Guide](/Storage/Block%20Storage/en/overview/).
+The **Members** tab displays the list and status of member instances registered in Load Balancer (DSR). The items displayed in the list are as follows:
 
-<a id="placement-policy"></a>
-### Placement Policy
+* IP address: The IP address of the member instance.
+* Device model: The type of resource owned by the network port registered as a member.
+* Device information: The identification information (instance name, port ID, etc.) of the network port registered as a member is displayed in a consolidated format.
+* Status: The current status of the member.
 
-You can use placement policies to place instances on different hypervisors. When you set a placement policy at instance creation time, instances assigned to the same placement policy are created on different hypervisors.
- 
-> [Caution]
-> Instance creation may fail in situations where distributed deployment is not possible.
+!!! tip "Note"
+    Since Load Balancer (DSR) forwards client requests to members while preserving the destination port, the L4 service port is not displayed separately in the member list. The actual service port is the port that the client uses to send requests to the VIP, and the application on the member server must listen on the port.
 
-<a id="user-script"></a>
-### User Script
+!!! tip "Note"
+    The member status is determined by one of the following:
 
-You can specify a script to be executed after instance creation. The user script is executed following the instance's initial boot and after the initialization process including network configuration has completed. User scripts in NHN Cloud are executed by automated tools such as cloud-init (Linux) and Cloudbase-init (Windows), which are embedded in the official images.
+    | Status | Description |
+    |--|--|
+    | `ACTIVE` | Health check passed, target for traffic distribution |
+    | `INACTIVE` | Health check failed or immediately after being newly registered, excluded from traffic distribution |
+    | `ONLINE` | The member is manually disabled |
 
-> [Caution]
-> User scripts are executed with root (Linux)/Administrator (Windows) privileges.
+<a id='add-dsr-members'></a>
+### Add Member { #add-dsr-members }
+Click **+ Add Member** button on the **Member** tab to display the add member modal.
 
-#### Linux
-The first line of a user script must begin with `#!`.
-```
-#!/bin/bash
-...
-```
+1. Select the **instance** to register as a member from the list. One or more instances can be selected simultaneously.
+2. Click **Confirm** button to register the selected instances as members.
 
-For a user script to run successfully, log files in the instance must be checked. You can check output logs printed by standard output/error from the script in `/var/log/cloud-init-output.log`.
+!!! tip "Note"
+    Unlike a standard load balancer, Load Balancer (DSR) does not require entering an L4 service port when adding members. Since Load Balancer (DSR) forwards the destination port of client requests to members without modification, per-member port mapping is not required.
 
-#### Windows
+!!! danger "Caution"
+    Note the following restrictions when registering members:
 
-Windows images support both Batch and PowerShell formats for user scripts. The format is determined by an indicator specified in the first line.
+    * Member instances must belong to the same subnet as Load Balancer (DSR).
+    * Only compute instances can be registered as members.
+    * The same instance port cannot be registered more than once in the same Load Balancer (DSR).
+    * By default, up to 30 members can be registered per Load Balancer (DSR).
 
-* Batch Script
-```
-rem cmd
-...
-```
+!!! tip "Note"
+    To properly receive traffic after registering a member, add the VIP as an additional allowed address on the network interface, and configure the ARP kernel parameters, add the VIP to the lo interface, and set up Security Groups rules within the member server. For detailed instructions, see the Member server configuration guide in the [Load Balancer (DSR) Overview](/Network/Load%20Balancer(DSR)/ko/overview/).
 
-* PowerShell Script
-```
-#ps1_sysnative
-...
-```
+<a id='deactivate-dsr-members'></a>
+### Deactivate Members { #deactivate-dsr-members }
+You can temporarily exclude a member from the service without deleting it. Select the member to exclude from the list on the Members tab, click the **Deactivate Member** button, and then click **Confirm**. The status of a deactivated member changes to `ONLINE` and the member is excluded from traffic distribution.
 
-To use both Batch and PowerShell in your script, use the following format.
+!!! tip "Note"
+    A deactivated member remains registered in Load Balancer (DSR) without being removed, and continues to count toward the number of members per Load Balancer (DSR) quota. For more information about member status values, see [Member List](#member-list).
 
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
+<a id='delete-dsr-members'></a>
+### Delete Member { #delete-dsr-members }
+Select the member to delete from the list on the Members tab and click **Delete** button. When the confirmation window appears, click **Confirm** to remove the member from Load Balancer (DSR).
 
-Logs from user scripts can be found in `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`.
+!!! tip "Note"
+    Deleting a member from Load Balancer (DSR) does not delete the instance itself. Conversely, if an instance registered as a member is deleted, the member is automatically removed from Load Balancer (DSR).
 
-For more details regarding user scripts, see the [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) or [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) guides.
+<a id='manage-dsr-health-monitor'></a>
+## Health Check Management { #manage-dsr-health-monitor }
 
-<a id="additional-instance-features"></a>
-## Additional Instance Features
+The current health check settings can be viewed and modified on the **Health Check** tab of the Load Balancer (DSR) details screen.
 
-<a id="change-instance-status"></a>
-### Change Instance Status
+<a id='view-dsr-health-monitor'></a>
+### View Health Check { #view-dsr-health-monitor }
+The **Health Check** tab displays the following information about the currently configured health check:
 
-An instance’s status can be changed by stopping, terminating, deleting, and starting it.
+* Health check protocol: TCP / ICMP / HTTP
+* Health check port: The target port for health checks when using TCP or HTTP protocol
+* Delay: The health check request interval (in seconds)
+* Maximum response wait time: The health check timeout (in seconds)
+* Max retries: The number of retries before an instance is considered unhealthy
+* HTTP path (URL) / Expected HTTP response code: Displayed only when using HTTP protocol
 
-For more details on hypervisor resources and fees for stopping, terminating, and deleting instances, see the table below.
+<a id='change-dsr-health-monitor'></a>
+### Change Health Check Settings { #change-dsr-health-monitor }
+Click **Change Setting** button on the **Health Check** tab to modify the health check settings.
 
-| Classification | Stop instance | Terminate Instance | Delete Instance |
-| --- | -- | --- | --- |
-| Hypervisor resource | Resource remain allocated  | Resource returned and reallocated when an instance is started | Resource removed |
-| Pricing for instance | Price for stopping applied | Free | Free |
-| Pricing for other connected resources | Charged| Charged | Charged |
+* Health check protocol: Select one of TCP, ICMP, or HTTP.
+* Enter the required items for each protocol:
+  * TCP: Health check port
+  * ICMP: No additional items
+  * HTTP: Health check port, HTTP path, and expected HTTP response code
+* Configure the delay, maximum response wait time, and max retries.
 
-> [Note] GPU Instances cannot be terminated and will incur normal (100%) rates when stopped.
+Click **Confirm** after completing the settings to apply the changes
 
-<a id="create-image"></a>
-### Create Image
+!!! danger "Caution"
+    The delay must be greater than or equal to the timeout. If the timeout is greater than the delay, health checks may not function correctly.
 
-Create an image from an instance's root block storage. It is recommended to stop instances before creating an image in order to ensure data integrity.
+!!! tip "Note"
+    Health check requests are sent from a dedicated health check IP automatically assigned to the same subnet as Load Balancer (DSR). The Security Group of member instances must allow this traffic for health checks to function correctly. For more information, see the Security Groups configuration section in the [Load Balancer (DSR) Overview](/Network/Load%20Balancer(DSR)/ko/overview/).
 
-While it is possible to create an image from an instance that has no available free space in its root block storage, those images are unusable by other instances because they cannot be properly initialized. Before creating an image, ensure that your instance has at least 100KB of free space.
+<a id='dsr-quota'></a>
+## Quota and Limitations { #dsr-quota }
 
-Created images are registered as private images in **Compute > Image**. You can use the registered image to create an instance with a block storage identical to that of the original instance.
+The following quotas and limitations apply when using Load Balancer (DSR):
 
-> [Caution]
-> The size of the created image may be larger than the actual usage of the root block storage.
+| Item | Default Limit | Description |
+|--|--|--|
+| Number of Load Balancers (DSR) per project | 10 | Maximum number of Load Balancer (DSR) instances that can be created per project |
+| Number of members per Load Balancer (DSR) | 30 | Maximum number of members that can be registered in a single Load Balancer (DSR) |
 
-<a id="associatedisassociate-floating-ip"></a>
-### Associate/Disassociate Floating IP
-
-Floating IP can be associated with or disassociated from an instance, regardless of the instance's status. If you have no available floating IP or if the floating IP you want is not available, you can create one by clicking **Create**. Alternatively, floating IP can also be created from **Network > VPC > Floating IP**.
-
-For more details on floating IP, see [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="modify-security-group"></a>
-### Modify Security Group
-
-An instance's security groups can be modified regardless of the instance's status. Modified security groups are applied immediately.
-
-For more details on security groups, see [Security Group](./console-guide/#security-group) and [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="change-network-subnet"></a>
-### Change Network Subnet
-
-An instance's network subnet can only be changed while the instance is stopped. When you add a subnet, a network interface that will be connected to that subnet is automatically created on your instance. If you add multiple subnets at once, the order of the newly created network interfaces on the instance is set randomly. Deleting a subnet from an instance automatically deletes the network interface that was created along with the subnet.
-
-<a id="modify-flavor"></a>
-### Modify Flavor
-
-Instance flavors can be changed once an instance has been stopped. If an instance is running, click **Stop Instance** in **Additional Features** to stop the instance.
-
-You can only change an instance to another flavor that is compatible with its current flavor.
-
-* m2, c2, r2, t2, x1 flavor instances can be changed to m2, c2, r2, t2, x1 flavors.
-* m2, c2, r2, t2, x1 flavor instances cannot be changed to u2 flavors.
-* u2 flavor instances cannot be changed to other flavors once they have been created, not even to those of the same u2 flavor.
-
-When you modify flavors, instance resize and resize confirmation tasks proceed. When all tasks are completed, the VM changes its status to **Shutoff**. You can start the instance by clicking **Start Instance** in **Additional Features**.
-
-> [Note] The instance's root block storage size cannot be modified. If an instance requires additional block storage space, attach a block storage. For details on how to attach block storage, see [Block Storage Overview](/Storage/Block%20Storage/en/overview/).
-
-Instances will be charged using the new flavor from the moment the modification completes.
-
-<a id="change-instance-os-details"></a>
-### Change Instance OS Details
-
-You can change instance OS information regardless of the state of the instance. 
-
-On the **Compute > Instance** page, click the instance whose OS information you want to change. On the **Basic Information** tab of that instance's details screen, click **OS > Modify**.
-
-> [Note] You can't change the OS type.
-
-<a id="change-instance-description"></a>
-### Change Instance Description
- 
-You can change instance description regardless of the state of the instance. 
- 
-On the **Compute > Instance** page, click the instance whose information you want to change. On the **Basic Information** tab of that instance's details screen, click **Description > Change**.
-
-<a id="change-instance-key-pair"></a>
-### Change Instance Key Pair
-
-You can change the instance key pair only if the instance is active.
-
-On the **Compute > Instance** page, click the instance whose key pair information you want to change. On the **Basic Information** tab of that instance's details screen, click **Key Pair > Change**.
-
-Change the key pair of the instance default account to the selected key pair. The instance default account can be found on the **Connection Information** tab of the instance's bottom details screen.
-
-> [Caution] Changing an instance key pair deletes all public key information in the instance except for the selected key pair.
-
-> [Note] Only project members with the ADMIN permissions for the basic infrastructure can change the instance key pair, which cannot be changed if it is a Windows OS instance.
-
-> [Note] If the image version used to create the instance is low, the feature to change key pairs may not be available.
-
-<a id="manage-placement-policies"></a>
-### Manage Placement Policies
-
-You can create and delete placement policies and view a list of instances assigned to placement policies.
-
-Only the `anti-affinity` placement policy type for distributed placement is provided.
-
-You can delete a placement policy even if instances are assigned to it, in which case the instances are not deleted.
-
-<a id="key-pairs"></a>
-## Key Pairs
-
-<a id="import-key-pairs-windows"></a>
-### Import Key Pairs (Windows)
-
-You can use puttygen, which is installed when you install the PuTTY SSH client, to create a key pair and register it with NHN Cloud.
-
-Make sure you have [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) installed.
-
-Run puttygen.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
-
-Select **RSA** (or SSH-2 RSA in older versions of puttygen) under **Parameters**. Click **Generate** under **Actions**. Continuously move your mouse in the empty space in order to generate the key.
-
-After the key is generated, the public key file contents will be visible as shown below. Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
-
-Click **Save private key** under **Actions** to save the private key. If you save the private key leaving the **Key passphrase** field blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to use your converted private key more securely, set a passphrase before saving.
-
-> [Caution]
-> If you wish to be able to automatically login to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### Import Key Pairs (Mac and Linux)
-
-Key pairs created using `ssh-keygen` in Mac or Linux can be registered with NHN Cloud. Use the following command to create a key pair.
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-You can choose to set a passphrase for the key pair, although it is not required. If you wish to use your key pair more securely, we recommend setting a passphrase. The file with `.pub` appended to the specified key pair name contains the public key.
-
-	$ cat my_key.key.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-	
-Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## Appendix 1. Change Language Packs in Windows
-
-NHN Cloud provides Windows images with English as the primary language. You may change your language preferences with the following steps.
-
-1. Go to **START > Control Panel > Clock, Language, and Region > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. Select **Change your language preferences > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. Choose a language in **Add a language** and click **Add**.
-![Image1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. Check the language pack just added.
-![Image1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. Download and install the language pack.
-![Image1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. Download and install updates.
-![Image1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. To change to the installed language pack, double-click the selected language or select **Options**.
-![Image1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. Choose **Make this the primary language** for Windows display language.
-![Image1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. To apply the changes, click **Log off now**.
-![Image1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. Log in again, and you can see Windows is displayed using the language pack of your choice.
-![Image1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## Appendix 2. Change Routing in Windows
-
-Routing in NHN Cloud Windows instances can be changed as follows.
-
-* Press **Windows Key + R** to open an execution window, and enter `cmd` and execute to open a command prompt window. You can enter route commands here.
-
-Route commands
-
-* Print current configuration: route print
-* Add : route add "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Change : route change "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Delete : route delete "Destination" mask "Destination subnet" "gateway" metric "Metric value" if "Interface number"
-* Option : -p (specify as persistent route)
-
-  
-Description
-
-![Image1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* Metric Value: A lower value indicates higher priority
-* Interface Number: This value can be obtained from route print (red box above)
-* Persistent Route: Use the -p option to avoid the configured routes being reset across system reboots (blue box above)
-
-Example 1 - Restricting external communication for particular interfaces
-
-* You can restrict an interface from communicating externally by using the route change command to change its route metric or by leaving the default gateway field blank when configuring fixed IP settings.
-* How to Modify Metrics
-    * Increase interface metric value
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* How to Set Fixed IP
-    1. Use the ipconfig /all command to view IP information.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. Enter the corresponding IP information, leaving the default gateway field blank, in the IP Properties window.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. Check the results using the route print command.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Example 2 - Setting routes for a particular address range
-
-* Use the route add command to set routes for a particular address range.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Example 3 - Removing a particular route
-
-* Use the route delete command to remove specified routes.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## Appendix 3. Change System Locale
-
-System locale in NHN Cloud Windows instances can be changed as follows.
-
-1. Go to **Windows Key > Control Panel > Clock, Language, and Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. Select **Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. From the **Administrative** tab, click **Change system locale**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. Select a system locale to use.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. Restart the system to apply the changes.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## Appendix 4. Restarting Instances for Hypervisor Maintenance
-NHN Cloud updates hypervisor software on a regular basis to enhance the security and stability of infrastructure services that we provide.
-Instances running on a hypervisor that requires maintenance must be restarted and migrated to a hypervisor which has completed maintenance.
-
-To restart an instance, use the **! Restart** button that has been created next to the instance name in the console.
-`Using the "Restart Instances" button in the console or rebooting the operating system will not migrate an instance to another hypervisor.`
-Follow the guide below to use the restart feature in the console.
-
-Go to the project where your instance requiring maintenance is located.
-
-**1. Check if your instance requires maintenance.**
-
-Any instance that has the **! Restart** button before its name requires maintenance.
-Put the mouse cursor over the **! Restart** button to find maintenance schedule details.
-![Instance Maintenance Image 1](http://static.toastoven.net/prod_instance/instance_p_migration_en_1.png)    
-
-**2. Deactivate or stop application programs running on an instance which requires maintenance.**
-
-Any application programs running on an instance which requires maintenance must be deactivated or stopped in order not to impact your service.
-If there is no way to do so without impacting your service, please contact NHN Cloud Customer Center and we will provide you with guidance on appropriate measures to take.
-
-**3. Click the [! Restart] button created next to the name of the target instance.**
-
-![Instance Maintenance Image 2](http://static.toastoven.net/prod_instance/instance_p_migration_en_2.png)
-
-**4. Click [Confirm] in the Restart Instances confirmation window.**
-
-![Instance Maintenance Image3](http://static.toastoven.net/prod_instance/instance_p_migration_en_3.png)
-
-**5. Wait until the instance status turns green and the [! Restart] button disappers.**
-
-If the status does not change or the **! Restart** button is not disabled, try refreshing the page.
-
-You cannot operate or modify the instance while a restart is underway.
-If an instance restart does not complete successfully, the administrator will automatically be notified and you'll also be contacted by NHN Cloud.
+!!! tip "Note"
+    If you need to exceed the default quota, contact customer support.
