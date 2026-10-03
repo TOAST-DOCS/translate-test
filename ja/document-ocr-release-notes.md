@@ -1,16 +1,16 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=1dc1c0f63720 -->
+<!-- pre-align:aligned sig=af4b6ea368ec -->
 
 <a id="ai-service-ocr-document-ocr-release-notes"></a>
 ## AI Service > OCR > Document OCR > リリースノート { #ai-service-ocr-document-ocr-release-notes }
 
-<a id="september-8-2026"></a>
-## 2026. 09. 08. { #september-8-2026 }
+<a id="september-15-2026"></a>
+## 2026. 09. 15. { #september-15-2026 }
 
 - 運転免許証の真偽確認時における暗号シリアル番号の必須化
   - 2026年9月7日より、運転免許証の真偽確認リクエストに暗号シリアル番号を必ず含める必要があります。
-  - 警察庁の運転免許証真偽確認手続きが強化されたことによる変更です。
+  - 警察庁の運転免許証の真偽確認手続きが強化されたことにより適用される変更です。
   - 暗号シリアル番号は、運転免許証の分析結果で確認できます。
   - 詳細については、[APIガイド](./document-ocr-api-guide-v2.1.md)を参照してください。
 
