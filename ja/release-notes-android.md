@@ -1,7 +1,26 @@
-<!-- pre-align:aligned sig=4c88926373f0 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=28cf8b9f9a55 -->
 
 <a id="game-gamebase-release-notes-android"></a>
 ## Game > Gamebase > リリースノート > Android { #game-gamebase-release-notes-android }
+
+<a id="2-83-0-2026-09-17"></a>
+### 2.83.0 (2026. 09. 17.) { #2-83-0-2026-09-17 }
+
+[SDK Download](https://static.toastoven.net/toastcloud/sdk_download/gamebase/v2.83.0/GamebaseSDK-Android.zip)
+
+<a id="830-2026-09-17-added-features"></a>
+#### 機能追加
+
+* Googleの OOAP (Out-Of App Purchases) での購入が成功すると、Gamebase Event Handler の Purchase Updated イベントが発生します。
+    * [Game > Gamebase > Android SDK使用ガイド > ETC > Additional Features > Gamebase Event Handler > Purchase Updated](./aos-etc/#gamebase-event-handler-purchase-updated)
+
+<a id="830-2026-09-17-feature-updates"></a>
+#### 機能改善/変更
+
+* ログイン後、またはアプリをバックグラウンドからフォアグラウンドに復帰したときに実行される自動再処理が成功すると、Gamebase Event Handler の Purchase Updated イベントが発生します。
+    * [Game > Gamebase > Android SDK使用ガイド > ETC > Additional Features > Gamebase Event Handler > Purchase Updated](./aos-etc/#gamebase-event-handler-purchase-updated)
 
 <a id="2-82-0-2026-07-28"></a>
 ### 2.82.0 (2026. 07. 28.) { #2-82-0-2026-07-28 }
