@@ -1,237 +1,139 @@
-<a id="compute-instance-overview"></a>
-## Compute > Instance > 개요
+<!-- pre-align:aligned sig=3543b2af3ddd -->
 
-인스턴스는 가상의 CPU, 메모리, 루트 블록 스토리지로 구성된 가상 서버입니다. 이 서버에 고객의 서비스나 애플리케이션을 설치하고 NHN Cloud가 제공하는 다양한 서비스를 조합하여 사용합니다.
+<a id="network-flow-log-overview"></a>
+## Network > Flow Log > 개요 { #network-flow-log-overview }
+Flow Log 서비스는 사용자의 네트워크 인터페이스로 들어오고 나가는 패킷을 분석하여 통계를 제공합니다. 이 서비스를 사용하면 네트워크 인터페이스에 설정된 **Security Groups** 규칙에 의하여 허용 또는 거부된 패킷의 개수, 크기 등 다양한 통계를 확인할 수 있습니다. Flow Log 서비스를 활용하면 사용자의 네트워크 인터페이스가 올바르게 트래픽을 주고받았는지, 누구와 통신을 수행했는지 그리고 외부에서 어떠한 침입 시도가 있었는지 등을 확인할 수 있습니다.
 
-<a id="components"></a>
-## 인스턴스 구성 요소
 
-인스턴스를 구성하는 요소는 다음과 같습니다.
 
-- **이미지**: 인스턴스의 운영체제를 담고 있는 가상 디스크
-- **타입**(flavor): 인스턴스의 가상 하드웨어 성능
-- **가용성 영역**(AZ, availability zone): 인스턴스가 만들어질 물리적인 위치
-- **키페어**(key-pair): 인스턴스 접속 수단으로 사용되는 키
-- **보안 그룹**(security groups): 인스턴스 네트워크 보안 설정
-- **네트워크**: 인스턴스가 연결될 가상 네트워크
+<a id="main-features"></a>
+### 주요 기능 { #main-features }
 
-이 정보에 따라 인스턴스의 속성과 사용 방식이 바뀝니다. 이 정보 중, 이미지와 가용성 영역을 제외한 설정은 인스턴스 생성 이후에도 변경할 수 있으나, 일부 인스턴스 타입(flavor)은 인스턴스 생성 이후에 변경할 수 없습니다. 인스턴스 타입 변경에 대한 자세한 설명은 [콘솔 사용 가이드의 인스턴스 타입 변경](./console-guide/#modify-flavor)을 참고합니다.
+* Flow Log 서비스는 네트워크 인터페이스로 오가는 모든 패킷의 헤더를 검사합니다. 현재는 인스턴스의 네트워크 인터페이스와 트랜짓 허브 연결에만 기능을 제공합니다.
 
-<a id="image"></a>
-### 이미지
+* 단, L2 유형은 Ethernet을, L3 유형은 IPv4를, L4 유형은 TCP/UDP/ICMP인 경우에만 헤더를 검사하여 통계를 제공합니다. 검사된 패킷은 5-tuple을 기준으로 집계됩니다.
 
-이미지는 운영체제를 담고 있는 가상 디스크입니다. NHN Cloud는 현재 Debian, Ubuntu, Rocky와 Windows를 지원하고 있습니다.
+* 현재 Flow Log 서비스는 **Object Storage**를 저장소로 활용합니다. 사용자가 설정한 수집 간격마다 **Object Storage**에 파일이 생성되며, 이 파일을 다운로드하여 실제 통계를 확인할 수 있습니다.
 
-모든 이미지는 인스턴스의 가상 하드웨어에서 최적으로 실행되도록 설정돼 있으며, NHN Cloud의 보안 검증을 거쳤기 때문에 안전하게 사용할 수 있습니다. 이미지에 대한 자세한 설명은 [이미지 개요](/Compute/Image/ko/overview/)를 참고합니다.
+* 통계를 확인하여 **Security Groups**의 올바른 설정 여부, 외부 침입 시도 등을 확인할 수 있습니다.
 
-<a id="flavor"></a>
-### 인스턴스 타입(Instance flavor)
 
-NHN Cloud는 고객의 사용 용도에 맞는 다양한 인스턴스 타입을 제공합니다. 운용할 서비스 또는 애플리케이션의 특성에 따라 적절한 타입의 인스턴스를 생성할 수 있습니다. 이미 생성된 인스턴스의 타입도 웹 콘솔에서 쉽게 변경할 수 있습니다.
+<a id="service-targets"></a>
+### 서비스 대상 { #service-targets }
 
-| 타입    | 설명                                                                                                                                               |
-| ------- |--------------------------------------------------------------------------------------------------------------------------------------------------|
-| m2 | CPU와 메모리를 균형 있게 설정한 타입입니다. 서비스나 애플리케이션의 성능 요구 사항이 명확하지 않을 때 사용합니다.                                                                               |
-| c2 | CPU의 성능을 높게 설정한 인스턴스 타입입니다. 고성능 연산 성능이 필요한 웹 애플리케이션 서버나 분석 시스템에 사용합니다.                                                                           |
-| r2 | 다른 자원에 비해 메모리의 사용량이 많은 경우 사용할 수 있습니다. 보통 메모리 데이터베이스나 캐시 서버에 사용합니다.                                                                               |
-| t2 | 비용이 저렴한 인스턴스입니다. 워크로드가 높지 않은 서버에 사용합니다.                                                                                                          |
-| u2 | 가장 저렴한 인스턴스입니다. 워크로드가 높지 않은 서버에서 사용합니다.<br>로컬 블록 스토리지를 사용하기 때문에 상대적으로 다른 인스턴스보다 안정성이 떨어지지만 저렴한 가격에 이용할 수 있습니다.<br>이 타입의 인스턴스는 I/O 성능을 보장하지 않습니다. |
-| x1 | 고사양의 CPU와 메모리를 지원하는 타입입니다. 높은 성능이 필요한 서비스나 애플리케이션에 사용합니다.                                                                                        |
+* 인스턴스의 포트를 통해 들어오고 나가는 패킷의 연결 정보, 통계 등을 수집/확인하고 싶은 경우
 
-<a id="availability-zone"></a>
-### 가용성 영역(Availability zone)
+* 사용 중인 네트워크 서비스에 흐르는 패킷의 연결 정보, 통계 등을 수집/확인하고 싶은 경우
 
-NHN Cloud는 물리 하드웨어 문제로 생기는 장애에 대비하기 위해 전체 시스템을 여러 개의 가용성 영역으로 나누어 두었습니다. 이 가용성 영역별로 저장 시스템, 네트워크 스위치, 상면, 전원 장치가 모두 별도로 구성돼 있습니다. 한 가용성 영역 내에서 생기는 장애는 다른 가용성 영역에 영향을 주지 않으므로 서비스 전체의 가용성이 높아집니다. 인스턴스를 여러 가용성 영역에 나눠 구축한다면 서비스의 가용성을 더욱 높일 수 있습니다.
+* **Security Groups** 설정에 의해 허용 또는 차단된 패킷의 연결 정보, 통계를 수집/확인하고 싶은 경우
 
-서로 다른 가용성 영역 사이에는 다음과 같은 특성이 있습니다.
+* 인스턴스로의 패킷 유입 기록을 확인하고 의심스러운 주소를 차단해 인스턴스의 보안 강화를 도모하고 싶은 경우
 
-- 여러 가용성 영역에 흩어져서 생성된 인스턴스끼리 네트워크 통신이 가능하며 이때 발생하는 네트워크 사용 비용은 부과되지 않습니다.
-- 같은 가용성 영역에 만들어진 인스턴스 사이에서는 블록 스토리지를 공유할 수 있으나, 서로 다른 가용성 영역 간에는 블록 스토리지를 공유할 수 없습니다.
-- 서로 다른 가용성 영역에서 플로팅 IP를 공유할 수 있습니다. 만약 한 가용성 영역에 장애가 생겼을 때에도 빠르게 다른 가용성 영역으로 플로팅 IP를 이동하여 장애 시간을 최소화할 수 있습니다.
 
-<a id="key-pair"></a>
-### 키페어(Key-pair)
+<a id="terminology"></a>
+### 용어 { #terminology }
 
-키페어는 공개 키 기반 구조([PKI](https://ko.wikipedia.org/wiki/%EA%B3%B5%EA%B0%9C_%ED%82%A4_%EA%B8%B0%EB%B0%98_%EA%B5%AC%EC%A1%B0), public key infrastructure)를 바탕으로 한 SSH 공개 키, 개인 키 쌍입니다. NHN Cloud에서 생성한 인스턴스에 접속하려면 보안에 취약한 키보드 입력 방식의 아이디/비밀번호 인증 대신 키페어를 이용해야 합니다. 사용자는 키페어의 개인 키를 이용해 로그인 정보를 인코딩하여 인스턴스로 전송해 접속 인증을 받은 후, 안전하게 인스턴스에 접속할 수 있습니다. 키페어를 이용한 인스턴스 접속 방법은 [인스턴스 접속 방법](#how-to-access-instances)을 참고합니다.
+Flow Log 서비스에서 사용하는 리소스와 용어를 설명합니다.
 
-키페어는 인스턴스를 생성할 때 NHN Cloud 콘솔에서 새로 만들 수도 있고, 고객이 직접 만든 키페어를 등록하여 사용할 수도 있습니다. 키페어 등록 방법은 [콘솔 가이드의 키페어 가져오기](./console-guide/#import-key-pairs-windows)를 참고합니다.
+* flowlog logger: 사용자가 생성한 Flow Log 로거입니다. 수집 간격, 필터 등을 설정할 수 있습니다.
+* flowlog logging port: 사용자가 생성한 Flow Log 로거에 의하여 실질적으로 수집이 진행되는 네트워크 인터페이스입니다.
+* 5-tuple: 일반적인 L4 패킷 헤더에서 다음으로 구성된 튜플을 의미합니다(프로토콜, 출발지 주소, 목적지 주소, 출발지 포트 번호, 목적지 포트 번호). 5-tuple이 같은 경우, 같은 플로우로 간주합니다. L4가 없는 ICMP의 경우에는 출발지 포트 번호와 목적지 포트 번호를 0으로 간주합니다.
 
-> [주의]
-> 키페어를 새로 생성하면 키페어의 개인 키를 다운로드하게 됩니다. 개인 키는 다시 발급할 수 없으므로 다운로드한 개인 키는 안전한 디스크나 USB 드라이브 등에 잘 보관하세요. 개인 키가 외부에 유출되면 누구나 유출된 개인 키로 해당 인스턴스에 접근할 수 있으므로 신중하게 관리해야 합니다.
 
-> [참고]
-> 키페어는 사용자 계정에 할당된 리소스이므로 프로젝트를 삭제해도 삭제되지 않고 유지됩니다.
 
-<a id="security-groups"></a>
-### 보안 그룹(Security groups)
+<a id="statistics-information-items"></a>
+## 통계 제공 정보 항목 { #statistics-information-items }
+Flow Log 서비스가 패킷을 수집 및 집계하여 사용자에게 제공하는 항목은 다음과 같습니다.
 
-보안 그룹은 인스턴스에 전달되는 네트워크 트래픽을 결정하는 가상의 방화벽입니다. 보안 그룹에 대한 자세한 설명은 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
 
-> [참고]
-> 기본 보안 그룹은 외부에서 들어오는 인바운드(in-bound) 네트워크 트래픽을 모두 무시하도록 되어 있습니다. SSH로 인스턴스에 접속할 때 인스턴스가 속한 보안 그룹에 SSH 포트를 열도록 설정한 뒤에 인스턴스에 접속합니다.
+| 번호 | 필드 | 설명 | 단위 | 비고 |
+| --- | --- | --- | --- | --- |
+| 1| timestamp_start | 해당 5-tuple이 처음 확인된 시간 | UNIX TIMESTAMP |  |
+| 2| timestamp_end | 해당 5-tuple이 마지막으로 확인된 시간 | UNIX TIMESTAMP | |
+| 3| interface_id | 네트워크 인터페이스 ID | UUID |  |
+| 4| owner_type | 네트워크 인터페이스를 소유한 장비의 종류 | `instance`, `transithub_attachment`, `inter_project_peering`, `inter_region_peering`, `colocation_gateway` 또는 `loadbalancer` | |
+| 5| owner_id | 네트워크 인터페이스를 소유한 장비의 ID | UUID | |
+| 6| subnet_id | 네트워크 인터페이스를 소유한 서브넷의 ID | UUID | |
+| 7| vpc_id | 네트워크 인터페이스를 소유한 VPC의 ID | UUID | |
+| 8| region | 리전 정보 | `KR1`, `KR2`, `KR3` | * KR1: 한국(판교) 리전 <br> * KR2: 한국(평촌) 리전 <br> * KR3: 한국(광주) 리전 |
+| 9| protocol | 5-tuple 중에서 프로토콜 번호 | IANA에서 부여한 프로토콜 번호를 표현합니다. <br> * 각 번호에 따른 프로토콜은 다음과 같습니다. 1: ICMP, 6: TCP, 17: UDP <br> * 이 외에는 수집하지 않습니다.|
+| 10 | src_addr | 출발지 주소 | IPv4 주소 | |
+| 11 | dst_addr | 목적지 주소 | IPv4 주소 | |
+| 12 | src_port | 출발지 포트 번호| Integer | ICMP는 0으로 간주합니다. |
+| 13 | dst_port | 목적지 포트 번호 | Integer | ICMP는 0으로 간주합니다. |
+| 14 | tcp_flag | TCP flag | Integer | TCP flag는 수집 간격 내에 캡처된 패킷을 `bitwise OR` 처리하여 표기합니다. <br>자세한 내용은 표 하단의 TCP flags를 참고하세요. |
+| 15 | packets | 수집 간격 동안 확인된 패킷 개수 | Integer | |
+| 16 | bytes | 수집 간격 동안 확인된 패킷 크기 총합 | Byte | |
+| 17 | direction | 수집된 5-tuple의 패킷 흐름 방향 | `ingress`, `egress` 또는 `unknown` | |
+| 18 | filter | 수집된 5-tuple의 Security Groups 판정 결과 | `ACCEPT` 또는 `DROP` |
+| 19 | transithub_drop_no_route_packets | 라우팅 경로가 없어 트랜짓 허브 라우터가 드롭한 패킷의 수 | Integer | 트랜짓 허브와 관련된 항목으로서, 트랜짓 허브가 아닌 인터페이스는 -1로 표기됩니다. |
+| 20 | transithub_drop_no_route_bytes | 라우팅 경로가 없어 트랜짓 허브 라우터가 드롭한 패킷 크기의 총합 | Byte | 트랜짓 허브와 관련된 항목으로서, 트랜짓 허브가 아닌 인터페이스는 -1로 표기됩니다. |
+| 21 | transithub_drop_black_hole_packets | 트랜짓 허브 라우터에서 블랙홀 라우팅으로 결정되어 드롭된 패킷의 수 | Integer | 트랜짓 허브와 관련된 항목으로서, 트랜짓 허브가 아닌 인터페이스는 -1로 표기됩니다. |
+| 22 | transithub_drop_black_hole_bytes | 트랜짓 허브 라우터에서 블랙홀 라우팅으로 결정되어 드롭된 패킷 크기의 총합 | Byte | 트랜짓 허브와 관련된 항목으로서, 트랜짓 허브가 아닌 인터페이스는 -1로 표기됩니다. |
+| 23 | status | 로그 상태 | `OK` 또는 `SKIPDATA` 또는 `NODATA`                                                                              | * OK: 정상적으로 로깅된 5-tuple입니다. <br> * SKIPDATA: Flow Log에서 제공하는 내부 용량을 초과하여 해당 수집 간격 기간 동안 수집되지 않은 패킷이 존재합니다. <br> * NODATA: 해당 수집 간격 내에 수집된 데이터가 없습니다. |
+| 24 | traffic_path | 수집된 5-tuple의 트래픽 경로 | Integer | 패킷이 흐른 네트워크 경로를 1~7의 정수 값으로 표기합니다. <br> * 1: VPC Local(동일 VPC 내 리소스 간 통신) <br> * 2: Internet Gateway(인터넷으로 나가는 트래픽, Floating IP 포함) <br> * 3: VPN Gateway(Site-to-Site VPN을 통한 온프레미스 연결) <br> * 4: VPC Peering(같은 프로젝트 내 VPC 피어링) <br> * 5: Region Peering(다른 리전 간 VPC 피어링) <br> * 6: Project Peering(다른 프로젝트, 같은 리전 VPC 피어링) <br> * 7: Service Gateway(NHN Cloud 내부 서비스 접근, 예: Object Storage) |
 
-<a id="network"></a>
-### 네트워크
 
-인스턴스가 외부와 통신하려면 VPC에서 정의된 네트워크 중 적어도 하나 이상에 연결되어 있어야 합니다. 네트워크에 연결되어 있지 않은 인스턴스에는 접근할 수 없습니다. 네트워크를 새로 생성하거나 변경하려면 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
+<a id="tcp-flag"></a>
+### TCP Flag { #tcp-flag }
+* TCP 연결이 짧은 경우 TCP Active open을 시도하는 측에서 SYN, FIN을 수집 간격 내에 송신할 수 있습니다. 이때는 SYN \| FIN (2 | 1 = 3)이 기록됩니다.
 
-<a id="pricing"></a>
-## 과금
 
-인스턴스 과금 방식은 다음과 같습니다.
+* 반대로 수신 데이터로는 수집 간격 내에 SYN \| ACK, 그리고 FIN이 수신될 수 있습니다. 이때는 SYN \| ACK \| FIN (16 | 2 | 1 = 19)이 기록됩니다.
 
-* 인스턴스는 생성하는 순간부터 과금됩니다.
-* 인스턴스 루트 블록 스토리지는 인스턴스와 별도로 블록 스토리지 과금 기준으로 과금됩니다.
-* 인스턴스가 중지되면 90일 동안 홈페이지 요금 기준으로 90% 할인된 금액을 적용합니다. 중지 상태가 90일을 초과하면 중지 상태를 유지하면서 정상 요금으로 전환됩니다.
-* 종료된 인스턴스는 과금되지 않습니다.
+* SYN, ACK, RST, FIN의 각 숫자는 TCP header tcp flag bit field(RFC 793, section 3.1. Header Format)를 따릅니다.
 
-과금에 대한 더 자세한 사항은 서비스별 [요금 페이지](https://www.toast.com/kr/service/compute/instance#price)를 참고합니다.
+    * FIN: 1
+    * SYN: 2
+    * RST: 4
+    * ACK: 16
 
-<a id="how-to-access-instances"></a>
-## 인스턴스 접속 방법
+* PSH flag만 존재하는 패킷, ACK flag만 존재하는 패킷 및 일반적으로 트래픽을 송신할 때 사용하는 PSH \| ACK flag는 수집에 포함하지 않습니다. 즉, SYN, SYN \| ACK, FIN \| ACK, RST, FIN만 기록합니다.
+* URG(urgent), ECE(ECN-echo), CWR(congestion window reduced)는 제공하지 않습니다.
 
-<a id="how-to-access-linux-instances"></a>
-### Linux 인스턴스 접속 방법
+<a id="caution"></a>
+## 주의 사항 { #caution }
 
-Linux 인스턴스에 접속할 때는 SSH 클라이언트를 이용합니다. 인스턴스의 보안 그룹에 SSH 접근 포트(기본값 22)가 열려 있지 않다면 접속할 수 없습니다. SSH 접근을 허용하는 방법에 대해서는 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다. 인스턴스에 플로팅 IP가 할당되어 있지 않다면 NHN Cloud 외부에서 접속할 수 없습니다. 플로팅 IP를 할당하는 방법에 대해서는 [VPC 개요](/Network/VPC/ko/overview/)를 참고합니다.
+<a id="collection-interval"></a>
+### 수집 간격 { #collection-interval }
+* 수집 간격을 길게 설정할 경우, 실제로는 다른 연결이지만 같은 5-tuple로 수집될 수 있습니다.
 
-#### Mac 또는 Linux의 SSH 클라이언트로 Linux 인스턴스에 접속하는 방법
+    * 수집 간격 이내에 동일한 5-tuple로 여러 번 연결 수립/종료를 반복하면, 이 연결들이 논리적으로 각자 다른 연결이라고 할지라도 같은 5-tuple로 집계됩니다.
 
-Mac이나 Linux에는 보통 SSH 클라이언트가 기본적으로 설치되어 있습니다. SSH 클라이언트에서 아래와 같이 키페어의 개인 키를 이용하여 접속합니다.
+    * 따라서 상황에 따라 적절한 수집 간격을 설정하는 것이 좋습니다.
 
-Ubuntu 인스턴스
+<a id="traffic-not-captured-by-flow-log"></a>
+### Flow Log가 캡처하지 않는 트래픽 { #traffic-not-captured-by-flow-log }
 
-	$ ssh -i my_private_key.pem ubuntu@<인스턴스의 IP>
+* IPv6 트래픽은 기록하지 않습니다.
+* 인스턴스로 오가는 멀티캐스트 트래픽은 기록하지 않습니다.
+* 인스턴스의 상태를 파악하기 위하여 169.254.169.0/24로 통신하는 트래픽은 기록하지 않습니다.
+* 트래픽 미러링은 기록하지 않습니다.
+* ARP 패킷은 기록하지 않습니다.
+* 인스턴스를 포함하는 물리적 장비 또는 네트워크 서비스의 물리적 장비에서 일시적인 네트워크 혼잡으로 발생하는 DROP은 수집 대상이 아닙니다.
 
-Debian 인스턴스
+<a id="important-notes-for-using-flow-log-designated-for-a-transit-hub-connection"></a>
+### 트랜짓 허브 연결에 Flow Log를 지정하여 사용 시 유의 사항 { #important-notes-for-using-flow-log-designated-for-a-transit-hub-connection }
 
-	$ ssh -i my_private_key.pem debian@<인스턴스의 IP>
+* 트랜짓 허브의 멀티캐스트 트래픽은 트랜짓 허브를 기준으로 트랜짓 허브를 통해 유입(ingress)되는 패킷만 기록합니다. 하나 또는 여러 연결을 통해 나가는 멀티캐스트 트래픽은 기록하지 않습니다.
+* 트랜짓 허브에 흐르는 패킷은 트랜짓 허브 라우터의 드롭 여부와 관계없이 모두 ACCEPT에 한 번씩 기록됩니다. 트랜짓 허브 라우터에서 실제로 드롭된 패킷은 별도의 줄에 DROP과 함께 기록됩니다.
+* 트랜짓 허브는 **연결 수립 패킷만 수집(connection setup only)** 옵션의 영향을 받지 않으며, 연결 상태와 관계없이 모든 패킷을 수집합니다.
 
-Rocky 인스턴스
+<a id="important-notes-when-using-flow-log-designated-for-load-balancers"></a>
+### 로드 밸런서에 Flow Log를 지정하여 사용 시 유의 사항 { #important-notes-when-using-flow-log-designated-for-load-balancers }
 
-	$ ssh -i my_private_key.pem rocky@<인스턴스의 IP>
+* 현재 로드 밸런서는 ACCEPT 패킷만을 수집합니다. 로드 밸런서에 설정된 IPACL에 의하여 DROP된 패킷의 수집은 추후 지원 예정입니다.
 
-#### Windows에서 PuTTY SSH 클라이언트로 Linux 인스턴스에 접속하는 방법
+* 로드 밸런서에 접근을 시도하는 패킷, 로드 밸런서와 멤버 사이의 일반 패킷뿐만 아니라 상태 확인 패킷들도 함께 수집합니다.
+* 해당 서비스에 연결된 Flow Log는 **연결 수립 패킷만 수집(connection setup only)** 옵션의 영향을 받지 않으며, 연결 상태와 관계없이 모든 패킷을 수집합니다.
 
-PuTTY SSH 클라이언트는 Windows에서 많이 사용되는 SSH 클라이언트 프로그램입니다. [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 또는 한글 패치가 적용된 [iPuTTY](https://github.com/iPuTTY/iPuTTY/releases/tag/l0.70i)를 설치합니다.
+<a id="important-notes-when-using-flow-log-on-peering-gateways-and-colocation-gateways"></a>
+### 피어링 게이트웨이 및 코로케이션 게이트웨이에 플로우 로그를 지정하여 사용 시 유의 사항 { #important-notes-when-using-flow-log-on-peering-gateways-and-colocation-gateways }
 
-Windows에서 PuTTY SSH 클라이언트로 Linux 인스턴스에 접속하려면 세 단계를 거쳐야 합니다.
+* 같은 프로젝트 내 VPC 피어링 게이트웨이는 현재 수집 대상으로 지원하지 않습니다. 수집 대상을 `네트워크 인터페이스` 단위로 지정할 수 없으며, `VPC` 또는 `Subnet` 단위로 플로우 로그를 생성한 경우에도 VPC 피어링 게이트웨이의 네트워크 인터페이스는 수집 대상에서 제외됩니다.
+    * 단, VPC 피어링을 통해 오간 트래픽은 인스턴스의 네트워크 인터페이스에서 수집됩니다.
+* 다른 프로젝트 간 피어링(inter_project_peering), 다른 리전 간 피어링(inter_region_peering) 게이트웨이와 코로케이션 게이트웨이의 네트워크 인터페이스는 수집 대상으로 지원합니다.
+* 사용자가 명시적으로 DROP을 설정할 수 있는 서비스가 아니므로, DROP은 지원하지 않습니다.
+* 해당 서비스에 연결된 Flow Log는 **연결 수립 패킷만 수집(connection setup only)** 옵션의 영향을 받지 않으며, 연결 상태와 관계없이 모든 패킷을 수집합니다.
 
-* 키페어의 개인 키를 PuTTY용 개인 키로 변경
-* PuTTY용 개인 키를 PuTTY에 등록
-* PuTTY로 인스턴스에 접속
 
-##### 1. 키페어의 개인 키를 PuTTY용 개인 키로 변경
-
-PuTTY에서는 키페어 개인 키를 PuTTY의 개인 키 형식으로 바꿔서 사용해야 합니다. 키 변환은 PuTTY와 함께 설치되는 puttygen을 이용합니다.
-
-![이미지1](http://static.toastoven.net/prod_instance/putty001.png)
-
-**PuTTY Key 생성기** 대화 상자 제일 아래 **매개변수**에서 **생성할 키 형식**을 **RSA**로 선택하고, **생성할 키 비트**는 기본값인 '2048' 비트로 입력합니다. **작업** 아래 **개인키 파일 불러오기** 옆의 **불러오기** 버튼을 클릭하고 키페어의 개인 키 파일을 불러옵니다.
-
-![이미지2](http://static.toastoven.net/prod_instance/putty002.png)
-
-**작업** 아래 **생성된 키 저장** 옆의 **개인키 저장** 버튼을 클릭하여 PuTTY용으로 변환된 키페어 개인 키를 저장합니다. **키 암호어구**를 빈 칸으로 두고 개인 키를 저장하면, **암호어구로 보호하지 않은 채 이 키를 저장하겠습니까?**라는 메시지가 나타납니다. 변환된 개인 키를 좀 더 안전하게 저장하려면 암호어구를 설정하여 저장합니다.
-
-> [주의]
-인스턴스에 자동으로 로그인하도록 설정하려면 암호어구를 사용하지 않아야 합니다. 암호어구를 사용하면 로그인할 때 개인 키에 대한 비밀번호를 직접 입력해야 합니다.
-
-##### 2. PuTTY용 개인 키를 PuTTY에 등록
-
-이렇게 만들어진 PuTTY용 개인 키는 2가지 방법으로 등록하여 사용할 수 있습니다.
-
-* PuTTY에서 인증 개인 키 파일을 등록하여 사용하는 방법
-* pageant(PuTTY 인증 에이전트)에 인증 개인 키 파일을 등록하여 사용하는 방법
-
-**A. PuTTY에서 인증 개인 키 파일을 등록하여 사용하는 방법**
-
-
-PuTTY를 실행하고, 왼쪽 **카테고리**에서 **연결 > SSH > Auth**를 선택합니다. 오른쪽 **인증 매개 변수** 아래 **인증 개인키 파일**에 PuTTY용 개인 키를 등록합니다.
-
-![이미지3](http://static.toastoven.net/prod_instance/putty005.png)
-
-개인 키를 등록한 뒤, 접속 정보를 저장해두면 매번 개인 키 파일을 다시 등록할 필요가 없습니다. 접속 정보를 저장하는 방법은 아래 접속 방법을 참고합니다.
-
-
-**B. pageant(PuTTY 인증 에이전트)에 인증 개인 키 파일을 등록하여 사용하는 방법**
-
-
-PuTTY와 함께 설치되는 pageant를 실행하면, 아래 그림과 같이 Windows 트레이에 아이콘이 나타납니다. pageant 아이콘을 마우스 오른쪽 버튼으로 클릭한 후 **키 추가** 메뉴를 클릭해 PuTTY용 개인 키를 추가합니다.
-
-![이미지4](http://static.toastoven.net/prod_instance/putty006.png)
-
-개인 키가 추가된 것을 확인하려면 **키 보기**를 선택합니다. 키가 잘 추가되었다면, 아래 그림과 같이 추가된 키가 보입니다.
-
-![이미지5](http://static.toastoven.net/prod_instance/putty008.png)
-
-pageant는 한 번 실행되면, Windows 트레이에 계속 남아서 실행되므로 인스턴스에 접속할 때마다 다시 실행할 필요가 없습니다. 다만 Windows를 새로 시작한 경우에는 다시 실행해야 합니다.
-
-##### 3. PuTTY로 인스턴스에 접속
-
-PuTTY용으로 변환된 개인 키가 잘 등록되었다면 PuTTY를 실행합니다.
-
-![이미지6](http://static.toastoven.net/prod_instance/putty009.png)
-
-기본 접속 정보의 **호스트 이름**은 다음과 같이 사용합니다.
-
-Ubuntu
-
-	ubuntu@<인스턴스의 IP>
-
-Debian
-
-	debian@<인스턴스의 IP>
-
-Rocky
-
-	rocky@<인스턴스의 IP>
-
-**포트**는 SSH 기본 포트인 22, **연결 형식**은 **SSH**로 지정합니다.
-
-모든 정보가 정확하다면 세션을 저장합니다. **불러오기, 저장, 저장된 세션 삭제**에서 저장된 섹션 아래 필드에 저장할 세션 이름을 쓰고, **저장** 버튼을 클릭하여 세션을 저장합니다. 세션을 저장하지 않으면 2-A에서 등록한 개인 키 설정 역시 유지되지 않습니다.
-
-이제 **열기**를 클릭하면 인스턴스에 접속합니다.
-
-<a id="how-to-access-windows-instances"></a>
-### Windows 인스턴스 접속 방법
-
-Windows 서버에 접속하려면, NHN Cloud 콘솔에서 접속하려는 Windows 인스턴스를 선택합니다. 인스턴스 상세 화면의 **접속 정보** 탭에서 **비밀번호 확인** 버튼을 클릭하여 Windows 서버에 설정된 비밀번호를 확인합니다.
-
-**비밀번호 확인**에서 입력하는 키페어의 개인 키는 서버로 전송되지 않고, 브라우저에서 비밀번호를 복호화하는 작업에만 사용됩니다.
-
-**비밀번호 확인** 옆의 **연결** 버튼을 클릭해 원격 데스크톱 접속 설정이 저장된 .rdp 파일을 받아서 실행하면 Windows 서버에 접속합니다. Windows 서버의 ID는 `Administrator`이며, 비밀번호는 NHN Cloud 콘솔에서 확인한 비밀번호를 이용합니다.
-
-### 시리얼 콘솔 접속 방법
-
-부팅 실패, 네트워크 구성 문제와 같이 SSH 클라이언트를 사용할 수 없는 상황에서 시리얼 콘솔에 연결하여 인스턴스에 접속할 수 있습니다. 
-
-시리얼 콘솔 기능은 다음과 같은 제약 조건이 있습니다.
-
-* 인스턴스당 하나의 시리얼 콘솔 연결만 가능하며, 다중 접속 시도 시 정상적으로 연결이 되지 않을 수 있습니다.
-* 개인이 업로드한 이미지로 만든 인스턴스와 개인 이미지로 만든 인스턴스는 시리얼 콘솔 접속을 보장하지 않습니다.
-* 시리얼 콘솔 연결은 최대 10분간 접속 가능합니다.
-* Windows 인스턴스는 시리얼 콘솔 기능을 지원하지 않습니다.
-* 2026년 1월 27일 배포 이전에 생성한 인스턴스는 **인스턴스 중지** 후에 **인스턴스 시작**이 필요합니다. **인스턴스 재부팅** 기능으로는 적용되지 않습니다.
-
-> [주의]
-> 시리얼 콘솔로 인스턴스에 접속하여 부팅 방법 변경 시 부팅에 실패할 수 있으며, 이에 따른 결과에 대한 책임은 사용자에게 있습니다.
-> 일반적인 상황에서는 SSH 클라이언트 접속 사용을 권장합니다.
-
-#### GRUB 부트로더 설정 변경
-
-2024년 11월 26일 배포 이전에 생성한 인스턴스에서 부트로더를 조작하기 위해서는 GRUB 설정이 필요합니다.
-
-GRUB 설정 파일을 수정합니다.
-
-```
-$ sudo vi /etc/default/grub.d/50-cloudimg-settings.cfg
-GRUB_TIMEOUT=3
-GRUB_TERMINAL="console serial"
-GRUB_SERIAL_COMMAND="serial --speed=9600 --unit=0 --word=8 --parity=no --stop=1"
-```
-
-변경된 설정을 적용합니다. OS에 따라 GRUB 설정 적용 명령어가 다를 수 있습니다.
-
-```
-$ sudo update-grub
-```
