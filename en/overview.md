@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=ad9be4a958b6 -->
+<!-- pre-align:aligned sig=70f5c107edf8 -->
 
 <a id="storage-nas-for-bigdata-overview"></a>
 ## Storage > NAS for BigData > Overview { #storage-nas-for-bigdata-overview }
