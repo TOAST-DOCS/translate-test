@@ -1,512 +1,504 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > コンソール使用ガイド
+<!-- pre-align:aligned sig=087cd81ac2d8 -->
 
-<a id="create-instances"></a>
-## インスタンス生成
+# コンソール利用ガイド
+**Management > Private CA > コンソール利用ガイド**
 
-インスタンスを作成するには、以下の設定を行うか、インスタンステンプレート(Instance Template)を利用します。インスタンステンプレートを利用してインスタンスを作成するにはインスタンス作成画面で**インスタンステンプレート使用**を選択します。インスタンステンプレートの作成方法は[インスタンステンプレートコンソールガイド](/Compute/Instance%20Template/ja/console-guide/)を参照します。
+Private CAコンソールは認証局(certificate authority, CA)を中心に構成されており、全てのリソース(証明書テンプレート、発行者、証明書、ACMEトークン)は特定のリポジトリに属します。コンソール画面は左側にリポジトリリスト、右側に選択したリポジトリの詳細情報を表示するタブ構造になっています。
 
-<a id="os-settings"></a>
-### OS設定
+<a id="private-ca-usage-flow"></a>
+## Private CA利用フロー { #private-ca-usage-flow }
 
-インスタンス作成時に使用されるルートブロックストレージの作成方式を決定します。
+Private CAで証明書を発行するまでの過程は次のとおりです。
 
-- **新規作成及び設定**または**既存リソース指定**のいずれかを選択します。
-- **新規作成及び設定**を選択した場合、イメージを利用してルートブロックストレージを作成します。
-- **既存リソース指定**を選択した場合、既存のブロックストレージまたはスナップショットを利用します。
+1. **リポジトリ作成**：証明書を管理するスペースを作成します。
+2. **発行者作成**：証明書に署名する認証局(CA)を作成します。
+    - Root CA:最上位認証局
+    - Intermediate CA:Root CAの下位の中間認証局
+3. **証明書テンプレート作成**：同じ設定で複数の証明書を発行する際に使用します。
+4. **証明書発行**：証明書テンプレートを通じて実際に使用する証明書を発行します。
 
-<a id="image"></a>
-### イメージ
+!!! tip "ポイント"
+    - **CA(certificate authority, 認証局)**：証明書を発行し署名する主体です。
+    - **Root CA**：自己署名した最上位証明書です。全ての信頼の起点です。
+    - **Intermediate CA**：Root CAによって署名された中間証明書です。実際のサーバー証明書発行に使用されます。
 
-希望のオペレーションシステムがインストールされているイメージを選択します。イメージはNHN Cloudが提供するパブリックイメージ、作成済のユーザーイメージ、共有イメージから選択できます。
+<a id="repository"></a>
+## リポジトリ { #repository }
 
-使用するイメージによってインスタンスタイプ(flavor)が異なるので、インスタンス生成の際は、まず初めにイメージを選択してください。
+リポジトリはPrivate CAを管理する基本単位です。リポジトリを作成すると、発行者、証明書テンプレート、証明書などを管理できます。
 
-| オペレーションシステム                  | ブロックストレージ    | メモリ  |
-| ---------------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu、Debian、Rocky | 20GB以上  | 1GB以上 |
-| Windows                           | 50GB以上  | 2GB以上 |
+<a id="add-repository"></a>
+### リポジトリ追加 { #add-repository }
 
-<a id="root-block-storage"></a>
-### ルートブロックストレージ
+1. コンソール左上の**+ 追加**をクリックしてリポジトリを追加します。
+  ![ca_empty_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/ca_init.png)
 
-**OS設定**に従ってルートブロックストレージを設定します。
+2. リポジトリ追加モーダルウィンドウで次の情報を入力します。
+  ![ca_create](https://static.toastoven.net/prod_privateca/2025-12-23_ko/ca_create.png)
+    - **リポジトリ名**(必須)：リポジトリを識別する名前を入力します。
+    - **リポジトリ説明**(選択)：リポジトリに関する説明を入力します。
+    - **CRL有効化**
+        - CRL(certificate revocation list、証明書失効リスト)を有効にするかどうかを選択します。
+        - 失効した証明書リストを定期的に提供し、クライアントが証明書の有効性を確認できるようにします。
+        - CRLを有効化すると、更新サイクルを日単位で設定できます。
+    - **OCSP有効化**
+        - OCSP(online certificate status protocol)を有効にするかどうかを選択します。
+        - 個別の証明書の失効状態をリクエスト時点の状態で素早く確認できるプロトコルです。
+        - OCSPを有効化すると、更新サイクルを時間単位で設定できます。
 
-- **新規作成及び設定**を選択した場合、**ブロックストレージタイプ**及び**ブロックストレージサイズ**を指定してルートブロックストレージを作成します。
-- **既存リソース指定**を選択した場合、**原本リソース**を指定してルートブロックストレージとして使用します。
+3. **作成**をクリックしてリポジトリを作成します。
 
-#### 原本リソース
+<a id="modify-and-delete-repositories"></a>
+### リポジトリ修正、削除 { #modify-and-delete-repositories }
 
-既存の**ブロックストレージ**または**スナップショット**のいずれかを選択できます。
+リポジトリリストで各リポジトリ項目の右側にあるメニューボタン(⋮)をクリックすると、次の作業を実行できます。
+![overview_3dot](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_3dot.png)
 
-- **ブロックストレージ**を選択した場合、既存のブロックストレージをルートブロックストレージとして使用します。
-- **スナップショット**を選択した場合、既存のスナップショットを利用してルートブロックストレージを作成します。
+- **修正**：リポジトリの名前、説明、CRL/OCSP設定を変更できます。
+- **削除**：リポジトリを削除します。
+    - リポジトリを削除すると、該当リポジトリに属する全てのリソース(発行者、証明書テンプレート、証明書、ACMEトークン)が一緒に削除されます。
 
-#### ブロックストレージサイズ
+!!! danger "注意"
+    削除作業は元に戻せないため注意が必要です。
 
-インスタンスのルートブロックストレージを決定します。
+<a id="repository-details"></a>
+### リポジトリ詳細情報 { #repository-details }
 
-- ブロックストレージのサイズはイメージが要求する最小サイズ以上にする必要があります。
+左側のリポジトリリストで希望するリポジトリをクリックすると、右側の画面にリポジトリの詳細情報が表示されます。リポジトリ詳細情報画面はリポジトリ名、説明とタブリスト、そして複数の詳細情報で構成されています。
 
-インスタンスのルートブロックストレージサイズはインスタンスタイプによって異なります。
+<a id="repository-details-tab-list"></a>
+#### タブリスト
 
-| 仕様              | サポートするブロックストレージのサイズ             |
-| ---------------- | -------------------------------- |
-| u2タイプ            | 20 ～ 100 GB (仕様ごとに固定)        |
-| t2、m2、c2、r2、x1タイプ   | 20 ～2000GB       　               |
+リポジトリを選択すると、右側の画面上部には次のようなタブがあり、各タブをクリックして該当機能に移動できます。
+![overview_tabs](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_tabs.png)
 
-> [参考]
-> ブロックストレージサイズに応じて課金されるため、基本ブロックストレージのサイズを無条件に大きくすることは非効率的です。必要に応じてブロックストレージを追加して使用することを推奨します。
-> **OS設定**で**既存リソース指定**を**ブロックストレージ**に選択した場合、ブロックストレージサイズを変更することはできません。
-> **OS設定**で**既存リソース指定**を**スナップショット**に選択した場合、ブロックストレージサイズは原本ブロックストレージサイズと同じか、それより大きく設定する必要があります。
+- **概要**：リポジトリの統計情報と設定情報
+- **証明書テンプレート**：証明書テンプレートリスト及び管理
+- **発行者**：証明書発行者リスト及び管理
+- **証明書**：発行された証明書リスト及び管理
+- **ACME管理**：ACMEトークンリスト及び管理
+- **証明書履歴**：リポジトリの証明書履歴確認
 
-#### ブロックストレージタイプ
+<a id="repository-details-resource-statistics-card"></a>
+#### リソース統計カード
 
-インスタンスの基本ブロックストレージタイプを決定します。
+画面上部にはリポジトリの主要リソース数を表示するカードが3つ表示されます。
+![overview_resource_card](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_resource_card.png)
 
-- **HDD**または**SSD**のいずれかを選択します。タイプによって料金と性能が異なります。
-- 一度選択したブロックストレージタイプは変更できません。 
+- **証明書テンプレート**：作成された証明書テンプレート総数
+- **発行者**：作成された発行者(Root CA、Intermediate CA)総数
+- **証明書**：発行された証明書総数
+
+各カードの**{カード名}表示 >**をクリックすると、該当リソースの管理タブにすぐに移動できます。
+
+<a id="repository-details-acme-info"></a>
+#### ACME情報
 
-> [参考] 
-> **OS設定**で**既存リソース指定**を選択した場合、ブロックストレージタイプの変更はできません。
+リソースカード下部にはACME情報が表示されます。
+![overview_acme_info](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_acme_info.png)
 
-<a id="availability-zone"></a>
-### アベイラビリティゾーン(availability zone)
+- **全トークン**：作成されたACMEトークン総数
+- **アクティブトークン**：アクティブ状態のACMEトークン数
+- **削除されたトークン**：削除されたACMEトークン数
+
+<a id="repository-details-2"></a>
+#### リポジトリ詳細情報
+
+ACME情報下部にはリポジトリ詳細情報が表示されます。
+![overview_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/overview_detail.png)
+
+- **リポジトリID**：リポジトリのID
+- **CRL URL**：証明書失効リスト(certificate revocation list)を確認できるURL
+- **CRL更新サイクル**：CRLが更新される周期(日単位)
+- **OCSP URL**：OCSP(online certificate status protocol)レスポンダURL
+- **OCSP更新サイクル**：OCSP情報が更新される周期(時間単位)
+
+!!! tip "ポイント"
+    CRLとOCSPは証明書の失効状態を確認する方法です。CRLは失効した証明書リストを提供し、OCSPは個別証明書の状態をリクエスト時点の状態で素早く照会できます。
+
+<a id="issuer"></a>
+## 発行者 { #issuer }
+
+発行者は証明書に署名し発行する認証局です。Private CAではRoot CAとIntermediate CAの2種類のタイプの発行者を作成できます。
+
+<a id="guide-to-selecting-an-issuer-type"></a>
+### 発行者タイプ選択ガイド { #guide-to-selecting-an-issuer-type }
+
+- **Root CAのみ使用する場合**：小規模組織内部用証明書発行
+- **Root CA + Intermediate CA使用する場合**
+    - Root CAの秘密鍵を安全に保管したい場合
+    - 複数の部署/プロジェクト別に別途CAを運営したい場合
+    - セキュリティベストプラクティスに従いたい場合(推奨)
+
+<a id="issuer-list"></a>
+### 発行者リスト { #issuer-list }
+
+発行者タブでは作成された全ての発行者をテーブル形式で確認できます。テーブルには次の情報が表示されます。
+![issuer_list_after](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_list_after.png)
+
+- **名前**：発行者の名前
+- **状態**：発行者の現在の状態
+    - **active**：正常に使用可能な状態(青色)
+    - **revoked**：失効した状態(赤色)
+- **タイプ**：RootまたはIntermediate
+- **シリアル番号**：証明書の固有シリアル番号
+- **一般名**：証明書の一般名
+
+各発行者項目には**失効**ボタンがあり、必要に応じて発行者を**失効させる**ことができます。
+
+<a id="add-an-issuer"></a>
+### 発行者追加 { #add-an-issuer }
+
+1. 発行者タブで**+ 追加**をクリックします。
+  ![issuer_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_list.png)
+
+
+2. 発行者作成ページで次の情報を入力します。
+  ![issuer_create](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_create.png)
+    - 基本情報
+        - **発行者タイプ**：発行者のタイプとしてRootまたはIntermediateを選択
+            - **Root**：最上位認証局で、自己署名された証明書です。
+            - **Intermediate**：中間認証局で、Root CAによって署名されます。
+                - **上位証明書ID**：Intermediateタイプを選択した場合、上位発行者を選択します。
+                  ![issuer_create_intermediate](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_create_intermediate.png)
+        - **発行者名**(必須)：発行者を識別する名前
+        - **発行者説明**(選択)：発行者に関する説明
+        - **一般名**(必須)：証明書一般名
+        - **有効期限設定**(必須)：有効期間を入力し、TTLまたは特定の日付のいずれかを選択
+            - **TTL**：発行時点から指定した期間有効(例：365d、8760h、60m、30s)
+            - **特定の日付**：特定の有効期限(有効終了時刻)を指定
+        - **バックデート有効性**：証明書の有効開始時点を現在時刻より前に設定する期間です。時間同期の問題を防ぐために使用されます。(デフォルト値：30s / 例：1d、24h、60m、30s)
+        - **最大パス長**：証明書チェーンでこの発行者の下に許可される中間CAの最大数を指定します。0はこれ以上下位CAを作成できないことを意味します。(例：0)
+
+    - 鍵情報
+        - **鍵アルゴリズム**：RSA、EC、ED25519の中から選択
+        - **鍵ビット**：アルゴリズムによる鍵ビット選択
+
+    - SAN(subject alternative name)設定
+        - **SANから一般名除外**：SANリストから一般名(CN)を自動的に除外するかどうかを選択します。
+        - **主体シリアル番号**：主体の固有シリアル番号を入力します。
+        - **主体代替名(SANs)**：ドメイン形式の追加識別名(例：example.com、sub.example.com)
+        - **IP主体代替名(IP SANs)**：IPアドレス形式の追加識別名(例：192.168.1.1、10.0.0.1)
+        - **URI主体代替名(URI SANs)**：URI形式の追加識別名(例：https://example.com、spiffe://example.org)
+        - **その他SANs**：その他形式のSAN(例：1.2.3.4;UTF8:test@example.com)
+
+    - 主体情報(subject)
+        - **国(C)**：国コード
+        - **市/道(ST)**：州または道
+        - **市/郡/区(L)**：都市名
+        - **道路名住所**：道路名住所
+        - **郵便番号**：郵便番号
+        - **機関(組織)(O)**：組織名
+        - **部署(組織単位)(OU)**：部署名
+
+3. **追加**をクリックして発行者を追加します。
+
+<a id="issuer-details"></a>
+### 発行者詳細情報 { #issuer-details }
+
+発行者リストで発行者名をクリックすると詳細情報ページに移動します。詳細ページには次の情報が表示され、上部のダウンロードボタンを通じて証明書PEMファイルをダウンロードできます。
+![issuer_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/issuer_detail.png)
+
+<a id="issuer-details-certificate-information"></a>
+#### 証明書情報
+- 状態、タイプ、シリアル番号
+- 主体情報(subject DN)
+- 発行者情報(Issuer DN)
+- 鍵用途及び拡張鍵用途
+- アルゴリズム及び鍵サイズ
+- 有効期間(有効開始時刻、有効終了時刻)
+- 証明書PEM内容
+
+<a id="issuer-details-issuer-url"></a>
+#### 発行者URL
+- **発行証明書URL**：この発行者が発行した証明書リスト
+- **CRL配布ポイント**：CRLを確認できるURL
+- **OCSPサーバー**：OCSPレスポンダURL
+
+
+<a id="issuer-modification-revocation"></a>
+### 発行者修正、失効 { #issuer-modification-revocation }
+
+<a id="issuer-modification-revocation-modify-issuer"></a>
+#### 発行者修正
+発行者詳細ページで名前と説明を直接修正できます。修正後、**保存**をクリックして変更事項を保存します。
+
+- 編集可能フィールド
+    - **名前**：発行者名を修正できます。
+    - **説明**：発行者説明を修正できます。
+
+<a id="issuer-modification-revocation-issuer-revocation"></a>
+#### 発行者失効
+1. 発行者リストで失効させる発行者の**失効**をクリックします。
+2. 確認ダイアログで**失効**をクリックして失効を確定します。
+
+!!! danger "注意"
+    - 発行者を失効させると、該当発行者が発行した全ての証明書の信頼性に影響を及ぼします。失効した発行者はこれ以上証明書を発行できず、すでに発行された証明書はCRLまたはOCSPを通じて失効状態を確認できます。
+    - ルート証明書は失効させることができません。
+
+<a id="certificate-template"></a>
+## 証明書テンプレート { #certificate-template }
+
+証明書テンプレートは、証明書を迅速かつ一貫性を持って発行するための設定の集まりです。証明書テンプレートを使用すると、同じ設定で複数の証明書を簡単に発行できます。
+
+<a id="list-of-certificate-templates"></a>
+### 証明書テンプレートリスト { #list-of-certificate-templates }
+
+証明書テンプレートタブでは、作成された全ての証明書テンプレートをテーブル形式で確認できます。テーブルには次の情報が表示されます。
+![template_list_after](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_list_after.png)
+
+- **名前**：証明書テンプレート名をクリックすると詳細情報に移動します。
+- **説明**：証明書テンプレートに関する説明
+
+各証明書テンプレート項目には**修正**及び**削除**ボタンがあり、証明書テンプレートを管理できます。
+
+<a id="add-a-certificate-template"></a>
+### 証明書テンプレート追加 { #add-a-certificate-template }
+
+1. 証明書テンプレートタブで**+ 追加**をクリックします。
+  ![template_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_list.png)
+
+2. 証明書テンプレート作成ページで次の情報を入力します。
+  ![template_create](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_create.png)
+
+    - 基本情報
+        - **証明書テンプレート名**(必須)：証明書テンプレートを識別する名前
+        - **説明**(任意)：証明書テンプレートに関する説明
+        - **発行者選択**：この証明書テンプレートで作成された証明書に署名する発行者を選択します。
+
+    - 制限設定
+        - **有効期限設定**(必須)
+            - **TTL**：最大有効期間設定(例：365d、8760h、60m、30s)
+            - **特定の日付**：固定された有効期限(有効終了時刻)を指定
+        - **バックデート有効性**：証明書の有効開始時点を現在時刻より前に設定する期間です。時間同期の問題を防ぐために使用されます。(デフォルト値：30s / 例：1d、24h、60m、30s)
+
+    - SANオプション
+        - **IP SANs許可**：IPアドレスをSANに含めることができるように許可します。
+        - **URI主体代替名(URI SANs)**：URI形式のSANを入力します。(例：https://example.com、spiffe://example.org)
+        - **その他SANs**：その他形式のSANを入力します。(例：1.2.3.4;UTF8:test@example.com)
 
-アベイラビリティゾーンを明示的に設定しない場合、任意のゾーンに設定されます。ノクターナルによって、このインスタンスが使用できるブロックストレージが決定されます。使用したいブロックストレージが特定のノクターナルに存在する場合は、そのノクターナルに設定して使用します。
+    - 共通反映設定
+        - 設定
+            - **サーバー保存可否決定**：作成された証明書をサーバーに保存するかどうかを選択します。
+            - **非CAに対する基本制約条件有効化**：CAではないことを証明書に明示するかどうかを選択します。
+
+        - 鍵パラメータ
+            - **鍵アルゴリズム**：RSA、EC、ED25519の中から選択
+            - **鍵ビット**：アルゴリズムによる鍵ビット選択
+            - **署名ビット**：証明書署名に使用するハッシュアルゴリズムのビット数選択
 
-> [参考] 
-> VPCのリソースは全てのアベイラビリティゾーンで使用できます。
-> **OS設定**で**既存リソース指定**を選択した場合、アベイラビリティゾーンは変更できません。
+            !!! danger "注意"
+                署名ビットはRSAアルゴリズムの場合のみ設定可能です。その他のアルゴリズムでは無視されます。
 
-アベイラビリティゾーンの詳細は[インスタンス概要のアベイラビリティゾーン](./overview/#availability-zone)を参照してください。
+        - 鍵用途(Key Usage)
+            - `digitalSignature`(デジタル署名)、`keyEncipherment`(鍵暗号化)、`keyCertSign`(証明書署名)など、証明書の用途を選択します。
 
-<a id="flavor"></a>
-### タイプ(flavor)
+        - 拡張鍵用途(Extended Key Usage)
+            - `serverAuth`(TLSサーバー認証)、`clientAuth`(TLSクライアント認証)、`codeSigning`(コード署名)など、拡張鍵の使用用途を選択します。
+            - **拡張鍵用途OIDs**：追加拡張鍵用途OIDを直接入力できます。(例：1.3.6.1.5.5.7.3.1、1.3.6.1.5.5.7.3.2)
+
+        - ポリシー(Certificate Policies)
+            - **ポリシーリスト**：証明書が遵守するポリシーを示すOIDを入力します。複数のOIDを入力できます。
+                - 例：2.5.29.32.0(anyPolicy)、1.2.3.4.5(組織固有ポリシー)
+            - 証明書ポリシーフィールドは、証明書がどのポリシーの下で発行されたかを明示し、証明書検証時にポリシー遵守可否を確認するために使用されます。
+
+    - 追加主体フィールド
+        - **CSR一般名使用**：CSRのCNを証明書にそのまま使用するかどうかを選択します。
+        - **CSR SANs使用**：CSRのSANを証明書に含めるかどうかを選択します。
+        - **国(C)**：国コード
+        - **市/道(ST)**：州または道
+        - **市/郡/区(L)**：都市名
+        - **道路名住所**：道路名住所
+        - **郵便番号**：郵便番号
+        - **機関(組織)(O)**：組織名
+        - **部署(組織単位)(OU)**：部署名
+
+        !!! danger "注意"
+            CSRのSubject DNに対する値を設定しても、証明書テンプレートで設定した値で上書きされます。
+
+3. **追加**をクリックして証明書テンプレートを追加します。
 
-仮想ハードウェアの性能によって様々なタイプを選択できます。ただし、イメージで要求する仮想ハードウェアの性能によって選択できるタイプが制限される場合があります。詳細は[インスタンス概要](./overview)を参照してください。
+<a id="certificate-template-details"></a>
+### 証明書テンプレート詳細情報 { #certificate-template-details }
 
-> [参考]
-> 1 vCPUは、スレッド1つとコア1つで構成されたソケット1つを意味し、ソケット1つ当たりのスレッド数とコア数はそれぞれ1つで一定です。
+証明書テンプレートリストで証明書テンプレート名をクリックすると詳細情報ページに移動します。詳細ページは折りたたみ可能なセクションで構成されており、ユーザーが入力した情報を確認できます。
+![template_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_detail.png)
 
-インスタンスのタイプは、作成後もNHN Cloudコンソールで変更できます。高いタイプから低いタイプに変更することができ、低いタイプから高いタイプに変更することもできます。一部のタイプは変更できない場合もありますので、詳細は[インスタンスタイプ変更](./console-guide/#modify-flavor)を参照してください。
+詳細ページ上部には**+ 証明書新規作成**及び**修正**、**削除**ボタンがあります。
 
-> [注意]インスタンスのルートブロックストレージはタイプ変更で変更できません。
+<a id="modify-delete-certificate-template"></a>
+### 証明書テンプレート修正、削除 { #modify-delete-certificate-template }
 
-<a id="number-of-instances"></a>
-### インスタンス数
+<a id="modify-delete-certificate-template-modify-certificate-template"></a>
+#### 証明書テンプレート修正
+1. 証明書テンプレートリストで**修正**をクリックするか、詳細ページで**修正**をクリックします。
+2. 証明書テンプレート修正ページで必要な内容を変更します。
+3. **修正**をクリックして変更事項を保存します。
 
-イメージ、アベイラビリティゾーン、インスタンスタイプ、ブロックストレージサイズ、キーペア、ネットワーク設定が、全て同じインスタンスを複数生成する場合に使用します。インスタンスの名前には、設定した名前の後ろに「-1」、「-2」のような番号が振られます。例えば、インスタンス名を「my-instance」にしてインスタンスを2個生成すると、「my-instance-1」、「my-instance-2」が生成されます。一度に生成できる最大インスタンス数は10個です。
+<a id="modify-delete-certificate-template-delete-a-certificate-template"></a>
+#### 証明書テンプレート削除
+1. 証明書テンプレートリストで削除する証明書テンプレートの**削除**をクリックするか、詳細ページで**削除**をクリックします。
+2. 確認ダイアログで**削除**をクリックして削除を確定します。
 
-任意のアベイラビリティゾーンにインスタンスを複数生成した場合、それぞれのインスタンスは任意のアベイラビリティゾーンに生成されます。たとえば、2個のインスタンスを任意のアベイラビリティゾーンに生成した場合、2個が同じアベイラビリティゾーンに生成されることもあれば、別のアベイラビリティゾーンに生成されることもあります。全てのインスタンスを同じアベイラビリティゾーンに生成する必要がある時は、特定アベイラビリティゾーンを選択して生成します。
+!!! tip "ポイント"
+    証明書テンプレートを削除しても、該当証明書テンプレートですでに作成された証明書には影響しません。
 
-> [参考]
-> **OS設定**で**既存リソース指定**を**ブロックストレージ**に選択した場合、または**ネットワーク設定**で**既存ネットワークインターフェイス指定**を選択した場合、インスタンス数は`1`に制限されます。
+<a id="create-certificates-with-certificate-templates"></a>
+### 証明書テンプレートを使用した証明書作成 { #create-certificates-with-certificate-templates }
 
-<a id="key-pair"></a>
-### キーペア
+証明書テンプレートを使用して証明書を作成する方法は次のとおりです。
 
-既存のキーペアを使用したり、新たにキーペアを生成して使用します。既存キーペアの登録はWindowsユーザーの場合、[キーペアインポート(Windowsユーザー)](./console-guide/#import-key-pairs-windows)、Mac、Linuxユーザーの場合は[キーペアインポート(Mac、Linuxユーザー)](./console-guide/#import-key-pairs-mac-and-linux)を参照してください。
+1. 証明書テンプレート詳細ページ上部の**+ 証明書新規作成**をクリックします。
+  ![template_detail_generate](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_detail_generate.png)
 
-> [参考]
-> キーペアはユーザーアカウントに割り当てられたリソースなので、プロジェクトを削除しても削除されずに維持されます。
+2. 証明書作成形式を選択します。
+  ![template_generate](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_generate.png)
+    - **証明書CSR署名**を選択した場合、次のように異なる形式の入力フォームが表示されます。
+  ![template_generate_csr](https://static.toastoven.net/prod_privateca/2025-12-23_ko/template_generate_csr.png)
 
-<a id="network"></a>
-### ネットワーク
+3. 証明書作成ページで次の情報を入力します。
+    - **一般名**(必須)：証明書の主体名
+    - **有効期限設定**(必須)：証明書テンプレートの最大設定範囲内で設定
+    - **SAN情報**：追加SAN情報
 
-VPCで定義されたサブネットの中からインスタンスに接続するサブネットを選択します。サブネットを一つ選択するたびに、インスタンスに該当のサブネットに接続するネットワークインターフェイスが作られます。選択されたサブネットの順序を変えてネットワークインターフェイスを変更することもできます。この場合、最初のネットワークインターフェイス(`eth0`)が基本ゲートウェイに設定されます。
+4. **確認**をクリックして証明書を作成します。
 
-ネットワーク作成と管理の詳細については[VPC概要](/Network/VPC/ja/overview/)を参照してください。
+作成された証明書はユーザーの選択に応じてPrivate CAに保存でき、保存した場合は証明書タブで確認できます。
 
-<a id="floating-ip"></a>
-### Floating IP
+<a id="certificate"></a>
+## 証明書 { #certificate }
 
-インスタンス作成後、Floating IPを使用するかどうかを指定します。Floating IP使用を選択すると、Floating IPを新たに作成して最初のネットワークインターフェイスに接続します。この時、最初のネットワークインターフェイスは必ずインターネットゲートウェイが設定されているサブネットに接続されている必要があります。
+証明書タブではリポジトリから発行された全ての証明書を照会及び管理できます。
 
-Floating IP管理は、Instance > 管理ページまたはInstance > Floating IPページで行えます。Floating IPの詳細は、[VPCコンソール使用ガイド](/Network/VPC/ja/console-guide/)を参照してください。
+<a id="list-of-certificates"></a>
+### 証明書リスト { #list-of-certificates }
 
-<a id="security-group"></a>
-### セキュリティグループ
+証明書タブでは発行された全ての証明書をテーブル形式で確認できます。テーブルには次の情報が表示されます。
+![certificate_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/certificate_list.png)
 
-インスタンスが属すセキュリティグループを指定します。一つのインスタンスは複数のセキュリティグループに属すことがあります。インスタンスが複数のセキュリティグループに属す場合は、次を参照してください。
+- **一般名**：証明書の一般名をクリックすると詳細情報に移動します。
+- **状態**：証明書の現在の状態
+    - **active**：正常に使用可能な状態(青色)
+    - **revoked**：失効した状態(赤色)
+- **シリアル番号**：証明書の固有シリアル番号
+- **有効開始時刻**：証明書が有効になった時点
 
-- 各セキュリティグループに属している全てのインスタンスとネットワーク通信ができます。別のインスタンスの意図していないアクセスを防ぐ必要のある機密データを持つインスタンスの場合は、慎重にセキュリティグループを指定する必要があります。
-- 各セキュリティグループの全てのルールが合わさって、該当のインスタンスの外部通信に適用されます。
+各証明書項目には**ダウンロード**及び**失効**ボタンがあり、証明書を管理できます。
 
-セキュリティグループの詳細については[VPC概要](/Network/VPC/ja/overview/)を参照してください。
+<a id="certificate-details"></a>
+### 証明書詳細情報 { #certificate-details }
 
-<a id="additional-block-storage"></a>
-### 追加ブロックストレージ
+証明書リストで一般名をクリックすると詳細情報ページに移動します。詳細ページには次の情報が表示され、上部のダウンロードボタンを通じて証明書PEMファイルをダウンロードできます。
+![certificate_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/certificate_detail.png)
 
-インスタンス作成後、追加ブロックストレージに接続するかどうかを指定します。追加ブロックストレージ使用を選択すると、ルートブロックストレージとは別の新しいブロックストレージを作成してインスタンスに接続します。ルートブロックストレージ同様、追加ブロックストレージを作成する時に、名前、ストレージタイプ、サイズを指定できます。
+<a id="certificate-details-certificate-information"></a>
+#### 証明書情報
+- **一般名**：証明書の一般名
+- **シリアル番号**：固有シリアル番号
+- **証明書**：証明書PEM情報
+- **CAチェーン**：チェーン証明書PEM情報
+- **有効期間**
+    - **有効開始時刻**：証明書が有効になる開始時点
+    - **有効終了時刻**：証明書が失効する時点
+- **アルゴリズム及び鍵サイズ**：署名アルゴリズムと鍵長
+- **鍵用途**：digitalSignature、keyEnciphermentなど
+- **拡張鍵用途**：serverAuth、clientAuthなど
 
-ルートブロックストレージはOS用途でのみ使用し、追加ブロックストレージにはよく使用するソフトウェアやデータを保管すると、ブロックストレージ接続/解除またはスナップショット機能で簡単に移行や複製ができます。またインスタンスに障害が発生した時、追加ブロックストレージのみ解除して他のインスタンスに接続することで、簡単にサービスを復旧できます。
+<a id="revoke-certificate"></a>
+### 証明書失効 { #revoke-certificate }
 
-ブロックストレージ管理は、Instance > Block Storageページでもできます。ブロックストレージの詳細は[ブロックストレージガイド](/Storage/Block%20Storage/ja/overview/)を参照してください。
+証明書を失効させるには次のように進めます。
 
-<a id="placement-policy"></a>
-### 配置ポリシー
+1. 証明書リストで失効させる証明書テンプレートの**失効**をクリックするか、詳細ページで**失効**をクリックします。
+2. 確認ダイアログで**失効**をクリックして失効を確定します。
 
-配置ポリシーを使用して、インスタンスを異なるハイパーバイザーに配置することができます。インスタンス作成時に配置ポリシーを設定すると、同じ配置ポリシーに割り当てられたインスタンスは異なるハイパーバイザーに作成されます。
+失効した証明書はもはや信頼できないと見なされ、次のような方法で失効状態を確認できます。
 
-> [注意]
-> 分散配置が不可能な状況の場合、インスタンス生成に失敗する可能性があります。
+- **CRL(certificate revocation list)**：リポジトリのCRL URLを通じて失効した証明書リストを確認できます。
+- **OCSP(online certificate status protocol)**：リポジトリのOCSP URLを通じて個別証明書の状態を照会できます。
 
-<a id="user-script"></a>
-### ユーザースクリプト
+!!! danger "注意"
+    証明書の失効は元に戻せない作業です。失効した証明書は再度有効化できないため、新しい証明書を発行する必要があります。
 
-インスタンス作成後に実行するスクリプトを指定します。ユーザースクリプトは、インスタンスの最初の起動が完了した後、ネットワーク設定などの初期化プロセスが終わった後に実行されます。NHN Cloudのユーザースクリプトは公式イメージに含まれているcloud-init (Linux)、Cloudbase-init (Windows)などの自動化ツールにより実行されます。
+<a id="acme-management"></a>
+## ACME管理 { #acme-management }
 
-> [注意]
-> ユーザースクリプトはroot (Linux)/Administrator (Windows)ユーザー権限で実行されます。
+ACME(automated certificate management environment)は証明書の発行及び更新を自動化するプロトコルです。Private CAのACME管理機能を使用すると、Let's Encryptクライアント(例：certbot)のようなACMEクライアントを通じて自動的に証明書を発行できます。
 
-#### Linux
-ユーザースクリプトの最初の行は必ず`#!`で始まる必要があります。
-```
-#!/bin/bash
-...
-```
+<a id="acme-token-list"></a>
+### ACMEトークンリスト { #acme-token-list }
 
-ユーザースクリプトが正常に動作するには、インスタンス内部のログファイルを確認する必要があります。スクリプトで標準出力/エラー装置に出力したログは`/var/log/cloud-init-output.log`で確認できます。
+ACME管理タブでは作成された全てのACMEトークンをテーブル形式で確認できます。テーブルには次の情報が表示されます。
+![acme_list_after](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_list_after.png)
 
-#### Windows
+- **名前**：ACMEトークンの名前をクリックすると詳細情報に移動します。
+- **ID**：ACMEトークンID
+- **説明**：ACMEトークンに関する説明
 
-Windowsイメージではユーザースクリプト形式にBatchスクリプト形式、 Powershellスクリプト形式をすべてサポートします。各形式は最初の行に明示する表示子により区別されます。
+各トークン項目には**削除**ボタンがあり、使用しなくなったトークンを削除できます。
 
-* Batchスクリプト
-```
-rem cmd
-...
-```
+<a id="add-an-acme-token"></a>
+### ACMEトークン追加 { #add-an-acme-token }
 
-* PowerShellスクリプト
-```
-#ps1_sysnative
-...
-```
+1. ACME管理タブで**+ ACMEトークン追加**をクリックします。
+  ![acme_list](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_list.png)
 
-BatchスクリプトとPowerShellスクリプトを一緒に使用したい場合は、下記のように記述します。
+2. ACMEトークン作成モーダルウィンドウで次の情報を入力します。
+  ![acme_create](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_create.png)
+    - **名前**(必須)：ACMEトークンを識別する名前
+    - **説明**(任意)：ACMEトークンに関する説明
 
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
+3. **作成**をクリックしてトークンを作成します。
 
-ユーザースクリプトのログは、`C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`で確認できます。
+<a id="add-an-acme-token-verify-information-after-acme-token-is-created"></a>
+#### ACMEトークン作成完了後の情報確認
+![acme_once](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_once.png)
+トークンが作成されると、次の情報が表示されます。
 
-ユーザースクリプト関連の詳細は、[cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html)または[Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html)ガイドを参照してください。
+- **トークンID**：ACMEクライアント設定に使用される識別子
+- **HMACキー**：ACMEクライアント認証に使用される秘密鍵
 
-<a id="additional-instance-features"></a>
-## インスタンス追加機能
+!!! danger "注意"
+    HMACキーはトークン作成時に一度だけ表示されます。必ず安全な場所にコピーして保管する必要があり、その後は再確認できません。HMACキーを紛失した場合は新しいトークンを作成する必要があります。
 
-<a id="change-instance-status"></a>
-### インスタンスの状態変更
+<a id="acme-token-details"></a>
+### ACMEトークン詳細情報 { #acme-token-details }
 
-インスタンスの停止、終了、削除、起動でインスタンスの状態を変更できます。
+![acme_detail](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_detail.png)
+トークンリストでトークン名をクリックすると詳細情報ページに移動します。詳細ページには次の情報が表示されます。
 
-インスタンスの停止、終了、削除のハイパーバイザリソース及び料金関連情報は下表を参照してください。
+<a id="acme-token-details-issued-certificate"></a>
+#### 発行された証明書
+トークンを使用して発行された証明書リストが表示されます。各証明書は次の情報を含みます。
 
-| 区分 | インスタンス停止 | インスタンス終了 | インスタンス削除 |
-| --- | -- | --- | --- |
-| ハイパーバイザリソース | リソース割り当て状態維持 | リソース返却及びインスタンス起動時に再割り当て | リソース削除 |
-| インスタンス料金 | 停止料金ポリシーの適用 | 無料 | 無料 |
-| 接続された他のリソースの料金 | 課金される| 課金される | 課金される |
+- **一般名**：証明書一般名
+- **状態**：証明書状態
+- **シリアル番号**：証明書シリアル番号
+- **有効開始日**：証明書有効開始日
 
-> [参考] GPU Instanceは終了することができず、停止時にも通常(100%)料金が発生します。
+<a id="example-of-acme-client-setup"></a>
+### ACMEクライアント設定例 { #example-of-acme-client-setup }
 
-<a id="create-image"></a>
-### イメージ作成
+[ACME証明書更新ガイド(Certbot, acme.sh)](./client-guide.md)ページを参考にして作成します。
 
-インスタンスのルートブロックストレージからイメージを作成します。イメージ作成は、データの整合性を保障するために、インスタンスを停止した状態で行うことを推奨します。
+<a id="delete-an-acme-token"></a>
+### ACMEトークン削除 { #delete-an-acme-token }
 
-インスタンスのルートブロックストレージに空き容量が全くない場合、イメージの作成はできますが、イメージを別のインスタンスで使用するための初期化作業は行えないので正常に使用できません。イメージを作成する前にインスタンスで最低100KBの空き容量を確保する必要があります。
+1. ACME管理タブで削除するトークンの**削除**をクリックします。
+  ![acme_detail_delete](https://static.toastoven.net/prod_privateca/2025-12-23_ko/acme_detail_delete.png)
 
-作成されたイメージは**Compute > Image**にプライベートイメージとして登録されます。登録されたイメージを利用して、元のインスタンスと同じブロックストレージを持つインスタンスを作成できます。
+2. 確認ダイアログで**削除**をクリックして削除を確定します。
 
-> [注意]
-> 作成されたイメージのサイズはルートブロックストレージの実際の使用量より大きくなる可能性があります。
+!!! tip "ポイント"
+    ACMEトークンを削除しても、該当トークンですでに発行された証明書には影響しません。ただし、該当トークンを使用した自動更新は動作しなくなるため、新しいトークンを作成してACMEクライアント設定を更新する必要があります。
 
-<a id="associatedisassociate-floating-ip"></a>
-### Floating IP接続と解除
+<a id="certificate-history"></a>
+## 証明書履歴 { #certificate-history }
 
-インスタンスの状態にかかわらずFloating IPを接続または解除できます。使用できるFloating IPがない場合や、希望するFloating IPがない場合、**生成**ボタンをクリックしてFloating IPを生成して接続できます。また**Network > VPC > Floating IP**でFloating IPを生成して使用することもできます。
+![history](https://static.toastoven.net/prod_privateca/2025-12-23_ko/history.png)
+証明書履歴タブではリポジトリで発生した証明書関連の活動を時系列で確認できます。履歴には次のような情報が含まれます。
 
-Floating IPの詳細については[VPC概要](/Network/VPC/ja/overview/)を参照してください。
+- 発行者、証明書作成履歴
+- 証明書失効履歴
 
-<a id="modify-security-group"></a>
-### セキュリティグループ修正
-
-インスタンスの状態に関わらずインスタンスのセキュリティグループを修正できます。修正されたセキュリティグループはすぐに適用されます。
-
-セキュリティグループの詳細については[セキュリティグループ](./console-guide/#security-group)と[VPC概要](/Network/VPC/ja/overview/)を参照してください。
-
-<a id="change-network-subnet"></a>
-### サブネット変更
-
-インスタンスのネットワークサブネットはインスタンスが停止した状態でのみ変更できます。サブネットを追加すると、自動的にインスタンスに該当サブネットに接続されるネットワークインターフェイスが作成されます。この時、一度に複数のサブネットを追加するとインスタンスに新たに作成されるネットワークインターフェイスの順序は任意で指定されます。サブネットをインスタンスから削除すると作成されていたネットワークインターフェイスも自動的に削除されます。
-
-<a id="modify-flavor"></a>
-### インスタンスタイプ変更
-
-インスタンスの仕様は、インスタンスを停止した後に変更できます。インスタンスが実行中の場合は**追加機能**の**インスタンス停止**をクリックしてインスタンスを停止します。
-
-現在の仕様に応じて、変更できるインスタンスの仕様が異なります。
-
-* m2、c2、r2、t2、x1タイプのインスタンスはm2、c2、r2、t2、x1タイプのインスタンスタイプに変更できます。
-* m2、c2、r2、t2、x1タイプのインスタンスはu2タイプのインスタンスタイプに変更できません。
-* u2タイプは生成後に仕様を変更できません。同じu2タイプのインスタンスタイプへも変更できません。
-
-インスタンスの仕様を変更すると、変更作業と変更確認作業が行われます。全ての作業が完了するとVM状態が**Shutoff**状態になり、**追加機能**の**Start instance**をクリックしてインスタンスを起動できます。
-
-> [参考]インスタンスのルートブロックストレージサイズは変更できません。インスタンスのブロックストレージ容量が足りない場合は、ブロックストレージを追加して使用します。ブロックストレージ追加方法については[ブロックストレージ概要](/Storage/Block%20Storage/ja/overview/)を参照してください。
-
-インスタンスは変更時点を基準に変更された仕様で課金されます。
-
-<a id="change-instance-os-details"></a>
-### インスタンスOS情報の変更
-
-インスタンスの状態に関係なく インスタンスOS情報を変更できます。 
-
-**Compute > Instance**サービスページで、OS情報を変更するインスタンスをクリックします。該当インスタンスの詳細情報画面の**基本情報**タブで**OS > 変更**をクリックします。
-
-> [参考] OS区分は変更できません。
-
-<a id="change-instance-description"></a>
-### インスタンス説明の変更
-
-インスタンスの状態に関係なくインスタンス説明を変更できます。 
-
-**Compute > Instance**サービスページで説明を変更するインスタンスをクリックします。該当インスタンス詳細情報画面の**基本情報**タブで**説明 > 変更**をクリックします。
-
-<a id="change-instance-key-pair"></a>
-### インスタンスキーペアの変更
-
-インスタンスキーペアはインスタンスが有効状態の場合にのみ変更できます。
-
-**Compute > Instance** サービスページでキーペア情報を変更するインスタンスをクリックします。該当インスタンス詳細情報画面の **基本情報**タブで**キーペア > 変更**をクリックします。
-
-インスタンス基本アカウントのキーペアを選択したキーペアに変更します。インスタンス基本アカウントはインスタンス下部の詳細情報画面の**接続情報**タブで確認できます。
-
-> [注意]インスタンスのキーペアを変更すると、選択したキーペアを除いたインスタンス内のすべての公開鍵の内容が削除されます。
-> [参考]基本インフラサービスADMIN権限を持つプロジェクトメンバーのみインスタンスキーペアを変更することができ、Windows OSインスタンスの場合は変更できません。
-> [参考]インスタンス作成に使用したイメージのバージョンが低い場合、キーペア変更機能をサポートしない場合があります。
-
-<a id="manage-placement-policies"></a>
-### 配置ポリシー管理
-
-配置ポリシーを作成及び削除することができ、配置ポリシーに割り当てられたインスタンスのリストを表示します。
-
-分散配置のための`anti-affinity`配置ポリシータイプのみ提供します。
-
-配置ポリシーにインスタンスが割り当てられている場合でも、配置ポリシーの削除が可能で、この場合、インスタンスは削除されません。
-
-<a id="key-pairs"></a>
-## キーペア
-
-<a id="import-key-pairs-windows"></a>
-### キーペアをインポートする(Windowsユーザー)
-
-PuTTY SSHクライアントをインストールすると一緒にインストールされるputtygenプログラムでキーペアを生成し、NHN Cloudに登録して使用できます。
-
-[PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)をインストールします。
-
-Puttygenを実行します。
-
-![イメージ1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
-
-**パラメータ**で**RSA**(旧バージョンのputtygenではSSH-2 RSA)を選択します。 **Actions**にある**「Generate」**ボタンをクリックします。キーを生成するために空欄の中でマウスを動かします。
-
-キーが生成されたら下図のように公開鍵ファイル内容が表示されます。公開鍵全体を**キーペア作成**の**公開鍵:**入力欄に貼り付けてキーペアを登録します。
-
-![イメージ1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
-
-** Actions **の**「Save private key」**をクリックして秘密鍵を保存します。キーパスフレーズを空欄のまま秘密鍵を保存すると、**キーパスフレーズで保護されないままこのキーを保存しますか？**というメッセージが表示されます。変換された秘密鍵をより安全に使用するには、キーパスフレーズを設定して保存します。
-
-> [注意]
-インスタンスに自動的にログインするには、キーパスフレーズを使わないでください。キーパスフレーズを使用するとログインする際に秘密鍵のパスワードを直接入力する必要があります。
-
-登録したキーペアはインスタンスを生成する時に使用でき、インスタンス接続時にはこのキーペアの秘密鍵で接続する必要があります。インスタンス接続方法は[インスタンス接続方法](./overview/#how-to-access-instances)を参照してください。
-
-NHN Cloudで生成したキーペア同様、このように作成されたキーペアの秘密鍵も外部に流出すると、誰でも流出した秘密鍵でそのインスタンスにアクセスできるようになるので、慎重に管理する必要があります。
-
-
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### キーペアインポート(Mac、Linuxユーザー)
-
-MacやLinuxの「ssh-keygen」で作成したキーペアをNHN Cloudに登録して使用できます。キーペアは次のコマンドで作成します。
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-キーペアのパスワードは設定しても構いませんが、設定しなくても問題はありません。セキュリティレベルを上げるならば、パスワードの設定を推奨します。入力したキーペアの名前に拡張子「.pub」が追加されたファイル内にキーペア公開鍵が入っています。
-
-	$ cat my_key.key.pub
-	ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-
-この内容全体を**キーペア作成**の**公開鍵:**入力欄に貼り付けてキーペアを登録します。
-
-登録したキーペアはインスタンスを生成する時に使用でき、インスタンス接続時にはこのキーペアの秘密鍵で接続する必要があります。インスタンス接続方法は[インスタンス接続方法](./overview/#how-to-access-instances)を参照してください。
-
-NHN Cloudで生成したキーペア同様、このように作成されたキーペアの秘密鍵も外部に流出すると誰でも流出した秘密鍵でそのインスタンスにアクセスできるようになるので慎重に管理する必要があります。
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## 付録1. Windows言語パックの変更
-
-NHN CloudのWindowsイメージは、英語版が基本設定になっています。他の言語を基本設定にする方法は次のとおりです。
-
-1. **START > Control Panel > Clock, Language, and Region > Add a language**を選択します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. **言語基本設定変更 > 言語追加**を選択します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. **言語追加(Add a language)**で使用したい言語を選択し、**追加(Add)**をクリックします。
-![イメージ1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. 追加された言語パックを確認します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. 追加された言語パックをダウンロードし、インストールします。
-![イメージ1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. アップデートをダウンロードし、インストールします。
-![イメージ1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. インストールされた言語パックを変更するには、選択した言語をダブルクリックするか、**オプション(Options)**を選択します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. 言語オプションで、**基本言語に設定**を選択します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. 基本言語設定を適用するには、**いまログオフ(Log off now)**をクリックします。
-![イメージ1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. 再度ログインすると、ユーザーが選択した言語パックへの変更を確認できます。
-![イメージ1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## 付録2. Windowsルーティングの変更
-
-NHN CloudWindowsでルーティングを変更する方法は次のとおりです。
-
-
-* **Windowsキー + R**を押すと「ファイル名を指定して実行」ダイアログが表示されるので、名前に`cmd`と入力してOKボタンをクリックし、コマンドプロンプトウィンドウを開きます。
-
-
-  Routeコマンドを入力します。
-
-* 現在設定の出力：route print
-* 追加：route add "宛先" mask "subnet" "gateway" metric "メトリック値" if "インターフェイス番号"
-* 変更：route change "宛先" mask "subnet" "gateway" metric "メトリック値" if "インターフェイス番号"
-* 削除：route delete "宛先" mask "宛先subnet" "gateway" metric "メトリック値" if "インターフェイス番号"
-* オプション：-p (永久ルート指定)
-
-
-説明
-
-
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* メトリック値：値が小さいほど優先順位が高い
-* インターフェイス番号：route printで確認可能(上の図で赤色の枠)
-* 永久ルート：-pオプションを使用しない場合、システム再起動時に、設定したルートが初期化されるため使用(上の図で青色の枠)
-
-事例1 - 特定インターフェイスのみ外部通信設定
-
-* route changeコマンドを使用し、外部通信をしたくないインターフェイスルートのmetricを修正するか、固定IP設定でデフォルトゲートウェイ情報を入力しない方法などがあります。
-
-* Metricの修正方法
-    * インターフェイスのmetric増加
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* 固定IPの設定方法
-    1. ipconfig /allを入力し、IP情報を確認します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. 確認したIP情報を利用し、IP設定ウィンドウでデフォルトゲートウェイを除いて入力します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. route printで確認します。
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-事例2 - 特定帯域に対するルート設定
-
-* route addコマンドで、特定帯域に対するルートを設定します。
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-
-事例3 - 特定ルートの除去
-
-* route deleteを使用し、指定したルートを除去します。
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![イメージ1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## 付録3. システムロケールの変更
-
-NHN CloudのWindowsで、システムロケールを変更する方法は次の通りです。
-
-1. **スタート > コントロールパネル > 時計、言語、および地域**を選択します。
-![画像1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. **地域と言語**を選択します。
-![画像1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. **管理**タブで**システムロケール変更**をクリックします。
-![画像1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. 変更するシステムロケールを選択します。
-![画像1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. 適用するにはシステムを再起動します。
-![画像1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## 付録4. ハイパーバイザーのメンテナンスのためのインスタンス再起動ガイド
-NHN Cloudは周期的にハイパーバイザーのソフトウェアをアップデートして、基本インフラサービスのセキュリティと安定性を向上させています。
-メンテナンス対象のハイパーバイザーで起動中のインスタンスは再起動を行い、メンテナンスが完了したハイパーバイザーに移動する必要があります。
-
-インスタンスを再起動するには、コンソールでインスタンス名の横に作成された**!再起動** ボタンを使用する必要があります。
-`コンソールにあるインスタンス再起動またはOSの再起動機能では、インスタンスが別のハイパーバイザに移動しません。`
-下記のガイドに従って、コンソールの再起動機能を利用してください。
-
-メンテナンス対象に指定されたインスタンスがあるプロジェクトに移動します。
-
-**1. メンテナンス対象インスタンスを確認します。**
-
-インスタンス名の前に**!再起動**ボタンがあるインスタンスが、メンテナンス対象のインスタンスです。
-**再起動**ボタンの上にマウスオーバーすると、詳細なメンテナンス時間を確認できます。
-![イメージ1](http://static.toastoven.net/prod_instance/instance_p_migration_jp_1.png)    
-
-**2. メンテナンス対象インスタンスで起動中のアプリケーションを無効化するか、終了します。**
-
-メンテナンス対象インスタンスで起動中のアプリケーションを無効化するか終了して、サービスに影響を与えないようにする必要があります。 
-やむを得ずサービスに影響を与えてしまう時は、NHN Cloudサポートに連絡してくだされば、適切な措置を案内いたします。
-
-**3. メンテナンス対象インスタンス名の横に作成された[!再起動]ボタンをクリックします。**
-
-![イメージ2](http://static.toastoven.net/prod_instance/instance_p_migration_jp_2.png)
-
-**4. インスタンスの再起動を確認するウィンドウが表示されたら、[確認] ボタンをクリックします。**
-
-![イメージ3](http://static.toastoven.net/prod_instance/instance_p_migration_jp_3.png)
-
-**5. インスタンス状態表示灯が緑に変わり、[!再起動] ボタンが消えるまで待機します。**
-
-インスタンス状態表示灯が変わらない場合や、**!再起動**ボタンが無効化されない場合は、「更新」を行ってみてください。
-
-
-インスタンスの再起動中は、該当インスタンスを一切操作できません。
-インスタンスの再起動が正常に完了しない場合は、自動的に管理者に報告され、NHN Cloudから別途連絡いたします。
+履歴情報を通じてリポジトリの証明書管理活動を追跡し、監査できます。
