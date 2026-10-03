@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=61dff5f1b687 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=64d88869d71a -->
 
 <a id="object"></a>
 ## Object { #object }
@@ -31,21 +33,18 @@ In the **Object** tab, you can create and manage the IPs and ports to be used wh
 * Click **Delete** to delete an object.
     * Objects automatically created by Network Firewall cannot be modified or deleted.
 
-<a id="add-instance-object"></a>
-### Add Instance Object { #add-instance-object }
-* Add objects by leveraging the instances that exist within the project where Network Firewall was created.
-![(object3)](https://static.toastoven.net/prod_nfw/26.07.28/2.console-user-guide/4.object/object3.png)
+<a id="additional-features"></a>
+### Additional features { #additional-features }
 
-<a id="batch-download-of-objects"></a>
-### Batch Download of Objects { #batch-download-of-objects }
-
-* You can download all IP and port objects created in the **Object** tab at once.
+* Add Instance Object: Add objects by leveraging the instances that exist within the project where Network Firewall was created.
+* Download Template: Download the template file required for batch registration.
+* Batch Register Objects: Register objects at once using the downloaded template.
+* Download All Objects: Download all IP or port objects created on the **Objects** tab, each in a single batch.
 
 !!! tip "Note"
-
-    * Group objects cannot be added when creating a group object (only individual or range objects can be selected and added).
-    * Objects are created by simply referencing the instance name and private IP address, regardless of the instance itself. Created objects are managed in the **Object** tab.
+    * Group objects cannot be added when creating a group object (only single or range objects can be added by selecting them).
+    * The Type cannot be modified when modifying an object.
+    * The Add Instance Object feature creates an instance-agnostic object by simply referencing the instance's name and private IP address. The objects you create are managed on the **Objects** tab.
 
 !!! danger "Caution"
-
-    Objects in use by a policy will be changed to ALL objects after deletion.
+    If you delete an object that is in use by a policy, it will be changed to an ALL object after deletion. Exercise caution when deleting.
