@@ -397,7 +397,7 @@ NHN Container Service(NCS)를 사용하려면 먼저 템플릿을 생성해야 �
 ### 워크로드 중지/재시작 { #workload-stop-restart }
 워크로드 중지를 실행하면 플로팅 IP와 URL은 유지되며 워크로드의 모든 작업이 종료됩니다.
 
-워크로드 재시작을 실행하면 로드 밸런서 IP는 변경됩니다.
+워크로드 재시작을 실행하면 로드 밸런서 IP는 변경됩니다. IP를 변경하지 않으려면 API로 로드 밸런서 IP를 지정하세요.
 
 > [참고]
 > 배포 컨트롤러에 따라서 워크로드 중지/재시작을 실행하면 컨테이너 IP가 변경될 수 있습니다.
@@ -525,6 +525,30 @@ NCS 서비스를 이용하기 위해서는 다음 역할이 필요합니다.
 | --- | --- | --- | --- | --- | --- |
 | Graphics Optimized | ncs1 | ncs1.g1m5 | 5GB | 1 | MIG 1g.5gb |
 | Graphics Optimized | ncs1 | ncs1.g2m10 | 10GB | 2 | MIG 2g.10gb |
+
+<a id="loadbalancer-static-ip"></a>
+### 워크로드 로드 밸런서 IP 지정
+* API로 워크로드의 로드 밸런서 IP를 지정할 수 있습니다.
+* 로드 밸런서 IP를 지정하지 않은 경우, 로드 밸런서가 재생성되면 IP가 변경될 수 있습니다.
+* 로드 밸런서 IP를 지정하면 로드 밸런서가 재생성되더라도 해당 IP가 유지됩니다. 지정한 IP는 별도로 변경하거나 워크로드를 삭제하기 전까지 유지됩니다.
+* 다음과 같은 상황에서도 지정한 로드 밸런서 IP는 유지됩니다.
+   * 워크로드 중지 또는 재시작으로 인해 로드 밸런서가 재생성되는 경우
+   * 서비스 운영 중 장애 또는 유지보수로 인해 로드 밸런서가 재생성되는 경우
+   * 로드 밸런서를 비활성화한 후 다시 활성화하여 로드 밸런서가 생성되는 경우
+
+```json
+PATCH /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
+Content-Type: application/json-patch+json
+x-nhn-authorization: Bearer {accessToken}
+
+[
+  {
+    "op": "replace",
+    "path": "/workload/loadBalancing/vipAddress",
+    "value": "$IP"
+  }
+]
+```
 
 <a id="problem-solving"></a>
 ## 문제 해결 가이드 { #problem-solving }
