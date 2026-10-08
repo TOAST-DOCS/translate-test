@@ -1,0 +1,563 @@
+<!-- pre-align:aligned sig=1868d30c1606 -->
+
+<a id="monitoring-cloud-monitoring-metric-dictionary"></a>
+## Monitoring > Cloud Monitoring > Metric Dictionary { #monitoring-cloud-monitoring-metric-dictionary }
+
+<a id="metric-dictionary"></a>
+## Metric Dictionary { #metric-dictionary }
+- This is a list of defined metrics for monitoring services on NHN Cloud.
+- Metric Dictionary helps you view and understand metrics for the services you monitor.
+- You can find and use the metrics you need when configuring widgets. For more information, see the [console user guide](console-guide.md).
+- In **Metric List**, you can see a list of metric dictionaries for each service.
+
+<a id="filter"></a>
+### Filter { #filter }
+- You can apply filters to metrics.
+- When you apply a filter, you'll only see metrics that match that filter.
+  - For example, if you apply KR1 to the region filter, you will only see metrics that fall within the KR1 region among your metrics.
+- Common filters are as follows.
+
+| Filter name | Description           | Value                                                                  |
+|-----|--------------|--------------------------------------------------------------------|
+| Region  | NHN Cloud Region | kr1: Korea (Pangyo), kr2: Korea (Pyeongchon), kr3: Korea (Gwangju), us1: United States (California), jp1: Japan (Tokyo) |
+
+<a id="legend"></a>
+### Legend { #legend }
+- You can apply a legend for metrics.
+- When you apply a legend, the metric is applied in legend format.
+  - For example, if you apply {{nhncloud_region}} to the legend, each metric appears as the region, such as kr1, kr2.
+- Common legends are as follows.
+
+| Filter name             | Description           | Value                                                                  |
+|-----------------|--------------|--------------------------------------------------------------------|
+| nhncloud_region | NHN Cloud Region | kr1: Korea (Pangyo), kr2: Korea (Pyeongchon), kr3: Korea (Gwangju), us1: United States (California), jp1: Japan (Tokyo) |
+
+<a id="instance"></a>
+## Instance { #instance }
+- A dictionary that defines metrics that can be monitored for the Instance service on NHN Cloud.
+
+<a id="metric-list"></a>
+### Metric List { #metric-list }
+| Metric Name                            | Resource Name    | Default legend (Legend)                                                              | Unit         |
+|----------------------------------------|---------|----------------------------------------------------------------------------|------------------|
+| CPU usage                              | 3.10     |                                                                            | Percentage (0-100)       |
+| CPU usage by core                      | 3.10     | {{nhncloud_instance_id}} cpu={{cpu}}                                       | Percentage (0-100)       |
+| CPU details (user)                     | 3.10     | {{nhncloud_instance_id}}                                                   | Ratio (0.00 - 1.00)  |
+| CPU details (nice)                     | 3.10     | {{nhncloud_instance_id}}                                                   | Ratio (0.00 - 1.00)  |
+| CPU details (system)                   | 3.10     | {{nhncloud_instance_id}}                                                   | Ratio (0.00 - 1.00)  |
+| CPU details (iowait)                   | 3.10     | {{nhncloud_instance_id}}                                                   | Ratio (0.00 - 1.00)  |
+| CPU average load (1m)                  | 3.10     | {{nhncloud_instance_id}}                                                   | Number               |
+| CPU average load (5m)                  | 3.10     | {{nhncloud_instance_id}}                                                   | Number               |
+| CPU average load (15m)                 | 3.10     | {{nhncloud_instance_id}}                                                   | Number               |
+| Disk usage                             | Disk    | {{nhncloud_instance_id}}                                                   | Ratio (0.00 - 1.00)  |
+| Disk usage by mount                    | Disk    | {{nhncloud_instance_id}} device={{device}} fstype={{fstype}} path={{path}} | Ratio (0.00 - 1.00)  |
+| Read disk                              | Disk    | {{nhncloud_instance_id}}                                                   | Bytes per second (bytes/s)  |
+| Write to disk                          | Disk    | {{nhncloud_instance_id}}                                                   | Bytes per second (bytes/s)  |
+| Read disk by device                    | Disk    | {{nhncloud_instance_id}} fstype={{fstype}}                                 | Bytes per second (bytes/s)  |
+| Write to disk by device                | Disk    | {{nhncloud_instance_id}} fstype={{fstype}}                                 | Bytes per second (bytes/s)  |
+| Memory usage                           | Memory  | {{nhncloud_instance_id}}                                                   | Percentage (0-100)       |
+| Memory details (used)                  | Memory  | {{nhncloud_instance_id}}                                                   | bytes       |
+| Memory details (buffered)              | Memory  | {{nhncloud_instance_id}}                                                   | bytes       |
+| Memory details (cached)                | Memory  | {{nhncloud_instance_id}}                                                   | bytes       |
+| Memory details (free)                  | Memory  | {{nhncloud_instance_id}}                                                   | bytes       |
+| Network data transmission              | Network | {{nhncloud_instance_id}}                                                   | Bytes per second (bytes/s)  |
+| Network data reception                 | Network | {{nhncloud_instance_id}}                                                   | Bytes per second (bytes/s)  |
+| Network data transmission per device   | Network | {{nhncloud_instance_id}} interface={{interface}}                           | Bytes per second (bytes/s)  |
+| Network data reception per device      | Network | {{nhncloud_instance_id}} interface={{interface}}                           | Bytes per second (bytes/s)  |
+| Network data packet trasmission        | Network | {{nhncloud_instance_id}}                                                   | Packets per second (packets/s) |
+| Network packet reception               | Network | {{nhncloud_instance_id}}                                                   | Packets per second (packets/s) |
+| Network packet transmission per device | Network | {{nhncloud_instance_id}} interface={{interface}}                           | Packets per second (packets/s) |
+| Network packet reception per device    | Network | {{nhncloud_instance_id}} interface={{interface}}                           | Packets per second (packets/s) |
+| Number of processes                    | Process | {{nhncloud_instance_id}}                                                   | Number               |
+| Swap usage (used)                      | Swap    | {{nhncloud_instance_id}}                                                   | bytes       |
+| Swap usage (free)                      | Swap    | {{nhncloud_instance_id}}                                                   | bytes       |
+| Swap usage (total)                     | Swap    | {{nhncloud_instance_id}}                                                   | bytes       |
+| Swap Usage                             | Swap    | {{nhncloud_instance_id}}                                                   | Ratio (0.00 - 1.00)  |
+
+<a id="instance-filter"></a>
+### Instance Filter { #instance-filter }
+- You can apply filters to the Instance metric.
+- When you apply a filter, you'll only see metrics that match that filter.
+
+| Filter name  | Description                                      |
+|------|-----------------------------------------|
+| Instance | Name of the instance being used by the Instance service on NHN Cloud. |
+
+<a id="instance-legend"></a>
+### Instance Legend { #instance-legend }
+- You can apply a legend for the Instance metric.
+- When you apply a legend, the metric is applied in legend format.
+
+| Legend Name                  | Description                  |
+|----------------------|---------------------|
+| nhncloud_instance_id | Instance name            |
+| cpu                  | CPU number of the instance        |
+| device               | Disk device in the instance        |
+| fstype               | File system type of the instance     |
+| path                 | Disk mount path to the instance    |
+| interface            | Name of the instance's network interface |
+
+<a id="nhn-container-servicencs"></a>
+## NHN Container Service(NCS) { #nhn-container-servicencs }
+- A dictionary that defines metrics that can be monitored for NCS services on NHN Cloud.
+
+<a id="nhn-container-servicencs-metric-list"></a>
+### Metric List { #nhn-container-servicencs-metric-list }
+| Metric Name           | Resource Name | Default legend (Legend)                                                            | Unit        |
+|---------------|------|--------------------------------------------------------------------------|-----------------|
+| CPU usage       | NCS  | {{label_ncs_container_nhncloud_com_workload_id}} container={{container}} | Percentage (0-100)      |
+| CPUs assigned to the workload | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | Number              |
+| Memory usage       | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | Percentage (0-100)      |
+| Memory allocated to the workload | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | Megabytes (MiB)      |
+| GPU usage       | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | Percentage (0-100)      |
+| GPU memory usage   | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | Percentage (0-100)      |
+| GPU power usage    | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | Megawatts (mW)        |
+| GPU temperature        | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | Celsius (℃)           |
+| GPUs assigned to the workload | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | Number              |
+| Network data reception   | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | Bytes per second (bytes/s) |
+| Network data transmission   | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | Bytes per second (bytes/s) |
+| Disk usage       | NCS  | {{workload_id}} {{type}}                                                 | Percentage (0-100)      |
+| Number of tasks by activation status  | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | Number              |
+| Number of processes in a container  | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | Number              |
+
+<a id="ncs-filter"></a>
+### NCS Filter { #ncs-filter }
+- You can apply filters to NCS metrics.
+- When you apply a filter, you'll only see metrics that match that filter.
+
+| Filter name  | Description                               |
+|------|----------------------------------|
+| Workload | Name of the workload being used by the NCS service on NHN Cloud  |
+| Type   | Storage type                          |
+
+
+<a id="ncs-legend"></a>
+### NCS Legend { #ncs-legend }
+- You can apply a legend for NCS metrics.
+- When you apply a legend, the metric is applied in legend format.
+
+| Legend Name                                          | Description                             |
+|----------------------------------------------|--------------------------------|
+| label_ncs_container_nhncloud_com_workload_id | Name of the workload being used by the NCS service on NHN Cloud |
+| workload_id                                  | Name of the workload being used by the NCS service on NHN Cloud |
+| String                                         | Storage type                        |
+| container                                    | Container Name                       |
+
+<a id="10"></a>
+## 3.10 { #10 }
+- A dictionary that defines metrics that can be monitored for GPU services on NHN Cloud.
+
+<a id="10-metric-list"></a>
+### Metric List { #10-metric-list }
+| Metric Name         | Resource Name | Default legend (Legend) | Unit   |
+|-------------|------|---------------|------------|
+| GPU usage     | 3.10  | None            | Percentage (0-100) |
+| GPU temperature      | 3.10  | None            | Celsius (℃)      |
+| GPU memory usage | 3.10  | None            | Percentage (0-100) |
+| GPU power usage  | 3.10  | None            | Watts (W)      |
+
+<a id="gpu-filter"></a>
+### GPU Filter { #gpu-filter }
+- You can apply filters for GPU metrics.
+- When you apply a filter, you'll only see metrics that match that filter.
+
+
+| Filter name  | Description           |
+|------|--------------|
+| Instance | Name of the instance being used by the GPU service on NHN Cloud. |
+
+<a id="gpu-legend"></a>
+### GPU Legend { #gpu-legend }
+- You can apply a legend for GPU metrics.
+- When you apply a legend, the metric is applied in legend format.
+
+| Filter name                  | Description           |
+|----------------------|--------------|
+| nhncloud_instance_id | Name of the GPU instance |
+
+<a id="transit-hub"></a>
+## Transit Hub { #transit-hub }
+- A dictionary that defines metrics that can be monitored for the Transit Hub service on NHN Cloud.
+
+<a id="transit-hub-metric-list"></a>
+### Metric List { #transit-hub-metric-list }
+| Metric Name                                | Resource Name | Default legend (Legend) | Unit   |
+|------------------------------------|------|---------------|------------|
+| Network transmitted bytes                        | Transit Hub  | {{id}} | 5 min accumulated bytes |
+| Network received bytes                        | Transit Hub  | {{id}} | 5 min accumulated bytes |
+| Network transmitted packets                         | Transit Hub  | {{id}} | 5 min accumulated packets  |
+| Network received packets                         | Transit Hub  | {{id}} | 5 min accumulated packets  |
+| Network packets deleted due to route mismatch            | Transit Hub  | {{id}} | 5 min accumulated packets  |
+| Network bytes deleted due to route mismatch           | Transit Hub  | {{id}} | 5 min accumulated bytes |
+| Network packets deleted due to blackhole route match           | Transit Hub  | {{id}} | 5 min accumulated packets  |
+| Network bytes deleted due to blackhole route match          | Transit Hub  | {{id}} | 5 min accumulated bytes |
+| Network transmitted bytes                        | Attachment  | {{id}} | 5 min accumulated bytes |
+| Network received bytes                        | Attachment  | {{id}} | 5 min accumulated bytes |
+| Network transmitted packets                         | Attachment  | {{id}} | 5 min accumulated packets  |
+| Network received packets                         | Attachment  | {{id}} | 5 min accumulated packets  |
+| Network packets deleted due to route mismatch            | Attachment  | {{id}} | 5 min accumulated packets  |
+| Network bytes deleted due to route mismatch           | Attachment  | {{id}} | 5 min accumulated bytes |
+| Network packets deleted due to blackhole route match           | Attachment  | {{id}} | 5 min accumulated packets  |
+| Network bytes deleted due to blackhole route match          | Attachment  | {{id}} | 5 min accumulated bytes |
+| Network transmitted bits per second (bps)               | Transit Hub  | {{id}} |  Bits per second (bits/s)  |
+| Network received bits per second (bps)               | Transit Hub  | {{id}} |  Bits per second (bits/s)  |
+| Network transmitted packets per second (pps)               | Transit Hub  | {{id}} |  Packets per second (packets/s)  |
+| Network received packets per second               | Transit Hub  | {{id}} |  Packets per second (packets/s)  |
+| Network packets per second (pps) due to route mismatch  | Transit Hub  | {{id}} |  Packets per second (packets/s)  |
+| Network bits per second (bps) due to route mismatch  | Transit Hub  | {{id}} |  Bits per second (bits/s)  |
+| Network packets per second (pps) deleted due to blackhole route match | Transit Hub  | {{id}} |  Packets per second (packets/s)  |
+| Network bits per second (bps) deleted due to blackhole route match | Transit Hub  | {{id}} |  Bits per second (bits/s)  |
+| Network transmitted bits per second (bps)               | Attachment  | {{id}} |  Bits per second (bits/s)  |
+| Network received bits per second (bps)               | Attachment  | {{id}} | Bits per second (bits/s)  |
+| Network transmitted packets per second (pps)               | Attachment  | {{id}} |  Packets per second (packets/s)  |
+| Network received packets per second               | Attachment  | {{id}} |  Packets per second (packets/s)  |
+| Network packets per second (pps) due to route mismatch  | Attachment  | {{id}} |  Packets per second (packets/s)  |
+| Network bits per second (bps) due to route mismatch  | Attachment  | {{id}} |  Bits per second (bits/s)  |
+| Network packets per second (pps) deleted due to blackhole route match | Attachment  | {{id}} |  Packets per second (packets/s)  |
+| Network bits per second (bps) deleted due to blackhole route match | Attachment  | {{id}} |  Bits per second (bits/s)  |
+
+
+<a id="transit-hub-filter"></a>
+### Transit Hub Filter { #transit-hub-filter }
+- You can apply filters to Transit Hub metrics.
+- When you apply a filter, only metrics that meet the criteria of that filter are displayed.
+
+<a id="transit-hub-filter-resource-type-applicable-filters-for-transit-hub"></a>
+#### Resource Type > Applicable Filters for Transit Hub
+
+| Filter name | Description |
+| --- | --- |
+| Transit Hub | Transit hub used by the Network service on NHN Cloud |
+
+<a id="transit-hub-filter-resource-type-applicable-filters-for-attachment"></a>
+#### Resource Type > Applicable filters for Attachment
+
+| Filter name | Description                                      |
+| --- |-----------------------------------------|
+| Transit Hub | Transit hub related to attachment |
+| Attachment | Connect the transit hub used by Network services on NHN Cloud |
+
+<a id="transit-hub-legend"></a>
+### Transit Hub Legend { #transit-hub-legend }
+- You can apply a legend for Transit Hub metrics.
+- When you apply a legend, the metric is applied in legend format.
+
+| Legend Name            | Description                         |
+|----------------|----------------------------|
+| id             | Transit hub or attachment name            |
+| transit_hub_id | Transit hub name (if the resource is `attachment`) |
+
+<a id="internet-gateway"></a>
+## Internet Gateway { #internet-gateway }
+- A dictionary that defines metrics that can be monitored for the Internet Gateway service on NHN Cloud.
+
+<a id="internet-gateway-metric-list"></a>
+### Metric List { #internet-gateway-metric-list }
+
+| Metric Name                          | Resource Name    | Default legend (Legend)          | Unit         |
+|------------------------------|---------|------------------------|------------------|
+| Network transmitted bytes                 | Routing Table | {{id}} | 5 min accumulated bytes        |
+| Network received bytes                 | Routing Table | {{id}} | 5 min accumulated bytes        |
+| Network transmitted packets                  | Routing Table | {{id}} | 5 min accumulated packets         |
+| Network received packets                  | Routing Table | {{id}} | 5 min accumulated packets         |
+| Network transmitted bits per second (bps)        | Routing Table | {{id}} | Bits per second (bits/s)    | 
+| Network received bits per second (bps)	    | Routing Table | {{id}} | Bits per second (bits/s)    | 
+| Network transmitted packets per second (pps)	    | Routing Table | {{id}} | Packets per second (packets/s) | 
+| Network received packets per second	    | Routing Table | {{id}} | Packets per second (packets/s) | 
+
+<a id="internet-gateway-filter"></a>
+### Internet Gateway Filter { #internet-gateway-filter }
+- You can apply filters to the Internet Gateway metrics.
+- When you apply a filter, only metrics that meet the criteria of that filter are displayed.
+
+| Filter name | Description |
+| --- | --- |
+| Routing Table | Routing table used by Network service on NHN Cloud |
+
+<a id="internet-gateway-legend"></a>
+### Internet Gateway Legend { #internet-gateway-legend }
+- You can apply a legend for the Internet Gateway metrics.
+- When you apply a legend, the metric is applied in legend format.
+
+| Legend Name            | Description                                     |
+|----------------|----------------------------------------|
+| id             | Routing table name  |
+
+<a id="colocation-gateway"></a>
+## Colocation Gateway { #colocation-gateway }
+- A dictionary that defines metrics that can be monitored for the Colocation Gateway service on NHN Cloud.
+
+<a id="colocation-gateway-metric-list"></a>
+### Metric List { #colocation-gateway-metric-list }
+
+| Metric Name                                  | Resource Name      | Default legend (Legend) | Unit                            |
+|----------------------------------------------|--------------------|-------------------------|---------------------------------|
+| Network transmitted bytes                    | Colocation Gateway | {{id}}                  | 5 min accumulated bytes         |
+| Network received bytes                       | Colocation Gateway | {{id}}                  | 5 min accumulated bytes         |
+| Network transmitted packets                  | Colocation Gateway | {{id}}                  | 5 min accumulated packets       |
+| Network received packets                     | Colocation Gateway | {{id}}                  | 5 min accumulated packets       |
+| Network transmitted bits per second (bps)    | Colocation Gateway | {{id}}                  | Bits per second (bits/s)        | 
+| Network received bits per second (bps)	      | Colocation Gateway | {{id}}                  | Bits per second (bits/s)        | 
+| Network transmitted packets per second (pps) | Colocation Gateway | {{id}}                  | Packets per second (packets/s)  | 
+| Network received packets per second	         | Colocation Gateway | {{id}}                  | Packets per second (packets/s)  | 
+
+<a id="colocation-gateway-filter"></a>
+### Colocation Gateway Filter { #colocation-gateway-filter }
+
+| Filter name         | Description                                             |
+|---------------------|---------------------------------------------------------|
+| Colocation Gateway  | Colocation gateway used by Network service on NHN Cloud |
+
+<a id="colocation-gateway-legend"></a>
+### Colocation Gateway Legend { #colocation-gateway-legend }
+
+| Legend Name | Description             |
+|-------------|-------------------------|
+| id          | Colocation gateway name |
+
+<a id="load-balancer"></a>
+## Load Balancer { #load-balancer }
+- A dictionary that defines metrics that can be monitored for the Load Balancer service on NHN Cloud.
+
+<a id="load-balancer-metric-list"></a>
+### Metric List { #load-balancer-metric-list }
+
+| Metric Name                                                   | Resource Name          | Default Legend                                                 | Unit                     |
+|---------------------------------------------------------------|------------------------|---------------------------------------------------------------|--------------------------|
+| CPU Usage (Workload)                                          | Load Balancer          | {{loadbalancer_id}}                                           | Percentage (0-100)       |
+| Sessions in Listener Connection State                         | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener Rejected Requests                                    | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener Rejected Responses                                   | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener Invalid Requests                                     | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener Sessions per Second                                  | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener Peak Sessions per Second                             | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener HTTP 100 Series Responses                            | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener HTTP 200 Series Responses                            | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener HTTP 300 Series Responses                            | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener HTTP 400 Series Responses                            | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener HTTP 500 Series Responses                            | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener HTTP Responses Outside the 100~500 Series            | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener Successful HTTP Responses                            | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener Requests per Second                                  | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener Peak Requests per Second                             | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Total Listener Requests                                       | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener Incoming Bytes                                       | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Bytes                    |
+| Listener Outgoing Bytes                                       | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Bytes                    |
+| Number of Network Received Bit per Second for Listener (bps)  | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Bits per second (bit/s)  |
+| Number of Network Sent Bit per Second for Listener (bps)      | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Bits per second (bit/s)  |
+| Listener maximum session count                                | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener session limit                                        | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener total session count                                  | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| Listener SSL handshake failure count                          | Load Balancer Listener | {{loadbalancer_id}}/{{listener_id}}                           | Number                   |
+| SYN_SENT Sockets                                              | Load Balancer Member   | {{loadbalancer_id}}/{{member_id}}                             | Number                   |
+| ESTABLISHED Sockets                                           | Load Balancer Member   | {{loadbalancer_id}}/{{member_id}}                             | Number                   |
+| TIME_WAIT Sockets                                             | Load Balancer Member   | {{loadbalancer_id}}/{{member_id}}                             | Number                   |
+| Sessions per Second                                           | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Number                   |
+| Network Received Byte                                         | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5 min accumulated bytes  |
+| Network Sent Byte                                             | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5 min accumulated bytes  |
+| Number of Network Received Bit per Second (bps)               | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Bits per second (bit/s)  |
+| Number of Network Sent Bit per Second (bps)                   | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Bits per second (bit/s)  |
+| Total Number Load Balanced with the Member                    | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Number                   |
+| Average Response Time                                         | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Millisecond              |
+| Number of Sessions in Connection Status                       | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Number                   |
+| Number of Requests Pending Processing                         | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Number                   |
+| HTTP 100 Response Count                                       | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5 min accumulated Number |
+| HTTP 200 Response Count                                       | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5 min accumulated Number |
+| HTTP 300 Response Count                                       | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5 min accumulated Number |
+| HTTP 400 Response Count                                       | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5 min accumulated Number |
+| HTTP 500 Response Count                                       | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5 min accumulated Number |
+| Other HTTP Responses Count                                    | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5 min accumulated Number |
+| Total Number of Normal HTTP Responses Returned                | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Number                   |
+| Number of Connections Error                                   | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Number                   |
+| The Active Status Value of the Member                         | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Number                   |
+| Maximum queue count                                           | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Number                   |
+| Maximum session count                                         | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Number                   |
+| Total session count                                           | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Number                   |
+| Last session elapsed time                                     | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Number                   |
+| Maximum sessions per second                                   | Load Balancer Member   | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | Number                   |
+| Member group current queue count                              | Load Balancer Member group | {{loadbalancer_id}}/{{pool_id}}                               | Number                   |
+| Member group maximum queue count                              | Load Balancer Member group | {{loadbalancer_id}}/{{pool_id}}                               | Number                   |
+| Member group current session count                            | Load Balancer Member group | {{loadbalancer_id}}/{{pool_id}}                               | Number                   |
+| Member group maximum session count                            | Load Balancer Member group | {{loadbalancer_id}}/{{pool_id}}                               | Number                   |
+| Member group session limit                                    | Load Balancer Member group | {{loadbalancer_id}}/{{pool_id}}                               | Number                   |
+| Member group total session count                              | Load Balancer Member group | {{loadbalancer_id}}/{{pool_id}}                               | Number                   |
+| Member group sessions per second                              | Load Balancer Member group | {{loadbalancer_id}}/{{pool_id}}                               | Number                   |
+| Member group maximum sessions per second                      | Load Balancer Member group | {{loadbalancer_id}}/{{pool_id}}                               | Number                   |
+| Member group total load balancing count                       | Load Balancer Member group | {{loadbalancer_id}}/{{pool_id}}                               | Number                   |
+| Member group time elapsed since last session                  | Load Balancer Member group | {{loadbalancer_id}}/{{pool_id}}                               | Number                   |
+
+<a id="load-balancer-filter"></a>
+### Load Balancer Filter { #load-balancer-filter }
+
+| Filter Name    | Description                                        |
+|----------------|----------------------------------------------------|
+| Load Balancer  | Load balancer used by Network service on NHN Cloud |
+| Listener       | Listener belonging to the load balancer            |
+| Member group   | Member group belonging to the listener             |
+| Member         | Member belonging to the member group               |
+
+<a id="load-balancer-legend"></a>
+### Load Balancer Legend { #load-balancer-legend }
+
+| Legend Name     | Description        |
+|-----------------|--------------------|
+| loadbalancer_id | Load balancer name |
+| listener_id     | Listener name      |
+| pool_id         | Member group name  |
+| member_id       | Member name        |
+
+<a id="direct-connect"></a>
+## Direct Connect { #direct-connect }
+- A dictionary that defines metrics that can be monitored for the Direct Connect service on NHN Cloud.
+
+<a id="direct-connect-metric-list"></a>
+### Metric List { #direct-connect-metric-list }
+
+| Metric Name                               | Resource Name | Default legend (Legend) | Unit                     |
+|-------------------------------------------|---------------|-------------------------|--------------------------|
+| Connection Status                         | Network       | {{orderId}}             | Number                   |
+| Number of connection receive errors       | Network       | {{orderId}}             | Number                   |
+| Number of connection send errors          | Network       | {{orderId}}             | Number                   |
+| Network transmitted bytes                 | Network       | {{orderId}}             | 5 min accumulated bytes  |
+| Network received bytes                    | Network       | {{orderId}}             | 5 min accumulated bytes  |
+| Network transmitted bits per second (bps) | Network       | {{orderId}}             | Bits per second (bits/s) |
+| Network received bits per second (bps)    | Network       | {{orderId}}             | Bits per second (bits/s) |
+
+<a id="direct-connect-filter"></a>
+### Direct Connect Filter { #direct-connect-filter }
+
+| Filter name | Description                                          |
+|-------------|------------------------------------------------------|
+| Service ID  | Service apply ID used by Direct Connect on NHN Cloud |
+
+<a id="direct-connect-legend"></a>
+### Direct Connect Legend { #direct-connect-legend }
+
+| Legend Name | Description      |
+|-------------|------------------|
+| orderId     | Service apply ID |
+
+<a id="vpc"></a>
+## VPC { #vpc }
+- A dictionary that defines metrics that can be monitored for the VPC service on NHN Cloud.
+
+<a id="vpc-metric-list"></a>
+### Metric List { #vpc-metric-list }
+
+| Metric Name                               | Resource Name | Default legend (Legend) | Unit                |
+|-------------------------------------------|---------------|-------------------------|---------------------|
+|Number of IPs in VPC|VPC|{{vpc_id}}| Number              |
+|Number of Subnet Allocation IPs|VPC|{{vpc_id}}| Number              |
+|VPC Usage|VPC|{{vpc_id}}| Percentage (0-100)  |
+
+
+<a id="vpc-filter"></a>
+### VPC Filter { #vpc-filter }
+
+| Filter name | Description                  |
+|-------------|------------------------------|
+| VPC         | VPC used by Network on NHN Cloud |
+
+<a id="vpc-legend"></a>
+### VPC Legend { #vpc-legend }
+
+| Legend Name | Description |
+|-------------|-------------|
+| vpc_id      | VPC name    |
+
+<a id="subnet"></a>
+## Subnet { #subnet }
+- A dictionary that defines metrics that can be monitored for the Subnet service on NHN Cloud.
+
+<a id="subnet-metric-list"></a>
+### Metric List { #subnet-metric-list }
+
+| Metric Name                               | Resource Name | Default legend (Legend) | Unit               |
+|-------------------------------------------|---------------|-------------------------|--------------------|
+|Number of IPs in Subnet|Subnet|{{subnet_id}}| Number                   |
+|Number of Resource Allocation IPs|Subnet|{{subnet_id}}| Number             |
+|Subnet Usage|Subnet|{{subnet_id}}| Percentage (0-100) |
+
+
+<a id="subnet-filter"></a>
+### Subnet Filter { #subnet-filter }
+
+| Filter name | Description                         |
+|-------------|-------------------------------------|
+| Subnet      | Subnet used by Network on NHN Cloud |
+
+<a id="subnet-legend"></a>
+### Subnet Legend { #subnet-legend }
+
+| Legend Name | Description |
+|-------------|-------------|
+| subnet_id      | Subnet name |
+
+<a id="floating-ip"></a>
+## Floating IP { #floating-ip }
+- A dictionary that defines metrics that can be monitored for the Floating IP service on NHN Cloud.
+
+<a id="floating-ip-metric-list"></a>
+### Metric List { #floating-ip-metric-list }
+
+| Metric Name                               | Resource Name | Default legend (Legend) | Unit               |
+|-------------------------------------------|---------------|-------------------------|--------------------|
+|Number of Floating IPs|Floating IP|{{nhncloud_region}} - total|Number|
+|Number of Associated Floating IPs|Floating IP|{{nhncloud_region}} - {{status}}|Number|
+|Number of Unassociated Floating IPs|Floating IP|{{nhncloud_region}} - {{status}}|Number|
+
+<a id="sms"></a>
+## SMS { #sms }
+- A dictionary that defines metrics that can be monitored for the SMS service on NHN Cloud.
+
+<a id="sms-metric-list"></a>
+### Metric List { #sms-metric-list }
+
+| Metric Name                               | Resource Name | Default legend (Legend) | Unit               |
+|----------------------|---------|---------------|-------------|
+|Delivered|Message||Number|
+|Delivery failed|Message||Number|
+|Send failed|Message||Number|
+|Delivered|International SMS||Number|
+|Delivery failed|International SMS||Number|
+|Send failed|International SMS||Number|
+
+<a id="sms-filter"></a>
+### SMS Filter { #sms-filter }
+
+| Filter name | Description                         |
+|------|---------------------------------------------------------------------------------------------------|
+| Message Type | Message sending type (SMS, LMS, MMS, AUTH)                                                                 |
+| Result code | Message send/receive result codes([Reference](https://docs.nhncloud.com/en/Notification/SMS/en/error-code/)) |
+
+<a id="cloud-functions"></a>
+## Cloud Functions { #cloud-functions }
+- A dictionary that defines metrics that can be monitored for the Cloud Functions service on NHN Cloud.
+
+<a id="cloud-functions-metric-list"></a>
+### Metric List { #cloud-functions-metric-list }
+
+| Metric Name                               | Resource Name | Default legend (Legend) | Unit    |
+|----------------------|---------|---------------|---------|
+|Number of Call Reject (Execution Limit)|Cloud Functions|{{function_number}}-{{function_name}}| Number  |
+|Maximum Execution Time|Cloud Functions|{{function_number}}-{{function_name}}| Seconds |
+|Number of Errors|Cloud Functions|{{function_number}}-{{function_name}}| Number  |
+|Average Execution Time|Cloud Functions|{{function_number}}-{{function_name}}| Seconds        |
+|Success Rate|Cloud Functions|{{function_number}}-{{function_name}}|Percentage (0-100)|
+|Number of Function Calls|Cloud Functions|{{function_number}}-{{function_name}}| Number  |
+
+<a id="cloud-functions-filter"></a>
+### Cloud Functions Filter { #cloud-functions-filter }
+
+| Filter name | Description                                       |
+|-------------|---------------------------------------------------|
+| Function    | User-defined function name |
+| Fucntion ID | Key value of the function   |
+
+<a id="cloud-functions-legend"></a>
+### Cloud Functions Legend { #cloud-functions-legend }
+
+| Legend Name | Description   |
+|------------|---------------|
+| function_name | Function Name |
+| function_number | Function ID   |
