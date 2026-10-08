@@ -1,0 +1,248 @@
+## Monitoring > Cloud Monitoring > Metric Dictionary
+
+## Metric Dictionary
+- NHN Cloud 내 서비스에 대한 모니터링을 위한 지표들을 정의한 목록입니다.
+- 지표 사전을 통해 모니터링 대상 서비스의 지표를 확인하고, 이해할 수 있습니다.
+- 위젯 구성 시 필요한 지표를 찾아 사용할 수 있습니다. 자세한 내용은 [콘솔 사용 가이드](console-guide-ninc.md)를 참고하세요.
+- **Metric List**에서 각 서비스별 지표 사전 목록을 확인할 수 있습니다.
+
+### 필터(Filter)
+- 지표에 대해 필터를 적용할 수 있습니다.
+- 필터를 적용하면 해당 필터에 맞는 지표만 표시됩니다.
+  - 예를 들어 리전 필터에 kr1을 적용하면 지표들 중 kr1 리전에 해당하는 지표만 표시됩니다.
+- 공통 필터는 아래와 같습니다.
+
+| 필터명 | 설명           | 값                        |
+|-----|--------------|--------------------------|
+| 리전  | NHN Cloud 리전 | kr1: 한국(판교), kr2: 한국(평촌) |
+
+### 범례(Legend)
+- 지표에 대해 범례를 적용할 수 있습니다.
+- 범례를 적용하면 해당 지표가 범례 형식으로 적용됩니다.
+  - 예를 들어 범례에 {{nhncloud_region}}를 적용하면 각 지표들의 이름이 kr1, kr2와 같이 리전명으로 표시됩니다.
+- 공통 범례는 아래와 같습니다.
+
+| 범례명             | 설명           | 값                        |
+|-----------------|--------------|--------------------------|
+| nhncloud_region | NHN Cloud 리전 | kr1: 한국(판교), kr2: 한국(평촌) |
+
+## Instance
+- NHN Cloud의 Instance 서비스에 대해 모니터링할 수 있는 지표를 정의한 사전입니다.
+
+### Metric List
+
+|지표명|리소스명|기본 범례(Legend)|단위(Unit)|
+|-------|-------|------|------|
+|CPU 사용률 (%)|CPU|{{nhncloud_instance_id}}|백분율(0-100)|
+|CPU 코어 개수|CPU|{{nhncloud_instance_id}}|숫자|
+|코어별 CPU 사용률 (%)|CPU|{{nhncloud_instance_id}} cpu={{cpu}}|백분율(0-100)|
+|CPU 평균 부하(1m)|CPU|{{nhncloud_instance_id}} - 1m|숫자|
+|CPU 평균 부하(5m)|CPU|{{nhncloud_instance_id}} - 5m|숫자|
+|CPU 평균 부하(15m)|CPU|{{nhncloud_instance_id}} - 15m|숫자|
+|CPU 상세(user) (%)|CPU|{{nhncloud_instance_id}}|백분율(0-100)|
+|CPU 상세(nice) (%)|CPU|{{nhncloud_instance_id}}|백분율(0-100)|
+|CPU 상세(system) (%)|CPU|{{nhncloud_instance_id}}|백분율(0-100)|
+|CPU 상세(iowait) (%)|CPU|{{nhncloud_instance_id}}|백분율(0-100)|
+|CPU 상세(steal) (%)|CPU|{{nhncloud_instance_id}}|백분율(0-100)|
+|메모리 사용률 (%)|Memory|{{nhncloud_instance_id}}|백분율(0-100)|
+|메모리 상세(used) (Bytes)|Memory|{{nhncloud_instance_id}}|바이트(bytes)|
+|메모리 상세(available) (Bytes)|Memory|{{nhncloud_instance_id}}|바이트(bytes)|
+|메모리 상세(free) (Bytes)|Memory|{{nhncloud_instance_id}}|바이트(bytes)|
+|메모리 상세(cached) (Bytes)|Memory|{{nhncloud_instance_id}}|바이트(bytes)|
+|메모리 상세(buffered) (Bytes)|Memory|{{nhncloud_instance_id}}|바이트(bytes)|
+|디스크 사용률 (%)|Disk|{{nhncloud_instance_id}}|백분율(0-100)|
+|장치별 디스크 사용률 (%)|Disk|{{nhncloud_instance_id}} device={{device}} fstype={{fstype}} path={{path}}|백분율(0-100)|
+|디스크 읽기 (B/s)|Disk I/O|{{nhncloud_instance_id}}|초당 바이트(bytes/s)|
+|디스크 쓰기 (B/s)|Disk I/O|{{nhncloud_instance_id}}|초당 바이트(bytes/s)|
+|장치별 디스크 읽기 (B/s)|Disk I/O|{{nhncloud_instance_id}} device={{name}}|초당 바이트(bytes/s)|
+|장치별 디스크 쓰기 (B/s)|Disk I/O|{{nhncloud_instance_id}} device={{name}}|초당 바이트(bytes/s)|
+|장치별 처리 중인 작업 수|Disk I/O|{{nhncloud_instance_id}} device={{name}}|숫자|
+|장치별 IO 사용률 (%)|Disk I/O|{{nhncloud_instance_id}} device={{name}}|백분율(0-100)|
+|네트워크 데이터 수신 (B/s)|Network|{{nhncloud_instance_id}}|초당 바이트(bytes/s)|
+|네트워크 데이터 송신 (B/s)|Network|{{nhncloud_instance_id}}|초당 바이트(bytes/s)|
+|장치별 네트워크 데이터 수신 (B/s)|Network|{{nhncloud_instance_id}} interface={{interface}}|초당 바이트(bytes/s)|
+|장치별 네트워크 데이터 송신 (B/s)|Network|{{nhncloud_instance_id}} interface={{interface}}|초당 바이트(bytes/s)|
+|네트워크 데이터 수신 (bps)|Network|{{nhncloud_instance_id}}|초당 비트(bit/s)|
+|네트워크 데이터 송신 (bps)|Network|{{nhncloud_instance_id}}|초당 비트(bit/s)|
+|장치별 네트워크 데이터 수신 (bps)|Network|{{nhncloud_instance_id}} interface={{interface}}|초당 비트(bit/s)|
+|장치별 네트워크 데이터 송신 (bps)|Network|{{nhncloud_instance_id}} interface={{interface}}|초당 비트(bit/s)|
+|네트워크 패킷 수신 (pps)|Network|{{nhncloud_instance_id}}|초당 패킷(packets/s)|
+|네트워크 패킷 송신 (pps)|Network|{{nhncloud_instance_id}}|초당 패킷(packets/s)|
+|장치별 네트워크 패킷 수신 (pps)|Network|{{nhncloud_instance_id}} interface={{interface}}|초당 패킷(packets/s)|
+|장치별 네트워크 패킷 송신 (pps)|Network|{{nhncloud_instance_id}} interface={{interface}}|초당 패킷(packets/s)|
+|가동시간 (s)|System|{{nhncloud_instance_id}}|시간(second)|
+|스왑 사용률 (%)|Swap|{{nhncloud_instance_id}}|백분율(0-100)|
+|스왑 사용량(used) (Bytes)|Swap|{{nhncloud_instance_id}}|바이트(bytes)|
+|스왑 사용량(free) (Bytes)|Swap|{{nhncloud_instance_id}}|바이트(bytes)|
+|스왑 사용량(total) (Bytes)|Swap (New)|{{nhncloud_instance_id}}|바이트(bytes)|
+
+### Instance 필터(Filter)
+- Instance 지표에 대해 필터를 적용할 수 있습니다.
+- 필터를 적용하면 해당 필터에 맞는 지표만 표시됩니다.
+
+| 필터명  | 설명                                      |
+|------|-----------------------------------------|
+| 인스턴스 | NHN Cloud의 Instance 서비스에서 사용 중인 인스턴스의 이름 |
+
+### Instance 범례(Legend)
+- Instance 지표에 대해 범례를 적용할 수 있습니다.
+- 범례를 적용하면 해당 지표가 범례 형식으로 적용됩니다.
+
+| 범례명                  | 설명                  |
+|----------------------|---------------------|
+| nhncloud_instance_id | 인스턴스의 이름            |
+| cpu                  | 인스턴스의 CPU 번호        |
+| device               | 인스턴스의 디스크 장치        |
+| fstype               | 인스턴스의 파일 시스템 종류     |
+| path                 | 인스턴스의 디스크 마운트 경로    |
+| interface            | 인스턴스의 네트워크 인터페이스 이름 |
+
+## Load Balancer
+- NHN Cloud의 Load Balancer 서비스에 대해 모니터링할 수 있는 지표를 정의한 사전입니다.
+
+### Metric List
+
+| 지표명                                    | 리소스명        | 기본 범례(Legend)                                                 | 단위(Unit)      |
+|----------------------------------------|-------------|---------------------------------------------------------------|---------------|
+| CPU 사용률(작업부하)                          | 로드밸런서       | {{loadbalancer_id}}                                           | 백분율(0-100)    |
+| 리스너 연결 상태에 있는 세션 개수                    | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 요청 거부 개수                           | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 응답 거부 개수                           | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 잘못된 요청 개수                          | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 초당 세션 수                            | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 초당 세션 수 최대값                        | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 HTTP 100번대 응답을 한 횟수                | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 HTTP 200번대 응답을 한 횟수                | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 HTTP 300번대 응답을 한 횟수                | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 HTTP 400번대 응답을 한 횟수                | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 HTTP 500번대 응답을 한 횟수                | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 HTTP 응답 중 100번~500번 외 다른 응답을 한 횟수 | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 HTTP 성공 응답                         | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 초당 요청 세션 수                         | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 초당 요청 세션 수 최대값                     | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 요청 총 횟수                            | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 수신 바이트                              | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 바이트            |
+| 리스너 송신 바이트                              | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 바이트            |
+| 네트워크 수신 초당 비트 수 (bps)                  | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 초당 비트 (bit/s) |
+| 네트워크 송신 초당 비트 수 (bps)                  | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 초당 비트 (bit/s) |
+| 리스너 최대 세션 수                           | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 세션 제한 수                           | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 총 세션 수                            | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| 리스너 SSL 핸드셰이크 실패 수                    | 로드밸런서 리스너   | {{loadbalancer_id}}/{{listener_id}}                           | 숫자            |
+| SYN_SENT 소켓 수                          | 로드밸런서 멤버    | {{loadbalancer_id}}/{{member_id}}                             | 숫자            |
+| ESTABLISHED 소켓 수                       | 로드밸런서 멤버    | {{loadbalancer_id}}/{{member_id}}                             | 숫자            |
+| TIME_WAIT 소켓 수                         | 로드밸런서 멤버    | {{loadbalancer_id}}/{{member_id}}                             | 숫자            |
+| 초당 세션 수                                | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 숫자            |
+| 네트워크 수신 바이트                            | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5분 누적 바이트     |
+| 네트워크 송신 바이트                            | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5분 누적 바이트     |
+| 네트워크 수신 초당 비트 수(bps)                   | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 초당 비트 (bit/s) |
+| 네트워크 송신 초당 비트 수(bps)                   | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 초당 비트 (bit/s) |
+| 해당 멤버로 로드 밸런싱된 총횟수                     | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 숫자            |
+| 평균 응답시간                                | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | ms            |
+| 연결 상태에 있는 세션 개수                        | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 숫자            |
+| 처리 대기 중인 요청 개수                         | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 숫자            |
+| HTTP 100번대 응답을 한 횟수                    | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5분 누적 숫자      |
+| HTTP 200번대 응답을 한 횟수                    | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5분 누적 숫자      |
+| HTTP 300번대 응답을 한 횟수                    | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5분 누적 숫자      |
+| HTTP 400번대 응답을 한 횟수                    | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5분 누적 숫자      |
+| HTTP 500번대 응답을 한 횟수                    | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5분 누적 숫자      |
+| HTTP 응답 중 100번~500번 외 다른 응답을 한 횟수      | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5분 누적 숫자      |
+| HTTP 응답이 정상적으로 반환된 총횟수                 | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 숫자            |
+| 오류 발생 연결 횟수                            | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 숫자            |
+| 해당 멤버의 활성 상태 값                         | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 숫자            |
+| 최대 큐 수                                 | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 숫자            |
+| 최대 세션 수                                | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 숫자            |
+| 총 세션 수                                 | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 숫자            |
+| 마지막 세션 경과 시간                           | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 숫자            |
+| 초당 세션 수 최댓값                            | 로드밸런서 멤버    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 숫자            |
+| 멤버 그룹 현재 큐 수                          | 로드밸런서 멤버 그룹 | {{loadbalancer_id}}/{{pool_id}}                               | 숫자            |
+| 멤버 그룹 최대 큐 수                          | 로드밸런서 멤버 그룹 | {{loadbalancer_id}}/{{pool_id}}                               | 숫자            |
+| 멤버 그룹 현재 세션 수                         | 로드밸런서 멤버 그룹 | {{loadbalancer_id}}/{{pool_id}}                               | 숫자            |
+| 멤버 그룹 최대 세션 수                         | 로드밸런서 멤버 그룹 | {{loadbalancer_id}}/{{pool_id}}                               | 숫자            |
+| 멤버 그룹 세션 제한 수                         | 로드밸런서 멤버 그룹 | {{loadbalancer_id}}/{{pool_id}}                               | 숫자            |
+| 멤버 그룹 총 세션 수                          | 로드밸런서 멤버 그룹 | {{loadbalancer_id}}/{{pool_id}}                               | 숫자            |
+| 멤버 그룹 초당 세션 수                         | 로드밸런서 멤버 그룹 | {{loadbalancer_id}}/{{pool_id}}                               | 숫자            |
+| 멤버 그룹 초당 세션 수 최댓값                     | 로드밸런서 멤버 그룹 | {{loadbalancer_id}}/{{pool_id}}                               | 숫자            |
+| 멤버 그룹 로드 밸런싱 총 횟수                     | 로드밸런서 멤버 그룹 | {{loadbalancer_id}}/{{pool_id}}                               | 숫자            |
+| 멤버 그룹 마지막 세션 경과 시간                    | 로드밸런서 멤버 그룹 | {{loadbalancer_id}}/{{pool_id}}                               | 숫자            |
+
+### Load Balancer 필터(Filter)
+
+| 필터명    | 설명                                    |
+|--------|---------------------------------------|
+| 로드밸런서  | NHN Cloud Network 서비스에서 사용 중인 로드밸런서   |
+| 리스너    | 로드밸런서에 속한 리스너                         |
+| 멤버 그룹  | 리스너에 속한 멤버 그룹                         |
+| 멤버     | 멤버 그룹에 속한 멤버                          |
+
+### Load Balancer 범례(Legend)
+
+| 범례명             | 설명        |
+|-----------------|-----------|
+| loadbalancer_id | 로드밸런서 이름  |
+| listener_id     | 리스너 이름    |
+| pool_id         | 멤버 그룹 이름  |
+| member_id       | 멤버 이름     |
+
+## GPU Instance
+- NHN Cloud의 GPU Instance 서비스에 대해 모니터링할 수 있는 지표를 정의한 사전입니다.
+
+> [참고]
+> GPU 지표는 GPU Instance에서 DCGM(Data Center GPU Manager) 기반으로 수집되며, Cloud Monitoring Agent가 설치된 GPU Instance에서만 조회할 수 있습니다.
+> GPU 모델(V100/A100/T4) 및 드라이버 버전에 따라 일부 지표는 수집되지 않을 수 있습니다.
+
+### Metric List
+
+|지표명|리소스명|기본 범례(Legend)|단위(Unit)|
+|-------|-------|------|------|
+|GPU 사용률(%)|GPU 성능|{{nhncloud_instance_id}} - gpu={{gpu}}|백분율(0-100)|
+|GPU 메모리 사용률(%)|GPU 성능|{{nhncloud_instance_id}} - gpu={{gpu}}|백분율(0-100)|
+|GPU 메모리 대역폭 사용률(%)|GPU 성능|{{nhncloud_instance_id}} - gpu={{gpu}}|백분율(0-100)|
+|GPU 전력 사용량(W)|GPU 성능|{{nhncloud_instance_id}} - gpu={{gpu}}|와트(W)|
+|GPU 온도(°C)|GPU 성능|{{nhncloud_instance_id}} - gpu={{gpu}}|섭씨(°C)|
+|GPU 메모리 온도(°C)|GPU 성능|{{nhncloud_instance_id}} - gpu={{gpu}}|섭씨(°C)|
+|SM 클럭(MHz)|GPU 성능|{{nhncloud_instance_id}} - gpu={{gpu}}|메가헤르츠(MHz)|
+|메모리 클럭(MHz)|GPU 성능|{{nhncloud_instance_id}} - gpu={{gpu}}|메가헤르츠(MHz)|
+|인코더 사용률(%)|GPU 성능|{{nhncloud_instance_id}} - gpu={{gpu}}|백분율(0-100)|
+|디코더 사용률(%)|GPU 성능|{{nhncloud_instance_id}} - gpu={{gpu}}|백분율(0-100)|
+|GPU 여유 메모리(MiB)|GPU 성능|{{nhncloud_instance_id}} - gpu={{gpu}}|메비바이트(MiB)|
+|GPU 예약 메모리(MiB)|GPU 성능|{{nhncloud_instance_id}} - gpu={{gpu}}|메비바이트(MiB)|
+|PCIe 재전송 비율(count/s)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 카운트(count/s)|
+|XID 에러|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|숫자|
+|ECC 단일비트 에러 - 누적(count)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|숫자|
+|ECC 단일비트 에러 - 변동(count)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|숫자|
+|ECC 이중비트 에러 - 누적(count)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|숫자|
+|ECC 이중비트 에러 - 변동(count)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|숫자|
+|격리 페이지 - SBE(count)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|숫자|
+|격리 페이지 - DBE(count)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|숫자|
+|격리 대기 페이지(count)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|숫자|
+|리매핑 행 - 교정 가능(count)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|숫자|
+|리매핑 행 - 교정 불가(count)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|숫자|
+|리매핑 실패 여부|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|숫자|
+|NVLink CRC Flit 에러 비율(count/s)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 카운트(count/s)|
+|NVLink CRC Data 에러 비율(count/s)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 카운트(count/s)|
+|NVLink Replay 에러 비율(count/s)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 카운트(count/s)|
+|NVLink Recovery 에러 비율(count/s)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 카운트(count/s)|
+|NVLink 대역폭 - Total(KiB/s)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 키비바이트(KiB/s)|
+|NVLink 대역폭 - L0(B/s)|GPU 상태|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 바이트(bytes/s)|
+|전력 스로틀링 비율(µs/s)|GPU 클럭 이벤트|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 마이크로초(µs/s)|
+|온도 스로틀링 비율(µs/s)|GPU 클럭 이벤트|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 마이크로초(µs/s)|
+|보드 제한 스로틀링 비율(µs/s)|GPU 클럭 이벤트|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 마이크로초(µs/s)|
+|저사용률 스로틀링 비율(µs/s)|GPU 클럭 이벤트|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 마이크로초(µs/s)|
+|동기 부스트 스로틀링 비율(µs/s)|GPU 클럭 이벤트|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 마이크로초(µs/s)|
+|신뢰성 스로틀링 비율(µs/s)|GPU 클럭 이벤트|{{nhncloud_instance_id}} - gpu={{gpu}}|초당 마이크로초(µs/s)|
+
+### GPU Instance 필터(Filter)
+
+|필터명|설명|
+|------|------|
+|리전|GPU Instance가 위치한 리전|
+|인스턴스|GPU Instance의 이름|
+|GPU|인스턴스 내 GPU 장치 번호|
+
+### GPU Instance 범례(Legend)
+
+|범례명|설명|
+|------|------|
+|nhncloud_instance_id|GPU Instance의 이름|
+|gpu|인스턴스 내 GPU 장치 번호|

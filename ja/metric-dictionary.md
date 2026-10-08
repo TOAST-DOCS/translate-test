@@ -1,0 +1,566 @@
+<!-- pre-align:aligned sig=1868d30c1606 -->
+
+<a id="monitoring-cloud-monitoring-metric-dictionary"></a>
+## Monitoring > Cloud Monitoring > Metric Dictionary { #monitoring-cloud-monitoring-metric-dictionary }
+
+<a id="metric-dictionary"></a>
+## Metric Dictionary { #metric-dictionary }
+- NHN Cloud内のサービスに対するモニタリングのための指標を定義したリストです。
+- 指標辞典を通じてモニタリング対象サービスの指標を確認し、理解できます。
+- ウィジェット構成時に必要な指標を検索して使用できます。詳細は[コンソール使用ガイド](console-guide.md)を参照してください。
+- **Metric List**で各サービス別の指標の事前リストを確認できます。
+
+<a id="filter"></a>
+### フィルタ(Filter) { #filter }
+- 指標に対してフィルタを適用できます。
+- フィルタを適用すると、そのフィルタに合う指標だけが表示されます。
+  - 例えば、リージョンフィルターにkr1を適用すると、指標のうちkr1リージョンに該当する指標のみ表示されます。
+- 共通フィルタは次のとおりです。
+
+| フィルタ名 | 説明         | 値                                                                |
+|-----|--------------|--------------------------------------------------------------------|
+| リージョン | NHN Cloudリージョン | kr1:韓国(パンギョ), kr2:韓国(ピョンチョン), kr3:韓国(光州), us1:米国(カリフォルニア), jp1:日本(東京) |
+
+<a id="legend"></a>
+### 凡例(Legend) { #legend }
+- 指標に対して凡例を適用できます。
+- 凡例を適用すると、該当指標が凡例形式で適用されます。
+  - 例えば、凡例に{{nhncloud_region}}を適用すると、各指標の名前がkr1、kr2のように地域名で表示されます。
+- 共通凡例は次のとおりです。
+
+| フィルタ名           | 説明         | 値                                                                |
+|-----------------|--------------|--------------------------------------------------------------------|
+| nhncloud_region | NHN Cloudリージョン | kr1:韓国(パンギョ), kr2:韓国(ピョンチョン), kr3:韓国(光州), us1:米国(カリフォルニア), jp1:日本(東京) |
+
+<a id="instance"></a>
+## Instance { #instance }
+- NHN CloudのInstanceサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="metric-list"></a>
+### Metric List { #metric-list }
+| 指標名            | リソース名  | 基本凡例(Legend)                                                              | 単位(Unit)         |
+|------------------|---------|----------------------------------------------------------------------------|------------------|
+| CPU使用率        | CPU     |                                                                            | パーセンテージ(0-100)       |
+| コア別CPU使用率    | CPU     | {{nhncloud_instance_id}} cpu={{cpu}}                                       | パーセンテージ(0-100)       |
+| CPU詳細(user)     | CPU     | {{nhncloud_instance_id}}                                                   | 比率(0.00 - 1.00)  |
+| CPU詳細(nice)     | CPU     | {{nhncloud_instance_id}}                                                   | 比率(0.00 - 1.00)  |
+| CPU詳細(system)   | CPU     | {{nhncloud_instance_id}}                                                   | 比率(0.00 - 1.00)  |
+| CPU詳細(iowait)   | CPU     | {{nhncloud_instance_id}}                                                   | 比率(0.00 - 1.00)  |
+| CPU平均負荷(1m)    | CPU     | {{nhncloud_instance_id}}                                                   | 数字             |
+| CPU平均負荷(5m)    | CPU     | {{nhncloud_instance_id}}                                                   | 数字             |
+| CPU平均負荷(15m)   | CPU     | {{nhncloud_instance_id}}                                                   | 数字             |
+| ディスク使用率        | Disk    | {{nhncloud_instance_id}}                                                   | 比率(0.00 - 1.00)  |
+| マウント別ディスク使用率   | Disk    | {{nhncloud_instance_id}} device={{device}} fstype={{fstype}} path={{path}} | 比率(0.00 - 1.00)  |
+| ディスクの読み取り          | Disk    | {{nhncloud_instance_id}}                                                   | 毎秒バイト(bytes/s)  |
+| ディスク書き込み          | Disk    | {{nhncloud_instance_id}}                                                   | 毎秒バイト(bytes/s)  |
+| 装置別ディスク読み取り      | Disk    | {{nhncloud_instance_id}} fstype={{fstype}}                                 | 毎秒バイト(bytes/s)  |
+| 装置別ディスク書き込み      | Disk    | {{nhncloud_instance_id}} fstype={{fstype}}                                 | 毎秒バイト(bytes/s)  |
+| メモリ使用率        | Memory  | {{nhncloud_instance_id}}                                                   | パーセンテージ(0-100)       |
+| メモリ詳細(used)     | Memory  | {{nhncloud_instance_id}}                                                   | バイト(bytes)       |
+| メモリ詳細(buffered) | Memory  | {{nhncloud_instance_id}}                                                   | バイト(bytes)       |
+| メモリ詳細(cached)   | Memory  | {{nhncloud_instance_id}}                                                   | バイト(bytes)       |
+| メモリ詳細(free)     | Memory  | {{nhncloud_instance_id}}                                                   | バイト(bytes)       |
+| ネットワークデータ送信    | Network | {{nhncloud_instance_id}}                                                   | 毎秒バイト(bytes/s)  |
+| ネットワークデータ受信    | Network | {{nhncloud_instance_id}}                                                   | 毎秒バイト(bytes/s)  |
+| 装置別ネットワークデータ送信 | Network | {{nhncloud_instance_id}} interface={{interface}}                           | 毎秒バイト(bytes/s)  |
+| 装置別ネットワークデータ受信 | Network | {{nhncloud_instance_id}} interface={{interface}}                           | 毎秒バイト(bytes/s)  |
+| ネットワークパケット送信     | Network | {{nhncloud_instance_id}}                                                   | 毎秒パケット(packets/s) |
+| ネットワークパケット受信     | Network | {{nhncloud_instance_id}}                                                   | 毎秒パケット(packets/s) |
+| 装置別ネットワークパケット送信 | Network | {{nhncloud_instance_id}} interface={{interface}}                           | 毎秒パケット(packets/s) |
+| 装置別ネットワークパケット受信 | Network | {{nhncloud_instance_id}} interface={{interface}}                           | 毎秒パケット(packets/s) |
+| プロセス数        | Process | {{nhncloud_instance_id}}                                                   | 数字             |
+| スワップ使用量(used)     | Swap    | {{nhncloud_instance_id}}                                                   | バイト(bytes)       |
+| スワップ使用量(free)     | Swap    | {{nhncloud_instance_id}}                                                   | バイト(bytes)       |
+| スワップ使用量(total)    | Swap    | {{nhncloud_instance_id}}                                                   | バイト(bytes)       |
+| スワップ使用率         | Swap    | {{nhncloud_instance_id}}                                                   | 比率(0.00 - 1.00)  |
+
+<a id="instance-filter"></a>
+### Instanceフィルタ(Filter) { #instance-filter }
+- Instance指標に対してフィルタを適用できます。
+- フィルタを適用すると、そのフィルタに合う指標だけが表示されます。
+
+| フィルタ名 | 説明                                     |
+|------|------------------------------------------|
+| インスタンス | NHN CloudのInstanceサービスで使用中のインスタンスの名前 |
+
+<a id="instance-legend"></a>
+### Instance凡例(Legend) { #instance-legend }
+- Instance指標に対して凡例を適用できます。
+- 凡例を適用すると、該当指標が凡例形式で適用されます。
+
+| 凡例名                 | 説明                |
+|----------------------|---------------------|
+| nhncloud_instance_id | インスタンスの名前          |
+| cpu                  | インスタンスのCPU番号      |
+| device               | インスタンスのディスク装置      |
+| fstype               | インスタンスのファイルシステムの種類   |
+| path                 | インスタンスのディスクマウントパス  |
+| interface            | インスタンスのネットワークインターフェイス名 |
+
+<a id="nhn-container-servicencs"></a>
+## NHN Container Service(NCS) { #nhn-container-servicencs }
+- NHN CloudのNCSサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="nhn-container-servicencs-metric-list"></a>
+### Metric List { #nhn-container-servicencs-metric-list }
+| 指標名         | リソース名 | 基本凡例(Legend)                                                            | 単位(Unit)        |
+|---------------|------|--------------------------------------------------------------------------|-----------------|
+| CPU使用率     | NCS  | {{label_ncs_container_nhncloud_com_workload_id}} container={{container}} | パーセンテージ(0-100)      |
+| ワークロードに割り当てられたCPU | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | 数字            |
+| メモリ使用率     | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | パーセンテージ(0-100)      |
+| ワークロードに割り当てられたメモリ | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | メビバイト(MiB)      |
+| GPU使用率     | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | パーセンテージ(0-100)      |
+| GPUメモリ使用率 | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | パーセンテージ(0-100)      |
+| GPU電力使用量  | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | メガワット(mW)        |
+| GPU温度      | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | 摂氏(℃)           |
+| ワークロードに割り当てられたGPU | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | 数字            |
+| ネットワークデータ受信 | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | 毎秒バイト(bytes/s) |
+| ネットワークデータ送信 | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | 毎秒バイト(bytes/s) |
+| ディスク使用率     | NCS  | {{workload_id}} {{type}}                                                 | パーセンテージ(0-100)      |
+| 有効化状態別作業数 | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | 数字            |
+| コンテナのプロセス数 | NCS  | {{label_ncs_container_nhncloud_com_workload_id}}                         | 数字            |
+
+<a id="ncs-filter"></a>
+### NCS Filter { #ncs-filter }
+- NCS指標に対してフィルタを適用できます。
+- フィルタを適用すると、そのフィルタに合う指標だけが表示されます。
+
+| フィルタ名 | 説明                                |
+|------|-------------------------------------|
+| ワークロード | NHN CloudのNCSサービスで使用中のワークロードの名前 |
+| タイプ | ストレージ種類                           |
+
+
+<a id="ncs-legend"></a>
+### NCS Legend { #ncs-legend }
+- NCS指標に対して凡例を適用できます。
+- 凡例を適用すると、該当指標が凡例形式で適用されます。
+
+| 凡例名                                         | 説明                           |
+|----------------------------------------------|--------------------------------|
+| label_ncs_container_nhncloud_com_workload_id | NHN CloudのNCSサービスで使用中のワークロードの名前 |
+| workload_id                                  | NHN CloudのNCSサービスで使用中のワークロードの名前 |
+| type                                         | ストレージ種類                      |
+| container                                    | コンテナ名                     |
+
+<a id="10"></a>
+## GPU { #10 }
+- NHN CloudのGPUサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="10-metric-list"></a>
+### Metric List { #10-metric-list }
+| 指標名       | リソース名 | 基本凡例(Legend) | 単位(Unit)   |
+|-------------|------|---------------|------------|
+| GPU使用率   | GPU  | なし           | パーセンテージ(0-100) |
+| GPU温度    | GPU  | なし           | 摂氏(℃)      |
+| GPUメモリ使用率 | GPU  | なし           | パーセンテージ(0-100) |
+| GPU電力使用量 | GPU  | なし           | ワット(W)      |
+
+<a id="gpu-filter"></a>
+### GPUフィルタ(Filter) { #gpu-filter }
+- GPU指標に対してフィルタを適用できます。
+- フィルタを適用すると、そのフィルタに合う指標だけが表示されます。
+
+| フィルタ名 | 説明                                 |
+|------|-------------------------------------|
+| インスタンス | NHN CloudのGPUサービスで使用中のインスタンスの名前 |
+
+<a id="gpu-legend"></a>
+### GPU凡例(Legend) { #gpu-legend }
+- GPU指標に対して凡例を適用できます。
+- 凡例を適用すると、該当指標が凡例形式で適用されます。
+
+| フィルタ名                | 説明         |
+|----------------------|--------------|
+| nhncloud_instance_id | GPUインスタンスの名前 |
+
+<a id="transit-hub"></a>
+## Transit Hub { #transit-hub }
+- NHN CloudのTransit Hubサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="transit-hub-metric-list"></a>
+### Metric List { #transit-hub-metric-list }
+| 指標名                               | リソース名 | 基本凡例(Legend) | 単位(Unit)   |
+|------------------------------------|------|---------------|------------|
+| ネットワーク送信バイト                       | トランジットハブ | {{id}} | 5分累積バイト |
+| ネットワーク受信バイト                       | トランジットハブ | {{id}} | 5分累積バイト |
+| ネットワーク送信パケット                        | トランジットハブ | {{id}} | 5分累積パケット |
+| ネットワーク受信パケット                        | トランジットハブ | {{id}} | 5分累積パケット |
+| 経路が一致しないため、削除されたネットワークパケット           | トランジットハブ | {{id}} | 5分累積パケット |
+| 経路が一致しないため、削除されたネットワークバイト          | トランジットハブ | {{id}} | 5分累積バイト |
+| ブラックホール経路と一致したため、削除されたネットワークパケット          | トランジットハブ | {{id}} | 5分累積パケット |
+| ブラックホール経路と一致したため、削除されたネットワークバイト数         | トランジットハブ | {{id}} | 5分累積バイト |
+| ネットワーク送信バイト                       | 接続 | {{id}} | 5分累積バイト |
+| ネットワーク受信バイト                       | 接続 | {{id}} | 5分累積バイト |
+| ネットワーク送信パケット                        | 接続 | {{id}} | 5分累積パケット |
+| ネットワーク受信パケット                        | 接続 | {{id}} | 5分累積パケット |
+| 経路が一致しないため、削除されたネットワークパケット           | 接続 | {{id}} | 5分累積パケット |
+| 経路が一致しないため、削除されたネットワークバイト          | 接続 | {{id}} | 5分累積バイト |
+| ブラックホール経路と一致したため、削除されたネットワークパケット          | 接続 | {{id}} | 5分累積パケット |
+| ブラックホール経路と一致したため、削除されたネットワークバイト         | 接続 | {{id}} | 5分累積バイト |
+| ネットワーク送信 ビット/秒(bps)               | トランジットハブ | {{id}} |  ビット/秒(bits/s)  |
+| ネットワーク受信 ビット/秒(bps)               | トランジットハブ | {{id}} |  ビット/秒(bits/s)  |
+| ネットワーク送信 パケット/秒(pps)               | トランジットハブ | {{id}} |  パケット/秒(packets/s)  |
+| ネットワーク受信 パケット/秒(pps)               | トランジットハブ | {{id}} |  パケット/秒(packets/s)  |
+| 経路が一致しないため、削除されたネットワーク パケット/秒(pps)  | トランジットハブ | {{id}} |  パケット/秒(packets/s)  |
+| 経路が一致しないため、削除されたネットワーク ビット/秒(bps)  | トランジットハブ | {{id}} |  ビット/秒(bits/s)  |
+| ブラックホール経路と一致したため、削除されたネットワーク パケット/秒(pps) | トランジットハブ | {{id}} |  パケット/秒(packets/s)  |
+| ブラックホール経路と一致したため、削除されたネットワーク ビット/秒(bps) | トランジットハブ | {{id}} |  ビット/秒(bits/s)  |
+| ネットワーク送信 ビット/秒(bps)               | 接続 | {{id}} |  ビット/秒(bits/s)  |
+| ネットワーク受信 ビット/秒(bps)               | 接続 | {{id}} | ビット/秒(bits/s)  |
+| ネットワーク送信 パケット/秒(pps)               | 接続 | {{id}} |  パケット/秒(packets/s)  |
+| ネットワーク受信 パケット/秒(pps)               | 接続 | {{id}} |  パケット/秒(packets/s)  |
+| 経路が一致しないため、削除されたネットワーク パケット/秒(pps)  | 接続 | {{id}} |  パケット/秒(packets/s)  |
+| 経路が一致しないため、削除されたネットワーク ビット/秒(bps)  | 接続 | {{id}} |  ビット/秒(bits/s)  |
+| ブラックホール経路と一致したため、削除されたネットワーク パケット/秒(pps) | 接続 | {{id}} |  パケット/秒(packets/s)  |
+| ブラックホール経路と一致したため、削除されたネットワーク ビット/秒(bps) | 接続 | {{id}} |  ビット/秒(bits/s)  |
+
+
+<a id="transit-hub-filter"></a>
+### Transit Hubフィルタ(Filter) { #transit-hub-filter }
+- Transit Hub指標に対してフィルタを適用できます。
+- フィルタを適用すると、該当フィルタ条件に該当する指標のみ表示されます。
+
+<a id="transit-hub-filter-resource-type-applicable-filters-for-transit-hub"></a>
+#### リソースタイプ > トランジットハブの場合に適用可能なフィルタ
+
+| フィルタ名 | 説明 |
+| --- | --- |
+| トランジットハブ | NHN CloudのNetworkサービスで使用中のトランジットハブ |
+
+<a id="transit-hub-filter-resource-type-applicable-filters-for-attachment"></a>
+#### リソースタイプ > 接続の場合、適用可能なフィルタ
+
+| フィルタ名 | 説明                                     |
+| --- |-----------------------------------------|
+| トランジットハブ | 接続に関連するトランジットハブ |
+| 接続 | NHN CloudのNetworkサービスで使用中のトランジットハブ接続 |
+
+<a id="transit-hub-legend"></a>
+### Transit Hub凡例(Legend) { #transit-hub-legend }
+- Transit Hub指標に対して凡例を適用できます。
+- 凡例を適用すると、該当指標が凡例形式で適用されます。
+
+| 凡例名           | 説明                        |
+|----------------|----------------------------|
+| id             | トランジットハブまたは接続名           |
+| transit_hub_id | トランジットハブ名(リソースが`接続`の場合) |
+
+<a id="internet-gateway"></a>
+## Internet Gateway { #internet-gateway }
+- NHN CloudのInternet Gatewayサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="internet-gateway-metric-list"></a>
+### Metric List { #internet-gateway-metric-list }
+
+| 指標名                         | リソース名   | 基本凡例(Legend)          | 単位(Unit)         |
+|------------------------------|---------|------------------------|------------------|
+| ネットワーク送信バイト                | ルーティングテーブル | {{id}} | 5分累積バイト       |
+| ネットワーク受信バイト                | ルーティングテーブル | {{id}} | 5分累積バイト       |
+| ネットワーク送信パケット                 | ルーティングテーブル | {{id}} | 5分累積パケット        |
+| ネットワーク受信パケット                 | ルーティングテーブル | {{id}} | 5分累積パケット        |
+| ネットワーク送信 ビット/秒(bps)        | ルーティングテーブル | {{id}} | ビット/秒(bits/s)    | 
+| ネットワーク受信 ビット/秒(bps)	    | ルーティングテーブル | {{id}} | ビット/秒(bits/s)    | 
+| ネットワーク送信 パケット/秒(pps)	    | ルーティングテーブル | {{id}} | パケット/秒(packets/s) | 
+| ネットワーク受信 パケット/秒(pps)	    | ルーティングテーブル | {{id}} | パケット/秒(packets/s) | 
+
+<a id="internet-gateway-filter"></a>
+### Internet Gatewayフィルタ(Filter) { #internet-gateway-filter }
+- Internet Gateway指標に対してフィルタを適用できます。
+- フィルタを適用すると、該当フィルタ条件に該当する指標のみ表示されます。
+
+| フィルタ名 | 説明 |
+| --- | --- |
+| ルーティングテーブル | NHN CloudのNetworkサービスで使用中のルーティングテーブル |
+
+<a id="internet-gateway-legend"></a>
+### Internet Gateway凡例(Legend) { #internet-gateway-legend }
+- Internet Gateway指標に対して凡例を適用できます。
+- 凡例を適用すると、該当指標が凡例形式で適用されます。
+
+| 凡例名           | 説明                                    |
+|----------------|----------------------------------------|
+| id             | ルーティングテーブル名 |
+
+<a id="colocation-gateway"></a>
+## Colocation Gateway { #colocation-gateway }
+- NHN CloudのColocation Gatewayサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="colocation-gateway-metric-list"></a>
+### Metric List { #colocation-gateway-metric-list }
+
+| 指標名                   | リソース名      | 基本凡例(Legend) | 単位(Unit)          |
+|-----------------------|------------|--------------|-------------------|
+| ネットワーク送信バイト           | ルーティングテーブル | {{id}}       | 5分累積バイト           |
+| ネットワーク受信バイト           | ルーティングテーブル | {{id}}       | 5分累積バイト           |
+| ネットワーク送信パケット          | ルーティングテーブル | {{id}}       | 5分累積パケット          |
+| ネットワーク受信パケット          | ルーティングテーブル | {{id}}       | 5分累積パケット          |
+| ネットワーク送信 ビット/秒(bps)   | ルーティングテーブル | {{id}}       | ビット/秒(bits/s)     | 
+| ネットワーク受信 ビット/秒(bps)	  | ルーティングテーブル | {{id}}       | ビット/秒(bits/s)     | 
+| ネットワーク送信 パケット/秒(pps)  | ルーティングテーブル | {{id}}       | パケット/秒(packets/s) | 
+| ネットワーク受信 パケット/秒(pps)	 | ルーティングテーブル | {{id}}       | パケット/秒(packets/s) | 
+
+<a id="colocation-gateway-filter"></a>
+### Colocation Gatewayフィルタ(Filter) { #colocation-gateway-filter }
+
+| フィルタ名         | 説明                                      |
+|---------------|-----------------------------------------|
+| コロケーションゲートウェイ | NHN CloudのNetworkサービスで使用中のコロケーションゲートウェイ |
+
+<a id="colocation-gateway-legend"></a>
+### Colocation Gateway凡例(Legend) { #colocation-gateway-legend }
+
+| 凡例名 | 説明             |
+|-----|----------------|
+| id  | コロケーションゲートウェイ名 |
+
+<a id="load-balancer"></a>
+## Load Balancer { #load-balancer }
+- NHN CloudのLoad Balancerサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="load-balancer-metric-list"></a>
+### Metric List { #load-balancer-metric-list }
+
+| 指標名                                          | リソース名           | 基本凡例(Legend)                                                  | 単位(Unit)       |
+|----------------------------------------------|-----------------|---------------------------------------------------------------|----------------|
+| CPU使用率(作業負荷)                                 | ロードバランサー        | {{loadbalancer_id}}                                           | パーセント(0-100)   |
+| リスナー接続状態にあるセッション数                            | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーリクエスト拒否数                                 | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーレスポンス拒否数                                 | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーの誤ったリクエスト数                               | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナー毎秒セッション数                                 | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナー毎秒セッション数最大値                              | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーHTTP 100番台のレスポンス回数                       | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーHTTP 200番台のレスポンス回数                       | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーHTTP 300番台のレスポンス回数                       | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーHTTP 400番台のレスポンス回数                       | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーHTTP 500番台のレスポンス回数                       | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーHTTPレスポンスのうち100～500番台以外のレスポンス回数          | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーHTTP成功レスポンス                              | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナー毎秒リクエストセッション数                            | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナー毎秒リクエストセッション数最大値                         | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーリクエスト総数                                  | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナー受信バイト                                    | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | バイト            |
+| リスナー送信バイト                                    | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | バイト            |
+| リスナーネットワーク受信ビット/秒(bps)                       | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | ビット/秒(bit/s)   |
+| リスナーネットワーク送信ビット/秒(bps)                       | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | ビット/秒(bit/s)   |
+| リスナー最大セッション数                                 | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーセッション制限数                                 | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナー総セッション数                                  | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| リスナーSSLハンドシェイク失敗数                            | ロードバランサーリスナー    | {{loadbalancer_id}}/{{listener_id}}                           | 数字             |
+| SYN_SENTソケット数                                | ロードバランサーメンバー    | {{loadbalancer_id}}/{{member_id}}                             | 数字             |
+| ESTABLISHEDソケット数                             | ロードバランサーメンバー    | {{loadbalancer_id}}/{{member_id}}                             | 数字             |
+| TIME_WAITソケット数                               | ロードバランサーメンバー    | {{loadbalancer_id}}/{{member_id}}                             | 数字             |
+| 毎秒セッション数                                     | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 数字             |
+| ネットワーク受信バイト                                  | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5分累積バイト        |
+| ネットワーク送信バイト                                  | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5分累積バイト        |
+| ネットワーク受信ビット/秒(bps)                           | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | ビット/秒(bit/s)   |
+| ネットワーク送信ビット/秒(bps)                           | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | ビット/秒(bit/s)   |
+| 当該メンバーでロードバランシングされた合計回数                      | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 数字             |
+| 平均レスポンス時間                                    | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | ミリ秒            |
+| 接続状態にあるセッション数                                | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 数字             |
+| 処理待機中のリクエスト数                                 | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 数字             |
+| HTTP 100番台レスポンスをした回数                         | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5分累積数値         |
+| HTTP 200番台レスポンスをした回数                         | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5分累積数値         |
+| HTTP 300番台レスポンスをした回数                         | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5分累積数値         |
+| HTTP 400番台レスポンスをした回数                         | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5分累積数値         |
+| HTTP 500番台レスポンスをした回数                         | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5分累積数値         |
+| HTTPレスポンスのうち、100番～500番以外のレスポンスをした回数          | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 5分累積数値         |
+| HTTPレスポンスが正常に返された合計回数                        | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 数字             |
+| エラー発生接続回数                                    | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 数字             |
+| 該当メンバーのアクティブ状態値                              | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 数字             |
+| 最大キュー数                                       | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 数字             |
+| 最大セッション数                                     | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 数字             |
+| 総セッション数                                      | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 数字             |
+| 最終セッション経過時間                                  | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 数字             |
+| 最大秒間セッション数                                   | ロードバランサーメンバー    | {{loadbalancer_id}}/{{listener_id}}/{{pool_id}}/{{member_id}} | 数字             |
+| メンバーグループ現在キュー数                              | ロードバランサーメンバーグループ | {{loadbalancer_id}}/{{pool_id}}                               | 数字             |
+| メンバーグループ最大キュー数                              | ロードバランサーメンバーグループ | {{loadbalancer_id}}/{{pool_id}}                               | 数字             |
+| メンバーグループ現在セッション数                            | ロードバランサーメンバーグループ | {{loadbalancer_id}}/{{pool_id}}                               | 数字             |
+| メンバーグループ最大セッション数                            | ロードバランサーメンバーグループ | {{loadbalancer_id}}/{{pool_id}}                               | 数字             |
+| メンバーグループセッション制限数                            | ロードバランサーメンバーグループ | {{loadbalancer_id}}/{{pool_id}}                               | 数字             |
+| メンバーグループ総セッション数                             | ロードバランサーメンバーグループ | {{loadbalancer_id}}/{{pool_id}}                               | 数字             |
+| メンバーグループ秒間セッション数                            | ロードバランサーメンバーグループ | {{loadbalancer_id}}/{{pool_id}}                               | 数字             |
+| メンバーグループ秒間セッション数最大値                        | ロードバランサーメンバーグループ | {{loadbalancer_id}}/{{pool_id}}                               | 数字             |
+| メンバーグループロードバランシング総回数                       | ロードバランサーメンバーグループ | {{loadbalancer_id}}/{{pool_id}}                               | 数字             |
+| メンバーグループ最終セッション経過時間                        | ロードバランサーメンバーグループ | {{loadbalancer_id}}/{{pool_id}}                               | 数字             |
+
+<a id="load-balancer-filter"></a>
+### Load Balancerフィルタ(Filter) { #load-balancer-filter }
+
+| フィルタ名      | 説明                                 |
+|------------|------------------------------------|
+| ロードバランサー   | NHN CloudのNetworkサービスで使用中のロードバランサー |
+| リスナー       | ロードバランサーに属するリスナー                   |
+| メンバーグループ   | リスナーに属するメンバーグループ                   |
+| メンバー       | メンバーグループに属するメンバー                   |
+
+<a id="load-balancer-legend"></a>
+### Load Balancer凡例(Legend) { #load-balancer-legend }
+
+| 凡例名             | 説明          |
+|-----------------|-------------|
+| loadbalancer_id | ロードバランサー名   |
+| listener_id     | リスナー名       |
+| pool_id         | メンバーグループ名   |
+| member_id       | メンバー名       |
+
+<a id="direct-connect"></a>
+## Direct Connect { #direct-connect }
+- NHN CloudのDirect Connectサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="direct-connect-metric-list"></a>
+### Metric List { #direct-connect-metric-list }
+
+| 指標名                 | リソース名   | 基本凡例(Legend) | 単位(Unit)      |
+|---------------------|---------|--------------|---------------|
+| 接続状態                | Network | {{orderId}}  | 数字            |
+| 接続受信エラー数            | Network | {{orderId}}  | 数字            |
+| 接続送信エラー数            | Network | {{orderId}}  | 数字            |
+| ネットワーク送信バイト         | Network | {{orderId}}  | 5分累積バイト       |
+| ネットワーク受信バイト         | Network | {{orderId}}  | 5分累積バイト       |
+| ネットワーク送信 ビット/秒(bps) | Network | {{orderId}}  | ビット/秒(bits/s) |
+| ネットワーク受信 ビット/秒(bps) | Network | {{orderId}}  | ビット/秒(bits/s) |
+
+<a id="direct-connect-filter"></a>
+### Direct Connectフィルタ(Filter) { #direct-connect-filter }
+
+| フィルタ名  | 説明                                        |
+|--------|-------------------------------------------|
+| サービスID | NHN CloudのDirect Connectサービスで使用中のサービス申請ID |
+
+
+<a id="direct-connect-legend"></a>
+### Direct Connect凡例(Legend) { #direct-connect-legend }
+
+| 凡例名     | 説明       |
+|---------|----------|
+| orderId | サービス申請ID |
+
+<a id="vpc"></a>
+## VPC { #vpc }
+- NHN CloudのVPCサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="vpc-metric-list"></a>
+### Metric List { #vpc-metric-list }
+
+| 指標名                 | リソース名   | 基本凡例(Legend) | 単位(Unit)      |
+|---------------------|---------|--------------|---------------|
+|VPC全体のIP数|VPC|{{vpc_id}}|数字|
+|サブネット割り当てIP数|VPC|{{vpc_id}}|数字|
+|VPC使用率|VPC|{{vpc_id}}|パーセンテージ(0-100)|
+
+
+<a id="vpc-filter"></a>
+### VPCフィルタ(Filter) { #vpc-filter }
+
+| フィルタ名 | 説明                        |
+|-------|---------------------------|
+| VPC   | NHN CloudのNetworkサービスで使用中のVPC |
+
+
+<a id="vpc-legend"></a>
+### VPC凡例(Legend) { #vpc-legend }
+
+| 凡例名    | 説明       |
+|--------|----------|
+| vpc_id | VPCの名前 |
+
+<a id="subnet"></a>
+## Subnet { #subnet }
+- NHN CloudのSubnetサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="subnet-metric-list"></a>
+### Metric List { #subnet-metric-list }
+
+| 指標名                 | リソース名   | 基本凡例(Legend) | 単位(Unit)      |
+|---------------------|---------|--------------|---------------|
+|サブネット全体のIP数|Subnet|{{subnet_id}}|数字|
+|リソース割り当てIP数|Subnet|{{subnet_id}}|数字|
+|サブネット使用率|Subnet|{{subnet_id}}|パーセンテージ(0-100)|
+
+
+<a id="subnet-filter"></a>
+### Subnetフィルタ(Filter) { #subnet-filter }
+
+| フィルタ名 | 説明                        |
+|-------|---------------------------|
+| サブネット   | NHN CloudのNetworkサービスで使用中のサブネット |
+
+
+<a id="subnet-legend"></a>
+### Subnet凡例(Legend) { #subnet-legend }
+
+| 凡例名    | 説明       |
+|--------|----------|
+| subnet_id | サブネットの名前 |
+
+<a id="floating-ip"></a>
+## Floating IP { #floating-ip }
+- NHN CloudのFloating IPサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="floating-ip-metric-list"></a>
+### Metric List { #floating-ip-metric-list }
+
+| 指標名                 | リソース名   | 基本凡例(Legend) | 単位(Unit)      |
+|---------------------|---------|--------------|---------------|
+|全体Floating IP数|Floating IP|{{nhncloud_region}} - total|数字|
+|接続されたFloating IP数|Floating IP|{{nhncloud_region}} - {{status}}|数字|
+|接続されていないFloating IP数|Floating IP|{{nhncloud_region}} - {{status}}|数字|
+
+<a id="sms"></a>
+## SMS { #sms }
+- NHN Cloudの SMSサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="sms-metric-list"></a>
+### Metric List { #sms-metric-list }
+
+| 指標名                 | リソース名   | 基本凡例(Legend) | 単位(Unit)      |
+|----------------------|---------|---------------|-------------|
+|受信成功|メッセージ||数字|
+|受信失敗|メッセージ||数字|
+|送信失敗|メッセージ||数字|
+|受信成功|国際 SMS||数字|
+|受信失敗|国際 SMS||数字|
+|送信失敗|国際 SMS||数字|
+
+<a id="sms-filter"></a>
+### SMSフィルタ(Filter) { #sms-filter }
+
+| フィルタ名 | 説明                                                                                          |
+| --- |---------------------------------------------------------------------------------------------|
+| メッセージタイプ | メッセージ送信タイプの種類(SMS、LMS、MMS、 AUTH)                                                            |
+| 結果コード | メッセージ送信及び受信結果に関するコード([参考ガイド](https://docs.nhncloud.com/ja/Notification/SMS/ja/error-code/)) |
+
+<a id="cloud-functions"></a>
+## Cloud Functions { #cloud-functions }
+- NHN CloudのCloud Functionsサービスに対してモニタリングできる指標を定義した辞書です。
+
+<a id="cloud-functions-metric-list"></a>
+### Metric List { #cloud-functions-metric-list }
+
+| 指標名                 | リソース名   | 基本凡例(Legend) | 単位(Unit)      |
+|---------------------|---------|--------------|---------------|
+|呼び出し拒否数(実行制限)|Cloud Functions|{{function_number}}-{{function_name}}| 数字|
+|最大実行時間|Cloud Functions|{{function_number}}-{{function_name}}|秒 |
+|エラー発生回数|Cloud Functions|{{function_number}}-{{function_name}}| 数字|
+|平均実行時間|Cloud Functions|{{function_number}}-{{function_name}}|秒 |
+|成功率|Cloud Functions|{{function_number}}-{{function_name}}| パーセンテージ(0-100) |
+|関数呼び出し回数|Cloud Functions|{{function_number}}-{{function_name}}|数字 |
+
+<a id="cloud-functions-filter"></a>
+### Cloud Functionsフィルタ(Filter) { #cloud-functions-filter }
+
+| フィルタ名 | 説明                        |
+|-------|---------------------------|
+| 関数   | ユーザー定義関数名 |
+| 関数 ID | 関数のキー値 |
+
+
+<a id="cloud-functions-legend"></a>
+### Cloud Functions凡例(Legend) { #cloud-functions-legend }
+
+| 凡例名    | 説明       |
+|--------|----------|
+| function_name | 関数 |
+| function_number | 関数 ID |
