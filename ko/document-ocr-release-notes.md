@@ -3,8 +3,8 @@
 <a id="ai-service-ocr-document-ocr-release-notes"></a>
 ## AI Service > OCR > Document OCR > 릴리스 노트 { #ai-service-ocr-document-ocr-release-notes }
 
-<a id="september-8-2026"></a>
-## 2026. 09. 08. { #september-8-2026 }
+<a id="september-15-2026"></a>
+## 2026. 09. 15. { #september-15-2026 }
 
 - 운전면허증 진위 확인 시 암호 일련번호 필수화
   - 2026년 9월 7일부터 운전면허증 진위 확인 요청에 암호 일련번호를 반드시 포함해야 합니다.
