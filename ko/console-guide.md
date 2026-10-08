@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=df549469ae0a -->
+
 <a id="storage-storage-gateway-console-user-guide"></a>
 ## Storage > Storage Gateway > 콘솔 사용 가이드 { #storage-storage-gateway-console-user-guide }
 
@@ -7,7 +9,7 @@
 ## 게이트웨이(Gateway) { #gateway }
 <a id="create-gateway"></a>
 ### 게이트웨이 생성 { #create-gateway }
-새로운 스토리지 게이트웨이를 생성합니다. 게이트웨이는 사용자 프로젝트에 인스턴스를 생성해 구성합니다. 
+새로운 스토리지 게이트웨이를 생성합니다. 게이트웨이는 사용자 프로젝트에 인스턴스를 생성해 구성합니다.
 
 <a id="create-gateway-gateway-information"></a>
 #### 게이트웨이 정보
@@ -22,17 +24,17 @@
 
 <a id="create-gateway-network"></a>
 #### 네트워크
-스토리지 게이트웨이에 사용할 VPC와 서브넷을 선택합니다. 
-게이트웨이를 구성하는 인스턴스에 선택한 VPC의 서브넷과 연결되는 네트워크 인터페이스가 만들어집니다. 네트워크 자원의 생성과 관리에 대한 자세한 내용은 [VPC 사용자 가이드](/Network/VPC/ko/overview/)를 참조하세요.
-서비스 게이트웨이는 Object Storage와 같이 사용자 VPC 외부의 스토리지를 인터넷 경유 없이 연결하기 위해 사용합니다. 서비스 게이트웨이에 대한 자세한 내용은 [Service Gateway 사용 가이드](/Network/Service%20Gateway/ko/overview/)를 참조하세요.
+스토리지 게이트웨이에 사용할 VPC와 서브넷을 선택합니다.
+게이트웨이를 구성하는 인스턴스에 선택한 VPC의 서브넷과 연결되는 네트워크 인터페이스가 만들어집니다. 네트워크 자원의 생성과 관리에 대한 자세한 내용은 [VPC 사용자 가이드](/Network/VPC/ko/overview/)를 참고하세요.
+서비스 게이트웨이는 Object Storage와 같이 사용자 VPC 외부의 스토리지를 인터넷 경유 없이 연결하기 위해 사용합니다. 서비스 게이트웨이에 대한 자세한 내용은 [Service Gateway 사용 가이드](/Network/Service%20Gateway/ko/overview/)를 참고하세요.
 
 <a id="create-gateway-floating-ip"></a>
 #### 플로팅 IP
-플로팅 IP 사용 여부를 설정합니다. 게이트웨이에 플로팅 IP를 사용하면 인터넷에서 게이트웨이에 접속할 수 있습니다. 자세한 내용은 [Floating IP 사용 가이드](/Network/Floating%20IP/ko/overview/)를 참조하세요.
+플로팅 IP 사용 여부를 설정합니다. 게이트웨이에 플로팅 IP를 사용하면 인터넷에서 게이트웨이에 접속할 수 있습니다. 자세한 내용은 [Floating IP 사용 가이드](/Network/Floating%20IP/ko/overview/)를 참고하세요.
 
 <a id="create-gateway-security-groups"></a>
 #### 보안 그룹
-스토리지 게이트웨이의 인스턴스가 속할 보안 그룹을 지정합니다. 선택한 VPC 네트워크 외부에서 게이트웨이를 통해 NHN Cloud 스토리지에 마운트하려면 보안 그룹에 다음과 같은 포트에 대한 규칙이 명시되어 있어야 합니다. 
+스토리지 게이트웨이의 인스턴스가 속할 보안 그룹을 지정합니다. 선택한 VPC 네트워크 외부에서 게이트웨이로 NHN Cloud 스토리지에 마운트하려면 보안 그룹에 다음과 같은 포트 규칙을 명시해야 합니다.
 
 | 방향 | IP 프로토콜 | 포트 범위 | Ether | 원격 |
 | --- | --- | --- | --- | --- |
@@ -40,16 +42,16 @@
 | 수신 | TCP | 2049 | IPv4 | 원격지 IP |
 | 수신 | TCP | 57861-57869 | IPv4 | 원격지 IP |
 
-원격지 IP는 CIDR 형식의 대역으로 설정할 수 있습니다. 
+원격지 IP는 CIDR 형식의 대역으로 설정할 수 있습니다.
 
 !!! danger "주의"
     원격지 IP를 `0.0.0.0/0`과 같이 넓은 대역으로 설정하면 보안에 취약해질 수 있습니다. 최소한의 범위로 설정해 주세요.
 
-자세한 내용은 [Security Groups 사용 가이드](/Network/Security%20Groups/ko/overview/)를 참조하세요.
+자세한 내용은 [Security Groups 사용 가이드](/Network/Security%20Groups/ko/overview/)를 참고하세요.
 
 <a id="create-gateway-redundancy"></a>
 #### 이중화
-스토리지 게이트웨이 이중화 여부를 선택합니다. 
+스토리지 게이트웨이 이중화 여부를 선택합니다.
 이중화를 사용하면 2개의 인스턴스를 생성해 클러스터를 구성합니다. 클러스터를 구성하는 하나의 인스턴스에 장애가 발생하더라도 다른 인스턴스를 통해 중단 없이 게이트웨이를 사용할 수 있습니다. 장애가 발생하여 서비스에서 제외된 인스턴스는 오토 힐링 기능을 통해 자동으로 복구되어 클러스터에 투입됩니다.
 
 <a id="start-gateway"></a>
@@ -61,11 +63,11 @@
 스토리지 게이트웨이를 중지합니다. 게이트웨이를 중지하면 클러스터를 구성하는 인스턴스가 중지되며 스토리지와 연결할 수 없습니다.
 
 !!! danger "주의"
-    스토리지 게이트웨이를 중지하기 전, NHN Cloud 스토리지를 연결하여 사용 중인 시스템에서 언마운트해야 합니다. 마운트 상태에서 게이트웨이를 중지하면 사용자 시스템에 문제가 발생할 수 있습니다.
+    스토리지 게이트웨이를 중지하기 전에 NHN Cloud 스토리지를 연결하여 사용 중인 시스템에서 언마운트해야 합니다. 마운트 상태에서 게이트웨이를 중지하면 사용자 시스템에 문제가 발생할 수 있습니다.
 
 <a id="delete-gateway"></a>
 ### 게이트웨이 삭제 { #delete-gateway }
-스토리지 게이트웨이를 삭제합니다. 클러스터를 구성하는 모든 인스턴스와 자원이 삭제됩니다. 게이트웨이에 연결되어 있던 NHN Cloud 스토리지는 삭제되지 않습니다. 
+스토리지 게이트웨이를 삭제합니다. 클러스터를 구성하는 모든 인스턴스와 자원이 삭제됩니다. 게이트웨이에 연결되어 있던 NHN Cloud 스토리지는 삭제되지 않습니다.
 
 !!! tip "알아두기"
     게이트웨이를 삭제하려면 먼저 게이트웨이에 생성한 모든 공유를 삭제해야 합니다.
@@ -74,7 +76,7 @@
 ## 공유(Share) { #share }
 <a id="create-share"></a>
 ### 공유 생성 { #create-share }
-공유를 생성합니다. 공유는 NHN Cloud 스토리지를 연결할 설정입니다. 공유를 생성하면 마운트 연결 정보를 얻을 수 있고, 이 연결 정보를 이용해 사용자 시스템에 NHN Cloud 스토리지를 마운트하여 사용할 수 있습니다.
+공유를 생성합니다. 공유는 NHN Cloud 스토리지를 연결할 설정입니다. 공유를 생성하면 마운트 연결 정보를 얻을 수 있고, 이 연결 정보를 사용해 사용자 시스템에 NHN Cloud 스토리지를 마운트하여 사용할 수 있습니다.
 
 <a id="create-share-share-information"></a>
 #### 공유 정보
@@ -85,8 +87,8 @@
 
 <a id="create-share-storage-information-for-connection"></a>
 #### 연결 스토리지 정보
-연결할 스토리지 정보를 설정합니다. 
-Object Storage는 연결할 컨테이너 이름과 S3 API 자격 증명의 Access Key가 필요합니다. 연결할 컨테이너의 이름은 Amazon S3의 버킷 명명 규칙을 따라야 합니다. S3 API 자격 증명은 Object Storage 콘솔 또는 API를 이용해 발급할 수 있습니다. 자세한 내용은 **Object Storage Amazon S3 호환 API 가이드**의 [버킷 생성](/Storage/Object%20Storage/ko/s3-api-guide/#bucket) 섹션과 [S3 API 자격 증명](/Storage/Object%20Storage/ko/s3-api-guide/#s3-api) 섹션을 참조하세요.
+연결할 스토리지 정보를 설정합니다.
+Object Storage는 연결할 컨테이너 이름과 S3 API 자격 증명의 Access Key가 필요합니다. 연결할 컨테이너의 이름은 Amazon S3의 버킷 명명 규칙을 따라야 합니다. S3 API 자격 증명은 Object Storage 콘솔 또는 API를 사용해 발급할 수 있습니다. 자세한 내용은 **Object Storage Amazon S3 호환 API 가이드**의 [버킷 생성](/Storage/Object%20Storage/ko/s3-api-guide/#bucket) 섹션과 [S3 API 자격 증명](/Storage/Object%20Storage/ko/s3-api-guide/#s3-api-credential) 섹션을 참고하세요.
 
 !!! tip "알아두기"
     Object Storage 컨테이너를 연결하는 공유를 생성하면 Object Storage에 `{컨테이너명}+segments` 컨테이너가 자동으로 생성됩니다. 게이트웨이를 통해 25MB를 초과하는 파일을 저장하면 연결된 컨테이너에 멀티 파트로 업로드되며, 멀티 파트 오브젝트의 세그먼트 오브젝트가 `{컨테이너명}+segments` 컨테이너에 저장됩니다.
@@ -95,21 +97,24 @@ Object Storage는 연결할 컨테이너 이름과 S3 API 자격 증명의 Acces
 
 !!! danger "주의"
     연결할 Object Storage의 컨테이너에 IP ACL을 설정하려면 반드시 Service Gateway에 대한 **read/write 허용**을 추가해야 합니다.
+
     Object Storage의 S3 API 자격 증명을 발급하는 사용자는 연결할 컨테이너에 대한 **read/write** 권한이 필요합니다.
+
     스토리지 게이트웨이를 통해 Object Storage의 컨테이너를 연결해 사용하는 동안 컨테이너를 삭제하거나 S3 API 자격 증명을 삭제한다면 사용자 시스템에 문제가 생길 수 있습니다. 삭제하지 않도록 주의해야 합니다.
+
     스토리지 게이트웨이를 통해 Object Storage의 컨테이너를 연결해 사용하는 동안 `{컨테이너명}+segments` 컨테이너의 오브젝트를 삭제하면 저장한 파일에 접근할 수 없습니다. 삭제하지 않도록 주의해야 합니다.
 
 <a id="create-share-nfs-permissions-settings"></a>
 #### NFS 권한 설정
-NFS 프로토콜을 통해 연결할 클라이언트의 권한을 설정합니다. 
+NFS 프로토콜로 연결할 클라이언트의 권한을 설정합니다.
 
 | Squash 옵션 | 설명 |
 | --- | --- |
-| no_root_squash | 클라이언트의 root를 NFS 서버의 root에 매핑합니다. |
-| root_squash | 클라이언트의 root를 nobody 또는 지정한 UID/GID에 매핑합니다. |
-| all_squash | 클라이언트의 모든 사용자를 nobody 또는 지정한 UID/GID에 매핑합니다. |
+| `no_root_squash` | 클라이언트의 root를 NFS 서버의 root에 매핑합니다. |
+| `root_squash` | 클라이언트의 root를 nobody 또는 지정한 UID/GID에 매핑합니다. |
+| `all_squash` | 클라이언트의 모든 사용자를 nobody 또는 지정한 UID/GID에 매핑합니다. |
 
-사용자 ID와 그룹 ID를 입력하지 않으면 Squash 옵션에 따라 **root(0)** 또는 **nobody(65534)**로 설정됩니다. 그 외의 사용자와 그룹에 매핑하려면 리눅스 사용자 ID와 그룹 ID를 입력합니다. 리눅스 사용자 ID와 그룹 ID는 리눅스 셸에서 **id** 명령으로 확인할 수 있습니다.
+사용자 ID와 그룹 ID를 입력하지 않으면 Squash 옵션에 따라 **root(0)** 또는 **nobody(65534)**로 설정됩니다. 그 외의 사용자와 그룹에 매핑하려면 Linux 사용자 ID와 그룹 ID를 입력합니다. Linux 사용자 ID와 그룹 ID는 Linux 셸에서 `id` 명령으로 확인할 수 있습니다.
 
 ```
 $ id
@@ -126,7 +131,7 @@ uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu)
 
 <a id="delete-share"></a>
 ### 공유 삭제 { #delete-share }
-공유를 삭제합니다. 
+공유를 삭제합니다.
 
 !!! danger "주의"
     공유를 삭제하기 전에 NHN Cloud 스토리지를 마운트하여 사용 중인 시스템에서 언마운트해야 합니다. 마운트 상태에서 공유를 삭제하면 사용자 시스템에 문제가 생길 수 있습니다.
@@ -174,7 +179,7 @@ sudo service rpcbind start
 
 <a id="mount-share"></a>
 ### 공유 마운트 { #mount-share }
-생성한 공유의 마운트 연결 정보와 mount 명령을 이용하여 다음과 같이 NHN Cloud 스토리지를 사용자 시스템에 마운트할 수 있습니다.
+생성한 공유의 마운트 연결 정보와 mount 명령을 사용하여 다음과 같이 NHN Cloud 스토리지를 사용자 시스템에 마운트할 수 있습니다.
 
 ```
 sudo mount -t nfs {마운트 연결 정보} {마운트할 경로}
@@ -186,12 +191,11 @@ NFS v3를 사용하려면 다음과 같이 버전 옵션을 추가해야 합니�
 sudo mount -t nfs -o vers=3 {마운트 연결 정보} {마운트할 경로}
 ```
 
-* 마운트 연결 정보는 공유의 상세 정보에서 확인할 수 있습니다. 
+* 마운트 연결 정보는 공유의 상세 정보에서 확인할 수 있습니다.
   예: 192.168.0.11:/data
 
 * 마운트할 경로
   예: /mnt/data
-
 
 <a id="posix-api"></a>
 ## POSIX API { #posix-api }

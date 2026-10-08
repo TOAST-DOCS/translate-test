@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=109ab9c97015 -->
+
 <a id="storage-storage-gateway-overview"></a>
 ## Storage > Storage Gateway > 개요 { #storage-storage-gateway-overview }
 
@@ -9,7 +11,7 @@ Storage Gateway는 하나 이상의 클라우드 인스턴스 또는 온프레�
 <a id="characteristics"></a>
 ## 특징 { #characteristics }
 <a id="sharable"></a>
-### 공유 { #sharable }
+### 공유성 { #sharable }
 NHN Cloud 스토리지를 하나 이상의 인스턴스 또는 온프레미스 장비에 마운트하여 사용할 수 있습니다.
 지원하는 프로토콜은 NFS v3, v4(Linux)입니다.
 
@@ -27,16 +29,15 @@ NHN Cloud 스토리지의 뛰어난 확장성을 통해 데이터 사용량에 �
 
 <a id="accessible"></a>
 ### 접근성 { #accessible }
-게이트웨이의 VPC 네트워크에 Floating IP를 연결하거나 네트워크 게이트웨이 설정을 통해 다양한 환경에서 NHN Cloud Storage에 접근할 수 있습니다.
+게이트웨이의 VPC 네트워크에 Floating IP를 연결하거나 네트워크 게이트웨이 설정을 사용하여 다양한 환경에서 NHN Cloud 스토리지에 접근할 수 있습니다.
 
 <a id="secure"></a>
 ### 보안성 { #secure }
-NHN Cloud 스토리지의 서버 측 암호화 기능을 이용하여 데이터를 안전하게 보관할 수 있습니다.
+NHN Cloud 스토리지의 서버 측 암호화 기능을 사용하여 데이터를 안전하게 보관할 수 있습니다.
 
 <a id="disaster-recovery"></a>
 ### 재해 복구 { #disaster-recovery }
 NHN Cloud 스토리지의 재해 복구 설정을 통해 예기치 않은 재해 상황에 대비할 수 있습니다.
-
 
 <a id="terms"></a>
 ## 용어 { #terms }
