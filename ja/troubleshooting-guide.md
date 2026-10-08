@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 ## Container > NHN Kubernetes Service(NKS) > トラブルシューティング
 
 NHN Kubernetes Service(NKS)を使用する際に発生する可能性のあるさまざまな問題の解決方法を説明します。
@@ -126,7 +128,7 @@ $
 > [参考]上記の内容は同期を行うための1つの方法にすぎません。ユーザーの環境に、より適切な方法があれば、その方法で同期処理を行ってください。
 
 
-#### > Podの状態がImagePullBackOffと表示されます。
+### > Podの状態がImagePullBackOffと表示されます。
 
 2020年11月20日からdockerhubはコンテナイメージpullリクエスト回数に次のような制限を設けるポリシーを実施しました。制限の詳細については、[Understanding Docker Hub Rate Limiting](https://www.docker.com/increase-rate-limits)と[Pricing & Subscriptions](https://www.docker.com/pricing)を参照してください。
 
@@ -145,7 +147,8 @@ NKSのワーカーノードでdockerhubからコンテナイメージをダウ�
 
 
 ### > クローズドネットワーク環境でfailed to pull image `k8s.gcr.io/pause:3.2`が発生します。
-クローズドネットワーク環境のクラスターがパブリックレジストリからイメージを取得できないため発生する問題であり、2024年8月以前に作成されたクラスターで発生する可能性があります。k8s.gcr.io/pause:3.2`イメージのように、デフォルトで配布されているイメージは、ワーカーノード作成時にNHN Cloud内部レジストリからプルされます。しかし、最初にイメージをプルされた後、イメージが削除された場合、問題が発生する可能性があります。クラスター作成時、基本的に配布されるイメージのリストは次のとおりです。
+クローズドネットワーク環境のクラスターがパブリックレジストリからイメージを取得できないために発生する問題で、2024年8月以前に作成されたクラスターで発生する可能性があります。`k8s.gcr.io/pause:3.2`イメージのようにデフォルトでデプロイされているイメージは、ワーカーノード作成時にNHN Cloud内部レジストリからpullします。ただし、最初にイメージをpullした後にイメージが削除された場合、問題が発生する可能性があります。クラスター作成時にデフォルトでデプロイされるイメージの一覧は次のとおりです。
+
 * kubernetesui/dashboard
 * k8s.gcr.io/pause
 * k8s.gcr.io/kube-proxy
@@ -174,7 +177,8 @@ NKSのワーカーノードでdockerhubからコンテナイメージをダウ�
 * k8s.gcr.io/node-problem-detector/node-problem-detector
 * k8s.gcr.io/autoscaling/cluster-autoscaler
 * nvidia/k8s-device-plugin
-該当イメージに対して同じ問題が発生する可能性があります。
+
+該当のイメージで同じ問題が発生する可能性があります。
 
 基本イメージはkubeletのImage garbage collectionによって削除されることがあります。 kubelet garbage collection関連情報は[Garbage Collection](https://kubernetes.io/docs/concepts/architecture/garbage-collection/)をご覧ください。NKSの場合、imageGCHighThresholdPercent, imageGCLowThresholdPercentがデフォルト値に設定されています。
 ```
@@ -396,4 +400,28 @@ kubectl -n kube-system set image deployment/calico-kube-controllers \
 [例]
 kubectl -n kube-system set image deployment/calico-kube-controllers \
   calico-kube-controllers=calico/kube-controllers:v3.24.1
+```
+### > GPU flavorワーカーノードのGPU関連モニタリング情報が表示されません。
+dcgm-exporterが参照するライブラリリンクに問題があるために発生します。dcgm-exporterが`libdcgm.so.4`ライブラリを見つけられず実行に失敗し、その結果GPUに関するモニタリング指標が収集されません。
+
+この問題は、以下のイメージを使用するGPUワーカーノードで発生します。
+
+* Rocky Linux 8.10 - Container (2026.03.10)
+* Rocky Linux 9.7 - Container (2026.03.10)
+* Ubuntu Server 22.04.5 LTS - Container (2026.03.10)
+* Ubuntu Server 24.04.4 LTS - Container (2026.03.10)
+
+#### 症状発生時の確認方法
+GPUワーカーノードでdcgm-exporterを実行すると、次のようなエラーログが出力されます。
+```
+# /usr/bin/dcgm-exporter --address localhost:9400
+time=2026-08-06T00:13:18.786+09:00 level=INFO msg="Starting dcgm-exporter" Version=4.4.0-4.5.0
+time=2026-08-06T00:13:18.792+09:00 level=ERROR msg="the libdcgm.so.4 library was not found. Install Data Center GPU Manager (DCGM)."
+```
+
+#### 解決策
+この問題は、2026年8月の定期メンテナンス時に対処される予定です。定期メンテナンス前までは、各GPUワーカーノードで以下のコマンドを実行することで、暫定的に対処できます。
+```
+sed -i 's/DCGM_FI_PROF/#DCGM_FI_PROF/g' /etc/dcgm-exporter/default-counters.csv
+ldconfig && systemctl restart dcgm-exporter.service
 ```
