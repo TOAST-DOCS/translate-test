@@ -1,0 +1,40 @@
+<!-- pre-align:aligned sig=6bb67be47f46 -->
+
+<a id="security-web-firewall-overview"></a>
+## Security > WEB Firewall > 개요 { #security-web-firewall-overview }
+
+WEB Firewall 서비스에는 Self 서비스와 Managed 서비스가 있습니다. 
+Self 서비스를 선택하면 고객이 직접 웹 방화벽을 구축할 수 있고, Managed 서비스를 선택하면 전문 엔지니어가 웹 방화벽 운영 및 보안관제 서비스를 제공합니다. 
+고객 클라우드 영역에 웹 방화벽이 구성되며, 독립적인 운영 환경을 제공합니다.
+<BR>
+웹 방화벽은 펜타시큐리티(WAPPLES SA)와 파이오링크(WEBFRONT-KS) 제품 중 선택하여 이용할 수 있습니다.
+
+<a id="main-features"></a>
+## WEB Firewall 주요 기능 { #main-features }
+
+* Self 서비스
+    * 고객이 직접 웹 방화벽을 구축하고 운영할 수 있도록 웹 방화벽 이미지 및 운영 가이드를 제공합니다.
+* Managed 서비스
+    * 전문 엔지니어를 통한 웹 방화벽 운영 대행 및 보안관제 서비스를 제공합니다.
+    * 보안관제 전문 업체의 24시간 보안관제 서비스를 통해 보안 사고 발생 시 빠르게 대응할 수 있습니다.
+    * 웹 방화벽 실시간 장애 모니터링 및 대응 서비스를 제공합니다.
+    * 콘솔의 현황 페이지에서 웹 방화벽 이벤트 및 보안관제 업무 처리 현황을 실시간으로 확인할 수 있습니다.
+    * 주기적인 패치 및 패턴 업데이트 관리 서비스를 제공합니다.
+* 웹 방화벽이 고객 클라우드 영역에 단독으로 구성돼 독립적인 환경 제공
+    * 고객 클라우드 인프라 영역에 웹 방화벽 인스턴스가 생성되며, 이를 통해 독립적인 운영 환경과 보안성을 보장합니다.
+* 검증된 솔루션 사용으로 보안성 및 안정성 보장
+    * OWASP TOP 10, 국정원 8대 취약점에 완벽하게 대응해 다양한 유형의 위협으로부터 보호합니다.
+    * CC 인증, GS 인증, PCI-DSS 인증 등 주요 규제를 준수하여 제품 안정성을 보장합니다.
+
+<a id="web-firewall-service-configuration"></a>
+## WEB Firewall 서비스 구성도 { #web-firewall-service-configuration }
+
+* 외부에서 들어오는 웹 애플리케이션 위협 트래픽과 외부 정보 유출을 차단하여 웹 서버를 보호할 수 있습니다.
+* 웹 방화벽은 웹 서버 앞단에서 프락시 방식으로 동작하여 모든 웹 트래픽을 검사합니다.
+
+> [참고]
+> * 보호할 대상 도메인의 트래픽을 웹 방화벽으로 경유하게 하려면 웹 방화벽 IP로 DNS를 변경해야 합니다.
+> * 서비스 장애를 대비하려면 로드 밸런서를 이용한 웹 방화벽 Active-Active 구성을 권장합니다.
+> * 보안관제 센터의 서비스 지원은 Managed 서비스 신청 시 이용할 수 있습니다.
+
+![webfirewall_public_kr_overview_01_241113.png](https://static.toastoven.net/prod_web_firewall/Common/public/kr/webfirewall_public_kr_overview_01_241113.png)
