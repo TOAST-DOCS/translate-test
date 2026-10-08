@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=aa55f47b49ba -->
+
 <a id="storage-nas-for-bigdata-release-notes"></a>
 ## Storage > NAS for BigData > 릴리스 노트 { #storage-nas-for-bigdata-release-notes }
 
