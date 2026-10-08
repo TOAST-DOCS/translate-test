@@ -1,0 +1,73 @@
+<!-- pre-align:aligned sig=87b4655be4a9 -->
+
+<a id="network-dns-plus-overview"></a>
+## Network > DNS Plus > 개요 { #network-dns-plus-overview }
+
+DNS Plus는 전 세계 사용자들이 안정적이고 빠르게 접속할 수 있는 DNS입니다. 애니캐스트 네트워크를 지원해 어디서든 안정적이고 빠르게 DNS에 접속할 수 있으며, 별도의 DNS 솔루션이나 서버 없이 웹 콘솔에서 바로 DNS 서비스를 할 수 있습니다.
+
+<a id="key-features"></a>
+## 주요 기능 { #key-features }
+
+- DNS
+    - 별도의 DNS 서버를 설치하지 않고, 웹 콘솔에서 DNS 작업을 할 수 있습니다.
+    - 애니캐스트 네트워크를 지원하여, 국내뿐 아니라 해외에서도 빠른 속도로 서비스할 수 있습니다.
+    - 대규모 DNS 질의를 받을 수 있도록 설계되었기 때문에, 대규모 DNS 질의 처리와 DNS를 대상으로 한 DDoS 공격도 완화할 수 있습니다.
+    > **[참고] DNS 서비스 사용을 위한 도메인 구매**
+    > DNS 서비스 사용을 시작하려면 먼저 도메인이 있어야 합니다. DNS 서비스에서는 새로운 도메인명을 구매할 수는 없으며, 도메인 등록 기관에서 도메인을 구매해야 합니다. (자세한 도메인 이름 등록 방법은 한국인터넷진흥원 [도메인 이름 등록](https://xn--3e0bx5euxnjje69i70af08bea817g.xn--3e0b707e/jsp/business/management/domain/registrationInfo.jsp)을 참고하세요.)
+
+- GSLB
+    - DNS Plus GSLB(Global Server Load Balancing)는 DNS 서비스 기반으로 엔드포인트에 안정적으로 트래픽을 로드밸런싱해 주는 서비스입니다.
+    - 다양한 라우팅 규칙을 제공합니다.
+
+    | 라우팅 규칙 | 설명 | 상세 내용 |
+    |---|---|---|
+    | FAILOVER | GSLB 도메인에 연결된 Pool의 우선순위로 라우팅합니다. |  |
+    | RANDOM | GSLB 도메인에 연결된 Pool 중 사용 가능한 Pool을 무작위로 라우팅합니다. |  |
+    | GEOLOCATION | 설정된 지역의 트래픽을 해당 연결된 Pool로 라우팅합니다.<br>지역에 대한 설정이 없는 경우 우선순위로 라우팅합니다. | <설정 가능한 지역><br>- Western North America<br>- Eastern Nort America<br>- Western Europe<br>- Eastern Europe<br>- Northern South America<br>- Southern South America<br>- Oceania<br>- Middle East<br>- Northern Africa<br>- Southern Africa<br>- India<br>- Southeast Asia<br>- Northeast Asia |
+
+    - Pool을 통한 엔드포인트 그룹핑
+        - Pool을 이용하여 특정 목적에 따라 엔드포인트를 그룹핑할 수 있습니다
+        - Pool 내에 포함된 엔드포인트별로 가중치를 설정할 수 있습니다.
+
+    - 다양한 엔드포인트 헬스 체크 기능 지원
+        - HTTP/HTTPS/TCP를 이용해 Pool에 포함된 엔드포인트의 헬스체크를 수행함으로써 안정적인 서비스를 지원합니다
+        - HTTP 헬스 체크의 경우 포트, 경로, 예상 상태 코드, 예상 응답 본문을 설정할 수 있습니다.
+        - HTTPS 헬스 체크의 경우 인증서 유효성, 포트, 경로, 예상 상태 코드, 예상 응답 본문을 설정할 수 있습니다.
+
+<a id="service-targets"></a>
+## 서비스 대상 { #service-targets }
+
+- DNS
+    - 글로벌 대상으로 서비스하는 애플리케이션을 개발하는 경우
+    - DNS 서버의 관리 및 유지보수가 부담스러운 경우
+
+- GSLB
+    - 안정적인 서비스 트래픽 로드밸런싱을 원하는 경우
+    - 전 세계적인 서비스 트래픽 로드밸런싱을 원하는 경우
+    - 로드밸런싱을 통한 DR(Disaster Recovery) 구성을 원하는 경우
+
+<a id="service-terms"></a>
+## 서비스 용어 { #service-terms }
+
+| 용어 | 설명 |
+|---|---|
+| 도메인 | 네트워크에서 컴퓨터를 식별하는 주소를 사람이 쉽게 인식할 수 있는 형태로 나타낸 방법입니다. |
+| DNS Zone | DNS가 서비스하는 호스트의 도메인 영역입니다. 레코드 세트의 컨테이너이며 도메인과 하위 도메인의 트래픽을 라우팅하는 방법을 포함하고 있습니다. |
+| 레코드 세트 | DNS Zone으로 서비스하는 호스트 정보로, 도메인의 트래픽을 라우팅하는 방법입니다. |
+| 레코드 세트 타입 | 호스트의 트래픽을 라우팅하는 방법을 나타내는 리소스 유형입니다. |
+| 레코드값 | 호스트의 트래픽을 라우팅하는 방법을 기술한 것으로 레코드 세트 타입(리소스 유형)에 따라 입력 내용이 결정되며 특정 유형을 제외하고 하나 이상 등록할 수 있습니다. |
+| GSLB 도메인 | Global Server Load Balancing 도메인의 약어이며, DNS Plus에서 생성한 서비스 도메인(레코드 세트)에 CNAME을 매핑해 사용할 수 있는 도메인입니다. |
+| Pool(풀) | 엔드포인트를 그룹핑하는 요소이며, 라우팅 규칙이 적용되는 최소 단위입니다. Pool 내에 포함된 엔드포인트는 가중치에 따라 로드밸런싱됩니다. |
+| 엔드포인트 | 실제 트래픽을 처리하는 서버를 말합니다. 엔드포인트는 IP 및 도메인 형태로 사용 가능합니다. |
+| 헬스 체크 | 설정한 값에 따라 Pool 내에 속한 엔드포인트에 대해 접근성을 확인하는 요소입니다. |
+
+<a id="dns-concepts"></a>
+## DNS 개념 { #dns-concepts }
+DNS(domain name system)은 컴퓨터 네트워크에서 호스트 이름(예: www.example.com)과 IP 주소(예: 192.168.1.1) 간의 매핑을 담당하는 시스템입니다.
+
+DNS의 기본 작동 원리는 다음과 같습니다.
+1. 도메인 이름 입력: 사용자는 웹 브라우저에 도메인 이름(예: www.example.com)을 입력합니다.
+2. DNS 질의: 사용자의 컴퓨터는 입력된 도메인 이름을 해석하기 위해 DNS 서버에 질의를 보냅니다.
+3. DNS 서버 검색: 사용자의 컴퓨터는 일반적으로 ISP(인터넷 서비스 제공자)에 속한 DNS 서버에 질의를 보냅니다. 만약 이 DNS 서버에서 도메인 이름과 매핑된 IP 주소를 알고 있다면 해당 IP 주소를 반환합니다. 그렇지 않은 경우 더 상위 수준의 DNS 서버에 또다시 질의를 보내 IP 주소를 찾습니다.
+4. 응답 전달: DNS 서버는 찾은 IP 주소를 사용자의 컴퓨터에게 전달합니다.
+5. 웹 서버 연결: 사용자의 컴퓨터는 찾은 IP 주소를 사용하여 해당 도메인의 웹 서버에 연결합니다.
