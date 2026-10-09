@@ -122,6 +122,7 @@ See the [Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads
 
 ![stage-guide-07](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_pipeline/2024-09-15/pipeline-stage-guide/deploy-stage-normal.png)
 
+<a id="deployment---deploy-resource-versioning"></a>
 #### Resource Versioning
 When deploying ConfigMap and Secret resources, the Pipeline service creates new resources with a version suffix (-v000, -v001, …) appended to the name by default, and automatically updates the references to those resources in workloads included in the same deployment — such as `volume`, `env`, and `envFrom` — to use the versioned names. This Resource Versioning feature preserves the history of configuration changes by version and allows you to revert both the workload and its configuration to a previous state during a rollback.
 
