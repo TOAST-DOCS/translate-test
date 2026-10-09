@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=781e4ded30b6 -->
 
 <a id="monitoring-cloud-monitoring-console-user-guide"></a>
@@ -404,6 +406,21 @@ When you start/stop collecting metrics, a confirmation modal opens.
 ![Example of the widget when metrics are being collected](https://static.toastoven.net/prod_cloud_monitoring/cloud_monitoring_03_01-5.png)
 
 If you stop collecting metrics, the metrics are no longer displayed in widgets that you've created using metrics from that service, and the metrics' legends are disabled.
+
+<a id="anomaly-detection-status"></a>
+### Anomaly Detection Status { #anomaly-detection-status }
+
+| Status | Description | 
+| --- | --- |
+| Enabled - Normal | - Anomaly detection is enabled and operating normally. <br> - Anomaly detection data is displayed in the Widget and notifications occur. |
+| Enabled - Waiting | - Anomaly detection is enabled and data acquisition is in progress. <br> - It may take about 6 hours to acquire the data required for anomaly detection training and inference. Anomaly detection data is displayed and notifications occur once data acquisition is complete. | 
+| active-insufficient data | - Anomaly detection is not operating due to insufficient collected metric data for the anomaly detection target. <br> - This can occur due to service failures or resource deletion. Check the resource status in each service Console. <br>(If the resource has been deleted, delete the corresponding anomaly detection settings. If the status persists even when there is no issue, contact customer support.) | 
+| Enabled - Suspended | - Anomaly detection has been temporarily suspended due to a temporary issue. <br> - The system recovers automatically, and after recovery, additional data acquisition for analysis may proceed. <br> (If the status persists for an extended period, contact the customer support center.) |
+| Disabled | - Anomaly detection is disabled and not operating. <br> - You can restart anomaly detection by enabling it. <br>(However, enabling it requires time to acquire additional data, and anomaly detection data is displayed and notifications occur only after data acquisition is complete.) | 
+
+!!! tip "Note"
+    In all states except Enabled - Normal, no anomaly detection data occurs, and accordingly, no notifications occur.
+    If a suspension occurs in a state other than Enabled - Normal (Enabled - Waiting, active-insufficient data), the data acquisition process for training and inference may be reset. In this case, additional time of at least 6 hours may be required depending on the state before the suspension.
 
 <a id="example-screen"></a>
 ## Example Screen { #example-screen }
