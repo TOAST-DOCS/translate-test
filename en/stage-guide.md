@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ec801840fa91 -->
 
 <a id="dev-tools-pipeline-stage-guide"></a>
@@ -107,22 +109,40 @@ This is a stage to deploy to the Kubernetes environment.
 
 <a id="deployment---deploy"></a>
 ### Deployment - Deploy { #deployment---deploy }
-- You can select the [deployment target](./environment-config/#deployment-target) you added in **Deployment Target Settings** in **Environment Settings**. 
-Enter **Namespace**, **Resource Type**, **Resource Name**, and **Manifest** to use for deployment. 
+- You can select the [deployment target](./environment-config/#deployment-target) you added in **Deployment Target Settings** in **Environment Settings**.
+Enter **Stage Name**, **Deployment Target**, and **Manifest** to use for deployment.
 If the tag format is used in the build stage, entering the Docker image tag part of **Manifest** as `_{BUILD_NUMBER}` allows you to deploy to the image with the most recent number among the images built in the tag format.
-For more details on **Manifest**, see [Kubernetes documents](https://kubernetes.io/docs/concepts/workloads/controllers/deployment ).
+See the [Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/controllers/deployment ) for how to write **Manifest**.
 - You can select **Manifest Source** as artifacts. The selected artifact must be created in Manifest format.
     - You can select an artifact created in the pipeline.
     - You can select a specific file from the repository as an artifact. 
 - You can set the **Start Condition** and **End Condition** of ** Artifact**. You can set a start condition to determine whether to start stages. You can set **End Condition** to set stage products as artifacts.
 
-![stage-guide-07](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_pipeline/2024-08-27/pipeline-stage-guide/stage-guide-07_new.png)
+- You can configure **Use Resource Versioning**. It is the default behavior of the Pipeline service, and we recommend that you enable it. For more information, see **Resource Versioning** below.
+
+![stage-guide-07](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_pipeline/2024-09-15/pipeline-stage-guide/deploy-stage-normal.png)
+
+#### Resource Versioning
+When deploying ConfigMap and Secret resources, the Pipeline service creates new resources with a version suffix (-v000, -v001, …) appended to the name by default, and automatically updates the references to those resources in workloads included in the same deployment — such as `volume`, `env`, and `envFrom` — to use the versioned names. This Resource Versioning feature preserves the history of configuration changes by version and allows you to revert both the workload and its configuration to a previous state during a rollback.
+
+If you disable **Use Resource Versioning** in the **Deploy** stage, the resources deployed by that stage are deployed using the original names defined in the manifest, and the Resource Versioning feature of the Pipeline service cannot be used. We recommend that you disable this only when operators, controllers, or other components outside the deployment manifest need to retrieve the resource by its original name directly.
+
+![stage-guide-07-1](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_pipeline/2026-09-15/pipeline-stage-guide/deploy-stage-version.png)
+
+The Resource Versioning option applies to all resources deployed by the stage. To configure specific resources differently, you can add the `strategy.spinnaker.io/versioned` annotation to `metadata.annotations` in the manifest with a value of "`true`" or "`false`" to configure it on a per-resource basis. Whether Resource Versioning is applied is determined by the following priority:
+
+1. The `strategy.spinnaker.io/versioned` annotation on the resource
+2. The **Use Resource Versioning** setting in the Deploy stage
+
+**Constraints**
+* Resources with versioning disabled do not retain a version history, so the **Deploy - Rollout undo** stage and the rollback feature of the **Deployment Target Management** workload cannot be used. Even if a rollback is executed, the previous ConfigMap and Secret configurations are not restored.
+* Resources that have already been deployed with a versioned name (-vNNN) are not automatically cleaned up and must be deleted manually.
 
 <a id="deployment---patch"></a>
 ### Deployment - Patch { #deployment---patch }
 - You can select the [deployment target\](/Dev%20Tools/Pipeline/en/environment-config/#deployment-target) you added in **Deployment Target Settings** in **Environment Settings**.
 - Enter **Namespace**, **Resource Type**, **Resource Name**, and **Manifest** to use for deployment.You can modify the information of an existing resource with Patch.
-- See the [Kubernetes documentation\](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#patching-resources) for how to write **Manifest**.
+- See the [Kubernetes documentation](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#patching-resources) for how to write **Manifest**.
 - If you set the selection method to **Select by dynamic method**, enter a **cluster** and **selection strategy**.
 - Cluster
     - For replicaSets, Pipeline internally versions and deploys them, and when you select a **Select by dynamic method**, it selects targets based on a selection strategy rather than selecting a specific version.
@@ -274,7 +294,7 @@ If you uncheck the **execution condition**, the next stage runs without waiting 
 <a id="feature---run-nhn-cloud-deploy-service-deployment"></a>
 ### Feature - Run NHN Cloud Deploy Service Deployment { #feature---run-nhn-cloud-deploy-service-deployment }
 You can run the deployment using the NHN Cloud Deploy service on the stage.
-- If the **command type**of the artifact you want to run the deployment on is **SSH**, the **Run NHN Cloud Deploy Service Deployment** is not supported, only **Cloud Agenet** is supported. For more information, refer to the [Deploy User Guide](/Dev%20Tools/Deploy/en/console-guide/#_8).
+- If the **Command Type** of the artifact you want to run the deployment on is **SSH**, the **Run NHN Cloud Deploy Service Deployment** feature is not supported, only **Cloud Agent** is supported. For more information, refer to the [Deploy User Guide](/Dev%20Tools/Deploy/en/console-guide/#_8).
 
 In **Environment Settings** > **NHN Cloud Security Settings**, select the security settings you added, and in **AppKey**, enter the appkey that will use the NHN Cloud Deploy service.
 
