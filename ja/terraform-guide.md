@@ -127,7 +127,7 @@ resource "nhncloud_nas_storage_volume_v1" "volume_03" {
 | mount_protocol.cifs_auth_ids | List(String) | N | O | CIFS認証ID一覧<br>NFSプロトコル選択時は入力不要 |
 | mount_protocol.protocol | String | Y | - | ボリュームマウント時のプロトコル指定<br>`nfs`、`cifs`のいずれかを選択できます。 |
 | snapshot_policy | Object | N | - | ボリュームスナップショット設定オブジェクト |
-| snapshot_policy.max_scheduled_count | Integer | N | O | スナップショット最大保存数<br>30個まで設定可能であり、最大保存数に達すると、自動的に作成されたスナップショットの中で一番最初に作成されたスナップショットが削除されます。 |
+| snapshot_policy.max_scheduled_count | Integer | N | O | スナップショット最大保存数<br>20個まで設定可能であり、最大保存数に達すると、自動的に作成されたスナップショットの中で一番最初に作成されたスナップショットが削除されます。 |
 | snapshot_policy.reserve_percent | Integer | N | O | スナップショット容量の割合 |
 | snapshot_policy.schedule | Object | N | - | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成は設定されません。 |
 | snapshot_policy.schedule.time | String | N | O | スナップショット自動作成時間 |
@@ -209,7 +209,7 @@ resource "nhncloud_nas_storage_volume_mirror_v1" "nas_mirror_01" {
 | dst_volume.name | String | Y | - | ボリューム名 |
 | dst_volume.size_gb | Integer | Y | O | ボリュームサイズ(GB)<br>ボリュームは最小300GBから最大10,000GBまで、100GB単位で設定できます。 |
 | dst_volume.snapshot_policy | Object | N | - | ボリュームスナップショット設定オブジェクト |
-| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | スナップショット最大保存数<br>30個まで設定可能であり、最大保存数に達すると、自動的に作成されたスナップショットの中で一番最初に作成されたスナップショットが削除されます。 |
+| dst_volume.snapshot_policy.max_scheduled_count | Integer | N | O | スナップショット最大保存数<br>20個まで設定可能であり、最大保存数に達すると、自動的に作成されたスナップショットの中で一番最初に作成されたスナップショットが削除されます。 |
 | dst_volume.snapshot_policy.reserve_percent | Integer | N | O | スナップショット容量の割合 |
 | dst_volume.snapshot_policy.schedule | Object | N | O | スナップショット自動作成オブジェクト<br>`null`の場合、スナップショット自動作成は設定されません。 |
 | dst_volume.snapshot_policy.schedule.time | String | N | O | スナップショット自動作成時間 |
