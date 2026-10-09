@@ -1,13 +1,24 @@
-<!-- pre-align:aligned sig=128be9dd92f4 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=8aaf9aa29550 -->
 
 <a id="data-analytics-dataflow-release-notes"></a>
 ## Data & Analytics > DataFlow > Release Notes { #data-analytics-dataflow-release-notes }
 
-<a id="may-27-2026"></a>
-## May 27, 2026 { #may-27-2026 }
+<a id="october-27-2026"></a>
+## October 27, 2026 { #october-27-2026 }
 
 <a id="feature-updates"></a>
 ### Feature Updates { #feature-updates }
+* Added new nodes
+    * Filter
+        * Aggregate
+
+<a id="may-27-2026"></a>
+## May 27, 2026 { #may-27-2026 }
+
+<a id="may-27-2026-feature-updates"></a>
+### Feature Updates { #may-27-2026-feature-updates }
 * Added new nodes
     * Source
         * (NHN Cloud) EasyQueue
