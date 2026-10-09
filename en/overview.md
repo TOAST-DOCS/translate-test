@@ -6,13 +6,11 @@
 {% set vpc_ov = '-gov' if 'gov' in build_flags else '' %}
 {% set price_dom = {"public":"www.toast.com","gov":"gov.toast.com","ncgn":"www.gncloud.go.kr","ninc":"www.ninc.go.kr","ngsc":"www.ngsc.go.kr","ngovc":"www.ngovc.com","ngoic":"www.ngoic.com"} %}
 <a id="compute-instance-overview"></a>
-
 ## Compute > Instance > Overview { #compute-instance-overview }
 
 An instance is a virtual server composed of virtual CPUs, memory, and root block storage. You can install your services and applications on this server and use it in combination with the various services provided by NHN Cloud.
 
 <a id="components"></a>
-
 ## Instance components { #components }
 
 An instance consists of the following components:
@@ -85,7 +83,6 @@ A security group is a virtual firewall that controls the network traffic deliver
 To communicate with the outside, an instance must be connected to at least one network defined in the VPC. An instance that is not connected to a network cannot be accessed. To create or modify a network, see [VPC Overview](/Network/VPC/en/overview$[ vpc_ov ]$/).
 
 <a id="pricing"></a>
-
 ## Pricing { #pricing }
 
 Instances are billed as follows:
@@ -98,7 +95,6 @@ Instances are billed as follows:
 For more details on billing, see the [pricing page](https://$[ price_dom[f] ]$/kr/service/compute/instance#price) for each service.
 
 <a id="how-to-access-instances"></a>
-
 ## How to access instances { #how-to-access-instances }
 
 <a id="how-to-access-linux-instances"></a>
