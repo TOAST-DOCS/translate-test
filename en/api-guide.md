@@ -88,7 +88,7 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 {%- endif %}
 | $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | Volume size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
 | $[ prefix ]$snapshotPolicy | Body | Object | N | Volume snapshot settings object |
-| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | Maximum number of snapshots to store<br>You can set a maximum of 30, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
+| $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | Maximum number of snapshots to store<br>You can set a maximum of 20, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
 | $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | Snapshot capacity ratio |
 | $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | Snapshot auto-creation object<br>If `null`, snapshot auto-creation will not be configured. |
 | $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | Snapshot auto-creation time |
@@ -186,6 +186,7 @@ $[ ' ' * indent ]$"preserved": false,
 $[ ' ' * indent ]$"size": 3112960,
 $[ ' ' * indent ]$"type": "NORMAL"{% endmacro %}
 {# end macro #}
+
 <a id="storage-nas-api-guide"></a>
 ## Storage > NAS > API Guide { #storage-nas-api-guide }
 
