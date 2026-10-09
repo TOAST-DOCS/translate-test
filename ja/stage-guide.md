@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ec801840fa91 -->
 
 <a id="dev-tools-pipeline-stage-guide"></a>
@@ -108,23 +110,46 @@ Kubernetes環境に配布を行うステージです。
 
 <a id="deployment---deploy"></a>
 ### 配布 - Deploy { #deployment---deploy }
-- **環境設定**の**配布対象設定**で追加した[配布対象](./environment-config/#deployment-target)を選択できます。
-**ステージ名**、**配布対象**、配布に使用する**Manifest**を入力します。
-ビルドステージでタグフォーマットを使用した場合、**Manifest**のドッカーイメージタグ部分を`_{BUILD_NUMBER}`と入力すると、タグフォーマットでビルドされたイメージのうち最新の番号のイメージで配布できます。
-**Manifest**を作成する方法は[Kubernetes文書](https://kubernetes.io/docs/concepts/workloads/controllers/deployment )を参照してください。
+- **[環境設定]** の **[デプロイ対象設定]** で追加した[デプロイ対象](./environment-config/#deployment-target)を選択できます。
+**[ステージ名]**、**[デプロイ対象]**、デプロイに使用する **[Manifest]** を入力します。
+ビルドステージでタグフォーマットを使用した場合、**[Manifest]** のドッカーイメージのタグ部分を `_{BUILD_NUMBER}` と入力すると、タグフォーマットでビルドされたイメージのうち最新番号のイメージでデプロイできます。
+**[Manifest]** の作成方法については、[Kubernetesドキュメント](https://kubernetes.io/docs/concepts/workloads/controllers/deployment )を参照してください。
 
 - **Manifestソース**をアーティファクトとして選択できます。選択したアーティファクトはManifest形式で作成する必要があります。
     - パイプラインで作成したアーティファクトを選択できます。
     - リポジトリから特定ファイルをアーティファクトとして選択できます。 
 - **アーティファクト**の**開始条件**および**終了条件**を設定できます。**開始条件**を設定してステージを開始するかどうかを決定できます。**終了条件**を設定してステージの作成物をアーティファクトに設定できます。
 
-![stage-guide-07](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_pipeline/2024-08-27/pipeline-stage-guide/stage-guide-07_new.png)
+- **[リソースのバージョン管理を使用]** を設定できます。Pipelineサービスのデフォルトの動作で、有効化することをお勧めします。詳細については、以下の **[リソースのバージョン管理]** を参照してください。
+
+![stage-guide-07](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_pipeline/2024-09-15/pipeline-stage-guide/deploy-stage-normal.png)
+
+#### リソースのバージョン管理
+パイプラインサービスは、ConfigMap、Secretリソースをデプロイする際、デフォルトで名前の末尾にバージョン(-v000、-v001、…)を付けた新しいリソースを作成し、
+同じデプロイに含まれるワークロードがそのリソースを参照する部分(`volume`、`env`、`envFrom`など)をバージョン付きの名前に自動的に変更するリソースのバージョン管理機能を提供します。
+この機能により、設定変更の履歴がバージョンごとに保存され、ロールバック時にワークロードとともに以前の設定に戻すことができます。
+
+**[デプロイ - Deploy]**ステージで**[リソースのバージョン管理を使用]**を無効にすると、そのステージがデプロイするリソースはマニフェストで定義された元の名前のままデプロイされ、パイプラインサービスのリソースのバージョン管理機能を使用することはできません。
+オペレーター、コントローラーなど、デプロイマニフェスト外でリソースを元の名前で直接参照する場合にのみ無効にすることをお勧めします。
+
+![stage-guide-07-1](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_pipeline/2026-09-15/pipeline-stage-guide/deploy-stage-version.png)
+
+リソースのバージョン管理オプションは、そのステージがデプロイするすべてのリソースに適用されます。
+特定のリソースのみ異なる設定をするには、マニフェストの`metadata.annotations`に`strategy.spinnaker.io/versioned`アノテーションを"`true`"または"`false`"の値で追加して、リソース単位で設定できます。
+リソースのバージョン管理の適用有無は、次の優先順位で決定されます。
+
+1. リソースの`strategy.spinnaker.io/versioned`アノテーション
+2. Deployステージの**[リソースのバージョン管理を使用]**設定
+
+**制約事項**
+* バージョン管理を無効にしたリソースはバージョン履歴が残らないため、**[デプロイ - Rollout undo]**ステージと**[デプロイ対象管理]**ワークロードのロールバック機能を使用することはできず、ロールバックを実行しても以前のConfigMap、Secretの設定は復元されません。
+* すでにバージョン(-vNNN)が付いた名前でデプロイされたリソースは自動的に削除されないため、手動で削除する必要があります。
 
 <a id="deployment---patch"></a>
 ### 配布 - Patch { #deployment---patch }
 - **環境設定**の**配布対象設定**で追加した[配布対象](./environment-config/#deployment-target)を選択できます。
 - **Namespace**, **リソースタイプ**、**選択方法**、**リソース名**、配布に使用する**Manifest**を入力します。 Patchで既存リソースの情報を修正できます。
-- **Manifest**を作成する方法は[Kubernetes文書](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#patching-resources)を参考してください。
+- **Manifest**を作成する方法は[Kubernetes文書](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#patching-resources)を参照してください。
 - **選択方法**を**動的な方法で選択**に設定する場合、**クラスタ**と**選択戦略**を入力します。
 - クラスタ
     - replicaSetの場合、Pipeline内部でバージョンを指定して配布し、**動的な方法で選択**を選択すると、特定のバージョンを選択するのではなく、選択戦略によって対象を選択します。
@@ -278,7 +303,7 @@ Webフックのレスポンス値が**Fail Fast HTTPステータスコード**�
 <a id="feature---run-nhn-cloud-deploy-service-deployment"></a>
 ### 機能 - NHN Cloud Deployサービス配布実行 { #feature---run-nhn-cloud-deploy-service-deployment }
 ステージでNHN Cloud Deployサービスを使用して配布を実行できます。
-- 配布を実行するアーティファクトの**Command Type**が**SSH**である場合、**NHN Cloud Deployサービス配布実行**機能をサポートしておらず、**Cloud Agent**である場合にのみサポートします。関連する内容については[Deploy使用ガイド](/Dev%20Tools/Deploy/ja/console-guide/#_8)を参照してください。
+- デプロイを実行するアーティファクトの**Command Type**が**SSH**の場合、**NHN Cloud Deployサービスデプロイ実行**機能はサポートされておらず、**Cloud Agent**の場合にのみサポートされます。詳細については、[Deployご利用ガイド](/Dev%20Tools/Deploy/ja/console-guide/#_8)を参照してください。
 
 **環境設定** > **NHN Cloudセキュリティ設定**で追加したセキュリティ設定を選択し、**AppKey**にはNHN Cloud Deployサービスを使用するAppkeyを入力します。
 
@@ -288,7 +313,8 @@ Webフックのレスポンス値が**Fail Fast HTTPステータスコード**�
 
 
 **配布制限時間**には該当ステージの実行完了待機時間を指定します。(最短1分、最長600分)
-**配布詳細設定**では、配布する対象に条件を追加できます。
+
+**[デプロイ詳細設定]**では、デプロイ対象に対する条件を追加できます。
 
 **サーバー選択**で配布するサーバーを選択できます。**全体サーバー**を選択すると、全体サーバーを対象に配布を実行でき、**サーバー選択**をクリックすると、配布するサーバーを選択できます。
 
