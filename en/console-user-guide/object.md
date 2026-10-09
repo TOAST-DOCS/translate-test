@@ -33,7 +33,8 @@ In the **Object** tab, you can create and manage the IPs and ports to be used wh
 * Click **Delete** to delete an object.
     * Objects automatically created by Network Firewall cannot be modified or deleted.
 
-### Additional Features
+<a id="additional-features"></a>
+### Additional Features { #additional-features }
 
 * Add Instance Object: Add objects by leveraging the instances that exist within the project where Network Firewall was created.
 * Download Template: Downloads the template file required for batch registration.
