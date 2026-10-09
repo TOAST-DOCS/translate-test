@@ -16,7 +16,7 @@
 | $[ prefix ]$role | Body | String | 複製ロール<br>- `SOURCE`: ソースボリューム<br>- `DESTINATION`: ターゲットボリューム |
 | $[ prefix ]$status | Body | String | 複製設定ステータス<br>- `INITIALIZED`: 設定完了<br>- `UPDATING`: 設定変更中<br>- `DELETING`: 設定削除中<br>- `PENDING`: 設定作成中 |
 | $[ prefix ]$direction | Body | String | 複製方向<br>- `FORWARD`: ソースボリューム → ターゲットボリューム<br>- `REVERSE`: ターゲットボリューム → ソースボリューム |
-| $[ prefix ]$directionChangedAt | Body | String | 複製方向変更日時 |
+| $[ prefix ]$directionChangedAt | Body | String | 複製方向変更時刻 |
 | $[ prefix ]$dstProjectId | Body | String | 複製ターゲットボリュームのプロジェクトID |
 | $[ prefix ]$dstRegion | Body | String | 複製ターゲットボリュームのリージョン |
 | $[ prefix ]$dstTenantId | Body | String | 複製ターゲットボリュームのテナントID |
@@ -27,7 +27,7 @@
 | $[ prefix ]$srcTenantId | Body | String | ソースボリュームのテナントID |
 | $[ prefix ]$srcVolumeId | Body | String | ソースボリュームID |
 | $[ prefix ]$srcVolumeName | Body | String | ソースボリューム名 |
-| $[ prefix ]$createdAt | Body | String | 複製作成日時 |{% endmacro %}
+| $[ prefix ]$createdAt | Body | String | 複製作成時刻 |{% endmacro %}
 {# end macro volume_mirror_response_table #}
 {% macro volume_response_table(prefix='') -%}
 | $[ prefix ]$id | Body | String | ボリュームID |
@@ -59,8 +59,8 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 | $[ prefix ]$snapshotPolicy.schedule.time | Body | String | スナップショット自動生成時間 |
 | $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | スナップショット自動生成基準タイムゾーン |
 | $[ prefix ]$snapshotPolicy.schedule.weekdays | Body | List | スナップショット自動生成曜日<br>空のリストは毎日を意味し、曜日は0（日曜日）から6（土曜日）までの数値リストで指定します。 |
-| $[ prefix ]$createdAt | Body | String | ボリューム作成日時 |
-| $[ prefix ]$updatedAt | Body | String | ボリューム更新日時 |{% endmacro %}
+| $[ prefix ]$createdAt | Body | String | ボリューム作成時刻 |
+| $[ prefix ]$updatedAt | Body | String | ボリューム更新時刻 |{% endmacro %}
 {# end macro volume_response_table #}
 {% macro volume_request_table(prefix='', method='') -%}
 | $[ prefix ]$acl | Body | List | N | ボリューム作成時に設定するACLリスト<br>IP または CIDR 形式で入力できます。 |
@@ -119,11 +119,9 @@ $[ ' ' * indent ]$  "10.0.1.0/24"
 $[ ' ' * indent ]$],
 $[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
 $[ ' ' * indent ]$"description": "NAS for Testing",
-{%- if encryption %}
 $[ ' ' * indent ]$"encryption": {
-$[ ' ' * indent ]$  "enabled": false
+$[ ' ' * indent ]$  "enabled": $[ 'true' if encryption else 'false' ]$
 $[ ' ' * indent ]$},
-{%- endif %}
 $[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
 $[ ' ' * indent ]$"interfaces": [
 $[ ' ' * indent ]$  {
@@ -176,7 +174,7 @@ $[ ' ' * indent ]$"updatedAt": "2025-04-01T06:47:13+00:00"{% endmacro %}
 | $[ prefix ]$size | Body | Integer | スナップショットサイズ |
 | $[ prefix ]$type | Body | String | スナップショットタイプ<br>- `NORMAL`: ユーザーが作成したスナップショット<br>- `SCHEDULED`: スナップショット自動生成で作成されたスナップショット<br>- `MIRROR`: 複製で作成されたスナップショット |
 | $[ prefix ]$preserved | Body | Boolean | システムが削除不可に設定したスナップショットかどうか |
-| $[ prefix ]$createdAt | Body | String | スナップショット作成日時 |{% endmacro %}
+| $[ prefix ]$createdAt | Body | String | スナップショット作成時刻 |{% endmacro %}
 {# end macro snapshot_response_table #}
 {% macro snapshot_response_json(indent=0) -%}
 $[ ' ' * indent ]$"createdAt": "2025-04-01T09:34:27+00:00",
@@ -760,11 +758,19 @@ X-Auth-Token: {token-id}
 | header | Body | Object | ヘッダオブジェクト |
 | usage | Body | Object | ボリューム使用状況オブジェクト |
 | usage.snapshotReserveGb | Body | Integer | ボリュームでスナップショットのために予約したスペースサイズ |
+{%- if release_2026_05 %}
+
 | usage.snapshotUsedGb | Body | Integer | スナップショット使用量 |
 | usage.snapshotUsedGbInReservedSpace | Body | Integer | スナップショット予約容量内の使用量 |
 | usage.snapshotUsedGbInUserSpace | Body | Integer | 予約容量を超過したスナップショット使用量 |
+{%- endif %}
+
 | usage.usedGb | Body | Integer | ボリューム使用量 |
+{%- if release_2026_05 %}
+
 | usage.userDataGb | Body | Integer | ユーザーが実際に記録したデータサイズ |
+
+{%- endif %}
 
 <details>
   <summary>レスポンス例</summary>
@@ -777,12 +783,17 @@ X-Auth-Token: {token-id}
     "resultMessage": "Success"
   },
   "usage": {
+{%- if release_2026_05 %}
     "snapshotReserveGb": 20,
     "snapshotUsedGb": 11,
     "snapshotUsedGbInReservedSpace": 11,
     "snapshotUsedGbInUserSpace": 0,
     "usedGb": 152,
     "userDataGb": 152
+{%- else %}
+    "snapshotReserveGb": 30,
+    "usedGb": 2
+{%- endif %}
   }
 }
 ```
