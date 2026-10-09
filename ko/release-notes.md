@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=288232a9967b -->
+
 ## Database > RDS for MariaDB > 릴리스 노트
 
 ## 2026. 07. 14.
