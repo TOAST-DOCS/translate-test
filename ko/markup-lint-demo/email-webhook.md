@@ -30,7 +30,7 @@ Email 서비스 내 특정 이벤트가 발생하면 웹훅 설정에 정의된 
 | productName     | 	String      | 	웹훅 이벤트가 발생한 서비스명                                                                     |
 | appKey          | 	String      | 웹훅 이벤트가 발생한 서비스 앱키                                                                    |
 | event           | 	String      | 웹훅 이벤트명<br>* UNSUBSCRIBE: 광고 메일 수신 주소 등록                                              |
-| hooks           | 	List\<Map\> | 웹훅 이벤트 발생 시 데이터<br>* 상세한 내용은 [이벤트 유형별 훅(hook) 정의](#hook-definitions-by-event-type)를 참고해 주세요. |
+| hooks           | 	List&lt;Map\> | 웹훅 이벤트 발생 시 데이터<br>* 상세한 내용은 [이벤트 유형별 훅(hook) 정의](#hook-definitions-by-event-type)를 참고해 주세요. |
 
 <a id="send-webhook-curl"></a>
 #### cURL
@@ -65,7 +65,7 @@ curl -X POST \
 
 | 값                 | 	타입          | 	설명                                           |
 |-------------------|--------------|-----------------------------------------------|
-| hooks             | 	List\<Map\> | 웹훅 이벤트 발생 시 데이터                               |
+| hooks             | 	List&lt;Map\> | 웹훅 이벤트 발생 시 데이터                               |
 | - hookId          | 	String      | 서비스에서 이벤트가 발생할 때 생성되는 고유 ID                   |
 | - receiveMailAddr | 	String      | 	수신 거부를 요청한 수신자 메일 주소                         |
 | - createdDateTime | 	String      | 수신 거부 요청 일시<br>* yyyy-MM-dd'T'HH:mm:ss.SSSXXX |
@@ -89,7 +89,7 @@ curl -X POST \
 
 | 값                   | 	타입          | 	설명                                                                                                                                                   |
 |---------------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| hooks               | 	List\<Map\> | 웹훅 이벤트 발생 시 데이터                                                                                                                                       |
+| hooks               | 	List&lt;Map\> | 웹훅 이벤트 발생 시 데이터                                                                                                                                       |
 | - messageType       | 	String      | 메일 타입<br>NORMAL_MAIL<br>NORMAL_MAIL_AD<br>NORMAL_MAIL_AUTH<br>MASS_MAIL<br>MASS_MAIL_AD<br>MASS_MAIL_AUTH |
 | - requestId         | 	String      | 요청 ID                                                                                                                                                 |
 | - mailSeq           | 	Integer     | 메일 순번                                                                                                                                                 |

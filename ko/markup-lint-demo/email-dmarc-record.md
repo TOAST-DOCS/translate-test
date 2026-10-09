@@ -29,7 +29,7 @@ DMARC 레코드에 사용되는 값에 대해 설명합니다. 더 자세한 내
 | v | 필수 | DMARC1 (고정)              | 버전입니다.                                                                                    |
 | p | 필수 | none, quarantine, reject | 실패 시 처리에 대한 정책입니다.                                                                        |
 | sp | 선택 | none, quarantine, reject | 서브 도메인에 대한 실패 처리 정책입니다.                                                                   |
-| pct | 선택 | 0 \~ 100 (기본값 100)       | 정책을 적용할 이메일 비중입니다. 예를 들어 50인 경우 수신된 이메일 중 절반이 DMARC 정책에 의해 인증됩니다.                         |
+| pct | 선택 | 0 ~ 100 (기본값 100)       | 정책을 적용할 이메일 비중입니다. 예를 들어 50인 경우 수신된 이메일 중 절반이 DMARC 정책에 의해 인증됩니다.                         |
 | adkim | 선택 | s, r (기본값)               | DKIM 얼라인먼트 (Alignment). DKIM-Signature의 도메인 (d)와 From (5322.From)의 일치 수준에 대한 설정입니다.       |
 | aspf | 선택 | s, r (기본값)               | SPF 얼라인먼트 (Alignment). SPF 인증 시 MAIL FROM (5321.From)과 From (5322.From)의 일치 수준에 대한 설정입니다. |
 | rua | 선택 |                          | 주기적으로 집계한 실패 보고서를 수신할 주소입니다. 예, mailto:demarc-report@nhncloud.com                         |
