@@ -1,11 +1,13 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ad9be4a958b6 -->
 
-<a id="overview"></a>
-## Storage > NAS for BigData > 概要 { #overview }
+<a id="storage-nas-for-bigdata-overview"></a>
+## Storage > NAS for BigData > 概要 { #storage-nas-for-bigdata-overview }
 
-NAS for BigDataは、クラウド環境で大容量ファイルストレージを簡単に活用できるように提供するフルマネージド型のNAS(network-attached storage)サービスです。標準のNFS(network file system)プロトコルをベースにクラウドインスタンスから簡単にマウントでき、ローカルディスクのようにデータを読み書きできます。
+NAS for BigDataは、クラウド環境で大容量ファイルストレージを簡単に活用できる完全マネージド型NAS（network-attached storage）サービスです。標準NFSプロトコルをベースにクラウドインスタンスから簡単にマウントでき、ローカルディスクのようにデータを読み書きできます。
 
-拡張可能な大容量ストレージを提供し、インスタンス間のファイル共有、大規模なデータ分析、バックアップなど、様々な業務に柔軟に対応できます。
+拡張可能な大容量ストレージを提供し、インスタンス間のファイル共有、大規模なデータ分析、バックアップなど、さまざまな業務に柔軟に対応できます。
 
 <a id="features"></a>
 ## 特徴 { #features }
