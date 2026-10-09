@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=3543b2af3ddd -->
 
 <a id="network-flow-log-overview"></a>
@@ -130,7 +132,9 @@ The Flow Log service collects and aggregates packets and presents them to you in
 <a id="important-notes-when-using-flow-log-on-peering-gateways-and-colocation-gateways"></a>
 ### Important notes when using Flow Log on peering gateways and colocation gateways { #important-notes-when-using-flow-log-on-peering-gateways-and-colocation-gateways }
 
-* VPC peering gateway is currently not supported.
+* VPC peering gateways within the same project are currently not supported as a collection target. You cannot specify the collection target at the network interface level, and even if you create a Flow Log at the `VPC` or `Subnet` level, the network interfaces of VPC peering gateways are excluded from the collection target.
+    * However, traffic that flows through VPC peering is collected at the network interface of the instance.
+* Network interfaces of inter-project peering (inter_project_peering), inter-region peering (inter_region_peering) gateways, and colocation gateways are supported as collection targets.
 * DROP is not supported because this is not a service that allows users to explicitly set DROP.
 * Flow Logs associated with the service are not affected by the **Connection Setup only** option and will collect all packets regardless of the connection state.
 
