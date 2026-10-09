@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=288232a9967b -->
+
 ## Database > RDS for MariaDB > リリースノート
 
 ## 2026. 07. 14.
