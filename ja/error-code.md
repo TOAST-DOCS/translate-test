@@ -3,11 +3,9 @@
 <!-- pre-align:aligned sig=172b01aa78b5 -->
 
 <a id="notification-sms-result-code"></a>
-
 ## Notification > SMS > 結果コード { #notification-sms-result-code }
 
 <a id="api-result-code"></a>
-
 ## API結果コード { #api-result-code }
 
 | カテゴリー | 成功可否 | 結果コード | 結果コードメッセージ | API応答メッセージ | 
@@ -103,7 +101,6 @@
 | タグ | false | -7002 | .csvの読み取り失敗 | Invalid csv read. |
 
 <a id="result-code-of-receiving"></a>
-
 ## 受信結果コード { #result-code-of-receiving }
 
 | 区分 | 結果コード | 分類 | 意味 |
@@ -159,7 +156,6 @@
 | ETC | E999 | 失敗 | その他のエラー |
 
 <a id="dlr-result-code"></a>
-
 ## DLR結果コード { #dlr-result-code }
 <a id="dlr-status-code"></a>
 ### DLRステータスコード { #dlr-status-code }
@@ -203,7 +199,6 @@
 | 1000 | その他のエラー | その他のエラー |
 
 <a id="query-delivery-codes"></a>
-
 ## 結果照会コード { #query-delivery-codes }
 <a id="query-delivery-codes-result-code-of-receiving"></a>
 ### 受信結果照会コード { #query-delivery-codes-result-code-of-receiving }
