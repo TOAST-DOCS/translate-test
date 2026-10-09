@@ -42,6 +42,7 @@ DNS 추가 설정 관련 자세한 내용은 **도메인 관리 가이드**를 �
 2024년 2월 1일부터 [Gmail 발신자 가이드라인](https://support.google.com/mail/answer/81126?hl=ko#requirements-5k)이 변경되어 도메인 인증 및 SPF, DKIM, DMARC 인증을 하지 않을 경우 일부 수신하는 메일 시스템에 대한 발송 요청이 거부될 수 있습니다.
 
 **미인증 시 발송 제한 대상 도메인**
+
 - gmail.com
 - yahoo.com
 
