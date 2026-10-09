@@ -3,11 +3,9 @@
 <!-- pre-align:aligned sig=172b01aa78b5 -->
 
 <a id="notification-sms-result-code"></a>
-
 ## Notification > SMS > Result Code { #notification-sms-result-code }
 
 <a id="api-result-code"></a>
-
 ## API Result Code { #api-result-code }
 
 | category | isSuccess | Result code | Result code message | API response message |
@@ -103,7 +101,6 @@
 | Tag | false | -7002 | Failed to read .csv | Invalid csv read. |
 
 <a id="result-code-of-receiving"></a>
-
 ## Result code of receiving { #result-code-of-receiving }
 
 | Category | Result code | Classification | Description |
@@ -159,7 +156,6 @@
 | ETC | E999 | Failure | Other errors |
 
 <a id="dlr-result-code"></a>
-
 ## DLR Result Code { #dlr-result-code }
 <a id="dlr-status-code"></a>
 ### DLR Status Code { #dlr-status-code }
@@ -203,7 +199,6 @@
 | 1000 | Other error | Any other error |
 
 <a id="query-delivery-codes"></a>
-
 ## Query Delivery Codes { #query-delivery-codes }
 <a id="query-delivery-codes-result-code-of-receiving"></a>
 ### Reception Result Query Codes { #query-delivery-codes-result-code-of-receiving }
