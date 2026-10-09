@@ -1,7 +1,14 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=e18bb3675006 -->
 
 <a id="security-web-firewall-release-notes"></a>
 ## Security > Web Firewall > Release Notes { #security-web-firewall-release-notes }
+### August 25, 2026
+
+#### Feature Updates
+
+* Added support for Penta Security (WAPPLES SA) Version 7 WAF.
 
 <a id="december-24-2024"></a>
 ### December 24, 2024 { #december-24-2024 }
