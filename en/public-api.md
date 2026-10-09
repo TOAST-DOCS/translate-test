@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=08050b417a83 -->
 
 # NCS API Guide
@@ -78,7 +80,7 @@ Retrieves a list of templates.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/templates
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-template-list-request"></a>
@@ -89,7 +91,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | page | Query | Integer | X | Page number to retrieve |
 | size | Query | Integer | X | Page size to retrieve (default: 10) |
 | disable\_containers | Query | Boolean | X | <li>true: Retrieve excluding containers</li><li>false: Retrieve including containers (default)</li> |
@@ -156,6 +158,9 @@ This API does not require a request body.
 | templates.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout |
 | templates.containers.probe.exec | Body | String List | O | Probe execution commands |
 | templates.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
+| templates.containers.sharedMemory | Body | Object | X | Shared memory configuration information for the container |
+| templates.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory configuration has changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| templates.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory configured for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -263,7 +268,7 @@ Retrieves information about an individual template.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/templates/{templateId}
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-template-request"></a>
@@ -276,7 +281,7 @@ This API does not require a request body.
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | templateId | URL | String | O | Template ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 
 <a id="view-template-response"></a>
 
@@ -340,6 +345,9 @@ This API does not require a request body.
 | template.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout |
 | template.containers.probe.exec | Body | String List | O | Command to run a probe |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
+| template.containers.sharedMemory | Body | Object | X | Shared memory configuration information for the container |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings have changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory configured for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -406,13 +414,13 @@ Creates a template.
 ```bash
 POST /ncs/v1.0/appkeys/{appKey}/templates
 Content-Type: application/json
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | template | Body | Array | O | Template information |
 | template.name | Body | String | O | Template name |
 | template.version | Body | String | X | Template version |
@@ -471,6 +479,9 @@ x-nhn-authorization: {token}
 | template.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout<li>A value greater than periodSeconds must be set.</li> |
 | template.containers.probe.exec | Body | String List | O | Probe execution command |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds)<ul><li>30 to 120 (default: 30)</li></ul>|
+| template.containers.sharedMemory | Body | Object | X | Shared memory configuration information for the container |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings have changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory configured for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -569,6 +580,9 @@ x-nhn-authorization: {token}
 | template.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout |
 | template.containers.probe.exec | Body | String List | O | Probe execution commands |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
+| template.containers.sharedMemory | Body | Object | X | Container shared memory configuration information |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory configuration<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory assigned to the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -633,7 +647,7 @@ Deletes a template.
 
 ```bash
 DELETE /ncs/v1.0/appkeys/{appKey}/templates/{templateId}
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="delete-template-request"></a>
@@ -645,7 +659,7 @@ This API does not require a request body.
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | templateId | URL | String | O | Template ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 
 <a id="delete-template-response"></a>
 #### Response
@@ -658,7 +672,7 @@ This API responds with common information.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/templates/{templateId}/versions
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-a-list-of-template-versions-request"></a>
@@ -671,7 +685,7 @@ This API does not require a request body.
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | templateId | Path | String | O | Template ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | q | Query | String | X | Search parameter |
 | page | Query | Integer | X | Page number to retrieve |
 | size | Query | Integer | X | Page size to retrieve (default: 10) |
@@ -740,6 +754,9 @@ This API does not require a request body.
 | templates.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout |
 | templates.containers.probe.exec | Body | String List | O | Command to run a probe |
 | templates.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
+| templates.containers.sharedMemory | Body | Object | X | Shared memory configuration information for the container |
+| templates.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the shared memory configuration of the container<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| templates.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory set for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -874,7 +891,7 @@ Retrieves information on an individual template version.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/templates/{templateId}/versions/{version}
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-template-versions-request"></a>
@@ -888,7 +905,7 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | templateId | URL | String | O | Template ID |
 | version | URL | String | O | Template version |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 
 <a id="view-template-versions-response"></a>
 
@@ -954,6 +971,9 @@ This API does not require a request body.
 | template.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout |
 | template.containers.probe.exec | Body | String List | O | Command to run a probe |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
+| template.containers.sharedMemory | Body | Object | X | Container shared memory configuration information |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory configuration<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory assigned to the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -1044,14 +1064,14 @@ Creates a version of the template.
 
 ```bash
 POST /ncs/v1.0/appkeys/{appKey}/templates/{templateId}/versions
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | templateId | URL | String | O | Template ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | template | Body | Object | O | Template version information |
 | template.version | Body | String | O | Template version |
 | template.sourceVersion | Body | String | O | Baseline template version |
@@ -1112,6 +1132,9 @@ x-nhn-authorization: {token}
 | template.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout |
 | template.containers.probe.exec | Body | String List | O | Probe execution command |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
+| template.containers.sharedMemory | Body | Object | X | Shared memory configuration information for the container |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory settings are changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory configured for the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -1208,6 +1231,9 @@ x-nhn-authorization: {token}
 | template.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout |
 | template.containers.probe.exec | Body | String List | O | Probe execution command |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
+| template.containers.sharedMemory | Body | Object | X | Shared memory configuration information for the container |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory configuration has changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory assigned to the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -1270,7 +1296,7 @@ x-nhn-authorization: {token}
 
 ```bash
 DELETE /ncs/v1.0/appkeys/{appkey}/templates/{templateId}/versions/{version}
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="delete-template-version-request"></a>
@@ -1283,7 +1309,7 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | templateId | URL | String | O | Template ID |
 | version | URL | String | O | Template version |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 
 <a id="delete-template-version-response"></a>
 #### Response
@@ -1302,7 +1328,7 @@ Retrieves a list of workloads.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/workloads
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="list-workloads-request"></a>
@@ -1314,7 +1340,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | q | Query | String | X | Filter by workload name, template ID, and template version<ul>Examples:<li>q=templateId=${Template ID}</li><li>q=${Workload name)</li><li>q=templateId=${Template ID}\&version=${Template version}</li></ul> |
 | page | Query | Integer | X | Page number to retrieve |
 | size | Query | Integer | X | Page size to retrieve (default: 10) |
@@ -1341,6 +1367,8 @@ This API does not require a request body.
 | workloads.loadBalancing | Body | Object | O | Workload load balancer information |
 | workloads.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workloads.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
+| workloads.loadBalancing.ipAddress | Body | String | O | Workload load balancer IP information (vip, floating ip) |
+| workloads.loadBalancing.vipAddress | Body | String | X | Workload load balancer specified IP |
 | workloads.loadBalancing.healthMonitor | Body | Object | X | About checking the health of the load balancer |
 | workloads.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workloads.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -1452,7 +1480,7 @@ Retrieves an individual workload.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-workload-request"></a>
@@ -1465,7 +1493,7 @@ This API does not require a request body.
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 
 <a id="view-workload-response"></a>
 
@@ -1488,6 +1516,8 @@ This API does not require a request body.
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
+| workload.loadBalancing.ipAddress | Body | String | O | Workload load balancer IP information (vip, floating ip) |
+| workload.loadBalancing.vipAddress | Body | String | X | Workload load balancer specified IP |
 | workload.loadBalancing.healthMonitor | Body | Object | X | About checking the health of the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -1581,6 +1611,9 @@ This API does not require a request body.
 | workload.tasks.containers.probe.timeoutSeconds | Body | String | O | Probe execution timeout |
 | workload.tasks.containers.probe.exec | Body | String List | O | Command to run a probe |
 | workload.tasks.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
+| workload.tasks.containers.sharedMemory | Body | Object | X | Container shared memory configuration information |
+| workload.tasks.containers.sharedMemory.changed | Body | Boolean | O | Whether the container shared memory configuration is changed<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| workload.tasks.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory (MiB) configured for the container |
 | workload.tasks.containers.state | Body | String | O | Container status |
 | workload.tasks.containers.startedAt | Body | String | O | Container start time |
 | workload.tasks.containers.finishedAt | Body | String | X | Initialization container completion time |
@@ -1706,7 +1739,7 @@ Retrieves the container logs for your workload.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/tasks/{taskId}/logs?container={ContainerName}&from={YYYY-MM-DDThh:mm:ssZ}&to={YYYY-MM-DDThh:mm:ssZ}
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-workload-log-request"></a>
@@ -1719,7 +1752,7 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
 | taskId | URL | String | O | Task ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | containerName | Query | String | O | Container name |
 | from | Query | String | X | Log start time (default: 5 minutes before current) |
 | to | Query | String | X | Log end time (default: current time) |
@@ -1768,7 +1801,7 @@ Retrieves the events of a workload.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/tasks/{taskId}/events
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-workload-event-request"></a>
@@ -1781,7 +1814,7 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
 | taskId | URL | String | O | Task ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | type | Query | Integer | X | Event type<ul><li>Normal</li><li>Warning</li></ul> |
 | q | Query | String | X | Filter by event content |
 | page | Query | String | X | Page to retrieve |
@@ -1835,7 +1868,7 @@ Retrieves a list of workload run history.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/history
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-a-list-of-workload-run-history-request"></a>
@@ -1847,7 +1880,7 @@ This API does not require a request body.
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | page | Query | Integer | X | Page number to retrieve |
 | size | Query | Integer | X | Page size to retrieve (default: 10) |
 | sort | Query | String | X | Field name to sort by<br>Prefix the field name with `-` for reverse sorting<br>Example: `sort=-id` |
@@ -1901,7 +1934,7 @@ Retrieves the run history of an individual workload.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/history/{historyId}
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-workload-run-history-request"></a>
@@ -1915,7 +1948,7 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
 | historyId | URL | Integer | O | History ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 
 <a id="view-workload-run-history-response"></a>
 
@@ -1984,6 +2017,9 @@ This API does not require a request body.
 | template.containers.probe.timeoutSeconds | Body | Integer | O | Probe execution timeout |
 | template.containers.probe.exec | Body | String List | O | Probe execution command |
 | template.containers.stopTimeout | Body | Integer | X | Initialization container execution timeout (seconds) |
+| template.containers.sharedMemory | Body | Object | X | Container shared memory configuration information |
+| template.containers.sharedMemory.changed | Body | Boolean | O | Whether to change the container shared memory configuration<ul><li>true: Changed</li><li>false: Not changed</li></ul> |
+| template.containers.sharedMemory.sizeLimit | Body | Boolean | O | Shared memory assigned to the container (MiB) |
 
 <details>
   <summary>Example</summary>
@@ -2083,7 +2119,7 @@ Views the history of a scheduled run.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/schedulehistory
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-workload-scheduled-run-history-request"></a>
@@ -2095,7 +2131,7 @@ This API does not require a request body.
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | page | Query | Integer | X | Page number to retrieve |
 | size | Query | Integer | X | Page size to retrieve (default: 10) |
 
@@ -2143,7 +2179,7 @@ Creates a workload.
 ```bash
 POST /ncs/v1.0/appkeys/{appKey}/workloads
 Content-Type: application/json
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="create-workload-request"></a>
@@ -2153,7 +2189,7 @@ x-nhn-authorization: {token}
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | workload | Body | Object | O | Workload information |
 | workload.name | Body | String | O | Workload name |
 | workload.type | Body | String | X | Deployment controller (default:deployment)<ul><li>deployment</li><li>statefulset</li></ul> |
@@ -2164,6 +2200,7 @@ x-nhn-authorization: {token}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
+| workload.loadBalancing.vipAddress | Body | String | X | Specify internal load balancer IP |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -2254,6 +2291,7 @@ x-nhn-authorization: {token}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
+| workload.loadBalancing.vipAddress | Body | String | X | Workload load balancer specified IP |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -2348,7 +2386,7 @@ Changes a workload.
 ```bash
 PUT /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
 Content-Type: application/json
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="change-workload-request"></a>
@@ -2359,7 +2397,7 @@ x-nhn-authorization: {token}
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | workload | Body | Object | O | Workload information |
 | workload.name | Body | String | O | Workload name |
 | workload.templateId | Body | String | O | Template ID of the workload |
@@ -2369,6 +2407,7 @@ x-nhn-authorization: {token}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
+| workload.loadBalancing.vipAddress | Body | String | X | Specify internal load balancer IP |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -2455,6 +2494,7 @@ x-nhn-authorization: {token}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
+| workload.loadBalancing.vipAddress | Body | String | X | Specified IP of workload load balancer |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | O | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | O | Maximum response wait time |
@@ -2561,14 +2601,14 @@ You can modify only part of a workload.
 ```bash
 PATCH /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
 Content-Type: application/json-patch+json
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | op | Body | String | O | Operation<ul><li>Add</li><li>Remove</li><li>Replace</li><li>Copy</li><li>Move</li><li>Test</li></ul> |
 | path | Body | String | O | Path of the data to change |
 | value | Body | String | X | Changed value |
@@ -2607,6 +2647,7 @@ x-nhn-authorization: {token}
 | workload.loadBalancing | Body | Object | O | Workload load balancer information |
 | workload.loadBalancing.enabled | Body | Boolean | O | Whether to use workload load balancer |
 | workload.loadBalancing.floatingIp | Body | Boolean | O | Whether to use the workload load balancer floating IP |
+| workload.loadBalancing.vipAddress | Body | String | X | Workload load balancer IP address |
 | workload.loadBalancing.healthMonitor | Body | Object | X | Health check information for the load balancer |
 | workload.loadBalancing.healthMonitor.delay | Body | Integer | X | Health check interval |
 | workload.loadBalancing.healthMonitor.timeout | Body | Integer | X | Maximum response wait time |
@@ -2705,7 +2746,7 @@ Stops a workload.
 
 ```bash
 POST /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/pause
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="stop-workload-request"></a>
@@ -2717,7 +2758,7 @@ This API does not require a request body.
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Template ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 
 <a id="stop-workload-response"></a>
 #### Response
@@ -2730,7 +2771,7 @@ Restarts a workload that is stopped.
 
 ```bash
 POST /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/resume
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="restart-workload-request"></a>
@@ -2742,7 +2783,7 @@ This API does not require a request body.
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 
 <a id="restart-workload-response"></a>
 #### Response
@@ -2755,7 +2796,7 @@ Restarts a task in the workload.
 
 ```bash
 POST /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/tasks/{taskId}/restart
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="delete-workload-request"></a>
@@ -2768,7 +2809,7 @@ This API does not require a request body.
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
 | taskId | URL | String | O | Task ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 
 <a id="delete-workload-response"></a>
 #### Response
@@ -2782,7 +2823,7 @@ Deletes a workload.
 
 ```bash
 DELETE /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="workload-1-1"></a>
@@ -2794,7 +2835,7 @@ This API does not require a request body.
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
 | workloadId | URL | String | O | Workload ID |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 
 <a id="workload-1-2"></a>
 #### Response
@@ -2808,7 +2849,7 @@ Retrieves the configured malware scan settings.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/malware/config
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-malware-scan-settings-request"></a>
@@ -2819,7 +2860,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 
 
 <a id="view-malware-scan-settings-respose"></a>
@@ -2851,7 +2892,7 @@ Configures the malware scan settings.
 
 ```bash
 POST /ncs/v1.0/appkeys/{appKey}/malware/config
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="configure-malware-scan-request"></a>
@@ -2859,7 +2900,7 @@ x-nhn-authorization: {token}
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | enabled | Body | String | O | Malware scan settings<ul><li>true: Enable</li><li>false: Disable</li></ul>|
 
 <details>
@@ -2902,7 +2943,7 @@ Retrieves the malware scan result.
 
 ```bash
 GET /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}/history/{historyId}/malware
-x-nhn-authorization: {token}
+x-nhn-authorization: Bearer {accessToken}
 ```
 
 <a id="view-malware-scan-result-request"></a>
@@ -2913,7 +2954,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 | --- | --- | --- | --- | --- |
 | appKey | URL | String | O | Service Appkey |
-| token | Header | String | O | NHN Cloud Token ({token_type} {access_token})|
+| token | Header | String | O | NHN Cloud Token |
 | workloadId | URL | String | O | Workload ID |
 
 
