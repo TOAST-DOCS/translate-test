@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=087cd81ac2d8 -->
 
 # Console User Guide
@@ -168,7 +170,7 @@ Each issuer entry has **Revoke** button so that you can revoke the issuer when n
             - **TTL**: Valid for a specified period of time from the time of issuance (for example: 365d, 8760h, 60m, 30s)
             - **Specific date**: Specify a specific expiration date (not after)
         - **Backdate Validity**: This period allows the certificate's validity start time to be set earlier than the current time. Used to prevent time synchronization issues (default: 30s / e.g. 1d, 24h, 60m, and 30s)
-        - **Maximum path length**: specify the maximum number of intermediate CAs allowed under this issuer in the certificate chain. A value of 0 means that no more subordinate CAs can be created (e.g: 0)
+        - **Maximum path length**: Specifies the maximum number of intermediate CAs allowed under this issuer in the certificate chain. A value of 0 means that no more subordinate CAs can be created (e.g., 0).
 
     - Key Info
         - **Key algorithm**: Choose among RSA, EC, and ED25519
@@ -177,10 +179,10 @@ Each issuer entry has **Revoke** button so that you can revoke the issuer when n
     - Subject alternative name (SAN) configuration
         - **Exclude common names from SANs**: select whether to automatically exclude common names (CNs) from the SAN list.
         - **Subject serial number**: enter the subject's unique serial number.
-        - **Subject alternate names (SAN**): Additional distinguished name in domain format (e.g., example.com, sub.example.com)
+        - **Subject alternate names (SANs)**: Additional distinguished name in domain format (e.g., example.com, sub.example.com). Values that contain an underscore (_) or are in the form of an IP address cannot be entered.
         - **IP subject alternate names (IP SANs**): an additional identifying name in the form of an IP address (e.g. 192.168.1.1, 10.0.0.1)
         - **URI subject alternate names (URI SANs**): additional identifying name in URI format (e.g., https://example.com, spiffe://example.org)
-        - **Other SANs**: other types of SANs (e.g: 1.2.3.4;UTF8:test@example.com
+        - **Other SANs**: SAN in other formats (e.g., 1.2.3.4;UTF8String:test@example.com). For TYPE, enter one of the following: UTF8String, IA5String, PrintableString, BMPString, or UniversalString.
 
     - Subject information (Subject)
         - **Country (C)**: country code
@@ -192,6 +194,8 @@ Each issuer entry has **Revoke** button so that you can revoke the issuer when n
         - **Department (organizational unit) (OU**): department name
 
 3. Click **Add** to add the issuer.
+
+    - If an input value is not valid, the section that contains the field with the error automatically expands, and the focus moves to the first section with an error.
 
 <a id="issuer-details"></a>
 ### Issuer details { #issuer-details }
@@ -275,7 +279,7 @@ Each certificate template entry has **Modify** and **Delete** buttons to help yo
     - SAN option
         - **Allow IP SANs**: allow IP addresses to be included in the SAN.
         - **URI subject alternate names (URI SANs**): enter the SAN in URI format (e.g. https://example.com, spiffe://example.org).
-        - **Other SANs**: enter other types of SANs (e.g. 1.2.3.4;UTF8:test@example.com
+        - **Other SANs**: enter other types of SANs (e.g. 1.2.3.4;UTF8String:test@example.com). Enter one of the following for TYPE: UTF8String, IA5String, PrintableString, BMPString, or UniversalString.
 
     - Common applied settings
         - Settings
@@ -295,7 +299,7 @@ Each certificate template entry has **Modify** and **Delete** buttons to help yo
 
         - Extended key usage
             - Select what you want to use the extended key for: `serverAuth`(TLS server authentication), `clientAuth`(TLS client authentication), `codeSigning, or codeSigning`.
-            - **Extended key usage OIDs**: you can manually enter an OID for additional extended key purposes (e.g. 1.3.6.1.5.5.7.3.1, 1.3.6.1.5.5.7.3.2)
+            - **Extended key usage OIDs**: you can manually enter an OID for additional extended key purposes (e.g. 1.3.6.1.5.5.7.3.1, 1.3.6.1.5.5.7.3.2).
 
         - Certificate policies
             - **List of policies**: enter an OID that represents the policy the certificate complies with. you can enter multiple OIDs.
@@ -318,6 +322,8 @@ Each certificate template entry has **Modify** and **Delete** buttons to help yo
 
 3. Click **Add** to add a certificate template.
 
+    - If an input value is invalid, the section containing the field where the error occurred is automatically expanded, and you are taken to the first error section.
+
 <a id="certificate-template-details"></a>
 ### Certificate template details { #certificate-template-details }
 
@@ -334,6 +340,9 @@ At the top of the details page are the **+ Create New Certificate**, Modify**, a
 1. In the certificate template list, click **Modify**, or on the details page, click **Modify**.
 2. On the Modify Certificate Template page, make the necessary changes.
 3. Click **Modify** to save your changes.
+
+    - If an input value is invalid, the section that contains the field with the error automatically expands, and the view scrolls to the first section with an error.
+    - If any previously saved value has an invalid format (for example, an incorrect OID), it will not be saved. Correct the value and save again.
 
 <a id="modify-delete-certificate-template-delete-a-certificate-template"></a>
 #### Delete a certificate template
@@ -362,6 +371,8 @@ To create a certificate using a certificate template, follow these steps:
     - **SAN information**: additional SAN information
 
 4. Click **OK** to create the certificate.
+
+    - If an input value is invalid, the section that contains the field where the error occurred automatically expands and navigates to the first error section.
 
 The generated certificate can be saved to the Private CA at your option, and if so, you can view it on the Certificate tab.
 
