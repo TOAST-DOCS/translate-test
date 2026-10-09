@@ -6,13 +6,11 @@
 {% set vpc_ov = '-gov' if 'gov' in build_flags else '' %}
 {% set price_dom = {"public":"www.toast.com","gov":"gov.toast.com","ncgn":"www.gncloud.go.kr","ninc":"www.ninc.go.kr","ngsc":"www.ngsc.go.kr","ngovc":"www.ngovc.com","ngoic":"www.ngoic.com"} %}
 <a id="compute-instance-overview"></a>
-
 ## Compute > Instance > 概要 { #compute-instance-overview }
 
 インスタンスは仮想のCPU、メモリ、ルートブロックストレージで構成された仮想サーバーです。このサーバーにお客様のサービスやアプリケーションをインストールし、NHN Cloudが提供するさまざまなサービスを組み合わせて使用します。
 
 <a id="components"></a>
-
 ## インスタンスの構成要素 { #components }
 
 インスタンスを構成する要素は次のとおりです。
@@ -85,7 +83,6 @@ NHN Cloudは物理ハードウェアの問題により発生する障害に備�
 インスタンスが外部と通信するには、VPCで定義されたネットワークのうち、少なくとも1つ以上に接続されている必要があります。ネットワークに接続されていないインスタンスにはアクセスできません。ネットワークを新規作成または変更するには、[VPC概要](/Network/VPC/ja/overview$[ vpc_ov ]$/)を参照してください。
 
 <a id="pricing"></a>
-
 ## 課金 { #pricing }
 
 インスタンスの課金方式は次のとおりです。
@@ -98,7 +95,6 @@ NHN Cloudは物理ハードウェアの問題により発生する障害に備�
 課金の詳細については、サービスごとの[料金ページ](https://$[ price_dom[f] ]$/kr/service/compute/instance#price)を参照してください。
 
 <a id="how-to-access-instances"></a>
-
 ## インスタンスの接続方法 { #how-to-access-instances }
 
 <a id="how-to-access-linux-instances"></a>
