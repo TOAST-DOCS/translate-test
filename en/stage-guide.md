@@ -122,6 +122,7 @@ For more details on how to write a **Manifest**, see the [Kubernetes documentati
 
 ![stage-guide-07](https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_2acdfabf4efe4efc8a04c00b348110c9/cdn_origin/prod_pipeline/2024-09-15/pipeline-stage-guide/deploy-stage-normal.png)
 
+<a id="deployment---deploy-resource-versioning"></a>
 #### Resource Versioning
 When deploying ConfigMap and Secret resources, the Pipeline service provides the Resource Versioning feature, which creates new resources with a version suffix (-v000, -v001, …) appended to the name and automatically updates references to those resources in workloads included in the same deployment (`volume`, `env`, `envFrom`, etc.) to use the versioned names.
 This feature preserves the configuration change history by version and allows you to revert to previous settings along with the workload during a Rollback.
