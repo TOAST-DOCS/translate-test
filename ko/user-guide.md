@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=53f25fa4d7f2 -->
+<!-- pre-align:aligned sig=02186abe0ed4 -->
 
 <a id="container-nhn-container-servicencs-user-guide"></a>
 ## Container > NHN Container Service(NCS) > 사용 가이드 { #container-nhn-container-servicencs-user-guide }
@@ -527,7 +527,7 @@ NCS 서비스를 이용하기 위해서는 다음 역할이 필요합니다.
 | Graphics Optimized | ncs1 | ncs1.g2m10 | 10GB | 2 | MIG 2g.10gb |
 
 <a id="loadbalancer-static-ip"></a>
-### 워크로드 로드 밸런서 IP 지정
+### 워크로드 로드 밸런서 IP 지정 { #loadbalancer-static-ip }
 * API로 워크로드의 로드 밸런서 IP를 지정할 수 있습니다.
 * 로드 밸런서 IP를 지정하지 않은 경우, 로드 밸런서가 재생성되면 IP가 변경될 수 있습니다.
 * 로드 밸런서 IP를 지정하면 로드 밸런서가 재생성되더라도 해당 IP가 유지됩니다. 지정한 IP는 별도로 변경하거나 워크로드를 삭제하기 전까지 유지됩니다.
