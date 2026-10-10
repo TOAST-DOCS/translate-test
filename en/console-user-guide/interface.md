@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=b90768e8e6c9 -->
 
 <a id="interface"></a>
@@ -34,12 +36,13 @@ In the **Interface** tab, you can create and manage interfaces to be used for th
 
 !!! tip "Note"
 
-    Only the name and description can be modified.
+    * The maximum number of interfaces that can be added is 10.
+    * Only the name and description can be modified.
 
 !!! danger "Caution"
     
     * Interfaces in use cannot be deleted.
         * An interface can only be deleted if it is not used in ACL and route settings and is set to disabled in the Interface tab.
     * Setting an interface currently in use to "Disabled" may affect communication.
-    * Information on created interfaces can be viewed in [Network > Network Interface].
-        * If a Virtual_IP type interface created in Network Firewall is modified, disabled interfaces will no longer be usable, and interfaces already in use may affect communication.
+    * Information on added interfaces can be viewed in [Network > Network Interface].
+        * If a Virtual_IP type interface added in Network Firewall is modified, disabled interfaces will no longer be usable, and interfaces already in use may affect communication.

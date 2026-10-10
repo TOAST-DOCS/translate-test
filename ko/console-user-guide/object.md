@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=61dff5f1b687 -->
+<!-- pre-align:aligned sig=64d88869d71a -->
 
 <a id="object"></a>
 ## 객체 { #object }
@@ -31,7 +31,8 @@
 * **삭제**를 클릭해 객체를 삭제할 수 있습니다.
     * 자동으로 Network Firewall에서 생성한 객체는 수정이나 삭제할 수 없습니다.
 
-### 부가 기능
+<a id="additional-features"></a>
+### 부가 기능 { #additional-features }
 
 * 인스턴스 객체 추가: Network Firewall이 생성된 프로젝트 내에 있는 인스턴스를 활용하여 객체를 추가할 수 있습니다.
 * 템플릿 내려받기: 일괄 등록 시 필요한 템플릿 파일을 다운로드합니다.
