@@ -54,7 +54,7 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 | $[ prefix ]$mountProtocol.protocol | Body | String | Volume mount protocol |
 | $[ prefix ]$snapshotPolicy | Body | Object | Volume snapshot settings object |
 | $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | Maximum number of snapshots to store |
-| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | Snapshot reserve capacity ratio |
+| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | Snapshot capacity ratio |
 | $[ prefix ]$snapshotPolicy.schedule | Body | Object | Snapshot auto-creation object |
 | $[ prefix ]$snapshotPolicy.schedule.time | Body | String | Snapshot auto-creation time |
 | $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | Snapshot auto-creation reference timezone |
@@ -89,7 +89,7 @@ $[ volume_mirror_response_table(prefix + 'mirrors.') ]$
 | $[ prefix ]$sizeGb | Body | Integer | $[ 'Y' if method == 'post'  else 'N' ]$ | Volume size (GB)<br>The volume can be set from a minimum of 300 GB to a maximum of 10,000 GB, in 100 GB increments. |
 | $[ prefix ]$snapshotPolicy | Body | Object | N | Volume snapshot settings object |
 | $[ prefix ]$snapshotPolicy.maxScheduledCount | Body | Integer | N | Maximum number of snapshots to store<br>You can set a maximum of 20, and the first automatically created snapshot will be deleted when the maximum number of saves is reached. |
-| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | Snapshot reserve capacity ratio |
+| $[ prefix ]$snapshotPolicy.reservePercent | Body | Integer | N | Snapshot capacity ratio |
 | $[ prefix ]$snapshotPolicy.schedule | Body | Object | N | Snapshot auto-creation object<br>If `null`, snapshot auto-creation will not be configured. |
 | $[ prefix ]$snapshotPolicy.schedule.time | Body | String | N | Snapshot auto-creation time |
 | $[ prefix ]$snapshotPolicy.schedule.timeOffset | Body | String | N | Snapshot auto-creation reference timezone |
@@ -119,11 +119,9 @@ $[ ' ' * indent ]$  "10.0.1.0/24"
 $[ ' ' * indent ]$],
 $[ ' ' * indent ]$"createdAt": "2025-04-01T06:44:25+00:00",
 $[ ' ' * indent ]$"description": "NAS for Testing",
-{%- if encryption %}
 $[ ' ' * indent ]$"encryption": {
-$[ ' ' * indent ]$  "enabled": false
+$[ ' ' * indent ]$  "enabled": $[ 'true' if encryption else 'false' ]$
 $[ ' ' * indent ]$},
-{%- endif %}
 $[ ' ' * indent ]$"id": "fc8b111a-32b7-45d3-b123-ff3ecaaf768a",
 $[ ' ' * indent ]$"interfaces": [
 $[ ' ' * indent ]$  {
@@ -759,14 +757,22 @@ This API does not require a request body.
 | header | Body | Object | Header objects |
 | usage | Body | Object | Volume usage object |
 | usage.snapshotReserveGb | Body | Integer | The amount of space reserved for snapshots on the volume |
+{%- if release_2026_05 %}
+
 | usage.snapshotUsedGb | Body | Integer | Snapshot usage |
 | usage.snapshotUsedGbInReservedSpace | Body | Integer | Snapshot usage within the reserved capacity |
 | usage.snapshotUsedGbInUserSpace | Body | Integer | Snapshot usage exceeding the reserved capacity |
+{%- endif %}
+
 | usage.usedGb | Body | Integer | Volume usage |
+{%- if release_2026_05 %}
+
 | usage.userDataGb | Body | Integer | The size of data actually written by the user |
 
+{%- endif %}
+
 <details>
-  <summary>Example response</summary>
+  <summary>Response Example</summary>
 
 ```json
 {
@@ -776,12 +782,17 @@ This API does not require a request body.
     "resultMessage": "Success"
   },
   "usage": {
+{%- if release_2026_05 %}
     "snapshotReserveGb": 20,
     "snapshotUsedGb": 11,
     "snapshotUsedGbInReservedSpace": 11,
     "snapshotUsedGbInUserSpace": 0,
     "usedGb": 152,
     "userDataGb": 152
+{%- else %}
+    "snapshotReserveGb": 30,
+    "usedGb": 2
+{%- endif %}
   }
 }
 ```
