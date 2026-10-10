@@ -5,12 +5,12 @@
 <a id="ai-service-ocr-document-ocr-release-notes"></a>
 ## AI Service > OCR > Document OCR > Release Notes { #ai-service-ocr-document-ocr-release-notes }
 
-<a id="september-8-2026"></a>
-## September 8, 2026 { #september-8-2026 }
+<a id="september-15-2026"></a>
+## September 15, 2026 { #september-15-2026 }
 
-- Encrypted serial number now required for driver license authenticity verification
+- Made encrypted serial number mandatory for driver license authenticity verification
   - Starting September 7, 2026, the encrypted serial number must be included in driver license authenticity verification requests.
-  - This change reflects the strengthened driver license authenticity verification procedures of the National Police Agency.
+  - This change is applied due to the strengthened driver license authenticity verification procedure by the National Police Agency.
   - The encrypted serial number can be found in the driver license analysis results.
   - For more information, see the [API Guide](./document-ocr-api-guide-v2.1.md).
 
