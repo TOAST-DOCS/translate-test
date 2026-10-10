@@ -1,7 +1,17 @@
-<!-- pre-align:aligned sig=bf7aa4e53faf -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=1928346f69c0 -->
 
 <a id="notification-sms-release-notes"></a>
 ## Notification > SMS > Release Notes { #notification-sms-release-notes }
+
+<a id="october-6-2026"></a>
+### 2026. 10. 6. { #october-6-2026 }
+<a id="october-6-2026-added-features"></a>
+#### Added Features
+* [Console] Limit on the number of sender numbers that can be registered
+  * The number of sender numbers that can be registered per account is limited to a maximum of 5.
+  * For more information, see [Console Guide > Sender Number Pre-registration](./console-guide#sender-number-registration-limit).
 
 <a id="june-23-2026"></a>
 ### June 23, 2026 { #june-23-2026 }
