@@ -528,7 +528,7 @@ Infrastructure NCS ADMIN permissions alone are only for viewing.
 | Graphics Optimized | ncs1 | ncs1.g2m10 | 10GB | 2 | MIG 2g.10gb |
 
 <a id="loadbalancer-static-ip"></a>
-### Specify a Workload Load Balancer IP
+### Specify a Workload Load Balancer IP { #loadbalancer-static-ip }
 * You can specify the load balancer IP of a workload via API.
 * If you do not specify a load balancer IP, the IP may change when the load balancer is recreated.
 * If you specify a load balancer IP, that IP is retained even if the load balancer is recreated. The specified IP is retained until you change it separately or delete the workload.
