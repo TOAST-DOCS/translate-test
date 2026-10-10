@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=d48e0cc2304b -->
 
 <a id="storage-nas-for-bigdata-console-user-guide"></a>
@@ -10,11 +12,11 @@
 <a id="create_volume"></a>
 ### ボリューム作成 { #create_volume }
 
-新しいボリュームを作成します。作成されたボリュームは、NFS(Network File System：ネットワークファイルシステム)プロトコルを利用してインスタンスからアクセスできます。
+新しいボリュームを作成します。作成されたボリュームは、NFS(network file system、ネットワークファイルシステム)プロトコルを使用してインスタンスからアクセスできます。
 
 | 項目 | 説明 |
 | --- | --- |
-| 名前 | 作成するボリュームの名前です。ボリューム名でNFSのアクセスパスを作成します。名前は100文字以内の英数字、及び一部の記号('-'、'\_')のみ入力できます。 |
+| 名前 | 作成するボリュームの名前です。ボリューム名でNFSのアクセスパスを作成します。名前は100文字以内の英文字と数字、及び一部の記号('-'、'\_')のみ入力できます。 |
 | 説明 | ボリュームの説明です。 |
 | VPC | ボリュームにアクセスするVPC(Virtual Private Cloud：仮想プライベートクラウド)です。 |
 | サブネット | ボリュームにアクセスするサブネットです。選択したVPCのサブネットのみ選択できます。 |
@@ -44,12 +46,12 @@ Network ACLサービスでアクセス制御リスト(ACL)を設定できます�
 
 <a id="snapshots"></a>
 ## スナップショット { #snapshots }
-スナップショットは、ボリュームの特定の時点の状態を保存した読み取り専用のコピーです。スナップショットを利用して、ボリュームをスナップショット作成時点の状態に復元できます。
+スナップショットは、ボリュームの特定の時点の状態を保存した読み取り専用のコピーです。スナップショットを使用して、ボリュームをスナップショット作成時点の状態に復元できます。
 
 | 項目 | 説明 |
 | --- | --- |
 | 名前 | スナップショットの名前です。システムが作成した場合は、指定されたルールに従って名前が決定されます。 |
-| 作成日 | スナップショットが作成された日時です。 |
+| 作成日 | スナップショットを作成した日時です。 |
 
 <a id="snapshots.create"></a>
 ### スナップショットの即時作成 { #snapshots.create }
@@ -69,7 +71,7 @@ Network ACLサービスでアクセス制御リスト(ACL)を設定できます�
 <a id="connect_volume"></a>
 ## ボリュームの接続 { #connect_volume }
 
-作成されたボリュームの接続情報を利用してインスタンスにマウントできます。ただし、マウントするインスタンスはボリュームと同じサブネットに接続されている必要があります。
+作成されたボリュームの接続情報を使用してインスタンスにマウントできます。ただし、マウントするインスタンスはボリュームと同じサブネットに接続されている必要があります。
 
 <a id="connect_volume.nfs"></a>
 ### NFSパッケージのインストール { #connect_volume.nfs }
@@ -80,7 +82,7 @@ Network ACLサービスでアクセス制御リスト(ACL)を設定できます�
 ```
 sudo apt-get install nfs-common rpcbind
 ```
-<br/>
+<br>
 
 <a id="connect_volume.nfs-rocky"></a>
 #### Rocky
@@ -88,7 +90,7 @@ sudo apt-get install nfs-common rpcbind
 ```
 sudo dnf install nfs-utils rpcbind
 ```
-<br/>
+<br>
 
 <a id="connect_volume.rpcbind"></a>
 ### rpcbindサービスの実行 { #connect_volume.rpcbind }
@@ -96,16 +98,16 @@ sudo dnf install nfs-utils rpcbind
 ```
 sudo service rpcbind start
 ```
-<br/>
+<br>
 
 <a id="connect_volume.mount"></a>
 ### ボリュームのマウント { #connect_volume.mount }
 
 ```
-sudo mount -t nfs <nas source> <mount point>
+sudo mount -t nfs <nas-source> <mount-point>
 ```
 
 | 項目 | 説明 |
 | --- | --- |
-| &lt;nas source&gt; | ボリューム情報<br>例：192.168.0.11:/GJ\_SHARE\_FS8/bacb62d4-f271-44ad-a5d2-505d21037b45 |
-| &lt;mount point&gt; | ボリュームをマウントするディレクトリ<br>例：/mnt |
+| &lt;nas-source&gt; | ボリュームの接続パス(`NFSサーバーアドレス:エクスポートパス`)<br>例：192.168.0.11:/GJ\_SHARE\_FS8/bacb62d4-f271-44ad-a5d2-505d21037b45 |
+| &lt;mount-point&gt; | ボリュームをマウントするディレクトリ<br>例：/mnt |
