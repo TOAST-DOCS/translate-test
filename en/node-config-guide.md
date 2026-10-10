@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=1d41682f4f26 -->
 
 <a id="data-analytics-dataflow-node-type-guide"></a>
@@ -337,7 +339,13 @@ Supported codec:
 | Property name | Default value | Data type | Description | Others |
 | --- |---------| --- | --- | --- |
 | Bucket | -       | string | Enter a bucket name to read data. |  |
-| Region | -       | string | 	
+| Region | -       | string | Enter region information configured in the storage. |  |
+| secret key | -       | string | Enter the S3-issued credentials secret key. |  |
+| Access Key | -       | string | Enter the S3-issued credentials access key. |  |
+| List Update Cycle | 60    | number | Enter the object list update cycle included in the bucket. |  |
+| Prefix | -       | string | Enter a prefix of an object to read. |  |
+| Exclude Key Pattern | -       | string | Enter the pattern of objects to exclude from reading. |  |
+
 Enter region information configured in the storage. |  |
 | Secret key | -       | string | Enter your S3 credentials secret key. |  |
 | Access key | -       | string | Enter your S3 credentials access key. |  |
@@ -473,14 +481,13 @@ STREAMING: Processes data every time a new message arrives in a topic.
 | Client ID | `dataflow` | string | Enter the ID to identify the Kafka Consumer. | Refer to the `client.id` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Partition Assignment Strategy | ["RANGE", "COOPERATIVE_STICKY"] | array of strings | Determines how partitions are assigned to the consumer group when receiving messages from Kafka. | Refer to the `partition.assignment.strategy` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). <br/>org.apache.kafka.clients.consumer.RangeAssignor<br/>org.apache.kafka.clients.consumer.RoundRobinAssignor<br/>org.apache.kafka.clients.consumer.StickyAssignor<br/>org.apache.kafka.clients.consumer.CooperativeStickyAssignor |
 | Offset Configuration | latest | enum | Enter the criteria for configuring the consumer group offset. | Refer to the `auto.offset.reset` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). <br/>All settings below retain the existing offset if the consumer group already exists.<br/>none: Returns an error if the consumer group does not exist.<br/>earliest: Initializes to the oldest offset of the partition if the consumer group does not exist.<br/>latest: Initializes to the latest offset of the partition if the consumer group does not exist. |
-| Offset Commit Interval | 5000 | number | Enter the interval (ms) for updating the consumer group offset. | Refer to the `auto.commit.internal.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Key Deserialization Type | `STRING` | enum | Enter the type of the key of the received message. | Refer to the `key.deserializer` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Generate Metadata | false | boolean | If the property value is true, generates metadata fields for the message. Metadata is generated in the `kafka_metadata` field. | The following fields are generated:<br/>topic: Topic from which the message was received<br/>groupId: Consumer group ID used to receive the message<br/>partition: Partition number of the topic from which the message was received<br/>offset: Offset of the partition from which the message was received<br/>key: Message key |
 | Minimum Fetch Size | 1 | number | Enter the minimum size (bytes) of data to retrieve in a single fetch request. | Refer to the `fetch.min.bytes` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Send Buffer Size | 131072 | number | Enter the size (bytes) of the TCP send buffer used for data transmission. | Refer to the `send.buffer.bytes` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Retry Request Interval | 100 | number | Enter the interval (ms) for retrying a failed transmission request. | Refer to the `retry.backoff.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Cyclic Redundancy Check | true | boolean | Checks the CRC of the message. | Refer to the `check.crcs` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
-| Server Reconnect Interval | 100 | number | Enter the interval (ms) for retrying a failed connection to the broker server. | Refer to the `reconnect.backoff.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
+| Server Reconnect Interval | 50 | number | Enter the interval (ms) for retrying a failed connection to the broker server. | Refer to the `reconnect.backoff.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Maximum Fetch Size per Partition | 1048576 | number | Enter the maximum size (bytes) to retrieve per partition in a single fetch request. | Refer to the `max.partition.fetch.bytes` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Server Request Timeout | 30000 | number | Enter the timeout (ms) for a transmission request. | Refer to the `request.timeout.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | TCP Receive Buffer Size | 65536 | number | Enter the size (bytes) of the TCP receive buffer used for reading data. | Refer to the `receive.buffer.bytes` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
@@ -492,7 +499,7 @@ STREAMING: Processes data every time a new message arrives in a topic.
 | Consumer Health Check Interval | 3000 | number | Enter the interval (ms) at which the consumer sends heartbeats. | Refer to the `heartbeat.interval.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 | Metadata Refresh Interval | 300000 | number | Enter the interval (ms) for refreshing partition and broker server status. | Refer to the `metadata.max.age.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/producer-configs/). |
 | IDLE Timeout | 540000 | number | Enter the wait time (ms) before closing a connection with no data transmission. | Refer to the `connections.max.idle.ms` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
-| Isolation level | read_committed | enum | Determines whether the consumer reads messages from uncommitted transactions or only committed messages. | [Kafka official documentation](https://kafka.apache.org/39/configuration/consumer-configs/)'s `isolation.level` property<br/>read_uncommitted: Reads all messages in offset order.<br/>read_committed: Reads only messages from committed transactions. |
+| Isolation level | read_committed | enum | Determines whether the consumer reads messages from uncommitted transactions or only committed messages. | Refer to the `isolation.level` property in the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/).<br/>read_uncommitted: Reads all messages in offset order.<br/>read_committed: Reads only messages from committed transactions. |
 | Additional Configuration | - | hash | Enter additional Consumer configuration to use for the Kafka connection. | Refer to the [Kafka documentation](https://kafka.apache.org/39/configuration/consumer-configs/). |
 
 <a id="source-apache-kafka-message-imported-by-codec"></a>
@@ -1361,6 +1368,253 @@ a
   }
 }
 ```
+
+<a id="filter-aggregate"></a>
+## Filter > Aggregate { #filter-aggregate }
+
+<a id="filter-aggregate-node-description"></a>
+### Node Description { #filter-aggregate-node-description }
+
+* A node that divides messages into fixed-length time intervals (windows) and aggregates them by group.
+* Windows are divided into non-overlapping intervals of equal length. Each message belongs to only one window.
+* Window intervals are divided based on the value of the Data Time Field. The time at which the node processes a message is not used.
+* When a window closes, it outputs one aggregation result message per group. The original messages are not output.
+* An Aggregate node can have only one input connection. If there are two or more input connections, the Flow cannot be saved.
+* To narrow down the aggregation targets, connect a [Branch > IF](#branch-if) node upstream to send only messages that match the condition. To send only some of the aggregation results to the next node, connect a [Branch > IF](#branch-if) node downstream.
+
+Before configuring the node, review the following concepts.
+
+* **Window**: A time interval that groups messages to be aggregated. When all messages in the interval are determined to have arrived, the window closes and outputs the result. A closed window does not reopen.
+* **Out-of-order arrival**: There is no guarantee that messages arrive in the order of their Data Time Field values. Messages created later may arrive first due to various reasons, such as transmission delays on the sender side, sources with multiple partitions, and parallel processing.
+* **Watermark Delay**: Therefore, instead of closing the window immediately when the interval ends, it waits longer. This value specifies how long to wait.
+* **Allowed Latency**: Set this value to include messages that arrive after the window closes.
+
+The difference between the two delay values is explained in [Watermark Delay and Allowed Latency](#filter-aggregate-watermark).
+
+<a id="filter-aggregate-property-description"></a>
+### Property Description { #filter-aggregate-property-description }
+
+| Property name | Default value | Data type | Description | Others |
+|---|---|---|---|---|
+| Group key | - | array of strings | Enter the field names to group by.<br/>If not set, all messages are aggregated into a single group. | A dropdown is provided when a schema is defined. |
+| Data Time Field | - | string | Enter the name of the time field used to divide window intervals.<br/>Messages whose values cannot be interpreted as a timestamp are excluded from aggregation. | A dropdown is provided when a schema is defined. |
+| Window size | 60 | number | Enter the length of a single window in seconds. |  |
+| Watermark Delay | 0 | number | Enter the amount of time, in seconds, to wait for late-arriving messages after a window interval has ended.<br/>A larger value includes more late messages, but the results are produced with a corresponding delay. |  |
+| Allowed Latency | 0 | number | Enter the amount of time, in seconds, to retain the aggregation state after a window has closed. |  |
+| Aggregation items | - | hash | Enter at least one row of aggregations to compute per window. | See `How to Enter Aggregation Items`. |
+
+<a id="filter-aggregate-property-description-how-to-enter-aggregations"></a>
+#### How to Enter Aggregation Items
+
+* Click **Add Aggregation** to add a row, and for each row, enter the field to aggregate, the operation, and the output field name.
+* You must enter at least one aggregation item row.
+* Output field names must be unique and cannot match the group key field name or `window_start`, `window_end`.
+
+| Operation | Field to Aggregate | Description |
+|---|---|---|
+| COUNT | Leave empty. | Counts the total number of messages in the window. Only one row can be added. |
+| SUM | Required. | Calculates the sum of the field values to aggregate. |
+| AVG | Required. | Calculates the average of the field values to aggregate. |
+
+* SUM and AVG aggregate only messages where the field value is numeric. Messages with no value or values that cannot be interpreted as numbers are excluded from the calculation.
+* If there are no values that can be interpreted as numbers in the window, the SUM and AVG result is `null`.
+
+<a id="filter-aggregate-window-boundary"></a>
+### Window Boundary { #filter-aggregate-window-boundary }
+
+The window boundary is determined not by the time when the flow starts or the time of the first message, but by multiples of the window size starting from January 1, 1970 00:00:00 UTC. For example, if the window size is 60 seconds, the boundary falls at second 0 of every minute; if it is 3,600 seconds, it falls at the top of every hour.
+
+The time is based on UTC. Therefore, if you set the window size to 86400 (1 day), the daily boundary falls at 9:00 AM Korean Standard Time.
+
+Aggregation windows are aligned to UTC. The boundary of a daily window is UTC midnight, which is 9:00 AM Korean Standard Time. Currently, there is no option to align the daily boundary to Korean Standard Time midnight. `window_start` and `window_end` are output as epoch milliseconds in UTC.
+
+<a id="filter-aggregate-data-time-field"></a>
+### Data Time Field { #filter-aggregate-data-time-field }
+
+The value of the field specified in the Data Time Field supports the following formats:
+
+| Format | Example |
+|---|---|
+| Epoch milliseconds (number or string) | `1785730000000`, `"1785730000000"` |
+| ISO 8601 UTC string | `2026-08-19T09:30:00Z` |
+| ISO 8601 string with offset | `2026-08-19T18:30:00+09:00` |
+
+* Numeric values are always interpreted as milliseconds. If you enter an epoch value in seconds, it is interpreted as a time close to 1970 and is not split into the intended windows.
+* Strings without an offset do not match the formats above, so messages with such values are excluded from aggregation. For example, `2026-08-19 18:30:00` and `2026-08-19T18:30:00` cannot be used.
+* If a value cannot be used as-is, connect a [Date](#filter-date) Node upstream to convert the format.
+
+<a id="filter-aggregate-watermark"></a>
+### Watermark Delay and Allowed Latency { #filter-aggregate-watermark }
+
+Both properties handle late-arriving messages, but they differ in when they take effect and what they produce.
+
+| Item | Watermark Delay | Allowed Latency |
+|---|---|---|
+| When it takes effect | Before the window closes | After the window closes |
+| Output | One result per window | One additional result for each late message that arrives |
+| When results are produced | Delayed by the configured amount | Not delayed |
+| Memory | No impact | Increases, as closed windows are retained |
+
+If you want to receive results only once, set the Allowed Latency to 0 and adjust only the Watermark Delay. If you want to receive results quickly without missing late data, and can handle duplicate results downstream, use Allowed Latency.
+
+Both properties measure time based on the value of the Data Time Field, not the actual clock time.
+
+The Aggregate Node closes windows based on the value of the Data Time Field, not the order in which messages arrive. The timing for closing a window is determined in the following sequence:
+
+1. The largest data time value among all messages received so far is used as the reference time.
+2. The Watermark Delay is subtracted from the reference time. This resulting value is the threshold for determining that all messages before this time have arrived.
+3. When this value reaches the window's end time, the window is closed and the result is output.
+
+For example, if the window size is 10 seconds and the Watermark Delay is 5 seconds, when a message with a data time of 15 seconds arrives, 15 - 5 = 10 seconds, which closes the window covering from 0 to less than 10 seconds.
+
+* A larger Watermark Delay captures more out-of-order messages, but delays the output accordingly.
+* (Apache) Kafka and (NHN Cloud) EasyQueue distribute data across multiple partitions. Because each partition is read at a different speed, messages created later can arrive earlier. If you use these sources, set the Watermark Delay generously.
+* Messages that arrive after the window closes are discarded. Setting an Allowed Latency keeps the aggregation state active for that duration, allowing late messages to be included.
+* However, if Allowed Latency is set to greater than 0, the result for that window is output again for each late message that arrives. This means multiple result messages with the same `window_start` value are produced, and the last one output is the final aggregated value.
+    * Previously output results are not updated. Be careful not to re-aggregate or store results in duplicate in downstream nodes or Sink nodes.
+    * If you do not want duplicate output, set Allowed Latency to 0 and increase the Watermark Delay to capture late-arriving messages before the window closes.
+
+<a id="filter-aggregate-output-event"></a>
+### Output Message Structure { #filter-aggregate-output-event }
+
+The output message consists of only the following fields. All input fields that are not specified as group keys are removed.
+
+| Field | Data Type | Description |
+|---|---|---|
+| Fields specified as group keys | Same as input message | The group key value is preserved as-is. |
+| window_start | Long | Window start time (epoch milliseconds). Included in the window interval. |
+| window_end | Long | Window end time (epoch milliseconds). Not included in the window interval. |
+| Output field name of the aggregation item | Long for COUNT, Double for SUM and AVG | Stores one result value for each aggregation item. |
+
+<a id="filter-aggregate-example"></a>
+### Aggregate Examples { #filter-aggregate-example }
+
+<a id="filter-aggregate-example-condition"></a>
+#### Condition
+
+* Group key → `device`
+* Data Time Field → `event_ts`
+* Window size → `10`
+* Watermark Delay → `5`
+* Allowed Latency → `0`
+* Aggregation items
+
+| Operation | Field to Aggregate | Output Field Name |
+|---|---|---|
+| COUNT | Leave empty | `message_count` |
+| SUM | `cnt` | `sum_cnt` |
+| AVG | `cnt` | `avg_cnt` |
+
+Small epoch millisecond values are used for `event_ts` to make the calculation process easy to follow. In actual data, a 13-digit value such as `1785730001000` is used, and `window_start` and `window_end` are also output with the same number of digits.
+
+<a id="filter-aggregate-example-input-message"></a>
+#### Input Message
+
+These are messages listed in the order they arrived.
+
+``` js
+{"device": "sensor-1", "cnt": 1, "event_ts": 1000}
+{"device": "sensor-2", "cnt": 5, "event_ts": 3000}
+{"device": "sensor-1", "cnt": 1, "event_ts": 9000}
+{"device": "sensor-1", "cnt": 1, "event_ts": 5000}
+{"device": "sensor-1", "cnt": 1, "event_ts": 12000}
+{"device": "sensor-1", "cnt": 2, "event_ts": 15000}
+{"device": "sensor-1", "cnt": 9, "event_ts": 7000}
+```
+
+<a id="filter-aggregate-example-output-message"></a>
+#### Output message
+
+The message with `event_ts` of 5000 arrives later than the message with `event_ts` of 9000, but it is included in the aggregation because the window from 0 to less than 10000 is still open. If the Watermark Delay were set to 0, this window would have already closed when the message with `event_ts` of 9000 arrived, and the message with `event_ts` of 5000 would have been missed.
+
+When the message with `event_ts` of 15000 arrives, 15000 - 5000 = 10000, which closes the window from 0 to less than 10000, and two records are output — one per group.
+
+``` js
+{
+    "device": "sensor-1",
+    "window_start": 0,
+    "window_end": 10000,
+    "message_count": 3,
+    "sum_cnt": 3.0,
+    "avg_cnt": 1.0
+}
+{
+    "device": "sensor-2",
+    "window_start": 0,
+    "window_end": 10000,
+    "message_count": 1,
+    "sum_cnt": 5.0,
+    "avg_cnt": 5.0
+}
+```
+
+The last arriving message with `event_ts` of 7000 belongs to an already-closed window and is discarded. If the Allowed Latency were set to 5, the result with `window_start` of 0 reflecting this message would be output one more time.
+
+The window from 10000 to less than 20000, to which the messages with `event_ts` of 12000 and 15000 belong, has not yet closed. This window closes only when a message with `event_ts` of 25000 or greater arrives; if no further messages arrive, no result is output.
+
+<a id="filter-aggregate-notes"></a>
+### Caution { #filter-aggregate-notes }
+
+<a id="filter-aggregate-notes-memory"></a>
+#### Memory Usage
+
+The memory usage of the Aggregate Node is proportional to the number of distinct group key values. The window size and the number of messages processed do not affect memory usage.
+
+* The recommended number of distinct group key values depends on the Instance Type and should not exceed the values listed below. If multiple group keys are specified, the number of distinct values is the number of combinations of each key value. For example, if there are 10 regions and 10,000 devices, the number of distinct values is 100,000.
+
+| Instance Type | Recommended Distinct Group Key Count | Base Memory Usage | Memory Check Threshold |
+|---|---|---|---|
+| c1m2 | Up to 100,000 | 450–500 MB | 600 MB |
+| c2m4 | Up to 400,000 | 900–950 MB | 1.3 GB |
+
+Even when the Flow is not processing messages, it continues to consume at least the base memory usage amount. This is normal and is not related to the number of distinct group key values.
+
+The larger the Instance Type, the more memory is allocated to the Flow, and the later the point at which used memory is cleaned up. Therefore, the base memory usage is not the amount actually used for aggregation, but includes memory that has not yet been cleaned up. This is why larger Instance Types have higher base memory usage.
+
+* You can check the memory usage in the V2-TASK memory usage section under **Data & Analytics > DataFlow > Monitoring**.
+* It is normal for memory usage to temporarily exceed the check threshold. If memory usage exceeds the check threshold for more than 30 minutes, check the number of distinct group key values.
+* If the number of distinct group key values exceeds the limit, the Flow will enter an error state due to insufficient memory and will not recover automatically. Stop the Flow, adjust the group key, and run it again.
+* Specify fields with a limited number of distinct values as group keys. If you specify fields such as user IDs, session IDs, request IDs, or IP addresses—where new values are continuously generated over time—as group keys, there is no upper limit on the number of distinct values, which will eventually lead to memory exhaustion.
+* If you need a larger number of distinct group key values, consider upgrading the Instance Type.
+* If the Allowed Latency is set to greater than 0, the state of closed windows is maintained for the duration of the Allowed Latency, and memory usage can increase up to (1 + Allowed Latency ÷ window size) times. Reduce the number of distinct group key values by that factor.
+
+<a id="filter-aggregate-notes-behavior"></a>
+#### Known Behavior
+
+* When a window closes and outputs its results, the memory that the window was using is released. Memory usage is determined not by the cumulative throughput, but by the number of distinct group key types that exist simultaneously within a single window.
+* When you stop a Flow, the aggregation state of windows that were in progress is not preserved. When the Flow is started again, those windows restart aggregation from an empty state.
+* Windows with no messages do not output results.
+* While the Flow is running, the last window closes only when messages from the next window arrive. If no more messages come in, the results of the last window are not output.
+* If the Allowed Latency is set to greater than 0, the results for the same window are output multiple times. For Sinks that do not update already-loaded data, such as Object Storage or Kafka, multiple results for the same window accumulate, so the consumer must use only the last result among those with the same `window_start` value.
+* Messages that arrived after the window closed and could not be aggregated, and messages that were excluded because the Data Time Field could not be parsed, are not output separately.
+* SUM and AVG are calculated using floating-point arithmetic, so errors may occur when aggregating values with a large number of digits.
+
+<a id="filter-aggregate-notes-termination"></a>
+#### Last Window When the Flow Stops
+
+When a flow stops, windows whose intervals have not yet ended are handled differently depending on how the flow is stopped.
+
+| Termination Method | Windows in Progress |
+|---|---|
+| Stop Flow | Disappears without producing any output. |
+| End After Flow Draining | Outputs the aggregated results up to that point, even if the interval has not ended. |
+| Automatic termination after processing all data in BATCH mode | Outputs the aggregated results up to that point, even if the interval has not ended. |
+
+The results output in this way **have the same format as results aggregated over the entire interval, making them impossible to distinguish.** Because `window_start` and `window_end` also retain the original interval values, you may mistake them for values aggregated over the entire interval.
+
+* The result of the last window output immediately after termination may be a partial aggregation. Consider this when comparing or summing aggregated results.
+* When aggregating data for a fixed period in BATCH mode, the last window may always be a partial aggregation. You can avoid this issue by aligning the time range of the data to process with a multiple of the window size.
+
+<a id="filter-aggregate-notes-no-output"></a>
+#### When No Results Are Displayed
+
+Check the following in order:
+
+1. Check the format of the Data Time Field value. If the format is not supported, the message is excluded from aggregation and no separate error is output.
+2. Check whether you are using an epoch value in seconds. A value in seconds is interpreted as a time close to 1970 and is not divided into the intended window.
+3. The window may not have closed yet. A window closes only when a message belonging to the next window arrives. If data comes in infrequently, try reducing the window size or waiting for more data to accumulate.
+4. Check whether the Watermark Delay is too large. Results are delayed by that amount.
+5. Check whether you are re-inserting past data. Because windows are divided based on the Data Time Field value, the window_start and window_end of the results are also output as those past times. Make sure you are not looking for results near the current time. In addition, if the Flow has already processed data with a more recent time, past data belongs to an already-closed window and is discarded without being aggregated.
 
 <a id="sink"></a>
 ## Sink { #sink }
