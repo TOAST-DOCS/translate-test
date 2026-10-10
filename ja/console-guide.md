@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=df549469ae0a -->
 
 <a id="storage-storage-gateway-console-user-guide"></a>
@@ -21,17 +23,17 @@
 
 <a id="create-gateway-network"></a>
 #### ネットワーク
-ストレージゲートウェイに使用するVPCとサブネットを選択します。 
-ゲートウェイを構成するインスタンスに選択したVPCのサブネットと接続されるネットワークインターフェイスが作成されます。ネットワークリソースの作成と管理の詳細については[VPCユーザーガイド](/Network/VPC/ko/overview/)を参照してください。
-サービスゲートウェイはObject Storageのように、ユーザーVPC外部のストレージをインターネットを経由せずに接続するために使用します。サービスゲートウェイの詳細については[Service Gateway使用ガイド](/Network/Service%20Gateway/ko/overview/)を参照してください。
+ストレージゲートウェイに使用するVPCとサブネットを選択します。
+ゲートウェイを構成するインスタンスに選択したVPCのサブネットと接続されるネットワークインターフェイスが作成されます。ネットワークリソースの作成と管理の詳細については[VPCユーザーガイド](/Network/VPC/ja/overview/)を参照してください。
+サービスゲートウェイはObject Storageのように、ユーザーVPC外部のストレージをインターネットを経由せずに接続するために使用します。サービスゲートウェイの詳細については[Service Gateway使用ガイド](/Network/Service%20Gateway/ja/overview/)を参照してください。
 
 <a id="create-gateway-floating-ip"></a>
 #### Floating IP
-Floating IPを使用するかどうかを設定します。ゲートウェイにFloating IPを使用すると、インターネットからゲートウェイに接続できます。詳細は、[Floating IP使用ガイド](/Network/Floating%20IP/ko/overview/)を参照してください。
+Floating IPの使用するかどうかを設定します。ゲートウェイにFloating IPを使用すると、インターネットからゲートウェイに接続できます。詳細は、[Floating IP使用ガイド](/Network/Floating%20IP/ja/overview/)を参照してください。
 
 <a id="create-gateway-security-groups"></a>
 #### セキュリティグループ
-ストレージゲートウェイのインスタンスが属するセキュリティグループを指定します。選択したVPCネットワーク外部からゲートウェイを経由してNHN Cloudストレージにマウントするには、セキュリティグループに次のようなポートについてのルールが明示されている必要があります。
+ストレージゲートウェイのインスタンスが属するセキュリティグループを指定します。選択したVPCネットワーク外部からゲートウェイを経由してNHN Cloudストレージにマウントするには、セキュリティグループに次のようなポートのルールを明示する必要があります。
 
 | 方向 | IPプロトコル | ポート範囲 | Ether | 遠隔 |
 | --- | --- | --- | --- | --- |
@@ -44,7 +46,7 @@ Floating IPを使用するかどうかを設定します。ゲートウェイに
 > [注意]
 > 遠隔地IPを`0.0.0.0/0`のような広い帯域に設定すると、セキュリティが脆弱になる可能性があります。最小限の範囲に設定してください。
 
-詳細は[Security Groups使用ガイド](/Network/Security%20Groups/ko/overview/)を参照してください。
+詳細については、[Security Groupsユーザーガイド](/Network/Security%20Groups/ja/overview/)を参照してください。
 
 <a id="create-gateway-redundancy"></a>
 #### 冗長化
@@ -59,8 +61,8 @@ Floating IPを使用するかどうかを設定します。ゲートウェイに
 ### ゲートウェイ停止 { #stop-gateway }
 ストレージゲートウェイを停止します。ゲートウェイを停止すると、クラスターを構成するインスタンスが停止し、ストレージと接続できません。
 
-> [注意]
-> ストレージゲートウェイを停止する前に、NHN Cloudストレージを接続して使用中のシステムからアンマウントする必要があります。マウント状態でゲートウェイを停止すると、ユーザーシステムに問題が発生する可能性があります。
+!!! danger "注意"
+    ストレージゲートウェイを停止する前に、NHN Cloudストレージを接続して使用中のシステムからアンマウントする必要があります。マウント状態でゲートウェイを停止すると、ユーザーシステムに問題が発生する可能性があります。
 
 <a id="delete-gateway"></a>
 ### ゲートウェイ削除 { #delete-gateway }
@@ -73,7 +75,7 @@ Floating IPを使用するかどうかを設定します。ゲートウェイに
 ## 共有(Share) { #share }
 <a id="create-share"></a>
 ### 共有作成 { #create-share }
-共有を作成します。共有はNHN Cloudストレージを接続する設定です。共有を作成すると、マウント接続情報を取得することができ、この接続情報を利用してユーザーシステムにNHN Cloudストレージをマウントして使用できます。
+共有を作成します。共有はNHN Cloudストレージを接続する設定です。共有を作成すると、マウント接続情報を取得することができ、この接続情報を使用してユーザーシステムにNHN Cloudストレージをマウントして使用できます。
 
 <a id="create-share-share-information"></a>
 #### 共有情報
@@ -84,31 +86,34 @@ Floating IPを使用するかどうかを設定します。ゲートウェイに
 
 <a id="create-share-storage-information-for-connection"></a>
 #### 接続ストレージ情報
-接続するストレージ情報を設定します。 
-Object Storageは接続するコンテナ名とS3 API認証情報のAccess Keyが必要です。接続するコンテナ名はAmazon S3のバケット命名規則に従わなければなりません。S3 API認証情報はObject StorageコンソールまたはAPIを利用して発行できます。詳細は**Object Storage Amazon S3互換APIガイド**の[バケット作成](/Storage/Object%20Storage/ko/s3-api-guide/#bucket)セクションと[S3 API認証情報](/Storage/Object%20Storage/ko/s3-api-guide/#s3-api)セクションを参照してください。
+接続するストレージ情報を設定します。
+Object Storageは接続するコンテナ名とS3 API認証情報のAccess Keyが必要です。接続するコンテナ名はAmazon S3のバケット命名規則に従わなければなりません。S3 API認証情報はObject StorageコンソールまたはAPIを使用して発行できます。詳細については、**Object Storage Amazon S3互換APIガイド**の[バケット作成](/Storage/Object%20Storage/ja/s3-api-guide/#bucket)セクションと[S3 API認証情報](/Storage/Object%20Storage/ja/s3-api-guide/#s3-api-credential)セクションを参照してください。
 
 > [参考]
 > Object Storageコンテナを接続する共有を作成すると、Object Storageに`{コンテナ名}+segments`コンテナが自動的に作成されます。ゲートウェイを介して25MBを超えるファイルを保存すると、接続されたコンテナにマルチパートでアップロードされ、マルチパートオブジェクトのセグメントオブジェクトが`{コンテナ名}+segments`コンテナに保存されます。 
 
 <!-- 改行のためのコメント -->
 
-> [注意]
-> 接続するObject StorageのコンテナにIP ACLを設定するには、必ずService Gatewayの**read/write許可**を追加する必要があります。
-> Object StorageのS3 API認証情報を発行するユーザーは接続するコンテナに対する**read/write**権限が必要です。
-> ストレージゲートウェイを介してObject Storageのコンテナを接続して使用している間にコンテナを削除したり、S3 API認証情報を削除すると、ユーザーシステムに問題が発生する可能性があります。削除しないように注意してください。
-> ストレージゲートウェイを介してObject Storageのコンテナを接続して使用している間に`{コンテナ名}+segments`コンテナのオブジェクトを削除すると、保存したファイルにアクセスできなくなります。削除しないように注意してください。
+!!! danger "注意"
+    接続するObject StorageのコンテナにIP ACLを設定するには、必ずService Gatewayの**read/write許可**を追加する必要があります。
+
+    Object StorageのS3 API認証情報を発行するユーザーは接続するコンテナに対する**read/write**権限が必要です。
+
+    ストレージゲートウェイを介してObject Storageのコンテナを接続して使用している間にコンテナを削除したり、S3 API認証情報を削除すると、ユーザーシステムに問題が発生する可能性があります。削除しないように注意してください。
+
+    ストレージゲートウェイを介してObject Storageのコンテナを接続して使用している間に`{コンテナ名}+segments`コンテナのオブジェクトを削除すると、保存したファイルにアクセスできなくなります。削除しないように注意してください。
 
 <a id="create-share-nfs-permissions-settings"></a>
 #### NFS権限設定
-NFSプロトコルで接続するクライアントの権限を設定します。 
+NFSプロトコルで接続するクライアントの権限を設定します。
 
 | Squashオプション | 説明 |
 | --- | --- |
-| no_root_squash | クライアントのrootをNFSサーバーのrootにマッピングします。 |
-| root_squash | クライアントのrootをnobodyまたは指定したUID/GIDにマッピングします。 |
-| all_squash | クライアントの全てのユーザーをnobodyまたは指定したUID/GIDにマッピングします。 |
+| `no_root_squash` | クライアントのrootをNFSサーバーのrootにマッピングします。 |
+| `root_squash` | クライアントのrootをnobodyまたは指定したUID/GIDにマッピングします。 |
+| `all_squash` | クライアントの全てのユーザーをnobodyまたは指定したUID/GIDにマッピングします。 |
 
-ユーザーIDとグループIDを入力しない場合、Squashのオプションによって**root(0)**または**nobody(65534)**に設定されます。その他のユーザーとグループにマッピングするには、LinuxユーザーIDとグループIDを入力します。 LinuxユーザーIDとグループIDはLinuxシェルで**id** コマンドで確認できます。
+ユーザーIDとグループIDを入力しない場合、Squashオプションによって**root(0)**または**nobody(65534)**に設定されます。その他のユーザーとグループにマッピングするには、LinuxユーザーIDとグループIDを入力します。LinuxユーザーIDとグループIDはLinuxシェルで`id`コマンドで確認できます。
 
 ```
 $ id
@@ -173,7 +178,7 @@ sudo service rpcbind start
 
 <a id="mount-share"></a>
 ### 共有マウント { #mount-share }
-作成した共有のマウント接続情報とmountコマンドを利用して次のようにNHN Cloudストレージをユーザーシステムにマウントできます。
+作成した共有のマウント接続情報とmountコマンドを使用して次のようにNHN Cloudストレージをユーザーシステムにマウントできます。
 
 ```
 sudo mount -t nfs {マウント接続情報} {マウントするパス}
