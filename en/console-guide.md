@@ -3,13 +3,11 @@
 <!-- pre-align:aligned sig=ecfaf0722a63 -->
 
 <a id="network-peering-gateway-console-user-guide"></a>
-
 ## Network > Peering Gateway > Console User Guide { #network-peering-gateway-console-user-guide }
 
 This guide describes how to use the Peering Gateway service in the console.
 
 <a id="peering"></a>
-
 ## Peering { #peering }
 
 **Peering** is a feature to connect two different **VPCs**. Normally, VPCs cannot communicate with each other because they are in different network zones. You can connect them using a **floating IP**, but it incurs extra charges depending on your network usage. However, the peering feature allows you to connect two **VPCs** at no additional cost.
@@ -69,7 +67,6 @@ When retrieving ports associated with peering using the API, the retrieval metho
     * GET /v2.0/ports?device_id={peering ID}&device_id={peer ID}
 
 <a id="region-peering"></a>
-
 ## Region Peering { #region-peering }
 
 **Region Peering** is a feature to connect two **VPCs** created in different regions. Peering can be used to connect VPCs in the same region, but it cannot be used to connect VPCs in different regions. However, region peering allows you to connect two VPCs in different regions.
@@ -123,7 +120,6 @@ When retrieving ports associated with peering using the API, the retrieval metho
 3. Click the **Delete Region Peering** button.
 
 <a id="project-peering"></a>
-
 ## Project Peering { #project-peering }
 
 **Project Peering** is a feature to connect two **VPCs** created in different projects. Peering can be used to connect VPCs in the same project, but it cannot be used to connect VPCs in different projects. However, the project peering feature allows you to connect two VPCs in different projects.
@@ -169,7 +165,6 @@ When retrieving ports associated with peering using the API, the retrieval metho
 3. Click the **Delete Project Peering** button.
 
 <a id="common-feature"></a>
-
 ## Common Feature { #common-feature }
 
 This section describes the common features provided by peering (Peering, Region Peering, and Project Peering).
@@ -236,7 +231,6 @@ By using the **route** settings provided by peering, you can configure traffic t
 5. Choose **OK**.
 
 <a id="other-considerations"></a>
-
 ## References { #other-considerations }
 
 <a id="how-to-check-peer-vpc-id"></a>
