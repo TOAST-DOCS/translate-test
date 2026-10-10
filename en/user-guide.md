@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=53f25fa4d7f2 -->
 
 <a id="container-nhn-container-servicencs-user-guide"></a>
@@ -396,7 +398,7 @@ If you use a load balancer to make changes to the template while the workload is
 ### Stop/Restart Workload { #workload-stop-restart }
 If you stop a workload, all tasks in the workload will be terminated.
 
-If you restart a workload, load balancer IP is changed.
+If you restart a workload, load balancer IP is changed. To keep the IP unchanged, specify the load balancer IP via API.
 
 > [Note]
 > Depending on your deployment controller, running a workload stop/restart might cause the container IP to change.
@@ -524,6 +526,30 @@ Infrastructure NCS ADMIN permissions alone are only for viewing.
 | --- | --- | --- | --- | --- | --- |
 | Graphics Optimized | ncs1 | ncs1.g1m5 | 5GB | 1 | MIG 1g.5gb |
 | Graphics Optimized | ncs1 | ncs1.g2m10 | 10GB | 2 | MIG 2g.10gb |
+
+<a id="loadbalancer-static-ip"></a>
+### Specify a Workload Load Balancer IP
+* You can specify the load balancer IP of a workload via API.
+* If you do not specify a load balancer IP, the IP may change when the load balancer is recreated.
+* If you specify a load balancer IP, that IP is retained even if the load balancer is recreated. The specified IP is retained until you change it separately or delete the workload.
+* The specified load balancer IP is also retained in the following situations:
+   * When the load balancer is recreated due to a workload stop or restart
+   * When the load balancer is recreated due to a failure or maintenance during service operation
+   * When the load balancer is created by disabling and then re-enabling the load balancer
+
+```json
+PATCH /ncs/v1.0/appkeys/{appKey}/workloads/{workloadId}
+Content-Type: application/json-patch+json
+x-nhn-authorization: Bearer {accessToken}
+
+[
+  {
+    "op": "replace",
+    "path": "/workload/loadBalancing/vipAddress",
+    "value": "$IP"
+  }
+]
+```
 
 <a id="problem-solving"></a>
 ## Guide to Problem Solving { #problem-solving }
