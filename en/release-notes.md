@@ -4,8 +4,10 @@
 
 <a id="notification-email-release-notes"></a>
 ## Notification > Email > Release Notes { #notification-email-release-notes }
-### August 25, 2026
+<a id="august-25-2026"></a>
+### August 25, 2026 { #august-25-2026 }
 
+<a id="august-25-2026-feature-updates"></a>
 #### Feature Updates
 
 * [Console/API] Improved TLD classification criteria
