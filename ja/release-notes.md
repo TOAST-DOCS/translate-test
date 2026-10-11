@@ -4,8 +4,10 @@
 
 <a id="notification-email-release-notes"></a>
 ## Notification > Email > Release Notes { #notification-email-release-notes }
-### 2026. 08. 25.
+<a id="august-25-2026"></a>
+### 2026. 08. 25. { #august-25-2026 }
 
+<a id="august-25-2026-feature-updates"></a>
 #### 機能改善
 
 * [コンソール、API] ドメインTLD分類基準の改善
