@@ -1,7 +1,15 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=18119ae949b1 -->
 
 <a id="notification-email-release-notes"></a>
 ## Notification > Email > Release Notes { #notification-email-release-notes }
+### 2026. 08. 25.
+
+#### 機能改善
+
+* [コンソール、API] ドメインTLD分類基準の改善
+    * 最上位ドメイン(TLD)の分類基準を改善し、これまでサブドメインとして分類されていた一部のドメインが正常に分類されるよう修正しました。
 
 <a id="notification-email-release-notes-1"></a>
 ### 2026. 05. 27. { #notification-email-release-notes-1 }
