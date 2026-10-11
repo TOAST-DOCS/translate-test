@@ -1,5 +1,12 @@
+<!-- machine_translated: true -->
+
 ## Game > Launching > Release Notes
 ## Release Notes
+
+### August 11, 2020
+#### Feature Updates
+* [Bug Fixes]
+    * Fixed a bug where a request fails when the backup name contains certain special characters during deployment
 
 ### 2018.12.27
 #### 기능 개선/변경
