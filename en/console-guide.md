@@ -209,8 +209,8 @@ If you're moving encrypted block storage, enter the encryption symmetric key ID 
 
 {% elif "gov" in build_flags %}
 
-<a id="replicate-block-storage"></a>
-## Replicate Block Storage { #replicate-block-storage }
+<a id="replicate-block-storage-2"></a>
+## Replicate Block Storage { #replicate-block-storage-2 }
 
 You can use block storage by replicating it. Although block storage can be replicated while being attached to an instance, it is recommended that you stop the instance or detach the block storage from the instance and proceed with replication to ensure data consistency and reliability.
 
@@ -224,31 +224,31 @@ After requesting replication, you can check the replication status and whether t
 > [Caution]
 > To proceed with replication, at least 100KB of free space in block storage is required.
 
-<a id="target-project"></a>
-### Target Project { #target-project }
+<a id="replicate-block-storage-2-target-project"></a>
+### Target Project { #replicate-block-storage-2-target-project }
 
 Select the target project where the replica will be created.
 
 * Same project: Replicate to the same project
 * Different project: Replicate to a different project that you belong to
 
-<a id="region"></a>
-### Region { #region }
+<a id="replicate-block-storage-2-region"></a>
+### Region { #replicate-block-storage-2-region }
 
 Select a target region to create a replica in.
 
-<a id="block-storage-type"></a>
-### Type of block storage { #block-storage-type }
+<a id="replicate-block-storage-2-block-storage-type"></a>
+### Type of block storage { #replicate-block-storage-2-block-storage-type }
 
 Select the type of block storage to use in the region to which to replicate. You can select a type that is different from the block storage type being used in the current region.
 
-<a id="availability-zone"></a>
-### Availability Zone { #availability-zone }
+<a id="replicate-block-storage-2-availability-zone"></a>
+### Availability Zone { #replicate-block-storage-2-availability-zone }
 
 Select the availability zone to use in the region to which to replicate. You can select an availability zone that is different from the availability zone being used in the current region.
 
-<a id="move-block-storage"></a>
-## Move Block Storage { #move-block-storage }
+<a id="move-block-storage-2"></a>
+## Move Block Storage { #move-block-storage-2 }
 
 You can move block storage to another project in the same organization. The requester must have the appropriate permissions on both the source and target projects.
 
@@ -257,13 +257,13 @@ Block storage where snapshots exist cannot be moved.
 
 <!-- This comment is for line breaks and must be included. -->
 
-<a id="move-block-storage-target-project"></a>
-### Target Project { #move-block-storage-target-project }
+<a id="move-block-storage-2-move-block-storage-target-project"></a>
+### Target Project { #move-block-storage-2-move-block-storage-target-project }
 
 Enter the ID of the target project to move the block storage to. The target project must be a project in the same organization.
 
-<a id="encryption-symmetric-key-id"></a>
-### Encryption Symmetric Key ID { #encryption-symmetric-key-id }
+<a id="move-block-storage-2-encryption-symmetric-key-id"></a>
+### Encryption Symmetric Key ID { #move-block-storage-2-encryption-symmetric-key-id }
 
 If you're moving encrypted block storage, enter the encryption symmetric key ID that the target project will use.
 
