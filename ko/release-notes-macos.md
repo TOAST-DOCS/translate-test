@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=46d075a6bc6a -->
+<!-- pre-align:aligned sig=b6e902f1abac -->
 
 <a id="game-gamestarter-macos"></a>
 ## Game > GameStarter > 릴리스 노트 > macOS { #game-gamestarter-macos }
