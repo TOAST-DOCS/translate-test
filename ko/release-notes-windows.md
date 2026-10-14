@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=f045de33a448 -->
+<!-- pre-align:aligned sig=4c06e7d42e67 -->
 
 <a id="game-gamestarter-windows"></a>
 ## Game > GameStarter > 릴리스 노트 > Windows { #game-gamestarter-windows }
