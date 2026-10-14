@@ -208,8 +208,8 @@ Secure Key Managerサービスで暗号化ブロックストレージに設定�
 
 {% elif "gov" in build_flags %}
 
-<a id="replicate-block-storage"></a>
-## Block Storageの複製 { #replicate-block-storage }
+<a id="replicate-block-storage-2"></a>
+## Block Storageの複製 { #replicate-block-storage-2 }
 
 Block Storageを複製して利用できます。Block Storageがインスタンスに接続されている状態でも複製できますが、データの整合性と安定性を保証するには、インスタンスを停止するか接続を解除してから複製することを推奨します。
 
@@ -223,31 +223,31 @@ Block Storageを複製して利用できます。Block Storageがインスタン
 > [注意]
 > 複製を実行するには、Block Storage内に100KB以上の空き容量が必要です。
 
-<a id="target-project"></a>
-### 対象プロジェクト { #target-project }
+<a id="replicate-block-storage-2-target-project"></a>
+### 対象プロジェクト { #replicate-block-storage-2-target-project }
 
 複製先の対象プロジェクトを選択します。
 
 * 同一プロジェクト: 同じプロジェクトへ複製
 * 別のプロジェクト: 自身が所属する別のプロジェクトへ複製
 
-<a id="region"></a>
-### リージョン { #region }
+<a id="replicate-block-storage-2-region"></a>
+### リージョン { #replicate-block-storage-2-region }
 
 複製を作成する対象リージョンを選択します。
 
-<a id="block-storage-type"></a>
-### Block Storageタイプ { #block-storage-type }
+<a id="replicate-block-storage-2-block-storage-type"></a>
+### Block Storageタイプ { #replicate-block-storage-2-block-storage-type }
 
 複製先のリージョンで使用するBlock Storageタイプを選択します。現在のリージョンで使用中のBlock Storageタイプとは異なるタイプを選択できます。
 
-<a id="availability-zone"></a>
-### Availability Zone { #availability-zone }
+<a id="replicate-block-storage-2-availability-zone"></a>
+### Availability Zone { #replicate-block-storage-2-availability-zone }
 
 複製先のリージョンで使用するAvailability Zoneを選択します。現在のリージョンで使用中のAvailability Zoneとは異なるAvailability Zoneを選択できます。
 
-<a id="move-block-storage"></a>
-## ブロックストレージの移動 { #move-block-storage }
+<a id="move-block-storage-2"></a>
+## ブロックストレージの移動 { #move-block-storage-2 }
 
 ブロックストレージを同じ組織の別のプロジェクトに移動できます。リクエスターは元プロジェクトと対象プロジェクトの両方に適切な権限が必要です。
 
@@ -256,13 +256,13 @@ Block Storageを複製して利用できます。Block Storageがインスタン
 
 <!-- 改行のためのコメントなので、必ず含める必要があります。 -->
 
-<a id="move-block-storage-target-project"></a>
-### 対象プロジェクト { #move-block-storage-target-project }
+<a id="move-block-storage-2-move-block-storage-target-project"></a>
+### 対象プロジェクト { #move-block-storage-2-move-block-storage-target-project }
 
 ブロックストレージを移動する対象プロジェクトのIDを入力します。移動先のプロジェクトは、同じ組織のプロジェクトである必要があります。
 
-<a id="encryption-symmetric-key-id"></a>
-### 暗号化対称キーID { #encryption-symmetric-key-id }
+<a id="move-block-storage-2-encryption-symmetric-key-id"></a>
+### 暗号化対称キーID { #move-block-storage-2-encryption-symmetric-key-id }
 
 暗号化ブロックストレージを移動する場合、対象プロジェクトで使用する対称キーIDを入力します。
 
