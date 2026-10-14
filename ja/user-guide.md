@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=3643d931a641 -->
 
 <a id="container-nhn-container-registry-ncr-user-guide"></a>
@@ -893,31 +895,31 @@ NCRサービスの利用権限は次のとおりです。
 | Project Admin<br>Project Member<br>Service Admin | NHN Container Registry(NCR)サービスCreate(作成)、Read(読み取り)、Update(更新)、Delete(削除) |
 | Service Viewer | NHN Container Registry(NCR)サービスRead(読み取り) |
 | Image Uploader | NHN Container Registry(NCR)サービスRead(読み取り)、イメージCreate(作成) |
-| Service Permission | NHN Container Registry(NCR)サービスEnable(有効化)、Disable(無効化) |
+| Service Permission | NHN Container Registry(NCR)サービスのEnable(有効化)、Disable(無効化) |
 
 NCRサービス利用権限により使用できる機能は次のとおりです。
 
 | Action | Project Admin | Project Member<br>Service Admin | Service Viewer | Image Uploader | Service Permission |
 | --- | --- | --- | --- | --- | --- |
-| サービスの有効化/無効化 | ✓ |  |  |  | ✓ |
+| サービス有効化/無効化 | ✓ |  |  |  | ✓ |
 | レジストリの照会 | ✓ | ✓ | ✓ | ✓ |  |
 | レジストリの作成/削除 | ✓ | ✓ |  |  |  |
 | レジストリ複製リストの照会 | ✓ | ✓ | ✓ | ✓ |  |
 | レジストリ複製の作成/修正/削除/実行 | ✓ | ✓ |  |  |  |
-| レジストリ複製ヒストリーの照会 | ✓ | ✓ | ✓ | ✓ |  |
-| イメージの表示 | ✓ | ✓ | ✓ | ✓ |  |
+| レジストリ複製の履歴照会 | ✓ | ✓ | ✓ | ✓ |  |
+| イメージ表示 | ✓ | ✓ | ✓ | ✓ |  |
 | イメージPull | ✓ | ✓ | ✓ |  |  |
 | イメージPush | ✓ | ✓ |  | ✓ |  |
 | イメージの削除 | ✓ | ✓ |  |  |  |
-| アーティファクトの表示 | ✓ | ✓ | ✓ | ✓ |  |
+| アーティファクト表示 | ✓ | ✓ | ✓ | ✓ |  |
 | アーティファクトの削除 | ✓ | ✓ |  |  |  |
 | アーティファクトタグの照会 | ✓ | ✓ | ✓ | ✓ |  |
 | アーティファクトタグの作成/削除 | ✓ | ✓ |  |  |  |
 | Webフックの照会 | ✓ | ✓ | ✓ | ✓ |  |
 | Webフックの作成/修正/削除 | ✓ | ✓ |  |  |  |
-| イメージ 整理 ポリシーの照会 | ✓ | ✓ | ✓ | ✓ |  |
-| イメージ 整理 ヒストリーの照会 | ✓ | ✓ | ✓ | ✓ |  |
-| イメージ 整理 ポリシーの作成/削除/実行 | ✓ | ✓ |  |  |  |
-| イメージ 整理 ルールの有効化/無効化 | ✓ | ✓ |  |  |  |
+| イメージ整理ポリシーの照会 | ✓ | ✓ | ✓ | ✓ |  |
+| イメージ整理の履歴照会 | ✓ | ✓ | ✓ | ✓ |  |
+| イメージ整理ポリシーの作成/削除/実行 | ✓ | ✓ |  |  |  |
+| イメージ整理ルールの有効化/無効化 | ✓ | ✓ |  |  |  |
 | イメージ保護ポリシーの照会 | ✓ | ✓ | ✓ | ✓ |  |
 | イメージ保護ポリシーの追加/削除 | ✓ | ✓ |  |  |  |
