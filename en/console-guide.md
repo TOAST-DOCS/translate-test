@@ -1,505 +1,269 @@
-<a id="compute-instance-console-guide"></a>
-## Compute > Instance > Console Guide
+<!-- pre-align:aligned sig=10ec624217b1 -->
 
-<a id="create-instances"></a>
-## Create Instances
+<a id="storage-block-storage-console-guide"></a>
+## Storage > Block Storage > Console Guide { #storage-block-storage-console-guide }
 
-You can create instances either by using the settings below or by using instance templates. To create instances using instance templates, select **Use instance template** from the Create Instance page. To learn how to create instance templates, see [Instance Template Console Guide](/Compute/Instance%20Template/en/console-guide/).
+<a id="create-block-storage"></a>
+## Create Block Storage { #create-block-storage }
 
-<a id="os-settings"></a>
-### OS Settings
+Create block storage to be attached to an instance.
 
-Determine how the root block storage is created that will be used when an instance is created.
+Block storage can be created with empty storage containing no data, or by snapshots of existing block storage.
 
-- Select either **Create New and Set up** or **Use Existing Resource**.
-- If you select **Create New and Set up**, create root block storage using an image.
-- If you select **Use Existing Resource**, use a previously created block storage or snapshot.
+To create empty block storage, select **Empty block storage, with no source** for **Block Storage Source**. Empty block storage must be attached to instance, with partitions divided, and formatted, before use.  Refer to [Block Storage Overview > Use Empty Block Storage](/Storage/Block%20Storage/en/overview/#use-empty-block-storage) on how to use block storage. The availability zone where empty block storage is to be located must have an instance to which block storage is to be attached. For block storage type, choose either **HDD** or **SSD**, based on the required I/O performance.
 
-<a id="image"></a>
-### Image
+You can also create block storage from snapshots. In this case, the size of block storage must be the same as or larger than that of a snapshot. To set a larger size, the customer must manually adjust partitions of existing block storage or add more partitions so as to make use of increased space.
 
-Select the image that contains the operating system you need. You can choose between public images provided by NHN Cloud, images you've previously created, or shared images.
+<a id="encrypted-block-storage"></a>
+### Encrypted Block Storage { #encrypted-block-storage }
 
-The available instance flavors vary depending on the image you choose, so we recommended you choose an image first when creating an instance.
+You can create encrypted block storage by selecting **Encrypted HDD** or **Encrypted SSD** from the block storage type. Encrypted block storage is encrypted using a symmetric key managed by NHN Cloud's Secure Key Manager service. Therefore, to create encrypted block storage, you must create a symmetric key in the Secure Key Manager service in advance.
 
-| OS                         | Block Storage     | Memory   |
-| -------------------------------- | ---------- | -------- |
-| Linux<br>Ubuntu, Debian, Rocky | 20GB or more  | 1GB or more |
-| Windows                           | 50GB or more  | 2GB or more |
+The policies for encrypted block storage are as follows.
 
-<a id="root-block-storage"></a>
-### Root Block Storage
-
-Set up root block storage according to the **OS settings**.
-
-- If you select **Create New and Set up**, create the root block store by specifying the **block storage type** and **block storage size**.
-- If you select **Use Existing Resource**, specify the **original resource** to use as root block storage.
-
-#### Original Resource
-
-You can select either a previously created **block storage** or **snapshot**.
-
-- When you select **block storage**, use the previously created block storage as the root block storage.
-- When you select **snapshot**, the root block storage is created using a previously created snapshot.
-
-#### Block Storage Size
-
-Specify the root block storage size of an instance.
-
-- The block storage size must be at least the minimum size required by the image.
-
-The root block storage size varies depending on instance flavor.
-
-| Flavors               | Supported Block Storage Size         |
-| -------------------| -------------------------- |
-| u2 flavors             | 20 ~ 100 GB (varies by flavor) |
-| t2, m2, c2, r2, and x1 flavors | 20 ~ 2000 GB               |
+* Due to encryption and decryption, I/O performance may be reduced compared to general block storage types (**HDD**, **SSD**).
+* You cannot change the symmetric key ID that is registered when creating encrypted block storage. To change the symmetric key, you must use the key rotation feature of Secure Key Manager.
+* After selecting encrypted block storage, clicking **Rotate Key** button allows you to re-encrypt block storage encrypted with an older version of the key with a newer version of the key.
 
 > [Note]
-> Because you are charged by block storage size, it is inefficient to make the default block storage size large without consideration. We recommend that you add additional block storage as needed.
-> If you select **block storage** for **Use Existing Resource** in the **OS settings**, you can't change the block storage size.
-> If you select **snapshot** for **Use Existing Resource** in the **OS settings**, block storage size must be set equal to or larger than the original block storage size.
+Backup products allow you to prepare for data loss due to key deletion, and create a replica for safe keeping.
 
-#### Block Storage Type
+<!-- For newline -->
 
-Determines the default block storage type of an instance.
+> [Caution]
+If the Secure Key Manager service deletes the symmetric key that you set for encrypted block storage and then detaches that block storage from the instance, it can't be decrypted again. You must manage symmetric keys carefully to avoid accidentally deleting them.
 
-- Choose either **HDD** or **SSD**. The choice of block storage type affects pricing and performance.
-- You cannot change the block storage type once the instance is created.
+<a id="delete-block-storage"></a>
+## Delete Block Storage { #delete-block-storage }
+
+Check the following before deleting block storage:
+
+* You cannot delete block storage attached to an instance. Detach it from the instance first.
+* You cannot delete block storage which has snapshots. Delete all snapshots of the block storage.
+
+Once deleted, block storage cannot be restored.
+
+
+<a id="change-block-storage-size"></a>
+## Change Block Storage Size { #change-block-storage-size }
+
+You can change the size of block storage. You cannot decrease the size of block storage, only increase it.
+
+For block storage attached to an instance, you must extend the partition and file system as described below.
+
+<a id="linux-instance"></a>
+### Linux Instance { #linux-instance }
+
+<a id="extend-partition"></a>
+#### Extend Partition
+
+1. Check the partitions in block storage.
+
+        # sudo lsblk
+
+    If the partition does not exist, go to `Extend File System` below.
+
+2. Extend the partition.
+
+    For example, if you want to extend `partition 1`on the `/dev/vda` device, proceed as the following.
+
+        # sudo growpart /dev/vda 1
+
+3. Check the extended partition.
+
+        # sudo lsblk
+
+<a id="extend-file-system"></a>
+#### Extend File System
+
+1. Check the type of file system you want to extend.
+
+        # df -hT
+
+2. Depending on the type of file system, enter the command as follows to extend.
+ 
+    [XFS file system] For example, if you want to extend a file system mounted on ` /`, proceed as the following.
+
+        # sudo xfs_growfs -d /
+
+    [Ext4 file system] For example, if you want to extend the file system on the `/dev/vda` device, proceed as the following.
+
+        # sudo resize2fs /dev/vda    
+
+3. Check the extended file system.
+
+        # df -hT
+
+   
+<a id="windows-instance"></a>
+### Windows Instance { #windows-instance }
+
+1. In **Run**, enter `diskmgmt.msc` and click **OK** to run the Disk Management utility.
+![image.png](https://static.toastoven.net/prod_infrastructure/block_storage/windows_volume_extend_01.png)
+2. It will be marked as **Unallocated** for the size added to the block storage. Right-click the extended drive and click **Extend Volume...** to run the Extend Volume Wizard.
+![image.png](https://static.toastoven.net/prod_infrastructure/block_storage/windows_volume_extend_02.png)
+3. In the Extend Volume Wizard, click **Next**. In **Select the amount of space in MB**, enter the number of megabytes to extend.
+
+    For the maximum number of megabytes you can enter, see **Maximum available space in MB**. Click **Next**again to complete the Extend Volume Wizard.
+![image.png](https://static.toastoven.net/prod_infrastructure/block_storage/windows_volume_extend_03.png)
+4. Check the extended drive in **This PC**.
+![image.png](https://static.toastoven.net/prod_infrastructure/block_storage/windows_volume_extend_04.png)
+
+<a id="attach-block-storage"></a>
+## Add Connections { #attach-block-storage }
+
+Attach block storage to an instance. You can attach block storage while the instance is running. Block storage can only be attached to an instance in the same availability zone. When creating block storage, make sure that you create the block storage in the same availability zone as the instance to attach to.
+
+If you attach empty block storage, it must be partitioned and formatted in the instance before use. A formatted block storage must be mounted before use. For block storage created with snapshots, you must mount it manually within the instance to use it.
 
 > [Note]
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the block storage type.
+> Depending on the operating system, mounting may be automatically applied, requiring no further mounting process.
+
+<a id="detach-block-storage"></a>
+## Detach { #detach-block-storage }
+
+Detach unnecessary block storage from an instance. Note, however, root block storage cannot be detached.
+
+You can detach block storage even while the instance is running. However, you must first unmount the block storage from the instance and detach the block storage in the console. Detaching while the block storage is mounted causes the following issues:
+
+1. Block storage data may be corrupted, resulting in data loss.
+2. When you add new block storage, the block storage name on the console and the block storage name on the instance appear different. You will need to reboot the instance for the same block storage name to appear on the console and on the instance.
+
+**Linux Instance**
+
+	# umount <mount point>
+
+**Windows Instance**
+
+Make the disk **Offline** in **Disk Management** and then detach it.
+
+<a id="create-snapshots"></a>
+## Create Snapshots { #create-snapshots }
+
+Create a read-only copy of the block storage. Although block storage snapshots can be created while the block storage is attached to an instance, it is recommended to detach it from the instance and create block storage snapshots to ensure data consistency and reliability.
+
+<a id="replicate-block-storage"></a>
+## Replicate Block Storage { #replicate-block-storage }
+
+You can use block storage by replicating it. Although block storage can be replicated while being attached to an instance, it is recommended that you stop the instance or detach the block storage from the instance and proceed with replication to ensure data consistency and reliability.
+
+After requesting replication, you can check the replication status and whether the replication is successful or not in **Replication Result**.
+
+> [Note]
+> The replication function is a one-time operation, and changes to the original block storage after the replication are not reflected.
+
+<!-- For newline -->
+
+> [Caution]
+> To proceed with replication, 100 KB or more of free space in block storage is required.
+
+<a id="target-project"></a>
+### Target Project { #target-project }
+
+Select a target project for which you want to create a replica.
+
+* Same project: Replicate to the same project
+* Different project: Replicate to another project to which you belong
+
+<a id="region"></a>
+### Region { #region }
+
+Select a target region for which you want to create a replica.
+
+<a id="block-storage-type"></a>
+### Block Storage Type { #block-storage-type }
+
+Select the type of block storage to use in the region to which to replicate. You can select a type that is different from the block storage type being used in the current region.
 
 <a id="availability-zone"></a>
-### Availability Zone
+### Availability Zone { #availability-zone }
 
-If an availability zone is not specified, a random zone is selected. An instance can use a block storage only if they both exist in the same availability zone. If the block storage you wish to use exists in a particular availability zone, then select that zone.
+Select the availability zone to use in the region to which to replicate. You can select an availability zone that is different from the availability zone being used in the current region.
 
-> [Note]
-> Resources in a VPC can be used in any availability zone.
-> If you select **Use Existing Resource** in the **OS settings**, you can't change the availability zone.
+<a id="move-block-storage"></a>
+## Move Block Storage { #move-block-storage }
 
-For more details on availability zones, see [Availability Zone in Instance Overview](./overview/#availability-zone).
-
-<a id="flavor"></a>
-### Flavor
-
-You can select various flavors depending on virtual hardware performance specifications. However, the choice of some flavors may be limited depending on the virtual hardware performance that your image requires. For more details, see [Instance Overview](./overview).
-
-> [Note] 
-> 1 vCPU refers to one socket composed of one thread and one core, the number of threads and the number of cores per socket are constant, one each.
-
-Instance flavors can be changed in the NHN Cloud console even after instance creation, from higher to lower specs and vice versa. However, note that some flavors cannot be changed. See [Modify flavor](./console-guide/#modify-flavor) for details.
-
-> [Caution] An instance's root block storagecannot be changed by changing instance flavors.
-
-<a id="number-of-instances"></a>
-### Number of Instances
-
-You can specify the number of instances you want to create when creating multiple instances with the same image, availability zone, flavor, block storage size, key pair, and network settings. The instance names will be the name you specified, with numbers such as `-1` and `-2` appended to the end. For example, creating two instances named `my-instance` will result in `my-instance-1` and `my-instance-2`. The maximum number of instances you can create at once is 10.
-
-When you create multiple instances without specifying an availability zone, each instance will be created in a randomly selected availability zone. For example, if two instances are created without specifying an availability zone, they may be created in the same zone or they may be created in different zones. If all instances need to be created in the same availability zone, select a particular zone.
+You can move block storage to another project in the same organization. The requester must have the appropriate permissions on both the source and target projects.
 
 > [Note]
-> If you select **block storage** for **Use Existing Resource** in the **OS settings** or **Use Existing Network Interface** in the **network settings**, the number of instances is limited to `1`.
+Block storage where snapshots exist cannot be moved.
 
-<a id="key-pair"></a>
-### Key Pair
+<!-- 개행을 위한 주석이므로 필수로 포함되어야 합니다. -->
 
-Use an existing key pair or create a new key pair. To register an existing key pair, see [Import Key Pair (Windows)](./console-guide/#import-key-pairs-windows) for Windows users, and [Import Key Pair (Mac and Linux)](./console-guide/#import-key-pairs-mac-and-linux) for Mac and Linux users.
+<a id="move-block-storage-target-project"></a>
+### Target project { #move-block-storage-target-project }
 
-> [Note]
-> Key Pair is a resource assigned to the user account, so it's not deleted when you delete a project.
+Enter the ID of the target project to which you want to move block storage. The target project must be a project in the same organization.
 
-<a id="network"></a>
-### Network
+<a id="encryption-symmetric-key-id"></a>
+### Encryption Symmetric Key ID { #encryption-symmetric-key-id }
 
-Select a subnet defined in your VPC to connect to an instance. For each selected subnet, a network interface is created in the instance to connect to that subnet. You can change the order of selected subnets to change network interfaces, in which case the first network interface (`eth0`) will be set as the default gateway.
+If you're moving encrypted block storage, enter the encryption symmetric key ID that the target project will use.
 
-For more details on creating and managing networks, refer to [VPC Overview](/Network/VPC/en/overview/).
+<a id="troubleshooting-guide"></a>
+## Troubleshooting Guide { #troubleshooting-guide }
 
-<a id="floating-ip"></a>
-### Floating IP
+<a id="an-issue-where-an-instance-boots-from-unintended-block-storage"></a>
+### An issue where an instance boots from unintended block storage { #an-issue-where-an-instance-boots-from-unintended-block-storage }
 
-Select whether you will use a floating IP after instance creation. If you enable this option, a new floating IP is created and connected to the first network interface. Note that the first network interface must be connected to a subnet where an internet gateway is configured.
+The instance might boot with block storage additionally attached to the instance mounted on `/`. This usually happens when you attach block storage created with the instance's OS image to another instance additionally.
 
-Floating IP can be managed from Instance > Management, or Instance > Floating IP. For more details on floating IP, see [VPC Console Guide](/Network/VPC/en/console-guide/).
+Linux determines which block storage to mount on `/` using `etc/fstab` at boot time. For the OS images used by NHN Cloud, the block storage to mount is determined based on the file system UUID. If block storage with the same file system UUID value is attached, unintended block storage may be mounted on `/`.
 
-<a id="security-group"></a>
-### Security Group
-
-Select security groups that the instance will be included in. One instance can be included in multiple security groups, in which case,
-
-- The instance can communicate over the network with all other instances included in each security group. When you are dealing with an instance with sensitive data that is not meant to be accessible by other instances, you must carefully select security groups.
-- The rules of each security group are aggregated and applied to the instance's external network communication.
-
-For more details on security groups, see [VPC Console Guide](/Network/VPC/en/console-guide/).
-
-<a id="additional-block-storage"></a>
-### Additional Block Storage
-
-Select whether you will attach an additional block storage after instance creation. If you enable this option, a new block storage separate from the root block storage is created and attached to the instance. As with the root block storage, you can specify the name, storage type, and size of the additional block storage you create.
-
-By using the root block storage only for the OS and storing your frequently used applications and data on the additional block storage, you can easily migrate or copy your applications and data using the block storage attach/detach and snapshot features. In addition, when an instance failure occurs, you can easily recover your services by simply detaching the additional block storage and attaching it to another instance.
-
-Block storage can also be managed from Instance > Block Storage. For more details on block storage, see [Block Storage Guide](/Storage/Block%20Storage/en/overview/).
-
-<a id="placement-policy"></a>
-### Placement Policy
-
-You can use placement policies to place instances on different hypervisors. When you set a placement policy at instance creation time, instances assigned to the same placement policy are created on different hypervisors.
- 
-> [Caution]
-> Instance creation may fail in situations where distributed deployment is not possible.
-
-<a id="user-script"></a>
-### User Script
-
-You can specify a script to be executed after instance creation. The user script is executed following the instance's initial boot and after the initialization process including network configuration has completed. User scripts in NHN Cloud are executed by automated tools such as cloud-init (Linux) and Cloudbase-init (Windows), which are embedded in the official images.
-
-> [Caution]
-> User scripts are executed with root (Linux)/Administrator (Windows) privileges.
-
-#### Linux
-The first line of a user script must begin with `#!`.
-```
-#!/bin/bash
+```console
+# cat /etc/fstab
 ...
+UUID=6cd50e51-cfc6-40b9-9ec5-f32fa2e4ff02 /                       xfs     defaults        0 0
 ```
 
-For a user script to run successfully, log files in the instance must be checked. You can check output logs printed by standard output/error from the script in `/var/log/cloud-init-output.log`.
+You can check the file system UUID of block storage with the `blkid` command.
 
-#### Windows
-
-Windows images support both Batch and PowerShell formats for user scripts. The format is determined by an indicator specified in the first line.
-
-* Batch Script
-```
-rem cmd
-...
+```console
+# blkid
+/dev/vda1: UUID="6cd50e51-cfc6-40b9-9ec5-f32fa2e4ff02" TYPE="xfs"
+/dev/vdb1: UUID="6cd50e51-cfc6-40b9-9ec5-f32fa2e4ff02" TYPE="xfs"
 ```
 
-* PowerShell Script
-```
-#ps1_sysnative
-...
-```
+As shown above, if the file system UUID of the additionally attached block storage is the same, the additionally attached block storage might be mounted on `/` depending on how the Linux distribution works.
 
-To use both Batch and PowerShell in your script, use the following format.
+Use the following steps to solve the problem by making the file system UUIDs of the two block storage different.
 
-* EC2 format
-```
-<script>
-...
-</script>
-<powershell>
-...
-</powershell>
-```
+1. After stopping the instance, [detach the block storage](./console-guide/#detach-block-storage) that is causing the problem (that is, the one that was mounted on `/` unexpectedly).
 
-Logs from user scripts can be found in `C:\Program Files\Cloudbase Solutions\Cloudbase-Init\log\cloudbase-init`.
+2. Start the instance.
 
-For more details regarding user scripts, see the [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/format.html) or [Cloudbase-init](https://cloudbase-init.readthedocs.io/en/latest/userdata.html) guides.
+3. When booting is complete, [attach the block storage](./console-guide/#attach-block-storage) that is causing the problem.
 
-<a id="additional-instance-features"></a>
-## Additional Instance Features
+4. Use the command below to change the file system UUID of the block storage that is causing the problem. Execute the command below according to the type of block storage causing the problem. The type of block storage can be found with the `blkid` command.
 
-<a id="change-instance-status"></a>
-### Change Instance Status
+	If the file system of the block storage causing the problem is ext4:
 
-An instance’s status can be changed by stopping, terminating, deleting, and starting it.
+	<pre><code class="language-console"># tune2fs -U random /dev/vdb1
+	tune2fs 1.42.9 (28-Dec-2013)
+	Setting the UUID on this filesystem could take some time.
+	Proceed anyway (or wait 5 seconds to proceed) ? (y,N) y
+	</code></pre>
 
-For more details on hypervisor resources and fees for stopping, terminating, and deleting instances, see the table below.
+	If the file system of the block storage causing the problem is xfs:
 
-| Classification | Stop instance | Terminate Instance | Delete Instance |
-| --- | -- | --- | --- |
-| Hypervisor resource | Resource remain allocated  | Resource returned and reallocated when an instance is started | Resource removed |
-| Pricing for instance | Price for stopping applied | Free | Free |
-| Pricing for other connected resources | Charged| Charged | Charged |
+	<pre><code class="language-console"># xfs_admin -U generate /dev/vdb1
+	Clearing log and setting UUID
+	writing all SBs
+	new UUID = 0037c590-0545-4736-bcdc-d052681eb5f5
+	</code></pre>
 
-> [Note] GPU Instances cannot be terminated and will incur normal (100%) rates when stopped.
+5. Verify that the file system UUID has been changed.
 
-<a id="create-image"></a>
-### Create Image
+	<pre><code class="language-console"># blkid
+	/dev/vda1: UUID="6cd50e51-cfc6-40b9-9ec5-f32fa2e4ff02" TYPE="xfs"
+	/dev/vdb1: UUID="0037c590-0545-4736-bcdc-d052681eb5f5" TYPE="xfs"
+	</code></pre>
 
-Create an image from an instance's root block storage. It is recommended to stop instances before creating an image in order to ensure data integrity.
+<a id="an-issue-where-an-instance-does-not-operate-because-the-block-storage-mount-fails"></a>
+### An issue where an instance does not operate because the block storage mount fails { #an-issue-where-an-instance-does-not-operate-because-the-block-storage-mount-fails }
 
-While it is possible to create an image from an instance that has no available free space in its root block storage, those images are unusable by other instances because they cannot be properly initialized. Before creating an image, ensure that your instance has at least 100KB of free space.
+If you set `/etc/fstab` incorrectly when adding block storage, the volume mount may fail during boot and the instance may enter emergency mode.
 
-Created images are registered as private images in **Compute > Image**. You can use the registered image to create an instance with a block storage identical to that of the original instance.
+To prevent this situation, it is recommended to use the `nofail` option according to the [Block Storage Mounting Guide](/Storage/Block%20Storage/en/overview/#mount-block-storage) when adding additional block storage in `/etc/fstab`.
 
-> [Caution]
-> The size of the created image may be larger than the actual usage of the root block storage.
-
-<a id="associatedisassociate-floating-ip"></a>
-### Associate/Disassociate Floating IP
-
-Floating IP can be associated with or disassociated from an instance, regardless of the instance's status. If you have no available floating IP or if the floating IP you want is not available, you can create one by clicking **Create**. Alternatively, floating IP can also be created from **Network > VPC > Floating IP**.
-
-For more details on floating IP, see [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="modify-security-group"></a>
-### Modify Security Group
-
-An instance's security groups can be modified regardless of the instance's status. Modified security groups are applied immediately.
-
-For more details on security groups, see [Security Group](./console-guide/#security-group) and [VPC Overview](/Network/VPC/en/overview/).
-
-<a id="change-network-subnet"></a>
-### Change Network Subnet
-
-An instance's network subnet can only be changed while the instance is stopped. When you add a subnet, a network interface that will be connected to that subnet is automatically created on your instance. If you add multiple subnets at once, the order of the newly created network interfaces on the instance is set randomly. Deleting a subnet from an instance automatically deletes the network interface that was created along with the subnet.
-
-<a id="modify-flavor"></a>
-### Modify Flavor
-
-Instance flavors can be changed once an instance has been stopped. If an instance is running, click **Stop Instance** in **Additional Features** to stop the instance.
-
-You can only change an instance to another flavor that is compatible with its current flavor.
-
-* m2, c2, r2, t2, x1 flavor instances can be changed to m2, c2, r2, t2, x1 flavors.
-* m2, c2, r2, t2, x1 flavor instances cannot be changed to u2 flavors.
-* u2 flavor instances cannot be changed to other flavors once they have been created, not even to those of the same u2 flavor.
-
-When you modify flavors, instance resize and resize confirmation tasks proceed. When all tasks are completed, the VM changes its status to **Shutoff**. You can start the instance by clicking **Start Instance** in **Additional Features**.
-
-> [Note] The instance's root block storage size cannot be modified. If an instance requires additional block storage space, attach a block storage. For details on how to attach block storage, see [Block Storage Overview](/Storage/Block%20Storage/en/overview/).
-
-Instances will be charged using the new flavor from the moment the modification completes.
-
-<a id="change-instance-os-details"></a>
-### Change Instance OS Details
-
-You can change instance OS information regardless of the state of the instance. 
-
-On the **Compute > Instance** page, click the instance whose OS information you want to change. On the **Basic Information** tab of that instance's details screen, click **OS > Modify**.
-
-> [Note] You can't change the OS type.
-
-<a id="change-instance-description"></a>
-### Change Instance Description
- 
-You can change instance description regardless of the state of the instance. 
- 
-On the **Compute > Instance** page, click the instance whose information you want to change. On the **Basic Information** tab of that instance's details screen, click **Description > Change**.
-
-<a id="change-instance-key-pair"></a>
-### Change Instance Key Pair
-
-You can change the instance key pair only if the instance is active.
-
-On the **Compute > Instance** page, click the instance whose key pair information you want to change. On the **Basic Information** tab of that instance's details screen, click **Key Pair > Change**.
-
-Change the key pair of the instance default account to the selected key pair. The instance default account can be found on the **Connection Information** tab of the instance's bottom details screen.
-
-> [Caution] Changing an instance key pair deletes all public key information in the instance except for the selected key pair.
-
-> [Note] Only project members with the ADMIN permissions for the basic infrastructure can change the instance key pair, which cannot be changed if it is a Windows OS instance.
-
-> [Note] If the image version used to create the instance is low, the feature to change key pairs may not be available.
-
-<a id="manage-placement-policies"></a>
-### Manage Placement Policies
-
-You can create and delete placement policies and view a list of instances assigned to placement policies.
-
-Only the `anti-affinity` placement policy type for distributed placement is provided.
-
-You can delete a placement policy even if instances are assigned to it, in which case the instances are not deleted.
-
-<a id="key-pairs"></a>
-## Key Pairs
-
-<a id="import-key-pairs-windows"></a>
-### Import Key Pairs (Windows)
-
-You can use puttygen, which is installed when you install the PuTTY SSH client, to create a key pair and register it with NHN Cloud.
-
-Make sure you have [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) installed.
-
-Run puttygen.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-001-en.png)
-
-Select **RSA** (or SSH-2 RSA in older versions of puttygen) under **Parameters**. Click **Generate** under **Actions**. Continuously move your mouse in the empty space in order to generate the key.
-
-After the key is generated, the public key file contents will be visible as shown below. Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-![Image1](http://static.toastoven.net/prod_instance/putty-ssh-002-en.png)
-
-Click **Save private key** under **Actions** to save the private key. If you save the private key leaving the **Key passphrase** field blank, the message **"Are you sure you want to save this key without a passphrase to protect it?"** will appear. In order to use your converted private key more securely, set a passphrase before saving.
-
-> [Caution]
-> If you wish to be able to automatically login to your instance, you should not set a key passphrase. When a passphrase is used, you must manually enter the private key's passphrase during login.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="import-key-pairs-mac-and-linux"></a>
-### Import Key Pairs (Mac and Linux)
-
-Key pairs created using `ssh-keygen` in Mac or Linux can be registered with NHN Cloud. Use the following command to create a key pair.
-
-	$ ssh-keygen -t rsa -f my_key.key
-
-You can choose to set a passphrase for the key pair, although it is not required. If you wish to use your key pair more securely, we recommend setting a passphrase. The file with `.pub` appended to the specified key pair name contains the public key.
-
-	$ cat my_key.key.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnnUAe36txQqk8J7VzbNuYKVQQ3gbNoClndHMX49OD+1Rw5xrDFLUKQqxbBDtlNMoA9tKBZNrQBpKr1kFEtvMIj1HPkH9ocb4MbuoVVjpkIhixbKMMJPDQ4JQJxaifsjR59YsZyDAp0aXZp+o+OB97P3S4AKPY2kQR0JdSr30+6Av6smf+3mZceAE4abzklfbyWT5slP1im/wfYEPO3QBEDl/0JbmTjKWPYI6QnbwnPRHS63SJ+Kd2QeYQYJCadv7X4mXnw81qEIWq/dx1SQkGDTNgR7lnN2ApFlU5EZcow69z6tiCr0hlyigwjGooMg3wTZvcSlYcVeTzZ755RArd ...
-	
-Paste the contents of the public key into the **Public Key** field in **Get Key Pair** in order to register the key pair.
-
-The registered key pair can be used to create instances, and the key pair's private key must be used when accessing instances. For more details on how to access instances, see [How to Access Instances](./overview/#how-to-access-instances).
-
-Just as with key pairs created from NHN Cloud, imported key pairs also need to be managed cautiously since exposed private keys can be abused by anyone to access instances.
-
-<a id="appendix-1-change-language-packs-in-windows"></a>
-## Appendix 1. Change Language Packs in Windows
-
-NHN Cloud provides Windows images with English as the primary language. You may change your language preferences with the following steps.
-
-1. Go to **START > Control Panel > Clock, Language, and Region > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows1.png)
-
-2. Select **Change your language preferences > Add a language**.
-![Image1](http://static.toastoven.net/prod_instance/windows2.png)
-
-3. Choose a language in **Add a language** and click **Add**.
-![Image1](http://static.toastoven.net/prod_instance/windows3.png)
-
-4. Check the language pack just added.
-![Image1](http://static.toastoven.net/prod_instance/windows4.png)
-
-5. Download and install the language pack.
-![Image1](http://static.toastoven.net/prod_instance/windows5.png)
-
-6. Download and install updates.
-![Image1](http://static.toastoven.net/prod_instance/windows6.png)
-
-7. To change to the installed language pack, double-click the selected language or select **Options**.
-![Image1](http://static.toastoven.net/prod_instance/windows7.png)
-
-8. Choose **Make this the primary language** for Windows display language.
-![Image1](http://static.toastoven.net/prod_instance/windows8.png)
-
-9. To apply the changes, click **Log off now**.
-![Image1](http://static.toastoven.net/prod_instance/windows9.png)
-
-10. Log in again, and you can see Windows is displayed using the language pack of your choice.
-![Image1](http://static.toastoven.net/prod_instance/windows10.png)
-
-<a id="appendix-2-change-routing-in-windows"></a>
-## Appendix 2. Change Routing in Windows
-
-Routing in NHN Cloud Windows instances can be changed as follows.
-
-* Press **Windows Key + R** to open an execution window, and enter `cmd` and execute to open a command prompt window. You can enter route commands here.
-
-Route commands
-
-* Print current configuration: route print
-* Add : route add "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Change : route change "Destination" mask "subnet" "gateway" metric "Metric value" if "Interface number"
-* Delete : route delete "Destination" mask "Destination subnet" "gateway" metric "Metric value" if "Interface number"
-* Option : -p (specify as persistent route)
-
-  
-Description
-
-![Image1](http://static.toastoven.net/prod_instance/windows_route1.png)
-
-* Metric Value: A lower value indicates higher priority
-* Interface Number: This value can be obtained from route print (red box above)
-* Persistent Route: Use the -p option to avoid the configured routes being reset across system reboots (blue box above)
-
-Example 1 - Restricting external communication for particular interfaces
-
-* You can restrict an interface from communicating externally by using the route change command to change its route metric or by leaving the default gateway field blank when configuring fixed IP settings.
-* How to Modify Metrics
-    * Increase interface metric value
-
-            $ route change 0.0.0.0 mask 0.0.0.0 172.16.5.1 metric 10 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route2.png)
-
-* How to Set Fixed IP
-    1. Use the ipconfig /all command to view IP information.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route3.png)
-    2. Enter the corresponding IP information, leaving the default gateway field blank, in the IP Properties window.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route4.png)
-    3. Check the results using the route print command.
-![Image 1](http://static.toastoven.net/prod_instance/windows_route5.png)
-
-Example 2 - Setting routes for a particular address range
-
-* Use the route add command to set routes for a particular address range.
-
-        $ route add 172.16.0.0 mask 255.255.0.0 172.16.5.1 metric 1 if 14 -p
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route6.png)
-
-Example 3 - Removing a particular route
-
-* Use the route delete command to remove specified routes.
-
-        $ route delete 172.16.0.0 mask 255.255.0.0 172.16.5.1
-
-![Image 1](http://static.toastoven.net/prod_instance/windows_route7.png)
-
-<a id="appendix-3-change-system-locale"></a>
-## Appendix 3. Change System Locale
-
-System locale in NHN Cloud Windows instances can be changed as follows.
-
-1. Go to **Windows Key > Control Panel > Clock, Language, and Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale1.png)
-
-2. Select **Region**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale2.png)
-
-3. From the **Administrative** tab, click **Change system locale**.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale3.png)
-
-4. Select a system locale to use.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale4.png)
-
-5. Restart the system to apply the changes.
-![Image 1](http://static.toastoven.net/prod_instance/win_locale5.png)
-
-<a id="appendix-4-restarting-instances-for-hypervisor-maintenance"></a>
-## Appendix 4. Restarting Instances for Hypervisor Maintenance
-NHN Cloud updates hypervisor software on a regular basis to enhance the security and stability of infrastructure services that we provide.
-Instances running on a hypervisor that requires maintenance must be restarted and migrated to a hypervisor which has completed maintenance.
-
-To restart an instance, use the **! Restart** button that has been created next to the instance name in the console.
-`Using the "Restart Instances" button in the console or rebooting the operating system will not migrate an instance to another hypervisor.`
-Follow the guide below to use the restart feature in the console.
-
-Go to the project where your instance requiring maintenance is located.
-
-**1. Check if your instance requires maintenance.**
-
-Any instance that has the **! Restart** button before its name requires maintenance.
-Put the mouse cursor over the **! Restart** button to find maintenance schedule details.
-![Instance Maintenance Image 1](http://static.toastoven.net/prod_instance/instance_p_migration_en_1.png)    
-
-**2. Deactivate or stop application programs running on an instance which requires maintenance.**
-
-Any application programs running on an instance which requires maintenance must be deactivated or stopped in order not to impact your service.
-If there is no way to do so without impacting your service, please contact NHN Cloud Customer Center and we will provide you with guidance on appropriate measures to take.
-
-**3. Click the [! Restart] button created next to the name of the target instance.**
-
-![Instance Maintenance Image 2](http://static.toastoven.net/prod_instance/instance_p_migration_en_2.png)
-
-**4. Click [Confirm] in the Restart Instances confirmation window.**
-
-![Instance Maintenance Image3](http://static.toastoven.net/prod_instance/instance_p_migration_en_3.png)
-
-**5. Wait until the instance status turns green and the [! Restart] button disappers.**
-
-If the status does not change or the **! Restart** button is not disabled, try refreshing the page.
-
-You cannot operate or modify the instance while a restart is underway.
-If an instance restart does not complete successfully, the administrator will automatically be notified and you'll also be contacted by NHN Cloud.
+If you have modified `/etc/fstab` incorrectly and your instance is not booting properly, please contact the Customer Support.
