@@ -1,24 +1,26 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=46d075a6bc6a -->
 
 <a id="game-gamestarter-macos"></a>
 ## Game > GameStarter > 릴리스 노트 > macOS { #game-gamestarter-macos }
 
 <a id="0180-2026-9-22"></a>
-### 4.0.18.0(2026. 9. 22.) { #0180-2026-9-22 }
+### 4.0.18.0(September 22, 2026) { #0180-2026-9-22 }
 
 <a id="0180-2026-9-22-1"></a>
-#### 기능 개선/변경
+#### Feature Updates
 
-* 공유 바이너리를 사용하는 게임 그룹에서 원본 게임 기준으로 설정을 적용하도록 개선함.
-* 콘솔 지표
-    * URL Scheme 실행 실패 지표를 '파싱 실패'와 'gameId 유효성 실패'로 분리함.
+* Improved game groups using a shared binary to apply settings based on the original game.
+* Console Metrics
+    * Separated the URL Scheme execution failure metric into "Parsing Failed" and "gameId Validation Failed".
 
 <a id="0180-2026-9-22-2"></a>
-#### 버그 수정
+#### Bug Fixes
 
-* 설치 취소 후 정리에 실패하면 게임이 "업데이트" 상태로 남던 문제를 수정함.
-* 다운로드 취소 시 진행 중인 작업이 정상적으로 종료되지 않던 문제를 수정함.
-* 런처 실행 중 URL Scheme으로 다시 실행할 때 gameId 검증이 늦게 수행되던 문제를 수정함.
+* Fixed an issue where the game remained in the "Update" status when cleanup failed after canceling installation.
+* Fixed an issue where ongoing tasks did not terminate properly when a download was canceled.
+* Fixed an issue where gameId validation was performed late when re-launching via URL Scheme while the Launcher was running.
 
 <a id="0170-2026-5-21"></a>
 ### 4.0.17.0 (2026. 5. 21) { #0170-2026-5-21 }
