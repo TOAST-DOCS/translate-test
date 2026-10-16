@@ -26,8 +26,8 @@ You can manage folders, original image files, and created thumbnail image files 
 
 2. Enter a folder name and click **OK**.
 
-   - A function to edit the name of a folder is not provided.
-   - If you need to modify the name, you must delete the folder and re-create a folder.
+    - A function to edit the name of a folder is not provided.
+    - If you need to modify the name, you must delete the folder and re-create a folder.
 
 <a id="upload-image-files"></a>
 ### Upload Image Files { #upload-image-files }
@@ -43,7 +43,7 @@ You can manage folders, original image files, and created thumbnail image files 
 
 3. Select 'Overwrite' or 'Change Name' to handle files with the same name, and click **Upload**.
 
-   - When the upload is completed normally, the screen is updated and you can check the file list.
+    - When the upload is completed normally, the screen is updated and you can check the file list.
 
 <a id="download"></a>
 ### Download { #download }
@@ -54,7 +54,7 @@ You can manage folders, original image files, and created thumbnail image files 
 
 2. If you select one image file after clicking the **OK** button, it will be downloaded immediately. If you select two or more files, the compressed file `nhn_cloud_image_manager.zip` will be downloaded.
 
-   - You can only download up to 10,000 images at a time, and even if you download images stored in a folder, only 10,000 images can be downloaded in the same way.
+    - You can only download up to 10,000 images at a time, and even if you download images stored in a folder, only 10,000 images can be downloaded in the same way.
 
 <a id="delete-files-or-a-folder"></a>
 ### Delete Files or a Folder { #delete-files-or-a-folder }
@@ -65,7 +65,7 @@ You can manage folders, original image files, and created thumbnail image files 
 
 2. Click **Confirm**.
 
-   - If you select a folder, all files in that folder are also deleted.
+    - If you select a folder, all files in that folder are also deleted.
 
 <a id="view-properties"></a>
 ### View Properties { #view-properties }
@@ -87,10 +87,10 @@ Select one folder or image file and click the **Properties** button.
 
 2. Search for the image file name from the current location or from the entire location.
 
-   - All results that contain a search term are retrieved, similar to `like '%search term%'` in the database.
-   - Searches are case-sensitive.
-      - Input example: sample
-      - Example results: sample.gif, sample_2.gif, sample 3.gif, sample_sample_100x100.png
+    - All results that contain a search term are retrieved, similar to `like '%search term%'` in the database.
+    - Searches are case-sensitive.
+       - Input example: sample
+       - Example results: sample.gif, sample_2.gif, sample 3.gif, sample_sample_100x100.png
 
 <a id="delete-all-files"></a>
 ### Delete All Files { #delete-all-files }
@@ -99,8 +99,8 @@ Select one folder or image file and click the **Properties** button.
 
 1. Click **Delete All Files**.
 
-   - To terminate the use of the service, all files must be deleted.
-   - A deleted file cannot be recovered, so use it with caution.
+    - To terminate the use of the service, all files must be deleted.
+    - A deleted file cannot be recovered, so use it with caution.
 
 2. Click **Confirm**.
 
@@ -136,9 +136,9 @@ You can generate thumbnails by a combination of several options.
 
 4. Add image operation scenario
 
-   - Click **+Add** to select image operation options.
-   - Scenarios are run by group and the same option cannot be configured in duplicate.
-   - Within the group, click the arrow button (▲▼) on the right side to set the scenario order.
+    - Click **+Add** to select image operation options.
+    - Scenarios are run by group and the same option cannot be configured in duplicate.
+    - Within the group, click the arrow button (▲▼) on the right side to set the scenario order.
 
 ![image_12_20220929](https://static.toastoven.net/prod_img/image_12_20220929.png)
 
@@ -166,8 +166,8 @@ After completing the scenario settings, click **Save**.
 
 2. Edit the thumbnail options and click **Edit**.
 
-   - Even if you modify the options, the thumbnails created with the settings before modification are not modified.
-   - If you check the 'Delete Operation Image' checkbox in the dialog box, you can bulk delete thumbnails created with the settings before modification.
+    - Even if you modify the options, the thumbnails created with the settings before modification are not modified.
+    - If you check the 'Delete Operation Image' checkbox in the dialog box, you can bulk delete thumbnails created with the settings before modification.
 
 <a id="delete-thumbnails"></a>
 ### Delete Thumbnails { #delete-thumbnails }

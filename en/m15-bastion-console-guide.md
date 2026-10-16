@@ -71,8 +71,8 @@ The script deployment feature allows you to run commands/scripts on multiple ins
 1. Select instances for deploying scripts/commands.
 2. Click **Deploy Scripts**.
 3. Select a web terminal, how to enter authentication information and enter the authentication information.
-   * **All**: Use when the authentication information of the deployment target instances is all the same.
-   * **Each**: Use when the authentication information of the deployment target instances is different.
+    * **All**: Use when the authentication information of the deployment target instances is all the same.
+    * **Each**: Use when the authentication information of the deployment target instances is different.
 4. Click **Deploy**.
 5. You can check the execution results and deployment results in the script deployment status.
 6. You can end the deployment with **End Deployment**.
@@ -121,6 +121,7 @@ Each policy has a priority, and policies are applied in order of highest priorit
 
 [Example]
 If the policy is applied as shown in the [table] below,
+
 * user A can access Instance A, only the `shutdown` command is unavailable, other commands are available
 * user A can access Instance B, only the `cd` command is available, no other commands
 * user B can access Instance A, only the `reboot` command is unavailable, other commands are available
@@ -155,6 +156,7 @@ The following commands are blocked regardless of whether you have a command poli
 ![image](https://github.com/jongwoo-kim-nhn/NHNBastion/assets/174567179/2342d3d9-a7f9-43d4-a474-0c514d5dda0b)
 
 You can change the priority of a policy.
+
    1. Change the order of the selected policies to the desired priority, and click **Modify**.
    2. In **After Reorder**, see a preview of the priorities you modified. The preview shows the policies in first and last order based on the policy you modified. 
    3. Click **Save** to change the priority of the policy.
@@ -172,6 +174,7 @@ You can change the priority of a policy.
 ![image](https://github.com/user-attachments/assets/0f6e47fe-f870-4a8a-a08b-1749a39decef)
 
 You can register policies in bulk using the provided templates, and you can download and back up created policies.
+
 * **Batch Register**: Provides policy uploads in bulk using templates
 * **Batch Download of Policies**: Provides a download of a list of currently applied policies
 
@@ -266,6 +269,7 @@ You cannot delete the first web terminal created when the service is activated; 
 The **Manage Resources > Resource Groups** tab lets you create and manage groups of instances that are registered to a connection target.
 
 ![image](https://github.com/jongwoo-kim-nhn/NHNBastion/assets/174567179/9d4a9853-d841-4f02-9aa3-c1f88e96d708)
+
 * **+ Create Group**: You can create a group by adding or deleting instances that are registered with the connection target.
 * **Copy**: You can select a group of resources to copy.
 * **Modify**: You can edit the resource group.
@@ -384,6 +388,7 @@ You can block a session if a user uses the banned commands more than a certain n
 #### Account Lockout
 
 Your account may be locked due to authentication failure and session blocking.
+
 * Account Lockout Duration: Set the lockout time when your account is locked.
 * Consecutive Session Blocking: the account will be locked if a certain number of sessions are blocked in a row.
 * Hourly Session Blocking: the account will be locked if a certain number of sessions are blocked within an hour.
