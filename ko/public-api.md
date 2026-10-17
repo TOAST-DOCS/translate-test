@@ -98,6 +98,7 @@ X-Auth-Token: {tokenId}
 
 이 API는 요청 본문을 요구하지 않습니다.
 
+<!-- maint-review: probe — 머지 전에 지우세요 -->
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | tenantId | URL | String | O | 테넌트 ID |
