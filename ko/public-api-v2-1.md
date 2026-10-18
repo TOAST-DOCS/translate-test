@@ -1,7 +1,7 @@
 <a id="compute-instance-api-v2-1-guide"></a>
 ## Compute > Instance > API v2.1 가이드 { #compute-instance-api-v2-1-guide }
 
-Instance는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token) 을 참고하세요.
+Instance는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token)을 참고하세요.
 
 인스턴스 API는 `compute` 타입 엔드포인트를 이용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
@@ -271,7 +271,7 @@ X-Auth-Token: {tokenId}
 | keypairs | Body | Array | 키페어 객체 목록 |
 | keypairs.keypair | Body | Object | 키페어 객체 |
 | keypairs.keypair.name | Body | String | 키페어 이름 |
-| keypairs.keypair.public_key | Body | String | 공개키 |
+| keypairs.keypair.public_key | Body | String | 공개 키 |
 | keypairs.keypair.fingerprint | Body | String | 키페어 지문 |
 
 <details><summary>예시</summary>
@@ -318,7 +318,7 @@ X-Auth-Token: {tokenId}
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
 | keypair | Body | Object | 키페어 객체 목록 |
-| keypair.public_key | Body | String | 공개키 |
+| keypair.public_key | Body | String | 공개 키 |
 | keypair.user_id | Body | String | 키페어 소유주 ID |
 | keypair.name | Body | String | 키페어 이름 |
 | keypair.deleted | Body | Boolean | 키페어 삭제 여부 |
@@ -368,7 +368,7 @@ X-Auth-Token: {tokenId}
 | tokenId | Header | String | O | 토큰 ID |
 | keypair | Body | Object | O | 키페어 객체 |
 | keypair.name | Body | String | O | 생성 또는 등록할 키페어 이름 |
-| keypair.public_key | Body | String | - | 등록할 공개키. 이 필드가 생략되면 새로운 키페어를 생성합니다. |
+| keypair.public_key | Body | String | - | 등록할 공개 키. 이 필드가 생략되면 새로운 키페어를 생성합니다. |
 
 <details><summary>예시</summary>
 <p>
@@ -391,7 +391,7 @@ X-Auth-Token: {tokenId}
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
 | keypair | Body | Object | 키페어 객체 |
-| keypair.public_key | Body | String | 공개키 |
+| keypair.public_key | Body | String | 공개 키 |
 | keypair.private_key | Body | String | 비밀키, 새로운 키페어를 생성한 경우에 비밀키를 반환합니다. |
 | keypair.user_id | Body | String | 키페어 소유주 ID |
 | keypair.name | Body | String | 키페어 이름 |
