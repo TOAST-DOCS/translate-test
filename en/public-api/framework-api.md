@@ -4217,7 +4217,6 @@ Available to all members. No specific permissions required.
 |   userAccessKeyID | String| N | User Access Key ID  |
 |   secretAccessKey | String| N | Secret key |
 |   tokenExpiryPeriod | Long| N | Token expiration period (in seconds)
-
 |   tokenFormatCode | String | N | Token format code (OPAQUE, JWT) |
 
 
