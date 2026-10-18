@@ -352,7 +352,7 @@ Also you can adjust screen proportion to the specified percentage by using the R
 
 ![monitoring.png](http://static.toastoven.net/prod_dataflow/ko/console_user_guide/monitoring_2025_08.png)
 
-!!! tip "Note"
+!!! tip "Tip"
     The Flow Graph on the Monitoring tab always reflects the latest flow definition.
     If you view metrics from a past execution after modifying a flow, the graph and metrics may appear misaligned.
     To view the metrics of a specific execution against the graph at the time of that execution, use **View Metric Details** for that execution in **Management > Execution History**.
