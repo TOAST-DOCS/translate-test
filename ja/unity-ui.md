@@ -571,7 +571,7 @@ Gamebaseで指定されたスキームです。
 | gamebase://dismiss   | Webビューを閉じる                          |
 | gamebase://goback    | Webビューで戻る                     |
 | gamebase://getuserid | 現在ログイン中のユーザーのIDを表示 |
-| gamebase://showwebview?link={URLEncodedURL} | linkパラメータのURLをWebビューで開く。<br>URLEncodedURL：WebビューでURL。<br>URLデコードが必要。 |
+| gamebase://showwebview?link={URLEncodedURL} | linkパラメータのURLをWebビューで開く。<br>URLEncodedURL：Webビューで開くURL。<br>URLデコードが必要。 |
 | gamebase://openbrowser?link={URLEncodedURL} | linkパラメータのURLを外部ブラウザで開く。<br>URLEncodedURL：外部ブラウザで開くURL。<br>URLデコードが必要。 |
 
 <a id="close-webview"></a>
