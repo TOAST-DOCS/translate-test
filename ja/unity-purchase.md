@@ -76,12 +76,11 @@ AndroidやiOSでアプリ内決済機能を設定する方法は、次のドキ�
 購入したいアイテムのgamebaseProductIdを使用して購入をリクエストします。<br/>
 gamebaseProductIdは一般的にストアに登録したアイテムのidと同じですが、Gamebaseコンソールで変更することもできます。<br/>
 
-購入したいアイテムのitemSeqを利用して次のAPIを呼び出し、購入をリクエストします。
 ゲームユーザーが購入をキャンセルする場合、**PURCHASE_USER_CANCELED**エラーが返されます。
 
 遅延決済や保護者の同意のように、決済完了を待つ必要がある状況が発生した場合は、**PURCHASE_PENDING**エラーが返却されます。
 その後、決済が正常に完了した場合、GamebaseEventHandlerで決済完了イベントを受信できます。
-[Game > Gamebase > Unreal SDK使用ガイド > ETC > Gamebase Event Handler](./unreal-etc/#purchase-updated)
+[Game > Gamebase > Unity SDK使用ガイド > ETC > Gamebase Event Handler](./unity-etc/#purchase-updated)
 
 **API**
 
