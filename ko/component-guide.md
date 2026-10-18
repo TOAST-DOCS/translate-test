@@ -1123,7 +1123,7 @@ shell> redis-cli
 <a id="initial-setup-after-creating-a-redis-instance"></a>
 ### Redis 인스턴스 생성 후 초기 설정 { #initial-setup-after-creating-a-redis-instance }
 
-Redis 인스턴스의 기본 설정 파일은 `~/redis/redis.conf` 입니다. 변경해야 할 파라미터에 대한 설명은 아래와 같습니다.
+Redis 인스턴스의 기본 설정 파일은 `~/redis/redis.conf`입니다. 변경해야 할 파라미터에 대한 설명은 아래와 같습니다.
 
 <a id="initial-setup-after-creating-a-redis-instance-bind"></a>
 #### bind
@@ -1131,7 +1131,7 @@ Redis 인스턴스의 기본 설정 파일은 `~/redis/redis.conf` 입니다. �
 - 기본 값: `127.0.0.1 -::1`
 - 변경 값: `<private ip> 127.0.0.1 -::1`
 
-Redis가 사용할 ip에 대한 값입니다. 서버 외부에서 Redis 인스턴스로의 접근을 허용하려면 해당 파라미터에 private ip를 추가해야 합니다. private ip는 `hostname -I` 명령어로 확인할 수 있습니다.
+Redis가 사용할 IP에 대한 값입니다. 서버 외부에서 Redis 인스턴스로의 접근을 허용하려면 해당 파라미터에 프라이빗 IP를 추가해야 합니다. 프라이빗 IP는 `hostname -I` 명령어로 확인할 수 있습니다.
 
 <a id="initial-setup-after-creating-a-redis-instance-port"></a>
 #### port
@@ -1180,7 +1180,7 @@ Redis 인스턴스 간의 통신에 필요한 보안 그룹(**Network** > **Secu
 | 수신|TCP | 26379| IPv4| 인스턴스 IP(CIDR)|
 
 <a id="automatic-ha-configuration-script-sentinel-automatic-configuration"></a>
-#### Sentinel 자동구성
+#### Sentinel 자동 구성
 
 Sentinel 구성을 위해 3개의 Redis 인스턴스가 필요합니다. 마스터로 사용할 인스턴스에 키페어를 복사한 뒤 아래와 같이 스크립트를 수행하세요.
 
@@ -1290,7 +1290,7 @@ shell> redis-cli
 <a id="redis-instance-2-initial-setup-after-creating-a-redis-instance"></a>
 ### Redis 인스턴스 생성 후 초기 설정 { #redis-instance-2-initial-setup-after-creating-a-redis-instance }
 
-Redis 인스턴스의 기본 설정 파일은 `~/redis/redis.conf` 입니다. 변경해야 할 파라미터에 대한 설명은 아래와 같습니다.
+Redis 인스턴스의 기본 설정 파일은 `~/redis/redis.conf`입니다. 변경해야 할 파라미터에 대한 설명은 아래와 같습니다.
 
 <a id="redis-instance-2-initial-setup-after-creating-a-redis-instance-initial-setup-after-creating-a-redis-instance-bind"></a>
 #### bind
@@ -1298,7 +1298,7 @@ Redis 인스턴스의 기본 설정 파일은 `~/redis/redis.conf` 입니다. �
 - 기본 값: `127.0.0.1 -::1`
 - 변경 값: `<private ip> 127.0.0.1 -::1`
 
-Redis가 사용할 ip에 대한 값입니다. 서버 외부에서 Redis 인스턴스로의 접근을 허용하려면 해당 파라미터에 private ip를 추가해야 합니다. private ip는 `hostname -I` 명령어로 확인할 수 있습니다.
+Redis가 사용할 IP에 대한 값입니다. 서버 외부에서 Redis 인스턴스로의 접근을 허용하려면 해당 파라미터에 프라이빗 IP를 추가해야 합니다. 프라이빗 IP는 `hostname -I` 명령어로 확인할 수 있습니다.
 
 <a id="redis-instance-2-initial-setup-after-creating-a-redis-instance-initial-setup-after-creating-a-redis-instance-port"></a>
 #### port
@@ -1347,7 +1347,7 @@ Redis 인스턴스 간의 통신에 필요한 보안 그룹(**Network** > **Secu
 | 수신|TCP | 26379| IPv4| 인스턴스 IP(CIDR)|
 
 <a id="redis-instance-2-automatic-ha-configuration-script-automatic-ha-configuration-script-sentinel-automatic-configuration"></a>
-#### Sentinel 자동구성
+#### Sentinel 자동 구성
 
 Sentinel 구성을 위해 3개의 Redis 인스턴스가 필요합니다. 마스터로 사용할 인스턴스에 키페어를 복사한 뒤 아래와 같이 스크립트를 수행하세요.
 
@@ -1506,7 +1506,7 @@ Valkey 인스턴스 간의 통신을 위해 보안 그룹(**Network** > **Securi
 | 수신|TCP | 26379| IPv4| 인스턴스 IP(CIDR)|
 
 <a id="valkey-automatic-ha-configuration-script-sentinel-automatic-configuration"></a>
-#### Sentinel 자동구성
+#### Sentinel 자동 구성
 Sentinel 구성을 위해 3개의 Valkey 인스턴스가 필요합니다. 마스터로 사용할 인스턴스에 키 페어를 복사한 뒤 아래와 같이 스크립트를 수행하세요.
 
 ```
