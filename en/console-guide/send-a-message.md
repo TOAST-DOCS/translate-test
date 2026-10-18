@@ -94,7 +94,7 @@ The template structure of the receiver contact list file is as follows.
 * If the sending is successful but you do not receive the text, check the 'carrier spam blocking service'.
     * [Go to the carrier spam blocking service guide](../service-policy-and-precondition/sms#about-carrier-spam-text-blocking-services)
 * For authentication SMS messages, authentication phrases must be included.
-      * Authentication phrases: auth, password, verif, にんしょう, 認証, Password, Authentication
+      * Authentication phrases: auth, password, verif, にんしょう, 認証, 비밀번호, 인증
 
 ##### MMS attachment image specifications
 
