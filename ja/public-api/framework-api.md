@@ -4207,6 +4207,7 @@ IP ACL設定を照会するAPIです。
 |   userAccessKeyID | String| N | User Access Key ID  |
 |   secretAccessKey | String| N | 秘密鍵 |
 |   tokenExpiryPeriod | Long| N | トークン有効期限(秒単位)
+|   tokenFormatCode | String | N | トークンフォーマットコード(OPAQUE, JWT) |
 
 |   tokenFormatCode | String | N | トークンフォーマットコード(OPAQUE、JWT) |
 
