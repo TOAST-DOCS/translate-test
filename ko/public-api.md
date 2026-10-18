@@ -6,9 +6,9 @@
 ## Compute > Image > API v2 가이드 { #compute-image-api-v2-guide }
 
 {% if "public" in build_flags %}
-Image은(는) API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token) 을 참고하세요.
+Image는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token)을 참고하세요.
 {% elif "gov" in build_flags %}
-Image은(는) API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token-gov) 을 참고하세요.
+Image는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다. IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token-gov)을 참고하세요.
 {% else %}
 API를 사용하려면 API 엔드포인트와 토큰 등이 필요합니다. [API 사용 준비](/Compute/Compute/ko/identity-api/)를 참고하여 API 사용에 필요한 정보를 준비합니다.
 {% endif %}
@@ -84,7 +84,7 @@ X-Auth-Token: {tokenId}
 | images.protected | Body | Boolean | 이미지 보호 여부<br>`protected=true`인 경우 수정 및 삭제 불가 |
 | images.id | Body | UUID | 이미지 ID |
 | images.min_ram | Body | Integer | 이미지 최소 메모리 요구량(MB)<br>`min_disk` 값보다 큰 인스턴스에서만 사용할 수 있음 |
-| images.checksum | Body | String | 이미지 내용 해시값<br>내부적으로 이미지 유효성 검증을 위해 사용 |
+| images.checksum | Body | String | 이미지 내용 해시 값<br>내부적으로 이미지 유효성 검증을 위해 사용 |
 | images.owner | Body | String | 이미지가 속한 테넌트 ID |
 | images.visibility | Body | Enum | 이미지 가시성<br>`public`, `private`, `shared` 중 하나 |
 | images.virtual_size | Body | Integer | 이미지 가상 크기 |
@@ -107,7 +107,7 @@ X-Auth-Token: {tokenId}
 | images.protected | Body | Boolean | 이미지 보호 여부<br>`protected=true`인 경우 수정 및 삭제 불가                                       |
 | images.id | Body | UUID | 이미지 ID                                                                             |
 | images.min_ram | Body | Integer | 이미지 최소 메모리 요구량(MB)<br>`min_disk` 값보다 큰 인스턴스에서만 사용할 수 있음                            |
-| images.checksum | Body | String | 이미지 내용 해시값<br>내부적으로 이미지 유효성 검증을 위해 사용                                              |
+| images.checksum | Body | String | 이미지 내용 해시 값<br>내부적으로 이미지 유효성 검증을 위해 사용                                              |
 | images.owner | Body | String | 이미지가 속한 테넌트 ID                                                                     |
 | images.visibility | Body | Enum | 이미지 가시성<br>`public`, `private`, `shared` 중 하나                                      |
 | images.virtual_size | Body | Integer | 이미지 가상 크기                                                                          |
@@ -130,7 +130,7 @@ X-Auth-Token: {tokenId}
 | images.protected | Body | Boolean | 이미지 보호 여부<br>`protected=true`인 경우 수정 및 삭제 불가                                       |
 | images.id | Body | UUID | 이미지 ID                                                                             |
 | images.min_ram | Body | Integer | 이미지 최소 메모리 요구량(MB)<br>`min_disk` 값보다 큰 인스턴스에서만 사용할 수 있음                            |
-| images.checksum | Body | String | 이미지 내용 해시값<br>내부적으로 이미지 유효성 검증을 위해 사용                                              |
+| images.checksum | Body | String | 이미지 내용 해시 값<br>내부적으로 이미지 유효성 검증을 위해 사용                                              |
 | images.owner | Body | String | 이미지가 속한 테넌트 ID                                                                     |
 | images.visibility | Body | Enum | 이미지 가시성<br>`public`, `private`, `shared` 중 하나                                      |
 | images.virtual_size | Body | Integer | 이미지 가상 크기                                                                          |
@@ -229,7 +229,7 @@ X-Auth-Token: {tokenId}
 | protected | Body | Boolean | 이미지 보호 여부<br>`protected=true`인 경우 수정 및 삭제 불가 |
 | id | Body | UUID | 이미지 ID |
 | min_ram | Body | Integer | 이미지 최소 메모리 요구량(MB)<br>`min_disk` 값보다 큰 인스턴스에서만 사용할 수 있음 |
-| checksum | Body | String | 이미지 내용의 해시값<br>내부적으로 이미지 유효성 검증을 위해 사용 |
+| checksum | Body | String | 이미지 내용의 해시 값<br>내부적으로 이미지 유효성 검증을 위해 사용 |
 | owner | Body | String | 이미지가 속한 테넌트 ID |
 | visibility | Body | Enum | 이미지 가시성<br>`public`, `private`, `shared` 중 하나 |
 | virtual_size | Body | Integer | 이미지 가상 크기 |
@@ -380,7 +380,7 @@ X-Auth-Token: {tokenId}
 | protected | Body | Boolean | 이미지 보호 여부<br>`protected=true`인 경우 수정 및 삭제 불가 |
 | id | Body | UUID | 이미지 ID |
 | min_ram | Body | Integer | 이미지 최소 메모리 요구량(MB)<br>`min_disk` 값보다 큰 인스턴스에서만 사용할 수 있음 |
-| checksum | Body | String | 이미지 내용의 해시값<br>내부적으로 이미지 유효성 검증을 위해 사용 |
+| checksum | Body | String | 이미지 내용의 해시 값<br>내부적으로 이미지 유효성 검증을 위해 사용 |
 | owner | Body | String | 이미지가 속한 테넌트 ID |
 {%- if "public" in build_flags %}
 | visibility | Body | Enum | 이미지 가시성<br>`private`, `shared` 중 하나 |
