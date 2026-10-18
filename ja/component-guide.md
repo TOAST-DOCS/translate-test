@@ -1,13 +1,22 @@
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=7e25219fc178 -->
+
+{% set rn_suf = '' if 'public' in build_flags else '-'+(build_flags | select("in", ["public","gov","ncgn","ninc","ngsc","ngovc","ngoic"]) | list | first) %}
+
 <a id="compute-instance-installation-component-guide"></a>
-## Compute > Instance > インストールコンポーネントガイド
+## Compute > Instance > インストールコンポーネントガイド { #compute-instance-installation-component-guide }
 
 <a id="nat-instance"></a>
-## NAT Instance
+## NAT Instance { #nat-instance }
 NATインスタンスは、プライベートネットワークインスタンスから特定IPアドレス帯域にインターネットアクセスできるようにするインスタンスです。
+{% if "public" in build_flags %}
 韓国(パンギョ)、韓国(ピョンチョン)リージョンでのみ提供する機能です。
+{% else %}
+{% endif %}
 
 <a id="key-features"></a>
-### 主な機能
+### 主な機能 { #key-features }
 * インターネットゲートウェイが接続されていないプライベートネットワークのインスタンスがNATインスタンスを介してインターネットにアクセスできます。
 * NATインスタンスのFloating IPをソースIPに変更してインターネットにアクセスします。
 * NATインスタンスまで転送されたパケットは、NATインスタンスのサブネットに接続されたルーティングテーブルのルート設定に基づいてパケットを転送します。
@@ -18,7 +27,7 @@ NATインスタンスは、プライベートネットワークインスタン�
 * セキュリティグループを設定できます。
 * ネットワークACLを設定できます。
 * 二重化をサポートしません。
-* NATインスタンスは、ネットワークインターフェイス設定でネットワークソース/対象確認を必ず「無効」に設定する必要があります。
+* NATインスタンスは、ネットワークインターフェイス設定で**スプーフィング防止**を必ず**使用しない**に設定する必要があります。
 * NATインスタンスでプライベートイメージを作成する場合、機能が正常に動作しない場合があります。
 * NATインスタンスは、1つのネットワークインタフェースでのみNAT機能を提供します。
 
@@ -33,15 +42,15 @@ NATインスタンスは、プライベートネットワークインスタン�
 > |SSH|使用不可| 使用可|
 
 <a id="sourcetarget-check-setting"></a>
-### ソース/対象確認設定
-NATインスタンスが正常に動作するには、ネットワークインターフェイス設定でネットワークソース/対象確認を無効化する必要があります。
+### スプーフィング防止設定 { #sourcetarget-check-setting }
+NATインスタンスが正常に動作するには、ネットワークインターフェイス設定で**スプーフィング防止**を**使用しない**に設定する必要があります。
 
 <a id="routing-setting"></a>
-### ルート設定
+### ルート設定 { #routing-setting }
 NATインスタンスをルートゲートウェイに指定します。 NATインスタンスまで転送されたパケットは、NATインスタンスのサブネットに接続されたルーティングテーブルのルート設定に基づいてパケットを転送します。
 
 <a id="caution-on-settings"></a>
-### 設定注意事項
+### 設定注意事項 { #caution-on-settings }
 * NATインスタンスは、1つのネットワークインタフェースのみ使用することを推奨します。 NATインスタンスに複数のネットワークインタフェースを接続しても、1つのインタフェース(eth0)だけがNAT機能を持つことができます。
 * NATインスタンスのサブネットに接続されたルーティングテーブルには、該当NATインスタンスをゲートウェイにするルート設定を追加してはいけません。
 * NATインスタンスサブネットとNATインスタンスをゲートウェイとして使用するインスタンスのサブネットを分離し、別々のルーティングテーブルを使用することを強く推奨します。
@@ -58,8 +67,12 @@ NATインスタンスをルートゲートウェイに指定します。 NATイ�
 
 
 <a id="ms-sql-instance"></a>
-## MS-SQL Instance
-インスタンス作成完了後、RDP(リモートデスクトップププロトコル)を通じてインスタンスにアクセスします。
+## MS-SQL Instance { #ms-sql-instance }
+
+<a id="allow-security-group-tcp-port-3389-rdp"></a>
+### セキュリティグループTCPポート3389(RDP)許可 { #allow-security-group-tcp-port-3389-rdp }
+
+インスタンス作成完了後、RDP(remote desktop protocol)を使用してインスタンスにアクセスします。
 インスタンスにFloating IPが接続されている必要があり、セキュリティーグループでTCPポート3389(RDP)が許可されている必要があります。
 **+ パスワード確認** ボタンをクリックし、インスタンス作成時に設定したキーペアを使用してパスワードを確認します。
 
@@ -68,24 +81,26 @@ NATインスタンスをルートゲートウェイに指定します。 NATイ�
 **接続** ボタンをクリックし、.rdpファイルをダウンロードした後に、獲得したパスワードを使用してインスタンスに接続します。
 
 <a id="initial-settings-after-microsoft-sql-image-is-created"></a>
-### MS-SQLイメージ作成後の初期設定
+### MS-SQLイメージ作成後の初期設定 { #initial-settings-after-microsoft-sql-image-is-created }
 
+<a id="initial-settings-after-microsoft-sql-image-is-created-set-sql-certification-mode"></a>
 #### 1. SQL認証モード設定
 
 サーバーの基本認証モードが「Windows認証モード」になっています。
-MS-SQLのデータベースアカウントを使用するためにSQL認証モードに変更する必要があります。
+MS-SQLのデータベースアカウントを使用するには、SQL認証モードに変更する必要があります。
 
 Microsoft SQL Server Management Studioを実行して、インスタンス名でオブジェクトに接続します。
 
 ![mssqlinstance_03_201812](https://static.toastoven.net/prod_ms_sql/mssqlinstance_03_201812_en.png)
 
-1. オブジェクトを右クリックします。
+1. オブジェクトをマウスの右ボタンでクリックします。
 2. メニューで **プロパティ**を選択します。
 3. サーバープロパティウィンドウで **セキュリティー** メニューを選択します。
 4. **サーバー認証** 方式を「SQL ServerおよびWindows認証モード」に変更します。
 
-※ SQL認証モード設定後、適用するためにMS-SQLサービスを再起動する必要があります。
+※ SQL認証モード設定後、適用するにはMS-SQLサービスを再起動する必要があります。
 
+<a id="initial-settings-after-microsoft-sql-image-is-created-change-microsoft-sql-service-port"></a>
 #### 2. MS-SQLサービスポート変更
 
 MS-SQLのデフォルトのサービスポート1433は、広く認知されているポートなので、セキュリティー脆弱性になることがあります。
@@ -97,27 +112,28 @@ SQL Server構成管理者を実行します。
 ![mssqlinstance_04_201812](https://static.toastoven.net/prod_ms_sql/mssqlinstance_04_201812_en.png)
 
 1. 左のチェンネルで **SQL Serverネットワーク構成**の下位項目 **MSSQLSERVERに対するプロトコル**を選択します。
-2. プロトコル名の中から **TCP/IP**を右クリックします。
+2. プロトコル名の中から **TCP/IP**をマウスの右ボタンでクリックします。
 3. メニューで **プロパティ**を選択します。
 4. **IPアドレス** タブをクリックします。
 5. ドロップダウンメニューの中から **IP ALL**を選択し、別のポート番号に変更します。
 
-※ MS-SQLサービスポート変更後、適用のためにMS-SQLサービスを再起動する必要があります。
+※ MS-SQLサービスポート変更後、適用するにはMS-SQLサービスを再起動する必要があります。
 
-#### 3. 外部からのMS-SQLデータベース接続許容設定
+<a id="initial-settings-after-microsoft-sql-image-is-created-allow-external-access-to-microsoft-sql-database"></a>
+#### 3. 外部からのMS-SQLデータベース接続許可設定
 
-外部からMS-SQLデータベースに接続するために、 **Network > Security Group** でMS-SQLサービスポートをSecurity Groupsに追加する必要があります。
+外部からMS-SQLデータベースに接続するには、 **Network > Security Group** でMS-SQLサービスポートをSecurity Groupsに追加する必要があります。
 Security Groupsに追加する時、接続を許可するMS-SQLサービスポート(基本ポート：1433)および遠隔IPを登録します。
 
 <a id="data-volume-assignment"></a>
-### データボリューム割り当て
+### データボリューム割り当て { #data-volume-assignment }
 
 MS-SQLのデータ/ログファイル(MDF/LDF)、バックアップファイルは別途のBlock Storageの使用を推奨します。
 Block Storageを作成するには、**Compute > Instance > Block Storage** タブで + Block Storage作成ボタンをクリックします。
 
 ![mssqlinstance_05_201812](https://static.toastoven.net/prod_ms_sql/mssqlinstance_05_201812_en.png)
 
-Block Storage作成時、Volumeタイプは性能を考慮して「汎用SSD」の使用を推奨します。
+Block Storage作成時、Volumeタイプは性能を考慮して**汎用SSD**を推奨します。
 
 ![mssqlinstance_06_201812](https://static.toastoven.net/prod_ms_sql/mssqlinstance_06_201812_en.png)
 
@@ -130,7 +146,8 @@ RDPでインスタンスに接続し、 **コンピュータ管理**を実行し
 ![mssqlinstance_07_201812](https://static.toastoven.net/prod_ms_sql/mssqlinstance_07_201812_en.png)
 
 接続されたBlock Storageが探知されたことを確認できます。使用するには先にディスク初期化を実行する必要があります。
-1. **ディスク1** ブロックを右クリックした後、**ディスク初期化**をクリックします。
+
+1. **ディスク1** ブロックをマウスの右ボタンでクリックした後、**ディスク初期化**をクリックします。
 2. パーティション形式選択後、 **確認** ボタンをクリックします。
 
 <br/>
@@ -139,7 +156,7 @@ RDPでインスタンスに接続し、 **コンピュータ管理**を実行し
 
 ![mssqlinstance_08_201812](https://static.toastoven.net/prod_ms_sql/mssqlinstance_08_201812_en.png)
 
-割り当てられていないディスクを右クリックし、 **新しいシンプルボリューム**をクリックして新しいシンプルボリュームウィザードを進行します。
+割り当てられていないディスクをマウスの右ボタンでクリックし、 **新しいシンプルボリューム**をクリックして新しいシンプルボリュームウィザードを進行します。
 
 <br/>
 
@@ -147,36 +164,41 @@ Microsoft SQL Server Management Studioサーバープロパティのデータベ
 
 ![mssqlinstance_09_201812](https://static.toastoven.net/prod_ms_sql/mssqlinstance_09_201812_en.png)
 
-※ MS-SQLデータベース基本位置の変更後、適用のためにMS-SQLサービスを再起動する必要があります。
+※ MS-SQLデータベース基本位置の変更後、適用するにはMS-SQLサービスを再起動する必要があります。
 
 <a id="restart-microsoft-sql"></a>
-### MS-SQLサービス再起動
+### MS-SQLサービス再起動 { #restart-microsoft-sql }
 MS-SQLの設定変更時、MS-SQLサービスの再起動が必要な場合があります。
-変更設定を適用するためにMS-SQLサービスを再起動します。
+変更設定を適用するにはMS-SQLサービスを再起動します。
 
-SQL Server構成管理者の **SQL Server構成管理者(ローカル) > SQL Serverサービス > SQL Server(MSSQLSERVER)** を選択後、右クリックして表示されるメニューにある「再起動」からMS-SQLサービスを再起動します。
+SQL Server構成管理者の **SQL Server構成管理者(ローカル) > SQL Serverサービス > SQL Server(MSSQLSERVER)** を選択後、マウスの右ボタンをクリックして表示されるメニューにある**再起動**からMS-SQLサービスを再起動します。
 
 ![mssqlinstance_10_201812](https://static.toastoven.net/prod_ms_sql/mssqlinstance_10_201812_en.png)
 
 <a id="checkset-automatic-microsoft-sql-service-execution"></a>
-### MS-SQLサービス自動実行確認/設定
+### MS-SQLサービス自動実行確認/設定 { #checkset-automatic-microsoft-sql-service-execution }
 MS-SQLのサービスが、OS起動時に自動で起動するように設定されているかを確認します。
 
 SQL Server構成管理者のSQL Server構成管理者(ローカル) > SQL Serverサービスで「起動モード」を確認できます。
 
 ![mssqlinstance_11_201812](https://static.toastoven.net/prod_ms_sql/mssqlinstance_11_201812_en.png)
 
-**SQL SERVER (MSSSQLSERVER)** および **SQL Serverエージェント(MSSQLSERVER)** などのサービス起動モードが **自動**ではない場合：
-1. サービスを右クリックした後、 **プロパティ**を選択します。
+**SQL SERVER (MSSQLSERVER)** および **SQL Serverエージェント(MSSQLSERVER)** などのサービス起動モードが **自動**ではない場合：
+
+1. サービスをマウスの右ボタンでクリックした後、 **プロパティ**を選択します。
 2. **サービス**タブで **General > 起動モード**を **自動**に変更します。
 
 > [参考]
-> MS-SQL Instanceのリリース状況は、[インスタンスリリースノート](/Compute/Compute/ja/release-notes/)を参照してください。
-
+{% if "public" in build_flags %}
+> MS-SQL Instanceのリリース状況は、[インスタンスリリースノート](/Compute/Compute/ja/release-notes$[ rn_suf ]$/)を参照します。
+{% else %}
+> MS-SQL Instanceのリリース状況は、[インスタンスリリースノート](/Compute/Compute/ja/release-notes$[ rn_suf ]$/)を参照してください。
+{% endif %}
 
 <a id="mysql-instance"></a>
-## MySQL Instance
-### MySQL起動/停止方法
+## MySQL Instance { #mysql-instance }
+<a id="startingstopping-mysql"></a>
+### MySQL起動/停止方法 { #startingstopping-mysql }
 
 ```
 #mysqlサービス起動
@@ -189,7 +211,8 @@ shell> service mysqld stop
 shell> service mysqld restart
 ```
 
-### MySQL接続
+<a id="connecting-to-mysql"></a>
+### MySQL接続 { #connecting-to-mysql }
 
 イメージ作成後、最初は下記のように接続します。
 
@@ -197,8 +220,10 @@ shell> service mysqld restart
 shell> mysql -uroot
 ```
 
-### MySQLインスタンス作成後の初期設定
+<a id="initial-settings-for-mysql-instance"></a>
+### MySQLインスタンス作成後の初期設定 { #initial-settings-for-mysql-instance }
 
+<a id="initial-settings-for-mysql-instance-1-set-the-password"></a>
 #### 1\.パスワード設定
 
 初期インストール後、MySQL ROOTアカウントパスワードは指定されていません。したがってインストール後、すぐにパスワードを設定する必要があります。
@@ -210,8 +235,9 @@ mysql> ALTER USER USER() IDENTIFIED BY '新しいパスワード';
 MySQL基本validate\_password\_policyは下記の通りです。
 
 * validate\_password\_policy=MEDIUM
-* 基本**8文字以上、数字、大文字、小文字、特殊文字**を含める必要がある
+* 基本8文字以上、数字、大文字、小文字、特殊文字を含める必要がある
 
+<a id="initial-settings-for-mysql-instance-2-change-the-port"></a>
 #### 2\.ポート(port)変更
 
 提供されるイメージポートはMySQL基本ポートの3306です。セキュリティー上、ポートの変更を推奨します。
@@ -240,22 +266,32 @@ shell> service mysqld restart
 shell> mysql -uroot -P[変更されたポート番号]
 ```
 
-### my.cnf説明
+<a id="description-of-mycnf"></a>
+### my.cnf説明 { #description-of-mycnf }
 
-my.cnfのデフォルトのパスは /etc/my.cnf で、NHN Cloud推奨変数(variable)が設定されています。内容は下記の通りです。
+{% if "public" in build_flags %}
+my.cnfのデフォルトのパスは `/etc/my.cnf` で、NHN Cloud推奨変数(variable)が設定されています。内容は下記の通りです。
+{% else %}
+my.cnfのデフォルトのパスは /etc/my.cnfで、NHN Cloud推奨変数(variable)が設定されています。内容は下記の通りです。
+{% endif %}
 
 | 名前 | 説明 |
 | --- | --- |
-| default\_storage\_engine | 基本ストレージエンジン(stroage engine)を指定します。InnoDBが指定され、Online-DDLとトランザクション(transaction)を使用できます。 |
+| default\_storage\_engine | 基本ストレージエンジン(storage engine)を指定します。InnoDBが指定され、Online-DDLとトランザクション(transaction)を使用できます。 |
 | expire\_logs\_days | binlog設定で、 ログを保存する日数を設定します。デフォルトで3日に指定されています。 |
+{%- if "public" in build_flags %}
 | innodb\_log\_file\_size | トランザクション(transaction)のredo logを保存するログファイルのサイズを指定します。<br><br>実際の運営環境では256MB以上を推奨しており、現在512MBに設定されています。設定値を修正した時は、DBの再起動が必要です。 |
+{%- else %}
+| innodb\_log\_file\_size | トランザクション (transaction) のredo logを保存するログファイルのサイズを指定します。<br><br>実際の運用環境では256MB以上を推奨しており、現在512MBに設定されています。設定値を変更する場合はDBの再起動が必要です。 |
+{%- endif %}
 | innodb\_file\_per\_table | テーブルが削除されたりTRUNCATEされる時、テーブルスペースがOSにすぐに返却されます。 |
 | innodb\_log\_files\_in\_group | innodb\_log\_fileファイルの個数を設定し、循環的\(circular\)に使用されます。最小2個以上で構成されます。 |
 | log_timestamps | MySQL 5.7の基本log時間はUTCで表示されます。したがってログ時間をSYSTEMローカル時間に変更します。 |
 | slow\_query\_log | slow\_query logオプションを使用します。 long\_query\_timeによる基本10秒以上のクエリーはslow\_query\_logに記録されます。 |
 | sysdate-is-now | sysdateの場合、replicationでsysdate()を使用したSQL文は、複製時にマスターとスレーブの間の時間が異なる問題があり、sysdate()とnow()の関数を同一に適用します。 |
 
-### MySQLディレクトリ説明
+<a id="description-of-mysql-directory"></a>
+### MySQLディレクトリ説明 { #description-of-mysql-directory }
 
 MySQLディレクトリおよびファイル説明は下記の通りです。
 
@@ -267,12 +303,12 @@ MySQLディレクトリおよびファイル説明は下記の通りです。
 | SLOW_LOG | MySQL Slow Queryファイルのパス -  <span style="color:#333333">/var/lib/mysql/*slow.log</span> |
 
 
-> MySQL Instanceのリリース状況は[インスタンスリリースノート](/Compute/Compute/ja/release-notes/)を参照してください。
-
+> MySQL Instanceのリリース状況は[インスタンスリリースノート](/Compute/Compute/ja/release-notes$[ rn_suf ]$/)を参照してください。
 
 <a id="postgresql-instance"></a>
-## PostgreSQL Instance
-### PostgreSQL開始/停止方法
+## PostgreSQL Instance { #postgresql-instance }
+<a id="how-to-startstop-postgresql"></a>
+### PostgreSQL開始/停止方法 { #how-to-startstop-postgresql }
 
 ```
 ##Ubuntuの場合
@@ -284,7 +320,8 @@ shell> sudo systemctl stop postgresql
 shell> sudo systemctl restart postgresql
 ```
 
-### PostgreSQL接続
+<a id="log-in-to-postgresql"></a>
+### PostgreSQL接続 { #log-in-to-postgresql }
 
 イメージ作成後、最初は下記のように接続します。
 <br>
@@ -294,8 +331,10 @@ shell> sudo su - postgres
 shell> psql
 ```
 
-### PostgreSQLインスタンス作成後、初期設定
+<a id="create-postgresql-instance-and-perform-initial-setup"></a>
+### PostgreSQLインスタンス作成後、初期設定 { #create-postgresql-instance-and-perform-initial-setup }
 
+<a id="create-postgresql-instance-and-perform-initial-setup-1-change-the-port"></a>
 #### 1\. ポート\(port\)変更
 
 提供されるイメージポートはPostgreSQL基本ポート5432です。セキュリティ上、ポートの変更を推奨します。
@@ -320,6 +359,7 @@ shell> sudo systemctl restart postgresql
 shell> psql -p[変更されたポート番号]
 ```
 
+<a id="create-postgresql-instance-and-perform-initial-setup-2-change-server-log-timezone"></a>
 #### 2\. サーバーログタイムゾーン変更
 
 サーバーログに記録される基本時間帯がUTCに設定されています。SYSTEMローカル時間と同じタイムゾーンに変更することを推奨します。
@@ -352,9 +392,10 @@ shell> psql
 postgres=# SHOW log_timezone;
 ```
 
+<a id="create-postgresql-instance-and-perform-initial-setup-3-cancel-public-schema-permission"></a>
 #### 3\. publicスキーマ権限の削除
 
-基本的にすべてのユーザーにpublicスキーマに対するCREATEおよびUSAGE権限を付与しているため、データベースに接続できるユーザーはpublicスキーマからオブジェクトを作成できます。すべてのユーザーがpublicスキーマからオブジェクトを作成できないように権限を削除すことを推奨します。
+基本的にすべてのユーザーにpublicスキーマのCREATEおよびUSAGE権限を付与しているため、データベースに接続できるユーザーはpublicスキーマからオブジェクトを作成できます。すべてのユーザーがpublicスキーマからオブジェクトを作成できないように権限を削除すことを推奨します。
 <br>
 ```
 #postgresql接続
@@ -367,6 +408,7 @@ shell> psql
 postgres=# REVOKE CREATE ON SCHEMA public FROM PUBLIC;
 ```
 
+<a id="create-postgresql-instance-and-perform-initial-setup-4-allow-remote-login"></a>
 #### 4\. 遠隔接続許可
 
 ローカルホスト以外の接続を許可するにはlisten_addresses変数とクライアント認証設定ファイルを変更する必要があります。
@@ -409,30 +451,45 @@ shell> pg_ctl reload -D /var/lib/postgresql/${version}/main
 ```
 
 <a id="postgresql-directory-description"></a>
-### PostgreSQLディレクトリ説明
+### PostgreSQLディレクトリ説明 { #postgresql-directory-description }
 
 PostgreSQLディレクトリおよびファイルの説明は下記のとおりです。
 
+{% if "public" in build_flags %}
 | 名前 | 説明 | Ubuntu |
 | --- | --- | --- |
 | postgresql.cnf | configファイル | /etc/postgresql/${version}/main/postgresql.conf |
 | DATADIR | PostgreSQLデータファイルパス | /var/lib/postgresql/${version}/main |
 | LOG | PostgreSQL logファイルパス | /var/lib/postgresql/${version}/main/log/\*.log |
+{% elif "gov" in build_flags %}
+| 名前 | 説明 |
+| --- | --- |
+| postgresql.cnf | /var/lib/pgsql/{version}/data/postgresql.cnf |
+| initdb.log | PostgreSQLデータベースクラスターの作成log - /var/lib/pgsql/{version}/initdb.log |
+| DATADIR | PostgreSQLデータファイルのパス - /var/lib/pgsql/{version}/data/ |
+| LOG | PostgreSQL logファイルのパス - /var/lib/pgsql/{version}/data/log/\*.log |
+{% else %}
+| 名前 | 説明 | Ubuntu |
+| --- | --- | --- |
+| postgresql.cnf | configファイル | /etc/postgresql/${version}/main/postgresql.conf |
+| DATADIR | PostgreSQLデータファイルのパス | /var/lib/postgresql/${version}/main |
+| LOG | PostgreSQL logファイルのパス | /var/lib/postgresql/${version}/main/log/\*.log |
+{% endif %}
 
 <a id="cubrid-instance"></a>
-## CUBRID Instance
+## CUBRID Instance { #cubrid-instance }
 
 <a id="how-to-startstop-the-cubrid-service"></a>
-### CUBRIDサービスの起動/停止方法
+### CUBRIDサービスの起動/停止方法 { #how-to-startstop-the-cubrid-service }
 
-“cubrid” LinuxアカウントにログインしてCUBRIDサービスを次のように開始または終了できます。
+`cubrid` LinuxアカウントにログインしてCUBRIDサービスを次のように開始または停止できます。
 ```
 # CUBRIDサービス/サーバーの起動
 shell> sudo su - cubrid
 shell> cubrid service start
 shell> cubrid server start demodb
 
-# CUBRIDサービス/サーバーの終了
+# CUBRIDサービス/サーバーの停止
 shell> sudo su - cubrid
 shell> cubrid server stop demodb
 shell> cubrid service stop
@@ -442,15 +499,15 @@ shell> sudo su - cubrid
 shell> cubrid server restart demodb
 shell> cubrid service restart
 
-# CUBRIDブローカーの開始/終了/再起動
+# CUBRIDブローカーの開始/停止/再起動
 shell> sudo su - cubrid
 shell> cubrid broker start
 shell> cubrid broker stop
 shell> cubrid broker restart
 ```
 
-<a id="cubrid-connection"></a>
-### CUBRID接続
+<a id="connect-to-cubrid"></a>
+### CUBRID接続 { #connect-to-cubrid }
 
 イメージ作成後、最初は以下のように接続します。
 ```
@@ -458,8 +515,10 @@ shell> sudo su - cubrid
 shell> csql -u dba demodb@localhost
 ```
 
-### CUBRIDインスタンス作成後の初期設定
+<a id="initial-setup-after-creating-a-cubrid-instance"></a>
+### CUBRIDインスタンス作成後の初期設定 { #initial-setup-after-creating-a-cubrid-instance }
 
+<a id="initial-setup-after-creating-a-cubrid-instance-1-set-the-password"></a>
 #### 1\. パスワード設定
 
 初期インストール後、CUBRID dbaアカウントのパスワードは指定されていません。そのため、インストール後に必ずパスワードを設定する必要があります。
@@ -467,9 +526,10 @@ shell> csql -u dba demodb@localhost
 shell> csql -u dba -c "ALTER USER dba PASSWORD 'new_password'" demodb@localhost
 ```
 
+<a id="initial-setup-after-creating-a-cubrid-instance-2-change-the-broker-port"></a>
 #### 2\. ブローカーポート\(port\)の変更
 
-**query_editor**のブローカーポートはデフォルト値が**30000**に設定され、**broker1**のブローカーポートはデフォルト値が**33000**に設定されます。
+`query_editor`のブローカーポートはデフォルト値が`30000`に設定され、`broker1`のブローカーポートはデフォルト値が`33000`に設定されます。
 セキュリティ上、ポートの変更を推奨します。
 
 ###### 1)ブローカーファイルの修正
@@ -492,9 +552,10 @@ BROKER_PORT             =[変更するportアドレス]
 shell> cubrid broker restart
 ```
 
+<a id="initial-setup-after-creating-a-cubrid-instance-3-change-the-manager-server-port"></a>
 #### 3\. マネージャサーバーポート\(port\)変更
 
-マネージャサーバーポートはデフォルト値が **8001**に設定されます。 
+マネージャサーバーポートはデフォルト値が`8001`に設定されます。
 セキュリティ上、ポート変更を推奨します。
 
 ###### 1)  cm.confファイルの修正
@@ -514,7 +575,8 @@ shell> cubrid manager stop
 shell> cubrid manager start
 ```
 
-### CUBRIDディレクトリの説明
+<a id="cubrid-directory-description"></a>
+### CUBRIDディレクトリの説明 { #cubrid-directory-description }
 
 CUBRIDディレクトリおよびファイルの説明は次のとおりです。
 
@@ -524,12 +586,13 @@ CUBRIDディレクトリおよびファイルの説明は次のとおりです�
 | CONF PATH | CUBRIDサーバー、ブローカー、マネージャ環境変数ファイルパス - /opt/cubrid/conf |
 | LOG PATH | CUBRIDプロセスログファイルパス - /opt/cubrid/log |
 | SQL\_LOG | CUBRID SQL Queryファイルパス /opt/cubrid/log/broker/sql\_log |
-| ERROR\_LOG | CUBRID ERROR SQL Queryファイルパス - /opt/cubrid/log/broker/error\_log |
+| ERROR\_LOG | CUBRID ERROR SQL Queryファイルパス - /opt/cubrid/log/broker/error\_log |
 | SLOW\_LOG | CUBRID Slow Queryファイルパス - /opt/cubrid/log/broker/sql\_log |
 
+<a id="cubrid-directory-description-cubridconf-description"></a>
 #### cubrid.conf説明
 
-サーバー設定用ファイルです。運営するデータベースのメモリ、同時ユーザー数に応じたスレッド数、ブローカーとサーバー間の通信ポートなどを設定可能です。
+サーバー設定用ファイルです。運営するデータベースのメモリ、同時ユーザー数に応じたスレッド数、ブローカーとサーバー間の通信ポートなどを設定できます。
 
 | 名前 | 説明 |
 | --- | --- |
@@ -538,9 +601,10 @@ CUBRIDディレクトリおよびファイルの説明は次のとおりです�
 | max\_clients | 1つデータベースサーバープロセスが同時に接続できるクライアントの最大数です。 |
 | data\_buffer\_size | データベースサーバーがメモリ内にキャッシュするデータバッファのサイズを設定するためのパラメータです。 <br>必要なメモリサイズがシステムメモリの2/3以内になるように設定することを推奨します。 |
 
+<a id="cubrid-directory-description-brokerconf-description"></a>
 #### broker.confの説明
 
-ブローカー設定ファイルです。運営するブローカーが使用するポート、応用サーバー(CAS)数、SQL LOGなどを設定可能です。
+ブローカー設定ファイルです。運営するブローカーが使用するポート、応用サーバー(CAS)数、SQL LOGなどを設定できます。
 
 | 名前 | 説明 |
 | --- | --- |
@@ -550,9 +614,10 @@ CUBRIDディレクトリおよびファイルの説明は次のとおりです�
 | LOG\_DIR | SQLログが保存されるディレクトリを指定するパラメータです。 |
 | ERROR\_LOG\_DIR | ブローカーのエラーログが保存されるディレクトリを指定するパラメータです。 |
 
+<a id="cubrid-directory-description-cmconf-description"></a>
 #### cm.confの説明
 
-CUBRIDマネージャ設定ファイルです。運営するマネージャサーバープロセスが使用するポート、モニタリング収集サイクルなどを設定可能です。
+CUBRIDマネージャ設定ファイルです。運営するマネージャサーバープロセスが使用するポート、モニタリング収集サイクルなどを設定できます。
 
 | 名前 | 説明 |
 | --- | --- |
@@ -563,29 +628,35 @@ CUBRIDマネージャ設定ファイルです。運営するマネージャサ�
 
 
 <a id="mariadb-instance"></a>
-## MariaDB Instance
+## MariaDB Instance { #mariadb-instance }
 
-<a id="startingstopping-mysql"></a>
-### MariaDB 起動/停止方法
+<a id="how-to-startstop-mariadb"></a>
+### MariaDB 起動/停止方法 { #how-to-startstop-mariadb }
 
 ``` sh
 # MariaDBサービスの開始
 shell> sudo systemctl start mariadb.service
 
-# MariaDBサービスの終了
+# MariaDBサービスの停止
 shell> sudo systemctl stop mariadb.service
 
 # MariaDBサービスの再起動
 shell> sudo systemctl restart mariadb.service
 ```
 
-<a id="connecting-to-mysql"></a>
-### MariaDB接続
+<a id="connect-to-mariadb"></a>
+### MariaDB接続 { #connect-to-mariadb }
 
 イメージ作成後、最初は以下のように接続します。
 
 ``` sh
+{% if "public" in build_flags %}
 shell> sudo mysql -u root
+{% elif "gov" in build_flags %}
+shell> sudo mysql -u root
+{% else %}
+shell> mysql -u root
+{% endif %}
 ```
 
 パスワード変更後は以下のように接続します。
@@ -595,9 +666,10 @@ shell> mysql -u root -p
 Enter password:
 ```
 
-<a id="initial-settings-for-mysql-instance"></a>
-### MariaDBインスタンス作成後の初期設定
+<a id="initial-setup-after-creating-a-mariadb-instance"></a>
+### MariaDBインスタンス作成後の初期設定 { #initial-setup-after-creating-a-mariadb-instance }
 
+<a id="initial-setup-after-creating-a-mariadb-instance-1-set-the-password"></a>
 #### 1\. パスワード設定
 
 初期インストール後、MariaDB rootアカウントパスワードは指定されていません。そのため、インストール後に必ずパスワードを設定する必要があります。
@@ -608,6 +680,7 @@ SET PASSWORD [FOR user] = password_option
 MariaDB> SET PASSWORD = PASSWORD('パスワード');
 ```
 
+<a id="initial-setup-after-creating-a-mariadb-instance-2-change-the-port"></a>
 #### 2\. ポート\(port\)の変更
 
 初期インストール後のポートはMariaDBのデフォルトポートである3306です。セキュリティ上、ポートの変更を推奨します。
@@ -631,33 +704,37 @@ port=[変更するportアドレス]
 sudo systemctl restart mariadb.service
 ```
 
-## Tibero Instance
+<a id="tibero-instance"></a>
+## Tibero Instance { #tibero-instance }
 
-<a id="description-of-mycnf"></a>
-### Tibero Instance作成
+<a id="create-a-tibero-instance"></a>
+### Tibero Instance作成 { #create-a-tibero-instance }
 
+<a id="create-a-tibero-instance-minimum-recommended-specifications"></a>
 #### 最小推奨仕様
 
 - ルートブロックストレージ
-    - 高速化のためにSSDを推奨し、root disk fullが発生しないように**50GB以上**に設定することを推奨します。
+    - 高速化のためにSSDを推奨し、root disk fullが発生しないように50GB以上に設定することを推奨します。
 
 - 最小推奨仕様: 4vCore/8GB
-    - **推奨仕様未満の場合、DBMSのインストールが制限される場合があります。**
+    - 推奨仕様未満の場合、DBMSのインストールが制限される場合があります。
 
+<a id="create-a-tibero-instance-additional-block-storage"></a>
 #### 追加ブロックストレージ
 
 - ルートボリューム以外の追加ボリュームを作成します。
-    - TMI(Tibero Machine Image)は追加ボリューム150GBを必要とするため、**追加ブロックストレージ150G以上**を必ず設定する必要があります
+    - TMI(Tibero machine image)は追加ボリューム150GBを必要とするため、追加ブロックストレージ150GB以上を必ず設定する必要があります
 
-<a id="description-of-mysql-directory"></a>
-### インスタンス接続
+<a id="connect-to-instance"></a>
+### インスタンス接続 { #connect-to-instance }
 
 - インスタンスの作成が完了したら、SSHを使用してインスタンスにアクセスします。
 - インスタンスにFloating IPが接続されていて、セキュリティグループでTCPポート22(SSH)が許可されている必要があります。
-- SSHクライアントと設定したキーペアを利用してインスタンスに接続します。
-- SSH接続の詳細については[SSH接続ガイド](./overview/#how-to-access-linux-instances)を参照してください。
+- SSHクライアントと設定したキーペアを使用してインスタンスに接続します。
+- 詳細なSSH接続ガイドは[SSH接続ガイド](./overview/#how-to-access-linux-instances)を参照してください。
 
-### TMIインストール
+<a id="install-tmi"></a>
+### TMIインストール { #install-tmi }
 
 
 rootアカウントで /rootパスからdbcaコマンドを実行します。
@@ -675,12 +752,18 @@ $ ./dbca OS_ACCOUNT DB_NAME DB_CHARACTERSET DB_TYPE DB_PORT
 
 ##### Tibero 7インストール
 ```
+{% if "public" in build_flags %}
 [rocky@tiberoinstance ~]$ sudo su - root
+{% else %}
+[rocky@tiberoinstance ~]$ sudo su root
+[root@tiberoinstance rocky]# cd
+{% endif %}
 [root@tiberoinstance ~]# pwd
 /root
 [root@tiberoinstance ~]# ./dbca nhncloud tiberotestdb utf8 $TYPE 8639
 ```
 
+<a id="install-tmi-complete-installation"></a>
 #### インストール完了
 
 dbcaコマンドを実行すると進行状況が表示され、nomountモードで データベースが作成されます。所要時間は10分以下です。 
@@ -698,6 +781,7 @@ SQL> Disconnected.
 ```
 
 
+<a id="install-tmi-check-the-operation-and-the-installation-log"></a>
 #### 動作確認とインストールログの確認
 
 Tiberoが動作していることを確認します。
@@ -744,9 +828,11 @@ drwxr-----   3 root root   19 10月17 14:13 .pki
 drwx------   2 root root   29 10月17 14:04 .ssh
 ```
 
-### Tibero接続
+<a id="connect-to-tibero"></a>
+### Tibero接続 { #connect-to-tibero }
 
 
+<a id="connect-to-tibero-change-the-account"></a>
 #### アカウント変更
 
 dbcaコマンドで作成したOS\_ACCOUNTにログインします。
@@ -768,6 +854,7 @@ dbcaコマンドで作成したOS\_ACCOUNTにログインします。
 
 ```
 
+<a id="connect-to-tibero-check-connection"></a>
 #### 接続確認
 
 ```
@@ -799,7 +886,11 @@ TIP_FILE
 tiberotestdb
 tiberoinstance.novalocal                                      NO
          0 7
-45216
+{% if "public" in build_flags %}
+2024/12/23
+{% else %}
+2023/10/17
+{% endif %}
 NORMAL           NO
 /db/tibero7/config/tiberotestdb.tip
 
@@ -809,8 +900,8 @@ NORMAL           NO
 SQL>
 ```
 
-
-### Tibero基本アカウント
+<a id="tibero-default-accounts"></a>
+### Tibero基本アカウント { #tibero-default-accounts }
 
 Tiberoで提供する基本アカウントは次のとおりです。
 
@@ -830,17 +921,17 @@ Tiberoで提供する基本アカウントは次のとおりです。
 * TIBERO/TIBERO1：example userであり、DBA権限を持っています。
 
 <a id="kafka-instance"></a>
-## Kafka Instance
+## Kafka Instance { #kafka-instance }
 > [参考]
 > インスタンスタイプはc1m2(CPU 1core、Memory 2GB)以上の仕様で作成してください。
 
-<a id="how-to-startstop-postgresql"></a>
-### Zookeeper、Kafka broker起動/停止
+<a id="start-and-stop-zookeeper-kafka-broker"></a>
+### Zookeeper、Kafka broker起動/停止 { #start-and-stop-zookeeper-kafka-broker }
 ```
 # Zookeeper、Kafka broker起動(Zookeeperを先に起動)
 shell> sudo systemctl start zookeeper.service
 shell> sudo systemctl start kafka.service
-# Zookeeper、Kafka broker終了(Kafka brokerを先に終了)
+# Zookeeper、Kafka broker停止(Kafka brokerを先に停止)
 shell> sudo systemctl stop kafka.service
 shell> sudo systemctl stop zookeeper.service
 # Zookeeper, Kafka broker再起動
@@ -848,8 +939,8 @@ shell> sudo systemctl restart zookeeper.service
 shell> sudo systemctl restart kafka.service
 ```
 
-<a id="log-in-to-postgresql"></a>
-### Kafka Clusterインストール
+<a id="install-kafka-cluster"></a>
+### Kafka Clusterインストール { #install-kafka-cluster }
 - 必ず新規インスタンスにインストールします。
 - インスタンスは3台以上、奇数で必要です。インスタンス1台でインストールスクリプトを実行します。
 - インスタンス1台にkafka broker、zookeeper nodeが各1つずつ構成されます。
@@ -914,9 +1005,10 @@ ls: cannot access /tmp/zookeeper: No such file or directory
 ##### Cluster Installation Complete #####
 ```
 
-<a id="create-postgresql-instance-and-perform-initial-setup"></a>
-### Kafkaインスタンス作成後の初期設定
+<a id="initial-setup-after-creating-a-kafka-instance"></a>
+### Kafkaインスタンス作成後の初期設定 { #initial-setup-after-creating-a-kafka-instance }
 
+<a id="initial-setup-after-creating-a-kafka-instance-change-the-port"></a>
 #### ポート(port)変更
 最初のインストール後、ポートはKafkaデフォルトポート9092、Zookeeperデフォルトポート2181です。セキュリティのためにポートを変更することを推奨します。
 
@@ -960,31 +1052,39 @@ shell> netstat -ntl | grep [Kafka port]
 shell> netstat -ntl | grep [Zookeeper port]
 ```
 
-### Kafkaトピックおよびデータ作成/使用
+<a id="create-and-use-kafka-topic-and-data"></a>
+### Kafkaトピックおよびデータ作成/使用 { #create-and-use-kafka-topic-and-data }
 
 トピックの作成/照会
 ```
 # インスタンスIP = Private IP / Kafka基本port = 9092
 # トピック作成
 shell> ~/kafka/bin/kafka-topics.sh --create --bootstrap-server [インスタンスIP]:[Kafka PORT] --topic kafka
+
 # トピックリスト照会
 shell> ~/kafka/bin/kafka-topics.sh --list --bootstrap-server [インスタンスIP]:[Kafka PORT]
+
 # トピック詳細情報確認
 shell> ~/kafka/bin/kafka-topics.sh --describe --bootstrap-server [インスタンスIP]:[Kafka PORT] --topic kafka
+
 # トピック削除
 shell> ~/kafka/bin/kafka-topics.sh --delete --bootstrap-server [インスタンスIP]:[Kafka PORT] --topic kafka
 ```
-データ作成/使用
+データの作成/使用
 ```
 # producer起動
 shell> ~/kafka/bin/kafka-console-producer.sh --broker-list [インスタンスIP]:[Kafka PORT] --topic kafka
+
 # consumer起動
 shell> ~/kafka/bin/kafka-console-consumer.sh --bootstrap-server [インスタンスIP]:[Kafka PORT] --from-beginning --topic kafka
+{% if "public" in build_flags %}
 ```
 
-## Redis Instance
+<a id="redis-instance"></a>
+## Redis Instance { #redis-instance }
 
-### Redis起動/停止
+<a id="startstop-redis"></a>
+### Redis起動/停止 { #startstop-redis }
 ```
 # Redisサービスの起動
 shell> sudo systemctl start redis
@@ -996,21 +1096,25 @@ shell> sudo systemctl stop redis
 shell> sudo systemctl restart redis
 ```
 
-### Redis接続
-`redis-cli`コマンドを利用してRedisインスタンスに接続できます。
+<a id="connect-to-redis"></a>
+### Redis接続 { #connect-to-redis }
+`redis-cli`コマンドでRedisインスタンスに接続できます。
 ```
 shell> redis-cli
 ```
 
-### Redisインスタンス作成後の初期設定
+<a id="initial-setup-after-creating-a-redis-instance"></a>
+### Redisインスタンス作成後の初期設定 { #initial-setup-after-creating-a-redis-instance }
 Redisインスタンスの基本設定ファイルは`~/redis/redis.conf`です。変更が必要なパラメータの説明は次のとおりです。
 
+<a id="initial-setup-after-creating-a-redis-instance-bind"></a>
 #### bind
 - 基本値：`127.0.0.1 -::1`
 - 変更値：`<private ip> 127.0.0.1 -::1`
 
 Redisが使用するipの値です。サーバー外部からRedisインスタンスへのアクセスを許可するには該当パラメータにprivate ipを追加する必要があります。 private ipは`hostname -I`コマンドで確認できます。
 
+<a id="initial-setup-after-creating-a-redis-instance-port"></a>
 #### port
 - 基本値：`6379`
 
@@ -1020,19 +1124,21 @@ Redisが使用するipの値です。サーバー外部からRedisインスタ�
 shell> redis-cli -p <新しいポート>
 ```
 
+<a id="initial-setup-after-creating-a-redis-instance-requirepassmasterauth"></a>
 #### requirepass/masterauth
 - 基本値：`nhncloud`
 
 基本パスワードは`nhncloud`です。セキュリティ上、パスワードを変更することを推奨します。複製接続を使用する場合、`requirepass`と`masterauth`値を同時に変更する必要があります。
 
-<a id="postgresql-directory-description"></a>
-### 自動HA構成スクリプト
+<a id="automatic-ha-configuration-script"></a>
+### 自動HA構成スクリプト { #automatic-ha-configuration-script }
 NHN CloudのRedisインスタンスは自動的にHA環境を構成するスクリプトを提供します。スクリプトは必ず**インストール直後の新規インスタンス**でのみ使用することができ、redis.confで設定値を変更した場合には使用できません。
 
 スクリプトを使用するには次の設定が必ず必要です。
 
 ##### キーペアコピー
 インストールスクリプトを実行するインスタンスに他のインスタンス接続に必要なキーペア(PEMファイル)が必要です。キーペアは次のようにコピーできます。
+
 - ubuntu
 ```
 local> scp -i <キーペア>.pem <キーペア>.pem ubuntu@<floating ip>:/home/ubuntu/
@@ -1040,7 +1146,7 @@ local> scp -i <キーペア>.pem <キーペア>.pem ubuntu@<floating ip>:/home/u
 作成したインスタンスのキーペアは、すべて同じである必要があります。
 
 ##### セキュリティグループ設定
-Redisインスタンス間の通信のためにセキュリティグループ(**Network** > **Security Groups**)設定が必要です。以下のルールでセキュリティグループを作成し、Redisインスタンスに適用してください。
+Redisインスタンス間の通信に必要なセキュリティグループ(**Network** > **Security Groups**)設定が必要です。以下のルールでセキュリティグループを作成し、Redisインスタンスに適用してください。
 
 | 方向 | IPプロトコル| ポート範囲| Ether| 遠隔|
 | --- | --- | --- | --- | --- |
@@ -1048,6 +1154,7 @@ Redisインスタンス間の通信のためにセキュリティグループ(**
 | 受信|TCP | 16379| IPv4| インスタンスIP(CIDR)|
 | 受信|TCP | 26379| IPv4| インスタンスIP(CIDR)|
 
+<a id="automatic-ha-configuration-script-sentinel-automatic-configuration"></a>
 #### Sentinel自動構成
 Sentinel構成のために3つのRedisインスタンスが必要です。マスターとして使用するインスタンスにキーペアをコピーし、以下のようにスクリプトを実行してください。
 
@@ -1070,6 +1177,7 @@ Enter Replica-2's IP: 192.168.0.97
 shell> Enter Pemkey's name: <キーペア>.pem
 ```
 
+<a id="automatic-ha-configuration-script-cluster-automatic-configuration"></a>
 #### Cluster自動構成
 Cluster構成のために6つのRedisインスタンスが必要です。マスターとして使用するインスタンスにキーペアをコピーし、以下のようにスクリプトを実行してください。
 
@@ -1096,6 +1204,330 @@ shell> Enter Pemkey's name: <キーペア>.pem
 ```
 
 `yes`を入力し、クラスタ構成を完了します。
+```
+>>> Performing hash slots allocation on 6 nodes...
+Master[0] -> Slots 0 - 5460
+Master[1] -> Slots 5461 - 10922
+Master[2] -> Slots 10923 - 16383
+Adding replica 192.168.0.91:6379 to 192.168.0.79:6379
+Adding replica 192.168.0.32:6379 to 192.168.0.10:6379
+Adding replica 192.168.0.116:6379 to 192.168.0.33:6379
+M: 0a6ee5bf24141f0058c403d8cc42b349cdc09752 192.168.0.79:6379
+   slots:[0-5460] (5461 slots) master
+M: b5d078bd7b30ddef650d9a7fa9735e7648efc86f 192.168.0.10:6379
+   slots:[5461-10922] (5462 slots) master
+M: 0da9b78108b6581bdb90002cbdde3506e9173dd8 192.168.0.33:6379
+   slots:[10923-16383] (5461 slots) master
+S: 078b4ce014a52588e23577b3fc2dabf408723d68 192.168.0.116:6379
+   replicates 0da9b78108b6581bdb90002cbdde3506e9173dd8
+S: caaae4ebd3584c0481205e472d6bd0f9dc5c574e 192.168.0.91:6379
+   replicates 0a6ee5bf24141f0058c403d8cc42b349cdc09752
+S: ab2aa9e37cee48ef8e4237fd63e8301d81193818 192.168.0.32:6379
+   replicates b5d078bd7b30ddef650d9a7fa9735e7648efc86f
+Can I set the above configuration? (type 'yes' to accept):
+```
+
+```
+[OK] All nodes agree about slots configuration.
+>>> Check for open slots...
+>>> Check slots coverage...
+[OK] All 16384 slots covered.
+{% elif "gov" in build_flags %}
+```
+
+<a id="redis-instance-2"></a>
+## Redis Instance { #redis-instance-2 }
+
+<a id="redis-instance-2-startstop-redis"></a>
+### Redis起動/停止 { #redis-instance-2-startstop-redis }
+
+```
+# Redisサービスの起動
+shell> sudo systemctl start redis
+
+# Redisサービスの停止
+shell> sudo systemctl stop redis
+
+# Redisサービスの再起動
+shell> sudo systemctl restart redis
+```
+
+<a id="redis-instance-2-connect-to-redis"></a>
+### Redisへの接続 { #redis-instance-2-connect-to-redis }
+
+`redis-cli`コマンドでRedisインスタンスに接続できます。
+```
+shell> redis-cli
+```
+
+<a id="redis-instance-2-initial-setup-after-creating-a-redis-instance"></a>
+### Redisインスタンス作成後の初期設定 { #redis-instance-2-initial-setup-after-creating-a-redis-instance }
+
+Redisインスタンスのデフォルト設定ファイルは`~/redis/redis.conf`です。変更が必要なパラメータの説明は次のとおりです。
+
+<a id="redis-instance-2-initial-setup-after-creating-a-redis-instance-initial-setup-after-creating-a-redis-instance-bind"></a>
+#### bind
+
+- デフォルト値: `127.0.0.1 -::1`
+- 変更値: `<private ip> 127.0.0.1 -::1`
+
+Redisが使用するIPに関する値です。サーバー外部からRedisインスタンスへのアクセスを許可するには、該当パラメータにprivate IPを追加する必要があります。private IPは`hostname -I`コマンドで確認できます。
+
+<a id="redis-instance-2-initial-setup-after-creating-a-redis-instance-initial-setup-after-creating-a-redis-instance-port"></a>
+#### port
+
+- デフォルト値: `6379`
+
+ポートはRedisのデフォルト値である6379です。セキュリティ上の理由から、ポートの変更をお勧めします。ポートを変更した後は、以下のコマンドでRedisに接続できます。
+
+```
+shell> redis-cli -p <新しいポート>
+```
+
+<a id="redis-instance-2-initial-setup-after-creating-a-redis-instance-initial-setup-after-creating-a-redis-instance-requirepassmasterauth"></a>
+#### requirepass/masterauth
+
+- デフォルト値: `nhncloud`
+
+デフォルトのパスワードは`nhncloud`です。セキュリティのため、パスワードの変更をお勧めします。レプリカ接続を使用する場合は、`requirepass`と`masterauth`の値を同時に変更する必要があります。
+
+<a id="redis-instance-2-automatic-ha-configuration-script"></a>
+### 自動HA構成スクリプト { #redis-instance-2-automatic-ha-configuration-script }
+
+NHN CloudのRedisインスタンスは、HA環境を自動的に構成するスクリプトを提供します。スクリプトは必ず**インストール直後の新規インスタンス**でのみ使用できます。redis.confで設定値を変更した場合は、使用することはできません。
+
+スクリプトを使用するには、次の設定が必要です。
+
+##### キーペアのコピー
+
+インストールスクリプトを実行するインスタンスに、他のインスタンスへの接続に必要なキーペア(PEMファイル)が必要です。キーペアは次のようにコピーできます。
+
+- ubuntu
+```
+local> scp -i <キーペア>.pem <キーペア>.pem ubuntu@<floating ip>:/home/ubuntu/
+```
+
+作成したインスタンスのキーペアはすべて同一である必要があります。
+
+##### セキュリティグループの設定
+
+Redisインスタンス間の通信に必要なセキュリティグループ(**Network** > **Security Groups**)の設定が必要です。以下のルールでセキュリティグループを作成し、Redisインスタンスに適用します。
+
+| 方向 | IPプロトコル | ポート範囲 | Ether | 遠隔 |
+| --- | --- | --- | --- | --- |
+| 受信 | TCP | 6379 | IPv4 | インスタンスIP(CIDR) |
+| 受信 | TCP | 16379 | IPv4 | インスタンスIP(CIDR) |
+| 受信 | TCP | 26379 | IPv4 | インスタンスIP(CIDR) |
+
+<a id="redis-instance-2-automatic-ha-configuration-script-automatic-ha-configuration-script-sentinel-automatic-configuration"></a>
+#### Sentinel自動構成
+
+Sentinel構成には3つのRedisインスタンスが必要です。マスターとして使用するインスタンスにキーペアをコピーした後、以下のようにスクリプトを実行します。
+
+```
+shell> sh .redis_make_sentinel.sh
+```
+
+その後、接続情報で使用するマスター名（Master Name）と、マスターおよびレプリカのprivate IPを順番に入力します。各インスタンスのprivate IPは`hostname -I`コマンドで確認できます。
+
+```
+shell> sh .redis_make_sentinel.sh
+Enter Master's Name (ex> mymaster) : mymaster
+Enter Master's IP: 192.168.0.33
+Enter Replica-1's IP: 192.168.0.27
+Enter Replica-2's IP: 192.168.0.97
+```
+
+コピーしてきたキーペアのファイル名を入力します。
+```
+shell> Enter Pemkey's name: <キーペア>.pem
+```
+
+<a id="redis-instance-2-automatic-ha-configuration-script-automatic-ha-configuration-script-cluster-automatic-configuration"></a>
+#### Cluster自動構成
+
+Cluster構成には6つのRedisインスタンスが必要です。マスターとして使用するインスタンスにキーペアをコピーし、次のようにスクリプトを実行します。
+
+```
+shell> sh .redis_make_cluster.sh
+```
+
+次に、クラスターで使用するRedisインスタンスのプライベートIPを順番に入力します。各インスタンスのプライベートIPは、`hostname -I`コマンドで確認できます。
+
+```
+shell> sh .redis_make_cluster.sh
+Enter cluster-1'IP:  192.168.0.79
+Enter cluster-2'IP:  192.168.0.10
+Enter cluster-3'IP:  192.168.0.33
+Enter cluster-4'IP:  192.168.0.116
+Enter cluster-5'IP:  192.168.0.91
+Enter cluster-6'IP:  192.168.0.32
+```
+
+コピーしてきたキーペアのファイル名を入力します。
+
+```
+shell> Enter Pemkey's name: <キーペア>.pem
+```
+
+`yes`を入力してクラスター構成を完了します。
+```
+>>> Performing hash slots allocation on 6 nodes...
+Master[0] -> Slots 0 - 5460
+Master[1] -> Slots 5461 - 10922
+Master[2] -> Slots 10923 - 16383
+Adding replica 192.168.0.91:6379 to 192.168.0.79:6379
+Adding replica 192.168.0.32:6379 to 192.168.0.10:6379
+Adding replica 192.168.0.116:6379 to 192.168.0.33:6379
+M: 0a6ee5bf24141f0058c403d8cc42b349cdc09752 192.168.0.79:6379
+   slots:[0-5460] (5461 slots) master
+M: b5d078bd7b30ddef650d9a7fa9735e7648efc86f 192.168.0.10:6379
+   slots:[5461-10922] (5462 slots) master
+M: 0da9b78108b6581bdb90002cbdde3506e9173dd8 192.168.0.33:6379
+   slots:[10923-16383] (5461 slots) master
+S: 078b4ce014a52588e23577b3fc2dabf408723d68 192.168.0.116:6379
+   replicates 0da9b78108b6581bdb90002cbdde3506e9173dd8
+S: caaae4ebd3584c0481205e472d6bd0f9dc5c574e 192.168.0.91:6379
+   replicates 0a6ee5bf24141f0058c403d8cc42b349cdc09752
+S: ab2aa9e37cee48ef8e4237fd63e8301d81193818 192.168.0.32:6379
+   replicates b5d078bd7b30ddef650d9a7fa9735e7648efc86f
+Can I set the above configuration? (type 'yes' to accept):
+```
+
+```
+[OK] All nodes agree about slots configuration.
+>>> Check for open slots...
+>>> Check slots coverage...
+[OK] All 16384 slots covered.
+{% else %}
+{% endif %}
+```
+
+<a id="valkey-instance"></a>
+## Valkey Instance { #valkey-instance }
+
+<a id="startstop-valkey"></a>
+### Valkeyの起動/停止 { #startstop-valkey }
+```
+# Valkeyサービスの起動
+shell> sudo systemctl start valkey
+
+# Valkeyサービスの停止
+shell> sudo systemctl stop valkey
+
+# Valkeyサービスの再起動
+shell> sudo systemctl restart valkey
+```
+
+<a id="connect-to-valkey"></a>
+### Valkeyへの接続 { #connect-to-valkey }
+`valkey-cli`コマンドを使用してValkeyインスタンスに接続できます。
+```
+shell> valkey-cli
+```
+
+<a id="initial-setup-after-creating-a-valkey-instance"></a>
+### Valkeyインスタンス作成後の初期設定 { #initial-setup-after-creating-a-valkey-instance }
+Valkeyインスタンスのデフォルト設定ファイルは `~/valkey/valkey.conf` です。変更が必要なパラメータについての説明は以下のとおりです。
+
+<a id="initial-setup-after-creating-a-valkey-instance-bind"></a>
+#### bind
+- デフォルト値：`127.0.0.1 -::1`
+- 変更値：`<private ip> 127.0.0.1 -::1`
+
+Valkeyが使用するIPアドレスです。サーバーの外部からValkeyインスタンスにアクセスするには、このパラメータにプライベートIPを追加する必要があります。プライベートIPは`hostname -I`コマンドで確認できます。
+
+<a id="initial-setup-after-creating-a-valkey-instance-port"></a>
+#### port
+- デフォルト値：`6379`
+
+ポートはValkeyのデフォルト値である6379です。セキュリティ上、ポートの変更を推奨します。ポートを変更した後は、以下のコマンドでValkeyに接続できます。
+
+```
+shell> valkey-cli -p <新しいポート>
+```
+
+<a id="initial-setup-after-creating-a-valkey-instance-requirepassmasterauth"></a>
+#### requirepass/masterauth
+- デフォルト値：`nhncloud`
+
+デフォルトのパスワードは`nhncloud`です。セキュリティ上、パスワードの変更を推奨します。レプリケーション接続を使用する場合は、`requirepass`と`masterauth`の値を同時に変更する必要があります。
+
+<a id="valkey-automatic-ha-configuration-script"></a>
+### 自動HA構成スクリプト { #valkey-automatic-ha-configuration-script }
+NHN CloudのValkeyインスタンスでは、HA環境を自動で構成するスクリプトを提供しています。このスクリプトはインストール直後の新規インスタンスでのみ使用でき、`valkey.conf`の設定値を変更した場合は使用できません。
+
+スクリプトを使用するには、以下の設定が必須となります。
+
+##### キーペアのコピー
+インストールスクリプトを実行するインスタンスには、他のインスタンスへの接続に必要なキーペア(PEMファイル)が配置されている必要があります。キーペアは次のようにコピーできます。
+
+- ubuntu
+```
+local> scp -i <キーペア>.pem <キーペア>.pem ubuntu@<floating ip>:/home/ubuntu/
+```
+
+作成したインスタンスのキーペアは、全て同一である必要があります。
+
+##### セキュリティグループの設定
+Valkeyインスタンス間で通信を行うには、セキュリティグループ(**Network** > **Security Groups**)の設定が必要です。以下のルールでセキュリティグループを作成し、Valkeyインスタンスに適用してください。
+
+| 方向 | IPプロトコル | ポート範囲 | Ether | リモート |
+| --- | --- | --- | --- | --- |
+| 受信 | TCP | 6379 | IPv4 | インスタンスIP(CIDR) |
+| 受信 | TCP | 16379 | IPv4 | インスタンスIP(CIDR) |
+| 受信 | TCP | 26379 | IPv4 | インスタンスIP(CIDR) |
+
+<a id="valkey-automatic-ha-configuration-script-sentinel-automatic-configuration"></a>
+#### Sentinelの自動構成
+Sentinel構成には、3つのValkeyインスタンスが必要です。マスターとして使用するインスタンスにキーペアをコピーした後、次のようにスクリプトを実行してください。
+
+```
+shell> sh .valkey_make_sentinel.sh
+```
+
+続いて、接続情報で使用するマスター名(Master Name)と、マスター及びレプリカのプライベートIPを順に入力します。各インスタンスのプライベートIPは`hostname -I`コマンドで確認できます。
+
+```
+shell> sh .valkey_make_sentinel.sh
+Enter Master's Name (ex> mymaster) : mymaster
+Enter Master's IP: 192.168.0.33
+Enter Replica-1's IP: 192.168.0.27
+Enter Replica-2's IP: 192.168.0.97
+```
+
+コピーしたキーペアのファイル名を入力します。
+```
+shell> Enter Pemkey's name: <キーペア>.pem
+```
+
+<a id="valkey-automatic-ha-configuration-script-cluster-automatic-configuration"></a>
+#### Clusterの自動構成
+Cluster構成には、6つのValkeyインスタンスが必要です。マスターとして使用するインスタンスにキーペアをコピーした後、次のようにスクリプトを実行してください。
+
+```
+shell> sh .valkey_make_cluster.sh
+```
+
+続いて、クラスターで使用するValkeyインスタンスのプライベートIPを順に入力します。各インスタンスのプライベートIPは`hostname -I`コマンドで確認できます。
+
+```
+shell> sh .valkey_make_cluster.sh
+Enter cluster-1'IP:  192.168.0.79
+Enter cluster-2'IP:  192.168.0.10
+Enter cluster-3'IP:  192.168.0.33
+Enter cluster-4'IP:  192.168.0.116
+Enter cluster-5'IP:  192.168.0.91
+Enter cluster-6'IP:  192.168.0.32
+```
+
+コピーしたキーペアのファイル名を入力します。
+
+```
+shell> Enter Pemkey's name: <キーペア>.pem
+```
+
+`yes`を入力してクラスター構成を完了します。
 ```
 >>> Performing hash slots allocation on 6 nodes...
 Master[0] -> Slots 0 - 5460
