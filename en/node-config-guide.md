@@ -1472,18 +1472,18 @@ The value of the field specified in the data time field supports the following f
 * If the value cannot be used as-is, connect a [Date](#filter-date) node upstream to convert the format.
 
 <a id="filter-aggregate-watermark"></a>
-### Watermark delay and allowed latency { #filter-aggregate-watermark }
+### Watermark delay and allowed lateness { #filter-aggregate-watermark }
 
 Both properties handle late-arriving messages, but they differ in when they take effect and what results they produce.
 
-| Item | Watermark Delay | Allowed Latency |
+| Item | Watermark Delay | Allowed Lateness |
 |---|---|---|
 | When it takes effect | Before the window closes | After the window closes |
 | Result output | One output per window | One additional output each time a late message arrives |
 | When results are produced | Delayed by the configured amount | Not delayed |
 | Memory | No impact | Increases, as closed windows are retained |
 
-If you want to receive results only once, set the allowed latency to 0 and adjust only the watermark delay. If you want to receive results quickly, don't want to miss late-arriving data, and can handle duplicate results downstream, use the allowed latency.
+If you want to receive results only once, set the allowed lateness to 0 and adjust only the watermark delay. If you want to receive results quickly, don't want to miss late-arriving data, and can handle duplicate results downstream, use the allowed lateness.
 
 Both properties measure time based on the value of the data time field, not the actual clock time.
 
@@ -1497,10 +1497,10 @@ For example, if the window size is 10 seconds and the watermark delay is 5 secon
 
 * A larger watermark delay accommodates more out-of-order messages, but also delays result output by the same amount.
 * (Apache) Kafka and (NHN Cloud) EasyQueue store data across multiple partitions. Because each partition is read at a different rate, messages created later often arrive first. If you use these sources, set the watermark delay to a generous value.
-* Messages that arrive after a window has closed are discarded. Setting the allowed latency retains the aggregation state for that duration, allowing late-arriving messages to be included.
-* However, if the allowed latency is set to greater than 0, the result for that window is output again for each late-arriving message. This means multiple result messages with the same `window_start` value are produced, and the last one output is the final aggregated value.
+* Messages that arrive after a window has closed are discarded. Setting the allowed lateness retains the aggregation state for that duration, allowing late-arriving messages to be included.
+* However, if the allowed lateness is set to greater than 0, the result for that window is output again for each late-arriving message. This means multiple result messages with the same `window_start` value are produced, and the last one output is the final aggregated value.
     * The previously output results are not updated. Be careful not to re-aggregate or store duplicates in downstream nodes or Sinks.
-    * If you do not want duplicate outputs, set the allowed latency to 0 and increase the watermark delay to capture late-arriving messages before the window closes.
+    * If you do not want duplicate outputs, set the allowed lateness to 0 and increase the watermark delay to capture late-arriving messages before the window closes.
 
 <a id="filter-aggregate-output-event"></a>
 ### Output Message Structure { #filter-aggregate-output-event }
@@ -1524,7 +1524,7 @@ The output message consists of only the following fields. All input fields that 
 * Data time field → `event_ts`
 * Window size → `10`
 * Watermark delay → `5`
-* Allowed latency → `0`
+* Allowed lateness → `0`
 * Aggregation items
 
 | Operation | Field to aggregate | Output field name |
@@ -1604,7 +1604,7 @@ Larger instance types allocate more memory to the Flow, and the memory that has 
 * If the number of distinct group key values exceeds the limit, the Flow enters an error state due to insufficient memory and does not recover automatically. Stop the Flow, adjust the group keys, and restart it.
 * Specify fields with a limited number of distinct values as group keys. If you specify fields that continuously generate new values over time — such as user IDs, session IDs, request IDs, or IP addresses — as group keys, there is no upper bound on the number of distinct values, which will eventually lead to insufficient memory.
 * If you need a larger number of distinct group key values, consider upgrading the instance type.
-* If the allowed latency is set to a value greater than 0, the state of closed windows is maintained for the duration of the allowed latency, which can increase memory usage by up to (1 + allowed latency ÷ window size) times. Reduce the number of distinct group key values by the same factor.
+* If the allowed lateness is set to a value greater than 0, the state of closed windows is maintained for the duration of the allowed lateness, which can increase memory usage by up to (1 + allowed lateness ÷ window size) times. Reduce the number of distinct group key values by the same factor.
 
 <a id="filter-aggregate-notes-behavior"></a>
 #### Known behavior
@@ -1613,7 +1613,7 @@ Larger instance types allocate more memory to the Flow, and the memory that has 
 * When you stop a flow, the aggregation state of any windows in progress is not retained. When the flow runs again, those windows start aggregating from an empty state.
 * Windows that contain no messages do not output results.
 * While a flow is running, the last window closes only when messages from the next window arrive. If no more messages come in, the results of the last window are not output.
-* If you set the allowed latency to a value greater than 0, the results of the same window are output multiple times. For Sink nodes that do not update already-loaded data — such as Object Storage or Kafka — multiple results for the same window accumulate, so the consumer must use only the last result among those with the same `window_start` value.
+* If you set the allowed lateness to a value greater than 0, the results of the same window are output multiple times. For Sink nodes that do not update already-loaded data — such as Object Storage or Kafka — multiple results for the same window accumulate, so the consumer must use only the last result among those with the same `window_start` value.
 * Messages that arrive after a window has closed and could not be aggregated, and messages that were excluded because the data time field could not be interpreted, are not output separately.
 * SUM and AVG are calculated using floating-point arithmetic, so aggregating values with a large number of digits may produce rounding errors.
 
