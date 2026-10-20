@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=fc4a4521d735 -->
 
 <a id="database-rds-for-enginepascalcase-backup-and-restoration"></a>
@@ -289,6 +291,9 @@ difficult to restore to the desired point in time. For the cases listed below, y
 * When a binary log is deleted due to a failover of a high availability DB instance
 * When binary logs are corrupted or deleted for various other reasons
 
+!!! tip "Note"
+    DB Instance Groups that use Transaction Log Archiving also use binary logs stored in Object Storage for Point In Time Recovery (PITR). Binary logs uploaded to Object Storage can be used for Point In Time Recovery (PITR) during the retention period, even if they are deleted from the DB Instance. For more information, see [Transaction Log Archiving](#transaction-log-archiving).
+
 To restore a point in time from the console
 
 ![point-in-time-restoration-list-en]({{url.cdn}}/24.03.12/point-in-time-restoration-list-en.png)
@@ -307,6 +312,8 @@ When restoring with a timestamp, proceed with the restoration based on the backu
 ![point-in-time-restoration-02-en]({{url.cdn}}/24.03.12/point-in-time-restoration-02-en.png)
 
 ❷ Select a restore time. You can restore to the most recent point in time, or you can enter a specific point in time.
+
+For a DB Instance Group that uses Transaction Log Archiving, the **Restore Coverage** bar is displayed when you select a restore time. Clicking a blue segment allows you to select a restore time within that segment, and clicking a backup (◆) sets the restore time to the time of that backup. For more information, see [Restore Coverage](#restore-coverage).
 
 ![point-in-time-restoration-03-en]({{url.cdn}}/24.03.12/point-in-time-restoration-03-en.png)
 
@@ -446,3 +453,86 @@ find {MariaDB data storage path} -name "*.qp" -print0 | xargs -0 rm
 {{/if}}
 
 (7) Start {{engine.pascalCase}} service. 
+
+<a id="transaction-log-archiving"></a>
+## Transaction Log Archiving { #transaction-log-archiving }
+
+Transaction Log Archiving is a feature that stores the Binary Log (BinLog) of the Primary in Object Storage in real time. Binary Logs stored in Object Storage are called Transaction Log Archives and are used for Point In Time Recovery (PITR). When you use Transaction Log Archiving, you can perform Point In Time Recovery over a wider range than when using only the Binary Log of the DB Instance.
+
+* Even if the Binary Log is deleted from the DB Instance, you can still perform Point In Time Recovery during the retention period.
+* You can perform Point In Time Recovery up to the time before a Failover using a backup created before the Failover.
+* Even if you delete the DB Instance while Transaction Log Archiving is enabled, you can perform Point In Time Recovery using the remaining backups during the retention period.
+
+!!! tip "Note"
+    * Transaction Log Archiving is configured at the DB Instance Group level.
+    * Transaction Log Archives are stored in Object Storage managed by RDS for {{engine.pascalCase}} and cannot be viewed or directly accessed from the user's Object Storage.
+    * A DB Instance Group created by promoting a Read Replica starts with Transaction Log Archiving disabled.
+{{#if (eq engine.lowerCase "mysql")}}
+    * MySQL version 5.6 does not support Transaction Log Archiving.
+{{/if}}
+
+<a id="transaction-log-archiving-settings"></a>
+### Transaction Log Archiving Settings { #transaction-log-archiving-settings }
+
+When creating a DB instance, you can select **Enable** under **Transaction Log Archiving** in the backup settings. After creation, you can change it in [Update DB Instance Group](db-instance/#modify-db-instance-group) or [Change Transaction Log Archiving](db-instance/#change-transaction-log-archiving).
+
+The retention period is the duration for which transaction log archives are stored. It can be set between 1 and 35 days, with a default of 7 days. Transaction log archives that exceed the retention period are automatically deleted. The range available for Point In Time Recovery (PITR) is the longer of the maximum Archive Retention period and the DB instance's Binary Log (BinLog) retention period, and there must be a restorable backup within that range.
+
+!!! tip "Note"
+    While using Transaction Log Archiving, a lower limit of 1 day is applied to the DB instance's Binary Log (BinLog) retention period to ensure stable Binary Log storage. Even if the `binlog_expire_logs_seconds` value is set to less than 1 day (86,400 seconds), 1 day is applied to the DB instance, and the value in the Parameter Group is not changed. Because Binary Logs are retained longer, data storage usage may increase.
+
+When Transaction Log Archiving is enabled, a 10 GB Staging Buffer Volume is added to the Primary to temporarily store Binary Logs before they are uploaded to Object Storage.
+
+!!! danger "Caution"
+    * Transaction Log Archiving cannot be used if the remaining capacity before the project's total volume size limit is less than 10 GB.
+    * Additional charges apply when using Transaction Log Archiving. For more information, see the [Transaction Log Archiving Pricing](#transaction-log-archiving-pricing) section.
+
+<a id="disable-transaction-log-archiving"></a>
+### Disable Transaction Log Archiving { #disable-transaction-log-archiving }
+
+When you change Transaction Log Archiving to **Disable**, any binary logs that have not yet been uploaded to Object Storage are uploaded first during the deactivation process. Once all remaining binary logs are uploaded, the Staging Buffer Volume is deleted.
+
+After disabling, you can only perform Point In Time Recovery (PITR) using the binary logs of the DB Instance. The remaining Transaction Log Archive is deleted 7 days after deactivation (if the retention period is shorter than 7 days, it is deleted after the retention period expires). If you change the setting back to **Enable** before that, the archive is retained according to the retention period.
+
+<a id="transaction-log-archiving-tab"></a>
+### Transaction Log Archiving Tab { #transaction-log-archiving-tab }
+
+On the details screen of a DB Instance Group that uses Transaction Log Archiving, selecting the **Transaction Log Archiving** tab displays the following information:
+
+| Item | Description |
+|---|---|
+| Summary | Retention period, Archive Usage, and the number of Pending Segments for the current Primary |
+| Archive Usage Trend | Changes in Archive Usage by DB Instance |
+| Upload Status by Container | Upload status and missing segments by DB Instance that was Primary |
+| Upload Delay Trend | Changes in the number of Pending Segments by DB Instance |
+| Restore Coverage | The time at which a point-in-time restoration can be requested |
+
+A segment refers to a single Binary Log file. If the upload status is displayed as **Delayed** or **Interrupted**, it means that the Binary Log is not being uploaded to Object Storage in a timely manner.
+
+<a id="restore-coverage"></a>
+### Restore Coverage { #restore-coverage }
+
+Restore Coverage displays the times at which you can request point-in-time restoration using backups and Transaction Log Archives as a bar. Blue segments indicate times when point-in-time restoration can be requested, gray segments indicate times when restoration is not available, ◆ represents a backup, and numbered vertical lines represent Failovers. On the Transaction Log Archiving tab, clicking a blue segment or a backup (◆) opens the point-in-time restoration screen.
+
+Segments where binary logs could not be uploaded to Object Storage are displayed as **log gaps**, and point-in-time restoration cannot be performed to times within these segments. To restore to a time after a log gap, a backup created after the log gap is required. Therefore, it is recommended to perform a backup when a log gap occurs.
+
+<a id="failover-and-point-in-time-restoration"></a>
+### Failover and Point In Time Recovery { #failover-and-point-in-time-restoration }
+
+A DB Instance Group that uses Transaction Log Archiving can be restored to a point in time before the failover using a backup created before the failover. Use [Restore with Timestamp](#point-in-time-restoration-restore-with-timestamp) for this. Restoring across the Failover Boundary is not supported, so if you want to restore to a point in time after the failover, a backup created after the failover is required.
+
+Depending on the failover, some points in time immediately before the failover or the entire period before the failover may not be restorable. If the entire period before the failover cannot be restored, **Failover Coordinates Not Available** is displayed in the container-level archiving status on the Transaction Log Archiving tab. You can check the available times in the Restore Coverage on the Point In Time Recovery screen.
+
+<a id="transaction-log-archiving-pricing"></a>
+### Transaction Log Archiving Pricing { #transaction-log-archiving-pricing }
+
+When you use Transaction Log Archiving, the following additional fees are charged.
+
+| Type | Criteria |
+|---|---|
+| Staging Buffer Volume | Usage fee for the 10 GB volume added to Primary |
+| Archive Usage | Capacity of the Transaction Log Archive stored in Object Storage. Object Storage usage fee is applied. |
+
+* If you disable Transaction Log Archiving, Archive Usage fees are not charged starting from the next hour.
+* If you delete a DB Instance while Transaction Log Archiving is enabled, the Transaction Log Archive is retained for the retention period, and Archive Usage fees are charged during that time.
+* If a Failover occurs, a Staging Buffer Volume is added to the new Primary, and the volume fee for the previous Primary's Staging Buffer Volume is also charged until the remaining Binary Log (BinLog) is uploaded and deleted.
