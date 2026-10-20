@@ -186,6 +186,11 @@ DB security groups are used to restrict access in case of external intrusion. Yo
 You can set up periodic backups of the databases in your DB instance, or you can create backups at any time through the console. Performance may degrade during backups. To avoid affecting service, it is better to perform back up at a time when the service is under low load. If you do not want the backup to degrade performance, you can use a high-availability configuration, back up only the incremental data since the previous backup, or perform backups from a Read Replica. Backup files are stored on internal backup storage and are charged based on the
 size of backup storage. You can export to NHN Cloud Object Storage if necessary. To prepare for unexpected failures, we recommend that you set up backups to be conducted periodically. For more details on backup, see [Backup and Restore](backup-and-restore/).
 
+<a id="transaction-log-archiving"></a>
+### Transaction Log Archiving { #transaction-log-archiving }
+
+You can configure binary logs to be stored in Object Storage for use in point-in-time restore. Select **Enable** to enter the retention period as an integer between 1 and 35 days. The default is **Disabled**, and the default retention period is 7 days. When transaction log archiving is enabled, additional charges are incurred based on the staging buffer volume and archive usage. For more information, see [Transaction Log Archiving](backup-and-restore/#transaction-log-archiving).
+
 <a id="maintenance"></a>
 ### Maintenance { #maintenance }
 
@@ -373,8 +378,9 @@ Select a DB Instance Group from the DB instance list to view its detailed inform
 
 | Tab | Description |
 |---|---|
-| Basic Information | Displays the DB Instance Group name and ID, high availability configuration, Primary and Standby names, and Ping settings. |
+| Basic Information         | Displays the DB Instance Group name and ID, high availability configuration, Primary and Standby names, Ping settings, and whether transaction log archiving is enabled.                                  |
 | DB Schema and Users | Manages the DB schemas and users of DB instances in the group. The DB schema and user features are provided in the DB Instance Group details, not in the individual DB instance details. |
+| Transaction Log Archiving | Displays the loading status, usage, and restorable range of the transaction log archive. Displayed only for groups that use transaction log archiving. For more information, see [Transaction Log Archiving Tab](backup-and-restore/#transaction-log-archiving-tab). |
 
 <a id="db-schema-and-users"></a>
 ### DB Schema and Users { #db-schema-and-users }
@@ -523,12 +529,18 @@ You can change the following items on the modification screen:
 | Ping Interval                     | Set within a range of 1 to 600 seconds in a high availability configuration.                                                                                        |
 | Ping Method                       | Select either `INSERT` or `SELECT` in a high availability configuration.                                                                                            |
 | DB Schema & Direct User Control   | Changes whether to use direct control for schemas and users of DB instances in the group.                                                                           |
+| Transaction Log Archiving | Changes whether to use transaction log archiving. If changed to **Enable**, a pricing notice is displayed on the confirmation screen. |
+| Retention Period | When using transaction log archiving, sets the retention period of the transaction log archive as an integer between 1 and 35 days. |
 
 !!! danger "Caution"
     * Disabling high availability deletes the Standby and converts to a standalone configuration. Before proceeding, make sure there is no data or configuration that exists only on the Standby.
     * You cannot change the high availability setting for a DB Instance Group while failover is in progress.
     * The Primary name cannot be changed in a private network. Also, the Standby name of an existing high availability configuration cannot be changed; the Standby name can only be entered when setting up high availability for the first time.
     * In a high availability configuration, the names of the Primary and Standby must be different from each other.
+    * If a task is in progress in the DB Instance Group, you cannot change the transaction log archiving settings or modify the group.
+
+!!! tip "Note"
+    Whether to use transaction log archiving and the retention period are applied along with other settings when you click **Modify DB Instance Group**. For more information, see [Transaction Log Archiving](backup-and-restore/#transaction-log-archiving).
 
 <a id="db-schema-direct-user-control"></a>
 ### DB Schema & Direct User Control { #db-schema-direct-user-control }
@@ -759,7 +771,8 @@ Select the binary log and press **Confirm** to delete all binary logs created pr
 {{/if}}
 
 !!! danger "Caution"
-    Depending on the deleted binary logs, point-in-time restoration may not be possible.
+    Depending on the binary logs that are deleted, restoration to a certain point in time may not be available.
+    If you are using transaction log archiving, deleting binary logs that have not yet been uploaded to Object Storage will make point-in-time restoration unavailable for that period. Before storage cleanup, verify on the **Transaction Log Archiving** tab on the group details page that the upload status is **Normal** and there are 0 pending upload segments.
 
 <a id="expand-storage-size"></a>
 ## Expand Storage Size { #expand-storage-size }
@@ -985,6 +998,22 @@ Enabling Delete Protection protects DB instances from being accidentally deleted
 
 ❷ Change the Delete Protection settings and click on **Confirm**.
 
+<a id="change-transaction-log-archiving"></a>
+## Change Transaction Log Archiving { #change-transaction-log-archiving }
+
+You can change whether transaction log archiving is enabled for a DB instance group. To change the transaction log archiving setting, follow the steps below.
+
+1. In the DB instance list, select the DB instance group or the Primary of the group.
+2. In the dropdown menu, click **Change Transaction Log Archiving**.
+3. In the pop-up window, select **Use** or **Not Use**.
+4. Click **Confirm**.
+
+The change request is processed asynchronously, and an event is generated when it completes or fails. The retention period cannot be changed from this menu; change it in [Modify DB Instance Group](#modify-db-instance-group). For more information, see [Transaction Log Archiving](backup-and-restore/#transaction-log-archiving).
+
+!!! danger "Caution"
+    * Changing to **Use** incurs additional charges based on staging buffer volume and archive usage.
+    * You cannot change the transaction log archiving setting while a task is in progress in the DB instance group.
+
 <a id="ha-db-instance"></a>
 ## High Availability DB Instances { #ha-db-instance }
 
@@ -1004,11 +1033,13 @@ Standby has a process for detecting failures, which periodically detects the sta
 <a id="automatic-failover"></a>
 ### Automatic Failover { #automatic-failover }
 
-When the Standby fails the Primary's health check four times in a row, it determines that the Primary is unable to provide service and automatically performs a failover. In order to prevent split brains, disconnect all user security groups assigned to the failed Primary to block external connections, and the Standby will take over the role of the Primary. A record in the internal domain for access are changed from the failed Primary to the Standby, so no changes to the application are required. When failover is completed, the type of the failed Primary changes to Failed Over Primary and the type of Standby changes to the Primary. No failover is performed until the Failed Over Primary is recovered or rebuilt. The new Primary takes over all automatic backups of the Failed Over Primary. Point-in-time restoration using existing backups is not supported because the Primary changes during failover and all binary logs are deleted. You can restore point-in-time
+When the Standby fails the Primary's health check four times in a row, it determines that the Primary is unable to provide service and automatically performs a failover. In order to prevent split brains, disconnect all user security groups assigned to the failed Primary to block external connections, and the Standby will take over the role of the Primary. A record in the internal domain for access are changed from the failed Primary to the Standby, so no changes to the application are required. When failover is completed, the type of the failed Primary changes to Failed Over Primary and the type of Standby changes to the Primary. No failover is performed until the Failed Over Primary is recovered or rebuilt. The new Primary takes over all automatic backups of the Failed Over Primary. Point-in-time restore using existing backups is not supported for DB instance groups that do not use transaction log archiving, because the Primary changes during failover and all binary logs are deleted. You can restore point-in-time
 from the time the new backup was performed on the new Primary.
 
 !!! tip "Note"
-    As the high availability feature is based on a domain, if a client trying to connect is in a network environment where the DNS server cannot be reached, the DB instance cannot be accessed through the domain, and normal connection is not possible in the event of failover. It takes approximately 3 seconds for the changes to A record in the internal domain to take effect, but may vary depending on the DNS Cache policy in the client environment where attempting to connect.
+    As the high availability feature is based on a domain, if a client trying to connect is in a network environment where the DNS server cannot be reached, the DB instance cannot be accessed through the domain, and normal connection is not possible in the event of failover.
+    It takes approximately 3 seconds for the changes to A record in the internal domain to take effect. The time may vary depending on the DNS Cache policy in the client environment where attempting to connect.
+    DB instance groups that use transaction log archiving can perform a point-in-time restore to a point in time before the failover using backups from before the failover. For more information, see [Failover and Point-in-Time Restore](backup-and-restore/#failover-and-point-in-time-restoration).
 
 !!! danger "Caution"
     If the position number value of the binary log between Primary and Standby differs by more than 100,000,000, there is no failover.
@@ -1130,11 +1161,12 @@ For a high availability DB instance, you can select whether or not to restart wi
 * Apply changes to parameters that require restart
 * DB Instances migration for Hypervisor Check
 
-After a restart using failover, the Standby will be restarted first. After that, the Standby becomes the Primary through failover, and the existing Primary will act as the Standby. At this point, the A record in the internal domain for the connection will be changed from Primary to Standby, so no application changes are required. The new Primary succeeds to all automatic backups of the old Primary. Point-in-time restoration with existing backups is not supported because the Primary changes during the failover and all binary logs are deleted. You can restore points-in-time from the time when the new backup is performed on the new Primary.
+After a restart using failover, the Standby will be restarted first. After that, the Standby becomes the Primary through failover, and the existing Primary will act as the Standby. At this point, the A record in the internal domain for the connection will be changed from Primary to Standby, so no application changes are required. The new Primary succeeds to all automatic backups of the old Primary. Because the Primary changes during the failover and all binary logs are deleted, DB instance groups that do not use transaction log archiving do not support point-in-time restoration using existing backups. You can restore points-in-time from the time when the new backup is performed on the new Primary.
 
 !!! tip "Note"
     Because the high availability feature is domain-based, if the client attempting to connect is in a network environment where the DNS server cannot be accessed, the DB instance cannot be accessed through the domain, and successful connection is not possible in the event of a failover.
     It takes approximately 3 seconds to reflect changes in the A record in the internal domain. The time required may vary depending on the DNS Cache policy of the client environment attempting to connect.
+    DB instance groups that use transaction log archiving can be point-in-time restored to a point in time before the failover using a pre-failover backup. For more information, see [Failover and Point-in-time Restore](backup-and-restore/#failover-and-point-in-time-restoration).
 
 !!! danger "Caution"
     If the Seconds_Behind_Master value of the Read Replica included in the replication group with the Standby is greater than or equal to 1, replication delay is considered to have occurred and a manual failover will fail. It is recommended that you perform manual failover during off-peak hours. Restart failures due to replication delays can be verified through the Events screen.
