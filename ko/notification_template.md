@@ -172,6 +172,13 @@
 | INSTC_76_02 | INSTANCE          | 예        | 유지 관리 스킵                             |
 | INSTC_76_04 | INSTANCE          | 예        | 유지 관리 실패                             |
 | INSTC_76_05 | INSTANCE          | 예        | 유지 관리 등록 실패                          |
+| INSTC_79_01 | INSTANCE          | 예        | 트랜잭션 로그 아카이빙 활성화 완료                  |
+| INSTC_79_04 | INSTANCE          | 예        | 트랜잭션 로그 아카이빙 활성화 실패                  |
+| INSTC_80_01 | INSTANCE          | 예        | 트랜잭션 로그 아카이빙 비활성화 완료                 |
+| INSTC_80_04 | INSTANCE          | 예        | 트랜잭션 로그 아카이빙 비활성화 실패                 |
+| INSTC_81_04 | INSTANCE          | 예        | 트랜잭션 로그 아카이빙 지연 또는 중단 감지              |
+| INSTC_81_05 | INSTANCE          | 예        | 트랜잭션 로그 아카이브 영구 공백 감지                 |
+| INSTC_82_04 | INSTANCE          | 예        | 트랜잭션 로그 아카이브 스테이징 버퍼 볼륨 부착 실패         |
 | JOB_01_04   | JOB               | 예        | Job 실행 실패                            |
 | TENAT_01_04 | TENANT            | 예        | CPU 코어 수 제한                          |
 | TENAT_02_04 | TENANT            | 예        | RAM 용량 제한	                           |
